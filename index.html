@@ -2,10 +2,60 @@
 <html lang="cs">
 <head>
   <meta charset="UTF-8">
-  <title>Můj web</title>
+  <title>Moje stránka</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      text-align: center;
+    }
+
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      padding: 12px 25px;
+      background: white;
+      color: #333;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      transform: scale(1.1);
+      background: #f0f0f0;
+    }
+  </style>
 </head>
+
 <body>
-  <h1>Ahoj 👋</h1>
-  <p>Moje první stránka</p>
+
+  <div class="hero">
+    <h1>Tvoje první stránka 🚀</h1>
+    <p>Vytvořeno pomocí HTML + CSS</p>
+    <a href="#" class="btn">Klikni na mě</a>
+  </div>
+
 </body>
 </html>
