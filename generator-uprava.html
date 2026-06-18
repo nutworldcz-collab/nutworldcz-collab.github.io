@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Nutworld — Úprava produktu</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--br:#83502e;--bd:#5c381f;--kraft:#f1e6da;--acc:#da1668;--amb:#f7ab31;--leaf:#6fa044;--white:#fff}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;font-size:14px}
+h1,h2,h3,h4{font-family:'Exo 2',sans-serif}
+
+.shell{max-width:1100px;margin:0 auto;padding:24px 16px;display:grid;grid-template-columns:1fr 380px;gap:20px;align-items:start}
+@media(max-width:900px){.shell{grid-template-columns:1fr}}
+
+.panel{background:var(--white);border-radius:14px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,.1)}
+.panel-head{background:linear-gradient(135deg,var(--bd),var(--br));padding:16px 22px;color:white}
+.panel-head h2{font-size:16px;font-weight:700;letter-spacing:.5px}
+.panel-head p{font-size:12px;opacity:.7;margin-top:2px}
+.panel-body{padding:18px 22px}
+
+.field{margin-bottom:14px}
+.field label{display:block;font-size:11px;font-weight:700;color:var(--br);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.field input,.field select,.field textarea{width:100%;border:1.5px solid #d4c0a8;border-radius:8px;padding:9px 12px;font-family:inherit;font-size:13px;color:#2a1a0e;background:#fdf9f6;transition:border-color .15s}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--br)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+.sec{font-family:'Exo 2',sans-serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--br);margin:18px 0 10px;padding-bottom:5px;border-bottom:1.5px solid var(--kraft)}
+.sec:first-child{margin-top:0}
+
+.btn-gen{display:block;width:100%;background:linear-gradient(135deg,#a07000,var(--amb));color:white;border:none;font-family:'Exo 2',sans-serif;font-weight:800;font-size:16px;padding:14px;border-radius:10px;cursor:pointer;margin-top:20px;letter-spacing:.5px;transition:opacity .15s}
+.btn-gen:hover{opacity:.9}
+.btn-gen:disabled{opacity:.5;cursor:not-allowed}
+
+.typ-btn{display:flex;gap:10px;margin-bottom:4px}
+.typ-btn button{flex:1;padding:10px;border-radius:8px;border:2px solid #d4c0a8;background:#fdf9f6;font-family:'Exo 2',sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:#5a3a22;transition:all .15s}
+.typ-btn button.active{border-color:var(--br);background:var(--kraft);color:var(--bd)}
+
+#preview-wrap{position:sticky;top:24px}
+.preview-body{padding:16px 18px}
+.email-box{background:#1e1e2e;border-radius:10px;padding:14px 16px;font-family:'SF Mono','Fira Code','Courier New',monospace;font-size:11px;color:#cdd6f4;line-height:1.75;white-space:pre-wrap;word-break:break-word;min-height:180px}
+.lbl{color:#89b4fa;font-weight:700}
+.val{color:#a6e3a1}
+.dim{color:#6c7086}
+.sep{color:#45475a}
+.hint{font-size:11px;color:#9a7050;line-height:1.5;margin-top:6px;padding:8px 10px;background:#fdf5ee;border-radius:6px;border-left:3px solid #c8976a}
+</style>
+</head>
+<body>
+
+<div style="background:var(--bd);padding:12px 24px;display:flex;align-items:center;gap:16px">
+  <a href="/" style="text-decoration:none;color:inherit;font-family:'Exo 2',sans-serif;font-size:18px;font-weight:800">🐿 Nutworld</a>
+  <span style="color:var(--amb);font-family:'Exo 2',sans-serif;font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase">Úprava produktu</span>
+</div>
+
+<div class="shell">
+
+<!-- FORMULÁŘ -->
+<div class="panel">
+  <div class="panel-head">
+    <h2>Úprava existujícího produktu</h2>
+    <p>Popis, název, cena — Claude upraví a nahraje do Shoptetu CZ + SK</p>
+  </div>
+  <div class="panel-body">
+
+    <div class="sec">Kdo odesílá</div>
+    <div class="field">
+      <label>Tvoje jméno</label>
+      <input id="jmeno" placeholder="Např. Tereza" oninput="updatePreview()"/>
+    </div>
+
+    <div class="sec">Produkt</div>
+    <div class="field">
+      <label>Kód Shoptet *</label>
+      <input id="kod" placeholder="3456" oninput="updatePreview()"/>
+      <div class="hint">Kód najdeš v Shoptetu u produktu (např. 101, 3618, 250XZXVAN)</div>
+    </div>
+    <div class="field">
+      <label>Název produktu (pro orientaci)</label>
+      <input id="nazev" placeholder="Mandle pražené solené 200g" oninput="updatePreview()"/>
+    </div>
+
+    <div class="sec">Co upravit</div>
+    <div class="field">
+      <label>Typ úpravy *</label>
+      <div class="typ-btn">
+        <button id="btn-popis" class="active" onclick="setTyp('popis')">📝 Popis / texty</button>
+        <button id="btn-cena" onclick="setTyp('cena')">💰 Cena</button>
+        <button id="btn-nazev" onclick="setTyp('nazev')">🏷 Název</button>
+        <button id="btn-jine" onclick="setTyp('jine')">⚙️ Jiné</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Co přesně změnit / doplnit *</label>
+      <textarea id="co_zmenit" rows="4" placeholder="Např.:&#10;- Přidat do popisu že jde o BIO produkt&#10;- Zkrátit popis, je moc dlouhý&#10;- Doplnit složení: Mandle (100 %)" oninput="updatePreview()"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Aktuální problém (pokud víš)</label>
+      <textarea id="problem" rows="2" placeholder="Nepovinné — Např. popis je špatně přeložený do SK, chybí alergeny..." oninput="updatePreview()"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Poznámka pro Claudiho</label>
+      <textarea id="poznamka" rows="2" placeholder="Nepovinné" oninput="updatePreview()"></textarea>
+    </div>
+
+    <button class="btn-gen" id="btn-odeslat" onclick="odeslat()">📨 Odeslat ke zpracování</button>
+
+    <div id="status-ok" style="display:none;margin-top:14px;background:#f0fff4;border:1.5px solid var(--leaf);border-radius:8px;padding:12px 16px;font-size:13px;color:#2d5a1b">
+      ✅ <strong>Žádost odeslána!</strong> Claude upraví produkt a nahraje do Shoptetu CZ + SK.
+    </div>
+    <div id="status-err" style="display:none;margin-top:14px;background:#fff0f5;border:1.5px solid var(--acc);border-radius:8px;padding:12px 16px;font-size:13px;color:#8b0000">
+      ❌ <strong>Chyba při odesílání.</strong> Zkus to znovu nebo napiš přímo na claudie.nutworld@nutworld.cz.
+    </div>
+
+  </div>
+</div>
+
+<!-- NÁHLED -->
+<div id="preview-wrap" class="panel">
+  <div class="panel-head" style="background:linear-gradient(135deg,#1e1e2e,#313244)">
+    <h2>Email pro Claudiho</h2>
+    <p>Toto přijde na claudie.nutworld@nutworld.cz</p>
+  </div>
+  <div class="preview-body">
+    <div class="email-box" id="email-preview"><span class="dim">← Vyplň formulář vlevo</span></div>
+    <div style="margin-top:12px;font-size:11px;color:#a07050;text-align:center">Claude zpracuje do ~24 hodin ve všední den</div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzMTvsRtxdSLfTKexhIIkWZ1U6gbLkdJJpaWSFWxnQ6C-zrtf4UYNu37LqhODuUyPnr/exec';
+
+let currentTyp = 'popis';
+const typLabels = { popis: 'Popis / texty', cena: 'Cena', nazev: 'Název', jine: 'Jiné' };
+
+function setTyp(typ) {
+  currentTyp = typ;
+  ['popis','cena','nazev','jine'].forEach(t => {
+    document.getElementById('btn-'+t).classList.toggle('active', t === typ);
+  });
+  updatePreview();
+}
+
+function g(id){ return (document.getElementById(id)?.value || '').trim(); }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function updatePreview(){
+  const jmeno    = g('jmeno')    || '—';
+  const kod      = g('kod')      || '—';
+  const nazev    = g('nazev')    || '—';
+  const co       = g('co_zmenit') || '(nevyplněno)';
+  const problem  = g('problem')  || '(nevyplněno)';
+  const pozn     = g('poznamka') || '(nevyplněno)';
+  const typ      = typLabels[currentTyp];
+  const now      = new Date();
+  const dt       = `${now.getDate()}.${now.getMonth()+1}.${now.getFullYear()} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+  document.getElementById('email-preview').innerHTML =
+`<span class="sep">════════════════════════════════
+</span><span class="lbl">NUTWORLD — UPRAV PRODUKT
+</span><span class="sep">════════════════════════════════
+</span>
+<span class="lbl">Od:    </span><span class="val">${esc(jmeno)}</span>
+<span class="lbl">Datum: </span><span class="val">${dt}</span>
+
+<span class="lbl">📦 PRODUKT
+</span><span class="lbl">Kód Shoptet:  </span><span class="val">${esc(kod)}</span>
+<span class="lbl">Název:        </span><span class="val">${esc(nazev)}</span>
+<span class="lbl">Typ úpravy:   </span><span class="val">${esc(typ)}</span>
+
+<span class="lbl">✏️ CO ZMĚNIT
+</span><span class="val">${esc(co)}</span>
+
+<span class="lbl">⚠️ AKTUÁLNÍ PROBLÉM
+</span><span class="dim">${esc(problem)}</span>
+
+<span class="lbl">📝 POZNÁMKA
+</span><span class="dim">${esc(pozn)}</span>
+<span class="sep">════════════════════════════════</span>`;
+}
+
+function buildBody(){
+  const now = new Date();
+  const dt  = `${now.getDate()}.${now.getMonth()+1}.${now.getFullYear()} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+  return `════════════════════════════════
+NUTWORLD — UPRAV PRODUKT
+════════════════════════════════
+
+Od:    ${g('jmeno')||'—'}
+Datum: ${dt}
+
+📦 PRODUKT
+Kód Shoptet:  ${g('kod')||'—'}
+Název:        ${g('nazev')||'—'}
+Typ úpravy:   ${typLabels[currentTyp]}
+
+✏️ CO ZMĚNIT
+${g('co_zmenit')||'(nevyplněno)'}
+
+⚠️ AKTUÁLNÍ PROBLÉM
+${g('problem')||'(nevyplněno)'}
+
+📝 POZNÁMKA
+${g('poznamka')||'(nevyplněno)'}
+
+════════════════════════════════`;
+}
+
+async function odeslat(){
+  const kod = g('kod');
+  const co  = g('co_zmenit');
+  if(!kod) { alert('Vyplň kód Shoptet!'); document.getElementById('kod').focus(); return; }
+  if(!co)  { alert('Vyplň co změnit!'); document.getElementById('co_zmenit').focus(); return; }
+
+  const btn = document.getElementById('btn-odeslat');
+  btn.disabled = true;
+  btn.textContent = '⏳ Odesílám…';
+  document.getElementById('status-ok').style.display = 'none';
+  document.getElementById('status-err').style.display = 'none';
+
+  try {
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        subject:   `[OPRAV] ${typLabels[currentTyp]} — kód ${kod}`,
+        from_name: `Nutworld Úpravy (${g('jmeno')||'neznámý'})`,
+        message:   buildBody(),
+        replyto:   'claudie.nutworld@nutworld.cz'
+      })
+    });
+    const json = await res.json();
+    if(json.success){
+      document.getElementById('status-ok').style.display = 'block';
+      btn.textContent = '✅ Odesláno';
+    } else { throw new Error(json.error); }
+  } catch(e){
+    console.error(e);
+    document.getElementById('status-err').style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = '📨 Odeslat ke zpracování';
+  }
+}
+
+updatePreview();
+</script>
+</body>
+</html>
