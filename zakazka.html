@@ -337,7 +337,8 @@ function renderSummary(d) {
     const celkem = p.ks * p.cena;
     totalBez += celkem;
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${p.nazev}</td><td style="text-align:right">${p.ks} ks</td>
+    const kodSpan = p.kod ? `<span style="font-size:10px;color:#aaa;font-family:monospace;margin-right:5px">${p.kod}</span>` : '';
+    tr.innerHTML = `<td>${kodSpan}${p.nazev}</td><td style="text-align:right">${p.ks} ks</td>
       <td style="text-align:right">${p.cena.toFixed(2).replace('.',',')} Kč</td>
       <td style="text-align:right"><strong>${num(celkem.toFixed(2))} Kč</strong></td>`;
     tbody.appendChild(tr);
@@ -351,7 +352,7 @@ function renderSummary(d) {
     const tr = document.createElement('tr');
     tr.id = 'vrow-' + i;
     tr.innerHTML = `
-      <td style="font-size:12px">${p.nazev}</td>
+      <td style="font-size:12px">${p.kod ? `<span style="font-size:10px;color:#aaa;font-family:monospace;margin-right:4px">${p.kod}</span>` : ''}${p.nazev}</td>
       <td style="text-align:right;font-size:12px">${p.ks} ks</td>
       <td style="text-align:right;font-size:12px">${p.cena.toFixed(2)} Kč</td>
       <td style="text-align:right"><input class="inp-vyr" type="number" id="vyr-${i}" placeholder="0.00" step="0.01" oninput="recalcMarze()"/> Kč</td>
