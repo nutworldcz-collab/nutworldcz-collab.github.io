@@ -240,11 +240,12 @@ function collectFormData() {
   const produkty = [];
   rows.forEach(tr => {
     const id = tr.id.replace('row-','');
+    const kod   = document.getElementById('kod-'+id)?.value.trim() || '';
     const nazev = document.getElementById('nazev-'+id)?.value.trim();
     const ks    = parseFloat(document.getElementById('ks-'+id)?.value) || 1;
     const cena  = parseFloat(document.getElementById('cena-'+id)?.value);
     if (!nazev || isNaN(cena) || cena <= 0) return;
-    produkty.push({ nazev, ks, cena });
+    produkty.push({ kod, nazev, ks, cena });
   });
   return {
     firma:       document.getElementById('firma').value.trim(),
