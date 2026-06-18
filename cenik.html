@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Nutworld — Porovnání ceníků</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--br:#83502e;--bd:#5c381f;--kraft:#f1e6da;--acc:#da1668;--amb:#f7ab31;--leaf:#6fa044}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;font-size:13px}
+.topbar{background:var(--bd);padding:12px 24px;display:flex;align-items:center;gap:16px}
+.topbar-title{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:800;color:white}
+.topbar a{color:rgba(255,255,255,.6);font-size:12px;text-decoration:none}
+.topbar a:hover{color:white}
+
+.container{max-width:1200px;margin:24px auto;padding:0 16px}
+
+/* Upload sekce */
+.upload-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+@media(max-width:600px){.upload-grid{grid-template-columns:1fr}}
+.upload-box{background:white;border-radius:14px;padding:20px;border:2px dashed #d4c0a8;text-align:center;transition:border-color .15s}
+.upload-box:hover{border-color:var(--br)}
+.upload-box.loaded{border-style:solid;border-color:var(--leaf);background:#f0fff4}
+.upload-label{font-family:'Exo 2',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--br);margin-bottom:8px;display:block}
+.upload-icon{font-size:32px;margin-bottom:8px;display:block}
+.upload-box input[type=file]{display:none}
+.upload-btn{display:inline-block;background:var(--kraft);border:1.5px solid #c8976a;color:var(--bd);font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;padding:7px 18px;border-radius:20px;cursor:pointer;margin-top:8px}
+.upload-btn:hover{background:#e8d5c0}
+.file-name{font-size:12px;color:#888;margin-top:6px}
+.file-count{font-size:11px;color:var(--leaf);font-weight:600;margin-top:4px}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:white;border-radius:10px;padding:14px 16px;text-align:center;border:1.5px solid #e0d0c0}
+.stat-num{font-family:'Exo 2',sans-serif;font-size:26px;font-weight:700}
+.stat-label{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.stat.green .stat-num{color:#c62828}
+.stat.red .stat-num{color:#2e7d32}
+.stat.orange .stat-num{color:#e65100}
+.stat.gray .stat-num{color:#5c381f}
+
+/* Filtry */
+.controls{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+.search{border:1.5px solid #d4c0a8;border-radius:8px;padding:7px 12px;font-size:13px;background:white;font-family:inherit;width:240px}
+.search:focus{outline:none;border-color:var(--br)}
+.filter-btn{border:1.5px solid #d4c0a8;border-radius:20px;padding:6px 14px;font-size:12px;background:white;cursor:pointer;font-family:'Exo 2',sans-serif;font-weight:600;color:#888;transition:all .15s}
+.filter-btn.active{background:var(--bd);color:white;border-color:var(--bd)}
+.count{font-size:12px;color:#888;margin-left:auto}
+
+/* Tabulka */
+table{width:100%;border-collapse:collapse;background:white;border-radius:10px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.08);font-size:12.5px}
+th{background:var(--bd);color:white;padding:8px 10px;text-align:left;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap}
+th:hover{background:var(--br)}
+td{padding:7px 10px;border-bottom:1px solid #f0e8e0}
+tr:nth-child(even) td{background:#fdf8f4}
+tr:hover td{background:#f1e6da}
+td.right{text-align:right}
+td.center{text-align:center}
+
+.badge-new{background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;border-radius:4px;padding:2px 7px;font-size:10px;font-family:'Exo 2',sans-serif;font-weight:700}
+.badge-del{background:#fdecea;color:#c62828;border:1px solid #ef9a9a;border-radius:4px;padding:2px 7px;font-size:10px;font-family:'Exo 2',sans-serif;font-weight:700}
+.badge-up{background:#fdecea;color:#c62828;border-radius:4px;padding:2px 7px;font-size:10px;font-family:'Exo 2',sans-serif;font-weight:700}
+.badge-down{background:#e8f5e9;color:#2e7d32;border-radius:4px;padding:2px 7px;font-size:10px;font-family:'Exo 2',sans-serif;font-weight:700}
+.badge-same{color:#aaa;font-size:11px}
+
+.empty{text-align:center;padding:48px;color:#aaa}
+.empty-icon{font-size:48px;display:block;margin-bottom:12px}
+
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-title">📋 Porovnání ceníků</span>
+  <a href="/">← Rozcestník</a>
+</div>
+
+<div class="container">
+
+  <!-- Upload -->
+  <div class="upload-grid">
+    <div class="upload-box" id="box-a">
+      <span class="upload-label">Starý / původní ceník</span>
+      <span class="upload-icon">📂</span>
+      <label class="upload-btn">Nahrát CSV <input type="file" accept=".csv" onchange="loadFile('a', this)"/></label>
+      <div class="file-name" id="name-a">Žádný soubor</div>
+      <div class="file-count" id="count-a"></div>
+    </div>
+    <div class="upload-box" id="box-b">
+      <span class="upload-label">Nový / aktuální ceník</span>
+      <span class="upload-icon">📂</span>
+      <label class="upload-btn">Nahrát CSV <input type="file" accept=".csv" onchange="loadFile('b', this)"/></label>
+      <div class="file-name" id="name-b">Žádný soubor</div>
+      <div class="file-count" id="count-b"></div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats hidden" id="stats">
+    <div class="stat orange">
+      <div class="stat-num" id="s-zdrazeni">0</div>
+      <div class="stat-label">Zdražení</div>
+    </div>
+    <div class="stat red">
+      <div class="stat-num" id="s-zlevneni">0</div>
+      <div class="stat-label">Zlevnění</div>
+    </div>
+    <div class="stat green">
+      <div class="stat-num" id="s-nove">0</div>
+      <div class="stat-label">Nové produkty</div>
+    </div>
+    <div class="stat gray">
+      <div class="stat-num" id="s-odebrany">0</div>
+      <div class="stat-label">Odebrané</div>
+    </div>
+  </div>
+
+  <!-- Filtry + tabulka -->
+  <div id="result-section" class="hidden">
+    <div class="controls">
+      <input class="search" id="search" placeholder="Hledat produkt nebo kód…" oninput="applyFilter()"/>
+      <button class="filter-btn active" data-f="all" onclick="setFilter('all')">Vše</button>
+      <button class="filter-btn" data-f="up" onclick="setFilter('up')">📈 Zdražení</button>
+      <button class="filter-btn" data-f="down" onclick="setFilter('down')">📉 Zlevnění</button>
+      <button class="filter-btn" data-f="new" onclick="setFilter('new')">🆕 Nové</button>
+      <button class="filter-btn" data-f="del" onclick="setFilter('del')">❌ Odebrané</button>
+      <span class="count" id="res-count"></span>
+    </div>
+    <table>
+      <thead><tr>
+        <th onclick="sortBy('kod')">Kód ↕</th>
+        <th onclick="sortBy('nazev')">Produkt ↕</th>
+        <th class="right" onclick="sortBy('cena_a')">Starý Kč/kg ↕</th>
+        <th class="right" onclick="sortBy('cena_b')">Nový Kč/kg ↕</th>
+        <th class="right" onclick="sortBy('diff_pct')">Změna ↕</th>
+        <th class="center">Stav</th>
+      </tr></thead>
+      <tbody id="result-tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="empty" id="empty-state">
+    <span class="empty-icon">📋</span>
+    <p style="font-size:15px;font-weight:600;color:#5a3a22;margin-bottom:6px">Nahraj dva ceníky pro porovnání</p>
+    <p>Formát: CSV s oddělovačem středník (;) — stejný formát jako cenik.csv</p>
+  </div>
+
+</div>
+
+<script>
+let dataA = {}, dataB = {}, allRows = [];
+let currentFilter = 'all';
+let sortKey = 'diff_pct', sortAsc = false;
+
+function parseCSV(text) {
+  const lines = text.split('\n').filter(l => l.trim());
+  const result = {};
+  for (let i = 1; i < lines.length; i++) {
+    const cols = lines[i].split(';').map(c => c.trim().replace(/^"|"$/g,''));
+    const soubor = cols[0] || '';
+    const kod = cols[1] || '';
+    const kg_czk = parseFloat(cols[3]);
+    if (!kod || isNaN(kg_czk) || kg_czk <= 0) continue;
+    // Název z souboru — odstraň datum a dodavatele
+    let nazev = soubor.replace(/^\d+_/, '').replace(/\s+\d{4}\s+\d{2}.*/, '').replace(/\s+-\s*\w+$/, '').trim();
+    result[kod] = { kod, nazev: nazev || soubor, cena: kg_czk };
+  }
+  return result;
+}
+
+function loadFile(which, input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const data = parseCSV(e.target.result);
+    if (which === 'a') { dataA = data; }
+    else               { dataB = data; }
+    const cnt = Object.keys(data).length;
+    document.getElementById('name-'+which).textContent = file.name;
+    document.getElementById('count-'+which).textContent = cnt + ' produktů načteno';
+    document.getElementById('box-'+which).classList.add('loaded');
+    if (Object.keys(dataA).length > 0 && Object.keys(dataB).length > 0) compare();
+  };
+  reader.readAsText(file, 'UTF-8');
+}
+
+function compare() {
+  allRows = [];
+  const allKody = new Set([...Object.keys(dataA), ...Object.keys(dataB)]);
+  let zdrazeni=0, zlevneni=0, nove=0, odebrany=0;
+
+  allKody.forEach(kod => {
+    const a = dataA[kod], b = dataB[kod];
+    if (a && b) {
+      const diff = b.cena - a.cena;
+      const pct = diff / a.cena * 100;
+      let status = 'same';
+      if (Math.abs(pct) >= 0.1) { status = pct > 0 ? 'up' : 'down'; }
+      if (status === 'up') zdrazeni++;
+      if (status === 'down') zlevneni++;
+      allRows.push({ kod, nazev: b.nazev||a.nazev, cena_a: a.cena, cena_b: b.cena, diff, diff_pct: pct, status });
+    } else if (!a && b) {
+      nove++;
+      allRows.push({ kod, nazev: b.nazev, cena_a: null, cena_b: b.cena, diff: null, diff_pct: null, status: 'new' });
+    } else if (a && !b) {
+      odebrany++;
+      allRows.push({ kod, nazev: a.nazev, cena_a: a.cena, cena_b: null, diff: null, diff_pct: null, status: 'del' });
+    }
+  });
+
+  document.getElementById('s-zdrazeni').textContent = zdrazeni;
+  document.getElementById('s-zlevneni').textContent = zlevneni;
+  document.getElementById('s-nove').textContent = nove;
+  document.getElementById('s-odebrany').textContent = odebrany;
+  document.getElementById('stats').classList.remove('hidden');
+  document.getElementById('result-section').classList.remove('hidden');
+  document.getElementById('empty-state').classList.add('hidden');
+  applyFilter();
+}
+
+function applyFilter() {
+  const q = document.getElementById('search').value.toLowerCase();
+  let rows = allRows.filter(r => {
+    if (currentFilter !== 'all' && r.status !== currentFilter) return false;
+    if (q && !r.nazev.toLowerCase().includes(q) && !r.kod.toLowerCase().includes(q)) return false;
+    return true;
+  });
+  // Sort
+  rows.sort((a,b) => {
+    let va = a[sortKey] ?? (sortAsc ? Infinity : -Infinity);
+    let vb = b[sortKey] ?? (sortAsc ? Infinity : -Infinity);
+    if (typeof va === 'string') return sortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+    return sortAsc ? va - vb : vb - va;
+  });
+  renderRows(rows);
+}
+
+function renderRows(rows) {
+  const tb = document.getElementById('result-tbody');
+  tb.innerHTML = rows.map(r => {
+    const ca = r.cena_a ? r.cena_a.toFixed(2)+' Kč' : '—';
+    const cb = r.cena_b ? r.cena_b.toFixed(2)+' Kč' : '—';
+    let diff = '—', badge = '';
+    if (r.status === 'same') { diff = '0,00 %'; badge = '<span class="badge-same">beze změny</span>'; }
+    else if (r.status === 'up') {
+      diff = `+${r.diff_pct.toFixed(1)} % (+${r.diff.toFixed(2)} Kč)`;
+      badge = `<span class="badge-up">📈 +${r.diff_pct.toFixed(1)} %</span>`;
+    } else if (r.status === 'down') {
+      diff = `${r.diff_pct.toFixed(1)} % (${r.diff.toFixed(2)} Kč)`;
+      badge = `<span class="badge-down">📉 ${r.diff_pct.toFixed(1)} %</span>`;
+    } else if (r.status === 'new') {
+      badge = '<span class="badge-new">🆕 Nový</span>';
+    } else if (r.status === 'del') {
+      badge = '<span class="badge-del">❌ Odebraný</span>';
+    }
+    const rowStyle = r.status==='new'?'background:#f0fff4!important':r.status==='del'?'background:#fdecea!important':'';
+    return `<tr style="${rowStyle}">
+      <td style="font-family:monospace;font-size:11px;color:var(--br)">${r.kod}</td>
+      <td>${r.nazev}</td>
+      <td class="right">${ca}</td>
+      <td class="right"><strong>${cb}</strong></td>
+      <td class="right" style="font-size:12px;color:${r.status==='up'?'#c62828':r.status==='down'?'#2e7d32':'#aaa'}">${diff}</td>
+      <td class="center">${badge}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('res-count').textContent = `${rows.length} produktů`;
+}
+
+function setFilter(f) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.f === f));
+  applyFilter();
+}
+
+let sortDir = {};
+function sortBy(key) {
+  sortDir[key] = !sortDir[key];
+  sortKey = key; sortAsc = sortDir[key];
+  applyFilter();
+}
+</script>
+</body>
+</html>
