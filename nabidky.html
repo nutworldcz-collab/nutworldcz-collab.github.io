@@ -246,20 +246,47 @@ function collectFormData() {
   };
 }
 
-function createLink() {
+const NW_KEY   = atob('MDM2M2ViYjE0OWRmMDRkMTI4NTY3MmEzMDgwMTYwYTI=');
+const NW_TOKEN = atob('QVRUQTdiMWI4YTFjZWRjMTIyODI3ZmRiMmY4MGRjMjRiNThkMTA4NTVkOTY3ZTAwNDViNWU0ZDdkNmZkMzQwYzJmZWFDNEYxMTFGRQ==');
+const NW_LIST_NABIDKY = '6a33b51cbb07c5f21987091a';
+
+async function createLink() {
   const data = collectFormData();
   if (!data.firma) { alert('Vyplň nejdřív název firmy.'); return; }
   if (!data.produkty.length) { alert('Přidej alespoň jeden produkt.'); return; }
   const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
   const url = 'https://nutworldcz-collab.github.io/zakazka.html#' + encoded;
+
+  // Zkopíruj do schránky
   navigator.clipboard.writeText(url).then(() => {
     document.getElementById('link-copied').style.display = 'block';
     const a = document.getElementById('link-preview');
     a.href = url;
     a.textContent = url.substring(0, 80) + '…';
   }).catch(() => {
-    prompt('Zkopíruj odkaz ručně (Ctrl+A, Ctrl+C):', url);
+    prompt('Zkopíruj odkaz ručně:', url);
   });
+
+  // Vytvoř kartu v Trellu — seznam Nabídky
+  const cislo = window._offerCislo || ('NW-' + new Date().toISOString().slice(0,10));
+  const totalBez = data.produkty.reduce((s,p) => s + p.ks * p.cena, 0);
+  const prodList = data.produkty.map(p => `- ${p.nazev} · ${p.ks} ks · ${p.cena.toFixed(2)} Kč`).join('\n');
+  const desc = `## ${data.firma}\n**Číslo:** ${cislo}\n**Rep:** ${data.repName||'-'}\n**Celkem s DPH:** ${(totalBez*1.12).toFixed(0)} Kč\n\n### Produkty\n${prodList}\n\n---\n[➡️ Otevřít formulář zakázky](${url})`;
+
+  try {
+    await fetch(`https://api.trello.com/1/cards?key=${NW_KEY}&token=${NW_TOKEN}`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        name: `${data.firma} — č. ${cislo}`,
+        desc,
+        idList: NW_LIST_NABIDKY,
+        pos: 'top'
+      })
+    });
+  } catch(e) {
+    console.warn('Trello karta se nevytvořila:', e);
+  }
 }
 
 // ── Generátor HTML nabídky ──
@@ -399,8 +426,9 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
   const container = document.getElementById('preview-container');
   container.innerHTML = `<iframe id="preview-frame" srcdoc="${html.replace(/"/g,'&quot;')}" style="width:100%;height:600px;border:none"></iframe>`;
   document.getElementById('preview-actions').style.display='flex';
-  window._offerHtml = html;
+  window._offerHtml  = html;
   window._offerFirma = firma;
+  window._offerCislo = cislo;
 }
 
 function printOffer() {
