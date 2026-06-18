@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Nutworld — Potvrzení zakázky</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--br:#83502e;--bd:#5c381f;--kraft:#f1e6da;--acc:#da1668;--amb:#f7ab31;--leaf:#6fa044;--white:#fff}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;font-size:14px;min-height:100vh}
+h1,h2,h3,h4{font-family:'Exo 2',sans-serif}
+
+.topbar{background:var(--bd);padding:12px 24px;display:flex;align-items:center;gap:12px}
+.topbar span:first-child{font-family:'Exo 2',sans-serif;font-size:20px;font-weight:800;color:white}
+.topbar span:last-child{color:var(--amb);font-family:'Exo 2',sans-serif;font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase}
+
+.container{max-width:720px;margin:28px auto;padding:0 16px}
+
+.panel{background:var(--white);border-radius:14px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,.1);margin-bottom:20px}
+.panel-head{background:linear-gradient(135deg,var(--bd),var(--br));padding:16px 24px;color:white}
+.panel-head h2{font-size:16px;font-weight:700}
+.panel-head p{font-size:12px;opacity:.7;margin-top:2px}
+.panel-body{padding:20px 24px}
+
+/* Link input */
+.link-wrap{display:flex;gap:10px}
+.link-input{flex:1;border:2px solid #d4c0a8;border-radius:8px;padding:10px 14px;font-family:inherit;font-size:13px;color:#2a1a0e;background:#fdf9f6}
+.link-input:focus{outline:none;border-color:var(--br)}
+.btn-load{background:var(--bd);color:white;border:none;font-family:'Exo 2',sans-serif;font-weight:700;font-size:13px;padding:10px 20px;border-radius:8px;cursor:pointer;white-space:nowrap}
+.btn-load:hover{background:var(--br)}
+
+/* Offer summary */
+.summary{background:var(--kraft);border-radius:10px;padding:16px 20px;margin-bottom:16px}
+.summary-firma{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:700;color:var(--bd);margin-bottom:4px}
+.summary-meta{font-size:12px;color:#7a5a3a;margin-bottom:12px}
+.prod-table{width:100%;border-collapse:collapse;font-size:13px}
+.prod-table th{background:var(--bd);color:white;padding:6px 10px;text-align:left;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:600}
+.prod-table th:last-child,.prod-table td:last-child{text-align:right}
+.prod-table td{padding:7px 10px;border-bottom:1px solid #e0d0c0}
+.prod-table tr:nth-child(even) td{background:rgba(0,0,0,.03)}
+.total-row{display:flex;justify-content:flex-end;margin-top:10px}
+.total-box{background:var(--bd);color:white;border-radius:8px;padding:8px 16px;font-family:'Exo 2',sans-serif;font-weight:700;font-size:14px}
+.total-box span{color:var(--amb)}
+
+/* Extra fields */
+.sec{font-family:'Exo 2',sans-serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--br);margin:16px 0 10px;padding-bottom:5px;border-bottom:1.5px solid var(--kraft)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:11px;font-weight:700;color:var(--br);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.field input,.field select,.field textarea{width:100%;border:1.5px solid #d4c0a8;border-radius:8px;padding:9px 12px;font-family:inherit;font-size:13px;color:#2a1a0e;background:#fdf9f6}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--br)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.req{color:var(--acc)}
+
+/* CTA */
+.btn-trello{display:block;width:100%;background:linear-gradient(135deg,var(--leaf),#4a7c2f);color:white;border:none;font-family:'Exo 2',sans-serif;font-weight:800;font-size:16px;padding:15px;border-radius:10px;cursor:pointer;margin-top:4px;letter-spacing:.5px;text-decoration:none;text-align:center}
+.btn-trello:hover{opacity:.9}
+
+/* Steps */
+.steps{display:flex;gap:0;margin-bottom:24px;background:var(--white);border-radius:10px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.step{flex:1;padding:12px 16px;text-align:center;font-family:'Exo 2',sans-serif;font-size:12px;font-weight:600;color:#aaa;border-right:1px solid var(--kraft)}
+.step:last-child{border-right:none}
+.step.active{background:var(--bd);color:white}
+.step.done{background:#f0fff4;color:var(--leaf)}
+.step-num{display:block;font-size:18px;margin-bottom:2px}
+
+/* Empty state */
+.empty{text-align:center;padding:40px 24px;color:#aaa}
+.empty .icon{font-size:48px;display:block;margin-bottom:12px}
+
+.alert-ok{background:#f0fff4;border:1.5px solid var(--leaf);border-radius:8px;padding:12px 16px;font-size:13px;color:#2d5a1b;margin-top:12px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>🐿 Nutworld</span>
+  <span>Zakázky</span>
+</div>
+
+<div class="container">
+
+  <!-- Kroky -->
+  <div class="steps">
+    <div class="step done" id="step1"><span class="step-num">✓</span>Nabídka odeslána</div>
+    <div class="step active" id="step2"><span class="step-num">2</span>Klient schválil</div>
+    <div class="step" id="step3"><span class="step-num">3</span>Vytvoření zakázky</div>
+  </div>
+
+  <!-- Panel: Vložení odkazu -->
+  <div class="panel" id="panel-link">
+    <div class="panel-head">
+      <h2>Vložte odkaz nabídky</h2>
+      <p>Odkaz jste získali při generování nabídky — "Zkopírovat odkaz zakázky"</p>
+    </div>
+    <div class="panel-body">
+      <div class="link-wrap">
+        <input class="link-input" id="link-input" placeholder="Vložte odkaz nabídky…" oninput="tryAutoLoad()"/>
+        <button class="btn-load" onclick="loadFromLink()">Načíst →</button>
+      </div>
+      <div id="link-error" style="display:none;margin-top:8px;color:var(--acc);font-size:12px"></div>
+    </div>
+  </div>
+
+  <!-- Panel: Přehled nabídky (skrytý do načtení) -->
+  <div class="panel" id="panel-summary" style="display:none">
+    <div class="panel-head">
+      <h2>📋 Přehled nabídky</h2>
+      <p id="summary-subtitle">Načteno z odkazu</p>
+    </div>
+    <div class="panel-body">
+      <div class="summary">
+        <div class="summary-firma" id="s-firma"></div>
+        <div class="summary-meta" id="s-meta"></div>
+        <table class="prod-table">
+          <thead><tr>
+            <th>Produkt</th>
+            <th style="text-align:right">Ks</th>
+            <th style="text-align:right">Cena/ks bez DPH</th>
+            <th style="text-align:right">Celkem</th>
+          </tr></thead>
+          <tbody id="s-produkty"></tbody>
+        </table>
+        <div class="total-row">
+          <div class="total-box">Celkem s DPH: <span id="s-total"></span></div>
+        </div>
+      </div>
+
+      <!-- Doplňující pole -->
+      <div class="sec">Doplňující informace k zakázce</div>
+
+      <div class="row2">
+        <div class="field">
+          <label>Termín dodání <span class="req">*</span></label>
+          <input type="date" id="termin"/>
+        </div>
+        <div class="field">
+          <label>Obchodní zástupce <span class="req">*</span></label>
+          <input id="obchodak" placeholder="Jméno repa"/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Způsob doručení</label>
+        <select id="doruceni">
+          <option>Dle vzájemné domluvy</option>
+          <option>Osobní odběr</option>
+          <option>Doprava Nutworld</option>
+          <option>Kurýr na adresu klienta</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Adresa doručení (pokud jiná než fakturační)</label>
+        <input id="adresa-doruceni" placeholder="Ulice, město — ponechte prázdné pokud shodná"/>
+      </div>
+
+      <div class="field">
+        <label>Interní poznámka pro tým</label>
+        <textarea id="poznamka-intern" rows="2" placeholder="Zvláštní požadavky, personalizace, logo, přání…"></textarea>
+      </div>
+
+      <div class="sec">Odeslat do Trella</div>
+      <p style="font-size:13px;color:#7a5a3a;margin-bottom:14px">
+        Kliknutím se otevře Gmail s předvyplněnou zakázkou. Stačí kliknout <strong>Odeslat</strong> — Trello karta vznikne do 1 minuty.
+      </p>
+      <button class="btn-trello" onclick="sendToTrello()">✅ Odeslat zakázku do Trella</button>
+      <div id="sent-ok" style="display:none" class="alert-ok">
+        📧 Gmail otevřen — klikni Odeslat. Trello karta bude vytvořena do 1 minuty.
+      </div>
+    </div>
+  </div>
+
+  <!-- Prázdný stav -->
+  <div id="panel-empty" class="panel">
+    <div class="panel-body">
+      <div class="empty">
+        <span class="icon">🔗</span>
+        <p style="font-size:15px;font-weight:600;color:#5a3a22;margin-bottom:6px">Čeká na odkaz nabídky</p>
+        <p>Vložte odkaz který jste zkopírovali při generování nabídky.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let offerData = null;
+
+// Auto-load z URL hash při otevření stránky
+window.addEventListener('load', () => {
+  const hash = window.location.hash.slice(1);
+  if (hash) {
+    document.getElementById('link-input').value = window.location.href;
+    parseAndLoad(hash);
+  }
+});
+
+function tryAutoLoad() {
+  const val = document.getElementById('link-input').value.trim();
+  if (val.includes('#') && val.length > 50) {
+    setTimeout(() => loadFromLink(), 300);
+  }
+}
+
+function loadFromLink() {
+  const val = document.getElementById('link-input').value.trim();
+  const hashIdx = val.indexOf('#');
+  if (hashIdx === -1) {
+    showError('Odkaz neobsahuje data nabídky — zkopírujte celý odkaz.');
+    return;
+  }
+  parseAndLoad(val.slice(hashIdx + 1));
+}
+
+function parseAndLoad(encoded) {
+  try {
+    const json = decodeURIComponent(escape(atob(encoded)));
+    offerData = JSON.parse(json);
+    renderSummary(offerData);
+    document.getElementById('panel-link').style.display = 'none';
+    document.getElementById('panel-empty').style.display = 'none';
+    document.getElementById('panel-summary').style.display = 'block';
+    document.getElementById('step2').classList.add('done');
+    document.getElementById('step2').classList.remove('active');
+    document.getElementById('step3').classList.add('active');
+    // Prefill obchodak
+    if (offerData.repName) document.getElementById('obchodak').value = offerData.repName;
+    hideError();
+  } catch(e) {
+    showError('Nepodařilo se načíst data — odkaz je poškozený nebo neúplný.');
+  }
+}
+
+function renderSummary(d) {
+  document.getElementById('s-firma').textContent = d.firma;
+  const meta = [d.adresa, d.kontakt, d.emailKlient].filter(Boolean).join(' · ');
+  let icoStr = '';
+  if (d.ico) icoStr += 'IČO: ' + d.ico;
+  if (d.dic) icoStr += (icoStr ? '  |  ' : '') + 'DIČ: ' + d.dic;
+  document.getElementById('s-meta').textContent = [meta, icoStr].filter(Boolean).join('\n');
+  document.getElementById('summary-subtitle').textContent =
+    'Nabídka pro ' + d.firma + (d.repName ? ' · Rep: ' + d.repName : '');
+
+  let totalBez = 0;
+  const tbody = document.getElementById('s-produkty');
+  tbody.innerHTML = '';
+  d.produkty.forEach(p => {
+    const celkem = p.ks * p.cena;
+    totalBez += celkem;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${p.nazev}</td><td style="text-align:right">${p.ks} ks</td>
+      <td style="text-align:right">${p.cena.toFixed(2).replace('.',',')} Kč</td>
+      <td style="text-align:right"><strong>${num(celkem.toFixed(2))} Kč</strong></td>`;
+    tbody.appendChild(tr);
+  });
+  const totalSDph = totalBez * 1.12;
+  document.getElementById('s-total').textContent = num(totalSDph.toFixed(2)) + ' Kč';
+}
+
+function sendToTrello() {
+  if (!offerData) return;
+  const termin   = document.getElementById('termin').value;
+  const obchodak = document.getElementById('obchodak').value.trim();
+  const doruceni = document.getElementById('doruceni').value;
+  const adresaDor= document.getElementById('adresa-doruceni').value.trim();
+  const poznamka = document.getElementById('poznamka-intern').value.trim();
+
+  if (!termin) { alert('Vyplňte termín dodání.'); return; }
+  if (!obchodak) { alert('Vyplňte obchodního zástupce.'); return; }
+
+  const d = offerData;
+  let totalBez = 0;
+  const prodLines = d.produkty.map(p => {
+    const c = p.ks * p.cena;
+    totalBez += c;
+    return `${p.nazev} | ${p.ks} ks | ${p.cena.toFixed(2)} Kč | ${num(c.toFixed(2))} Kč`;
+  }).join('\n');
+
+  const dphCastka = totalBez * 0.12;
+  const totalSDph = totalBez + dphCastka;
+
+  const formatDate = (iso) => {
+    if (!iso) return '';
+    const [y,m,dd] = iso.split('-');
+    return `${dd}.${m}.${y}`;
+  };
+
+  const body = `FIRMA: ${d.firma}
+ICO: ${d.ico || '-'}
+DIC: ${d.dic || '-'}
+KONTAKT: ${d.kontakt || '-'}
+EMAIL: ${d.emailKlient || '-'}
+FAKTURACNI_ADRESA: ${d.adresa || '-'}
+DORUCOVACI_ADRESA: ${adresaDor || d.adresa || '-'}
+
+TERMIN: ${formatDate(termin)}
+DORUCENI: ${doruceni}
+OBCHODAK: ${obchodak}
+
+PRODUKTY:
+${prodLines}
+
+CELKEM_BEZ_DPH: ${num(totalBez.toFixed(2))} Kč
+DPH_12: ${num(dphCastka.toFixed(2))} Kč
+CELKEM_S_DPH: ${num(totalSDph.toFixed(2))} Kč
+
+SPLATNOST: ${d.splatnost || '-'}
+TRVANLIVOST: ${d.trvanlivost || '-'}
+POZNAMKY: ${poznamka || '-'}
+POZNAMKA_NABIDKY: ${d.poznamka || '-'}`;
+
+  const subject = encodeURIComponent(`NW Zakázka — ${d.firma}`);
+  const bodyEnc = encodeURIComponent(body);
+  const mailto  = `mailto:claudie.nutworld.cz@gmail.com?subject=${subject}&body=${bodyEnc}`;
+
+  window.open(mailto);
+  document.getElementById('sent-ok').style.display = 'block';
+  document.getElementById('step3').classList.add('done');
+  document.getElementById('step3').classList.remove('active');
+}
+
+function num(s) { return String(s).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); }
+function showError(msg) {
+  const el = document.getElementById('link-error');
+  el.textContent = msg; el.style.display = 'block';
+}
+function hideError() { document.getElementById('link-error').style.display = 'none'; }
+</script>
+</body>
+</html>
