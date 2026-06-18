@@ -58,6 +58,8 @@ table.pt input.inp-cena{width:100px;text-align:right}
 /* ── BTN ── */
 .btn-gen{display:block;width:100%;background:linear-gradient(135deg,var(--acc),#b01252);color:white;border:none;font-family:'Exo 2',sans-serif;font-weight:800;font-size:16px;padding:14px;border-radius:10px;cursor:pointer;margin-top:20px;letter-spacing:.5px}
 .btn-gen:hover{opacity:.9}
+.btn-link{display:block;width:100%;background:#f1e6da;border:2px solid #c8976a;color:var(--bd);font-family:'Exo 2',sans-serif;font-weight:700;font-size:14px;padding:12px;border-radius:10px;cursor:pointer;margin-top:10px;letter-spacing:.3px}
+.btn-link:hover{background:#e8d5c0}
 
 /* ── NABIDKA PREVIEW ── */
 #preview-wrap{position:sticky;top:24px}
@@ -159,6 +161,11 @@ table.pt input.inp-cena{width:100px;text-align:right}
     <div class="field"><label>Poznámka (volitelná)</label><textarea id="poznamka" rows="2" placeholder="Např. ceny platí pro tento odběr..."></textarea></div>
 
     <button class="btn-gen" onclick="generateOffer()">🖨 Generovat nabídku</button>
+    <button class="btn-link" id="btn-link" onclick="createLink()" style="display:none">📋 Zkopírovat odkaz zakázky</button>
+    <div id="link-copied" style="display:none;margin-top:10px;background:#f0fff4;border:1.5px solid #6fa044;border-radius:8px;padding:10px 14px;font-size:13px;color:#2d5a1b">
+      ✅ Odkaz zkopírován! Uložte si ho — až klient schválí, otevřete ho na stránce Zakázky.
+      <br><a id="link-preview" href="#" target="_blank" style="color:#83502e;font-size:11px;word-break:break-all"></a>
+    </div>
   </div>
 </div>
 
@@ -208,6 +215,49 @@ function recalc(id) {
   if (!el) return;
   if (!ks || isNaN(cena) || cena <= 0) { el.textContent = '—'; return; }
   el.textContent = num((ks * cena).toFixed(2)) + ' Kč';
+}
+
+// ── Odkaz zakázky ──
+function collectFormData() {
+  const rows = document.querySelectorAll('#prod-tbody tr');
+  const produkty = [];
+  rows.forEach(tr => {
+    const id = tr.id.replace('row-','');
+    const nazev = document.getElementById('nazev-'+id)?.value.trim();
+    const ks    = parseFloat(document.getElementById('ks-'+id)?.value) || 1;
+    const cena  = parseFloat(document.getElementById('cena-'+id)?.value);
+    if (!nazev || isNaN(cena) || cena <= 0) return;
+    produkty.push({ nazev, ks, cena });
+  });
+  return {
+    firma:       document.getElementById('firma').value.trim(),
+    ico:         document.getElementById('ico').value.trim(),
+    dic:         document.getElementById('dic').value.trim(),
+    adresa:      document.getElementById('adresa').value.trim(),
+    kontakt:     document.getElementById('kontakt').value.trim(),
+    emailKlient: document.getElementById('email-klient').value.trim(),
+    repName:     document.getElementById('rep-name').value.trim(),
+    repEmail:    document.getElementById('rep-email').value.trim(),
+    splatnost:   document.getElementById('splatnost').value,
+    dodani:      document.getElementById('dodani').value,
+    trvanlivost: document.getElementById('trvanlivost').value,
+    poznamka:    document.getElementById('poznamka').value.trim(),
+    produkty
+  };
+}
+
+function createLink() {
+  const data = collectFormData();
+  if (!data.firma) { alert('Vyplň nejdřív název firmy.'); return; }
+  if (!data.produkty.length) { alert('Přidej alespoň jeden produkt.'); return; }
+  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+  const url = 'https://nutworldcz-collab.github.io/zakazka.html#' + encoded;
+  navigator.clipboard.writeText(url).then(() => {
+    document.getElementById('link-copied').style.display = 'block';
+    const a = document.getElementById('link-preview');
+    a.href = url;
+    a.textContent = url.substring(0, 80) + '…';
+  });
 }
 
 // ── Generátor HTML nabídky ──
@@ -337,6 +387,10 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
   <div style="height:3px;background:linear-gradient(90deg,#da1668,#f7ab31)"></div>
 </div>
 </body></html>`;
+
+  // Zobraz tlačítko odkazu
+  document.getElementById('btn-link').style.display = 'block';
+  document.getElementById('link-copied').style.display = 'none';
 
   // Zobraz v preview
   const container = document.getElementById('preview-container');
