@@ -16,14 +16,13 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .topbar-date{margin-left:auto;color:rgba(255,255,255,.45);font-size:11px}
 .container{max-width:1200px;margin:20px auto;padding:0 16px}
 .info{background:white;border-radius:8px;padding:10px 16px;margin-bottom:14px;font-size:12px;color:#888;border:1.5px solid #e0d0c0}
-.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:16px}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
 @media(max-width:700px){.stats{grid-template-columns:repeat(3,1fr)}}
-.stat{background:white;border-radius:10px;padding:10px 8px;text-align:center;border:1.5px solid #e0d0c0;cursor:pointer}
+.stat{background:white;border-radius:10px;padding:12px;text-align:center;border:1.5px solid #e0d0c0;cursor:pointer}
 .stat:hover{border-color:var(--br)}
-.stat-num{font-family:'Exo 2',sans-serif;font-size:22px;font-weight:700}
+.stat-num{font-family:'Exo 2',sans-serif;font-size:24px;font-weight:700}
 .stat-label{font-size:10px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
-.s-up .stat-num{color:#c62828}.s-dn .stat-num{color:#2e7d32}.s-dod .stat-num{color:#1565c0}
-.s-new .stat-num{color:#00796b}.s-mix .stat-num{color:#7a5200}
+.s-up .stat-num{color:#c62828}.s-dn .stat-num{color:#2e7d32}.s-dod .stat-num{color:#1565c0}.s-new .stat-num{color:#00796b}
 .tabs{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
 .tab{border:1.5px solid #d4c0a8;border-radius:20px;padding:5px 12px;font-size:11px;background:white;cursor:pointer;font-family:'Exo 2',sans-serif;font-weight:600;color:#888;white-space:nowrap}
 .tab.on{background:var(--bd);color:white;border-color:var(--bd)}
@@ -43,7 +42,6 @@ tr:hover td{filter:brightness(.97)}
 .b-dod{background:#e3f2fd;color:#1565c0;border-radius:4px;padding:2px 7px;font-size:10px;font-weight:700;white-space:nowrap}
 .b-new{background:#e0f2f1;color:#00796b;border-radius:4px;padding:2px 7px;font-size:10px;font-weight:700;white-space:nowrap}
 .b-del{background:#f5f5f5;color:#555;border-radius:4px;padding:2px 7px;font-size:10px;font-weight:700;white-space:nowrap}
-.b-mix{background:#fef3c7;color:#7a5200;border-radius:4px;padding:2px 7px;font-size:10px;font-weight:700;white-space:nowrap}
 .hidden{display:none!important}
 </style>
 </head>
@@ -51,19 +49,18 @@ tr:hover td{filter:brightness(.97)}
 <div class="topbar">
   <span class="topbar-title">📊 K2 Porovnání ceníků</span>
   <a href="/">← Rozcestník</a>
-  <span class="topbar-date">Květen → Červen 2026 · 18. 6. 2026</span>
+  <span class="topbar-date">2026-05 → 2026-06</span>
 </div>
 <div class="container">
-  <div class="info">K2 ceník: <strong>květen 2026</strong> vs <strong>červen 2026</strong> + vlastní mixy z cenik.csv · Celkem: 565 produktů</div>
+  <div class="info">K2 ceník: <strong>2026-05</strong> vs <strong>2026-06</strong> · Aktivní produkty: 355 → 765 · Celkem v tabulce: 535</div>
   <div class="stats">
     <div class="stat s-up" onclick="setF2('up')"><div class="stat-num">9</div><div class="stat-label">📈 Zdražení</div></div>
     <div class="stat s-dn" onclick="setF2('down')"><div class="stat-num">9</div><div class="stat-label">📉 Zlevnění</div></div>
     <div class="stat s-dod" onclick="setF2('zmena_dod')"><div class="stat-num">3</div><div class="stat-label">🔄 Změna dod.</div></div>
     <div class="stat s-new" onclick="setF2('nove')"><div class="stat-num">230</div><div class="stat-label">🆕 Nové</div></div>
-    <div class="stat s-mix" onclick="setF2('mixovane')"><div class="stat-num">30</div><div class="stat-label">🥜 Mixy</div></div>
-    <div class="stat" onclick="setF2('all')" style="border-color:#c8976a"><div class="stat-num" style="color:#5c381f">565</div><div class="stat-label">📋 Celkem</div></div>
+    <div class="stat" onclick="setF2('all')" style="border-color:#c8976a"><div class="stat-num" style="color:#5c381f">535</div><div class="stat-label">📋 Celkem</div></div>
   </div>
-  <div class="tabs"><button class="tab on" data-dod="all">Vše</button>
+  <div class="tabs" id="tabs"><button class="tab on" data-dod="all">Vše</button>
 <button class="tab" data-dod="1.VALASKÁ DÍLNA S.R.O">1.VALASKÁ DÍLNA S.R.O</button>
 <button class="tab" data-dod="ALMECO">ALMECO</button>
 <button class="tab" data-dod="BAUM HOSPITALITY S.R.O.">BAUM HOSPITALITY S.R.O.</button>
@@ -83,7 +80,6 @@ tr:hover td{filter:brightness(.97)}
 <button class="tab" data-dod="MANU JTC">MANU JTC</button>
 <button class="tab" data-dod="MB INDUSTRY">MB INDUSTRY</button>
 <button class="tab" data-dod="MIROSLAV BAJGAR">MIROSLAV BAJGAR</button>
-<button class="tab" data-dod="MIXOVANÉ">🥜 Mixované</button>
 <button class="tab" data-dod="MOJE PARTY">MOJE PARTY</button>
 <button class="tab" data-dod="MONACO">MONACO</button>
 <button class="tab" data-dod="NATURAL">NATURAL</button>
@@ -110,14 +106,13 @@ tr:hover td{filter:brightness(.97)}
     <button class="fbtn" data-f="up" onclick="setF(this,'up')">📈 Zdražení</button>
     <button class="fbtn" data-f="down" onclick="setF(this,'down')">📉 Zlevnění</button>
     <button class="fbtn" data-f="nove" onclick="setF(this,'nove')">🆕 Nové</button>
-    <button class="fbtn" data-f="mixovane" onclick="setF(this,'mixovane')">🥜 Mixy</button>
-    <button class="fbtn" data-f="all" onclick="setF(this,'all')">Vše (565)</button>
+    <button class="fbtn" data-f="all" onclick="setF(this,'all')">Vše (535)</button>
     <span class="cnt" id="cnt"></span>
   </div>
   <table>
     <thead><tr>
       <th>Kód</th><th>Produkt</th><th>Dodavatel</th>
-      <th class="r">Květen Kč</th><th class="r">Červen Kč</th>
+      <th class="r">2026-05 Kč</th><th class="r">2026-06 Kč</th>
       <th class="r">Rozdíl</th><th class="c">Změna</th>
     </tr></thead>
     <tbody id="tb"><tr data-status="up" data-dod="MB INDUSTRY|MB INDUSTRY" style="background:#fff5f0"><td style="font-family:monospace;font-size:11px;color:#83502e">125V</td><td style="font-size:12px">Lískové oříky - jádra 13/15 VOLNÉ VÁHY - změna specifikace</td><td style="font-size:11px;color:#555">MB INDUSTRY</td><td class="r" style="color:#999">289,00 Kč</td><td class="r"><strong>417,00 Kč</strong></td><td class="r" style="font-size:12px;color:#c62828">+128,00 Kč</td><td class="c"><span class="b-up">📈 +44.3 %</span></td></tr>
@@ -655,36 +650,6 @@ tr:hover td{filter:brightness(.97)}
 <tr data-status="same" data-dod="K-SERVIS PRAHA, A.S.|K-SERVIS PRAHA, A.S." style=""><td style="font-family:monospace;font-size:11px;color:#83502e">6465V</td><td style="font-size:12px">Čokoládové kamínky VOLNÉ VÁHY</td><td style="font-size:11px;color:#555">K-SERVIS PRAHA, A.S.</td><td class="r" style="color:#999">114,00 Kč</td><td class="r"><strong>114,00 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span style="color:#ccc;font-size:11px">—</span></td></tr>
 <tr data-status="same" data-dod="OŘECHY|OŘECHY" style=""><td style="font-family:monospace;font-size:11px;color:#83502e">10247V</td><td style="font-size:12px">Čokovajíčka - Mandle VOLNÉ VÁHY</td><td style="font-size:11px;color:#555">OŘECHY</td><td class="r" style="color:#999">479,00 Kč</td><td class="r"><strong>479,00 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span style="color:#ccc;font-size:11px">—</span></td></tr>
 <tr data-status="same" data-dod="CALBUCO|CALBUCO" style=""><td style="font-family:monospace;font-size:11px;color:#83502e">4128V</td><td style="font-size:12px">Čočka zelená francouzská VOLNÉ VÁHY</td><td style="font-size:11px;color:#555">CALBUCO</td><td class="r" style="color:#999">90,00 Kč</td><td class="r"><strong>90,00 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span style="color:#ccc;font-size:11px">—</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">2123V</td><td style="font-size:12px">Ananas platky MIX</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>140,54 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">1040V</td><td style="font-size:12px">Antioxidacni smes</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>165,29 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">4443V</td><td style="font-size:12px">Arasidove hrudky mix barev</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>235,69 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">2762V</td><td style="font-size:12px">Bananovy chips DUO mix</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>174,00 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">1037V</td><td style="font-size:12px">Brustáciový mix</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>334,80 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">7569V</td><td style="font-size:12px">Flamengo Mix</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>125,00 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">2726V</td><td style="font-size:12px">Kavovy mix slakdy</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>275,98 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">2705V</td><td style="font-size:12px">Kesu v cokolade MIX</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>250,34 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">2738V</td><td style="font-size:12px">Mandle a merunky drazovane mix</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>258,22 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">155V</td><td style="font-size:12px">Premium mix orech Nutworld</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>298,50 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">3082V</td><td style="font-size:12px">Rozinky obri MIX</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>127,00 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">5502V</td><td style="font-size:12px">Salatova smes seminek a piniovych orechu</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>144,25 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">2474V</td><td style="font-size:12px">Semiinkova smes</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>65,90 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">2693V</td><td style="font-size:12px">Skořicový MIX</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>250,05 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">2708V</td><td style="font-size:12px">Sladka smes DELUXE</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>253,55 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">1028V</td><td style="font-size:12px">Slany mix ALL IN ONE</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>192,09 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">5511V</td><td style="font-size:12px">Slany mix EXCLUSIVE</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>220,98 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">161V</td><td style="font-size:12px">Slany party mix</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>239,27 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">158V</td><td style="font-size:12px">Smes jader</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>309,60 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">5499V</td><td style="font-size:12px">Smes kesu a mandle natural</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>215,51 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">4896V</td><td style="font-size:12px">Smes mandli v cokolade BROWN</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>231,85 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">2342V</td><td style="font-size:12px">Smes orechu DELUXE</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>212,79 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">3097V</td><td style="font-size:12px">Smes orechu a rozinek</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>197,84 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">3091V</td><td style="font-size:12px">Smes orechu prazena nesolena</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>241,86 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">2345V</td><td style="font-size:12px">Smes orechu stastne srdce</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>175,00 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">6450V</td><td style="font-size:12px">Smes ovoce zdrava energie</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>252,00 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">5505V</td><td style="font-size:12px">Smes seminek kesu a mandle natural</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>134,65 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">2702V</td><td style="font-size:12px">Studentska smes</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>153,93 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">2699V</td><td style="font-size:12px">Tiramisu smes</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>220,60 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
-<tr data-status="mixovane" data-dod="MIXOVANÉ|MIXOVANÉ" style="background:#fdf5e0"><td style="font-family:monospace;font-size:11px;color:#83502e">2423V</td><td style="font-size:12px">Tropicka smes</td><td style="font-size:11px;color:#555">MIXOVANÉ</td><td class="r" style="color:#999">—</td><td class="r"><strong>127,33 Kč</strong></td><td class="r" style="font-size:12px;color:#aaa"></td><td class="c"><span class="b-mix">🥜 Mix</span></td></tr>
 </tbody>
   </table>
 </div>
@@ -698,10 +663,9 @@ function applyFilter(){
   document.querySelectorAll('#tb tr').forEach(tr=>{
     const s=tr.dataset.status,dod=tr.dataset.dod||'',txt=tr.textContent.toLowerCase();
     const mQ=!q||txt.includes(q);
-    const mF=curF==='all'||(curF==='changes'?s!=='same'&&s!=='mixovane':s===curF);
+    const mF=curF==='all'||(curF==='changes'?s!=='same':s===curF);
     const mD=curDod==='all'||dod.includes(curDod);
-    tr.classList.toggle('hidden',!(mQ&&mF&&mD));
-    if(mQ&&mF&&mD)vis++;
+    const show=mQ&&mF&&mD;tr.classList.toggle('hidden',!show);if(show)vis++;
   });
   document.getElementById('cnt').textContent=vis+' produktů';
 }
