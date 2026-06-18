@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Nutworld — Generátor nabídek</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--br:#83502e;--bd:#5c381f;--kraft:#f1e6da;--acc:#da1668;--amb:#f7ab31;--leaf:#6fa044;--white:#fff}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;font-size:14px}
+h1,h2,h3,h4{font-family:'Exo 2',sans-serif}
+
+/* ── LAYOUT ── */
+.shell{max-width:1100px;margin:0 auto;padding:24px 16px;display:grid;grid-template-columns:1fr 420px;gap:20px;align-items:start}
+@media(max-width:900px){.shell{grid-template-columns:1fr}}
+
+/* ── PANEL ── */
+.panel{background:var(--white);border-radius:14px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,.1)}
+.panel-head{background:linear-gradient(135deg,var(--bd),var(--br));padding:16px 22px;color:white}
+.panel-head h2{font-size:16px;font-weight:700;letter-spacing:.5px}
+.panel-head p{font-size:12px;opacity:.7;margin-top:2px}
+.panel-body{padding:18px 22px}
+
+/* ── FORM ── */
+.field{margin-bottom:14px}
+.field label{display:block;font-size:11px;font-weight:700;color:var(--br);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.field input,.field select,.field textarea{width:100%;border:1.5px solid #d4c0a8;border-radius:8px;padding:9px 12px;font-family:inherit;font-size:13px;color:#2a1a0e;background:#fdf9f6;transition:border-color .15s}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--br)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
+/* ── SECTION LABEL ── */
+.sec{font-family:'Exo 2',sans-serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--br);margin:18px 0 10px;padding-bottom:5px;border-bottom:1.5px solid var(--kraft)}
+
+/* ── PRODUKTY TABLE ── */
+.prod-wrap{overflow-x:auto;margin-bottom:12px}
+table.pt{width:100%;border-collapse:collapse;font-size:12.5px}
+table.pt th{background:var(--bd);color:white;padding:7px 10px;text-align:left;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:600;letter-spacing:.3px}
+table.pt td{padding:5px 6px;border-bottom:1px solid #ede0d4;vertical-align:middle}
+table.pt tr:nth-child(even) td{background:#fdf8f4}
+table.pt input{border:1.5px solid #d4c0a8;border-radius:6px;padding:7px 10px;font-size:13px;background:#fdf9f6;font-family:inherit}
+table.pt input:focus{outline:none;border-color:var(--br)}
+table.pt input.inp-nazev{width:100%}
+table.pt input.inp-ks{width:64px;text-align:center}
+table.pt input.inp-cena{width:100px;text-align:right}
+.td-total{font-weight:700;color:var(--bd);font-size:13px;white-space:nowrap;padding:5px 10px}
+.del-btn{background:none;border:none;color:#ccc;cursor:pointer;font-size:18px;padding:2px 7px;border-radius:4px;line-height:1}
+.del-btn:hover{color:var(--acc);background:#fff0f5}
+.add-btn{background:var(--kraft);border:1.5px solid #c8976a;color:var(--bd);font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;padding:7px 16px;border-radius:20px;cursor:pointer;margin-top:4px}
+.add-btn:hover{background:#e8d5c0}
+
+/* ── PRIJEMCI ── */
+.prijemci-list{display:flex;flex-direction:column;gap:8px}
+.prijemce-row{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end}
+.prijemce-row input{border:1.5px solid #d4c0a8;border-radius:8px;padding:8px 10px;font-size:12px;background:#fdf9f6;width:100%}
+
+/* ── BTN ── */
+.btn-gen{display:block;width:100%;background:linear-gradient(135deg,var(--acc),#b01252);color:white;border:none;font-family:'Exo 2',sans-serif;font-weight:800;font-size:16px;padding:14px;border-radius:10px;cursor:pointer;margin-top:20px;letter-spacing:.5px}
+.btn-gen:hover{opacity:.9}
+
+/* ── NABIDKA PREVIEW ── */
+#preview-wrap{position:sticky;top:24px}
+.preview-actions{padding:12px 22px;background:var(--kraft);display:flex;gap:10px;border-bottom:1px solid #d4c0a8}
+.btn-pdf{background:var(--bd);color:white;border:none;font-family:'Exo 2',sans-serif;font-weight:700;font-size:13px;padding:9px 20px;border-radius:20px;cursor:pointer}
+.btn-pdf:hover{background:var(--br)}
+.btn-reset{background:none;border:1.5px solid #c8976a;color:var(--br);font-family:'Exo 2',sans-serif;font-weight:600;font-size:12px;padding:8px 16px;border-radius:20px;cursor:pointer}
+#preview-frame{width:100%;min-height:500px;border:none;background:white}
+.empty-preview{padding:60px 24px;text-align:center;color:#aaa}
+.empty-preview p{font-size:14px;margin-top:8px}
+
+/* ── PRINT ── */
+@media print{body{background:white}.shell{display:block;padding:0}#form-panel{display:none}#preview-wrap{position:static}.preview-actions{display:none}#preview-frame{min-height:100vh}}
+
+</style>
+</head>
+<body>
+
+<div style="background:var(--bd);padding:12px 24px;display:flex;align-items:center;gap:12px">
+  <span style="font-family:'Exo 2',sans-serif;font-size:20px;font-weight:800;color:white">🐿 Nutworld</span>
+  <span style="color:var(--amb);font-family:'Exo 2',sans-serif;font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase">Generátor nabídek</span>
+</div>
+
+<div class="shell">
+<!-- ── FORMULÁŘ ── -->
+<div id="form-panel" class="panel">
+  <div class="panel-head">
+    <h2>Nová nabídka</h2>
+    <p>Vyplň údaje a klikni na Generovat nabídku</p>
+  </div>
+  <div class="panel-body">
+
+    <!-- Obchodní zástupce -->
+    <div class="sec">Obchodní zástupce</div>
+    <div class="row2">
+      <div class="field"><label>Jméno</label><input id="rep-name" placeholder="Jan Vlček" /></div>
+      <div class="field"><label>Email</label><input id="rep-email" placeholder="jan.vlcek@nutworld.cz" /></div>
+    </div>
+
+    <!-- Klient -->
+    <div class="sec">Klient</div>
+    <div class="field"><label>Název firmy *</label><input id="firma" placeholder="STERIPAK s.r.o." /></div>
+    <div class="row2">
+      <div class="field"><label>IČO</label><input id="ico" placeholder="26225484" /></div>
+      <div class="field"><label>DIČ</label><input id="dic" placeholder="CZ26225484" /></div>
+    </div>
+    <div class="field"><label>Adresa</label><input id="adresa" placeholder="Poděbradova 849, 664 42 Modřice" /></div>
+    <div class="row2">
+      <div class="field"><label>Kontaktní osoba</label><input id="kontakt" placeholder="Jméno" /></div>
+      <div class="field"><label>Email klienta</label><input id="email-klient" placeholder="info@firma.cz" /></div>
+    </div>
+
+    <!-- Produkty -->
+    <div class="sec">Produkty</div>
+    <div class="prod-wrap">
+      <table class="pt">
+        <thead>
+          <tr>
+            <th style="width:55%">Produkt / popis</th>
+            <th style="width:10%">Ks</th>
+            <th style="width:18%">Cena/ks bez DPH</th>
+            <th style="width:12%">Celkem</th>
+            <th style="width:5%"></th>
+          </tr>
+        </thead>
+        <tbody id="prod-tbody"></tbody>
+      </table>
+    </div>
+    <button class="add-btn" onclick="addRow()">+ Přidat řádek</button>
+
+    <!-- Podmínky -->
+    <div class="sec">Podmínky</div>
+    <div class="row3">
+      <div class="field"><label>Splatnost</label>
+        <select id="splatnost">
+          <option>7 dní</option>
+          <option>14 dní</option>
+          <option>30 dní</option>
+          <option>Dle domluvy</option>
+        </select>
+      </div>
+      <div class="field"><label>Dodání</label>
+        <select id="dodani">
+          <option>Dle vzájemné domluvy</option>
+          <option>Do 3 pracovních dnů</option>
+          <option>Do 5 pracovních dnů</option>
+          <option>Osobní odběr</option>
+        </select>
+      </div>
+      <div class="field"><label>Trvanlivost</label>
+        <select id="trvanlivost">
+          <option>4 měsíce a více</option>
+          <option>3 měsíce a více</option>
+          <option>6 měsíců a více</option>
+          <option>Dle obalu</option>
+        </select>
+      </div>
+    </div>
+    <div class="field"><label>Poznámka (volitelná)</label><textarea id="poznamka" rows="2" placeholder="Např. ceny platí pro tento odběr..."></textarea></div>
+
+    <button class="btn-gen" onclick="generateOffer()">🖨 Generovat nabídku</button>
+  </div>
+</div>
+
+<!-- ── NÁHLED ── -->
+<div id="preview-wrap" class="panel">
+  <div class="panel-head">
+    <h2>Náhled nabídky</h2>
+    <p>Vyplň formulář vlevo a klikni Generovat</p>
+  </div>
+  <div class="preview-actions" id="preview-actions" style="display:none">
+    <button class="btn-pdf" onclick="printOffer()">🖨 Stáhnout PDF</button>
+    <button class="btn-reset" onclick="resetPreview()">← Zpět na formulář</button>
+  </div>
+  <div id="preview-container">
+    <div class="empty-preview">
+      <div style="font-size:48px">📄</div>
+      <p>Zde se zobrazí náhled nabídky</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+const PRODUKTY = [{"kod": "164", "nazev": "ANANAS PLÁTKY", "kg_czk": 108.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "2123", "nazev": "ANANAS PLÁTKY MIX", "kg_czk": 140.54, "gramaze": [200, 500, 1000, 3000]}, {"kod": "3298", "nazev": "ANANAS PLÁTKY S PŘÍCHUTÍ JABLKO", "kg_czk": 119.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "3304", "nazev": "ANANAS PLÁTKY S PŘÍCHUTÍ JAHODA", "kg_czk": 127.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "1040", "nazev": "ANTIOXIDAČNÍ SMĚS", "kg_czk": 165.29, "gramaze": [500, 3000]}, {"kod": "4443", "nazev": "ARAŠÍDOVÉ HRUDKY MIX BAREV", "kg_czk": 235.69, "gramaze": [200, 500, 1000, 2000]}, {"kod": "56", "nazev": "ARAŠÍDY LOUPANÉ PRAŽENÉ SOLENÉ", "kg_czk": 59.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "10264", "nazev": "ARAŠÍDY V BÍLÉ ČOKOLÁDĚ", "kg_czk": 209.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "719", "nazev": "ARAŠÍDY V CHILLI TĚSTÍČKU", "kg_czk": 145.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "1976", "nazev": "ARAŠÍDY V CUKRU S PŘÍDAVKEM MEDU", "kg_czk": 86.0, "gramaze": [100, 200, 500, 1000, 5000]}, {"kod": "4146", "nazev": "ARAŠÍDY V KARAMELU S CHILLI", "kg_czk": 159.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "176", "nazev": "BANÁN KOUSKY <4CM", "kg_czk": 99.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "170", "nazev": "BANÁN SUŠENÉ PLÁTKY", "kg_czk": 89.0, "gramaze": [200, 500, 1000]}, {"kod": "2294", "nazev": "BANÁN V POLEVĚ S JOGURTOVOU PŘÍCHUTÍ", "kg_czk": 142.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "8742", "nazev": "BANÁNKY ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "2759", "nazev": "BANÁNOVÉ CHIPSY V HOŘKÉ ČOKOLÁDĚ", "kg_czk": 159.0, "gramaze": [200, 3000]}, {"kod": "5475", "nazev": "BANÁNOVÉ CHIPSY V MLÉČNÉ ČOKOLÁDĚ", "kg_czk": 159.0, "gramaze": [200, 500, 1000, 3000, 4000]}, {"kod": "2762", "nazev": "BANÁNOVÝ CHIPS DUO MIX", "kg_czk": 174.0, "gramaze": [200, 3000]}, {"kod": "3717", "nazev": "BAREVNÁ SMĚS ROZINEK", "kg_czk": 8.85, "gramaze": [100, 200, 500, 1000, 5000]}, {"kod": "3722", "nazev": "BLANŠÍROVANÉ SMAŽENÉ VALENCIJSKÉ LANÝŽOVÉ MANDLE", "kg_czk": 375.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "3720", "nazev": "BLANŠÍROVANÉ SMAŽENÉ VALENCIJSKÉ MANDLE", "kg_czk": 335.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "3721", "nazev": "BLANŠÍROVANÉ SMAŽENÉ VALENCIJSKÉ MANDLE S JEMNÝMI BYLINKAMI", "kg_czk": 356.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "182", "nazev": "BORŮVKY SUŠENÉ NESÍŘENÉ", "kg_czk": 362.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "179", "nazev": "BRUSINKY SUŠENÉ NESÍŘENÉ", "kg_czk": 108.0, "gramaze": [200, 500, 1000]}, {"kod": "1037", "nazev": "BRUSTÁCIOVÝ MIX", "kg_czk": 334.8, "gramaze": [200, 3000]}, {"kod": "269", "nazev": "CANTALOUPE PLÁTKY BEZ SO2", "kg_czk": 265.0, "gramaze": [200, 500, 1000]}, {"kod": "8541", "nazev": "CHIA SEMÍNKA", "kg_czk": 79.0, "gramaze": []}, {"kod": "2357", "nazev": "CORNFLAKES V MLÉČNÉ ČOKOLÁDĚ", "kg_czk": 195.0, "gramaze": [100, 200, 500, 1000, 5000]}, {"kod": "188", "nazev": "DATLE DEGLET NOUR", "kg_czk": 83.0, "gramaze": [500, 1000, 5000]}, {"kod": "191", "nazev": "DATLE MEDJOOL", "kg_czk": 168.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "2663", "nazev": "DATLE V HOŘKÉ ČOKOLÁDĚ A SKOŘICI", "kg_czk": 235.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "8751", "nazev": "DUHOVÉ MINI PENDREKY", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "1805", "nazev": "FAZOLKY ŽELÉ", "kg_czk": 179.0, "gramaze": [230, 1000]}, {"kod": "230", "nazev": "HROZINKY SUŠENÉ", "kg_czk": 64.5, "gramaze": [200, 500, 1000, 10000]}, {"kod": "3537", "nazev": "HRUŠKY BEZ PŘIDANÉHO CUKRU", "kg_czk": 149.0, "gramaze": [200, 500, 10000]}, {"kod": "4167", "nazev": "JABLEČNÉ TRUBIČKY MÁČENÉ V HOŘKÉ ČOKOLÁDĚ", "kg_czk": 498.1481, "gramaze": [100]}, {"kod": "4170", "nazev": "JABLEČNÉ TRUBIČKY MÁČENÉ V JOGURTU", "kg_czk": 498.1481, "gramaze": [100]}, {"kod": "4197", "nazev": "JABLEČNÉ TRUBIČKY MÁČENÉ V KAROBU", "kg_czk": 498.1481, "gramaze": [100]}, {"kod": "3540", "nazev": "JABLKA SUŠENÁ KROUŽKY", "kg_czk": 137.0, "gramaze": [200, 500, 10000]}, {"kod": "10269", "nazev": "JAHODOVÉ SNY ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "10271", "nazev": "JAHODY LYOFILIZOVANÉ V MLÉČNÉ ČOKOLÁDĚ", "kg_czk": 345.0, "gramaze": [200, 1000, 4000]}, {"kod": "242", "nazev": "JÁDRA TYKVE GWS AA", "kg_czk": 87.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "242", "nazev": "JÁDRA TYKVE GWS AA", "kg_czk": 87.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "10473", "nazev": "JÁDRA TYKVE NATURAL GWS – BIO", "kg_czk": 134.0, "gramaze": [100, 200, 500, 1000]}, {"kod": "203", "nazev": "KANDOVANÉ KIWI BEZ AZO BARVIV", "kg_czk": 129.0, "gramaze": [200, 500, 1000]}, {"kod": "3633", "nazev": "KARAMELOVÝ FONDÁN SLANÝ KARAMEL", "kg_czk": 159.0, "gramaze": [200, 500, 1000, 2000]}, {"kod": "3632", "nazev": "KARAMELOVÝ FONDÁN VANILKA", "kg_czk": 159.0, "gramaze": [200, 500, 1000, 2000]}, {"kod": "1771", "nazev": "KARAMELOVÝ FONDÁN VANILKA A ČOKOLÁDA", "kg_czk": 159.0, "gramaze": [200, 500, 1000, 2000]}, {"kod": "3634", "nazev": "KARAMELOVÝ FONDÁN ČOKOLÁDA", "kg_czk": 149.0, "gramaze": [200]}, {"kod": "10503", "nazev": "KEŠU EXCLUSIVE MIX", "kg_czk": 299.0, "gramaze": [100, 200, 500, 3000]}, {"kod": "2570", "nazev": "KEŠU JÁDRA PRAŽENÁ NESOLENÁ", "kg_czk": 235.4, "gramaze": [200, 3000]}, {"kod": "10724", "nazev": "KEŠU KOUSKY 5-8MM", "kg_czk": 136.0, "gramaze": [200, 500, 1000, 22000]}, {"kod": "110", "nazev": "KEŠU NATURAL WW320", "kg_czk": 201.01, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "2537", "nazev": "KEŠU S PŘÍCHUTÍ CHILLI", "kg_czk": 245.566, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "2297", "nazev": "KEŠU TIRAMISU", "kg_czk": 198.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "1340", "nazev": "KEŠU V BÍLÉ ČOKOLÁDĚ", "kg_czk": 289.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "10262", "nazev": "KEŠU V BÍLÉ ČOKOLÁDĚ S KOKOSEM", "kg_czk": 299.0, "gramaze": [100, 200, 500, 1000, 3000, 4000]}, {"kod": "2705", "nazev": "KEŠU V ČOKOLÁDĚ MIX", "kg_czk": 250.34, "gramaze": [200, 3000]}, {"kod": "152", "nazev": "KOKOS CHIPS", "kg_czk": 98.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "7564", "nazev": "KOKOS CHIPS S KARAMELEM A MOŘSKOU SOLÍ", "kg_czk": 149.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "2753", "nazev": "KOKOSOVÉ KOSTKY", "kg_czk": 169.0, "gramaze": [200, 500, 3000, 5000]}, {"kod": "9673", "nazev": "KOLA LÁHVE ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "248", "nazev": "KONOPNÉ SEMÍNKO LOUPANÉ", "kg_czk": 142.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "4296", "nazev": "KUKUŘIČNÉ LUPÍNKY V POLEVĚ S JOGURTOVOU PŘÍCHUTÍ", "kg_czk": 129.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "206", "nazev": "KUSTOVNICE ČÍNSKÁ GOJI", "kg_czk": 197.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "10251", "nazev": "KYSELÉ HOUSENKY ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "2726", "nazev": "KÁVOVÝ MIX SLADKÝ", "kg_czk": 275.98, "gramaze": [200, 3000]}, {"kod": "251", "nazev": "LNĚNÉ SEMÍNKO", "kg_czk": 26.5, "gramaze": [500, 1000, 3000]}, {"kod": "3107", "nazev": "LÍSKOVCE JÁDRA PRAŽENÁ V BÍLÉ ČOKOLÁDĚ", "kg_czk": 279.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "3108", "nazev": "LÍSKOVCE V JOGURTOVÉ POLEVĚ", "kg_czk": 192.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "10730", "nazev": "LÍSKOVÁ JÁDRA DRŤ 2-4MM PRAŽENÁ", "kg_czk": 345.0, "gramaze": [10, 200, 500, 1000, 10000]}, {"kod": "10261", "nazev": "LÍSKOVÉ OŘECHY TIRAMISU", "kg_czk": 209.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "146", "nazev": "MAKADAMOVÉ OŘECHY", "kg_czk": 399.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "4893", "nazev": "MAKADAMOVÉ OŘECHY PRAŽENÉ NA SUCHO, SOLENÉ", "kg_czk": 459.0, "gramaze": [100, 200, 500, 1000, 5000]}, {"kod": "1808", "nazev": "MALINY A OSTRUŽINY SMĚS", "kg_czk": 149.0, "gramaze": [230, 1000]}, {"kod": "2738", "nazev": "MANDLE A MERUŇKY DRAŽOVANÉ", "kg_czk": 258.22, "gramaze": [200, 3000]}, {"kod": "3995", "nazev": "MANDLE CAPPUCCINO", "kg_czk": 299.0, "gramaze": [50, 100, 200, 500, 1000, 3000]}, {"kod": "3993", "nazev": "MANDLE EXCLUSIVE MIX", "kg_czk": 289.0, "gramaze": [50, 100, 200, 500, 3000]}, {"kod": "4212", "nazev": "MANDLE JAHODOVÉ BÍLÁ ČOKOLÁDA", "kg_czk": 349.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "9945", "nazev": "MANDLE JÁDRA PRAŽENÁ SOLENÁ S PŘÍCHUTÍ HOŘČICE", "kg_czk": 223.0667, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "3723", "nazev": "MANDLE LOUPANÉ S PŘÍCHUTÍ ČERVENÉ PAPRIKY A CHILLI", "kg_czk": 356.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "8977", "nazev": "MANDLE MALINOVÉ BÍLÁ ČOKOLÁDA", "kg_czk": 252.0, "gramaze": [100, 200, 500, 1000, 5000]}, {"kod": "86", "nazev": "MANDLE PLÁTKY", "kg_czk": 210.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "101", "nazev": "MANDLE PRAŽENÉ SOLENÉ", "kg_czk": 226.156, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "9543", "nazev": "MANDLE PRAŽENÉ SOLENÉ S PŘÍCHUTÍ LANÝŽE A PARMAZÁNU VALENCIE DELUXE", "kg_czk": 367.5, "gramaze": [200]}, {"kod": "95", "nazev": "MANDLE PRAŽENÉ V MEDU A SOLI", "kg_czk": 259.0, "gramaze": [50, 100, 200, 500, 1000, 3000]}, {"kod": "1964", "nazev": "MANDLE TIRAMISU", "kg_czk": 189.0, "gramaze": [50, 100, 200, 500, 1000, 3000]}, {"kod": "10736", "nazev": "MANDLE TŘÍSKY, HRANOLKY", "kg_czk": 232.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "89", "nazev": "MANDLE UZENÉ", "kg_czk": 218.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "1988", "nazev": "MANDLE V BÍLÉ ČOKOLÁDĚ OBALENÉ KOKOSEM", "kg_czk": 289.0, "gramaze": [100, 200, 500, 1000, 3000, 4000]}, {"kod": "9811", "nazev": "MANDLE V JOGURTOVÉ POLEVĚ", "kg_czk": 188.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "9921", "nazev": "MANDLE V MLÉČNÉ ČOKOLÁDĚ A MALINOVÉM PRÁŠKU", "kg_czk": 309.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "10011", "nazev": "MANDLE ZASNĚŽENÉ V MLÉČNÉ ČOKOLÁDĚ", "kg_czk": 265.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "80", "nazev": "MANDLOVÁ JÁDRA NATURAL 23/25", "kg_czk": 195.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "4038", "nazev": "MANDLOVÁ JÁDRA PRAŽENÁ V MLÉČNÉ ČOKOLÁDĚ", "kg_czk": 210.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "212", "nazev": "MANGO PLÁTKY NESÍŘENÉ", "kg_czk": 274.0, "gramaze": [200, 500, 1000]}, {"kod": "635", "nazev": "MANGO PLÁTKY PROSLAZENÉ", "kg_czk": 144.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "8745", "nazev": "MAXI HADI ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "10233", "nazev": "MAXI MEDVĚDI ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "4794", "nazev": "MEDOVÁ SMĚS SE SOLÍ", "kg_czk": 187.725, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "10257", "nazev": "MEDVÍDCI TUTTI FRUTTI ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "2573", "nazev": "MERLÍK CHILSKÝ (QUINOA) – BÍLÁ", "kg_czk": 67.0, "gramaze": [200, 1000, 3000]}, {"kod": "218", "nazev": "MERUŇKY SUŠENÉ I. JAKOST", "kg_czk": 275.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "2018", "nazev": "MERUŇKY V JAHODOVÉM JOGURTU", "kg_czk": 205.44, "gramaze": [200, 500, 1000, 3000]}, {"kod": "3111", "nazev": "MERUŇKY V POLEVĚ S JOGURTOVOU PŘÍCHUTÍ", "kg_czk": 178.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "4440", "nazev": "MINI LENTILKY BEZ „PALMÁČE\";Cukr, kakaové máslo 14,5 %, sušená SYROVÁTKA, kakaový prášek se sníženým obsahem tuku 5,5 %, škrob, sušené plnotučné MLÉKO, emulgátor: lecitiny, leštící látky (arabská guma, karnaubský vosk, včelí vosk), koncentráty (hroznové víno, ředkev, černý rybíz, citron), extrakty (světlice barvířská, ječný slad, mořská řasa)\"", "kg_czk": 159.0, "gramaze": [230]}, {"kod": "324", "nazev": "MOCHYNĚ PERUÁNSKÁ – PHYSALIS", "kg_czk": 345.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "5892", "nazev": "MOTÝLCI ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "260", "nazev": "MÁK MLETÝ 100%", "kg_czk": 79.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "257", "nazev": "MÁK MODRÝ", "kg_czk": 66.0, "gramaze": [500, 1000, 3000]}, {"kod": "1768", "nazev": "NUGÁT MANDLOVÝ BÍLÝ", "kg_czk": 189.0, "gramaze": [200, 1000]}, {"kod": "4302", "nazev": "PAPAYA PLÁTKY", "kg_czk": 98.0, "gramaze": [200, 500, 5000]}, {"kod": "296", "nazev": "PAPAYA PLÁTKY BEZ SO2", "kg_czk": 245.0, "gramaze": [200, 500, 1000]}, {"kod": "2747", "nazev": "PAPÁJA KANDOVANÁ, KOSTKY", "kg_czk": 98.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "143", "nazev": "PARA OŘECHY", "kg_czk": 445.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "2117", "nazev": "PARA OŘECHY V TIRAMISU", "kg_czk": 229.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "1521", "nazev": "PEKÁN KARAMELIZOVANÝ CLASSIC", "kg_czk": 354.5, "gramaze": [200, 500, 1000, 5000]}, {"kod": "10558", "nazev": "PEČENÉ RÝŽOVÉ CHIPSY S PŘÍCHUTÍ CHILLI", "kg_czk": 120.0, "gramaze": [150, 300]}, {"kod": "10564", "nazev": "PEČENÉ RÝŽOVÉ SNACKY S PŘÍCHUTÍ BBQ", "kg_czk": 120.0, "gramaze": [150, 300]}, {"kod": "10570", "nazev": "PEČENÉ RÝŽOVÉ SNACKY S PŘÍCHUTÍ ORIGINÁLNÍ SÓJOVÉ OMÁČKY", "kg_czk": 120.0, "gramaze": [150, 300]}, {"kod": "149", "nazev": "PINIOVÁ JÁDRA", "kg_czk": 725.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "137", "nazev": "PISTÁCIE LOUPANÉ", "kg_czk": 630.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "131", "nazev": "PISTÁCIE PRAŽENÉ NELOUPANÉ JUMBO", "kg_czk": 245.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "134", "nazev": "PISTÁCIE PRAŽENÉ SOLENÉ NELOUPANÉ JUMBO", "kg_czk": 252.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "4452", "nazev": "PRECLÍKY TŘÍ BAREV", "kg_czk": 254.18, "gramaze": [200, 500, 1000, 2000]}, {"kod": "4449", "nazev": "PRECLÍKY V BÍLÉ ČOKOLÁDĚ", "kg_czk": 252.0, "gramaze": [200, 500, 1000, 2000]}, {"kod": "155", "nazev": "PRÉMIOVÝ OŘECHOVÝ MIX", "kg_czk": 298.5, "gramaze": [50, 100, 200, 500, 1000, 3000]}, {"kod": "3082", "nazev": "ROZINKY OBŘÍ MIX", "kg_czk": 127.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "233", "nazev": "ROZINKY OBŘÍ ZLATÉ", "kg_czk": 129.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "1967", "nazev": "ROZINKY V POLEVÁCH MIX", "kg_czk": 169.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "5502", "nazev": "SALÁTOVÁ SMĚS SEMÍNEK A PINIOVÝCH OŘECHŮ", "kg_czk": 144.25, "gramaze": [500, 3000]}, {"kod": "2474", "nazev": "SEMÍNKOVÁ SMĚS", "kg_czk": 65.9, "gramaze": [500, 1000, 3000]}, {"kod": "263", "nazev": "SEZAMOVÁ SEMÍNKA", "kg_czk": 51.0, "gramaze": [500, 1000, 3000]}, {"kod": "2693", "nazev": "SKOŘICOVÝ MIX", "kg_czk": 250.05, "gramaze": [200, 3000]}, {"kod": "2708", "nazev": "SLADKÁ SMĚS DELUXE", "kg_czk": 253.55, "gramaze": [200, 3000]}, {"kod": "1028", "nazev": "SLANÝ MIX ALL IN ONE", "kg_czk": 192.09, "gramaze": [200, 500, 1000, 3000]}, {"kod": "5511", "nazev": "SLANÝ MIX EXCLUSIVE", "kg_czk": 220.98, "gramaze": [50, 100, 200, 500, 3000]}, {"kod": "161", "nazev": "SLANÝ PÁRTY MIX", "kg_czk": 239.27, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "266", "nazev": "SLUNEČNICE", "kg_czk": 34.5, "gramaze": [500, 1000, 3000]}, {"kod": "10479", "nazev": "SLUNEČNICE BIO", "kg_czk": 58.0, "gramaze": [200, 500, 1000]}, {"kod": "1991", "nazev": "SLUNEČNICE V BAREVNÉ KRUSTĚ", "kg_czk": 119.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "158", "nazev": "SMĚS JADER", "kg_czk": 309.6, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "5499", "nazev": "SMĚS KEŠU A MANDLE NATURAL", "kg_czk": 215.51, "gramaze": [500, 3000]}, {"kod": "4896", "nazev": "SMĚS MANDLÍ V ČOKOLÁDĚ BROWN", "kg_czk": 231.85, "gramaze": [100, 200, 500, 3000]}, {"kod": "6450", "nazev": "SMĚS OVOCE ZDRAVÁ ENERGIE", "kg_czk": 252.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "3097", "nazev": "SMĚS OŘECHŮ A ROZINEK", "kg_czk": 197.84, "gramaze": [200, 500, 1000, 3000]}, {"kod": "2342", "nazev": "SMĚS OŘECHŮ DELUXE", "kg_czk": 212.79, "gramaze": [500, 3000]}, {"kod": "3091", "nazev": "SMĚS OŘECHŮ PRAŽENÁ NESOLENÁ", "kg_czk": 241.86, "gramaze": [200, 500, 1000, 3000]}, {"kod": "2345", "nazev": "SMĚS OŘECHŮ ŠŤASTNÉ SRDCE", "kg_czk": 175.0, "gramaze": [500, 3000]}, {"kod": "5505", "nazev": "SMĚS SEMÍNEK, KEŠU A MANDLÍ NATURAL", "kg_czk": 134.65, "gramaze": [500, 1000, 3000]}, {"kod": "3979", "nazev": "SOLENÉ MINI PRECLÍKY", "kg_czk": 84.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "10245", "nazev": "SOVIČKY ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "2702", "nazev": "STUDENTSKÁ SMĚS", "kg_czk": 153.93, "gramaze": [500, 1000, 3000]}, {"kod": "224", "nazev": "SUŠENÁ MORUŠE", "kg_czk": 278.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "224", "nazev": "SUŠENÁ MORUŠE", "kg_czk": 278.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "227", "nazev": "SUŠENÉ ROZINKY NESÍŘENÉ (RTU)", "kg_czk": 85.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "236", "nazev": "SUŠENÉ ŠVESTKY", "kg_czk": 92.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "2699", "nazev": "TIRAMISU SMĚS", "kg_czk": 220.6, "gramaze": [50, 100, 200, 500, 1000]}, {"kod": "2423", "nazev": "TROPICKÁ SMĚS", "kg_czk": 127.33, "gramaze": [100, 500, 2000]}, {"kod": "10020", "nazev": "TROPICKÝ MIX ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "3076", "nazev": "TŘEŠNĚ", "kg_czk": 185.0, "gramaze": [200, 500, 1000]}, {"kod": "1949", "nazev": "TŘÍBAREVNÁ SLUNEČNICE", "kg_czk": 199.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "9679", "nazev": "UPÍŘÍ ZUBY ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "8739", "nazev": "VEJCE ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "10239", "nazev": "VESELÍ SMAJLÍCI ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "4506", "nazev": "VESELÝ HAMBURGER ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "239", "nazev": "VIŠNĚ", "kg_czk": 499.0, "gramaze": [200, 500, 1000]}, {"kod": "122", "nazev": "VLAŠSKÁ JÁDRA CHILE", "kg_czk": 165.0, "gramaze": [500, 1000, 3000]}, {"kod": "3993VAN", "nazev": "VÁNOČNÍ MANDLE EXCLUSIVE", "kg_czk": 289.0, "gramaze": [200]}, {"kod": "254", "nazev": "ZLATÝ LEN", "kg_czk": 34.5, "gramaze": [500, 1000, 3000]}, {"kod": "1418", "nazev": "ZÁZVOR KOUSKY BEZ SO2", "kg_czk": 199.0, "gramaze": [200, 500, 1000]}, {"kod": "2576", "nazev": "ČERNÁ QUINOA", "kg_czk": 89.0, "gramaze": [200, 1000, 3000]}, {"kod": "3729", "nazev": "ČOKOLÁDOVÉ BONITO'S MIX (MLÉČNÁ/HOŘKÁ/BÍLÁ)", "kg_czk": 9.3, "gramaze": [200, 3000, 5000]}, {"kod": "2024", "nazev": "ČOKOLÁDOVÉ ROZINKY HOŘKÁ JUMBO", "kg_czk": 199.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "6465", "nazev": "Čokoládové kamínky", "kg_czk": 114.0, "gramaze": [200, 500, 5000]}, {"kod": "4797", "nazev": "ŽABKY ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "2000", "nazev": "ŽELÉ STEVIA MEDVÍDCI BEZ CUKRU SE SLADIDLY", "kg_czk": 189.0, "gramaze": [230]}, {"kod": "1832", "nazev": "ŽÍŽALKY ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}];
+
+// ── Řádky produktů ──
+let rowCount = 0;
+function addRow() {
+  rowCount++;
+  const id = rowCount;
+  const tr = document.createElement('tr');
+  tr.id = 'row-' + id;
+  tr.innerHTML = `
+    <td><input class="inp-nazev" id="nazev-${id}" placeholder="Název produktu, gramáž, specifikace…" oninput="recalc(${id})"/></td>
+    <td><input class="inp-ks" type="number" id="ks-${id}" value="1" min="1" oninput="recalc(${id})"/></td>
+    <td style="white-space:nowrap"><input class="inp-cena" type="number" id="cena-${id}" placeholder="0,00" step="0.01" oninput="recalc(${id})"/> Kč</td>
+    <td class="td-total" id="total-${id}">—</td>
+    <td><button class="del-btn" onclick="delRow(${id})">×</button></td>`;
+  document.getElementById('prod-tbody').appendChild(tr);
+  document.getElementById('nazev-'+id).focus();
+}
+function delRow(id) { document.getElementById('row-'+id)?.remove(); }
+function recalc(id) {
+  const ks   = parseFloat(document.getElementById('ks-'+id)?.value) || 0;
+  const cena = parseFloat(document.getElementById('cena-'+id)?.value);
+  const el   = document.getElementById('total-'+id);
+  if (!el) return;
+  if (!ks || isNaN(cena) || cena <= 0) { el.textContent = '—'; return; }
+  el.textContent = num((ks * cena).toFixed(2)) + ' Kč';
+}
+
+// ── Generátor HTML nabídky ──
+function num(s) { return s.replace(/\B(?=(\d{3})+(?!\d))/g, ' '); }
+
+function generateOffer() {
+  const firma = document.getElementById('firma').value.trim();
+  if (!firma) { alert('Vyplň název firmy!'); return; }
+  const rows = document.querySelectorAll('#prod-tbody tr');
+  const produkty = [];
+  let totalBezDph = 0, totalDph = 0;
+  rows.forEach(tr => {
+    const id = tr.id.replace('row-','');
+    const nazev = document.getElementById('nazev-'+id)?.value.trim();
+    const ks    = parseFloat(document.getElementById('ks-'+id)?.value) || 1;
+    const cena  = parseFloat(document.getElementById('cena-'+id)?.value);
+    if (!nazev || isNaN(cena) || cena <= 0) return;
+    const celkem = parseFloat((cena * ks).toFixed(2));
+    totalBezDph += celkem;
+    produkty.push({ nazev, ks, cenaBezDph: cena, celkem });
+  });
+  if (!produkty.length) { alert('Přidej alespoň jeden produkt s názvem a cenou!'); return; }
+  const dphCastka = parseFloat((totalBezDph * 0.12).toFixed(2));
+  const totalSDph = parseFloat((totalBezDph + dphCastka).toFixed(2));
+  const ico = document.getElementById('ico').value.trim();
+  const dic = document.getElementById('dic').value.trim();
+  const adresa = document.getElementById('adresa').value.trim();
+  const kontakt = document.getElementById('kontakt').value.trim();
+  const emailKlient = document.getElementById('email-klient').value.trim();
+  const repName = document.getElementById('rep-name').value.trim() || 'Nutworld';
+  const repEmail = document.getElementById('rep-email').value.trim() || 'info@nutworld.cz';
+  const splatnost = document.getElementById('splatnost').value;
+  const dodani = document.getElementById('dodani').value;
+  const trvanlivost = document.getElementById('trvanlivost').value;
+  const poznamka = document.getElementById('poznamka').value.trim();
+  const today = new Date();
+  const dateStr = today.getDate()+'. '+(today.getMonth()+1)+'. '+today.getFullYear();
+  const cislo = 'NW-'+today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+String(today.getDate()).padStart(2,'0')+'-'+String(Math.floor(Math.random()*900)+100);
+
+  const prodRows = produkty.map(p => `
+    <tr>
+      <td style="padding:9px 12px;color:#3a2010">${p.nazev}</td>
+      <td style="padding:9px 12px;text-align:right">${p.ks} ks</td>
+      <td style="padding:9px 12px;text-align:right">${p.cenaBezDph.toFixed(2).replace('.',',')} Kč</td>
+      <td style="padding:9px 12px;text-align:right"><strong>${num(p.celkem.toFixed(2).replace('.',','))} Kč</strong></td>
+    </tr>`).join('');
+
+  const html = `<!DOCTYPE html><html lang="cs"><head><meta charset="UTF-8"/>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+@page{size:A4;margin:8mm}
+body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;line-height:1.4}
+</style></head><body>
+<div style="max-width:820px;margin:0 auto;background:white">
+  <div style="height:3px;background:linear-gradient(90deg,#da1668,#f7ab31)"></div>
+  <div style="background:linear-gradient(135deg,#5c381f,#83502e);color:white;padding:18px 28px;display:flex;justify-content:space-between;align-items:flex-start">
+    <div>
+      <div style="font-family:'Exo 2',sans-serif;font-size:22px;font-weight:800">🐿 Nutworld</div>
+      <div style="font-size:11px;opacity:.7;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px">Ořechy · Sušené ovoce · Dárky</div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-family:'Exo 2',sans-serif;font-size:18px;font-weight:700;color:#f7ab31;letter-spacing:2px;text-transform:uppercase">Nabídka</div>
+      <div style="font-size:11px;opacity:.75;margin-top:2px">č. ${cislo}</div>
+      <div style="font-size:12px;margin-top:4px;opacity:.85">Datum: ${dateStr}</div>
+      <div style="font-size:12px;opacity:.85">Platnost: 30 dní</div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;border-bottom:2px solid #f1e6da">
+    <div style="padding:12px 28px;border-right:1px solid #f1e6da">
+      <div style="font-family:'Exo 2',sans-serif;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:#83502e;margin-bottom:5px">Dodavatel</div>
+      <div style="font-family:'Exo 2',sans-serif;font-size:14px;font-weight:700;color:#5c381f;margin-bottom:3px">Nutworld s.r.o.</div>
+      <div style="font-size:12px;color:#5a3a22;line-height:1.5">nutworld.cz<br>${repEmail}</div>
+      <div style="font-size:11px;color:#8a6a4a;margin-top:4px">Obchodní zástupce: <strong>${repName}</strong></div>
+    </div>
+    <div style="padding:12px 28px">
+      <div style="font-family:'Exo 2',sans-serif;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:#83502e;margin-bottom:5px">Odběratel</div>
+      <div style="font-family:'Exo 2',sans-serif;font-size:14px;font-weight:700;color:#5c381f;margin-bottom:3px">${firma}</div>
+      <div style="font-size:12px;color:#5a3a22;line-height:1.5">${adresa||''}${kontakt?'<br>'+kontakt:''}${emailKlient?'<br>'+emailKlient:''}</div>
+      ${ico||dic?`<div style="font-size:11px;color:#8a6a4a;margin-top:4px">${ico?'IČO: '+ico:''}${ico&&dic?' &nbsp;|&nbsp; ':''}${dic?'DIČ: '+dic:''}</div>`:''}
+    </div>
+  </div>
+  <div style="background:#f1e6da;padding:10px 28px;font-size:12px;color:#5c381f;border-left:4px solid #f7ab31">
+    <strong>Předmět nabídky:</strong> Balené ořechy a ořechové speciality — firemní odběr. Všechny produkty baleny a etiketovány dle platné legislativy ČR.
+  </div>
+  <div style="padding:16px 28px 0">
+    <div style="font-family:'Exo 2',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#83502e;margin-bottom:8px">Položky</div>
+    <table width="100%" style="border-collapse:collapse;font-size:12.5px">
+      <thead><tr style="background:#5c381f;color:white">
+        <th style="padding:7px 12px;text-align:left;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:600">Produkt</th>
+        <th style="padding:7px 12px;text-align:right;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:600">Množství</th>
+        <th style="padding:7px 12px;text-align:right;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:600">Cena/ks (bez DPH)</th>
+        <th style="padding:7px 12px;text-align:right;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:600">Celkem (bez DPH)</th>
+      </tr></thead>
+      <tbody style="border-bottom:1px solid #ede0d4">${prodRows}</tbody>
+    </table>
+  </div>
+  <div style="padding:0 28px 16px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-top:14px">
+      <div style="background:#f1e6da;border-radius:8px;border:1.5px solid #c8976a;padding:9px 12px">
+        <div style="font-family:'Exo 2',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#83502e;margin-bottom:4px">Platební podmínky</div>
+        <div style="font-size:11.5px;color:#5a3a22">Splatnost: <strong>${splatnost}</strong><br>Platba převodem.</div>
+      </div>
+      <div style="background:#f1e6da;border-radius:8px;border:1.5px solid #c8976a;padding:9px 12px">
+        <div style="font-family:'Exo 2',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#83502e;margin-bottom:4px">Dodání</div>
+        <div style="font-size:11.5px;color:#5a3a22"><strong>${dodani}</strong></div>
+      </div>
+      <div style="background:#f1e6da;border-radius:8px;border:1.5px solid #c8976a;padding:9px 12px">
+        <div style="font-family:'Exo 2',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#83502e;margin-bottom:4px">Trvanlivost</div>
+        <div style="font-size:11.5px;color:#5a3a22">Min. <strong>${trvanlivost}</strong> od dodání.</div>
+      </div>
+      ${poznamka?`<div style="background:#f1e6da;border-radius:8px;border:1.5px solid #c8976a;padding:9px 12px">
+        <div style="font-family:'Exo 2',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#83502e;margin-bottom:4px">Poznámka</div>
+        <div style="font-size:11.5px;color:#5a3a22">${poznamka}</div>
+      </div>`:''}
+    </div>
+    <table style="width:300px;border-collapse:collapse;margin-top:14px">
+      <tr><td style="padding:5px 10px;font-size:12.5px;color:#7a5a3a">Mezisoučet bez DPH</td><td style="padding:5px 10px;text-align:right;font-weight:600;font-size:12.5px;color:#5c381f">${num(totalBezDph.toFixed(2).replace('.',','))} Kč</td></tr>
+      <tr><td style="padding:5px 10px;border-top:1px solid #d4c0a8;font-size:12.5px;color:#7a5a3a">DPH 12 %</td><td style="padding:5px 10px;border-top:1px solid #d4c0a8;text-align:right;font-weight:600;font-size:12.5px;color:#5c381f">${num(dphCastka.toFixed(2).replace('.',','))} Kč</td></tr>
+      <tr><td style="background:#5c381f;color:white;padding:9px 12px;font-family:'Exo 2',sans-serif;font-weight:700;font-size:14px">Celkem k úhradě</td><td style="background:#5c381f;color:#f7ab31;padding:9px 12px;text-align:right;font-family:'Exo 2',sans-serif;font-weight:700;font-size:14px">${num(totalSDph.toFixed(2).replace('.',','))} Kč</td></tr>
+    </table>
+  </div>
+  <div style="background:#5c381f;padding:12px 28px;display:flex;justify-content:space-between;align-items:center">
+    <div style="color:rgba(255,255,255,.7);font-size:11px">🐿 Nutworld · info@nutworld.cz · nutworld.cz</div>
+    <div style="color:rgba(255,255,255,.7);font-size:11px">č. ${cislo}</div>
+  </div>
+  <div style="height:3px;background:linear-gradient(90deg,#da1668,#f7ab31)"></div>
+</div>
+</body></html>`;
+
+  // Zobraz v preview
+  const container = document.getElementById('preview-container');
+  container.innerHTML = `<iframe id="preview-frame" srcdoc="${html.replace(/"/g,'&quot;')}" style="width:100%;height:600px;border:none"></iframe>`;
+  document.getElementById('preview-actions').style.display='flex';
+  window._offerHtml = html;
+  window._offerFirma = firma;
+}
+
+function printOffer() {
+  const w = window.open('','_blank');
+  w.document.write(window._offerHtml);
+  w.document.close();
+  w.onload = () => { w.focus(); w.print(); };
+}
+function resetPreview() {
+  document.getElementById('preview-container').innerHTML='<div class="empty-preview"><div style="font-size:48px">📄</div><p>Zde se zobrazí náhled nabídky</p></div>';
+  document.getElementById('preview-actions').style.display='none';
+  window._offerHtml=null;
+}
+
+// Přidej první řádek produktu automaticky
+addRow();
+</script>
+</body></html>
