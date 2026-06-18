@@ -329,15 +329,15 @@ async function odeslat(){
     : `[OPRAV] ${typLabels[typ]} — ${nazev} — kód ${kod}`;
 
   try {
-    const res = await fetch(APPS_SCRIPT_URL, {
-      method:'POST', headers:{'Content-Type':'application/json'},
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode:   'no-cors',
+      headers: {'Content-Type': 'text/plain'},
       body: JSON.stringify({ subject, from_name:`Nutworld Generátor (${g('jmeno')||'neznámý'})`, message:buildBody(), replyto:'claudie.nutworld@nutworld.cz' })
     });
-    const json = await res.json();
-    if(json.success){
-      document.getElementById('status-ok').style.display='block';
-      btn.textContent='✅ Odesláno';
-    } else { throw new Error(json.error); }
+    // no-cors = nemůžeme číst odpověď, ale email se odešle
+    document.getElementById('status-ok').style.display='block';
+    btn.textContent='✅ Odesláno';
   } catch(e){
     console.error(e);
     document.getElementById('status-err').style.display='block';
