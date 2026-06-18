@@ -50,6 +50,7 @@ h1,h2,h3,h4{font-family:'Exo 2',sans-serif}
 .field input,.field select,.field textarea{width:100%;border:1.5px solid #d4c0a8;border-radius:8px;padding:9px 12px;font-family:inherit;font-size:13px;color:#2a1a0e;background:#fdf9f6}
 .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--br)}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
 .req{color:var(--acc)}
 
 /* CTA */
@@ -151,13 +152,59 @@ h1,h2,h3,h4{font-family:'Exo 2',sans-serif}
       </div>
 
       <div class="field">
-        <label>Adresa doručení (pokud jiná než fakturační)</label>
+        <label>Adresa doručení <span style="font-weight:400;color:#aaa">(pokud jiná než fakturační)</span></label>
         <input id="adresa-doruceni" placeholder="Ulice, město — ponechte prázdné pokud shodná"/>
       </div>
 
+      <div class="sec">Personalizace</div>
+
+      <div class="row3">
+        <div class="field">
+          <label>Vlastní logo klienta</label>
+          <select id="logo">
+            <option value="">— nevybráno —</option>
+            <option value="Ano">Ano</option>
+            <option value="Ne">Ne</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Vlastní složení</label>
+          <select id="vlastni-slozeni">
+            <option value="">— nevybráno —</option>
+            <option value="Ano">Ano</option>
+            <option value="Ne">Ne</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Vlastní obal / krabička</label>
+          <select id="vlastni-obal">
+            <option value="">— nevybráno —</option>
+            <option value="Ano">Ano</option>
+            <option value="Ne">Ne</option>
+          </select>
+        </div>
+      </div>
+
       <div class="field">
-        <label>Interní poznámka pro tým</label>
-        <textarea id="poznamka-intern" rows="2" placeholder="Zvláštní požadavky, personalizace, logo, přání…"></textarea>
+        <label>Přání / vzkaz <span style="font-weight:400;color:#aaa">(text na přiloženém lístku)</span></label>
+        <textarea id="prani" rows="2" placeholder="Např. Vážení partneři, přejeme krásné svátky…"></textarea>
+      </div>
+
+      <div class="field">
+        <label>Popis personalizace <span style="font-weight:400;color:#aaa">(logo, text, barvy, specifické požadavky)</span></label>
+        <textarea id="personalizace-popis" rows="3" placeholder="Detailní popis — co, kde, jak. Logo zašleme zvlášť emailem."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Soubory <span style="font-weight:400;color:#aaa">(logo, grafika — nahrajte na Drive a vložte odkaz)</span></label>
+        <input id="soubory-link" placeholder="Odkaz na Google Drive / Dropbox…"/>
+      </div>
+
+      <div class="sec">Interní poznámky</div>
+
+      <div class="field">
+        <label>Poznámka pro výrobu</label>
+        <textarea id="poznamka-intern" rows="2" placeholder="Co by měl tým vědět — termíny, priorita, zvláštní instrukce…"></textarea>
       </div>
 
       <div class="sec">Odeslat do Trella</div>
@@ -260,11 +307,17 @@ function renderSummary(d) {
 
 function sendToTrello() {
   if (!offerData) return;
-  const termin   = document.getElementById('termin').value;
-  const obchodak = document.getElementById('obchodak').value.trim();
-  const doruceni = document.getElementById('doruceni').value;
-  const adresaDor= document.getElementById('adresa-doruceni').value.trim();
-  const poznamka = document.getElementById('poznamka-intern').value.trim();
+  const termin        = document.getElementById('termin').value;
+  const obchodak      = document.getElementById('obchodak').value.trim();
+  const doruceni      = document.getElementById('doruceni').value;
+  const adresaDor     = document.getElementById('adresa-doruceni').value.trim();
+  const logo          = document.getElementById('logo').value;
+  const vlastniSlozeni= document.getElementById('vlastni-slozeni').value;
+  const vlastniObal   = document.getElementById('vlastni-obal').value;
+  const prani         = document.getElementById('prani').value.trim();
+  const persPopis     = document.getElementById('personalizace-popis').value.trim();
+  const souboryLink   = document.getElementById('soubory-link').value.trim();
+  const poznamka      = document.getElementById('poznamka-intern').value.trim();
 
   if (!termin) { alert('Vyplňte termín dodání.'); return; }
   if (!obchodak) { alert('Vyplňte obchodního zástupce.'); return; }
@@ -307,7 +360,16 @@ CELKEM_S_DPH: ${num(totalSDph.toFixed(2))} Kč
 
 SPLATNOST: ${d.splatnost || '-'}
 TRVANLIVOST: ${d.trvanlivost || '-'}
-POZNAMKY: ${poznamka || '-'}
+
+PERSONALIZACE:
+Vlastni logo: ${logo || 'nevybráno'}
+Vlastni slozeni: ${vlastniSlozeni || 'nevybráno'}
+Vlastni obal: ${vlastniObal || 'nevybráno'}
+Prani vzkaz: ${prani || '-'}
+Popis personalizace: ${persPopis || '-'}
+Soubory drive: ${souboryLink || '-'}
+
+POZNAMKY_TYM: ${poznamka || '-'}
 POZNAMKA_NABIDKY: ${d.poznamka || '-'}`;
 
   const subject = encodeURIComponent(`NW Zakázka — ${d.firma}`);
