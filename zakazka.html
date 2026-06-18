@@ -171,10 +171,10 @@ h1,h2,h3,h4{font-family:'Exo 2',sans-serif}
       <div class="field">
         <label>Způsob doručení</label>
         <select id="doruceni">
-          <option>Dle vzájemné domluvy</option>
-          <option>Osobní odběr</option>
           <option>Doprava Nutworld</option>
-          <option>Kurýr na adresu klienta</option>
+          <option>Vlastní svoz</option>
+          <option>Osobní odběr</option>
+          <option>Dle vzájemné dohody</option>
         </select>
       </div>
 
@@ -448,9 +448,9 @@ POZNAMKA_NABIDKY: ${d.poznamka || '-'}`;
 
   const subject = encodeURIComponent(`NW Zakázka — ${d.firma}`);
   const bodyEnc = encodeURIComponent(body);
-  const mailto  = `mailto:claudie.nutworld.cz@gmail.com?subject=${subject}&body=${bodyEnc}`;
+  const gmailUrl = `https://mail.google.com/mail/?view=cm&to=claudie.nutworld.cz%40gmail.com&su=${subject}&body=${bodyEnc}`;
 
-  window.open(mailto);
+  window.open(gmailUrl, '_blank');
   document.getElementById('sent-ok').style.display = 'block';
   document.getElementById('step3').classList.add('done');
   document.getElementById('step3').classList.remove('active');
