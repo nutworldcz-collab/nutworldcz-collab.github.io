@@ -241,12 +241,23 @@ h1,h2,h3,h4{font-family:'Exo 2',sans-serif}
       </div>
 
       <div class="sec">Odeslat do Trella</div>
-      <p style="font-size:13px;color:#7a5a3a;margin-bottom:14px">
-        Kliknutím se otevře Gmail s předvyplněnou zakázkou. Stačí kliknout <strong>Odeslat</strong> — Trello karta vznikne do 1 minuty.
-      </p>
-      <button class="btn-trello" onclick="sendToTrello()">✅ Odeslat zakázku do Trella</button>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+        <div>
+          <button class="btn-trello" onclick="sendToTrello('gmail')">✅ Otevřít Gmail a odeslat</button>
+          <p style="font-size:11px;color:#aaa;margin-top:5px;text-align:center">Pro uživatele Gmailu</p>
+        </div>
+        <div>
+          <button class="btn-trello" style="background:linear-gradient(135deg,#5c381f,#83502e)" onclick="sendToTrello('copy')">📋 Zkopírovat text zakázky</button>
+          <p style="font-size:11px;color:#aaa;margin-top:5px;text-align:center">Vložit do libovolného emailu na<br><strong>claudie.nutworld.cz@gmail.com</strong></p>
+        </div>
+      </div>
+
       <div id="sent-ok" style="display:none" class="alert-ok">
-        📧 Gmail otevřen — klikni Odeslat. Trello karta bude vytvořena do 1 minuty.
+        📧 Gmail otevřen — klikni Odeslat. Trello karta vznikne do 1 minuty.
+      </div>
+      <div id="copy-ok" style="display:none;background:#f0fff4;border:1.5px solid var(--leaf);border-radius:8px;padding:12px 16px;font-size:13px;color:#2d5a1b;margin-top:4px">
+        📋 Text zkopírován! Otevři svůj email, vytvoř novou zprávu na <strong>claudie.nutworld.cz@gmail.com</strong>, předmět: <span id="copy-subject" style="font-weight:700"></span> — a vlož text (Cmd+V / Ctrl+V).
       </div>
     </div>
   </div>
@@ -377,7 +388,7 @@ function recalcMarze() {
   }
 }
 
-function sendToTrello() {
+function sendToTrello(mode) {
   if (!offerData) return;
   const termin        = document.getElementById('termin').value;
   const obchodak      = document.getElementById('obchodak').value.trim();
@@ -446,12 +457,23 @@ Soubory (logo/grafika): ${souboryLink || 'nevybráno'}
 POZNAMKY_TYM: ${poznamka || '-'}
 POZNAMKA_NABIDKY: ${d.poznamka || '-'}`;
 
-  const subject = encodeURIComponent(`NW Zakázka — ${d.firma}`);
-  const bodyEnc = encodeURIComponent(body);
-  const gmailUrl = `https://mail.google.com/mail/?view=cm&to=claudie.nutworld.cz%40gmail.com&su=${subject}&body=${bodyEnc}`;
+  const subjectText = `NW Zakázka — ${d.firma}`;
 
-  window.open(gmailUrl, '_blank');
-  document.getElementById('sent-ok').style.display = 'block';
+  if (mode === 'copy') {
+    const fullText = `Komu: claudie.nutworld.cz@gmail.com\nPředmět: ${subjectText}\n\n${body}`;
+    navigator.clipboard.writeText(fullText).then(() => {
+      document.getElementById('copy-ok').style.display = 'block';
+      document.getElementById('copy-subject').textContent = subjectText;
+      document.getElementById('sent-ok').style.display = 'none';
+    });
+  } else {
+    const subject = encodeURIComponent(subjectText);
+    const bodyEnc = encodeURIComponent(body);
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&to=claudie.nutworld.cz%40gmail.com&su=${subject}&body=${bodyEnc}`;
+    window.open(gmailUrl, '_blank');
+    document.getElementById('sent-ok').style.display = 'block';
+    document.getElementById('copy-ok').style.display = 'none';
+  }
   document.getElementById('step3').classList.add('done');
   document.getElementById('step3').classList.remove('active');
 }
