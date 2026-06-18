@@ -302,7 +302,7 @@ function loadFromLink() {
 
 function parseAndLoad(encoded) {
   try {
-    const json = decodeURIComponent(unescape(atob(encoded)));
+    const json = decodeURIComponent(escape(atob(encoded)));
     offerData = JSON.parse(json);
     renderSummary(offerData);
     document.getElementById('panel-link').style.display = 'none';
