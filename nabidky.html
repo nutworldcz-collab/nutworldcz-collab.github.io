@@ -257,11 +257,14 @@ function createLink() {
     const a = document.getElementById('link-preview');
     a.href = url;
     a.textContent = url.substring(0, 80) + '…';
+  }).catch(() => {
+    prompt('Zkopíruj odkaz ručně (Ctrl+A, Ctrl+C):', url);
   });
 }
 
 // ── Generátor HTML nabídky ──
-function num(s) { return s.replace(/\B(?=(\d{3})+(?!\d))/g, ' '); }
+function num(s) { return String(s).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); }
+function fmt(n) { return num(parseFloat(n).toFixed(2)).replace('.',','); }
 
 function generateOffer() {
   const firma = document.getElementById('firma').value.trim();
@@ -301,8 +304,8 @@ function generateOffer() {
     <tr>
       <td style="padding:9px 12px;color:#3a2010">${p.nazev}</td>
       <td style="padding:9px 12px;text-align:right">${p.ks} ks</td>
-      <td style="padding:9px 12px;text-align:right">${p.cenaBezDph.toFixed(2).replace('.',',')} Kč</td>
-      <td style="padding:9px 12px;text-align:right"><strong>${num(p.celkem.toFixed(2).replace('.',','))} Kč</strong></td>
+      <td style="padding:9px 12px;text-align:right">${fmt(p.cenaBezDph)} Kč</td>
+      <td style="padding:9px 12px;text-align:right"><strong>${fmt(p.celkem)} Kč</strong></td>
     </tr>`).join('');
 
   const html = `<!DOCTYPE html><html lang="cs"><head><meta charset="UTF-8"/>
@@ -375,9 +378,9 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
       </div>`:''}
     </div>
     <table style="width:300px;border-collapse:collapse;margin-top:14px">
-      <tr><td style="padding:5px 10px;font-size:12.5px;color:#7a5a3a">Mezisoučet bez DPH</td><td style="padding:5px 10px;text-align:right;font-weight:600;font-size:12.5px;color:#5c381f">${num(totalBezDph.toFixed(2).replace('.',','))} Kč</td></tr>
-      <tr><td style="padding:5px 10px;border-top:1px solid #d4c0a8;font-size:12.5px;color:#7a5a3a">DPH 12 %</td><td style="padding:5px 10px;border-top:1px solid #d4c0a8;text-align:right;font-weight:600;font-size:12.5px;color:#5c381f">${num(dphCastka.toFixed(2).replace('.',','))} Kč</td></tr>
-      <tr><td style="background:#5c381f;color:white;padding:9px 12px;font-family:'Exo 2',sans-serif;font-weight:700;font-size:14px">Celkem k úhradě</td><td style="background:#5c381f;color:#f7ab31;padding:9px 12px;text-align:right;font-family:'Exo 2',sans-serif;font-weight:700;font-size:14px">${num(totalSDph.toFixed(2).replace('.',','))} Kč</td></tr>
+      <tr><td style="padding:5px 10px;font-size:12.5px;color:#7a5a3a">Mezisoučet bez DPH</td><td style="padding:5px 10px;text-align:right;font-weight:600;font-size:12.5px;color:#5c381f">${fmt(totalBezDph)} Kč</td></tr>
+      <tr><td style="padding:5px 10px;border-top:1px solid #d4c0a8;font-size:12.5px;color:#7a5a3a">DPH 12 %</td><td style="padding:5px 10px;border-top:1px solid #d4c0a8;text-align:right;font-weight:600;font-size:12.5px;color:#5c381f">${fmt(dphCastka)} Kč</td></tr>
+      <tr><td style="background:#5c381f;color:white;padding:9px 12px;font-family:'Exo 2',sans-serif;font-weight:700;font-size:14px">Celkem k úhradě</td><td style="background:#5c381f;color:#f7ab31;padding:9px 12px;text-align:right;font-family:'Exo 2',sans-serif;font-weight:700;font-size:14px">${fmt(totalSDph)} Kč</td></tr>
     </table>
   </div>
   <div style="background:#5c381f;padding:12px 28px;display:flex;justify-content:space-between;align-items:center">
@@ -401,7 +404,9 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
 }
 
 function printOffer() {
+  if (!window._offerHtml) { alert('Nejdřív vygeneruj nabídku.'); return; }
   const w = window.open('','_blank');
+  if (!w) { alert('Prohlížeč zablokoval popup — povol ho pro tuto stránku.'); return; }
   w.document.write(window._offerHtml);
   w.document.close();
   w.onload = () => { w.focus(); w.print(); };
