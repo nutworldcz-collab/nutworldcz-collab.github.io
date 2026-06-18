@@ -418,10 +418,6 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
 </div>
 </body></html>`;
 
-  // Zobraz tlačítko odkazu
-  document.getElementById('btn-link').style.display = 'block';
-  document.getElementById('link-copied').style.display = 'none';
-
   // Zobraz v preview
   const container = document.getElementById('preview-container');
   container.innerHTML = `<iframe id="preview-frame" srcdoc="${html.replace(/"/g,'&quot;')}" style="width:100%;height:600px;border:none"></iframe>`;
@@ -429,6 +425,40 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
   window._offerHtml  = html;
   window._offerFirma = firma;
   window._offerCislo = cislo;
+
+  // Automaticky vytvoř Trello kartu + vygeneruj link
+  const data = collectFormData();
+  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+  const zakazkaUrl = 'https://nutworldcz-collab.github.io/zakazka.html#' + encoded;
+  window._zakazkaUrl = zakazkaUrl;
+
+  const totalBez = produkty.reduce((s,p) => s + p.ks * p.cenaBezDph, 0);
+  const prodList = produkty.map(p => `- ${p.nazev} · ${p.ks} ks · ${fmt(p.cenaBezDph)} Kč`).join('\n');
+  const cardDesc = `## ${firma}\n**Číslo nabídky:** ${cislo}\n**Rep:** ${repName||'-'}\n**Celkem s DPH:** ${fmt(totalBez*1.12)} Kč\n\n### Produkty\n${prodList}\n\n---\n✅ [Otevřít formulář zakázky po schválení](${zakazkaUrl})`;
+
+  fetch(`https://api.trello.com/1/cards?key=${NW_KEY}&token=${NW_TOKEN}`, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({
+      name: `${firma} — ${cislo}`,
+      desc: cardDesc,
+      idList: NW_LIST_NABIDKY,
+      pos: 'top'
+    })
+  }).then(r => r.json()).then(card => {
+    if (card.id) {
+      document.getElementById('link-copied').style.display = 'block';
+      document.getElementById('link-copied').innerHTML =
+        `✅ Karta vytvořena v Trellu! &nbsp;
+         <a href="${card.url}" target="_blank" style="color:#5c381f;font-weight:700">Otevřít kartu →</a><br>
+         <span style="font-size:11px;color:#888">Link na zakázku je uložen v kartě. Až klient schválí, klikni na něj v Trellu.</span>`;
+      document.getElementById('btn-link').style.display = 'none';
+    }
+  }).catch(() => {
+    // Při chybě API zobraz ruční odkaz
+    document.getElementById('btn-link').style.display = 'block';
+    document.getElementById('link-copied').style.display = 'none';
+  });
 }
 
 function printOffer() {
