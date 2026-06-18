@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Nutworld — Generátor štítků</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bd:#5c381f;--br:#83502e;--kraft:#f1e6da;--acc:#da1668;--amb:#f7ab31;--leaf:#6fa044}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;font-size:14px}
+.topbar{background:var(--bd);padding:12px 24px;display:flex;align-items:center;gap:16px}
+.topbar-title{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:800;color:white}
+.topbar a{color:rgba(255,255,255,.6);font-size:12px;text-decoration:none}
+.topbar a:hover{color:white}
+.container{max-width:820px;margin:24px auto;padding:0 16px}
+
+.card{background:white;border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.card-title{font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700;color:var(--br);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+
+.field{margin-bottom:14px}
+label{display:block;font-size:12px;font-weight:600;color:#666;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+input,textarea,select{width:100%;border:1.5px solid #d4c0a8;border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;background:white;color:#2a1a0e;transition:border-color .15s}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--br)}
+textarea{resize:vertical;min-height:70px}
+.hint{font-size:11px;color:#aaa;margin-top:3px}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:600px){.grid2,.grid3{grid-template-columns:1fr}}
+
+.lang-toggle{display:flex;gap:8px;margin-bottom:14px}
+.lang-btn{border:1.5px solid #d4c0a8;border-radius:20px;padding:6px 16px;font-size:12px;background:white;cursor:pointer;font-family:'Exo 2',sans-serif;font-weight:600;color:#888}
+.lang-btn.active{background:var(--bd);color:white;border-color:var(--bd)}
+
+.sk-field{display:none}
+.sk-field.show{display:block}
+
+.nutri-table{width:100%;border-collapse:collapse}
+.nutri-table th{background:#f1e6da;padding:8px 10px;text-align:left;font-size:11px;color:var(--br);font-family:'Exo 2',sans-serif;font-weight:700;text-transform:uppercase}
+.nutri-table td{padding:4px 8px;border-bottom:1px solid #f0e8e0}
+.nutri-table td:first-child{font-size:12px;color:#666;width:200px}
+.nutri-table input{border:none;border-bottom:1.5px solid #d4c0a8;border-radius:0;padding:5px 6px;font-size:13px}
+.nutri-table input:focus{border-bottom-color:var(--br)}
+
+.btn-submit{background:var(--bd);color:white;border:none;border-radius:10px;padding:14px 32px;font-family:'Exo 2',sans-serif;font-size:15px;font-weight:700;cursor:pointer;width:100%;margin-top:8px;transition:background .15s}
+.btn-submit:hover{background:var(--br)}
+
+.success{display:none;background:#e8f5e9;border:1.5px solid #4caf50;border-radius:10px;padding:20px 24px;text-align:center;margin-top:16px}
+.success h3{color:#2e7d32;font-family:'Exo 2',sans-serif;margin-bottom:8px}
+.success p{color:#555;font-size:13px}
+
+.required::after{content:" *";color:var(--acc)}
+
+.alergen-hint{font-size:11px;background:#fff5f7;border:1px solid #da1668;border-radius:6px;padding:8px 10px;color:#c0134f;margin-top:6px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-title">🏷️ Generátor štítků</span>
+  <a href="/">← Rozcestník</a>
+</div>
+
+<div class="container">
+
+  <div class="card">
+    <div class="card-title">🌍 Jazyk štítku</div>
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('cz')">🇨🇿 Pouze CZ</button>
+      <button class="lang-btn" onclick="setLang('sk')">🇸🇰 Pouze SK</button>
+      <button class="lang-btn" onclick="setLang('both')">🇨🇿 + 🇸🇰 Oba</button>
+    </div>
+  </div>
+
+  <form id="form">
+
+    <!-- Základní info -->
+    <div class="card">
+      <div class="card-title">📦 Produkt</div>
+      <div class="grid2">
+        <div class="field">
+          <label class="required">Kód produktu (Shoptet)</label>
+          <input type="text" id="kod" placeholder="např. 1522" required/>
+        </div>
+        <div class="field">
+          <label class="required">Trvanlivost</label>
+          <input type="text" id="trvanlivost" placeholder="např. 12 měsíců" required/>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label class="required">Název produktu CZ</label>
+          <input type="text" id="nazev_cz" placeholder="PISTÁCIE KARAMELIZOVANÉ" required/>
+          <div class="hint">VELKÝMI PÍSMENY</div>
+        </div>
+        <div class="field sk-field" id="sk_nazev_wrap">
+          <label>Název produktu SK</label>
+          <input type="text" id="nazev_sk" placeholder="PISTÁCIE KARAMELIZOVANÉ"/>
+          <div class="hint">Ponech prázdné = stejný jako CZ</div>
+        </div>
+      </div>
+      <div class="field">
+        <label class="required">Druh výrobku CZ</label>
+        <input type="text" id="druh_cz" placeholder="Karamelizované sušené skořápkové plody" required/>
+      </div>
+      <div class="field sk-field" id="sk_druh_wrap">
+        <label>Druh výrobku SK</label>
+        <input type="text" id="druh_sk" placeholder="Karamelizované sušené škrupinové plody"/>
+      </div>
+    </div>
+
+    <!-- Složení -->
+    <div class="card">
+      <div class="card-title">🧪 Složení a alergeny</div>
+      <div class="field">
+        <label class="required">Složení CZ</label>
+        <textarea id="slozeni_cz" placeholder="PISTÁCIE (58 %), cukr" required></textarea>
+        <div class="alergen-hint">⚠️ Alergeny pište VELKÝMI PÍSMENY přímo ve složení: PISTÁCIE, ARAŠÍDY, MLÉKO...</div>
+      </div>
+      <div class="field sk-field" id="sk_slozeni_wrap">
+        <label>Složení SK</label>
+        <textarea id="slozeni_sk" placeholder="PISTÁCIE (58 %), cukor"></textarea>
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label>Stopy CZ <span style="color:#aaa;font-size:11px">(volitelné)</span></label>
+          <input type="text" id="stopy_cz" placeholder="ARAŠÍDŮ, SEZAMU, JINÝCH OŘECHŮ"/>
+        </div>
+        <div class="field sk-field" id="sk_stopy_wrap">
+          <label>Stopy SK</label>
+          <input type="text" id="stopy_sk" placeholder="ARAŠIDOV, SEZAMU, INÝCH ORECHOV"/>
+        </div>
+      </div>
+      <div class="field">
+        <label class="required">Země původu</label>
+        <input type="text" id="zeme" placeholder="Mimo EU (pistácie)" required/>
+      </div>
+    </div>
+
+    <!-- Výživa -->
+    <div class="card">
+      <div class="card-title">📊 Výživové hodnoty (na 100g)</div>
+      <table class="nutri-table">
+        <thead><tr><th>Složka</th><th>Hodnota CZ</th><th class="sk-field" id="sk_nutri_th">Hodnota SK</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Energetická hodnota</td>
+            <td><input type="text" id="energie_cz" placeholder="2203 kJ / 527 kcal"/></td>
+            <td class="sk-field"><input type="text" id="energie_sk" placeholder="2203 kJ / 527 kcal"/></td>
+          </tr>
+          <tr>
+            <td>Tuky celkem</td>
+            <td><input type="text" id="tuky_cz" placeholder="26,3 g"/></td>
+            <td class="sk-field"><input type="text" id="tuky_sk" placeholder="26,3 g"/></td>
+          </tr>
+          <tr>
+            <td>z toho nasycené MK</td>
+            <td><input type="text" id="nasycene_cz" placeholder="3,4 g"/></td>
+            <td class="sk-field"><input type="text" id="nasycene_sk" placeholder="3,4 g"/></td>
+          </tr>
+          <tr>
+            <td>Sacharidy celkem</td>
+            <td><input type="text" id="sacharidy_cz" placeholder="57,7 g"/></td>
+            <td class="sk-field"><input type="text" id="sacharidy_sk" placeholder="57,7 g"/></td>
+          </tr>
+          <tr>
+            <td>z toho cukry</td>
+            <td><input type="text" id="cukry_cz" placeholder="46,4 g"/></td>
+            <td class="sk-field"><input type="text" id="cukry_sk" placeholder="46,4 g"/></td>
+          </tr>
+          <tr>
+            <td>Vláknina</td>
+            <td><input type="text" id="vlaknina_cz" placeholder="6,2 g"/></td>
+            <td class="sk-field"><input type="text" id="vlaknina_sk" placeholder="6,2 g"/></td>
+          </tr>
+          <tr>
+            <td>Bílkoviny</td>
+            <td><input type="text" id="bilkoviny_cz" placeholder="11,7 g"/></td>
+            <td class="sk-field"><input type="text" id="bilkoviny_sk" placeholder="11,7 g"/></td>
+          </tr>
+          <tr>
+            <td>Sůl</td>
+            <td><input type="text" id="sul_cz" placeholder="0,00 g"/></td>
+            <td class="sk-field"><input type="text" id="sul_sk" placeholder="0,00 g"/></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="hint" style="margin-top:8px">SK hodnoty ponech prázdné = použijí se stejné jako CZ</div>
+    </div>
+
+    <div class="card">
+      <button type="button" class="btn-submit" onclick="submitForm()">🏷️ Odeslat ke zpracování</button>
+    </div>
+
+  </form>
+
+  <div class="success" id="success">
+    <h3>✅ Odesláno!</h3>
+    <p>Požadavek byl odeslán. Claude zpracuje štítek a hotové linky přijdou na <strong>legislativa@nutworld.cz</strong> do ~15 minut.</p>
+    <p style="margin-top:8px;color:#888;font-size:12px">Můžeš odeslat další štítek nebo zavřít stránku.</p>
+    <button onclick="resetForm()" style="margin-top:12px;background:var(--bd);color:white;border:none;border-radius:8px;padding:8px 20px;cursor:pointer;font-family:'Exo 2',sans-serif;font-weight:600">Nový štítek</button>
+  </div>
+
+</div>
+
+<script>
+let currentLang = 'cz';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach((b,i) => {
+    b.classList.toggle('active', ['cz','sk','both'][i] === lang);
+  });
+  const show = lang !== 'cz';
+  document.querySelectorAll('.sk-field').forEach(el => el.classList.toggle('show', show));
+}
+
+function v(id) { return (document.getElementById(id)?.value || '').trim(); }
+function vsk(cz_id, sk_id) { return v(sk_id) || v(cz_id); }
+
+function submitForm() {
+  // Validace povinných polí
+  const required = ['kod','trvanlivost','nazev_cz','druh_cz','slozeni_cz','zeme'];
+  for (const id of required) {
+    if (!v(id)) {
+      document.getElementById(id).focus();
+      document.getElementById(id).style.borderColor = '#da1668';
+      setTimeout(() => document.getElementById(id).style.borderColor = '', 2000);
+      alert('Vyplňte povinné pole: ' + document.querySelector(`[for]`)?.textContent || id);
+      return;
+    }
+  }
+
+  // Sestav data pro canva_jobs
+  const jobs = [];
+  const ELEMENTS_CZ = {
+    "nazev":"PBWfGyJTGGPVRjf3-LBYJgX2kPcncp4xW","druh":"PBWfGyJTGGPVRjf3-LB4h0dmszj3k1Szv",
+    "slozeni":"PBWfGyJTGGPVRjf3-LBlJxl1K5SXH5sSq","stopy":"PBWfGyJTGGPVRjf3-LBGJrmn0pFWB6k5K",
+    "kod":"PBWfGyJTGGPVRjf3-LB9skFL4CX2cpKJ8","trvanlivost":"PBWfGyJTGGPVRjf3-LBLhNF22VpPlHlp9",
+    "zeme":"PBWfGyJTGGPVRjf3-LBdBcMXdzhGGk9B0","energie":"PBWfGyJTGGPVRjf3-LBdrvM1dpYf1S1nS",
+    "tuky":"PBWfGyJTGGPVRjf3-LBd6nvsswvKyhKCx","nasycene":"PBWfGyJTGGPVRjf3-LBq8R32Xk9y7sdHv",
+    "sacharidy":"PBWfGyJTGGPVRjf3-LB2Kp7NLKNRNXgJh","cukry":"PBWfGyJTGGPVRjf3-LBbc6b7r9whVv1Qg",
+    "vlaknina":"PBWfGyJTGGPVRjf3-LBpyWbY2g1FQdHwY","bilkoviny":"PBWfGyJTGGPVRjf3-LBSy8ByDPzYJfXdd",
+    "sul":"PBWfGyJTGGPVRjf3-LBdgY9gt37wCfjfv"
+  };
+  const ELEMENTS_SK = {
+    "nazev":"PBX4NPLL9Q3nmn10-LBGNV2FnSnxh62gF","druh":"PBX4NPLL9Q3nmn10-LBGsyX4WD8PcsjBK",
+    "slozeni":"PBX4NPLL9Q3nmn10-LBB0KrfYxzj77T6X","stopy":"PBX4NPLL9Q3nmn10-LBK1MLtGSnv9FpFN",
+    "kod":"PBX4NPLL9Q3nmn10-LBqm06PyDP9x4V7m","trvanlivost":"PBX4NPLL9Q3nmn10-LB9hF6tpqVGM0w24",
+    "zeme":"PBX4NPLL9Q3nmn10-LBfR8XnnZlHPqwhp","energie":"PBX4NPLL9Q3nmn10-LBL9WBPbLjqt2JCW",
+    "tuky":"PBX4NPLL9Q3nmn10-LBTb5ncz1Gw7Vdzg","nasycene":"PBX4NPLL9Q3nmn10-LBK4YBG2HtxGhMW2",
+    "sacharidy":"PBX4NPLL9Q3nmn10-LBqnKkhDHB7yWdM6","cukry":"PBX4NPLL9Q3nmn10-LB7XLVm44LpZxvyf",
+    "vlaknina":"PBX4NPLL9Q3nmn10-LBdpZnbbLgr63KmV","bilkoviny":"PBX4NPLL9Q3nmn10-LBT9D7Vc4GRf0pGG",
+    "sul":"PBX4NPLL9Q3nmn10-LBxY664mFxM4MmZn"
+  };
+
+  function makeFields(lang) {
+    const isSK = lang === 'sk';
+    return {
+      nazev:      isSK ? vsk('nazev_cz','nazev_sk') : v('nazev_cz'),
+      druh:       isSK ? vsk('druh_cz','druh_sk') : v('druh_cz'),
+      slozeni:    isSK ? vsk('slozeni_cz','slozeni_sk') : v('slozeni_cz'),
+      stopy:      isSK ? vsk('stopy_cz','stopy_sk') : v('stopy_cz'),
+      kod:        v('kod'),
+      trvanlivost: v('trvanlivost'),
+      zeme:       v('zeme'),
+      energie:    isSK ? vsk('energie_cz','energie_sk') : v('energie_cz'),
+      tuky:       isSK ? vsk('tuky_cz','tuky_sk') : v('tuky_cz'),
+      nasycene:   isSK ? vsk('nasycene_cz','nasycene_sk') : v('nasycene_cz'),
+      sacharidy:  isSK ? vsk('sacharidy_cz','sacharidy_sk') : v('sacharidy_cz'),
+      cukry:      isSK ? vsk('cukry_cz','cukry_sk') : v('cukry_cz'),
+      vlaknina:   isSK ? vsk('vlaknina_cz','vlaknina_sk') : v('vlaknina_cz'),
+      bilkoviny:  isSK ? vsk('bilkoviny_cz','bilkoviny_sk') : v('bilkoviny_cz'),
+      sul:        isSK ? vsk('sul_cz','sul_sk') : v('sul_cz'),
+    };
+  }
+
+  if (currentLang === 'cz' || currentLang === 'both') {
+    jobs.push({
+      template_id: 'DAHIpVNxUgM',
+      lang: 'cz',
+      title: v('nazev_cz') + ' CZ',
+      fields: makeFields('cz'),
+      element_ids: ELEMENTS_CZ
+    });
+  }
+  if (currentLang === 'sk' || currentLang === 'both') {
+    jobs.push({
+      template_id: 'DAHIsKNI7aU',
+      lang: 'sk',
+      title: (vsk('nazev_cz','nazev_sk')) + ' SK',
+      fields: makeFields('sk'),
+      element_ids: ELEMENTS_SK
+    });
+  }
+
+  const jobsJson = JSON.stringify(jobs, null, 2);
+  const subject = encodeURIComponent('🏷️ Nový štítek Canva — ' + v('nazev_cz') + ' [' + v('kod') + ']');
+  const body = encodeURIComponent(
+    'CANVA_JOBS_JSON_START\n' + jobsJson + '\nCANVA_JOBS_JSON_END\n\n' +
+    'Produkt: ' + v('nazev_cz') + '\nKód: ' + v('kod') + '\nJazyk: ' + currentLang.toUpperCase()
+  );
+
+  window.location.href = 'mailto:claudie.nutworld.cz@gmail.com?subject=' + subject + '&body=' + body;
+
+  setTimeout(() => {
+    document.getElementById('form').style.display = 'none';
+    document.getElementById('success').style.display = 'block';
+  }, 1000);
+}
+
+function resetForm() {
+  document.getElementById('form').reset();
+  document.getElementById('form').style.display = 'block';
+  document.getElementById('success').style.display = 'none';
+  setLang('cz');
+}
+</script>
+</body>
+</html>
