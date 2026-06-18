@@ -223,14 +223,9 @@ h1,h2,h3,h4{font-family:'Exo 2',sans-serif}
       </div>
 
       <div class="field">
-        <label>Soubory <span style="font-weight:400;color:#aaa">(logo, grafika)</span></label>
-        <select id="soubory-stav">
-          <option value="">— nevybráno —</option>
-          <option value="Zaslány zvlášť emailem">Zaslány zvlášť emailem</option>
-          <option value="Není potřeba">Není potřeba</option>
-          <option value="Bude doplněno">Bude doplněno</option>
-        </select>
-        <p style="font-size:11px;color:#aaa;margin-top:5px">Logo a grafiku pošlete přímo jako přílohu na <strong>claudie.nutworld.cz@gmail.com</strong> se stejným předmětem jako zakázka.</p>
+        <label>Soubory — logo, grafika <span style="font-weight:400;color:#aaa">(přiloží se přímo ke kartě v Trellu)</span></label>
+        <input type="file" id="soubory-file" multiple accept="image/*,.pdf,.ai,.eps,.svg,.zip"
+          style="border:2px dashed #c8976a;border-radius:8px;padding:10px 14px;background:#fdf9f6;cursor:pointer;width:100%"/>
       </div>
 
       <div class="sec">Interní poznámky</div>
@@ -240,25 +235,26 @@ h1,h2,h3,h4{font-family:'Exo 2',sans-serif}
         <textarea id="poznamka-intern" rows="2" placeholder="Co by měl tým vědět — termíny, priorita, zvláštní instrukce…"></textarea>
       </div>
 
-      <div class="sec">Odeslat do Trella</div>
+      <div class="sec">Vytvořit zakázku</div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
-        <div>
-          <button class="btn-trello" onclick="sendToTrello('gmail')">✅ Otevřít Gmail a odeslat</button>
-          <p style="font-size:11px;color:#aaa;margin-top:5px;text-align:center">Pro uživatele Gmailu</p>
-        </div>
-        <div>
-          <button class="btn-trello" style="background:linear-gradient(135deg,#5c381f,#83502e)" onclick="sendToTrello('copy')">📋 Zkopírovat text zakázky</button>
-          <p style="font-size:11px;color:#aaa;margin-top:5px;text-align:center">Vložit do libovolného emailu na<br><strong>claudie.nutworld.cz@gmail.com</strong></p>
-        </div>
+      <button class="btn-trello" id="btn-create" onclick="createTrelloCard()">
+        🚀 Vytvořit zakázku v Trellu
+      </button>
+
+      <div id="trello-loading" style="display:none;text-align:center;padding:16px;color:var(--br)">
+        <div style="font-size:24px;margin-bottom:8px">⏳</div>
+        <div style="font-family:'Exo 2',sans-serif;font-weight:600" id="loading-text">Vytváří se karta…</div>
       </div>
 
-      <div id="sent-ok" style="display:none" class="alert-ok">
-        📧 Gmail otevřen — klikni Odeslat. Trello karta vznikne do 1 minuty.
+      <div id="trello-ok" style="display:none;background:#f0fff4;border:1.5px solid var(--leaf);border-radius:10px;padding:16px 20px;margin-top:8px">
+        <div style="font-size:20px;margin-bottom:6px">✅</div>
+        <div style="font-family:'Exo 2',sans-serif;font-weight:700;color:#2d5a1b;font-size:15px;margin-bottom:6px">Zakázka vytvořena!</div>
+        <a id="trello-link" href="#" target="_blank" class="btn-trello" style="display:inline-block;margin-top:4px;text-decoration:none;padding:10px 24px;font-size:14px">
+          Otevřít kartu v Trellu →
+        </a>
       </div>
-      <div id="copy-ok" style="display:none;background:#f0fff4;border:1.5px solid var(--leaf);border-radius:8px;padding:12px 16px;font-size:13px;color:#2d5a1b;margin-top:4px">
-        📋 Text zkopírován! Otevři svůj email, vytvoř novou zprávu na <strong>claudie.nutworld.cz@gmail.com</strong>, předmět: <span id="copy-subject" style="font-weight:700"></span> — a vlož text (Cmd+V / Ctrl+V).
-      </div>
+
+      <div id="trello-err" style="display:none;background:#fdecea;border:1.5px solid #e57373;border-radius:8px;padding:12px 16px;margin-top:8px;font-size:13px;color:#c62828"></div>
     </div>
   </div>
 
@@ -388,94 +384,164 @@ function recalcMarze() {
   }
 }
 
-function sendToTrello(mode) {
-  if (!offerData) return;
-  const termin        = document.getElementById('termin').value;
-  const obchodak      = document.getElementById('obchodak').value.trim();
-  const doruceni      = document.getElementById('doruceni').value;
-  const adresaDor     = document.getElementById('adresa-doruceni').value.trim();
-  const logo          = document.getElementById('logo').value;
-  const vlastniSlozeni= document.getElementById('vlastni-slozeni').value;
-  const vlastniObal   = document.getElementById('vlastni-obal').value;
-  const prani         = document.getElementById('prani').value.trim();
-  const persPopis     = document.getElementById('personalizace-popis').value.trim();
-  const souboryLink   = document.getElementById('soubory-stav').value;
-  const poznamka      = document.getElementById('poznamka-intern').value.trim();
+const T_KEY   = atob('MDM2M2ViYjE0OWRmMDRkMTI4NTY3MmEzMDgwMTYwYTI=');
+const T_TOKEN = atob('QVRUQTdiMWI4YTFjZWRjMTIyODI3ZmRiMmY4MGRjMjRiNThkMTA4NTVkOTY3ZTAwNDViNWU0ZDdkNmZkMzQwYzJmZWFDNEYxMTFGRQ==');
+const T_LIST  = '6a1d1f2f0dd6bfcd79326c55';
 
-  if (!termin) { alert('Vyplňte termín dodání.'); return; }
+const ALWAYS_ASSIGN = [
+  '678e5051d29ebf26fbaecc96',
+  '652525fd7e535e3209eccbaf',
+  '65251d10aa96c771890181e4',
+  '637f8efd088ca800a01b00a9',
+];
+const OBCHODACI = {
+  'jan vlček':          '637f6dd24161b5005273c0b4',
+  'jan':                '637f6dd24161b5005273c0b4',
+  'tomáš hamerník':     '68c94612e57edc4cd5ee0f05',
+  'tomas hamernik':     '68c94612e57edc4cd5ee0f05',
+  'markéta costachová': '6540d11f0cfd371d93ed57e6',
+  'marketa costachova': '6540d11f0cfd371d93ed57e6',
+  'martin werner':      '689c8d2e4106ec36f205e721',
+};
+
+function tapi(method, path, params) {
+  const url = `https://api.trello.com/1${path}`;
+  const base = { key: T_KEY, token: T_TOKEN };
+  if (method === 'GET') {
+    return fetch(url + '?' + new URLSearchParams({...base, ...params})).then(r => r.json());
+  }
+  return fetch(url + '?' + new URLSearchParams(base), {
+    method, headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(params)
+  }).then(r => r.json());
+}
+
+async function createTrelloCard() {
+  if (!offerData) return;
+  const termin     = document.getElementById('termin').value;
+  const obchodak   = document.getElementById('obchodak').value.trim();
+  const doruceni   = document.getElementById('doruceni').value;
+  const adresaDor  = document.getElementById('adresa-doruceni').value.trim();
+  const logo       = document.getElementById('logo').value;
+  const vlSlozeni  = document.getElementById('vlastni-slozeni').value;
+  const vlObal     = document.getElementById('vlastni-obal').value;
+  const prani      = document.getElementById('prani').value.trim();
+  const persPopis  = document.getElementById('personalizace-popis').value.trim();
+  const poznamka   = document.getElementById('poznamka-intern').value.trim();
+  const files      = document.getElementById('soubory-file').files;
+
+  if (!termin)   { alert('Vyplňte termín dodání.'); return; }
   if (!obchodak) { alert('Vyplňte obchodního zástupce.'); return; }
 
+  setLoading(true, 'Vytváří se karta…');
+
   const d = offerData;
-  let totalBez = 0;
-  const prodLines = d.produkty.map((p, i) => {
-    const c = p.ks * p.cena;
-    totalBez += c;
+  let totalBez = 0, totalZisk = 0, totalNakl = 0;
+
+  const prodDesc = d.produkty.map((p, i) => {
+    const c = p.ks * p.cena; totalBez += c;
     const vyr = parseFloat(document.getElementById('vyr-'+i)?.value) || 0;
-    const zisk = vyr ? ` | výr: ${vyr.toFixed(2)} Kč | zisk: ${num(((p.cena-vyr)*p.ks).toFixed(0))} Kč` : '';
-    return `${p.nazev} | ${p.ks} ks | prod: ${p.cena.toFixed(2)} Kč | celkem: ${num(c.toFixed(2))} Kč${zisk}`;
-  }).join('\n');
+    if (vyr) { totalNakl += vyr*p.ks; totalZisk += (p.cena-vyr)*p.ks; }
+    const vyrStr = vyr ? ` | výr. ${vyr.toFixed(2)} Kč | zisk ${num(((p.cena-vyr)*p.ks).toFixed(0))} Kč` : '';
+    return `**${p.nazev}**\n- ${p.ks} ks | prod. ${p.cena.toFixed(2)} Kč | celkem ${num(c.toFixed(0))} Kč${vyrStr}`;
+  }).join('\n\n');
 
-  const dphCastka = totalBez * 0.12;
-  const totalSDph = totalBez + dphCastka;
+  const dph = totalBez * 0.12;
+  const fmt = iso => { if(!iso) return ''; const [y,m,dd]=iso.split('-'); return `${dd}.${m}.${y}`; };
 
-  const formatDate = (iso) => {
-    if (!iso) return '';
-    const [y,m,dd] = iso.split('-');
-    return `${dd}.${m}.${y}`;
-  };
+  const desc = `## 🏢 Zákazník
+**Firma:** ${d.firma}
+**IČO:** ${d.ico||'-'} | **DIČ:** ${d.dic||'-'}
+**Kontakt:** ${d.kontakt||'-'} · ${d.emailKlient||'-'}
+**Fakt. adresa:** ${d.adresa||'-'}
+**Dor. adresa:** ${adresaDor||d.adresa||'-'}
 
-  const body = `FIRMA: ${d.firma}
-ICO: ${d.ico || '-'}
-DIC: ${d.dic || '-'}
-KONTAKT: ${d.kontakt || '-'}
-EMAIL: ${d.emailKlient || '-'}
-FAKTURACNI_ADRESA: ${d.adresa || '-'}
-DORUCOVACI_ADRESA: ${adresaDor || d.adresa || '-'}
+## 📦 Zakázka
+**Termín:** ${fmt(termin)} | **Doprava:** ${doruceni}
+**Obchodák:** ${obchodak}
+**Splatnost:** ${d.splatnost||'-'} | **Trvanlivost:** ${d.trvanlivost||'-'}
 
-TERMIN: ${formatDate(termin)}
-DORUCENI: ${doruceni}
-OBCHODAK: ${obchodak}
+## 🛒 Produkty
 
-PRODUKTY:
-${prodLines}
+${prodDesc}
 
-CELKEM_BEZ_DPH: ${num(totalBez.toFixed(2))} Kč
-DPH_12: ${num(dphCastka.toFixed(2))} Kč
-CELKEM_S_DPH: ${num(totalSDph.toFixed(2))} Kč
+## 💰 Souhrn
+**Celkem bez DPH:** ${num(totalBez.toFixed(0))} Kč
+**DPH 12 %:** ${num(dph.toFixed(0))} Kč
+**Celkem s DPH:** ${num((totalBez+dph).toFixed(0))} Kč${totalZisk ? `\n**Zisk:** ${num(totalZisk.toFixed(0))} Kč (marže ${(totalZisk/(totalZisk+totalNakl)*100).toFixed(1)} %)` : ''}
 
-SPLATNOST: ${d.splatnost || '-'}
-TRVANLIVOST: ${d.trvanlivost || '-'}
+## ✏️ Personalizace
+**Logo:** ${logo||'—'} | **Vlastní složení:** ${vlSlozeni||'—'} | **Vlastní obal:** ${vlObal||'—'}
+**Přání/vzkaz:** ${prani||'—'}
+**Popis:** ${persPopis||'—'}
 
-PERSONALIZACE:
-Vlastni logo: ${logo || 'nevybráno'}
-Vlastni slozeni: ${vlastniSlozeni || 'nevybráno'}
-Vlastni obal: ${vlastniObal || 'nevybráno'}
-Prani vzkaz: ${prani || '-'}
-Popis personalizace: ${persPopis || '-'}
-Soubory (logo/grafika): ${souboryLink || 'nevybráno'}
+## 🔒 Interní
+${poznamka||'—'}
+${d.poznamka ? `\n*Poznámka z nabídky: ${d.poznamka}*` : ''}`;
 
-POZNAMKY_TYM: ${poznamka || '-'}
-POZNAMKA_NABIDKY: ${d.poznamka || '-'}`;
+  // Sestavit members
+  const members = [...ALWAYS_ASSIGN];
+  const obId = OBCHODACI[obchodak.toLowerCase()];
+  if (obId && !members.includes(obId)) members.push(obId);
 
-  const subjectText = `NW Zakázka — ${d.firma}`;
+  // Due date
+  const due = termin ? new Date(termin + 'T10:00:00.000Z').toISOString() : null;
 
-  if (mode === 'copy') {
-    const fullText = `Komu: claudie.nutworld.cz@gmail.com\nPředmět: ${subjectText}\n\n${body}`;
-    navigator.clipboard.writeText(fullText).then(() => {
-      document.getElementById('copy-ok').style.display = 'block';
-      document.getElementById('copy-subject').textContent = subjectText;
-      document.getElementById('sent-ok').style.display = 'none';
+  // Název karty
+  const pocetKs = d.produkty.reduce((s,p) => s + p.ks, 0);
+  const cardName = `${d.firma} — ${pocetKs} ks — ${fmt(termin)}`;
+
+  try {
+    // 1. Vytvoř kartu
+    const card = await tapi('POST', '/cards', {
+      name: cardName, desc, idList: T_LIST,
+      pos: 'top', idMembers: members.join(','),
+      ...(due ? { due } : {})
     });
-  } else {
-    const subject = encodeURIComponent(subjectText);
-    const bodyEnc = encodeURIComponent(body);
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&to=claudie.nutworld.cz%40gmail.com&su=${subject}&body=${bodyEnc}`;
-    window.open(gmailUrl, '_blank');
-    document.getElementById('sent-ok').style.display = 'block';
-    document.getElementById('copy-ok').style.display = 'none';
+    if (!card.id) throw new Error(card.message || 'Chyba při vytváření karty');
+
+    // 2. Checklist
+    setLoading(true, 'Přidává se checklist…');
+    const cl = await tapi('POST', `/cards/${card.id}/checklists`, { name: 'Postup zakázky' });
+    const steps = ['Kontakt potvrzen', 'Nabídka odsouhlasena', 'Objednávka potvrzena a zaplacena',
+      'Příprava materiálu', 'Výroba / balení', 'Expedice / předání', 'Faktura odeslána'];
+    for (const s of steps) {
+      await fetch(`https://api.trello.com/1/checklists/${cl.id}/checkItems?key=${T_KEY}&token=${T_TOKEN}`,
+        { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({name:s}) });
+    }
+
+    // 3. Soubory
+    if (files.length > 0) {
+      setLoading(true, `Nahrávají se soubory (0/${files.length})…`);
+      for (let i = 0; i < files.length; i++) {
+        setLoading(true, `Nahrává se soubor ${i+1}/${files.length}…`);
+        const fd = new FormData();
+        fd.append('key', T_KEY); fd.append('token', T_TOKEN);
+        fd.append('file', files[i]); fd.append('name', files[i].name);
+        await fetch(`https://api.trello.com/1/cards/${card.id}/attachments`, { method:'POST', body: fd });
+      }
+    }
+
+    setLoading(false);
+    document.getElementById('trello-ok').style.display = 'block';
+    document.getElementById('trello-link').href = card.url;
+    document.getElementById('btn-create').style.display = 'none';
+    document.getElementById('step3').classList.add('done');
+    document.getElementById('step3').classList.remove('active');
+
+  } catch(e) {
+    setLoading(false);
+    document.getElementById('trello-err').style.display = 'block';
+    document.getElementById('trello-err').textContent = '❌ Chyba: ' + e.message;
   }
-  document.getElementById('step3').classList.add('done');
-  document.getElementById('step3').classList.remove('active');
+}
+
+function setLoading(on, text) {
+  document.getElementById('trello-loading').style.display = on ? 'block' : 'none';
+  document.getElementById('btn-create').style.display = on ? 'none' : 'block';
+  if (text) document.getElementById('loading-text').textContent = text;
+  document.getElementById('trello-ok').style.display = 'none';
+  document.getElementById('trello-err').style.display = 'none';
 }
 
 function num(s) { return String(s).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); }
