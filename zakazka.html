@@ -70,6 +70,11 @@ h1,h2,h3,h4{font-family:'Exo 2',sans-serif}
 .empty .icon{font-size:48px;display:block;margin-bottom:12px}
 
 .alert-ok{background:#f0fff4;border:1.5px solid var(--leaf);border-radius:8px;padding:12px 16px;font-size:13px;color:#2d5a1b;margin-top:12px}
+.inp-vyr{width:88px;border:1.5px solid #e57373;border-radius:6px;padding:4px 6px;font-size:12px;text-align:right;background:#fff8f8;font-family:inherit}
+.inp-vyr:focus{outline:none;border-color:#c62828}
+.marze-ok{color:#2e7d32;font-weight:700}
+.marze-warn{color:#e65100;font-weight:700}
+.marze-bad{color:#c62828;font-weight:700}
 </style>
 </head>
 <body>
@@ -113,6 +118,8 @@ h1,h2,h3,h4{font-family:'Exo 2',sans-serif}
       <div class="summary">
         <div class="summary-firma" id="s-firma"></div>
         <div class="summary-meta" id="s-meta"></div>
+        <!-- Zákaznická tabulka -->
+        <div style="font-family:'Exo 2',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--br);margin-bottom:6px">Nabídka zákazníkovi</div>
         <table class="prod-table">
           <thead><tr>
             <th>Produkt</th>
@@ -125,6 +132,26 @@ h1,h2,h3,h4{font-family:'Exo 2',sans-serif}
         <div class="total-row">
           <div class="total-box">Celkem s DPH: <span id="s-total"></span></div>
         </div>
+
+        <!-- Výrobní tabulka -->
+        <div style="font-family:'Exo 2',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#c62828;margin:16px 0 6px">Zadání výroby — interní ceny</div>
+        <table class="prod-table" id="vyroba-table">
+          <thead><tr>
+            <th>Produkt</th>
+            <th style="text-align:right">Ks</th>
+            <th style="text-align:right">Prod. cena/ks</th>
+            <th style="text-align:right;width:110px">Výr. cena/ks</th>
+            <th style="text-align:right">Marže</th>
+          </tr></thead>
+          <tbody id="v-produkty"></tbody>
+          <tfoot>
+            <tr style="background:#fdecea">
+              <td colspan="2" style="padding:7px 10px;font-weight:700;font-size:12px;color:#c62828">Celkový zisk</td>
+              <td colspan="2" style="text-align:right;padding:7px 10px;font-size:12px;color:#666" id="v-celkem-prod"></td>
+              <td style="text-align:right;padding:7px 10px;font-weight:700;color:#c62828" id="v-celkem-zisk"></td>
+            </tr>
+          </tfoot>
+        </table>
       </div>
 
       <!-- Doplňující pole -->
@@ -295,6 +322,7 @@ function renderSummary(d) {
   document.getElementById('summary-subtitle').textContent =
     'Nabídka pro ' + d.firma + (d.repName ? ' · Rep: ' + d.repName : '');
 
+  // Zákaznická tabulka
   let totalBez = 0;
   const tbody = document.getElementById('s-produkty');
   tbody.innerHTML = '';
@@ -307,8 +335,46 @@ function renderSummary(d) {
       <td style="text-align:right"><strong>${num(celkem.toFixed(2))} Kč</strong></td>`;
     tbody.appendChild(tr);
   });
-  const totalSDph = totalBez * 1.12;
-  document.getElementById('s-total').textContent = num(totalSDph.toFixed(2)) + ' Kč';
+  document.getElementById('s-total').textContent = num((totalBez * 1.12).toFixed(2)) + ' Kč';
+
+  // Výrobní tabulka — výrobní ceny zadává rep
+  const vtbody = document.getElementById('v-produkty');
+  vtbody.innerHTML = '';
+  d.produkty.forEach((p, i) => {
+    const tr = document.createElement('tr');
+    tr.id = 'vrow-' + i;
+    tr.innerHTML = `
+      <td style="font-size:12px">${p.nazev}</td>
+      <td style="text-align:right;font-size:12px">${p.ks} ks</td>
+      <td style="text-align:right;font-size:12px">${p.cena.toFixed(2)} Kč</td>
+      <td style="text-align:right"><input class="inp-vyr" type="number" id="vyr-${i}" placeholder="0.00" step="0.01" oninput="recalcMarze()"/> Kč</td>
+      <td style="text-align:right;font-size:12px" id="marze-${i}">—</td>`;
+    vtbody.appendChild(tr);
+  });
+  recalcMarze();
+}
+
+function recalcMarze() {
+  if (!offerData) return;
+  let totalProd = 0, totalZisk = 0;
+  offerData.produkty.forEach((p, i) => {
+    const vyr = parseFloat(document.getElementById('vyr-'+i)?.value);
+    const el  = document.getElementById('marze-'+i);
+    if (!el) return;
+    if (isNaN(vyr) || vyr <= 0) { el.innerHTML = '—'; return; }
+    const zisk = (p.cena - vyr) * p.ks;
+    const marze = ((p.cena - vyr) / p.cena * 100);
+    totalProd += vyr * p.ks;
+    totalZisk += zisk;
+    const cls = marze >= 40 ? 'marze-ok' : marze >= 25 ? 'marze-warn' : 'marze-bad';
+    el.innerHTML = `<span class="${cls}">${marze.toFixed(1)} %</span><br><span style="font-size:10px;color:#999">${num(zisk.toFixed(0))} Kč</span>`;
+  });
+  if (totalZisk) {
+    const marzeCelkem = totalZisk / (totalProd + totalZisk) * 100;
+    document.getElementById('v-celkem-prod').textContent = 'Nákl.: ' + num(totalProd.toFixed(0)) + ' Kč';
+    document.getElementById('v-celkem-zisk').innerHTML =
+      `<span class="${marzeCelkem >= 40 ? 'marze-ok' : marzeCelkem >= 25 ? 'marze-warn' : 'marze-bad'}">${num(totalZisk.toFixed(0))} Kč · ${marzeCelkem.toFixed(1)} %</span>`;
+  }
 }
 
 function sendToTrello() {
@@ -330,10 +396,12 @@ function sendToTrello() {
 
   const d = offerData;
   let totalBez = 0;
-  const prodLines = d.produkty.map(p => {
+  const prodLines = d.produkty.map((p, i) => {
     const c = p.ks * p.cena;
     totalBez += c;
-    return `${p.nazev} | ${p.ks} ks | ${p.cena.toFixed(2)} Kč | ${num(c.toFixed(2))} Kč`;
+    const vyr = parseFloat(document.getElementById('vyr-'+i)?.value) || 0;
+    const zisk = vyr ? ` | výr: ${vyr.toFixed(2)} Kč | zisk: ${num(((p.cena-vyr)*p.ks).toFixed(0))} Kč` : '';
+    return `${p.nazev} | ${p.ks} ks | prod: ${p.cena.toFixed(2)} Kč | celkem: ${num(c.toFixed(2))} Kč${zisk}`;
   }).join('\n');
 
   const dphCastka = totalBez * 0.12;
