@@ -278,7 +278,7 @@ let offerData = null;
 window.addEventListener('load', () => {
   const hash = window.location.hash.slice(1);
   if (hash) {
-    document.getElementById('link-input').value = window.location.href;
+    document.getElementById('link-input').value = window.location.hash.slice(1);
     parseAndLoad(hash);
   }
 });
@@ -302,7 +302,7 @@ function loadFromLink() {
 
 function parseAndLoad(encoded) {
   try {
-    const json = decodeURIComponent(escape(atob(encoded)));
+    const json = decodeURIComponent(unescape(atob(encoded)));
     offerData = JSON.parse(json);
     renderSummary(offerData);
     document.getElementById('panel-link').style.display = 'none';
@@ -376,7 +376,7 @@ function recalcMarze() {
     const cls = marze >= 40 ? 'marze-ok' : marze >= 25 ? 'marze-warn' : 'marze-bad';
     el.innerHTML = `<span class="${cls}">${marze.toFixed(1)} %</span><br><span style="font-size:10px;color:#999">${num(zisk.toFixed(0))} Kč</span>`;
   });
-  if (totalZisk) {
+  if (totalZisk && (totalProd + totalZisk) > 0) {
     const marzeCelkem = totalZisk / (totalProd + totalZisk) * 100;
     document.getElementById('v-celkem-prod').textContent = 'Nákl.: ' + num(totalProd.toFixed(0)) + ' Kč';
     document.getElementById('v-celkem-zisk').innerHTML =
@@ -495,14 +495,15 @@ ${d.poznamka ? `\n*Poznámka z nabídky: ${d.poznamka}*` : ''}`;
     // 1. Vytvoř kartu
     const card = await tapi('POST', '/cards', {
       name: cardName, desc, idList: T_LIST,
-      pos: 'top', idMembers: members.join(','),
+      pos: 'top', idMembers: members,
       ...(due ? { due } : {})
     });
-    if (!card.id) throw new Error(card.message || 'Chyba při vytváření karty');
+    if (!card.id) throw new Error(card.message || JSON.stringify(card));
 
     // 2. Checklist
     setLoading(true, 'Přidává se checklist…');
     const cl = await tapi('POST', `/cards/${card.id}/checklists`, { name: 'Postup zakázky' });
+    if (!cl.id) throw new Error('Checklist se nepodařilo vytvořit');
     const steps = ['Kontakt potvrzen', 'Nabídka odsouhlasena', 'Objednávka potvrzena a zaplacena',
       'Příprava materiálu', 'Výroba / balení', 'Expedice / předání', 'Faktura odeslána'];
     for (const s of steps) {
