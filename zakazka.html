@@ -196,8 +196,14 @@ h1,h2,h3,h4{font-family:'Exo 2',sans-serif}
       </div>
 
       <div class="field">
-        <label>Soubory <span style="font-weight:400;color:#aaa">(logo, grafika — nahrajte na Drive a vložte odkaz)</span></label>
-        <input id="soubory-link" placeholder="Odkaz na Google Drive / Dropbox…"/>
+        <label>Soubory <span style="font-weight:400;color:#aaa">(logo, grafika)</span></label>
+        <select id="soubory-stav">
+          <option value="">— nevybráno —</option>
+          <option value="Zaslány zvlášť emailem">Zaslány zvlášť emailem</option>
+          <option value="Není potřeba">Není potřeba</option>
+          <option value="Bude doplněno">Bude doplněno</option>
+        </select>
+        <p style="font-size:11px;color:#aaa;margin-top:5px">Logo a grafiku pošlete přímo jako přílohu na <strong>claudie.nutworld.cz@gmail.com</strong> se stejným předmětem jako zakázka.</p>
       </div>
 
       <div class="sec">Interní poznámky</div>
@@ -316,7 +322,7 @@ function sendToTrello() {
   const vlastniObal   = document.getElementById('vlastni-obal').value;
   const prani         = document.getElementById('prani').value.trim();
   const persPopis     = document.getElementById('personalizace-popis').value.trim();
-  const souboryLink   = document.getElementById('soubory-link').value.trim();
+  const souboryLink   = document.getElementById('soubory-stav').value;
   const poznamka      = document.getElementById('poznamka-intern').value.trim();
 
   if (!termin) { alert('Vyplňte termín dodání.'); return; }
@@ -367,7 +373,7 @@ Vlastni slozeni: ${vlastniSlozeni || 'nevybráno'}
 Vlastni obal: ${vlastniObal || 'nevybráno'}
 Prani vzkaz: ${prani || '-'}
 Popis personalizace: ${persPopis || '-'}
-Soubory drive: ${souboryLink || '-'}
+Soubory (logo/grafika): ${souboryLink || 'nevybráno'}
 
 POZNAMKY_TYM: ${poznamka || '-'}
 POZNAMKA_NABIDKY: ${d.poznamka || '-'}`;
