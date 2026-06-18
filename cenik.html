@@ -7,281 +7,1874 @@
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--br:#83502e;--bd:#5c381f;--kraft:#f1e6da;--acc:#da1668;--amb:#f7ab31;--leaf:#6fa044}
+:root{--bd:#5c381f;--br:#83502e;--kraft:#f1e6da;--acc:#da1668;--amb:#f7ab31}
 body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;font-size:13px}
 .topbar{background:var(--bd);padding:12px 24px;display:flex;align-items:center;gap:16px}
 .topbar-title{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:800;color:white}
 .topbar a{color:rgba(255,255,255,.6);font-size:12px;text-decoration:none}
 .topbar a:hover{color:white}
-
-.container{max-width:1200px;margin:24px auto;padding:0 16px}
-
-/* Upload sekce */
-.upload-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
-@media(max-width:600px){.upload-grid{grid-template-columns:1fr}}
-.upload-box{background:white;border-radius:14px;padding:20px;border:2px dashed #d4c0a8;text-align:center;transition:border-color .15s}
-.upload-box:hover{border-color:var(--br)}
-.upload-box.loaded{border-style:solid;border-color:var(--leaf);background:#f0fff4}
-.upload-label{font-family:'Exo 2',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--br);margin-bottom:8px;display:block}
-.upload-icon{font-size:32px;margin-bottom:8px;display:block}
-.upload-box input[type=file]{display:none}
-.upload-btn{display:inline-block;background:var(--kraft);border:1.5px solid #c8976a;color:var(--bd);font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;padding:7px 18px;border-radius:20px;cursor:pointer;margin-top:8px}
-.upload-btn:hover{background:#e8d5c0}
-.file-name{font-size:12px;color:#888;margin-top:6px}
-.file-count{font-size:11px;color:var(--leaf);font-weight:600;margin-top:4px}
-
-/* Stats */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}}
-.stat{background:white;border-radius:10px;padding:14px 16px;text-align:center;border:1.5px solid #e0d0c0}
-.stat-num{font-family:'Exo 2',sans-serif;font-size:26px;font-weight:700}
-.stat-label{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
-.stat.green .stat-num{color:#c62828}
-.stat.red .stat-num{color:#2e7d32}
-.stat.orange .stat-num{color:#e65100}
-.stat.gray .stat-num{color:#5c381f}
-
-/* Filtry */
-.controls{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
-.search{border:1.5px solid #d4c0a8;border-radius:8px;padding:7px 12px;font-size:13px;background:white;font-family:inherit;width:240px}
+.container{max-width:1100px;margin:24px auto;padding:0 16px}
+.info{background:white;border-radius:10px;padding:14px 20px;margin-bottom:16px;border:1.5px solid #d4c0a8;font-size:12px;color:#888;display:flex;align-items:center;gap:8px}
+.info strong{color:var(--bd)}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px}
+@media(max-width:600px){.stats{grid-template-columns:repeat(3,1fr)}}
+.stat{background:white;border-radius:10px;padding:12px;text-align:center;border:1.5px solid #e0d0c0}
+.stat-num{font-family:'Exo 2',sans-serif;font-size:24px;font-weight:700}
+.stat-label{font-size:10px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.s-up .stat-num{color:#c62828} .s-dn .stat-num{color:#2e7d32} .s-new .stat-num{color:#1565c0} .s-del .stat-num{color:#555} .s-same .stat-num{color:#aaa}
+.controls{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+.search{border:1.5px solid #d4c0a8;border-radius:8px;padding:7px 12px;font-size:13px;background:white;font-family:inherit;width:220px}
 .search:focus{outline:none;border-color:var(--br)}
-.filter-btn{border:1.5px solid #d4c0a8;border-radius:20px;padding:6px 14px;font-size:12px;background:white;cursor:pointer;font-family:'Exo 2',sans-serif;font-weight:600;color:#888;transition:all .15s}
-.filter-btn.active{background:var(--bd);color:white;border-color:var(--bd)}
-.count{font-size:12px;color:#888;margin-left:auto}
-
-/* Tabulka */
+.fbtn{border:1.5px solid #d4c0a8;border-radius:20px;padding:5px 14px;font-size:12px;background:white;cursor:pointer;font-family:'Exo 2',sans-serif;font-weight:600;color:#888}
+.fbtn.on{background:var(--bd);color:white;border-color:var(--bd)}
+.cnt{font-size:12px;color:#888;margin-left:auto}
 table{width:100%;border-collapse:collapse;background:white;border-radius:10px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.08);font-size:12.5px}
-th{background:var(--bd);color:white;padding:8px 10px;text-align:left;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap}
-th:hover{background:var(--br)}
+th{background:var(--bd);color:white;padding:8px 10px;text-align:left;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:600;white-space:nowrap}
 td{padding:7px 10px;border-bottom:1px solid #f0e8e0}
-tr:nth-child(even) td{background:#fdf8f4}
-tr:hover td{background:#f1e6da}
-td.right{text-align:right}
-td.center{text-align:center}
-
-.badge-new{background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;border-radius:4px;padding:2px 7px;font-size:10px;font-family:'Exo 2',sans-serif;font-weight:700}
-.badge-del{background:#fdecea;color:#c62828;border:1px solid #ef9a9a;border-radius:4px;padding:2px 7px;font-size:10px;font-family:'Exo 2',sans-serif;font-weight:700}
-.badge-up{background:#fdecea;color:#c62828;border-radius:4px;padding:2px 7px;font-size:10px;font-family:'Exo 2',sans-serif;font-weight:700}
-.badge-down{background:#e8f5e9;color:#2e7d32;border-radius:4px;padding:2px 7px;font-size:10px;font-family:'Exo 2',sans-serif;font-weight:700}
-.badge-same{color:#aaa;font-size:11px}
-
-.empty{text-align:center;padding:48px;color:#aaa}
-.empty-icon{font-size:48px;display:block;margin-bottom:12px}
-
+.r{text-align:right} .c{text-align:center}
+tr:hover td{background:#f1e6da!important}
+.b-up{background:#fdecea;color:#c62828;border-radius:4px;padding:2px 8px;font-size:10px;font-family:'Exo 2',sans-serif;font-weight:700}
+.b-down{background:#e8f5e9;color:#2e7d32;border-radius:4px;padding:2px 8px;font-size:10px;font-family:'Exo 2',sans-serif;font-weight:700}
+.b-new{background:#e3f2fd;color:#1565c0;border-radius:4px;padding:2px 8px;font-size:10px;font-family:'Exo 2',sans-serif;font-weight:700}
+.b-del{background:#fdecea;color:#555;border-radius:4px;padding:2px 8px;font-size:10px;font-family:'Exo 2',sans-serif;font-weight:700}
+.b-same{color:#ccc;font-size:11px}
 .hidden{display:none!important}
 </style>
 </head>
 <body>
-
 <div class="topbar">
   <span class="topbar-title">📋 Porovnání ceníků</span>
   <a href="/">← Rozcestník</a>
+  <span style="margin-left:auto;color:rgba(255,255,255,.5);font-size:11px">Aktualizováno: 18. 6. 2026</span>
 </div>
-
 <div class="container">
-
-  <!-- Upload -->
-  <div class="upload-grid">
-    <div class="upload-box" id="box-a">
-      <span class="upload-label">Starý / původní ceník</span>
-      <span class="upload-icon">📂</span>
-      <label class="upload-btn">Nahrát CSV <input type="file" accept=".csv" onchange="loadFile('a', this)"/></label>
-      <div class="file-name" id="name-a">Žádný soubor</div>
-      <div class="file-count" id="count-a"></div>
-    </div>
-    <div class="upload-box" id="box-b">
-      <span class="upload-label">Nový / aktuální ceník</span>
-      <span class="upload-icon">📂</span>
-      <label class="upload-btn">Nahrát CSV <input type="file" accept=".csv" onchange="loadFile('b', this)"/></label>
-      <div class="file-name" id="name-b">Žádný soubor</div>
-      <div class="file-count" id="count-b"></div>
-    </div>
+  <div class="info">📅 Porovnání: <strong>původní ceník (maj 2026)</strong> vs <strong>aktuální (18. 6. 2026)</strong> &nbsp;·&nbsp; Řazeno od největší změny</div>
+  <div class="stats">
+    <div class="stat s-up"><div class="stat-num">7</div><div class="stat-label">📈 Zdražení</div></div>
+    <div class="stat s-dn"><div class="stat-num">4</div><div class="stat-label">📉 Zlevnění</div></div>
+    <div class="stat s-new"><div class="stat-num">116</div><div class="stat-label">🆕 Nové</div></div>
+    <div class="stat s-del"><div class="stat-num">0</div><div class="stat-label">❌ Odebrané</div></div>
+    <div class="stat s-same"><div class="stat-num">127</div><div class="stat-label">Beze změny</div></div>
   </div>
-
-  <!-- Stats -->
-  <div class="stats hidden" id="stats">
-    <div class="stat orange">
-      <div class="stat-num" id="s-zdrazeni">0</div>
-      <div class="stat-label">Zdražení</div>
-    </div>
-    <div class="stat red">
-      <div class="stat-num" id="s-zlevneni">0</div>
-      <div class="stat-label">Zlevnění</div>
-    </div>
-    <div class="stat green">
-      <div class="stat-num" id="s-nove">0</div>
-      <div class="stat-label">Nové produkty</div>
-    </div>
-    <div class="stat gray">
-      <div class="stat-num" id="s-odebrany">0</div>
-      <div class="stat-label">Odebrané</div>
-    </div>
+  <div class="controls">
+    <input class="search" id="q" placeholder="Hledat…" oninput="filter()"/>
+    <button class="fbtn on" data-f="changes" onclick="setF('changes')">Pouze změny</button>
+    <button class="fbtn" data-f="up" onclick="setF('up')">📈 Zdražení</button>
+    <button class="fbtn" data-f="down" onclick="setF('down')">📉 Zlevnění</button>
+    <button class="fbtn" data-f="new" onclick="setF('new')">🆕 Nové</button>
+    <button class="fbtn" data-f="all" onclick="setF('all')">Vše včetně beze změny</button>
+    <span class="cnt" id="cnt"></span>
   </div>
-
-  <!-- Filtry + tabulka -->
-  <div id="result-section" class="hidden">
-    <div class="controls">
-      <input class="search" id="search" placeholder="Hledat produkt nebo kód…" oninput="applyFilter()"/>
-      <button class="filter-btn active" data-f="all" onclick="setFilter('all')">Vše</button>
-      <button class="filter-btn" data-f="up" onclick="setFilter('up')">📈 Zdražení</button>
-      <button class="filter-btn" data-f="down" onclick="setFilter('down')">📉 Zlevnění</button>
-      <button class="filter-btn" data-f="new" onclick="setFilter('new')">🆕 Nové</button>
-      <button class="filter-btn" data-f="del" onclick="setFilter('del')">❌ Odebrané</button>
-      <span class="count" id="res-count"></span>
-    </div>
-    <table>
-      <thead><tr>
-        <th onclick="sortBy('kod')">Kód ↕</th>
-        <th onclick="sortBy('nazev')">Produkt ↕</th>
-        <th class="right" onclick="sortBy('cena_a')">Starý Kč/kg ↕</th>
-        <th class="right" onclick="sortBy('cena_b')">Nový Kč/kg ↕</th>
-        <th class="right" onclick="sortBy('diff_pct')">Změna ↕</th>
-        <th class="center">Stav</th>
-      </tr></thead>
-      <tbody id="result-tbody"></tbody>
-    </table>
-  </div>
-
-  <div class="empty" id="empty-state">
-    <span class="empty-icon">📋</span>
-    <p style="font-size:15px;font-weight:600;color:#5a3a22;margin-bottom:6px">Nahraj dva ceníky pro porovnání</p>
-    <p>Formát: CSV s oddělovačem středník (;) — stejný formát jako cenik.csv</p>
-  </div>
-
+  <table>
+    <thead><tr>
+      <th>Kód</th><th>Produkt</th>
+      <th class="r">Původní Kč/kg</th><th class="r">Aktuální Kč/kg</th>
+      <th class="r">Rozdíl</th><th class="c">Změna</th>
+    </tr></thead>
+    <tbody id="tb"><tr data-status="up" style="background:#fff8f5">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3732</td>
+      <td>Fire mix</td>
+      <td class="r">5,15 Kč</td>
+      <td class="r"><strong>128,75 Kč</strong></td>
+      <td class="r" style="font-size:12px">+123,60 Kč</td>
+      <td class="c"><span class="b-up">+2400.0 %</span></td>
+    </tr><tr data-status="up" style="background:#fff8f5">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">125</td>
+      <td>Lísková jádra natural</td>
+      <td class="r">289,00 Kč</td>
+      <td class="r"><strong>417,00 Kč</strong></td>
+      <td class="r" style="font-size:12px">+128,00 Kč</td>
+      <td class="c"><span class="b-up">+44.3 %</span></td>
+    </tr><tr data-status="down" style="">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">8977</td>
+      <td>Mandle v bile cokolade a malinovem prasku</td>
+      <td class="r">298,00 Kč</td>
+      <td class="r"><strong>252,00 Kč</strong></td>
+      <td class="r" style="font-size:12px">-46,00 Kč</td>
+      <td class="c"><span class="b-down">-15.4 %</span></td>
+    </tr><tr data-status="down" style="">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">7564</td>
+      <td>Kokos chips s karamelem a mořskou solí</td>
+      <td class="r">169,00 Kč</td>
+      <td class="r"><strong>149,00 Kč</strong></td>
+      <td class="r" style="font-size:12px">-20,00 Kč</td>
+      <td class="c"><span class="b-down">-11.8 %</span></td>
+    </tr><tr data-status="down" style="">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">101</td>
+      <td>Mandle jadra prazena loupana solena HOS</td>
+      <td class="r">244,27 Kč</td>
+      <td class="r"><strong>226,16 Kč</strong></td>
+      <td class="r" style="font-size:12px">-18,11 Kč</td>
+      <td class="c"><span class="b-down">-7.4 %</span></td>
+    </tr><tr data-status="up" style="background:#fff8f5">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">134</td>
+      <td>Pistacie ve skorapce prazene a solene-MBI</td>
+      <td class="r">239,00 Kč</td>
+      <td class="r"><strong>252,00 Kč</strong></td>
+      <td class="r" style="font-size:12px">+13,00 Kč</td>
+      <td class="c"><span class="b-up">+5.4 %</span></td>
+    </tr><tr data-status="down" style="">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">1988</td>
+      <td>Mandle v bile cokolade s kokosem Raffaello</td>
+      <td class="r">299,00 Kč</td>
+      <td class="r"><strong>289,00 Kč</strong></td>
+      <td class="r" style="font-size:12px">-10,00 Kč</td>
+      <td class="c"><span class="b-down">-3.3 %</span></td>
+    </tr><tr data-status="up" style="background:#fff8f5">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3013</td>
+      <td>Kesu kari2026 05 -MBI</td>
+      <td class="r">229,00 Kč</td>
+      <td class="r"><strong>235,00 Kč</strong></td>
+      <td class="r" style="font-size:12px">+6,00 Kč</td>
+      <td class="c"><span class="b-up">+2.6 %</span></td>
+    </tr><tr data-status="up" style="background:#fff8f5">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">131</td>
+      <td>Pistacie ve skorapce prazene</td>
+      <td class="r">239,00 Kč</td>
+      <td class="r"><strong>245,00 Kč</strong></td>
+      <td class="r" style="font-size:12px">+6,00 Kč</td>
+      <td class="c"><span class="b-up">+2.5 %</span></td>
+    </tr><tr data-status="up" style="background:#fff8f5">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">137</td>
+      <td>Pistacie loupane Iran</td>
+      <td class="r">625,00 Kč</td>
+      <td class="r"><strong>630,00 Kč</strong></td>
+      <td class="r" style="font-size:12px">+5,00 Kč</td>
+      <td class="c"><span class="b-up">+0.8 %</span></td>
+    </tr><tr data-status="up" style="background:#fff8f5">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">510</td>
+      <td>Lieskovce prazene v mliecnej cokolade so skoricou</td>
+      <td class="r">239,00 Kč</td>
+      <td class="r"><strong>240,00 Kč</strong></td>
+      <td class="r" style="font-size:12px">+1,00 Kč</td>
+      <td class="c"><span class="b-up">+0.4 %</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3726</td>
+      <td>Mandle VIENNA Product specification 098116 en</td>
+      <td class="r">—</td>
+      <td class="r"><strong>275,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2708</td>
+      <td>Sladka smes DELUXE</td>
+      <td class="r">—</td>
+      <td class="r"><strong>253,55 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2702</td>
+      <td>Studentska smes</td>
+      <td class="r">—</td>
+      <td class="r"><strong>153,93 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">6459</td>
+      <td>Slaný mix Itálie specification 204906 -2026 04-King</td>
+      <td class="r">—</td>
+      <td class="r"><strong>183,75 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">164</td>
+      <td>Ananas plátky KS</td>
+      <td class="r">—</td>
+      <td class="r"><strong>108,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">10564</td>
+      <td>specifikace krekry BBQ v AJ</td>
+      <td class="r">—</td>
+      <td class="r"><strong>120,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2738</td>
+      <td>Mandle a merunky drazovane mix</td>
+      <td class="r">—</td>
+      <td class="r"><strong>258,22 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2336</td>
+      <td>Sklzas_kyselezmix</td>
+      <td class="r">—</td>
+      <td class="r"><strong>180,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">56</td>
+      <td>56 Arasidy prazene solene</td>
+      <td class="r">—</td>
+      <td class="r"><strong>59,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">5892</td>
+      <td>Motylci zele</td>
+      <td class="r">—</td>
+      <td class="r"><strong>89,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">10246</td>
+      <td>Kešu karamelizované s příchutí jablka a skořice</td>
+      <td class="r">—</td>
+      <td class="r"><strong>285,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">10257</td>
+      <td>Medvidci tutti frutti zele</td>
+      <td class="r">—</td>
+      <td class="r"><strong>89,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">4506</td>
+      <td>Vesely hamburger zele</td>
+      <td class="r">—</td>
+      <td class="r"><strong>89,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">10161</td>
+      <td>Rýžové krekry zahradní bylinky King</td>
+      <td class="r">—</td>
+      <td class="r"><strong>177,50 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2705</td>
+      <td>Kesu v cokolade MIX</td>
+      <td class="r">—</td>
+      <td class="r"><strong>250,34 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">203</td>
+      <td>Kiwi bez AZO 03 2026-KS</td>
+      <td class="r">—</td>
+      <td class="r"><strong>129,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3097</td>
+      <td>Smes orechu a rozinek</td>
+      <td class="r">—</td>
+      <td class="r"><strong>197,84 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2699</td>
+      <td>Tiramisu smes</td>
+      <td class="r">—</td>
+      <td class="r"><strong>220,60 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">547</td>
+      <td>NW Specifikace Kukuřice pražená s medem a hořčicí NW02</td>
+      <td class="r">—</td>
+      <td class="r"><strong>100,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2294</td>
+      <td>Banánové plátky v jogurtové polevě KS</td>
+      <td class="r">—</td>
+      <td class="r"><strong>142,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">4452</td>
+      <td>Precliky tri barev</td>
+      <td class="r">—</td>
+      <td class="r"><strong>254,18 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">9673</td>
+      <td>Kola lahve zele</td>
+      <td class="r">—</td>
+      <td class="r"><strong>89,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">9573</td>
+      <td>Chipsy zeleninové Mix Wasabi</td>
+      <td class="r">—</td>
+      <td class="r"><strong>384,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2474</td>
+      <td>Semiinkova smes</td>
+      <td class="r">—</td>
+      <td class="r"><strong>65,90 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">5852</td>
+      <td>Mandle v jahodovém jogurtu</td>
+      <td class="r">—</td>
+      <td class="r"><strong>199,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">4797</td>
+      <td>Zabky zele</td>
+      <td class="r">—</td>
+      <td class="r"><strong>89,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2024</td>
+      <td>2026-04-08_11-42_King Nuts & Raaphorst B.V.-Chocolate raisins dark jumbo -King</td>
+      <td class="r">—</td>
+      <td class="r"><strong>199,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">176</td>
+      <td>Banan kousky 4cm</td>
+      <td class="r">—</td>
+      <td class="r"><strong>99,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">7563</td>
+      <td>Arašídy s chilli BBQ -Product_specification_070861_en King</td>
+      <td class="r">—</td>
+      <td class="r"><strong>135,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">1808</td>
+      <td>Maliny a ostruziny smes</td>
+      <td class="r">—</td>
+      <td class="r"><strong>149,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3714</td>
+      <td>3714 Arašídy v barevné čokoládě</td>
+      <td class="r">—</td>
+      <td class="r"><strong>185,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">728</td>
+      <td>Kesu jadra prazena solena uzena HOS</td>
+      <td class="r">—</td>
+      <td class="r"><strong>241,76 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">80</td>
+      <td>Mandle jádra natural 23-25 (nonpareil)</td>
+      <td class="r">—</td>
+      <td class="r"><strong>195,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">4440</td>
+      <td>Mini lentilky bez palmace</td>
+      <td class="r">—</td>
+      <td class="r"><strong>159,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">4443</td>
+      <td>Arasidove hrudky mix barev</td>
+      <td class="r">—</td>
+      <td class="r"><strong>235,69 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2000</td>
+      <td>Zele stevia medvidci bez cukru</td>
+      <td class="r">—</td>
+      <td class="r"><strong>189,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2726</td>
+      <td>Kavovy mix slakdy</td>
+      <td class="r">—</td>
+      <td class="r"><strong>275,98 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">158</td>
+      <td>Smes jader</td>
+      <td class="r">—</td>
+      <td class="r"><strong>309,60 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">9601</td>
+      <td>Mandle v karamelu s vanilkovou příchutí</td>
+      <td class="r">—</td>
+      <td class="r"><strong>249,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">6450</td>
+      <td>Smes ovoce zdrava energie</td>
+      <td class="r">—</td>
+      <td class="r"><strong>252,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3705</td>
+      <td>3705 Arašídy s hořkou čokoládou spec. 093725 en</td>
+      <td class="r">—</td>
+      <td class="r"><strong>231,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2342</td>
+      <td>Smes orechu DELUXE</td>
+      <td class="r">—</td>
+      <td class="r"><strong>212,79 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">110</td>
+      <td>Kesu natural ww320 Afrika HOS</td>
+      <td class="r">—</td>
+      <td class="r"><strong>201,01 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">8751</td>
+      <td>Duhove mini pendreky</td>
+      <td class="r">—</td>
+      <td class="r"><strong>89,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">140</td>
+      <td>Pekanové orechy jadrá</td>
+      <td class="r">—</td>
+      <td class="r"><strong>332,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">155</td>
+      <td>Premium mix orech Nutworld</td>
+      <td class="r">—</td>
+      <td class="r"><strong>298,50 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">6462</td>
+      <td>Slaný mix Mexiko Spec 334305 en</td>
+      <td class="r">—</td>
+      <td class="r"><strong>170,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2744</td>
+      <td>anana_s 7.43 kandizovany_ kocky 2025 Encinger</td>
+      <td class="r">—</td>
+      <td class="r"><strong>112,90 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">10579</td>
+      <td>Arašídy Wasabi červené Spec 079368 en</td>
+      <td class="r">—</td>
+      <td class="r"><strong>125,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">9570</td>
+      <td>Chipsy zeleninové Mix</td>
+      <td class="r">—</td>
+      <td class="r"><strong>353,75 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">10570</td>
+      <td>Specifikace krekry original</td>
+      <td class="r">—</td>
+      <td class="r"><strong>120,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">1528</td>
+      <td>Kešu karamelizované klasické</td>
+      <td class="r">—</td>
+      <td class="r"><strong>249,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">10233</td>
+      <td>Maxi medvedi zele</td>
+      <td class="r">—</td>
+      <td class="r"><strong>89,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">1967</td>
+      <td>Rozinky v polevach MIX</td>
+      <td class="r">—</td>
+      <td class="r"><strong>169,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">10020</td>
+      <td>Tropicky MIX zele</td>
+      <td class="r">—</td>
+      <td class="r"><strong>89,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2723</td>
+      <td>Sklzas_kavova zr v hor</td>
+      <td class="r">—</td>
+      <td class="r"><strong>286,08 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">8739</td>
+      <td>Vejce zele</td>
+      <td class="r">—</td>
+      <td class="r"><strong>89,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3703</td>
+      <td>3703 Arašídové kousky s bílou čokoládou spec. 093735 en</td>
+      <td class="r">—</td>
+      <td class="r"><strong>210,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">1805</td>
+      <td>Fazolky zele</td>
+      <td class="r">—</td>
+      <td class="r"><strong>179,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">10239</td>
+      <td>Veseli smajlici zele</td>
+      <td class="r">—</td>
+      <td class="r"><strong>89,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3993VAN</td>
+      <td>3993VAN_Vanocni mandle EXCLUSIVE</td>
+      <td class="r">—</td>
+      <td class="r"><strong>289,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">1040</td>
+      <td>Antioxidacni smes</td>
+      <td class="r">—</td>
+      <td class="r"><strong>165,29 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">9921</td>
+      <td>Mandle v mlecne cokolade a malinovem prasku</td>
+      <td class="r">—</td>
+      <td class="r"><strong>309,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2762</td>
+      <td>Bananovy chips DUO mix</td>
+      <td class="r">—</td>
+      <td class="r"><strong>174,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">7566</td>
+      <td>Arašídy v těstíčku Shanghai</td>
+      <td class="r">—</td>
+      <td class="r"><strong>125,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2486</td>
+      <td>Mandle jádra natural 3 kg 2025ST HOS_converted</td>
+      <td class="r">—</td>
+      <td class="r"><strong>190,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">7569</td>
+      <td>Flamengo Mix</td>
+      <td class="r">—</td>
+      <td class="r"><strong>125,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3091</td>
+      <td>Smes orechu prazena nesolena</td>
+      <td class="r">—</td>
+      <td class="r"><strong>241,86 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">10251</td>
+      <td>Kysele housenky zele</td>
+      <td class="r">—</td>
+      <td class="r"><strong>89,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">1530</td>
+      <td>Kešu karamelizované solené</td>
+      <td class="r">—</td>
+      <td class="r"><strong>250,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">5502</td>
+      <td>Salatova smes seminek a piniovych orechu</td>
+      <td class="r">—</td>
+      <td class="r"><strong>144,25 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">9679</td>
+      <td>Upiri zuby zele</td>
+      <td class="r">—</td>
+      <td class="r"><strong>89,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3651</td>
+      <td>Mandle borůvkové</td>
+      <td class="r">—</td>
+      <td class="r"><strong>249,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2564</td>
+      <td>Mandle jadra  prazena 5 kg</td>
+      <td class="r">—</td>
+      <td class="r"><strong>219,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3082</td>
+      <td>Rozinky obri MIX</td>
+      <td class="r">—</td>
+      <td class="r"><strong>127,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">8742</td>
+      <td>Bananky zele</td>
+      <td class="r">—</td>
+      <td class="r"><strong>89,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">83</td>
+      <td>Mandle jádra loupana 3 kg HOS</td>
+      <td class="r">—</td>
+      <td class="r"><strong>215,72 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">10245</td>
+      <td>Sovicky zele</td>
+      <td class="r">—</td>
+      <td class="r"><strong>89,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2753</td>
+      <td>Kokosove kostky</td>
+      <td class="r">—</td>
+      <td class="r"><strong>169,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">5499</td>
+      <td>Smes kesu a mandle natural</td>
+      <td class="r">—</td>
+      <td class="r"><strong>215,51 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">1832</td>
+      <td>Zizalky zele</td>
+      <td class="r">—</td>
+      <td class="r"><strong>89,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">95</td>
+      <td>Mandle prazene v medu a soli HOS</td>
+      <td class="r">—</td>
+      <td class="r"><strong>259,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">10558</td>
+      <td>Specifikace krekry chilli v AJ</td>
+      <td class="r">—</td>
+      <td class="r"><strong>120,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">10270</td>
+      <td>Kešu karamelizované s banánovo-čokoládovou příchutí</td>
+      <td class="r">—</td>
+      <td class="r"><strong>289,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2123</td>
+      <td>Ananas platky MIX</td>
+      <td class="r">—</td>
+      <td class="r"><strong>140,54 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">4449</td>
+      <td>Specifikace Preclíky v bílé čokoládě</td>
+      <td class="r">—</td>
+      <td class="r"><strong>252,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3735</td>
+      <td>Arašídy v těstíčku se sýrovo kečupovou příchutí Spec 070794 en</td>
+      <td class="r">—</td>
+      <td class="r"><strong>129,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2423</td>
+      <td>Tropicka smes</td>
+      <td class="r">—</td>
+      <td class="r"><strong>127,33 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3995</td>
+      <td>Mandle CAPPUCCINO</td>
+      <td class="r">—</td>
+      <td class="r"><strong>299,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">9543</td>
+      <td>Mandle prazene solene s lanyzem a parmazanem Valencie DELUXE</td>
+      <td class="r">—</td>
+      <td class="r"><strong>367,50 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">170</td>
+      <td>Banán sušené plátky</td>
+      <td class="r">—</td>
+      <td class="r"><strong>89,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">9547</td>
+      <td>Slaný mix Premium Spec. 332015 en</td>
+      <td class="r">—</td>
+      <td class="r"><strong>378,75 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">8745</td>
+      <td>Maxi hadi zele</td>
+      <td class="r">—</td>
+      <td class="r"><strong>89,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">10269</td>
+      <td>Jahodove sny zele</td>
+      <td class="r">—</td>
+      <td class="r"><strong>89,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">9598</td>
+      <td>Arasidy v karamelu s vanilkovou prichuti King</td>
+      <td class="r">—</td>
+      <td class="r"><strong>125,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2345</td>
+      <td>Smes orechu stastne srdce</td>
+      <td class="r">—</td>
+      <td class="r"><strong>175,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3979</td>
+      <td>Precliky-KS</td>
+      <td class="r">—</td>
+      <td class="r"><strong>84,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">4896</td>
+      <td>Smes mandli v cokolade BROWN</td>
+      <td class="r">—</td>
+      <td class="r"><strong>231,85 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">1037</td>
+      <td>Brustáciový mix</td>
+      <td class="r">—</td>
+      <td class="r"><strong>334,80 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">239</td>
+      <td>Višně USA-KS</td>
+      <td class="r">—</td>
+      <td class="r"><strong>499,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3304</td>
+      <td>Ananas plátky jahoda KS</td>
+      <td class="r">—</td>
+      <td class="r"><strong>127,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">8541</td>
+      <td>Chia-KS</td>
+      <td class="r">—</td>
+      <td class="r"><strong>79,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">6456</td>
+      <td>Ořechový mix Velký v čokoládě Spec 092418 en</td>
+      <td class="r">—</td>
+      <td class="r"><strong>328,75 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">1028</td>
+      <td>Slany mix ALL IN ONE</td>
+      <td class="r">—</td>
+      <td class="r"><strong>192,09 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">5511</td>
+      <td>Slany mix EXCLUSIVE</td>
+      <td class="r">—</td>
+      <td class="r"><strong>220,98 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">9604</td>
+      <td>Arašídy karamelizované se sezamem-specification 091235 -2026 04-King</td>
+      <td class="r">—</td>
+      <td class="r"><strong>130,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2693</td>
+      <td>Skořicový MIX</td>
+      <td class="r">—</td>
+      <td class="r"><strong>250,05 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3702</td>
+      <td>3702 Arašídy s karamelovou čokoládou a solí spec. 093775 en</td>
+      <td class="r">—</td>
+      <td class="r"><strong>213,75 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">161</td>
+      <td>Slany party mix</td>
+      <td class="r">—</td>
+      <td class="r"><strong>239,27 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">5505</td>
+      <td>Smes seminek kesu a mandle natural</td>
+      <td class="r">—</td>
+      <td class="r"><strong>134,65 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">143</td>
+      <td>Para orechy j</td>
+      <td class="r">—</td>
+      <td class="r"><strong>445,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">10035</td>
+      <td>Arašídy v medu a soli 2025ST King</td>
+      <td class="r">—</td>
+      <td class="r"><strong>119,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">1964</td>
+      <td>Mandle tiramisu</td>
+      <td class="r">—</td>
+      <td class="r"><strong>189,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3298</td>
+      <td>Ananas plátky jablko KS</td>
+      <td class="r">—</td>
+      <td class="r"><strong>119,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">8657</td>
+      <td>Cashew - Souhrnná 4druhy spec.na Kešu (Aj) Almondeli</td>
+      <td class="r">—</td>
+      <td class="r"><strong>360,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="new" style="background:#f0fff4">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3704</td>
+      <td>3704 Arašídy s mléčnou čokoládou spec. 093715 en</td>
+      <td class="r">—</td>
+      <td class="r"><strong>208,00 Kč</strong></td>
+      <td class="r" style="font-size:12px"></td>
+      <td class="c"><span class="b-new">🆕 Nový</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">719</td>
+      <td>Arasidy-v-chilli-testicku</td>
+      <td class="r">145,00 Kč</td>
+      <td class="r">145,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3537</td>
+      <td>Hrušky bez přidaného cukru-KS</td>
+      <td class="r">149,00 Kč</td>
+      <td class="r">149,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">8543</td>
+      <td>Mandle v baby pink krustě</td>
+      <td class="r">362,88 Kč</td>
+      <td class="r">362,88 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">254</td>
+      <td>Len zlatý</td>
+      <td class="r">34,50 Kč</td>
+      <td class="r">34,50 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">5475</td>
+      <td>Banán chips v mliečnej čokoláde</td>
+      <td class="r">159,00 Kč</td>
+      <td class="r">159,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">10736</td>
+      <td>Mandle trisky-KS</td>
+      <td class="r">232,00 Kč</td>
+      <td class="r">232,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">1952</td>
+      <td>Mandle ve slaném karamelu Spec 092807 en</td>
+      <td class="r">261,25 Kč</td>
+      <td class="r">261,25 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">1976</td>
+      <td>Arasidy v cukru s pridavkem medu Holandsko-KS</td>
+      <td class="r">86,00 Kč</td>
+      <td class="r">86,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">324</td>
+      <td>Mochyně peruánská - Physalis-KS</td>
+      <td class="r">345,00 Kč</td>
+      <td class="r">345,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">242</td>
+      <td>Jádra tykve GWS AA-KS</td>
+      <td class="r">87,00 Kč</td>
+      <td class="r">87,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">188</td>
+      <td>Datle Deglet nour KS</td>
+      <td class="r">83,00 Kč</td>
+      <td class="r">83,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">146</td>
+      <td>Makadamové ořechy 2025ST MBI</td>
+      <td class="r">399,00 Kč</td>
+      <td class="r">399,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">1340</td>
+      <td>Kesu v bile cokolade</td>
+      <td class="r">289,00 Kč</td>
+      <td class="r">289,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3722</td>
+      <td>Mandle pražené solené s lanýžem Valencie DELUXE</td>
+      <td class="r">375,00 Kč</td>
+      <td class="r">375,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">10473</td>
+      <td>Jadra tykve natural GWS Bio-KS</td>
+      <td class="r">134,00 Kč</td>
+      <td class="r">134,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">251</td>
+      <td>Len hnědý-KS</td>
+      <td class="r">26,50 Kč</td>
+      <td class="r">26,50 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3717</td>
+      <td>Rozinky barevná směs Spec 093300 en</td>
+      <td class="r">8,85 Kč</td>
+      <td class="r">8,85 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3729</td>
+      <td>Kokos v čokoládě spec.093805 en</td>
+      <td class="r">9,30 Kč</td>
+      <td class="r">9,30 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">4167</td>
+      <td>Jablecne trubicky cokolada 5ks</td>
+      <td class="r">498,15 Kč</td>
+      <td class="r">498,15 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">227</td>
+      <td>Rozinky sultánky RTU 2025ST MBI</td>
+      <td class="r">85,00 Kč</td>
+      <td class="r">85,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">119</td>
+      <td>Kesu prazene v mliecnej cokolade</td>
+      <td class="r">205,00 Kč</td>
+      <td class="r">205,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">5358</td>
+      <td>Kešu v BBQ těstíčku-Katjang Cashew BBQ</td>
+      <td class="r">271,25 Kč</td>
+      <td class="r">271,25 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2537</td>
+      <td>Chilli kesu 3 kg</td>
+      <td class="r">245,57 Kč</td>
+      <td class="r">245,57 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">122</td>
+      <td>Vlasska jadra chile 80% pulek</td>
+      <td class="r">165,00 Kč</td>
+      <td class="r">165,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3106</td>
+      <td>Lieskovce prazene v horkej cokolade</td>
+      <td class="r">222,00 Kč</td>
+      <td class="r">222,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">10503</td>
+      <td>Kešu excklusive</td>
+      <td class="r">299,00 Kč</td>
+      <td class="r">299,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2576</td>
+      <td>Quinoa černá-KS</td>
+      <td class="r">89,00 Kč</td>
+      <td class="r">89,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">4512</td>
+      <td>Sklzas_mini mrshmallows</td>
+      <td class="r">171,12 Kč</td>
+      <td class="r">171,12 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">6465</td>
+      <td>Čokameny KS</td>
+      <td class="r">114,00 Kč</td>
+      <td class="r">114,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">4170</td>
+      <td>Jablecne trubicky jogurt 5ks</td>
+      <td class="r">498,15 Kč</td>
+      <td class="r">498,15 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">10262</td>
+      <td>Kesu v bile cokolade s kokosem</td>
+      <td class="r">299,00 Kč</td>
+      <td class="r">299,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2789</td>
+      <td>Banan chips v bielej cokolade</td>
+      <td class="r">172,00 Kč</td>
+      <td class="r">172,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">354</td>
+      <td>Arasidy ve  Wasabi</td>
+      <td class="r">115,24 Kč</td>
+      <td class="r">115,24 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">10261</td>
+      <td>Liskove orechy tiramisu</td>
+      <td class="r">209,00 Kč</td>
+      <td class="r">209,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">10479</td>
+      <td>Slunecnice BIO-KS</td>
+      <td class="r">58,00 Kč</td>
+      <td class="r">58,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">27562</td>
+      <td>Arasidy v mliecnej cokolade</td>
+      <td class="r">115,00 Kč</td>
+      <td class="r">115,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">4302</td>
+      <td>Papaya plátky-KS</td>
+      <td class="r">98,00 Kč</td>
+      <td class="r">98,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3720</td>
+      <td>Mandle pražené solené Valencie DELUXE</td>
+      <td class="r">335,00 Kč</td>
+      <td class="r">335,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">1975</td>
+      <td>Mandle Velikonoční v barevné v polevě s jogurtovou příchutí 2026 Poex</td>
+      <td class="r">189,50 Kč</td>
+      <td class="r">189,50 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">6453</td>
+      <td>Kralovsky_orizek_smes_cokolada_King</td>
+      <td class="r">276,25 Kč</td>
+      <td class="r">276,25 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2102</td>
+      <td>Japonska smes (King nuts coated peanuts) King</td>
+      <td class="r">138,75 Kč</td>
+      <td class="r">138,75 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">263</td>
+      <td>Sezam-KS</td>
+      <td class="r">51,00 Kč</td>
+      <td class="r">51,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">179</td>
+      <td>Brusinka -Klikva velkoploda</td>
+      <td class="r">108,00 Kč</td>
+      <td class="r">108,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">107</td>
+      <td>mandle 1.54 jadra prazene v bielej cokolade</td>
+      <td class="r">213,00 Kč</td>
+      <td class="r">213,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">152</td>
+      <td>Kokos chips-KS</td>
+      <td class="r">98,00 Kč</td>
+      <td class="r">98,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">269</td>
+      <td>Cantaloupe plátky bez SO2 KS</td>
+      <td class="r">265,00 Kč</td>
+      <td class="r">265,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">89</td>
+      <td>Mandle jadra prazena solena s uzenou prichuti HOS</td>
+      <td class="r">218,00 Kč</td>
+      <td class="r">218,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">230</td>
+      <td>hrozienka 2.1 sus_ene_ 2025 Encinger</td>
+      <td class="r">64,50 Kč</td>
+      <td class="r">64,50 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2570</td>
+      <td>Kesu jadra prazena nesolena 3 kg</td>
+      <td class="r">235,40 Kč</td>
+      <td class="r">235,40 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2756</td>
+      <td>Arasidy v horkej cokolade</td>
+      <td class="r">118,00 Kč</td>
+      <td class="r">118,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">1521</td>
+      <td>Pekan karamelizovany classic</td>
+      <td class="r">354,50 Kč</td>
+      <td class="r">354,50 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2018</td>
+      <td>Sklzas_merunky jahodo jog</td>
+      <td class="r">205,44 Kč</td>
+      <td class="r">205,44 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">1958</td>
+      <td>Mandle prazene v mliecnej cokolade so skoricou</td>
+      <td class="r">215,00 Kč</td>
+      <td class="r">215,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3076</td>
+      <td>Třešně-KS</td>
+      <td class="r">185,00 Kč</td>
+      <td class="r">185,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3632</td>
+      <td>Karamelovy fondan vanilka</td>
+      <td class="r">159,00 Kč</td>
+      <td class="r">159,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">4038</td>
+      <td>Mandle prazene v mliecnej cokolade</td>
+      <td class="r">210,00 Kč</td>
+      <td class="r">210,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">4893</td>
+      <td>Makadamové ořechy pražené na sucho, solené-KS</td>
+      <td class="r">459,00 Kč</td>
+      <td class="r">459,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3108</td>
+      <td>Liskove orechy v jogurtu</td>
+      <td class="r">192,00 Kč</td>
+      <td class="r">192,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">1970</td>
+      <td>Mandle v barevné krustě</td>
+      <td class="r">281,28 Kč</td>
+      <td class="r">281,28 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">149</td>
+      <td>Piniova jadra</td>
+      <td class="r">725,00 Kč</td>
+      <td class="r">725,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">10724</td>
+      <td>Kesu kousky 5-8mm</td>
+      <td class="r">136,00 Kč</td>
+      <td class="r">136,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">9811</td>
+      <td>Mandle v jogurtove poleve</td>
+      <td class="r">188,00 Kč</td>
+      <td class="r">188,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3107</td>
+      <td>Lieskovce  jadra prazene v bielej cokolade</td>
+      <td class="r">279,00 Kč</td>
+      <td class="r">279,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">1475</td>
+      <td>Lieskovce prazene v mliecnej cokolade</td>
+      <td class="r">215,00 Kč</td>
+      <td class="r">215,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">635</td>
+      <td>Mango platky</td>
+      <td class="r">144,00 Kč</td>
+      <td class="r">144,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">10264</td>
+      <td>Arasidy_v_bile_cokolade_2026_06</td>
+      <td class="r">209,00 Kč</td>
+      <td class="r">209,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">7852</td>
+      <td>Sklzas_mandle zlata</td>
+      <td class="r">645,12 Kč</td>
+      <td class="r">645,12 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">8542</td>
+      <td>Mandle v baby blue krustě</td>
+      <td class="r">370,56 Kč</td>
+      <td class="r">370,56 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3633</td>
+      <td>Karamelovy fondan slany karamel</td>
+      <td class="r">159,00 Kč</td>
+      <td class="r">159,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3540</td>
+      <td>Jablka kroužky 03 2026-KS</td>
+      <td class="r">137,00 Kč</td>
+      <td class="r">137,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">128</td>
+      <td>Lísková jádra loupaná-KS</td>
+      <td class="r">419,00 Kč</td>
+      <td class="r">419,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">1991</td>
+      <td>Slunecnice v barevne kruste. docx -KS</td>
+      <td class="r">119,00 Kč</td>
+      <td class="r">119,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">5364</td>
+      <td>Kešu ořechy s česnekem a rozmarýnem Spec 320321 en</td>
+      <td class="r">307,50 Kč</td>
+      <td class="r">307,50 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">248</td>
+      <td>Konopné semínko loupané-KS</td>
+      <td class="r">142,00 Kč</td>
+      <td class="r">142,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">4035</td>
+      <td>Kesu prazene v horkej cokolade</td>
+      <td class="r">205,00 Kč</td>
+      <td class="r">205,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">86</td>
+      <td>Mandlové plátky-KS</td>
+      <td class="r">210,00 Kč</td>
+      <td class="r">210,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">1949</td>
+      <td>Slunečnice tříbarevná-KS</td>
+      <td class="r">199,00 Kč</td>
+      <td class="r">199,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">296</td>
+      <td>Papaya plátky bez SO2-KS</td>
+      <td class="r">245,00 Kč</td>
+      <td class="r">245,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2540</td>
+      <td>Arašídy v chilli těstíčku ravioli</td>
+      <td class="r">169,00 Kč</td>
+      <td class="r">169,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">7853</td>
+      <td>Sklzas_mandle ve stribrne</td>
+      <td class="r">575,04 Kč</td>
+      <td class="r">575,04 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">1955</td>
+      <td>Mandle prazene v horkej cokolade</td>
+      <td class="r">205,00 Kč</td>
+      <td class="r">205,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">206</td>
+      <td>Goji A -KS</td>
+      <td class="r">197,00 Kč</td>
+      <td class="r">197,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">71</td>
+      <td>Podzemnice blanšírovaná-KS</td>
+      <td class="r">43,00 Kč</td>
+      <td class="r">43,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2333</td>
+      <td>Sklzas_mandle v karam</td>
+      <td class="r">220,80 Kč</td>
+      <td class="r">220,80 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">10271</td>
+      <td>Jahody lyofilizovane mlecna cokolada</td>
+      <td class="r">345,00 Kč</td>
+      <td class="r">345,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3111</td>
+      <td>Merunky v poleve s jogurtovou prichuti-KS</td>
+      <td class="r">178,00 Kč</td>
+      <td class="r">178,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">1771</td>
+      <td>Karamelovy fondan vanilka a cokolada</td>
+      <td class="r">159,00 Kč</td>
+      <td class="r">159,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2117</td>
+      <td>Para orechy v tiramisu</td>
+      <td class="r">229,00 Kč</td>
+      <td class="r">229,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">116</td>
+      <td>Kesu_prazene_solene_HOS_converted</td>
+      <td class="r">213,68 Kč</td>
+      <td class="r">213,68 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2747</td>
+      <td>NW papája kondenzované kostky NW01</td>
+      <td class="r">98,00 Kč</td>
+      <td class="r">98,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3993</td>
+      <td>Mandle EXCLUSIVE mix</td>
+      <td class="r">289,00 Kč</td>
+      <td class="r">289,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">9552</td>
+      <td>Sýrové kuličky s příchutí Gauda Spec 088535 en</td>
+      <td class="r">318,75 Kč</td>
+      <td class="r">318,75 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2573</td>
+      <td>Quinoa bílá-KS</td>
+      <td class="r">67,00 Kč</td>
+      <td class="r">67,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">920</td>
+      <td>Lyofilizovane maliny v bielej cokolade</td>
+      <td class="r">412,00 Kč</td>
+      <td class="r">412,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2297</td>
+      <td>Kesu tiramisu</td>
+      <td class="r">198,00 Kč</td>
+      <td class="r">198,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">4794</td>
+      <td>Mix orechu v medu a soli King</td>
+      <td class="r">187,72 Kč</td>
+      <td class="r">187,72 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">191</td>
+      <td>Medjoul-specifikace 2025ST MBI</td>
+      <td class="r">168,00 Kč</td>
+      <td class="r">168,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">9571</td>
+      <td>chipsy jablečné se skořicí 2025ST King</td>
+      <td class="r">388,75 Kč</td>
+      <td class="r">388,75 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3634</td>
+      <td>Karamelovy fondan cokolada</td>
+      <td class="r">149,00 Kč</td>
+      <td class="r">149,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">44</td>
+      <td>44</td>
+      <td class="r">77,70 Kč</td>
+      <td class="r">77,70 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">4212</td>
+      <td>Mandle JAHODA v bile cokolade</td>
+      <td class="r">349,00 Kč</td>
+      <td class="r">349,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">9945</td>
+      <td>Mandle jadra prazena solena s prichuti horcice 3 kg</td>
+      <td class="r">223,07 Kč</td>
+      <td class="r">223,07 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">257</td>
+      <td>Mák modrý-KS</td>
+      <td class="r">66,00 Kč</td>
+      <td class="r">66,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">1768</td>
+      <td>Nugat mandlovy bily mekky turecky med</td>
+      <td class="r">189,00 Kč</td>
+      <td class="r">189,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3980</td>
+      <td>Slany praclik v mliecnej cokolade so slanym karamelom</td>
+      <td class="r">195,00 Kč</td>
+      <td class="r">195,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">260</td>
+      <td>Mák mletý 100%-KS</td>
+      <td class="r">79,00 Kč</td>
+      <td class="r">79,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3975</td>
+      <td>Slany praclik v horkej cokolade</td>
+      <td class="r">275,00 Kč</td>
+      <td class="r">275,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2357</td>
+      <td>Cornflakes v mléčné čokoládě KS</td>
+      <td class="r">195,00 Kč</td>
+      <td class="r">195,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2663</td>
+      <td>Datle v hořké čokoládě a skořici KS</td>
+      <td class="r">235,00 Kč</td>
+      <td class="r">235,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">2759</td>
+      <td>Banan chips v horkej cokolade</td>
+      <td class="r">159,00 Kč</td>
+      <td class="r">159,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3723</td>
+      <td>Mandle loupane s prichuti cervene papriky a chilli-MBI</td>
+      <td class="r">356,00 Kč</td>
+      <td class="r">356,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">182</td>
+      <td>Borůvky sušené nesířené KS</td>
+      <td class="r">362,00 Kč</td>
+      <td class="r">362,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">10011</td>
+      <td>Mandle v mlecne cokolade snehove</td>
+      <td class="r">265,00 Kč</td>
+      <td class="r">265,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">4146</td>
+      <td>Arasidy-v-karamelu-s-chilli</td>
+      <td class="r">159,00 Kč</td>
+      <td class="r">159,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">1418</td>
+      <td>Zázvor kousky bez SO2-KS</td>
+      <td class="r">199,00 Kč</td>
+      <td class="r">199,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">218</td>
+      <td>Meruňky č.1-KS</td>
+      <td class="r">275,00 Kč</td>
+      <td class="r">275,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">224</td>
+      <td>Moruse-KS</td>
+      <td class="r">278,00 Kč</td>
+      <td class="r">278,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">4296</td>
+      <td>Cornflakes v polevě s jogurtovou příchutí KS</td>
+      <td class="r">129,00 Kč</td>
+      <td class="r">129,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3978</td>
+      <td>Slany praclik v mliecnej cokolade</td>
+      <td class="r">175,00 Kč</td>
+      <td class="r">175,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">236</td>
+      <td>Švestky Francie 03 2026 -aktuálně-KS</td>
+      <td class="r">92,00 Kč</td>
+      <td class="r">92,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">233</td>
+      <td>Rozinky obří zlaté-KS</td>
+      <td class="r">129,00 Kč</td>
+      <td class="r">129,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">10730</td>
+      <td>Liskova jadra drcena 2-4mm-KS</td>
+      <td class="r">345,00 Kč</td>
+      <td class="r">345,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">3721</td>
+      <td>Mandle pražené solené s bylinkami Valencie DELUX</td>
+      <td class="r">356,00 Kč</td>
+      <td class="r">356,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">4197</td>
+      <td>Jablecne trubicky karob 5ks</td>
+      <td class="r">498,15 Kč</td>
+      <td class="r">498,15 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">266</td>
+      <td>Slunečnice-KS</td>
+      <td class="r">34,50 Kč</td>
+      <td class="r">34,50 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">212</td>
+      <td>Mango platky bez SO2</td>
+      <td class="r">274,00 Kč</td>
+      <td class="r">274,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr><tr data-status="same" class="hidden">
+      <td style="font-family:monospace;font-size:11px;color:#83502e">9549</td>
+      <td>Arašídy v sezamovém těstíčku Spec 091235 en</td>
+      <td class="r">160,00 Kč</td>
+      <td class="r">160,00 Kč</td>
+      <td class="r" style="color:#aaa">0,00 Kč</td>
+      <td class="c"><span class="b-same">beze změny</span></td>
+    </tr></tbody>
+  </table>
 </div>
-
 <script>
-let dataA = {}, dataB = {}, allRows = [];
-let currentFilter = 'all';
-let sortKey = 'diff_pct', sortAsc = false;
-
-function parseCSV(text) {
-  const lines = text.split('\n').filter(l => l.trim());
-  const result = {};
-  for (let i = 1; i < lines.length; i++) {
-    const cols = lines[i].split(';').map(c => c.trim().replace(/^"|"$/g,''));
-    const soubor = cols[0] || '';
-    const kod = cols[1] || '';
-    const kg_czk = parseFloat(cols[3]);
-    if (!kod || isNaN(kg_czk) || kg_czk <= 0) continue;
-    // Název z souboru — odstraň datum a dodavatele
-    let nazev = soubor.replace(/^\d+_/, '').replace(/\s+\d{4}\s+\d{2}.*/, '').replace(/\s+-\s*\w+$/, '').trim();
-    result[kod] = { kod, nazev: nazev || soubor, cena: kg_czk };
-  }
-  return result;
+let curF = 'changes';
+function setF(f) {
+  curF = f;
+  document.querySelectorAll('.fbtn').forEach(b => b.classList.toggle('on', b.dataset.f===f));
+  filter();
 }
-
-function loadFile(which, input) {
-  const file = input.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    const data = parseCSV(e.target.result);
-    if (which === 'a') { dataA = data; }
-    else               { dataB = data; }
-    const cnt = Object.keys(data).length;
-    document.getElementById('name-'+which).textContent = file.name;
-    document.getElementById('count-'+which).textContent = cnt + ' produktů načteno';
-    document.getElementById('box-'+which).classList.add('loaded');
-    if (Object.keys(dataA).length > 0 && Object.keys(dataB).length > 0) compare();
-  };
-  reader.readAsText(file, 'UTF-8');
-}
-
-function compare() {
-  allRows = [];
-  const allKody = new Set([...Object.keys(dataA), ...Object.keys(dataB)]);
-  let zdrazeni=0, zlevneni=0, nove=0, odebrany=0;
-
-  allKody.forEach(kod => {
-    const a = dataA[kod], b = dataB[kod];
-    if (a && b) {
-      const diff = b.cena - a.cena;
-      const pct = diff / a.cena * 100;
-      let status = 'same';
-      if (Math.abs(pct) >= 0.1) { status = pct > 0 ? 'up' : 'down'; }
-      if (status === 'up') zdrazeni++;
-      if (status === 'down') zlevneni++;
-      allRows.push({ kod, nazev: b.nazev||a.nazev, cena_a: a.cena, cena_b: b.cena, diff, diff_pct: pct, status });
-    } else if (!a && b) {
-      nove++;
-      allRows.push({ kod, nazev: b.nazev, cena_a: null, cena_b: b.cena, diff: null, diff_pct: null, status: 'new' });
-    } else if (a && !b) {
-      odebrany++;
-      allRows.push({ kod, nazev: a.nazev, cena_a: a.cena, cena_b: null, diff: null, diff_pct: null, status: 'del' });
-    }
+function filter() {
+  const q = document.getElementById('q').value.toLowerCase();
+  let vis = 0;
+  document.querySelectorAll('#tb tr').forEach(tr => {
+    const s = tr.dataset.status;
+    const txt = tr.textContent.toLowerCase();
+    const matchQ = !q || txt.includes(q);
+    let matchF = true;
+    if (curF === 'changes') matchF = s !== 'same';
+    else if (curF !== 'all') matchF = s === curF;
+    const show = matchQ && matchF;
+    tr.classList.toggle('hidden', !show);
+    if (show) vis++;
   });
-
-  document.getElementById('s-zdrazeni').textContent = zdrazeni;
-  document.getElementById('s-zlevneni').textContent = zlevneni;
-  document.getElementById('s-nove').textContent = nove;
-  document.getElementById('s-odebrany').textContent = odebrany;
-  document.getElementById('stats').classList.remove('hidden');
-  document.getElementById('result-section').classList.remove('hidden');
-  document.getElementById('empty-state').classList.add('hidden');
-  applyFilter();
+  document.getElementById('cnt').textContent = vis + ' produktů';
 }
-
-function applyFilter() {
-  const q = document.getElementById('search').value.toLowerCase();
-  let rows = allRows.filter(r => {
-    if (currentFilter !== 'all' && r.status !== currentFilter) return false;
-    if (q && !r.nazev.toLowerCase().includes(q) && !r.kod.toLowerCase().includes(q)) return false;
-    return true;
-  });
-  // Sort
-  rows.sort((a,b) => {
-    let va = a[sortKey] ?? (sortAsc ? Infinity : -Infinity);
-    let vb = b[sortKey] ?? (sortAsc ? Infinity : -Infinity);
-    if (typeof va === 'string') return sortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
-    return sortAsc ? va - vb : vb - va;
-  });
-  renderRows(rows);
-}
-
-function renderRows(rows) {
-  const tb = document.getElementById('result-tbody');
-  tb.innerHTML = rows.map(r => {
-    const ca = r.cena_a ? r.cena_a.toFixed(2)+' Kč' : '—';
-    const cb = r.cena_b ? r.cena_b.toFixed(2)+' Kč' : '—';
-    let diff = '—', badge = '';
-    if (r.status === 'same') { diff = '0,00 %'; badge = '<span class="badge-same">beze změny</span>'; }
-    else if (r.status === 'up') {
-      diff = `+${r.diff_pct.toFixed(1)} % (+${r.diff.toFixed(2)} Kč)`;
-      badge = `<span class="badge-up">📈 +${r.diff_pct.toFixed(1)} %</span>`;
-    } else if (r.status === 'down') {
-      diff = `${r.diff_pct.toFixed(1)} % (${r.diff.toFixed(2)} Kč)`;
-      badge = `<span class="badge-down">📉 ${r.diff_pct.toFixed(1)} %</span>`;
-    } else if (r.status === 'new') {
-      badge = '<span class="badge-new">🆕 Nový</span>';
-    } else if (r.status === 'del') {
-      badge = '<span class="badge-del">❌ Odebraný</span>';
-    }
-    const rowStyle = r.status==='new'?'background:#f0fff4!important':r.status==='del'?'background:#fdecea!important':'';
-    return `<tr style="${rowStyle}">
-      <td style="font-family:monospace;font-size:11px;color:var(--br)">${r.kod}</td>
-      <td>${r.nazev}</td>
-      <td class="right">${ca}</td>
-      <td class="right"><strong>${cb}</strong></td>
-      <td class="right" style="font-size:12px;color:${r.status==='up'?'#c62828':r.status==='down'?'#2e7d32':'#aaa'}">${diff}</td>
-      <td class="center">${badge}</td>
-    </tr>`;
-  }).join('');
-  document.getElementById('res-count').textContent = `${rows.length} produktů`;
-}
-
-function setFilter(f) {
-  currentFilter = f;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.f === f));
-  applyFilter();
-}
-
-let sortDir = {};
-function sortBy(key) {
-  sortDir[key] = !sortDir[key];
-  sortKey = key; sortAsc = sortDir[key];
-  applyFilter();
-}
+filter();
 </script>
-</body>
-</html>
+</body></html>
