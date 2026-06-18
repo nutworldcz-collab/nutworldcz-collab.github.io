@@ -42,6 +42,7 @@ table.pt tr:nth-child(even) td{background:#fdf8f4}
 table.pt input{border:1.5px solid #d4c0a8;border-radius:6px;padding:7px 10px;font-size:13px;background:#fdf9f6;font-family:inherit}
 table.pt input:focus{outline:none;border-color:var(--br)}
 table.pt input.inp-nazev{width:100%}
+table.pt input.inp-kod{width:70px;text-align:center;font-family:monospace;font-size:12px;color:var(--br)}
 table.pt input.inp-ks{width:64px;text-align:center}
 table.pt input.inp-cena{width:100px;text-align:right}
 .td-total{font-weight:700;color:var(--bd);font-size:13px;white-space:nowrap;padding:5px 10px}
@@ -118,9 +119,10 @@ table.pt input.inp-cena{width:100px;text-align:right}
       <table class="pt">
         <thead>
           <tr>
-            <th style="width:55%">Produkt / popis</th>
-            <th style="width:10%">Ks</th>
-            <th style="width:18%">Cena/ks bez DPH</th>
+            <th style="width:12%">Kód</th>
+            <th style="width:43%">Produkt / popis</th>
+            <th style="width:8%">Ks</th>
+            <th style="width:16%">Cena/ks bez DPH</th>
             <th style="width:12%">Celkem</th>
             <th style="width:5%"></th>
           </tr>
@@ -129,6 +131,15 @@ table.pt input.inp-cena{width:100px;text-align:right}
       </table>
     </div>
     <button class="add-btn" onclick="addRow()">+ Přidat řádek</button>
+
+    <div style="display:flex;align-items:center;gap:10px;margin-top:12px;padding:10px 12px;background:#fdf8f4;border:1.5px solid #d4c0a8;border-radius:8px">
+      <label style="font-size:11px;font-weight:700;color:var(--br);text-transform:uppercase;letter-spacing:1px;white-space:nowrap">Doprava</label>
+      <input type="number" id="doprava" placeholder="0" step="1" min="0"
+        style="width:100px;border:1.5px solid #d4c0a8;border-radius:6px;padding:6px 10px;font-size:13px;background:#fdf9f6;text-align:right"
+        oninput="recalcDoprava()"/>
+      <span style="font-size:13px;color:#888">Kč bez DPH</span>
+      <span id="doprava-total" style="margin-left:auto;font-size:13px;color:var(--bd);font-weight:600"></span>
+    </div>
 
     <!-- Podmínky -->
     <div class="sec">Podmínky</div>
@@ -199,7 +210,8 @@ function addRow() {
   const tr = document.createElement('tr');
   tr.id = 'row-' + id;
   tr.innerHTML = `
-    <td><input class="inp-nazev" id="nazev-${id}" placeholder="Název produktu, gramáž, specifikace…" oninput="recalc(${id})"/></td>
+    <td><input class="inp-kod" id="kod-${id}" placeholder="101" title="Kód produktu ze Shoptetu"/></td>
+    <td><input class="inp-nazev" id="nazev-${id}" placeholder="Název produktu, gramáž…" oninput="recalc(${id})"/></td>
     <td><input class="inp-ks" type="number" id="ks-${id}" value="1" min="1" oninput="recalc(${id})"/></td>
     <td style="white-space:nowrap"><input class="inp-cena" type="number" id="cena-${id}" placeholder="0,00" step="0.01" oninput="recalc(${id})"/> Kč</td>
     <td class="td-total" id="total-${id}">—</td>
@@ -208,6 +220,11 @@ function addRow() {
   document.getElementById('nazev-'+id).focus();
 }
 function delRow(id) { document.getElementById('row-'+id)?.remove(); }
+function recalcDoprava() {
+  const d = parseFloat(document.getElementById('doprava')?.value) || 0;
+  const el = document.getElementById('doprava-total');
+  if (el) el.textContent = d > 0 ? `+ ${fmt(d*1.12)} Kč s DPH` : '';
+}
 function recalc(id) {
   const ks   = parseFloat(document.getElementById('ks-'+id)?.value) || 0;
   const cena = parseFloat(document.getElementById('cena-'+id)?.value);
@@ -301,17 +318,19 @@ function generateOffer() {
   let totalBezDph = 0, totalDph = 0;
   rows.forEach(tr => {
     const id = tr.id.replace('row-','');
+    const kod   = document.getElementById('kod-'+id)?.value.trim();
     const nazev = document.getElementById('nazev-'+id)?.value.trim();
     const ks    = parseFloat(document.getElementById('ks-'+id)?.value) || 1;
     const cena  = parseFloat(document.getElementById('cena-'+id)?.value);
     if (!nazev || isNaN(cena) || cena <= 0) return;
     const celkem = parseFloat((cena * ks).toFixed(2));
     totalBezDph += celkem;
-    produkty.push({ nazev, ks, cenaBezDph: cena, celkem });
+    produkty.push({ kod, nazev, ks, cenaBezDph: cena, celkem });
   });
   if (!produkty.length) { alert('Přidej alespoň jeden produkt s názvem a cenou!'); return; }
-  const dphCastka = parseFloat((totalBezDph * 0.12).toFixed(2));
-  const totalSDph = parseFloat((totalBezDph + dphCastka).toFixed(2));
+  const doprava    = parseFloat(document.getElementById('doprava')?.value) || 0;
+  const dphCastka  = parseFloat(((totalBezDph + doprava) * 0.12).toFixed(2));
+  const totalSDph  = parseFloat((totalBezDph + doprava + dphCastka).toFixed(2));
   const ico = document.getElementById('ico').value.trim();
   const dic = document.getElementById('dic').value.trim();
   const adresa = document.getElementById('adresa').value.trim();
@@ -329,11 +348,17 @@ function generateOffer() {
 
   const prodRows = produkty.map(p => `
     <tr>
-      <td style="padding:9px 12px;color:#3a2010">${p.nazev}</td>
+      <td style="padding:9px 12px;color:#3a2010">${p.kod ? `<span style="font-size:10px;color:#aaa;font-family:monospace;margin-right:6px">${p.kod}</span>` : ''}${p.nazev}</td>
       <td style="padding:9px 12px;text-align:right">${p.ks} ks</td>
       <td style="padding:9px 12px;text-align:right">${fmt(p.cenaBezDph)} Kč</td>
       <td style="padding:9px 12px;text-align:right"><strong>${fmt(p.celkem)} Kč</strong></td>
     </tr>`).join('');
+  const dopravRow = doprava > 0 ? `
+    <tr style="background:#fdf8f4">
+      <td style="padding:9px 12px;color:#888;font-style:italic">Doprava</td>
+      <td></td><td style="padding:9px 12px;text-align:right;color:#888">—</td>
+      <td style="padding:9px 12px;text-align:right;color:#888">${fmt(doprava)} Kč</td>
+    </tr>` : '';
 
   const html = `<!DOCTYPE html><html lang="cs"><head><meta charset="UTF-8"/>
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
@@ -382,7 +407,7 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
         <th style="padding:7px 12px;text-align:right;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:600">Cena/ks (bez DPH)</th>
         <th style="padding:7px 12px;text-align:right;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:600">Celkem (bez DPH)</th>
       </tr></thead>
-      <tbody style="border-bottom:1px solid #ede0d4">${prodRows}</tbody>
+      <tbody style="border-bottom:1px solid #ede0d4">${prodRows}${dopravRow}</tbody>
     </table>
   </div>
   <div style="padding:0 28px 16px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start">
