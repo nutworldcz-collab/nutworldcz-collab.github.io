@@ -316,6 +316,76 @@ function resetForm() {
   document.getElementById('success').style.display = 'none';
   setLang('cz');
 }
+
+// Krátké CZ genitiv formy 14 EU alergenů (pořadí dle spec JSON)
+const ALERGEN_SHORT_CZ = [
+  'LEPKU', 'VAJEC', 'MLÉKA', 'ARAŠÍDŮ', 'HOŘČICE',
+  'OXIDU SIŘIČITÉHO', 'MĚKKÝŠŮ', 'KORÝŠŮ', 'RYB', 'SÓJI',
+  'OŘECHŮ', 'CELERU', 'SEZAMU', 'LUPINY'
+];
+const ALERGEN_SHORT_SK = [
+  'LEPKU', 'VAJEC', 'MLIEKA', 'ARAŠIDOV', 'HORČICE',
+  'OXIDU SIRIČITÉHO', 'MÄKKÝŠOV', 'KÔROVCOV', 'RÝB', 'SÓJE',
+  'ORECHOV', 'ZELERU', 'SEZAMU', 'LUPINY'
+];
+
+function loadFromStorage() {
+  const raw = sessionStorage.getItem('nw_spec_prefill');
+  if (!raw) return;
+  sessionStorage.removeItem('nw_spec_prefill');
+
+  const spec = JSON.parse(raw);
+  const vy = spec.vyziva || {};
+
+  const stripHtml = s => (s || '').replace(/<[^>]+>/g, '');
+
+  const stopy_cz = (spec.alergeny || [])
+    .map((a, i) => a.z_prenosu === 'ano' ? ALERGEN_SHORT_CZ[i] : null)
+    .filter(Boolean).join(', ');
+  const stopy_sk = (spec.alergeny || [])
+    .map((a, i) => a.z_prenosu === 'ano' ? ALERGEN_SHORT_SK[i] : null)
+    .filter(Boolean).join(', ');
+
+  const trvItem = (spec.skladovatelnost || []).find(s => /měsíc|rok|týden|den/i.test(s)) || '';
+  const trvMatch = trvItem.match(/\d+\s*(?:měsíc[ůíce]*|rok[ůu]?|týdn[ůůy]*|týden|dn[ůůí]*|den)/i);
+  const trvanlivost = trvMatch ? trvMatch[0] : '';
+
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
+
+  set('kod', spec._nw_code || '');
+  set('trvanlivost', trvanlivost);
+  set('nazev_cz', spec.nazev || '');
+  set('druh_cz', spec.druh_produktu || '');
+  set('slozeni_cz', stripHtml(spec.slozeni || ''));
+  set('stopy_cz', stopy_cz);
+  set('zeme', spec.puvod_suroviny || '');
+  set('energie_cz', vy.energie || '');
+  set('tuky_cz', vy.tuky || '');
+  set('nasycene_cz', vy.nasycene_mk || '');
+  set('sacharidy_cz', vy.sacharidy || '');
+  set('cukry_cz', vy.cukry || '');
+  set('vlaknina_cz', vy.vlaknina || '');
+  set('bilkoviny_cz', vy.bilkoviny || '');
+  set('sul_cz', vy.sul || '');
+
+  // SK — výživa bývá stejná, SK překlad textu nechme prázdný pro ruční doplnění
+  set('energie_sk', vy.energie || '');
+  set('tuky_sk', vy.tuky || '');
+  set('nasycene_sk', vy.nasycene_mk || '');
+  set('sacharidy_sk', vy.sacharidy || '');
+  set('cukry_sk', vy.cukry || '');
+  set('vlaknina_sk', vy.vlaknina || '');
+  set('bilkoviny_sk', vy.bilkoviny || '');
+  set('sul_sk', vy.sul || '');
+  set('stopy_sk', stopy_sk);
+
+  const banner = document.createElement('div');
+  banner.style.cssText = 'background:#6fa044;color:white;text-align:center;padding:10px 16px;font-weight:700;font-size:14px;position:sticky;top:0;z-index:999';
+  banner.textContent = '✅ Předvyplněno ze spec generátoru — zkontroluj složení a doplň SK překlad (název, druh, složení).';
+  document.body.insertBefore(banner, document.body.firstChild);
+}
+
+window.addEventListener('DOMContentLoaded', loadFromStorage);
 </script>
 </body>
 </html>
