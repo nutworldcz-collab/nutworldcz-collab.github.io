@@ -439,6 +439,13 @@ function renderSpec(spec) {
         ${h(spec.ionizace_text)}
         ${spec.ionizace_ref ? `<div class="reg-ref">${h(spec.ionizace_ref)}</div>` : ""}
       </div>
+
+      ${spec.fyzikalni_vlastnosti && spec.fyzikalni_vlastnosti.filter(f=>f.hodnota).length ? `
+      <div class="sec-title" style="margin-top:12px">Fyzikální a chemické vlastnosti</div>
+      <table class="tbl">
+        <thead><tr><th style="background:rgba(131,80,46,.12);padding:6px 9px;font-size:10.5px;width:55%">Parametr</th><th style="background:rgba(131,80,46,.12);padding:6px 9px;font-size:10.5px">Povolené rozmezí</th></tr></thead>
+        <tbody>${spec.fyzikalni_vlastnosti.filter(f=>f.hodnota).map(f=>`<tr><td class="label">${h(f.parametr)}</td><td class="val">${h(f.hodnota)}</td></tr>`).join("")}</tbody>
+      </table>` : ""}
     </div>
   </div>`;
 
@@ -480,29 +487,11 @@ function renderSpec(spec) {
         ${spec.legenda_senzoricky ? `<div class="legend-box"><strong>Legenda</strong>${h(spec.legenda_senzoricky)}</div>` : ""}
       </div>` : ""}
 
-      ${spec.fyzikalni_vlastnosti && spec.fyzikalni_vlastnosti.length ? `
-      <div class="sec-title" style="margin-top:14px">Fyzikální a chemické vlastnosti</div>
-      <table class="tbl">
-        <thead><tr><th style="background:rgba(131,80,46,.12);padding:6px 9px;font-size:10.5px;width:55%">Parametr</th><th style="background:rgba(131,80,46,.12);padding:6px 9px;font-size:10.5px">Povolené rozmezí</th></tr></thead>
-        <tbody>${spec.fyzikalni_vlastnosti.map(f=>`<tr><td class="label">${h(f.parametr)}</td><td class="val">${h(f.hodnota)}</td></tr>`).join("")}</tbody>
-      </table>` : ""}
-
       ${hasMikro ? `
-      <div class="sec-title dark" style="background:var(--brown-dark)">Mikrobiologické požadavky</div>
+      <div class="sec-title dark" style="background:var(--brown-dark);margin-top:14px">Mikrobiologické požadavky</div>
       <table class="tbl">
         <thead><tr><th style="background:rgba(131,80,46,.12);padding:6px 9px;font-size:10.5px">Parametr</th><th style="background:rgba(131,80,46,.12);padding:6px 9px;font-size:10.5px">Limit</th><th style="background:rgba(131,80,46,.12);padding:6px 9px;font-size:10.5px">Metoda</th></tr></thead>
         <tbody>${(spec.mikrobiologie||[]).map(m=>`<tr><td class="label">${h(m.parametr)}</td><td class="val">${h(m.limit)}</td><td>${h(m.metoda)}</td></tr>`).join("")}</tbody>
-      </table>` : ""}
-
-      ${spec.pesticidy ? `
-      <div class="sec-title green" style="margin-top:14px">Pesticidy</div>
-      <div class="info-block">${h(spec.pesticidy)}</div>` : ""}
-
-      ${spec.pridatne_latky && spec.pridatne_latky.length ? `
-      <div class="sec-title amber" style="margin-top:14px">Přídatné látky</div>
-      <table class="tbl">
-        <thead><tr><th style="background:rgba(131,80,46,.12);padding:6px 9px;font-size:10.5px;width:70%">Surovina obsahuje</th><th style="background:rgba(131,80,46,.12);padding:6px 9px;font-size:10.5px;text-align:center">Ano / Ne</th></tr></thead>
-        <tbody>${spec.pridatne_latky.map(p=>`<tr><td class="label">${h(p.latka)}</td><td style="text-align:center;font-weight:600;color:${p.pritomnost==='ano'?'var(--accent)':'var(--muted)'}">${h(p.pritomnost)}</td></tr>`).join("")}</tbody>
       </table>` : ""}
     </div>
   </div>`;
@@ -533,6 +522,17 @@ function renderSpec(spec) {
       <div class="sec-title">Logistika a přepravní podmínky</div>
       <table class="tbl">
         <tbody>${(spec.logistika||[]).map(l=>`<tr><td class="label">${h(l.parametr)}</td><td class="val">${h(l.hodnota)}</td></tr>`).join("")}</tbody>
+      </table>` : ""}
+
+      ${spec.pesticidy ? `
+      <div class="sec-title green">Pesticidy</div>
+      <div class="info-block">${h(spec.pesticidy)}</div>` : ""}
+
+      ${spec.pridatne_latky && spec.pridatne_latky.length ? `
+      <div class="sec-title amber">Přídatné látky</div>
+      <table class="tbl">
+        <thead><tr><th style="background:rgba(131,80,46,.12);padding:6px 9px;font-size:10.5px;width:70%">Surovina obsahuje</th><th style="background:rgba(131,80,46,.12);padding:6px 9px;font-size:10.5px;text-align:center">Ano / Ne</th></tr></thead>
+        <tbody>${spec.pridatne_latky.map(p=>`<tr><td class="label">${h(p.latka)}</td><td style="text-align:center;font-weight:600;color:${p.pritomnost==='ano'?'var(--accent)':'var(--muted)'}">${h(p.pritomnost)}</td></tr>`).join("")}</tbody>
       </table>` : ""}
 
       <div class="sec-title amber">Skladovatelnost a přeprava</div>
