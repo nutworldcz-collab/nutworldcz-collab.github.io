@@ -11,8 +11,8 @@
 body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;font-size:14px}
 h1,h2,h3{font-family:'Exo 2',sans-serif}
 
-.shell{max-width:1100px;margin:0 auto;padding:24px 16px;display:grid;grid-template-columns:1fr 360px;gap:20px;align-items:start}
-@media(max-width:900px){.shell{grid-template-columns:1fr}}
+.shell{max-width:960px;margin:0 auto;padding:24px 16px;display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start}
+@media(max-width:860px){.shell{grid-template-columns:1fr}}
 
 .panel{background:var(--white);border-radius:14px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,.1)}
 .panel-head{background:linear-gradient(135deg,var(--bd),var(--br));padding:16px 22px;color:white}
@@ -22,46 +22,33 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
 
 .field{margin-bottom:14px}
 .field label{display:block;font-size:11px;font-weight:700;color:var(--br);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
-.field input,.field select,.field textarea{width:100%;border:1.5px solid #d4c0a8;border-radius:8px;padding:9px 12px;font-family:inherit;font-size:13px;color:#2a1a0e;background:#fdf9f6;transition:border-color .15s}
-.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--br)}
+.field input,.field textarea{width:100%;border:1.5px solid #d4c0a8;border-radius:8px;padding:9px 12px;font-family:inherit;font-size:13px;color:#2a1a0e;background:#fdf9f6;transition:border-color .15s}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--br)}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .sec{font-family:'Exo 2',sans-serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--br);margin:18px 0 10px;padding-bottom:5px;border-bottom:1.5px solid var(--kraft)}
 .sec:first-child{margin-top:0}
-.hint{font-size:11px;color:#9a7050;line-height:1.5;margin-top:5px;padding:7px 10px;background:#fdf5ee;border-radius:6px;border-left:3px solid #c8976a}
 
-/* ── Přepínač režimu ── */
-.mode-switch{display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:10px;overflow:hidden;border:2px solid #d4c0a8;margin-bottom:20px}
-.mode-btn{padding:12px 10px;text-align:center;cursor:pointer;border:none;background:#fdf9f6;font-family:'Exo 2',sans-serif;font-weight:700;font-size:13px;color:#8a6a4a;transition:all .15s;display:flex;flex-direction:column;align-items:center;gap:4px}
-.mode-btn .ico{font-size:22px}
-.mode-btn .lbl{font-size:11px;letter-spacing:.5px}
-.mode-btn.active-new{background:linear-gradient(135deg,#2d7a1b,var(--leaf));color:white}
-.mode-btn.active-edit{background:linear-gradient(135deg,#a07000,var(--amb));color:white}
-.mode-btn:not(.active-new):not(.active-edit):hover{background:var(--kraft)}
+/* přepínače */
+.switch-row{display:grid;gap:8px;margin-bottom:6px}
+.switch-row.cols2{grid-template-columns:1fr 1fr}
+.switch-row.cols2b{grid-template-columns:1fr 1fr}
+.sw-btn{padding:11px 8px;border-radius:9px;border:2px solid #d4c0a8;background:#fdf9f6;font-family:'Exo 2',sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:#7a5a3a;transition:all .15s;text-align:center;display:flex;flex-direction:column;align-items:center;gap:3px}
+.sw-btn .ico{font-size:20px}
+.sw-btn:hover{background:var(--kraft);border-color:#c8976a}
+.sw-btn.on-green{background:linear-gradient(135deg,#2d7a1b,var(--leaf));border-color:transparent;color:white}
+.sw-btn.on-amber{background:linear-gradient(135deg,#a07000,var(--amb));border-color:transparent;color:white}
+.sw-btn.on-pink{background:linear-gradient(135deg,#a01050,var(--acc));border-color:transparent;color:white}
+.sw-btn.on-brown{background:linear-gradient(135deg,var(--bd),var(--br));border-color:transparent;color:white}
 
-/* ── Sekce formuláře ── */
-.section-new,.section-edit{display:none}
-.section-new.visible,.section-edit.visible{display:block}
+.btn-send{display:block;width:100%;color:white;border:none;font-family:'Exo 2',sans-serif;font-weight:800;font-size:15px;padding:13px;border-radius:10px;cursor:pointer;margin-top:20px;letter-spacing:.5px;transition:opacity .15s;background:linear-gradient(135deg,#2d7a1b,var(--leaf))}
+.btn-send.amber{background:linear-gradient(135deg,#a07000,var(--amb))}
+.btn-send:hover{opacity:.9}
+.btn-send:disabled{opacity:.5;cursor:not-allowed}
 
-/* ── Tlačítko ── */
-.btn-gen{display:block;width:100%;color:white;border:none;font-family:'Exo 2',sans-serif;font-weight:800;font-size:16px;padding:14px;border-radius:10px;cursor:pointer;margin-top:20px;letter-spacing:.5px;transition:opacity .15s}
-.btn-gen.green{background:linear-gradient(135deg,#2d7a1b,var(--leaf))}
-.btn-gen.amber{background:linear-gradient(135deg,#a07000,var(--amb))}
-.btn-gen:hover{opacity:.9}
-.btn-gen:disabled{opacity:.5;cursor:not-allowed}
-
-/* ── Sub-tlačítka (typ úpravy) ── */
-.typ-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px}
-.typ-btn{flex:1;min-width:80px;padding:8px 6px;border-radius:8px;border:2px solid #d4c0a8;background:#fdf9f6;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;cursor:pointer;color:#5a3a22;transition:all .15s;text-align:center}
-.typ-btn.active{border-color:var(--br);background:var(--kraft);color:var(--bd)}
-
-/* ── Preview ── */
 #preview-wrap{position:sticky;top:24px}
 .preview-body{padding:14px 16px}
-.email-box{background:#1e1e2e;border-radius:10px;padding:13px 15px;font-family:'SF Mono','Fira Code','Courier New',monospace;font-size:10.5px;color:#cdd6f4;line-height:1.75;white-space:pre-wrap;word-break:break-word;min-height:160px}
-.el{color:#89b4fa;font-weight:700}
-.ev{color:#a6e3a1}
-.ed{color:#6c7086}
-.es{color:#45475a}
+.email-box{background:#1e1e2e;border-radius:10px;padding:13px 15px;font-family:'SF Mono','Fira Code','Courier New',monospace;font-size:10.5px;color:#cdd6f4;line-height:1.8;white-space:pre-wrap;word-break:break-word;min-height:140px}
+.el{color:#89b4fa;font-weight:700}.ev{color:#a6e3a1}.ed{color:#6c7086}.es{color:#45475a}
 </style>
 </head>
 <body>
@@ -72,278 +59,178 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
 </div>
 
 <div class="shell">
-
-<!-- ── FORMULÁŘ ── -->
 <div class="panel">
   <div class="panel-head">
     <h2 id="form-title">Generátor produktů</h2>
-    <p id="form-sub">Vyber co potřebuješ udělat</p>
+    <p id="form-sub">Vyber typ akce a produktu — Claude udělá zbytek</p>
   </div>
   <div class="panel-body">
 
-    <!-- Přepínač -->
-    <div class="mode-switch">
-      <button class="mode-btn" id="btn-new" onclick="setMode('new')">
-        <span class="ico">📦</span>
-        <span class="lbl">Doplnit popis</span>
+    <div class="sec">Co chceš udělat?</div>
+    <div class="switch-row cols2">
+      <button class="sw-btn" id="sw-new" onclick="setAkce('new')">
+        <span class="ico">📝</span>Doplnit popis
       </button>
-      <button class="mode-btn" id="btn-edit" onclick="setMode('edit')">
-        <span class="ico">✏️</span>
-        <span class="lbl">Upravit produkt</span>
+      <button class="sw-btn" id="sw-edit" onclick="setAkce('edit')">
+        <span class="ico">✏️</span>Upravit produkt
       </button>
     </div>
 
-    <!-- Společné pole -->
-    <div class="sec">Kdo odesílá</div>
-    <div class="field">
-      <label>Tvoje jméno</label>
-      <input id="jmeno" placeholder="Např. Tereza" oninput="updatePreview()"/>
+    <div class="sec" style="margin-top:14px">Typ produktu</div>
+    <div class="switch-row cols2b">
+      <button class="sw-btn" id="sw-darek" onclick="setTyp('darek')">
+        <span class="ico">🎁</span>Dárek
+      </button>
+      <button class="sw-btn" id="sw-zakladni" onclick="setTyp('zakladni')">
+        <span class="ico">📦</span>Základní produkt
+      </button>
     </div>
 
     <div class="sec">Produkt</div>
+    <div class="field">
+      <label>Tvoje jméno</label>
+      <input id="jmeno" placeholder="Tereza" oninput="up()"/>
+    </div>
     <div class="row2">
       <div class="field">
         <label>Kód Shoptet *</label>
-        <input id="kod" placeholder="3456" oninput="updatePreview()"/>
+        <input id="kod" placeholder="3456" oninput="up()"/>
       </div>
       <div class="field">
-        <label>Název produktu</label>
-        <input id="nazev" placeholder="Kešu přírodní 180g" oninput="updatePreview()"/>
+        <label>Nákupní cena (Kč/kg)</label>
+        <input id="cena" placeholder="235" type="number" oninput="up()"/>
       </div>
     </div>
-
-    <!-- ── SEKCE: Doplnit popis ── -->
-    <div class="section-new" id="sec-new">
-      <div class="sec">Obal &amp; gramáž</div>
-      <div class="row2">
-        <div class="field">
-          <label>Typ obalu *</label>
-          <select id="obal" onchange="updatePreview()">
-            <option value="dárková krabička">Dárková krabička</option>
-            <option value="dárková kazetka">Dárková kazetka (50g)</option>
-            <option value="sáček s knírem">Sáček s knírem (180g)</option>
-            <option value="sáček s kolíčkem">Sáček s kolíčkem (150g)</option>
-            <option value="vánoční sáček sob">Vánoční sáček SOB (180g)</option>
-            <option value="ořechový kornout">Ořechový kornout</option>
-            <option value="celofánek s mašličkou">Celofánek s mašličkou</option>
-            <option value="kraft kelímek">Kraft kelímek</option>
-            <option value="eko kelímek">Eko kelímek (100g)</option>
-            <option value="sklenička deluxe">Sklenička DELUXE (180g)</option>
-            <option value="sklenička exclusive">Sklenička EXCLUSIVE (70g)</option>
-            <option value="zajíček">Velikonoční zajíček (180g)</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Gramáž / varianta</label>
-          <input id="gramaz" placeholder="2×50g nebo 180g" oninput="updatePreview()"/>
-        </div>
-      </div>
-      <div class="field">
-        <label>Téma</label>
-        <select id="tema" onchange="updatePreview()">
-          <option value="univerzalni">Univerzální 🎁</option>
-          <option value="vanoce">Vánoce 🎄</option>
-          <option value="narozeniny">Narozeniny 🎂</option>
-          <option value="firemni">Firemní 🏢</option>
-          <option value="velikonoce">Velikonoce 🐰</option>
-        </select>
-      </div>
-
-      <div class="sec">Obsah</div>
-      <div class="field">
-        <label>Co je uvnitř *</label>
-        <textarea id="obsah" rows="3" placeholder="Kešu natural 50g&#10;Mandle pražené solené 50g" oninput="updatePreview()"></textarea>
-        <div class="hint">Každý produkt na nový řádek. Stačí název a gramáž.</div>
-      </div>
-      <div class="field">
-        <label>Složení / alergeny (pokud víš)</label>
-        <textarea id="slozeni" rows="2" placeholder="Nepovinné — Claude si dohledá" oninput="updatePreview()"></textarea>
-      </div>
+    <div class="field">
+      <label>Název / popis (pro orientaci)</label>
+      <input id="nazev" placeholder="Kešu kari sklenička exclusive 70g" oninput="up()"/>
     </div>
-
-    <!-- ── SEKCE: Úprava ── -->
-    <div class="section-edit" id="sec-edit">
-      <div class="sec">Co upravit</div>
-      <div class="field">
-        <label>Typ úpravy *</label>
-        <div class="typ-row">
-          <button class="typ-btn active" id="typ-popis" onclick="setTyp('popis')">📝 Popis</button>
-          <button class="typ-btn" id="typ-cena" onclick="setTyp('cena')">💰 Cena</button>
-          <button class="typ-btn" id="typ-nazev" onclick="setTyp('nazev')">🏷 Název</button>
-          <button class="typ-btn" id="typ-jine" onclick="setTyp('jine')">⚙️ Jiné</button>
-        </div>
-      </div>
-      <div class="field">
-        <label>Co přesně změnit *</label>
-        <textarea id="co_zmenit" rows="4" placeholder="Např.:&#10;- Přidat že jde o BIO produkt&#10;- Zkrátit popis&#10;- Doplnit složení: Mandle (100 %)" oninput="updatePreview()"></textarea>
-      </div>
-      <div class="field">
-        <label>Aktuální problém (pokud víš)</label>
-        <textarea id="problem" rows="2" placeholder="Např. špatný překlad do SK, chybí alergeny..." oninput="updatePreview()"></textarea>
-      </div>
-    </div>
-
-    <!-- Společná poznámka -->
-    <div class="field" style="margin-top:14px">
+    <div class="field">
       <label>Poznámka pro Claudiho</label>
-      <textarea id="poznamka" rows="2" placeholder="Nepovinné" oninput="updatePreview()"></textarea>
+      <textarea id="poznamka" rows="2" placeholder="Nepovinné — např. odkaz na Trello, speciální požadavek..." oninput="up()"></textarea>
     </div>
 
-    <button class="btn-gen green" id="btn-odeslat" onclick="odeslat()">📨 Odeslat ke zpracování</button>
+    <button class="btn-send" id="btn-send" onclick="odeslat()">📨 Odeslat ke zpracování</button>
 
-    <div id="status-ok" style="display:none;margin-top:14px;background:#f0fff4;border:1.5px solid var(--leaf);border-radius:8px;padding:12px 16px;font-size:13px;color:#2d5a1b">
-      ✅ <strong>Žádost odeslána!</strong> Claude zpracuje a nahraje do Shoptetu CZ + SK.
+    <div id="ok" style="display:none;margin-top:12px;background:#f0fff4;border:1.5px solid var(--leaf);border-radius:8px;padding:11px 14px;font-size:13px;color:#2d5a1b">
+      ✅ <strong>Odesláno!</strong> Claude zpracuje a pushne do Shoptetu CZ + SK.
     </div>
-    <div id="status-err" style="display:none;margin-top:14px;background:#fff0f5;border:1.5px solid var(--acc);border-radius:8px;padding:12px 16px;font-size:13px;color:#8b0000">
-      ❌ <strong>Chyba.</strong> Zkus znovu nebo napiš na claudie.nutworld.cz@gmail.com.
+    <div id="err" style="display:none;margin-top:12px;background:#fff0f5;border:1.5px solid var(--acc);border-radius:8px;padding:11px 14px;font-size:13px;color:#8b0000">
+      ❌ Chyba — zkus znovu nebo napiš přímo na claudie.nutworld.cz@gmail.com.
     </div>
 
   </div>
 </div>
 
-<!-- ── PREVIEW ── -->
+<!-- preview -->
 <div id="preview-wrap" class="panel">
   <div class="panel-head" style="background:linear-gradient(135deg,#1e1e2e,#313244)">
     <h2>Email pro Claudiho</h2>
-    <p>Toto přijde na claudie.nutworld.cz@gmail.com</p>
+    <p>claudie.nutworld.cz@gmail.com</p>
   </div>
   <div class="preview-body">
-    <div class="email-box" id="email-preview"><span class="ed">← Vyber typ a vyplň formulář</span></div>
+    <div class="email-box" id="preview"><span class="ed">← Vyber typ a vyplň formulář</span></div>
     <div style="margin-top:10px;font-size:11px;color:#a07050;text-align:center">Zpracování do ~24 hodin ve všední den</div>
   </div>
 </div>
-
 </div>
 
 <script>
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzMTvsRtxdSLfTKexhIIkWZ1U6gbLkdJJpaWSFWxnQ6C-zrtf4UYNu37LqhODuUyPnr/exec';
+const URL = 'https://script.google.com/macros/s/AKfycbzMTvsRtxdSLfTKexhIIkWZ1U6gbLkdJJpaWSFWxnQ6C-zrtf4UYNu37LqhODuUyPnr/exec';
 
-let mode = null;
-let typ  = 'popis';
-const typLabels = {popis:'Popis / texty', cena:'Cena', nazev:'Název', jine:'Jiné'};
+let akce = null, typ = null;
 
-function setMode(m) {
-  mode = m;
-  document.getElementById('btn-new').className  = 'mode-btn' + (m==='new'  ? ' active-new'  : '');
-  document.getElementById('btn-edit').className = 'mode-btn' + (m==='edit' ? ' active-edit' : '');
-  document.getElementById('sec-new').className  = 'section-new'  + (m==='new'  ? ' visible' : '');
-  document.getElementById('sec-edit').className = 'section-edit' + (m==='edit' ? ' visible' : '');
-  const isNew = m === 'new';
-  document.getElementById('form-title').textContent = isNew ? 'Doplnit popis produktu' : 'Úprava produktu';
-  document.getElementById('form-sub').textContent   = isNew
-    ? 'Produkt je v Shoptetu bez popisu — Claude doplní texty CZ + SK'
-    : 'Oprav popis, název nebo cenu existujícího produktu';
-  const btn = document.getElementById('btn-odeslat');
-  btn.className = 'btn-gen ' + (isNew ? 'green' : 'amber');
-  btn.textContent = '📨 Odeslat ke zpracování';
-  updatePreview();
+function setAkce(a) {
+  akce = a;
+  document.getElementById('sw-new').className  = 'sw-btn' + (a==='new'  ? ' on-green' : '');
+  document.getElementById('sw-edit').className = 'sw-btn' + (a==='edit' ? ' on-amber' : '');
+  const btn = document.getElementById('btn-send');
+  btn.className = 'btn-send' + (a==='edit' ? ' amber' : '');
+  up();
 }
-
 function setTyp(t) {
   typ = t;
-  ['popis','cena','nazev','jine'].forEach(k =>
-    document.getElementById('typ-'+k).classList.toggle('active', k===t)
-  );
-  updatePreview();
+  document.getElementById('sw-darek').className    = 'sw-btn' + (t==='darek'    ? ' on-pink'  : '');
+  document.getElementById('sw-zakladni').className = 'sw-btn' + (t==='zakladni' ? ' on-brown' : '');
+  up();
 }
 
 function g(id){ return (document.getElementById(id)?.value||'').trim(); }
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function dt(){ const n=new Date(); return `${n.getDate()}.${n.getMonth()+1}.${n.getFullYear()} ${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}`; }
-function temaText(){ return document.getElementById('tema')?.selectedOptions[0]?.text||'—'; }
+function now(){ const n=new Date(); return `${n.getDate()}.${n.getMonth()+1}.${n.getFullYear()} ${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}`; }
 
-function updatePreview(){
-  if(!mode){ document.getElementById('email-preview').innerHTML='<span class="ed">← Vyber typ a vyplň formulář</span>'; return; }
-  const jmeno = g('jmeno')||'—', kod=g('kod')||'—', nazev=g('nazev')||'—';
-
-  let specifics = '';
-  if(mode==='new'){
-    const obal=g('obal')||'—', gramaz=g('gramaz')||'—', tema=temaText();
-    const obsah=g('obsah')||'(nevyplněno)', slozeni=g('slozeni')||'(nevyplněno)';
-    specifics =
-`\n<span class="el">📦 OBAL & GRAMÁŽ\n</span><span class="el">Typ obalu: </span><span class="ev">${esc(obal)}</span>\n<span class="el">Gramáž:    </span><span class="ev">${esc(gramaz)}</span>\n<span class="el">Téma:      </span><span class="ev">${esc(tema)}</span>\n\n<span class="el">🫙 OBSAH\n</span><span class="ev">${esc(obsah)}</span>\n\n<span class="el">🧪 SLOŽENÍ\n</span><span class="ed">${esc(slozeni)}</span>`;
-  } else {
-    const co=g('co_zmenit')||'(nevyplněno)', problem=g('problem')||'(nevyplněno)';
-    specifics =
-`\n<span class="el">✏️ TYP ÚPRAVY\n</span><span class="ev">${typLabels[typ]}</span>\n\n<span class="el">📋 CO ZMĚNIT\n</span><span class="ev">${esc(co)}</span>\n\n<span class="el">⚠️ PROBLÉM\n</span><span class="ed">${esc(problem)}</span>`;
-  }
-
-  const tag = mode==='new' ? '[GENERUJ]' : '[OPRAV]';
-  document.getElementById('email-preview').innerHTML =
-`<span class="es">════════════════════════════════
-</span><span class="el">NUTWORLD — ${tag}
-</span><span class="es">════════════════════════════════
-</span>
-<span class="el">Od:    </span><span class="ev">${esc(jmeno)}</span>
-<span class="el">Datum: </span><span class="ev">${dt()}</span>
-
-<span class="el">📦 PRODUKT
-</span><span class="el">Kód:   </span><span class="ev">${esc(kod)}</span>
-<span class="el">Název: </span><span class="ev">${esc(nazev)}</span>${specifics}
-
-<span class="el">📝 POZNÁMKA
-</span><span class="ed">${esc(g('poznamka')||'(nevyplněno)')}</span>
-<span class="es">════════════════════════════════</span>`;
-}
+const akceLabel = {new:'Doplnit popis', edit:'Upravit produkt'};
+const typLabel  = {darek:'Dárek 🎁', zakladni:'Základní produkt 📦'};
+function tag(){ return akce==='new' ? '[GENERUJ]' : '[OPRAV]'; }
 
 function buildBody(){
-  const tag = mode==='new' ? '[GENERUJ]' : '[OPRAV]';
-  let specifics = '';
-  if(mode==='new'){
-    specifics = `\n📦 OBAL & GRAMÁŽ\nTyp obalu: ${g('obal')||'—'}\nGramáž:    ${g('gramaz')||'—'}\nTéma:      ${temaText()}\n\n🫙 OBSAH\n${g('obsah')||'(nevyplněno)'}\n\n🧪 SLOŽENÍ\n${g('slozeni')||'(nevyplněno)'}`;
-  } else {
-    specifics = `\n✏️ TYP ÚPRAVY\n${typLabels[typ]}\n\n📋 CO ZMĚNIT\n${g('co_zmenit')||'(nevyplněno)'}\n\n⚠️ PROBLÉM\n${g('problem')||'(nevyplněno)'}`;
-  }
-  return `════════════════════════════════
-NUTWORLD — ${tag}
-════════════════════════════════
+  return `${tag()} | ${typLabel[typ]||'—'}
+════════════════════════════
+Od:     ${g('jmeno')||'—'}
+Datum:  ${now()}
 
-Od:    ${g('jmeno')||'—'}
-Datum: ${dt()}
+Kód:    ${g('kod')||'—'}
+Název:  ${g('nazev')||'—'}
+Cena:   ${g('cena') ? g('cena')+' Kč/kg' : '(neuvedena)'}
+Akce:   ${akceLabel[akce]||'—'}
+Typ:    ${typLabel[typ]||'—'}
 
-📦 PRODUKT
-Kód:   ${g('kod')||'—'}
-Název: ${g('nazev')||'—'}
-${specifics}
+Poznámka:
+${g('poznamka')||'(žádná)'}
+════════════════════════════`;
+}
 
-📝 POZNÁMKA
-${g('poznamka')||'(nevyplněno)'}
-════════════════════════════════`;
+function up(){
+  if(!akce && !typ){ document.getElementById('preview').innerHTML='<span class="ed">← Vyber typ a vyplň formulář</span>'; return; }
+  const t = tag(), tl = typLabel[typ]||'—', al = akceLabel[akce]||'—';
+  document.getElementById('preview').innerHTML =
+`<span class="es">════════════════════════════
+</span><span class="el">${esc(t)} | ${esc(tl)}
+</span><span class="es">════════════════════════════
+</span>
+<span class="el">Od:    </span><span class="ev">${esc(g('jmeno')||'—')}</span>
+<span class="el">Datum: </span><span class="ev">${now()}</span>
+
+<span class="el">Kód:   </span><span class="ev">${esc(g('kod')||'—')}</span>
+<span class="el">Název: </span><span class="ev">${esc(g('nazev')||'—')}</span>
+<span class="el">Cena:  </span><span class="ev">${g('cena') ? g('cena')+' Kč/kg' : '(neuvedena)'}</span>
+<span class="el">Akce:  </span><span class="ev">${esc(al)}</span>
+<span class="el">Typ:   </span><span class="ev">${esc(tl)}</span>
+
+<span class="el">Poznámka:
+</span><span class="ed">${esc(g('poznamka')||'(žádná)')}</span>
+<span class="es">════════════════════════════</span>`;
 }
 
 async function odeslat(){
-  if(!mode){ alert('Vyber nejdřív typ — Doplnit popis nebo Upravit produkt.'); return; }
-  const kod = g('kod');
-  if(!kod){ alert('Vyplň kód Shoptet!'); document.getElementById('kod').focus(); return; }
-  if(mode==='new' && !g('obsah')){ alert('Vyplň co je uvnitř!'); document.getElementById('obsah').focus(); return; }
-  if(mode==='edit' && !g('co_zmenit')){ alert('Vyplň co změnit!'); document.getElementById('co_zmenit').focus(); return; }
+  if(!akce){ alert('Vyber co chceš udělat (Doplnit popis / Upravit produkt)'); return; }
+  if(!typ)  { alert('Vyber typ produktu (Dárek / Základní produkt)'); return; }
+  if(!g('kod')){ alert('Vyplň kód Shoptet!'); document.getElementById('kod').focus(); return; }
 
-  const btn = document.getElementById('btn-odeslat');
-  btn.disabled = true; btn.textContent = '⏳ Odesílám…';
-  document.getElementById('status-ok').style.display='none';
-  document.getElementById('status-err').style.display='none';
+  const btn = document.getElementById('btn-send');
+  btn.disabled=true; btn.textContent='⏳ Odesílám…';
+  document.getElementById('ok').style.display='none';
+  document.getElementById('err').style.display='none';
 
-  const obal = g('obal'), nazev = g('nazev')||kod;
-  const subject = mode==='new'
-    ? `[GENERUJ] ${obal} — ${nazev} — kód ${kod}`
-    : `[OPRAV] ${typLabels[typ]} — ${nazev} — kód ${kod}`;
+  const subject = `${tag()}[${typ.toUpperCase()}] ${g('nazev')||g('kod')} — kód ${g('kod')}`;
+  const params = new URLSearchParams({
+    subject,
+    from_name: `Nutworld Generátor (${g('jmeno')||'?'})`,
+    message:   buildBody(),
+    replyto:   'claudie.nutworld.cz@gmail.com'
+  });
 
   try {
-    const params = new URLSearchParams({
-      subject,
-      from_name: `Nutworld Generátor (${g('jmeno')||'neznámý'})`,
-      message:   buildBody(),
-      replyto:   'claudie.nutworld.cz@gmail.com'
-    });
-    await fetch(APPS_SCRIPT_URL + '?' + params.toString(), { mode: 'no-cors' });
-    document.getElementById('status-ok').style.display='block';
+    await fetch(URL + '?' + params.toString(), { mode: 'no-cors' });
+    document.getElementById('ok').style.display='block';
     btn.textContent='✅ Odesláno';
   } catch(e){
-    console.error(e);
-    document.getElementById('status-err').style.display='block';
+    document.getElementById('err').style.display='block';
     btn.disabled=false; btn.textContent='📨 Odeslat ke zpracování';
   }
 }
+
+up();
 </script>
 </body>
 </html>
