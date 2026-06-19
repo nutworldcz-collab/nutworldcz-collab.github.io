@@ -242,7 +242,10 @@ input[type=text]:focus { border-color: var(--brown); }
       <button class="btn-back" onclick="goBack()">← Zpět</button>
       <span id="spec-title-bar">Specifikace výrobku</span>
     </div>
-    <button class="btn-print" onclick="window.print()">🖨 Tisk / PDF</button>
+    <div style="display:flex;gap:10px">
+      <button class="btn-print" style="background:#6fa044" onclick="goToStitky()">🏷 Vytvořit štítek →</button>
+      <button class="btn-print" onclick="window.print()">🖨 Tisk / PDF</button>
+    </div>
   </div>
   <div class="spec-pages" id="spec-pages"></div>
 </div>
@@ -254,6 +257,7 @@ const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxj7OEliotD3ger
 pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
 let extractedText = "";
+let currentSpec = null;
 
 // ── DRAG & DROP ──
 const dropZone = document.getElementById("drop-zone");
@@ -339,6 +343,7 @@ document.getElementById("btn-generate").addEventListener("click", async () => {
 
     if (!data.success) throw new Error(data.error || "Chyba serveru");
 
+    currentSpec = data.spec;
     renderSpec(data.spec);
     document.getElementById("form-section").style.display = "none";
     document.getElementById("spec-output").classList.add("visible");
@@ -579,6 +584,12 @@ function renderSpec(spec) {
   </div>`;
 
   document.getElementById("spec-pages").innerHTML = page1 + page2 + page3;
+}
+
+function goToStitky() {
+  if (!currentSpec) return;
+  sessionStorage.setItem('nw_spec_prefill', JSON.stringify(currentSpec));
+  window.open('stitky.html', '_blank');
 }
 </script>
 </body>
