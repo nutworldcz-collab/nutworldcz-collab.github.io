@@ -403,7 +403,7 @@ function renderSpec(spec) {
           <td class="id-label">Název</td>
           <td>${h(spec.nazev)}</td>
           <td class="id-label">Složení</td>
-          <td>${h(spec.slozeni)}</td>
+          <td>${spec.slozeni || ""}</td>
           <td class="id-label" style="width:80px">Původ suroviny</td>
           <td>${h(spec.puvod_suroviny)}</td>
         </tr>
