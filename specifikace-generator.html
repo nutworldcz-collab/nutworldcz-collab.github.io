@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generátor specifikací — Nutworld</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --brown: #83502e; --brown-dark: #5c381f; --brown-soft: #f1e6da;
+  --amber: #f7ab31; --green: #6fa044; --accent: #da1668;
+  --border: #c9a882; --row-alt: #f5ede4; --muted: #666;
+}
+body { font-family: 'Source Sans 3', sans-serif; background: #e8ddd4; min-height: 100vh; }
+
+/* ── FORMULÁŘ ── */
+.form-wrap {
+  max-width: 680px; margin: 0 auto; padding: 32px 20px 40px;
+}
+.form-header {
+  background: linear-gradient(135deg, var(--brown-dark), var(--brown));
+  border-radius: 16px 16px 0 0; padding: 24px 28px;
+}
+.form-header h1 { font-family: 'Exo 2', sans-serif; color: #fff; font-size: 22px; font-weight: 800; }
+.form-header p  { color: rgba(255,255,255,.75); font-size: 13px; margin-top: 4px; }
+.form-body {
+  background: #fff; border-radius: 0 0 16px 16px;
+  padding: 28px; border: 1px solid var(--border); border-top: none;
+}
+.form-row { margin-bottom: 18px; }
+label { display: block; font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 13px; color: var(--brown-dark); margin-bottom: 6px; }
+input[type=text] {
+  width: 100%; padding: 10px 14px; border: 1.5px solid var(--border);
+  border-radius: 8px; font-family: 'Source Sans 3', sans-serif; font-size: 14px;
+  color: #333; outline: none; transition: border-color .2s;
+}
+input[type=text]:focus { border-color: var(--brown); }
+
+.drop-zone {
+  border: 2.5px dashed var(--border); border-radius: 12px;
+  padding: 36px 20px; text-align: center; cursor: pointer;
+  background: var(--brown-soft); transition: all .2s;
+}
+.drop-zone:hover, .drop-zone.drag-over { border-color: var(--brown); background: #ecdece; }
+.drop-zone .dz-icon { font-size: 36px; margin-bottom: 10px; }
+.drop-zone p { color: var(--brown); font-weight: 600; font-size: 14px; }
+.drop-zone small { color: var(--muted); font-size: 12px; margin-top: 4px; display: block; }
+#file-name { margin-top: 10px; font-size: 13px; color: var(--brown-dark); font-weight: 600; min-height: 20px; }
+
+.btn-primary {
+  width: 100%; padding: 14px; background: var(--brown);
+  color: #fff; font-family: 'Exo 2', sans-serif; font-weight: 700;
+  font-size: 16px; border: none; border-radius: 12px; cursor: pointer;
+  transition: background .2s; margin-top: 8px;
+}
+.btn-primary:hover { background: var(--brown-dark); }
+.btn-primary:disabled { background: #bbb; cursor: not-allowed; }
+
+.status {
+  margin-top: 16px; padding: 12px 16px; border-radius: 10px;
+  font-size: 13px; font-weight: 600; display: none;
+}
+.status.loading { background: #fff8e6; color: #8a6200; border: 1px solid var(--amber); display: block; }
+.status.error   { background: #fdecea; color: #c62828; border: 1px solid #f44; display: block; }
+
+/* ── SPEC TEMPLATE CSS ── */
+.spec-output { display: none; }
+.spec-output.visible { display: block; }
+
+.print-bar {
+  background: var(--brown-dark); padding: 12px 28px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 99;
+}
+.print-bar span { color: rgba(255,255,255,.8); font-size: 13px; }
+.btn-print {
+  background: var(--amber); color: var(--brown-dark); border: none;
+  font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 14px;
+  padding: 10px 24px; border-radius: 8px; cursor: pointer;
+}
+.btn-back {
+  background: transparent; color: rgba(255,255,255,.8); border: 1px solid rgba(255,255,255,.3);
+  font-family: 'Exo 2', sans-serif; font-weight: 600; font-size: 13px;
+  padding: 8px 18px; border-radius: 8px; cursor: pointer; margin-right: 12px;
+}
+
+/* ── SPEC PAGES ── */
+.spec-pages { background: #ccc0b4; padding: 28px; }
+.page {
+  width: 210mm; min-height: 297mm; background: #fff;
+  margin: 0 auto 28px; display: flex; flex-direction: column;
+  box-shadow: 0 4px 24px rgba(0,0,0,.18); page-break-after: always;
+}
+.page-body { flex: 1; padding: 18px 24px 20px; }
+
+.doc-header {
+  border-bottom: 3px solid var(--brown);
+  display: grid; grid-template-columns: auto 1fr auto; align-items: stretch;
+}
+.dh-logo { padding: 12px 20px; display: flex; align-items: center; border-right: 1px solid var(--border); }
+.logo-text { font-family: 'Exo 2', sans-serif; font-weight: 800; font-size: 22px; color: var(--brown-dark); letter-spacing: 2px; text-transform: uppercase; }
+.dh-center { padding: 10px 18px; display: flex; flex-direction: column; justify-content: center; }
+.dh-center .doc-title-label { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 14px; color: var(--brown); }
+.dh-center .doc-meta { font-size: 10.5px; color: var(--muted); margin-top: 3px; }
+.dh-right { border-left: 1px solid var(--border); padding: 10px 18px; display: flex; flex-direction: column; align-items: flex-end; justify-content: center; background: var(--brown-soft); }
+.dh-right .product-code { font-family: 'Exo 2', sans-serif; font-weight: 800; font-size: 18px; color: var(--brown-dark); letter-spacing: 1px; }
+.dh-right .page-count { font-size: 10.5px; color: var(--muted); margin-top: 2px; }
+
+.sec-title { background: var(--brown); color: #fff; font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: .5px; padding: 5px 10px; margin-top: 12px; }
+.sec-title.amber  { background: var(--amber); color: var(--brown-dark); }
+.sec-title.green  { background: var(--green); }
+.sec-title.accent { background: var(--accent); }
+
+.tbl { width: 100%; border-collapse: collapse; border: 1px solid var(--border); border-top: none; font-size: 11.5px; }
+.tbl td { padding: 5px 9px; border-bottom: 1px solid rgba(180,130,80,.2); vertical-align: top; }
+.tbl tr:last-child td { border-bottom: none; }
+.tbl tr:nth-child(even) td { background: var(--row-alt); }
+.tbl td.label { width: 40%; color: var(--muted); font-size: 11px; }
+.tbl td.val { font-weight: 600; }
+
+.id-table { width: 100%; border-collapse: collapse; border: 1px solid var(--border); margin-top: 14px; }
+.id-table td { padding: 6px 10px; border: 1px solid rgba(180,130,80,.3); vertical-align: top; font-size: 11.5px; }
+.id-table td.id-label { background: var(--brown-soft); font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 10.5px; color: var(--brown-dark); white-space: nowrap; width: 130px; }
+
+.bullet-section { border: 1px solid var(--border); border-top: none; padding: 10px 14px; }
+.bullet-section ul { padding-left: 16px; margin: 0; }
+.bullet-section li { margin-bottom: 4px; font-size: 11.5px; line-height: 1.5; }
+.bullet-section .exceptions { margin-top: 8px; padding: 8px 10px; background: var(--row-alt); border-left: 3px solid var(--brown); font-size: 11px; }
+.bullet-section .exceptions strong { display: block; font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 11px; color: var(--brown-dark); margin-bottom: 4px; }
+
+.reg-block { border: 1px solid var(--border); border-top: none; padding: 8px 10px; font-size: 11px; color: var(--muted); line-height: 1.55; }
+.reg-block p { margin-bottom: 4px; }
+.reg-block p:last-child { margin-bottom: 0; }
+
+.info-block { border: 1px solid var(--border); border-top: none; padding: 8px 10px; font-size: 11.5px; line-height: 1.55; }
+.info-block .reg-ref { font-size: 10.5px; color: var(--muted); margin-top: 5px; padding-top: 5px; border-top: 1px dashed rgba(180,130,80,.4); }
+
+.allergen-tbl { width: 100%; border-collapse: collapse; border: 1px solid var(--border); border-top: none; font-size: 11px; }
+.allergen-tbl th { background: rgba(131,80,46,.12); font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 10.5px; color: var(--brown-dark); padding: 6px 9px; border-bottom: 1px solid var(--border); text-align: center; }
+.allergen-tbl th:first-child { text-align: left; }
+.allergen-tbl td { padding: 5px 9px; border-bottom: 1px solid rgba(180,130,80,.18); vertical-align: top; }
+.allergen-tbl tr:last-child td { border-bottom: none; }
+.allergen-tbl tr:nth-child(even) td { background: var(--row-alt); }
+.allergen-tbl td:nth-child(2), .allergen-tbl td:nth-child(3) { text-align: center; width: 100px; font-weight: 600; vertical-align: middle; }
+.ano { color: var(--accent); font-weight: 700; }
+.ne  { color: var(--muted); }
+
+.sensory-wrap { border: 1px solid var(--border); border-top: none; }
+.sensory-ref { font-size: 10px; color: var(--muted); padding: 5px 9px; border-bottom: 1px solid rgba(180,130,80,.2); font-style: italic; }
+.sensory-tbl { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+.sensory-tbl td { padding: 5px 9px; border-bottom: 1px solid rgba(180,130,80,.18); vertical-align: top; }
+.sensory-tbl tr:last-child td { border-bottom: none; }
+.sensory-tbl tr:nth-child(even) td { background: var(--row-alt); }
+.sensory-tbl td:first-child { width: 38%; color: var(--muted); font-size: 11px; }
+.sensory-tbl td:last-child { font-weight: 600; }
+.legend-box { border-top: 1px solid var(--border); padding: 8px 10px; font-size: 10.5px; color: var(--muted); background: var(--row-alt); }
+.legend-box strong { font-family: 'Exo 2', sans-serif; font-weight: 700; color: var(--brown-dark); display: block; margin-bottom: 3px; }
+
+.nutri-tbl { width: 100%; border-collapse: collapse; border: 1px solid var(--border); border-top: none; font-size: 11.5px; }
+.nutri-tbl th { background: rgba(131,80,46,.12); font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 10.5px; color: var(--brown-dark); padding: 6px 9px; border-bottom: 1px solid var(--border); text-align: left; }
+.nutri-tbl th:nth-child(2), .nutri-tbl th:nth-child(3) { text-align: right; width: 100px; }
+.nutri-tbl td { padding: 5px 9px; border-bottom: 1px solid rgba(180,130,80,.18); }
+.nutri-tbl tr:last-child td { border-bottom: none; }
+.nutri-tbl tr:nth-child(even) td { background: var(--row-alt); }
+.nutri-tbl td:nth-child(2) { text-align: right; font-weight: 700; color: var(--brown-dark); }
+.nutri-tbl td:nth-child(3) { text-align: right; color: var(--muted); }
+.nutri-tbl .sub td:first-child { padding-left: 22px; color: var(--muted); font-size: 11px; }
+.nutri-tbl .energy td { background: rgba(131,80,46,.08); font-family: 'Exo 2', sans-serif; font-weight: 700; color: var(--brown-dark); }
+
+.distributor-box { margin-top: 16px; padding: 10px 12px; border: 1px solid rgba(180,130,80,.35); background: var(--row-alt); font-size: 11.5px; }
+.distributor-box strong { font-family: 'Exo 2', sans-serif; font-weight: 700; color: var(--brown-dark); display: block; margin-bottom: 3px; }
+
+.signature-area { margin-top: 20px; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+.signature-title { background: var(--brown-soft); border-bottom: 1px solid var(--border); padding: 6px 12px; font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 11px; color: var(--brown-dark); }
+.signature-body { padding: 16px 20px 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.sig-field label { display: block; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 32px; }
+.sig-field .sig-line { border-bottom: 1px solid var(--brown); height: 1px; margin-bottom: 5px; }
+.sig-field .sig-hint { font-size: 10px; color: var(--muted); font-style: italic; }
+
+@media print {
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .print-bar, .form-wrap { display: none !important; }
+  .spec-output { display: block !important; }
+  .spec-pages { background: white; padding: 0; }
+  body { background: white; }
+  .page { box-shadow: none; margin: 0; width: 100%; min-height: unset; page-break-after: always; }
+  .page:last-child { page-break-after: avoid; }
+  .page-body { padding: 12px 16px 14px; }
+  .sec-title { margin-top: 6px; padding: 3px 7px; font-size: 9px; }
+  .tbl td, .allergen-tbl td, .allergen-tbl th, .sensory-tbl td, .nutri-tbl td, .nutri-tbl th { padding: 2px 6px; font-size: 9px; }
+  .id-table td { padding: 3px 7px; font-size: 9px; }
+  .bullet-section li { font-size: 9px; }
+  .reg-block, .info-block { padding: 4px 7px; font-size: 8.5px; }
+  @page { margin: 8mm 10mm; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ FORMULÁŘ ══ -->
+<div class="form-wrap" id="form-section">
+  <div class="form-header">
+    <h1>🐿 Generátor specifikací</h1>
+    <p>Nahraj specifikaci dodavatele → automatický převod do Nutworld formátu</p>
+  </div>
+  <div class="form-body">
+
+    <div class="form-row">
+      <label>Iniciály dodavatele *</label>
+      <input type="text" id="initials" placeholder="např. MBI, KS, HOS..." maxlength="10">
+    </div>
+
+    <div class="form-row">
+      <label>Kód produktu NW *</label>
+      <input type="text" id="nw-code" placeholder="např. NW-116, NW-3703...">
+    </div>
+
+    <div class="form-row">
+      <label>Nahrát specifikaci dodavatele (PDF nebo DOCX) *</label>
+      <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+        <div class="dz-icon">📄</div>
+        <p>Klikni nebo přetáhni soubor sem</p>
+        <small>Podporované formáty: PDF, DOCX</small>
+      </div>
+      <input type="file" id="file-input" accept=".pdf,.docx" style="display:none">
+      <div id="file-name"></div>
+    </div>
+
+    <button class="btn-primary" id="btn-generate" disabled>Generovat specifikaci →</button>
+    <div class="status" id="status"></div>
+
+  </div>
+</div>
+
+<!-- ══ VÝSTUP SPECIFIKACE ══ -->
+<div class="spec-output" id="spec-output">
+  <div class="print-bar">
+    <div>
+      <button class="btn-back" onclick="goBack()">← Zpět</button>
+      <span id="spec-title-bar">Specifikace výrobku</span>
+    </div>
+    <button class="btn-print" onclick="window.print()">🖨 Tisk / PDF</button>
+  </div>
+  <div class="spec-pages" id="spec-pages"></div>
+</div>
+
+<script>
+// ── CONFIG ──
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzMTvsRtxdSLfTKexhIIkWZ1U6gbLkdJJpaWSFWxnQ6C-zrtf4UYNu37LqhODuUyPnr/exec";
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+let extractedText = "";
+
+// ── DRAG & DROP ──
+const dropZone = document.getElementById("drop-zone");
+const fileInput = document.getElementById("file-input");
+
+dropZone.addEventListener("dragover", e => { e.preventDefault(); dropZone.classList.add("drag-over"); });
+dropZone.addEventListener("dragleave", () => dropZone.classList.remove("drag-over"));
+dropZone.addEventListener("drop", e => { e.preventDefault(); dropZone.classList.remove("drag-over"); handleFile(e.dataTransfer.files[0]); });
+fileInput.addEventListener("change", e => handleFile(e.target.files[0]));
+
+function handleFile(file) {
+  if (!file) return;
+  document.getElementById("file-name").textContent = "📎 " + file.name;
+  document.getElementById("btn-generate").disabled = true;
+  setStatus("loading", "Čtu soubor...");
+
+  if (file.name.endsWith(".pdf")) {
+    extractPDF(file);
+  } else if (file.name.endsWith(".docx")) {
+    extractDOCX(file);
+  } else {
+    setStatus("error", "Nepodporovaný formát. Použij PDF nebo DOCX.");
+  }
+}
+
+async function extractPDF(file) {
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    let text = "";
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const content = await page.getTextContent();
+      text += content.items.map(s => s.str).join(" ") + "\n";
+    }
+    extractedText = text;
+    setStatus("loading", `✅ PDF přečten (${pdf.numPages} stran, ${text.length} znaků)`);
+    checkReady();
+  } catch (e) {
+    setStatus("error", "Chyba při čtení PDF: " + e.message);
+  }
+}
+
+async function extractDOCX(file) {
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const result = await mammoth.extractRawText({ arrayBuffer });
+    extractedText = result.value;
+    setStatus("loading", `✅ DOCX přečten (${extractedText.length} znaků)`);
+    checkReady();
+  } catch (e) {
+    setStatus("error", "Chyba při čtení DOCX: " + e.message);
+  }
+}
+
+function checkReady() {
+  const ok = extractedText.length > 100 &&
+             document.getElementById("initials").value.trim() &&
+             document.getElementById("nw-code").value.trim();
+  document.getElementById("btn-generate").disabled = !ok;
+}
+
+document.getElementById("initials").addEventListener("input", checkReady);
+document.getElementById("nw-code").addEventListener("input", checkReady);
+
+// ── GENEROVÁNÍ ──
+document.getElementById("btn-generate").addEventListener("click", async () => {
+  const initials = document.getElementById("initials").value.trim();
+  const nwCode   = document.getElementById("nw-code").value.trim();
+
+  if (!initials || !nwCode || !extractedText) return;
+
+  setStatus("loading", "⏳ Překládám a strukturuji specifikaci... (může trvat 20–40 s)");
+  document.getElementById("btn-generate").disabled = true;
+
+  try {
+    const resp = await fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify({ text: extractedText, initials, nw_code: nwCode }),
+      headers: { "Content-Type": "text/plain" }
+    });
+    const data = await resp.json();
+
+    if (!data.success) throw new Error(data.error || "Chyba serveru");
+
+    renderSpec(data.spec);
+    document.getElementById("form-section").style.display = "none";
+    document.getElementById("spec-output").classList.add("visible");
+
+  } catch (e) {
+    setStatus("error", "Chyba: " + e.message);
+    document.getElementById("btn-generate").disabled = false;
+  }
+});
+
+function setStatus(type, msg) {
+  const el = document.getElementById("status");
+  el.className = "status " + type;
+  el.textContent = msg;
+}
+
+function goBack() {
+  document.getElementById("spec-output").classList.remove("visible");
+  document.getElementById("form-section").style.display = "";
+  document.getElementById("btn-generate").disabled = false;
+}
+
+// ── RENDER SPECIFIKACE ──
+function h(str) {
+  return (str || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+function renderPageHeader(spec, pageNum, totalPages) {
+  return `
+  <div class="doc-header">
+    <div class="dh-logo"><span class="logo-text">Nut World</span></div>
+    <div class="dh-center">
+      <div class="doc-title-label">Specifikace výrobku</div>
+      <div class="doc-meta">Datum účinnosti: ${h(spec.datum_ucinnosti)} &nbsp;|&nbsp; Hvězdova 1716/2b, Praha, 140 00, Česká republika</div>
+    </div>
+    <div class="dh-right">
+      <div class="product-code">${h(spec._nw_code).replace("-"," - ")}</div>
+      <div class="page-count">počet stran: ${pageNum}/${totalPages}</div>
+    </div>
+  </div>`;
+}
+
+function renderSpec(spec) {
+  document.getElementById("spec-title-bar").textContent = spec.nazev || "Specifikace výrobku";
+
+  // Zjisti počet stránek
+  const hasMikro = spec.mikrobiologie && spec.mikrobiologie.length > 0;
+  const hasLogistika = spec.logistika && spec.logistika.length > 0;
+  const totalPages = (hasMikro || hasLogistika) ? 3 : 3; // vždy 3
+
+  // ── STRÁNKA 1 ──
+  const p1_urcene = (spec.urcene_pouziti || []).map(b => `<li>${h(b)}</li>`).join("");
+  const p1_vyjimky = spec.vyjimky_pouziti
+    ? `<div class="exceptions"><strong>Výjimky:</strong> ${h(spec.vyjimky_pouziti)}</div>` : "";
+
+  const page1 = `
+  <div class="page">
+    ${renderPageHeader(spec, 1, totalPages)}
+    <div class="page-body">
+      <table class="id-table">
+        <tr>
+          <td class="id-label">Název</td>
+          <td>${h(spec.nazev)}</td>
+          <td class="id-label">Složení</td>
+          <td>${h(spec.slozeni)}</td>
+          <td class="id-label" style="width:80px">Původ suroviny</td>
+          <td>${h(spec.puvod_suroviny)}</td>
+        </tr>
+        <tr>
+          <td class="id-label">Balení</td>
+          <td colspan="5">${h(spec.baleni)}</td>
+        </tr>
+      </table>
+      ${spec.druh_produktu ? `<div style="margin-top:6px;padding:4px 10px;border:1px solid rgba(180,130,80,.3);background:rgba(131,80,46,.06);font-size:11px;font-weight:700;color:var(--brown-dark)">${h(spec.druh_produktu)}</div>` : ""}
+
+      <div class="sec-title">Určené použití</div>
+      <div class="bullet-section">
+        <ul>${p1_urcene}</ul>
+        ${p1_vyjimky}
+      </div>
+
+      ${spec.obalovy_material_text ? `
+      <div class="sec-title amber">Přímý a nepřímý obalový materiál</div>
+      <div class="reg-block"><p>${h(spec.obalovy_material_text)}</p></div>` : ""}
+
+      ${spec.oznaceni_text ? `
+      <div class="sec-title">Označení výrobku</div>
+      <div class="reg-block"><p>${h(spec.oznaceni_text)}</p></div>` : ""}
+
+      <div class="sec-title green">GMO informace</div>
+      <div class="info-block">
+        ${h(spec.gmo_text)}
+        ${spec.gmo_ref ? `<div class="reg-ref">${h(spec.gmo_ref)}</div>` : ""}
+      </div>
+
+      <div class="sec-title green">Informace o ošetření ionizujícím zářením</div>
+      <div class="info-block">
+        ${h(spec.ionizace_text)}
+        ${spec.ionizace_ref ? `<div class="reg-ref">${h(spec.ionizace_ref)}</div>` : ""}
+      </div>
+    </div>
+  </div>`;
+
+  // ── STRÁNKA 2 ──
+  const allergenRows = (spec.alergeny || []).map(a => {
+    const z = a.ze_suroviny === "ano"
+      ? `<td class="ano">Ano</td>` : `<td class="ne">Ne</td>`;
+    const p = a.z_prenosu === "ano"
+      ? `<td class="ano">Ano</td>` : `<td class="ne">Ne</td>`;
+    return `<tr><td>${h(a.alergen)}</td>${z}${p}</tr>`;
+  }).join("");
+
+  const senzorickyRows = (spec.senzoricky || []).map(s =>
+    `<tr><td>${h(s.parametr)}</td><td>${h(s.hodnota)}</td></tr>`
+  ).join("");
+
+  const page2 = `
+  <div class="page">
+    ${renderPageHeader(spec, 2, totalPages)}
+    <div class="page-body">
+      <div class="sec-title accent">Alergeny</div>
+      <div style="font-size:10.5px;color:var(--muted);padding:5px 9px;border:1px solid var(--border);border-top:none;border-bottom:none">
+        Nařízení Evropského parlamentu a Rady (EU) č. 1169/2011 ze dne 25. října 2011 o poskytování informací o potravinách spotřebitelům.
+      </div>
+      <table class="allergen-tbl">
+        <thead><tr>
+          <th>Výrobek obsahuje:</th>
+          <th>Alergen ze suroviny<br>ANO / NE</th>
+          <th>Alergen z přenosu<br>ANO / NE</th>
+        </tr></thead>
+        <tbody>${allergenRows}</tbody>
+      </table>
+
+      ${senzorickyRows ? `
+      <div class="sec-title" style="margin-top:14px">Senzorické požadavky &nbsp;/&nbsp; Kvalitativní a chemicko-fyzikální hodnocení</div>
+      <div class="sensory-wrap">
+        ${spec.senzoricky_ref ? `<div class="sensory-ref">${h(spec.senzoricky_ref)}</div>` : ""}
+        <table class="sensory-tbl">${senzorickyRows}</table>
+        ${spec.legenda_senzoricky ? `<div class="legend-box"><strong>Legenda</strong>${h(spec.legenda_senzoricky)}</div>` : ""}
+      </div>` : ""}
+
+      ${hasMikro ? `
+      <div class="sec-title dark" style="background:var(--brown-dark)">Mikrobiologické požadavky</div>
+      <table class="tbl">
+        <thead><tr><th style="background:rgba(131,80,46,.12);padding:6px 9px;font-size:10.5px">Parametr</th><th style="background:rgba(131,80,46,.12);padding:6px 9px;font-size:10.5px">Limit</th><th style="background:rgba(131,80,46,.12);padding:6px 9px;font-size:10.5px">Metoda</th></tr></thead>
+        <tbody>${(spec.mikrobiologie||[]).map(m=>`<tr><td class="label">${h(m.parametr)}</td><td class="val">${h(m.limit)}</td><td>${h(m.metoda)}</td></tr>`).join("")}</tbody>
+      </table>` : ""}
+    </div>
+  </div>`;
+
+  // ── STRÁNKA 3 ──
+  const v = spec.vyziva || {};
+  const nutri_rows = [
+    { label: "Energie", val: v.energie, unit: "kJ / kcal", cls: "energy" },
+    { label: "Tuky", val: v.tuky, unit: "g" },
+    { label: "z toho nasycené mastné kyseliny", val: v.nasycene_mk, unit: "g", sub: true },
+    { label: "Sacharidy", val: v.sacharidy, unit: "g" },
+    { label: "z toho cukry", val: v.cukry, unit: "g", sub: true },
+    { label: "Vláknina", val: v.vlaknina, unit: "g" },
+    { label: "Bílkoviny", val: v.bilkoviny, unit: "g" },
+    { label: "Sůl", val: v.sul, unit: "g" },
+  ].map(r => {
+    const val = (r.val && r.val !== "") ? h(r.val) : `<span style="color:var(--muted);font-weight:400">—</span>`;
+    const cls = (r.cls || "") + (r.sub ? " sub" : "");
+    return `<tr class="${cls}"><td>${h(r.label)}</td><td>${val}</td><td>${h(r.unit)}</td></tr>`;
+  }).join("");
+
+  const page3 = `
+  <div class="page">
+    ${renderPageHeader(spec, 3, totalPages)}
+    <div class="page-body">
+
+      ${hasLogistika ? `
+      <div class="sec-title">Logistika a přepravní podmínky</div>
+      <table class="tbl">
+        <tbody>${(spec.logistika||[]).map(l=>`<tr><td class="label">${h(l.parametr)}</td><td class="val">${h(l.hodnota)}</td></tr>`).join("")}</tbody>
+      </table>` : ""}
+
+      <div class="sec-title amber">Skladovatelnost a přeprava</div>
+      <div class="bullet-section">
+        <ul>${(spec.skladovatelnost||[]).map(s=>`<li>${h(s)}</li>`).join("")}</ul>
+      </div>
+
+      <div class="sec-title green">Výživové údaje</div>
+      <div style="font-size:10.5px;color:var(--muted);padding:5px 9px;border:1px solid var(--border);border-top:none;border-bottom:none">
+        ${h(spec.vyziva_ref || "Nařízení Evropského parlamentu a Rady (EU) č. 1169/2011 ze dne 25. října 2011 o poskytování informací o potravinách spotřebitelům")}
+      </div>
+      <table class="nutri-tbl">
+        <thead><tr><th></th><th>Na 100 g</th><th>Jednotka</th></tr></thead>
+        <tbody>${nutri_rows}</tbody>
+      </table>
+
+      <div class="distributor-box">
+        <strong>Distributor v ČR:</strong>
+        Nut World s.r.o., Hvězdova 1716/2b, Praha, 140 00, Česká republika
+      </div>
+
+      <div class="signature-area">
+        <div class="signature-title">Schválení a podpis</div>
+        <div class="signature-body">
+          <div class="sig-field">
+            <label>Schválil / Schválila za Nutworld s.r.o.</label>
+            <div class="sig-line"></div><div class="sig-hint">Podpis</div>
+          </div>
+          <div class="sig-field">
+            <label>Jméno a funkce</label>
+            <div class="sig-line"></div><div class="sig-hint">Hůlkovým písmem</div>
+          </div>
+          <div class="sig-field">
+            <label>Datum schválení</label>
+            <div class="sig-line"></div><div class="sig-hint">DD. MM. RRRR</div>
+          </div>
+          <div class="sig-field">
+            <label>Razítko</label>
+            <div style="height:56px;border:1px dashed var(--border);border-radius:4px;margin-top:-4px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+
+  document.getElementById("spec-pages").innerHTML = page1 + page2 + page3;
+}
+</script>
+</body>
+</html>
