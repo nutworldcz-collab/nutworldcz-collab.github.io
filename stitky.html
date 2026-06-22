@@ -223,14 +223,20 @@ textarea{resize:vertical;min-height:70px}
     </div>
 
     <div class="card">
-      <button type="button" class="btn-submit" onclick="submitForm()">🏷️ Odeslat ke zpracování</button>
+      <div class="field" style="margin-bottom:14px">
+        <label>Zaslat link na email</label>
+        <input type="email" id="email_recipient" placeholder="legislativa@nutworld.cz" value="legislativa@nutworld.cz"/>
+        <div class="hint">Google Doc štítek přijde sem do ~1 minuty</div>
+      </div>
+      <button type="button" class="btn-submit" onclick="submitForm()">🏷️ Vytvořit štítek</button>
     </div>
 
   </form>
 
   <div class="success" id="success">
-    <h3>✅ Uloženo!</h3>
-    <p>Štítek je připravený. Řekni Claudovi <strong>"vyplň Canva štítky"</strong> a za pár sekund máš hotové linky.</p>
+    <h3>✅ Odesláno!</h3>
+    <p>Google Doc štítek se vytváří a link přijde na <strong><span id="success-email">legislativa@nutworld.cz</span></strong> do ~1 minuty.</p>
+    <p style="margin-top:8px;color:#555;font-size:13px">Otevřeš link → zkontrolyješ → případně upravíš → stáhneš jako PDF nebo vytiskneš.</p>
     <p style="margin-top:8px;color:#888;font-size:12px">Můžeš odeslat další štítek nebo zavřít stránku.</p>
     <button onclick="resetForm()" style="margin-top:12px;background:var(--bd);color:white;border:none;border-radius:8px;padding:8px 20px;cursor:pointer;font-family:'Exo 2',sans-serif;font-weight:600">Nový štítek</button>
   </div>
@@ -484,13 +490,16 @@ function submitForm() {
   btn.textContent = '⏳ Ukládám...';
 
   // no-cors = fire-and-forget (Apps Script redirect blokuje čtení response v browseru)
+  const emailRecipient = document.getElementById('email_recipient')?.value.trim() || 'legislativa@nutworld.cz';
+
   fetch(SPEC_URL, {
     method: 'POST',
-    body: JSON.stringify({ action: 'queue_canva', jobs }),
+    body: JSON.stringify({ action: 'create_label', jobs, email: emailRecipient }),
     headers: { 'Content-Type': 'text/plain' },
     mode: 'no-cors'
   }).catch(() => {});
 
+  document.getElementById('success-email').textContent = emailRecipient;
   document.getElementById('form').style.display = 'none';
   document.getElementById('success').style.display = 'block';
 }
