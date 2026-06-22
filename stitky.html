@@ -229,8 +229,8 @@ textarea{resize:vertical;min-height:70px}
   </form>
 
   <div class="success" id="success">
-    <h3>✅ Odesláno!</h3>
-    <p>Požadavek byl odeslán. Claude zpracuje štítek a hotové linky přijdou na <strong>legislativa@nutworld.cz</strong> do ~15 minut.</p>
+    <h3>✅ Uloženo!</h3>
+    <p>Štítek je připravený. Řekni Claudovi <strong>"vyplň Canva štítky"</strong> a za pár sekund máš hotové linky.</p>
     <p style="margin-top:8px;color:#888;font-size:12px">Můžeš odeslat další štítek nebo zavřít stránku.</p>
     <button onclick="resetForm()" style="margin-top:12px;background:var(--bd);color:white;border:none;border-radius:8px;padding:8px 20px;cursor:pointer;font-family:'Exo 2',sans-serif;font-weight:600">Nový štítek</button>
   </div>
@@ -479,19 +479,26 @@ function submitForm() {
     });
   }
 
-  const jobsJson = JSON.stringify(jobs, null, 2);
-  const subject = encodeURIComponent('🏷️ Nový štítek Canva — ' + v('nazev_cz') + ' [' + v('kod') + ']');
-  const body = encodeURIComponent(
-    'CANVA_JOBS_JSON_START\n' + jobsJson + '\nCANVA_JOBS_JSON_END\n\n' +
-    'Produkt: ' + v('nazev_cz') + '\nKód: ' + v('kod') + '\nJazyk: ' + currentLang.toUpperCase()
-  );
+  const btn = document.querySelector('.btn-submit');
+  btn.disabled = true;
+  btn.textContent = '⏳ Ukládám...';
 
-  window.location.href = 'mailto:claudie.nutworld.cz@gmail.com?subject=' + subject + '&body=' + body;
-
-  setTimeout(() => {
+  fetch(SPEC_URL, {
+    method: 'POST',
+    body: JSON.stringify({ action: 'queue_canva', jobs }),
+    headers: { 'Content-Type': 'text/plain' }
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (!data.success) throw new Error(data.error || 'Chyba serveru');
     document.getElementById('form').style.display = 'none';
     document.getElementById('success').style.display = 'block';
-  }, 1000);
+  })
+  .catch(e => {
+    alert('Chyba: ' + e.message);
+    btn.disabled = false;
+    btn.textContent = '🏷️ Odeslat ke zpracování';
+  });
 }
 
 function resetForm() {
