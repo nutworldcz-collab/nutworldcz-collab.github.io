@@ -67,6 +67,22 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 @keyframes spin{to{transform:rotate(360deg)}}
 
 .empty-group{padding:20px;text-align:center;color:#bbb;font-size:13px;grid-column:1/-1}
+
+/* Akční tlačítka — skrytá na desktopu, viditelná na mobilu */
+.z-actions{display:none;grid-template-columns:1fr 1fr;gap:7px;margin:8px 0}
+.action-btn{display:flex;align-items:center;justify-content:center;gap:5px;padding:10px 6px;border-radius:10px;border:none;font-family:'Exo 2',sans-serif;font-weight:700;font-size:13px;cursor:pointer;text-decoration:none;transition:opacity .15s}
+.action-btn:hover{opacity:.85}
+.action-btn.tel{background:#e8f5e9;color:#2e7d32}
+.action-btn.email{background:#fff8e1;color:#b8860b}
+.action-btn.trello{background:#f1e6da;color:var(--bd)}
+.action-btn.zakazka{background:var(--bd);color:white}
+.action-btn.disabled{opacity:.35;pointer-events:none}
+
+@media(max-width:550px){
+  .z-actions{display:grid}
+  /* Na mobilu schovat textové linky v body — jsou v tlačítkách */
+  .z-link{display:none}
+}
 </style>
 </head>
 <body>
@@ -388,6 +404,18 @@ function renderCards() {
         ${p.tel ? `<br><a href="tel:${p.tel.replace(/\s/g,'')}" onclick="event.stopPropagation()" style="color:var(--leaf);font-weight:700;text-decoration:none">📞 ${esc(p.tel)}</a>` : ''}
         ${p.email ? `<br><a href="mailto:${esc(p.email)}" onclick="event.stopPropagation()" style="color:var(--br);font-weight:600;text-decoration:none">📧 ${esc(p.email)}</a>` : ''}
         ${p.rep && p.rep !== '-' ? `<br><span style="color:#aaa;font-size:11px">Rep: ${esc(p.rep)}</span>` : ''}
+      </div>
+      <div class="z-actions">
+        ${p.tel
+          ? `<a class="action-btn tel" href="tel:${p.tel.replace(/\s/g,'')}" onclick="event.stopPropagation()">📞 Zavolat</a>`
+          : `<span class="action-btn tel disabled">📞 —</span>`}
+        ${p.email
+          ? `<a class="action-btn email" href="mailto:${esc(p.email)}" onclick="event.stopPropagation()">📧 Email</a>`
+          : `<span class="action-btn email disabled">📧 —</span>`}
+        <a class="action-btn trello" href="${card.url}" onclick="event.stopPropagation()" target="_blank">🃏 Trello</a>
+        ${p.zakazkaUrl
+          ? `<a class="action-btn zakazka" href="${p.zakazkaUrl}" onclick="event.stopPropagation()" target="_blank">📋 Zakázka</a>`
+          : `<span class="action-btn zakazka disabled">📋 —</span>`}
       </div>
       <div class="z-footer">
         <span class="z-status" style="background:${clr.bg};color:${clr.text}">${esc(lname)}</span>
