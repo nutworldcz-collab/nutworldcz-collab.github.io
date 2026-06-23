@@ -13,7 +13,14 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .topbar-title{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:800;color:white}
 .topbar a{color:rgba(255,255,255,.6);font-size:12px;text-decoration:none}
 .topbar a:hover{color:white}
-.container{max-width:680px;margin:24px auto;padding:0 16px}
+.container{max-width:680px;margin:0 auto;padding:0 16px 32px}
+
+/* Tabs */
+.tabs{display:flex;gap:0;margin:20px 0 18px;background:white;border-radius:12px;padding:4px;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.tab-btn{flex:1;padding:10px 0;border:none;background:none;font-family:'Exo 2',sans-serif;font-size:14px;font-weight:700;color:#999;cursor:pointer;border-radius:9px;transition:all .18s}
+.tab-btn.active{background:var(--bd);color:white}
+.tab-btn:not(.active):hover{background:var(--kraft);color:var(--br)}
+
 .card{background:white;border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(0,0,0,.07)}
 .card-title{font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700;color:var(--br);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px}
 .field{margin-bottom:14px}
@@ -43,8 +50,6 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
 .total-row span:last-child{font-family:'Exo 2',sans-serif;font-weight:700;color:var(--bd)}
 
 .empty-state{text-align:center;padding:32px;color:#aaa;font-size:13px}
-.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;background:var(--acc);color:white;margin-left:6px}
-.badge.ok{background:var(--leaf)}
 
 /* Roll-up */
 .rollup-toggle{background:none;border:1.5px dashed #c8a882;border-radius:8px;padding:8px 14px;font-family:'Exo 2',sans-serif;font-size:12px;font-weight:700;color:var(--br);cursor:pointer;width:100%;text-align:left;margin-top:4px;transition:all .15s}
@@ -64,8 +69,31 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
 .search-results{position:absolute;top:100%;left:0;right:0;background:white;border:1.5px solid var(--br);border-top:none;border-radius:0 0 8px 8px;max-height:240px;overflow-y:auto;z-index:100;display:none}
 .search-results.open{display:block}
 .search-item{padding:8px 12px;cursor:pointer;font-size:13px;border-bottom:1px solid #f5ede4}
-.search-item:hover,.search-item.active{background:var(--kraft)}
+.search-item:hover{background:var(--kraft)}
 .search-item .item-kod{font-size:11px;color:#aaa;margin-left:6px}
+
+/* Nakup info box */
+.nakup-box{background:#fff8e1;border:1px solid var(--amb);border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px}
+
+/* Dárky nový */
+.marze-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.marze-btn{background:var(--kraft);border:1.5px solid #c8a882;border-radius:8px;padding:7px 14px;font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700;color:var(--br);cursor:pointer;transition:all .15s}
+.marze-btn:hover,.marze-btn.active{background:var(--bd);border-color:var(--bd);color:white}
+.formula-row{display:flex;gap:6px;margin-bottom:12px}
+.formula-btn{flex:1;background:var(--kraft);border:1.5px solid #c8a882;border-radius:8px;padding:8px;font-family:'Exo 2',sans-serif;font-size:12px;font-weight:700;color:var(--br);cursor:pointer;text-align:center;transition:all .15s}
+.formula-btn.active{background:var(--br);border-color:var(--br);color:white}
+.d-prod-row{display:grid;grid-template-columns:1fr 90px auto;gap:8px;align-items:start;margin-bottom:8px}
+.d-prod-row input{font-size:12px;padding:6px 10px}
+.d-rm{background:none;border:1.5px solid #e0c8b8;border-radius:6px;cursor:pointer;font-size:14px;color:#a08060;padding:5px 7px;margin-top:0}
+.d-rm:hover{background:#fee;border-color:var(--acc);color:var(--acc)}
+.d-prod-hint{font-size:11px;color:var(--br);margin-top:2px;font-weight:600}
+.btn-add-prod{background:none;border:1.5px solid var(--leaf);border-radius:8px;padding:8px 16px;font-family:'Exo 2',sans-serif;font-size:12px;font-weight:700;color:var(--leaf);cursor:pointer;width:100%;margin-top:4px}
+.btn-add-prod:hover{background:#e8f5e9}
+.total-costs{background:var(--kraft);border-radius:10px;padding:12px 16px;margin-top:12px;font-size:13px}
+.cost-row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(0,0,0,.06)}
+.cost-row:last-child{border:none;font-weight:700;font-size:14px;padding-top:6px}
+.cost-row span:last-child{font-family:'Exo 2',sans-serif;font-weight:700;color:var(--bd)}
+.sep-line{border:none;border-top:2px solid #c8a882;margin:6px 0}
 </style>
 </head>
 <body>
@@ -77,182 +105,260 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
 
 <div class="container">
 
-  <div class="card">
-    <div class="card-title">📦 Produkt</div>
+  <div class="tabs">
+    <button class="tab-btn active" id="tab-btn-produkty" onclick="switchTab('produkty')">📦 Produkty</button>
+    <button class="tab-btn" id="tab-btn-darky" onclick="switchTab('darky')">🎁 Dárky</button>
+  </div>
 
-    <div class="field">
-      <label>Vyhledat produkt</label>
-      <div class="search-wrap">
-        <input type="text" id="search" placeholder="Začni psát název nebo kód..." autocomplete="off" oninput="onSearch(this.value)" onfocus="onSearch(this.value)"/>
-        <div class="search-results" id="search-results"></div>
+  <!-- ══════════════════════════════════════ TAB: PRODUKTY ══ -->
+  <div id="tab-produkty">
+
+    <div class="card">
+      <div class="card-title">📦 Produkt</div>
+
+      <div class="field">
+        <label>Vyhledat produkt</label>
+        <div class="search-wrap">
+          <input type="text" id="p-search" placeholder="Začni psát název nebo kód..." autocomplete="off"
+                 oninput="pOnSearch(this.value)" onfocus="pOnSearch(this.value)"/>
+          <div class="search-results" id="p-search-results"></div>
+        </div>
+        <div class="hint" id="p-selected-hint"></div>
       </div>
-      <div class="hint" id="selected-hint"></div>
+
+      <div class="grid2">
+        <div class="field">
+          <label>Gramáž</label>
+          <select id="p-gramaz" onchange="pOnGramazChange()" disabled>
+            <option value="">— vyber produkt —</option>
+          </select>
+          <input type="number" id="p-gramaz-custom" placeholder="vlastní gramáž v g" min="1"
+                 style="display:none;margin-top:6px" oninput="pCalculate()"/>
+        </div>
+        <div class="field">
+          <label>Počet kusů</label>
+          <input type="number" id="p-pocet" value="1" min="1" oninput="pCalculate()"/>
+        </div>
+      </div>
+
+      <button class="rollup-toggle" id="p-rollup-btn" onclick="pToggleRollup()">
+        ➕ Roll-up — míchání více produktů
+      </button>
+      <div class="rollup-section" id="p-rollup-section">
+        <div style="font-size:12px;color:#888;margin-bottom:8px">
+          Přidej produkty a jejich gramáže → spočítá blended nákupní cenu (+20 Kč/kg za míchání)
+        </div>
+        <div id="p-rollup-rows"></div>
+        <button class="btn-add-row" onclick="pAddRollupRow()">+ Přidat produkt</button>
+        <div class="blend-info" id="p-blend-info" style="display:none"></div>
+      </div>
     </div>
 
-    <div class="grid2">
+    <div class="card" id="p-result-card">
+      <div class="card-title">💰 Výsledek</div>
+      <div class="empty-state" id="p-empty-state">👆 Vyber produkt a gramáž</div>
+      <div id="p-result-content" style="display:none">
+        <div class="nakup-box">
+          <span style="font-weight:700;color:#5c381f">📦 Nákupní cena (základ):</span>
+          <span id="p-r-nakup-kg" style="font-weight:700;color:#83502e;margin-left:6px">—</span>
+          <span style="color:#888"> / kg bez DPH</span>
+          <span style="color:#bbb;margin:0 6px">|</span>
+          <span id="p-r-nakup-ks" style="font-weight:700;color:#83502e">—</span>
+          <span style="color:#888"> / ks bez DPH</span>
+        </div>
+        <div class="result-grid">
+          <div class="result-box highlight">
+            <div class="result-label">MO cena / ks</div>
+            <div class="result-value" id="p-r-mo">—</div>
+            <div class="result-sub">maloobchod s DPH 12&nbsp;%</div>
+          </div>
+          <div class="result-box">
+            <div class="result-label">VO cena / ks</div>
+            <div class="result-value" id="p-r-vo">—</div>
+            <div class="result-sub">velkoobchod</div>
+          </div>
+          <div class="result-box green">
+            <div class="result-label">Marže</div>
+            <div class="result-value" id="p-r-marze">—</div>
+            <div class="result-sub" id="p-r-marze-czk">—</div>
+          </div>
+          <div class="result-box">
+            <div class="result-label">Nákupní cena / ks</div>
+            <div class="result-value" id="p-r-nakup">—</div>
+            <div class="result-sub">bez DPH</div>
+          </div>
+        </div>
+        <div class="result-total" id="p-result-total" style="display:none">
+          <div class="total-row"><span>Počet ks</span><span id="p-t-pocet">—</span></div>
+          <div class="total-row"><span>Celkem MO</span><span id="p-t-mo">—</span></div>
+          <div class="total-row"><span>Celkem VO</span><span id="p-t-vo">—</span></div>
+          <div class="total-row"><span>Celkový zisk (MO)</span><span id="p-t-zisk">—</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /tab-produkty -->
+
+
+  <!-- ══════════════════════════════════════ TAB: DÁRKY ══ -->
+  <div id="tab-darky" style="display:none">
+
+    <!-- Card 1: Složení -->
+    <div class="card">
+      <div class="card-title">🥜 Složení dárku</div>
+      <div id="d-prod-rows"></div>
+      <button class="btn-add-prod" onclick="dAddRow()">+ Přidat produkt</button>
+      <div class="total-costs" id="d-prod-total" style="display:none">
+        <div class="cost-row"><span>Celková gramáž obsahu</span><span id="dc-gram">—</span></div>
+        <div class="cost-row"><span>Nákupní cena produktů</span><span id="dc-prod">—</span></div>
+      </div>
+    </div>
+
+    <!-- Card 2: Obal a práce -->
+    <div class="card">
+      <div class="card-title">📦 Obal a práce</div>
       <div class="field">
-        <label>Gramáž</label>
-        <select id="gramaz" onchange="onGramazChange()" disabled>
-          <option value="">— vyber produkt —</option>
+        <label>Šablona (předvyplní ceny)</label>
+        <select id="d-vzorec-sel" onchange="dApplyVzorec()">
+          <option value="">— vlastní zadání —</option>
+          <optgroup label="Sáčky">
+            <option value="sacek_knir">Sáček s knírem — obal 10 + práce 5 Kč</option>
+            <option value="sacek_kolick">Sáček s kolíčkem — obal 15 + práce 10 Kč</option>
+            <option value="sacek_vanoce">Vánoční sáček SOB — obal 5 + práce 5 Kč</option>
+            <option value="zajicek">Velikonoční zajíček — obal 10 + práce 10 Kč</option>
+            <option value="celofan">Celofánek s mašličkou — obal 10 + práce 10 Kč</option>
+            <option value="kornout">Ořechový kornout — obal 12 + práce 7 Kč</option>
+          </optgroup>
+          <optgroup label="Kelímky & skleničky">
+            <option value="eko_kelimek">Eko kelímek — obal 9,5 + práce 7 Kč</option>
+            <option value="sklenic_deluxe">Sklenička DELUXE — obal 14 + práce 7 Kč</option>
+            <option value="sklenic_exclusive">Sklenička EXCLUSIVE — obal 15 + práce 6 Kč</option>
+          </optgroup>
+          <optgroup label="Krabičky">
+            <option value="krabicka_2x50">🟤 Krabička 2×50g — obal 15 + práce 20 Kč, ×2.5</option>
+            <option value="krabicka_4x80">🟤 Krabička 4×80g — obal 15 + práce 20 Kč, marže 55 %</option>
+            <option value="vanocni_krabicka">🎄 Vánoční krabička — obal 15 + práce 20 Kč, ×2.5</option>
+            <option value="kazetka">Dárková kazetka — obal 8 + práce 14 Kč</option>
+            <option value="krabice_kelimky">Dárková krabice s kelímky — obal 69 + práce 17 Kč</option>
+            <option value="krabicka">Dárková krabička — obal 17,5 + práce 27,5 Kč</option>
+            <option value="kraft">Kraft kelímek — obal 8 + práce 16 Kč</option>
+          </optgroup>
         </select>
-        <input type="number" id="gramaz-custom" placeholder="vlastní gramáž v g" min="1"
-               style="display:none;margin-top:6px" oninput="calculate()"/>
       </div>
-      <div class="field">
-        <label>Počet kusů</label>
-        <input type="number" id="pocet" value="1" min="1" oninput="calculate()"/>
+      <div class="grid2">
+        <div class="field">
+          <label>Obal (Kč bez DPH)</label>
+          <input type="number" id="d-obal-cena" placeholder="např. 15" min="0" step="0.5" oninput="dCalculate()"/>
+        </div>
+        <div class="field">
+          <label>Práce (Kč bez DPH)</label>
+          <input type="number" id="d-prace-cena" placeholder="např. 10" min="0" step="0.5" oninput="dCalculate()"/>
+        </div>
       </div>
     </div>
 
-    <!-- Roll-up -->
-    <button class="rollup-toggle" id="rollup-btn" onclick="toggleRollup()">
-      ➕ Roll-up — míchání více produktů
-    </button>
-    <div class="rollup-section" id="rollup-section">
-      <div style="font-size:12px;color:#888;margin-bottom:8px">
-        Přidej produkty a jejich gramáže → spočítá blended nákupní cenu (+20 Kč/kg za míchání)
-      </div>
-      <div id="rollup-rows"></div>
-      <button class="btn-add-row" onclick="addRollupRow()">+ Přidat produkt</button>
-      <div class="blend-info" id="blend-info" style="display:none"></div>
-    </div>
-  </div>
+    <!-- Card 3: Marže a vzorec -->
+    <div class="card">
+      <div class="card-title">📊 Cena a marže</div>
 
-  <div class="card" id="result-card">
-    <div class="card-title">💰 Výsledek</div>
-    <div class="empty-state" id="empty-state">👆 Vyber produkt a gramáž</div>
-    <div id="result-content" style="display:none">
-      <!-- Nákupní cena — základ pro kontrolu -->
-      <div style="background:#fff8e1;border:1.5px solid #f7ab31;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px">
-        <span style="font-weight:700;color:#5c381f">📦 Nákupní cena (základ):</span>
-        <span id="r-nakup-kg" style="font-weight:700;color:#83502e;margin-left:6px">—</span>
-        <span style="color:#888"> / kg bez DPH</span>
-        <span style="color:#bbb;margin:0 6px">|</span>
-        <span id="r-nakup-ks" style="font-weight:700;color:#83502e">—</span>
-        <span style="color:#888"> / ks bez DPH</span>
+      <label style="margin-bottom:8px;display:block">Způsob výpočtu</label>
+      <div class="formula-row">
+        <button class="formula-btn active" id="fb-marze" onclick="dSetFormula('marze')">Marže % <span style="font-size:10px;opacity:.7">MO = náklady×DPH / (1−m)</span></button>
+        <button class="formula-btn" id="fb-nasobek" onclick="dSetFormula('nasobek')">Násobek × <span style="font-size:10px;opacity:.7">MO = (produkty + obal) × N</span></button>
       </div>
-      <div class="result-grid">
-        <div class="result-box highlight">
-          <div class="result-label">MO cena / ks</div>
-          <div class="result-value" id="r-mo">—</div>
-          <div class="result-sub">maloobchod s DPH 12&nbsp;%</div>
+
+      <div id="d-marze-section">
+        <label>Marže</label>
+        <div class="marze-row">
+          <button class="marze-btn" onclick="dSetMarze(20)">20 %</button>
+          <button class="marze-btn" onclick="dSetMarze(30)">30 %</button>
+          <button class="marze-btn" onclick="dSetMarze(40)">40 %</button>
+          <button class="marze-btn active" onclick="dSetMarze(50)">50 %</button>
+          <button class="marze-btn" onclick="dSetMarze(60)">60 %</button>
         </div>
-        <div class="result-box">
-          <div class="result-label">VO cena / ks</div>
-          <div class="result-value" id="r-vo">—</div>
-          <div class="result-sub">velkoobchod</div>
-        </div>
-        <div class="result-box green">
-          <div class="result-label">Marže</div>
-          <div class="result-value" id="r-marze">—</div>
-          <div class="result-sub" id="r-marze-czk">—</div>
-        </div>
-        <div class="result-box">
-          <div class="result-label">Nákupní cena / ks</div>
-          <div class="result-value" id="r-nakup">—</div>
-          <div class="result-sub">bez DPH</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:6px">
+          <input type="number" id="d-marze-input" value="50" min="1" max="90" step="0.5"
+                 oninput="dSyncMarzeInput()" style="max-width:120px"/>
+          <span style="font-size:12px;color:#888">% vlastní marže</span>
         </div>
       </div>
-      <div class="result-total" id="result-total" style="display:none">
-        <div class="total-row"><span>Počet ks</span><span id="t-pocet">—</span></div>
-        <div class="total-row"><span>Celkem MO</span><span id="t-mo">—</span></div>
-        <div class="total-row"><span>Celkem VO</span><span id="t-vo">—</span></div>
-        <div class="total-row"><span>Celkový zisk (MO)</span><span id="t-zisk">—</span></div>
+
+      <div id="d-nasobek-section" style="display:none">
+        <label>Násobek (N)</label>
+        <div style="display:flex;align-items:center;gap:8px">
+          <input type="number" id="d-nasobek-input" value="2" min="1" step="0.1" oninput="dCalculate()" style="max-width:120px"/>
+          <span style="font-size:12px;color:#888">MO = (produkty + obal + práce) × N</span>
+        </div>
+        <div class="hint" style="margin-top:4px">Pro vlastní marži % přepni na <strong>Marže %</strong> výše</div>
+      </div>
+
+      <div class="grid2" style="margin-top:12px">
+        <div class="field">
+          <label>DPH</label>
+          <select id="d-dph" onchange="dCalculate()">
+            <option value="1.12">12 % (potraviny)</option>
+            <option value="1.21">21 %</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>VO faktor</label>
+          <input type="number" id="d-vo-fakt" value="0.8" min="0.1" max="1" step="0.05" oninput="dCalculate()"/>
+        </div>
       </div>
     </div>
-  </div>
 
-</div>
+    <!-- Card 4: Výsledek -->
+    <div class="card">
+      <div class="card-title">💰 Výsledek</div>
+      <div class="empty-state" id="d-empty-state">👆 Přidej produkt, obal a zvol marži</div>
+      <div id="d-result-content" style="display:none">
+        <div class="total-costs">
+          <div class="cost-row"><span>Produkty</span><span id="dr-prod">—</span></div>
+          <div class="cost-row"><span>Obal + práce</span><span id="dr-obal">—</span></div>
+          <hr class="sep-line"/>
+          <div class="cost-row"><span>Náklady celkem (bez DPH)</span><span id="dr-nakl">—</span></div>
+        </div>
+        <div class="result-grid" style="margin-top:12px">
+          <div class="result-box highlight">
+            <div class="result-label">MO cena</div>
+            <div class="result-value" id="dr-mo">—</div>
+            <div class="result-sub" id="dr-gram-label">—</div>
+          </div>
+          <div class="result-box">
+            <div class="result-label">VO cena</div>
+            <div class="result-value" id="dr-vo">—</div>
+            <div class="result-sub" id="dr-vo-label">—</div>
+          </div>
+          <div class="result-box green">
+            <div class="result-label">Marže</div>
+            <div class="result-value" id="dr-marze">—</div>
+            <div class="result-sub" id="dr-zisk">—</div>
+          </div>
+          <div class="result-box">
+            <div class="result-label">Zisk / ks</div>
+            <div class="result-value" id="dr-zisk-czk">—</div>
+            <div class="result-sub">MO − náklady</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /tab-darky -->
+
+</div><!-- /container -->
 
 <script>
-const PRODUKTY = [{"kod": "2024", "nazev": "2026-04-08_11-42_King Nuts & Raaphorst B.V.-Chocolate raisins dark jumbo", "kg_czk": 199.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "3702", "nazev": "3702 Arašídy s karamelovou čokoládou a solí", "kg_czk": 213.75, "gramaze": [150, 200, 500, 1000, 4000]}, {"kod": "3703", "nazev": "3703 Arašídové kousky s bílou čokoládou", "kg_czk": 210.0, "gramaze": [150, 200, 500, 1000, 4000]}, {"kod": "3704", "nazev": "3704 Arašídy s mléčnou čokoládou", "kg_czk": 208.0, "gramaze": [150, 200, 500, 1000, 4000]}, {"kod": "3705", "nazev": "3705 Arašídy s hořkou čokoládou", "kg_czk": 231.0, "gramaze": [150, 200, 500, 1000, 4000]}, {"kod": "3714", "nazev": "3714 Arašídy v barevné čokoládě 2026 04 King", "kg_czk": 185.0, "gramaze": [100, 200, 500, 1000, 4000, 5000]}, {"kod": "44", "nazev": "44", "kg_czk": 77.7, "gramaze": [200, 1000, 3000, 5000]}, {"kod": "56", "nazev": "56 Arasidy prazene solene 2026 05 -MBI", "kg_czk": 59.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "2744", "nazev": "anana_s 7.43 kandizovany_ kocky 2025 Encinger", "kg_czk": 112.9, "gramaze": [200, 500, 1000, 5000]}, {"kod": "2123", "nazev": "Ananas platky MIX", "kg_czk": 140.54, "gramaze": [200, 500, 1000, 3000]}, {"kod": "3298", "nazev": "Ananas plátky jablko KS", "kg_czk": 119.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "3304", "nazev": "Ananas plátky jahoda KS", "kg_czk": 127.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "164", "nazev": "Ananas plátky KS", "kg_czk": 108.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "1040", "nazev": "Antioxidacni smes", "kg_czk": 165.29, "gramaze": [500, 3000]}, {"kod": "4443", "nazev": "Arasidove hrudky mix barev", "kg_czk": 235.69, "gramaze": [200, 500, 1000, 2000]}, {"kod": "1976", "nazev": "Arasidy v cukru s pridavkem medu Holandsko-KS", "kg_czk": 86.0, "gramaze": [100, 200, 500, 1000, 5000]}, {"kod": "2756", "nazev": "Arasidy v horkej cokolade", "kg_czk": 118.0, "gramaze": [200, 500, 1000, 3000, 5000]}, {"kod": "9598", "nazev": "Arasidy v karamelu s vanilkovou prichuti King", "kg_czk": 125.0, "gramaze": [50, 100, 200, 500, 1000, 3000, 5000]}, {"kod": "27562", "nazev": "Arasidy v mliecnej cokolade", "kg_czk": 115.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "354", "nazev": "Arasidy ve  Wasabi 2026 05 -HOS", "kg_czk": 115.24, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "719", "nazev": "Arasidy-v-chilli-testicku", "kg_czk": 145.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "4146", "nazev": "Arasidy-v-karamelu-s-chilli", "kg_czk": 159.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "10264", "nazev": "Arasidy_v_bile_cokolade_2026_06", "kg_czk": 209.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "7563", "nazev": "Arašídy s chilli BBQ -Product_specification_070861_en King", "kg_czk": 135.0, "gramaze": [200, 500, 1000, 3000, 5000]}, {"kod": "2540", "nazev": "Arašídy v chilli těstíčku ravioli", "kg_czk": 169.0, "gramaze": [100, 200, 500, 1000, 5000]}, {"kod": "10035", "nazev": "Arašídy v medu a soli 2025ST King", "kg_czk": 119.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "9549", "nazev": "Arašídy v sezamovém těstíčku", "kg_czk": 160.0, "gramaze": [100, 200, 500, 1000]}, {"kod": "3735", "nazev": "Arašídy v těstíčku se sýrovo kečupovou příchutí", "kg_czk": 129.0, "gramaze": [200, 500, 2000]}, {"kod": "7566", "nazev": "Arašídy v těstíčku Shanghai", "kg_czk": 125.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "10579", "nazev": "Arašídy Wasabi červené", "kg_czk": 125.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "9604", "nazev": "Arašídy karamelizované se sezamem-specification 091235 -2026 04", "kg_czk": 130.0, "gramaze": [50, 100, 200, 500, 1000, 3000, 5000]}, {"kod": "2789", "nazev": "Banan chips v bielej cokolade", "kg_czk": 172.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "2759", "nazev": "Banan chips v horkej cokolade", "kg_czk": 159.0, "gramaze": [200, 3000]}, {"kod": "176", "nazev": "Banan kousky 4cm 2026 04 -KS", "kg_czk": 99.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "8742", "nazev": "Bananky zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "2762", "nazev": "Bananovy chips DUO mix", "kg_czk": 174.0, "gramaze": [200, 3000]}, {"kod": "5475", "nazev": "Banán chips v mliečnej čokoláde", "kg_czk": 159.0, "gramaze": [200, 500, 1000, 3000, 4000]}, {"kod": "170", "nazev": "Banán sušené plátky 2026 01 MBI", "kg_czk": 89.0, "gramaze": [200, 500, 1000]}, {"kod": "2294", "nazev": "Banánové plátky v jogurtové polevě KS", "kg_czk": 142.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "182", "nazev": "Borůvky sušené nesířené KS", "kg_czk": 362.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "1802", "nazev": "Broskvova srdicka Pedro", "kg_czk": 89.0, "gramaze": [100, 200, 500, 1000]}, {"kod": "179", "nazev": "Brusinka -Klikva velkoploda 2026 05 -MBI", "kg_czk": 108.0, "gramaze": [200, 500, 1000]}, {"kod": "1037", "nazev": "Brustáciový mix", "kg_czk": 334.8, "gramaze": [200, 3000]}, {"kod": "269", "nazev": "Cantaloupe plátky bez SO2 KS", "kg_czk": 265.0, "gramaze": [200, 500, 1000]}, {"kod": "8657", "nazev": "Cashew - Souhrnná 4druhy spec.na Kešu (Aj) Almondeli", "kg_czk": 360.0, "gramaze": [50, 100, 200, 5000]}, {"kod": "2537", "nazev": "Chilli kesu 3 kg 2026 04 -HOS", "kg_czk": 245.57, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "9571", "nazev": "chipsy jablečné se skořicí 2025ST King", "kg_czk": 388.75, "gramaze": [100, 1000]}, {"kod": "9570", "nazev": "Chipsy zeleninové Mix", "kg_czk": 353.75, "gramaze": [100]}, {"kod": "9573", "nazev": "Chipsy zeleninové Mix Wasabi", "kg_czk": 384.0, "gramaze": [100]}, {"kod": "2357", "nazev": "Cornflakes v mléčné čokoládě KS", "kg_czk": 195.0, "gramaze": [100, 200, 500, 1000, 5000]}, {"kod": "4296", "nazev": "Cornflakes v polevě s jogurtovou příchutí KS", "kg_czk": 129.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "188", "nazev": "Datle Deglet nour KS", "kg_czk": 83.0, "gramaze": [500, 1000, 5000]}, {"kod": "2663", "nazev": "Datle v hořké čokoládě a skořici KS", "kg_czk": 235.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "8751", "nazev": "Duhove mini pendreky", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "1805", "nazev": "Fazolky zele", "kg_czk": 179.0, "gramaze": [230, 1000]}, {"kod": "3732", "nazev": "Fire mix", "kg_czk": 128.75, "gramaze": [200, 500, 1000, 3000]}, {"kod": "7569", "nazev": "Flamengo Mix", "kg_czk": 125.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "206", "nazev": "Goji A -KS", "kg_czk": 197.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "230", "nazev": "hrozienka 2.1 sus_ene_ 2025 Encinger", "kg_czk": 64.5, "gramaze": [200, 500, 1000, 10000]}, {"kod": "3537", "nazev": "Hrušky bez přidaného cukru-KS", "kg_czk": 149.0, "gramaze": [200, 500, 10000]}, {"kod": "4167", "nazev": "Jablecne trubicky cokolada 5ks", "kg_czk": 498.15, "gramaze": [100]}, {"kod": "4170", "nazev": "Jablecne trubicky jogurt 5ks", "kg_czk": 498.15, "gramaze": [100]}, {"kod": "4197", "nazev": "Jablecne trubicky karob 5ks", "kg_czk": 498.15, "gramaze": [100]}, {"kod": "3540", "nazev": "Jablka kroužky 03 2026-KS", "kg_czk": 137.0, "gramaze": [200, 500, 10000]}, {"kod": "10473", "nazev": "Jadra tykve natural GWS Bio-KS", "kg_czk": 134.0, "gramaze": [100, 200, 500, 1000]}, {"kod": "10269", "nazev": "Jahodove sny zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "10271", "nazev": "Jahody lyofilizovane mlecna cokolada", "kg_czk": 345.0, "gramaze": [200, 1000, 4000]}, {"kod": "2102", "nazev": "Japonska smes (King nuts coated peanuts) King", "kg_czk": 138.75, "gramaze": [100, 200, 500, 1000, 2000, 5000]}, {"kod": "242", "nazev": "Jádra tykve GWS AA-KS", "kg_czk": 87.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "242", "nazev": "Jádra tykve GWS AA-KS", "kg_czk": 87.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "3634", "nazev": "Karamelovy fondan cokolada", "kg_czk": 149.0, "gramaze": [200]}, {"kod": "3633", "nazev": "Karamelovy fondan slany karamel", "kg_czk": 159.0, "gramaze": [200, 500, 1000, 2000]}, {"kod": "3632", "nazev": "Karamelovy fondan vanilka", "kg_czk": 159.0, "gramaze": [200, 500, 1000, 2000]}, {"kod": "1771", "nazev": "Karamelovy fondan vanilka a cokolada", "kg_czk": 159.0, "gramaze": [200, 500, 1000, 2000]}, {"kod": "2726", "nazev": "Kavovy mix slakdy", "kg_czk": 275.98, "gramaze": [200, 3000]}, {"kod": "2570", "nazev": "Kesu jadra prazena nesolena 3 kg 2026 04 -HOS", "kg_czk": 235.4, "gramaze": [200, 3000]}, {"kod": "728", "nazev": "Kesu jadra prazena solena uzena HOS", "kg_czk": 241.76, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "3013", "nazev": "Kesu kari2026 05 -MBI", "kg_czk": 235.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "10724", "nazev": "Kesu kousky 5-8mm 2026 04 -KS", "kg_czk": 136.0, "gramaze": [200, 500, 1000, 22000]}, {"kod": "110", "nazev": "Kesu natural ww320 Afrika HOS", "kg_czk": 201.01, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "4035", "nazev": "Kesu prazene v horkej cokolade", "kg_czk": 205.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "119", "nazev": "Kesu prazene v mliecnej cokolade", "kg_czk": 205.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "2297", "nazev": "Kesu tiramisu", "kg_czk": 198.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "1340", "nazev": "Kesu v bile cokolade", "kg_czk": 289.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "10262", "nazev": "Kesu v bile cokolade s kokosem", "kg_czk": 299.0, "gramaze": [100, 200, 500, 1000, 3000, 4000]}, {"kod": "2705", "nazev": "Kesu v cokolade MIX", "kg_czk": 250.34, "gramaze": [200, 3000]}, {"kod": "116", "nazev": "Kesu_prazene_solene_HOS_converted", "kg_czk": 213.68, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "5358", "nazev": "Kešu v BBQ těstíčku-Katjang Cashew BBQ 2026 04 King", "kg_czk": 271.25, "gramaze": [100, 200, 500, 1000, 5000]}, {"kod": "10503", "nazev": "Kešu excklusive", "kg_czk": 299.0, "gramaze": [100, 200, 500, 3000]}, {"kod": "1528", "nazev": "Kešu karamelizované klasické 2026 05 -MrRizos", "kg_czk": 249.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "10270", "nazev": "Kešu karamelizované s banánovo-čokoládovou příchutí 2026 05 -MrRizos", "kg_czk": 289.0, "gramaze": [50, 100, 200, 500, 1000, 3000]}, {"kod": "10246", "nazev": "Kešu karamelizované s příchutí jablka a skořice 2026 05 -MrRizos", "kg_czk": 285.0, "gramaze": [50, 100, 200, 500, 1000, 5000]}, {"kod": "1530", "nazev": "Kešu karamelizované solené 2026 05 -MrRizos", "kg_czk": 250.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "5364", "nazev": "Kešu ořechy s česnekem a rozmarýnem", "kg_czk": 307.5, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "10041", "nazev": "King N Arasidy v medu a skorici 2026 01 King", "kg_czk": 119.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "203", "nazev": "Kiwi bez AZO 03 2026-KS", "kg_czk": 129.0, "gramaze": [200, 500, 1000]}, {"kod": "7564", "nazev": "Kokos chips s karamelem a mořskou solí 2026 05 -KS", "kg_czk": 149.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "152", "nazev": "Kokos chips-KS", "kg_czk": 98.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "3729", "nazev": "Kokos v čokoládě", "kg_czk": 9.3, "gramaze": [200, 3000, 5000]}, {"kod": "2753", "nazev": "Kokosove kostky", "kg_czk": 169.0, "gramaze": [200, 500, 3000, 5000]}, {"kod": "9673", "nazev": "Kola lahve zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "248", "nazev": "Konopné semínko loupané-KS", "kg_czk": 142.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "6453", "nazev": "Kralovsky_orizek_smes_cokolada_King", "kg_czk": 276.25, "gramaze": [200, 500, 1000, 5000]}, {"kod": "546", "nazev": "Kukurice prazena barbecue KS", "kg_czk": 66.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "10251", "nazev": "Kysele housenky zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "251", "nazev": "Len hnědý-KS", "kg_czk": 26.5, "gramaze": [500, 1000, 3000]}, {"kod": "254", "nazev": "Len zlatý 2026 05 -KS", "kg_czk": 34.5, "gramaze": [500, 1000, 3000]}, {"kod": "3107", "nazev": "Lieskovce  jadra prazene v bielej cokolade", "kg_czk": 279.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "3106", "nazev": "Lieskovce prazene v horkej cokolade", "kg_czk": 222.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "1475", "nazev": "Lieskovce prazene v mliecnej cokolade", "kg_czk": 215.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "510", "nazev": "Lieskovce prazene v mliecnej cokolade so skoricou", "kg_czk": 240.0, "gramaze": [100, 200, 500, 1000, 3000, 4000]}, {"kod": "10730", "nazev": "Liskova jadra drcena 2-4mm-KS", "kg_czk": 345.0, "gramaze": [10, 200, 500, 1000, 10000]}, {"kod": "10261", "nazev": "Liskove orechy tiramisu", "kg_czk": 209.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "3108", "nazev": "Liskove orechy v jogurtu", "kg_czk": 192.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "128", "nazev": "Lísková jádra loupaná-KS", "kg_czk": 419.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "125", "nazev": "Lísková jádra natural 2026 04 -MBI", "kg_czk": 417.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "4182", "nazev": "Lyofil jahody v jogurtove cokolade", "kg_czk": 349.0, "gramaze": [100, 200, 500, 1000]}, {"kod": "920", "nazev": "Lyofilizovane maliny v bielej cokolade", "kg_czk": 412.0, "gramaze": [200]}, {"kod": "146", "nazev": "Makadamové ořechy 2025ST MBI", "kg_czk": 399.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "4893", "nazev": "Makadamové ořechy pražené na sucho, solené-KS", "kg_czk": 459.0, "gramaze": [100, 200, 500, 1000, 5000]}, {"kod": "1808", "nazev": "Maliny a ostruziny smes", "kg_czk": 149.0, "gramaze": [230, 1000]}, {"kod": "107", "nazev": "mandle 1.54 jadra prazene v bielej cokolade 2026 03 Encinger", "kg_czk": 213.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "2738", "nazev": "Mandle a merunky drazovane mix", "kg_czk": 258.22, "gramaze": [200, 3000]}, {"kod": "3651", "nazev": "Mandle borůvkové", "kg_czk": 249.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "3995", "nazev": "Mandle CAPPUCCINO", "kg_czk": 299.0, "gramaze": [50, 100, 200, 500, 1000, 3000]}, {"kod": "3648", "nazev": "Mandle citronové", "kg_czk": 249.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "3993", "nazev": "Mandle EXCLUSIVE mix", "kg_czk": 289.0, "gramaze": [50, 100, 200, 500, 3000]}, {"kod": "2564", "nazev": "Mandle jadra  prazena 5 kg 2026 04 -HOS_converted", "kg_czk": 219.0, "gramaze": [200, 3000, 5000]}, {"kod": "101", "nazev": "Mandle jadra prazena loupana solena HOS", "kg_czk": 226.16, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "9945", "nazev": "Mandle jadra prazena solena s prichuti horcice 3 kg 2026 04 -HOS", "kg_czk": 223.07, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "89", "nazev": "Mandle jadra prazena solena s uzenou prichuti HOS", "kg_czk": 218.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "4212", "nazev": "Mandle JAHODA v bile cokolade", "kg_czk": 349.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "83", "nazev": "Mandle jádra loupana 3 kg HOS", "kg_czk": 215.72, "gramaze": [200, 500, 1000, 3000]}, {"kod": "80", "nazev": "Mandle jádra natural 23-25 (nonpareil) 2026 04 -KS", "kg_czk": 195.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "2486", "nazev": "Mandle jádra natural 3 kg 2025ST HOS_converted", "kg_czk": 190.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "3723", "nazev": "Mandle loupane s prichuti cervene papriky a chilli-MBI", "kg_czk": 356.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "9543", "nazev": "Mandle prazene solene s lanyzem a parmazanem Valencie DELUXE 2026 05 -BaumH", "kg_czk": 367.5, "gramaze": [200]}, {"kod": "1955", "nazev": "Mandle prazene v horkej cokolade", "kg_czk": 205.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "95", "nazev": "Mandle prazene v medu a soli HOS", "kg_czk": 259.0, "gramaze": [50, 100, 200, 500, 1000, 3000]}, {"kod": "4038", "nazev": "Mandle prazene v mliecnej cokolade", "kg_czk": 210.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "1958", "nazev": "Mandle prazene v mliecnej cokolade so skoricou", "kg_czk": 215.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "3721", "nazev": "Mandle pražené solené s bylinkami Valencie DELUX 2026 05 -BaumH", "kg_czk": 356.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "3722", "nazev": "Mandle pražené solené s lanýžem Valencie DELUXE 2026 05 -BaumH", "kg_czk": 375.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "3720", "nazev": "Mandle pražené solené Valencie DELUXE 2026 05 -BaumH", "kg_czk": 335.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "1964", "nazev": "Mandle tiramisu", "kg_czk": 189.0, "gramaze": [50, 100, 200, 500, 1000, 3000]}, {"kod": "10736", "nazev": "Mandle trisky-KS", "kg_czk": 232.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "8542", "nazev": "Mandle v baby blue krustě", "kg_czk": 370.56, "gramaze": [100, 200, 1000]}, {"kod": "8543", "nazev": "Mandle v baby pink krustě", "kg_czk": 362.88, "gramaze": [100, 200, 1000]}, {"kod": "1970", "nazev": "Mandle v barevné krustě", "kg_czk": 281.28, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "1545", "nazev": "Mandle v bielej cokolade so zelenym cajom", "kg_czk": 259.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "8977", "nazev": "Mandle v bile cokolade a malinovem prasku", "kg_czk": 252.0, "gramaze": [100, 200, 500, 1000, 5000]}, {"kod": "1988", "nazev": "Mandle v bile cokolade s kokosem Raffaello", "kg_czk": 289.0, "gramaze": [100, 200, 500, 1000, 3000, 4000]}, {"kod": "5852", "nazev": "Mandle v jahodovém jogurtu 2026 04 Poex", "kg_czk": 199.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "9811", "nazev": "Mandle v jogurtove poleve", "kg_czk": 188.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "9601", "nazev": "Mandle v karamelu s vanilkovou příchutí", "kg_czk": 249.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "9921", "nazev": "Mandle v mlecne cokolade a malinovem prasku", "kg_czk": 309.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "10011", "nazev": "Mandle v mlecne cokolade snehove", "kg_czk": 265.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "1952", "nazev": "Mandle ve slaném karamelu", "kg_czk": 261.25, "gramaze": [50, 100, 200, 500, 1000, 3000, 5000]}, {"kod": "1975", "nazev": "Mandle Velikonoční v barevné v polevě s jogurtovou příchutí 2026 Poex", "kg_czk": 189.5, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "3726", "nazev": "Mandle VIENNA Product specification 098116", "kg_czk": 275.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "86", "nazev": "Mandlové plátky-KS", "kg_czk": 210.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "635", "nazev": "Mango platky 2026 05 -KS", "kg_czk": 144.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "212", "nazev": "Mango platky bez SO2 2026 05 -KS", "kg_czk": 274.0, "gramaze": [200, 500, 1000]}, {"kod": "8745", "nazev": "Maxi hadi zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "10233", "nazev": "Maxi medvedi zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "191", "nazev": "Medjoul-specifikace 2025ST MBI", "kg_czk": 168.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "10257", "nazev": "Medvidci tutti frutti zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "3111", "nazev": "Merunky v poleve s jogurtovou prichuti-KS", "kg_czk": 178.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "218", "nazev": "Meruňky č.1-KS", "kg_czk": 275.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "4440", "nazev": "Mini lentilky bez palmace", "kg_czk": 159.0, "gramaze": [230]}, {"kod": "4794", "nazev": "Mix orechu v medu a soli King", "kg_czk": 187.72, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "324", "nazev": "Mochyně peruánská - Physalis-KS", "kg_czk": 345.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "224", "nazev": "Moruse-KS", "kg_czk": 278.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "224", "nazev": "Moruse-KS", "kg_czk": 278.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "5892", "nazev": "Motylci zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "260", "nazev": "Mák mletý 100%-KS", "kg_czk": 79.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "257", "nazev": "Mák modrý-KS", "kg_czk": 66.0, "gramaze": [500, 1000, 3000]}, {"kod": "1768", "nazev": "Nugat mandlovy bily mekky turecky med", "kg_czk": 189.0, "gramaze": [200, 1000]}, {"kod": "2747", "nazev": "NW papája kondenzované kostky NW01", "kg_czk": 98.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "547", "nazev": "NW Specifikace Kukuřice pražená s medem a hořčicí NW02", "kg_czk": 100.0, "gramaze": [100, 200, 500, 1000]}, {"kod": "6456", "nazev": "Ořechový mix Velký v čokoládě", "kg_czk": 328.75, "gramaze": [100, 200, 500, 1000, 5000]}, {"kod": "296", "nazev": "Papaya plátky bez SO2-KS", "kg_czk": 245.0, "gramaze": [200, 500, 1000]}, {"kod": "4302", "nazev": "Papaya plátky-KS", "kg_czk": 98.0, "gramaze": [200, 500, 5000]}, {"kod": "143", "nazev": "Para orechy j 2026 05 -MBI", "kg_czk": 445.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "2117", "nazev": "Para orechy v tiramisu", "kg_czk": 229.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "1521", "nazev": "Pekan karamelizovany classic", "kg_czk": 354.5, "gramaze": [200, 500, 1000, 5000]}, {"kod": "140", "nazev": "Pekanové orechy jadrá", "kg_czk": 332.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "1823", "nazev": "Pendrek Twist MIX Diana", "kg_czk": 181.44, "gramaze": [100, 200, 500, 1000]}, {"kod": "149", "nazev": "Piniova jadra 2026 05 -MBI", "kg_czk": 725.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "137", "nazev": "Pistacie loupane Iran 2026 04 -MBI", "kg_czk": 630.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "131", "nazev": "Pistacie ve skorapce prazene 2026 05 -MBI", "kg_czk": 245.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "134", "nazev": "Pistacie ve skorapce prazene a solene-MBI", "kg_czk": 252.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "71", "nazev": "Podzemnice blanšírovaná-KS", "kg_czk": 43.0, "gramaze": [200, 1000, 3000]}, {"kod": "4452", "nazev": "Precliky tri barev", "kg_czk": 254.18, "gramaze": [200, 500, 1000, 2000]}, {"kod": "3979", "nazev": "Precliky-KS", "kg_czk": 84.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "155", "nazev": "Premium mix orech Nutworld", "kg_czk": 298.5, "gramaze": [50, 100, 200, 500, 1000, 3000]}, {"kod": "2573", "nazev": "Quinoa bílá-KS", "kg_czk": 67.0, "gramaze": [200, 1000, 3000]}, {"kod": "2576", "nazev": "Quinoa černá-KS", "kg_czk": 89.0, "gramaze": [200, 1000, 3000]}, {"kod": "3717", "nazev": "Rozinky barevná směs", "kg_czk": 200.0, "gramaze": [100, 200, 500, 1000, 5000]}, {"kod": "3082", "nazev": "Rozinky obri MIX", "kg_czk": 127.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "233", "nazev": "Rozinky obří zlaté-KS", "kg_czk": 129.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "227", "nazev": "Rozinky sultánky RTU 2025ST MBI", "kg_czk": 85.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "1967", "nazev": "Rozinky v polevach MIX", "kg_czk": 169.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "10161", "nazev": "Rýžové krekry zahradní bylinky King", "kg_czk": 177.5, "gramaze": [150, 300]}, {"kod": "5502", "nazev": "Salatova smes seminek a piniovych orechu", "kg_czk": 144.25, "gramaze": [500, 3000]}, {"kod": "2474", "nazev": "Semiinkova smes", "kg_czk": 65.9, "gramaze": [500, 1000, 3000]}, {"kod": "263", "nazev": "Sezam-KS", "kg_czk": 51.0, "gramaze": [500, 1000, 3000]}, {"kod": "2723", "nazev": "Sklzas_kavova zr v hor", "kg_czk": 286.08, "gramaze": [200, 500, 1000, 3000]}, {"kod": "2336", "nazev": "Sklzas_kyselezmix", "kg_czk": 180.0, "gramaze": [230, 1000]}, {"kod": "2333", "nazev": "Sklzas_mandle v karam", "kg_czk": 220.8, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "7853", "nazev": "Sklzas_mandle ve stribrne", "kg_czk": 575.04, "gramaze": [100, 200, 1000]}, {"kod": "7852", "nazev": "Sklzas_mandle zlata", "kg_czk": 645.12, "gramaze": [100, 200, 1000]}, {"kod": "2018", "nazev": "Sklzas_merunky jahodo jog", "kg_czk": 205.44, "gramaze": [200, 500, 1000, 3000]}, {"kod": "4512", "nazev": "Sklzas_mini mrshmallows", "kg_czk": 171.12, "gramaze": [100, 1000]}, {"kod": "2693", "nazev": "Skořicový MIX", "kg_czk": 250.05, "gramaze": [200, 3000]}, {"kod": "2708", "nazev": "Sladka smes DELUXE", "kg_czk": 253.55, "gramaze": [200, 3000]}, {"kod": "1028", "nazev": "Slany mix ALL IN ONE", "kg_czk": 192.09, "gramaze": [200, 500, 1000, 3000]}, {"kod": "5511", "nazev": "Slany mix EXCLUSIVE", "kg_czk": 220.98, "gramaze": [50, 100, 200, 500, 3000]}, {"kod": "161", "nazev": "Slany party mix", "kg_czk": 239.27, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "3975", "nazev": "Slany praclik v horkej cokolade", "kg_czk": 275.0, "gramaze": [200, 500, 1000, 2000]}, {"kod": "3978", "nazev": "Slany praclik v mliecnej cokolade", "kg_czk": 175.0, "gramaze": [200, 500, 1000, 2000]}, {"kod": "3980", "nazev": "Slany praclik v mliecnej cokolade so slanym karamelom", "kg_czk": 195.0, "gramaze": [200, 500, 1000]}, {"kod": "6459", "nazev": "Slaný mix Itálie specification 204906 -2026 04", "kg_czk": 183.75, "gramaze": [50, 100, 200, 500, 1000, 3000]}, {"kod": "6462", "nazev": "Slaný mix Mexiko", "kg_czk": 170.0, "gramaze": [50, 100, 200, 500, 1000, 3000]}, {"kod": "9547", "nazev": "Slaný mix Premium", "kg_czk": 378.75, "gramaze": [50, 100, 200, 500, 1000, 3000]}, {"kod": "10479", "nazev": "Slunecnice BIO-KS", "kg_czk": 58.0, "gramaze": [200, 500, 1000]}, {"kod": "1991", "nazev": "Slunecnice v barevne kruste. docx -KS", "kg_czk": 119.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "1949", "nazev": "Slunečnice tříbarevná-KS", "kg_czk": 199.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "266", "nazev": "Slunečnice-KS", "kg_czk": 34.5, "gramaze": [500, 1000, 3000]}, {"kod": "158", "nazev": "Smes jader", "kg_czk": 309.6, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "5499", "nazev": "Smes kesu a mandle natural", "kg_czk": 215.51, "gramaze": [500, 3000]}, {"kod": "4896", "nazev": "Smes mandli v cokolade BROWN", "kg_czk": 231.85, "gramaze": [100, 200, 500, 3000]}, {"kod": "3097", "nazev": "Smes orechu a rozinek", "kg_czk": 197.84, "gramaze": [200, 500, 1000, 3000]}, {"kod": "2342", "nazev": "Smes orechu DELUXE", "kg_czk": 212.79, "gramaze": [500, 3000]}, {"kod": "3091", "nazev": "Smes orechu prazena nesolena", "kg_czk": 241.86, "gramaze": [200, 500, 1000, 3000]}, {"kod": "2345", "nazev": "Smes orechu stastne srdce", "kg_czk": 175.0, "gramaze": [500, 3000]}, {"kod": "6450", "nazev": "Smes ovoce zdrava energie", "kg_czk": 252.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "5505", "nazev": "Smes seminek kesu a mandle natural", "kg_czk": 134.65, "gramaze": [500, 1000, 3000]}, {"kod": "10245", "nazev": "Sovicky zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "10564", "nazev": "specifikace krekry BBQ v AJ 2025 08 ST King", "kg_czk": 120.0, "gramaze": [150, 300]}, {"kod": "10558", "nazev": "Specifikace krekry chilli v AJ 2025 08ST King", "kg_czk": 120.0, "gramaze": [150, 300]}, {"kod": "10570", "nazev": "Specifikace krekry original 2025 08 ST King", "kg_czk": 120.0, "gramaze": [150, 300]}, {"kod": "4449", "nazev": "Specifikace Preclíky v bílé čokoládě 2025 10 Poex", "kg_czk": 252.0, "gramaze": [200, 500, 1000, 2000]}, {"kod": "2702", "nazev": "Studentska smes", "kg_czk": 153.93, "gramaze": [500, 1000, 3000]}, {"kod": "9552", "nazev": "Sýrové kuličky s příchutí Gauda", "kg_czk": 318.75, "gramaze": [200, 500, 1000]}, {"kod": "2699", "nazev": "Tiramisu smes", "kg_czk": 220.6, "gramaze": [50, 100, 200, 500, 1000]}, {"kod": "2423", "nazev": "Tropicka smes", "kg_czk": 127.33, "gramaze": [100, 500, 2000]}, {"kod": "10020", "nazev": "Tropicky MIX zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "3076", "nazev": "Třešně-KS", "kg_czk": 185.0, "gramaze": [200, 500, 1000]}, {"kod": "9679", "nazev": "Upiri zuby zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "3993VAN", "nazev": "Vanocni mandle EXCLUSIVE", "kg_czk": 289.0, "gramaze": [200]}, {"kod": "8739", "nazev": "Vejce zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "10239", "nazev": "Veseli smajlici zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "4506", "nazev": "Vesely hamburger zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "239", "nazev": "Višně USA-KS", "kg_czk": 499.0, "gramaze": [200, 500, 1000]}, {"kod": "122", "nazev": "Vlasska jadra chile 80% pulek 2026 05 -KS", "kg_czk": 165.0, "gramaze": [500, 1000, 3000]}, {"kod": "4797", "nazev": "Zabky zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "2000", "nazev": "Zele stevia medvidci bez cukru", "kg_czk": 189.0, "gramaze": [230]}, {"kod": "1832", "nazev": "Zizalky zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "1418", "nazev": "Zázvor kousky bez SO2-KS", "kg_czk": 199.0, "gramaze": [200, 500, 1000]}, {"kod": "6465", "nazev": "Čokameny KS", "kg_czk": 114.0, "gramaze": [200, 500, 5000]}, {"kod": "236", "nazev": "Švestky Francie 03 2026 -aktuálně-KS", "kg_czk": 92.0, "gramaze": [200, 500, 1000, 10000]}];
+const PRODUKTY = [{"kod": "2024", "nazev": "2026-04-08_11-42_King Nuts & Raaphorst B.V.-Chocolate raisins dark jumbo", "kg_czk": 199.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "3702", "nazev": "3702 Arašídy s karamelovou čokoládou a solí", "kg_czk": 213.75, "gramaze": [150, 200, 500, 1000, 4000]}, {"kod": "3703", "nazev": "3703 Arašídové kousky s bílou čokoládou", "kg_czk": 210.0, "gramaze": [150, 200, 500, 1000, 4000]}, {"kod": "3704", "nazev": "3704 Arašídy s mléčnou čokoládou", "kg_czk": 208.0, "gramaze": [150, 200, 500, 1000, 4000]}, {"kod": "3705", "nazev": "3705 Arašídy s hořkou čokoládou", "kg_czk": 231.0, "gramaze": [150, 200, 500, 1000, 4000]}, {"kod": "3714", "nazev": "3714 Arašídy v barevné čokoládě 2026 04 King", "kg_czk": 185.0, "gramaze": [100, 200, 500, 1000, 4000, 5000]}, {"kod": "44", "nazev": "44", "kg_czk": 77.7, "gramaze": [200, 1000, 3000, 5000]}, {"kod": "56", "nazev": "56 Arasidy prazene solene 2026 05 -MBI", "kg_czk": 59.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "2744", "nazev": "anana_s 7.43 kandizovany_ kocky 2025 Encinger", "kg_czk": 112.9, "gramaze": [200, 500, 1000, 5000]}, {"kod": "2123", "nazev": "Ananas platky MIX", "kg_czk": 140.54, "gramaze": [200, 500, 1000, 3000]}, {"kod": "3298", "nazev": "Ananas plátky jablko KS", "kg_czk": 119.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "3304", "nazev": "Ananas plátky jahoda KS", "kg_czk": 127.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "164", "nazev": "Ananas plátky KS", "kg_czk": 108.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "1040", "nazev": "Antioxidacni smes", "kg_czk": 165.29, "gramaze": [500, 3000]}, {"kod": "4443", "nazev": "Arasidove hrudky mix barev", "kg_czk": 235.69, "gramaze": [200, 500, 1000, 2000]}, {"kod": "1976", "nazev": "Arasidy v cukru s pridavkem medu Holandsko-KS", "kg_czk": 86.0, "gramaze": [100, 200, 500, 1000, 5000]}, {"kod": "2756", "nazev": "Arasidy v horkej cokolade", "kg_czk": 118.0, "gramaze": [200, 500, 1000, 3000, 5000]}, {"kod": "9598", "nazev": "Arasidy v karamelu s vanilkovou prichuti King", "kg_czk": 125.0, "gramaze": [50, 100, 200, 500, 1000, 3000, 5000]}, {"kod": "27562", "nazev": "Arasidy v mliecnej cokolade", "kg_czk": 115.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "354", "nazev": "Arasidy ve  Wasabi 2026 05 -HOS", "kg_czk": 115.24, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "719", "nazev": "Arasidy-v-chilli-testicku", "kg_czk": 145.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "4146", "nazev": "Arasidy-v-karamelu-s-chilli", "kg_czk": 159.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "10264", "nazev": "Arasidy_v_bile_cokolade_2026_06", "kg_czk": 209.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "7563", "nazev": "Arašídy s chilli BBQ -Product_specification_070861_en King", "kg_czk": 135.0, "gramaze": [200, 500, 1000, 3000, 5000]}, {"kod": "2540", "nazev": "Arašídy v chilli těstíčku ravioli", "kg_czk": 169.0, "gramaze": [100, 200, 500, 1000, 5000]}, {"kod": "10035", "nazev": "Arašídy v medu a soli 2025ST King", "kg_czk": 119.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "9549", "nazev": "Arašídy v sezamovém těstíčku", "kg_czk": 160.0, "gramaze": [100, 200, 500, 1000]}, {"kod": "3735", "nazev": "Arašídy v těstíčku se sýrovo kečupovou příchutí", "kg_czk": 129.0, "gramaze": [200, 500, 2000]}, {"kod": "7566", "nazev": "Arašídy v těstíčku Shanghai", "kg_czk": 125.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "10579", "nazev": "Arašídy Wasabi červené", "kg_czk": 125.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "9604", "nazev": "Arašídy karamelizované se sezamem-specification 091235 -2026 04", "kg_czk": 130.0, "gramaze": [50, 100, 200, 500, 1000, 3000, 5000]}, {"kod": "2789", "nazev": "Banan chips v bielej cokolade", "kg_czk": 172.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "2759", "nazev": "Banan chips v horkej cokolade", "kg_czk": 159.0, "gramaze": [200, 3000]}, {"kod": "176", "nazev": "Banan kousky 4cm 2026 04 -KS", "kg_czk": 99.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "8742", "nazev": "Bananky zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "2762", "nazev": "Bananovy chips DUO mix", "kg_czk": 174.0, "gramaze": [200, 3000]}, {"kod": "5475", "nazev": "Banán chips v mliečnej čokoláde", "kg_czk": 159.0, "gramaze": [200, 500, 1000, 3000, 4000]}, {"kod": "170", "nazev": "Banán sušené plátky 2026 01 MBI", "kg_czk": 89.0, "gramaze": [200, 500, 1000]}, {"kod": "2294", "nazev": "Banánové plátky v jogurtové polevě KS", "kg_czk": 142.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "182", "nazev": "Borůvky sušené nesířené KS", "kg_czk": 362.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "1802", "nazev": "Broskvova srdicka Pedro", "kg_czk": 89.0, "gramaze": [100, 200, 500, 1000]}, {"kod": "179", "nazev": "Brusinka -Klikva velkoploda 2026 05 -MBI", "kg_czk": 108.0, "gramaze": [200, 500, 1000]}, {"kod": "1037", "nazev": "Brustáciový mix", "kg_czk": 334.8, "gramaze": [200, 3000]}, {"kod": "269", "nazev": "Cantaloupe plátky bez SO2 KS", "kg_czk": 265.0, "gramaze": [200, 500, 1000]}, {"kod": "8657", "nazev": "Cashew - Souhrnná 4druhy spec.na Kešu (Aj) Almondeli", "kg_czk": 360.0, "gramaze": [50, 100, 200, 5000]}, {"kod": "2537", "nazev": "Chilli kesu 3 kg 2026 04 -HOS", "kg_czk": 245.57, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "9571", "nazev": "chipsy jablečné se skořicí 2025ST King", "kg_czk": 388.75, "gramaze": [100, 1000]}, {"kod": "9570", "nazev": "Chipsy zeleninové Mix", "kg_czk": 353.75, "gramaze": [100]}, {"kod": "9573", "nazev": "Chipsy zeleninové Mix Wasabi", "kg_czk": 384.0, "gramaze": [100]}, {"kod": "2357", "nazev": "Cornflakes v mléčné čokoládě KS", "kg_czk": 195.0, "gramaze": [100, 200, 500, 1000, 5000]}, {"kod": "4296", "nazev": "Cornflakes v polevě s jogurtovou příchutí KS", "kg_czk": 129.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "188", "nazev": "Datle Deglet nour KS", "kg_czk": 83.0, "gramaze": [500, 1000, 5000]}, {"kod": "2663", "nazev": "Datle v hořké čokoládě a skořici KS", "kg_czk": 235.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "8751", "nazev": "Duhove mini pendreky", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "1805", "nazev": "Fazolky zele", "kg_czk": 179.0, "gramaze": [230, 1000]}, {"kod": "3732", "nazev": "Fire mix", "kg_czk": 128.75, "gramaze": [200, 500, 1000, 3000]}, {"kod": "7569", "nazev": "Flamengo Mix", "kg_czk": 125.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "206", "nazev": "Goji A -KS", "kg_czk": 197.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "230", "nazev": "hrozienka 2.1 sus_ene_ 2025 Encinger", "kg_czk": 64.5, "gramaze": [200, 500, 1000, 10000]}, {"kod": "3537", "nazev": "Hrušky bez přidaného cukru-KS", "kg_czk": 149.0, "gramaze": [200, 500, 10000]}, {"kod": "4167", "nazev": "Jablecne trubicky cokolada 5ks", "kg_czk": 498.15, "gramaze": [100]}, {"kod": "4170", "nazev": "Jablecne trubicky jogurt 5ks", "kg_czk": 498.15, "gramaze": [100]}, {"kod": "4197", "nazev": "Jablecne trubicky karob 5ks", "kg_czk": 498.15, "gramaze": [100]}, {"kod": "3540", "nazev": "Jablka kroužky 03 2026-KS", "kg_czk": 137.0, "gramaze": [200, 500, 10000]}, {"kod": "10473", "nazev": "Jadra tykve natural GWS Bio-KS", "kg_czk": 134.0, "gramaze": [100, 200, 500, 1000]}, {"kod": "10269", "nazev": "Jahodove sny zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "10271", "nazev": "Jahody lyofilizovane mlecna cokolada", "kg_czk": 345.0, "gramaze": [200, 1000, 4000]}, {"kod": "2102", "nazev": "Japonska smes (King nuts coated peanuts) King", "kg_czk": 138.75, "gramaze": [100, 200, 500, 1000, 2000, 5000]}, {"kod": "242", "nazev": "Jádra tykve GWS AA-KS", "kg_czk": 87.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "3634", "nazev": "Karamelovy fondan cokolada", "kg_czk": 149.0, "gramaze": [200]}, {"kod": "3633", "nazev": "Karamelovy fondan slany karamel", "kg_czk": 159.0, "gramaze": [200, 500, 1000, 2000]}, {"kod": "3632", "nazev": "Karamelovy fondan vanilka", "kg_czk": 159.0, "gramaze": [200, 500, 1000, 2000]}, {"kod": "1771", "nazev": "Karamelovy fondan vanilka a cokolada", "kg_czk": 159.0, "gramaze": [200, 500, 1000, 2000]}, {"kod": "2726", "nazev": "Kavovy mix slakdy", "kg_czk": 275.98, "gramaze": [200, 3000]}, {"kod": "2570", "nazev": "Kesu jadra prazena nesolena 3 kg 2026 04 -HOS", "kg_czk": 235.4, "gramaze": [200, 3000]}, {"kod": "728", "nazev": "Kesu jadra prazena solena uzena HOS", "kg_czk": 241.76, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "3013", "nazev": "Kesu kari2026 05 -MBI", "kg_czk": 235.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "10724", "nazev": "Kesu kousky 5-8mm 2026 04 -KS", "kg_czk": 136.0, "gramaze": [200, 500, 1000, 22000]}, {"kod": "110", "nazev": "Kesu natural ww320 Afrika HOS", "kg_czk": 201.01, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "4035", "nazev": "Kesu prazene v horkej cokolade", "kg_czk": 205.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "119", "nazev": "Kesu prazene v mliecnej cokolade", "kg_czk": 205.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "2297", "nazev": "Kesu tiramisu", "kg_czk": 198.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "1340", "nazev": "Kesu v bile cokolade", "kg_czk": 289.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "10262", "nazev": "Kesu v bile cokolade s kokosem", "kg_czk": 299.0, "gramaze": [100, 200, 500, 1000, 3000, 4000]}, {"kod": "2705", "nazev": "Kesu v cokolade MIX", "kg_czk": 250.34, "gramaze": [200, 3000]}, {"kod": "116", "nazev": "Kesu_prazene_solene_HOS_converted", "kg_czk": 213.68, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "5358", "nazev": "Kešu v BBQ těstíčku-Katjang Cashew BBQ 2026 04 King", "kg_czk": 271.25, "gramaze": [100, 200, 500, 1000, 5000]}, {"kod": "10503", "nazev": "Kešu excklusive", "kg_czk": 299.0, "gramaze": [100, 200, 500, 3000]}, {"kod": "1528", "nazev": "Kešu karamelizované klasické 2026 05 -MrRizos", "kg_czk": 249.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "10270", "nazev": "Kešu karamelizované s banánovo-čokoládovou příchutí 2026 05 -MrRizos", "kg_czk": 289.0, "gramaze": [50, 100, 200, 500, 1000, 3000]}, {"kod": "10246", "nazev": "Kešu karamelizované s příchutí jablka a skořice 2026 05 -MrRizos", "kg_czk": 285.0, "gramaze": [50, 100, 200, 500, 1000, 5000]}, {"kod": "1530", "nazev": "Kešu karamelizované solené 2026 05 -MrRizos", "kg_czk": 250.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "5364", "nazev": "Kešu ořechy s česnekem a rozmarýnem", "kg_czk": 307.5, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "10041", "nazev": "King N Arasidy v medu a skorici 2026 01 King", "kg_czk": 119.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "203", "nazev": "Kiwi bez AZO 03 2026-KS", "kg_czk": 129.0, "gramaze": [200, 500, 1000]}, {"kod": "7564", "nazev": "Kokos chips s karamelem a mořskou solí 2026 05 -KS", "kg_czk": 149.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "152", "nazev": "Kokos chips-KS", "kg_czk": 98.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "3729", "nazev": "Kokos v čokoládě", "kg_czk": 9.3, "gramaze": [200, 3000, 5000]}, {"kod": "2753", "nazev": "Kokosove kostky", "kg_czk": 169.0, "gramaze": [200, 500, 3000, 5000]}, {"kod": "9673", "nazev": "Kola lahve zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "248", "nazev": "Konopné semínko loupané-KS", "kg_czk": 142.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "6453", "nazev": "Kralovsky_orizek_smes_cokolada_King", "kg_czk": 276.25, "gramaze": [200, 500, 1000, 5000]}, {"kod": "546", "nazev": "Kukurice prazena barbecue KS", "kg_czk": 66.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "10251", "nazev": "Kysele housenky zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "251", "nazev": "Len hnědý-KS", "kg_czk": 26.5, "gramaze": [500, 1000, 3000]}, {"kod": "254", "nazev": "Len zlatý 2026 05 -KS", "kg_czk": 34.5, "gramaze": [500, 1000, 3000]}, {"kod": "3107", "nazev": "Lieskovce  jadra prazene v bielej cokolade", "kg_czk": 279.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "3106", "nazev": "Lieskovce prazene v horkej cokolade", "kg_czk": 222.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "1475", "nazev": "Lieskovce prazene v mliecnej cokolade", "kg_czk": 215.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "510", "nazev": "Lieskovce prazene v mliecnej cokolade so skoricou", "kg_czk": 240.0, "gramaze": [100, 200, 500, 1000, 3000, 4000]}, {"kod": "10730", "nazev": "Liskova jadra drcena 2-4mm-KS", "kg_czk": 345.0, "gramaze": [10, 200, 500, 1000, 10000]}, {"kod": "10261", "nazev": "Liskove orechy tiramisu", "kg_czk": 209.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "3108", "nazev": "Liskove orechy v jogurtu", "kg_czk": 192.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "128", "nazev": "Lísková jádra loupaná-KS", "kg_czk": 419.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "125", "nazev": "Lísková jádra natural 2026 04 -MBI", "kg_czk": 417.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "4182", "nazev": "Lyofil jahody v jogurtove cokolade", "kg_czk": 349.0, "gramaze": [100, 200, 500, 1000]}, {"kod": "920", "nazev": "Lyofilizovane maliny v bielej cokolade", "kg_czk": 412.0, "gramaze": [200]}, {"kod": "146", "nazev": "Makadamové ořechy 2025ST MBI", "kg_czk": 399.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "4893", "nazev": "Makadamové ořechy pražené na sucho, solené-KS", "kg_czk": 459.0, "gramaze": [100, 200, 500, 1000, 5000]}, {"kod": "1808", "nazev": "Maliny a ostruziny smes", "kg_czk": 149.0, "gramaze": [230, 1000]}, {"kod": "107", "nazev": "mandle 1.54 jadra prazena v bielej cokolade 2026 03 Encinger", "kg_czk": 213.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "2738", "nazev": "Mandle a merunky drazovane mix", "kg_czk": 258.22, "gramaze": [200, 3000]}, {"kod": "3651", "nazev": "Mandle borůvkové", "kg_czk": 249.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "3995", "nazev": "Mandle CAPPUCCINO", "kg_czk": 299.0, "gramaze": [50, 100, 200, 500, 1000, 3000]}, {"kod": "3648", "nazev": "Mandle citronové", "kg_czk": 249.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "3993", "nazev": "Mandle EXCLUSIVE mix", "kg_czk": 289.0, "gramaze": [50, 100, 200, 500, 3000]}, {"kod": "2564", "nazev": "Mandle jadra  prazena 5 kg 2026 04 -HOS_converted", "kg_czk": 219.0, "gramaze": [200, 3000, 5000]}, {"kod": "101", "nazev": "Mandle jadra prazena loupana solena HOS", "kg_czk": 226.16, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "9945", "nazev": "Mandle jadra prazena solena s prichuti horcice 3 kg 2026 04 -HOS", "kg_czk": 223.07, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "89", "nazev": "Mandle jadra prazena solena s uzenou prichuti HOS", "kg_czk": 218.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "4212", "nazev": "Mandle JAHODA v bile cokolade", "kg_czk": 349.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "83", "nazev": "Mandle jádra loupana 3 kg HOS", "kg_czk": 215.72, "gramaze": [200, 500, 1000, 3000]}, {"kod": "80", "nazev": "Mandle jádra natural 23-25 (nonpareil) 2026 04 -KS", "kg_czk": 195.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "2486", "nazev": "Mandle jádra natural 3 kg 2025ST HOS_converted", "kg_czk": 190.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "3723", "nazev": "Mandle loupane s prichuti cervene papriky a chilli-MBI", "kg_czk": 356.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "9543", "nazev": "Mandle prazene solene s lanyzem a parmazanem Valencie DELUXE 2026 05 -BaumH", "kg_czk": 367.5, "gramaze": [200]}, {"kod": "1955", "nazev": "Mandle prazene v horkej cokolade", "kg_czk": 205.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "95", "nazev": "Mandle prazene v medu a soli HOS", "kg_czk": 259.0, "gramaze": [50, 100, 200, 500, 1000, 3000]}, {"kod": "4038", "nazev": "Mandle prazene v mliecnej cokolade", "kg_czk": 210.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "1958", "nazev": "Mandle prazene v mliecnej cokolade so skoricou", "kg_czk": 215.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "3721", "nazev": "Mandle pražené solené s bylinkami Valencie DELUX 2026 05 -BaumH", "kg_czk": 356.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "3722", "nazev": "Mandle pražené solené s lanýžem Valencie DELUXE 2026 05 -BaumH", "kg_czk": 375.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "3720", "nazev": "Mandle pražené solené Valencie DELUXE 2026 05 -BaumH", "kg_czk": 335.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "1964", "nazev": "Mandle tiramisu", "kg_czk": 189.0, "gramaze": [50, 100, 200, 500, 1000, 3000]}, {"kod": "10736", "nazev": "Mandle trisky-KS", "kg_czk": 232.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "8542", "nazev": "Mandle v baby blue krustě", "kg_czk": 370.56, "gramaze": [100, 200, 1000]}, {"kod": "8543", "nazev": "Mandle v baby pink krustě", "kg_czk": 362.88, "gramaze": [100, 200, 1000]}, {"kod": "1970", "nazev": "Mandle v barevné krustě", "kg_czk": 281.28, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "1545", "nazev": "Mandle v bielej cokolade so zelenym cajom", "kg_czk": 259.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "8977", "nazev": "Mandle v bile cokolade a malinovem prasku", "kg_czk": 252.0, "gramaze": [100, 200, 500, 1000, 5000]}, {"kod": "1988", "nazev": "Mandle v bile cokolade s kokosem Raffaello", "kg_czk": 289.0, "gramaze": [100, 200, 500, 1000, 3000, 4000]}, {"kod": "5852", "nazev": "Mandle v jahodovém jogurtu 2026 04 Poex", "kg_czk": 199.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "9811", "nazev": "Mandle v jogurtove poleve", "kg_czk": 188.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "9601", "nazev": "Mandle v karamelu s vanilkovou příchutí", "kg_czk": 249.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "9921", "nazev": "Mandle v mlecne cokolade a malinovem prasku", "kg_czk": 309.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "10011", "nazev": "Mandle v mlecne cokolade snehove", "kg_czk": 265.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "1952", "nazev": "Mandle ve slaném karamelu", "kg_czk": 261.25, "gramaze": [50, 100, 200, 500, 1000, 3000, 5000]}, {"kod": "1975", "nazev": "Mandle Velikonoční v barevné v polevě s jogurtovou příchutí 2026 Poex", "kg_czk": 189.5, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "3726", "nazev": "Mandle VIENNA Product specification 098116", "kg_czk": 275.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "86", "nazev": "Mandlové plátky-KS", "kg_czk": 210.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "635", "nazev": "Mango platky 2026 05 -KS", "kg_czk": 144.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "212", "nazev": "Mango platky bez SO2 2026 05 -KS", "kg_czk": 274.0, "gramaze": [200, 500, 1000]}, {"kod": "8745", "nazev": "Maxi hadi zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "10233", "nazev": "Maxi medvedi zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "191", "nazev": "Medjoul-specifikace 2025ST MBI", "kg_czk": 168.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "10257", "nazev": "Medvidci tutti frutti zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "3111", "nazev": "Merunky v poleve s jogurtovou prichuti-KS", "kg_czk": 178.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "218", "nazev": "Meruňky č.1-KS", "kg_czk": 275.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "4440", "nazev": "Mini lentilky bez palmace", "kg_czk": 159.0, "gramaze": [230]}, {"kod": "4794", "nazev": "Mix orechu v medu a soli King", "kg_czk": 187.72, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "324", "nazev": "Mochyně peruánská - Physalis-KS", "kg_czk": 345.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "224", "nazev": "Moruse-KS", "kg_czk": 278.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "5892", "nazev": "Motylci zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "260", "nazev": "Mák mletý 100%-KS", "kg_czk": 79.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "257", "nazev": "Mák modrý-KS", "kg_czk": 66.0, "gramaze": [500, 1000, 3000]}, {"kod": "1768", "nazev": "Nugat mandlovy bily mekky turecky med", "kg_czk": 189.0, "gramaze": [200, 1000]}, {"kod": "2747", "nazev": "NW papája kondenzované kostky NW01", "kg_czk": 98.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "547", "nazev": "NW Specifikace Kukuřice pražená s medem a hořčicí NW02", "kg_czk": 100.0, "gramaze": [100, 200, 500, 1000]}, {"kod": "6456", "nazev": "Ořechový mix Velký v čokoládě", "kg_czk": 328.75, "gramaze": [100, 200, 500, 1000, 5000]}, {"kod": "296", "nazev": "Papaya plátky bez SO2-KS", "kg_czk": 245.0, "gramaze": [200, 500, 1000]}, {"kod": "4302", "nazev": "Papaya plátky-KS", "kg_czk": 98.0, "gramaze": [200, 500, 5000]}, {"kod": "143", "nazev": "Para orechy j 2026 05 -MBI", "kg_czk": 445.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "2117", "nazev": "Para orechy v tiramisu", "kg_czk": 229.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "1521", "nazev": "Pekan karamelizovany classic", "kg_czk": 354.5, "gramaze": [200, 500, 1000, 5000]}, {"kod": "140", "nazev": "Pekanové orechy jadrá", "kg_czk": 332.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "1823", "nazev": "Pendrek Twist MIX Diana", "kg_czk": 181.44, "gramaze": [100, 200, 500, 1000]}, {"kod": "149", "nazev": "Piniova jadra 2026 05 -MBI", "kg_czk": 725.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "137", "nazev": "Pistacie loupane Iran 2026 04 -MBI", "kg_czk": 630.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "131", "nazev": "Pistacie ve skorapce prazene 2026 05 -MBI", "kg_czk": 245.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "134", "nazev": "Pistacie ve skorapce prazene a solene-MBI", "kg_czk": 252.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "71", "nazev": "Podzemnice blanšírovaná-KS", "kg_czk": 43.0, "gramaze": [200, 1000, 3000]}, {"kod": "4452", "nazev": "Precliky tri barev", "kg_czk": 254.18, "gramaze": [200, 500, 1000, 2000]}, {"kod": "3979", "nazev": "Precliky-KS", "kg_czk": 84.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "155", "nazev": "Premium mix orech Nutworld", "kg_czk": 298.5, "gramaze": [50, 100, 200, 500, 1000, 3000]}, {"kod": "2573", "nazev": "Quinoa bílá-KS", "kg_czk": 67.0, "gramaze": [200, 1000, 3000]}, {"kod": "2576", "nazev": "Quinoa černá-KS", "kg_czk": 89.0, "gramaze": [200, 1000, 3000]}, {"kod": "3717", "nazev": "Rozinky barevná směs", "kg_czk": 200.0, "gramaze": [100, 200, 500, 1000, 5000]}, {"kod": "3082", "nazev": "Rozinky obri MIX", "kg_czk": 127.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "233", "nazev": "Rozinky obří zlaté-KS", "kg_czk": 129.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "227", "nazev": "Rozinky sultánky RTU 2025ST MBI", "kg_czk": 85.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "1967", "nazev": "Rozinky v polevach MIX", "kg_czk": 169.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "10161", "nazev": "Rýžové krekry zahradní bylinky King", "kg_czk": 177.5, "gramaze": [150, 300]}, {"kod": "5502", "nazev": "Salatova smes seminek a piniovych orechu", "kg_czk": 144.25, "gramaze": [500, 3000]}, {"kod": "2474", "nazev": "Semiinkova smes", "kg_czk": 65.9, "gramaze": [500, 1000, 3000]}, {"kod": "263", "nazev": "Sezam-KS", "kg_czk": 51.0, "gramaze": [500, 1000, 3000]}, {"kod": "2723", "nazev": "Sklzas_kavova zr v hor", "kg_czk": 286.08, "gramaze": [200, 500, 1000, 3000]}, {"kod": "2336", "nazev": "Sklzas_kyselezmix", "kg_czk": 180.0, "gramaze": [230, 1000]}, {"kod": "2333", "nazev": "Sklzas_mandle v karam", "kg_czk": 220.8, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "7853", "nazev": "Sklzas_mandle ve stribrne", "kg_czk": 575.04, "gramaze": [100, 200, 1000]}, {"kod": "7852", "nazev": "Sklzas_mandle zlata", "kg_czk": 645.12, "gramaze": [100, 200, 1000]}, {"kod": "2018", "nazev": "Sklzas_merunky jahodo jog", "kg_czk": 205.44, "gramaze": [200, 500, 1000, 3000]}, {"kod": "4512", "nazev": "Sklzas_mini mrshmallows", "kg_czk": 171.12, "gramaze": [100, 1000]}, {"kod": "2693", "nazev": "Skořicový MIX", "kg_czk": 250.05, "gramaze": [200, 3000]}, {"kod": "2708", "nazev": "Sladka smes DELUXE", "kg_czk": 253.55, "gramaze": [200, 3000]}, {"kod": "1028", "nazev": "Slany mix ALL IN ONE", "kg_czk": 192.09, "gramaze": [200, 500, 1000, 3000]}, {"kod": "5511", "nazev": "Slany mix EXCLUSIVE", "kg_czk": 220.98, "gramaze": [50, 100, 200, 500, 3000]}, {"kod": "161", "nazev": "Slany party mix", "kg_czk": 239.27, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "3975", "nazev": "Slany praclik v horkej cokolade", "kg_czk": 275.0, "gramaze": [200, 500, 1000, 2000]}, {"kod": "3978", "nazev": "Slany praclik v mliecnej cokolade", "kg_czk": 175.0, "gramaze": [200, 500, 1000, 2000]}, {"kod": "3980", "nazev": "Slany praclik v mliecnej cokolade so slanym karamelom", "kg_czk": 195.0, "gramaze": [200, 500, 1000]}, {"kod": "6459", "nazev": "Slaný mix Itálie specification 204906 -2026 04", "kg_czk": 183.75, "gramaze": [50, 100, 200, 500, 1000, 3000]}, {"kod": "6462", "nazev": "Slaný mix Mexiko", "kg_czk": 170.0, "gramaze": [50, 100, 200, 500, 1000, 3000]}, {"kod": "9547", "nazev": "Slaný mix Premium", "kg_czk": 378.75, "gramaze": [50, 100, 200, 500, 1000, 3000]}, {"kod": "10479", "nazev": "Slunecnice BIO-KS", "kg_czk": 58.0, "gramaze": [200, 500, 1000]}, {"kod": "1991", "nazev": "Slunecnice v barevne kruste. docx -KS", "kg_czk": 119.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "1949", "nazev": "Slunečnice tříbarevná-KS", "kg_czk": 199.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "266", "nazev": "Slunečnice-KS", "kg_czk": 34.5, "gramaze": [500, 1000, 3000]}, {"kod": "158", "nazev": "Smes jader", "kg_czk": 309.6, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "5499", "nazev": "Smes kesu a mandle natural", "kg_czk": 215.51, "gramaze": [500, 3000]}, {"kod": "4896", "nazev": "Smes mandli v cokolade BROWN", "kg_czk": 231.85, "gramaze": [100, 200, 500, 3000]}, {"kod": "3097", "nazev": "Smes orechu a rozinek", "kg_czk": 197.84, "gramaze": [200, 500, 1000, 3000]}, {"kod": "2342", "nazev": "Smes orechu DELUXE", "kg_czk": 212.79, "gramaze": [500, 3000]}, {"kod": "3091", "nazev": "Smes orechu prazena nesolena", "kg_czk": 241.86, "gramaze": [200, 500, 1000, 3000]}, {"kod": "2345", "nazev": "Smes orechu stastne srdce", "kg_czk": 175.0, "gramaze": [500, 3000]}, {"kod": "6450", "nazev": "Smes ovoce zdrava energie", "kg_czk": 252.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "5505", "nazev": "Smes seminek kesu a mandle natural", "kg_czk": 134.65, "gramaze": [500, 1000, 3000]}, {"kod": "10245", "nazev": "Sovicky zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "10564", "nazev": "specifikace krekry BBQ v AJ 2025 08 ST King", "kg_czk": 120.0, "gramaze": [150, 300]}, {"kod": "10558", "nazev": "Specifikace krekry chilli v AJ 2025 08ST King", "kg_czk": 120.0, "gramaze": [150, 300]}, {"kod": "10570", "nazev": "Specifikace krekry original 2025 08 ST King", "kg_czk": 120.0, "gramaze": [150, 300]}, {"kod": "4449", "nazev": "Specifikace Preclíky v bílé čokoládě 2025 10 Poex", "kg_czk": 252.0, "gramaze": [200, 500, 1000, 2000]}, {"kod": "2702", "nazev": "Studentska smes", "kg_czk": 153.93, "gramaze": [500, 1000, 3000]}, {"kod": "9552", "nazev": "Sýrové kuličky s příchutí Gauda", "kg_czk": 318.75, "gramaze": [200, 500, 1000]}, {"kod": "2699", "nazev": "Tiramisu smes", "kg_czk": 220.6, "gramaze": [50, 100, 200, 500, 1000]}, {"kod": "2423", "nazev": "Tropicka smes", "kg_czk": 127.33, "gramaze": [100, 500, 2000]}, {"kod": "10020", "nazev": "Tropicky MIX zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "3076", "nazev": "Třešně-KS", "kg_czk": 185.0, "gramaze": [200, 500, 1000]}, {"kod": "9679", "nazev": "Upiri zuby zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "3993VAN", "nazev": "Vanocni mandle EXCLUSIVE", "kg_czk": 289.0, "gramaze": [200]}, {"kod": "8739", "nazev": "Vejce zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "10239", "nazev": "Veseli smajlici zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "4506", "nazev": "Vesely hamburger zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "239", "nazev": "Višně USA-KS", "kg_czk": 499.0, "gramaze": [200, 500, 1000]}, {"kod": "122", "nazev": "Vlasska jadra chile 80% pulek 2026 05 -KS", "kg_czk": 165.0, "gramaze": [500, 1000, 3000]}, {"kod": "4797", "nazev": "Zabky zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "2000", "nazev": "Zele stevia medvidci bez cukru", "kg_czk": 189.0, "gramaze": [230]}, {"kod": "1832", "nazev": "Zizalky zele", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "1418", "nazev": "Zázvor kousky bez SO2-KS", "kg_czk": 199.0, "gramaze": [200, 500, 1000]}, {"kod": "6465", "nazev": "Čokameny KS", "kg_czk": 114.0, "gramaze": [200, 500, 5000]}, {"kod": "236", "nazev": "Švestky Francie 03 2026 -aktuálně-KS", "kg_czk": 92.0, "gramaze": [200, 500, 1000, 10000]}];
 
-let selectedProduct = null;
-let rollupActive = false;
-let rollupRows = []; // [{search, gramaz, product}]
-
-// ── Roll-up ──
-function toggleRollup() {
-  rollupActive = !rollupActive;
-  document.getElementById('rollup-btn').classList.toggle('active', rollupActive);
-  document.getElementById('rollup-section').classList.toggle('open', rollupActive);
-  if (rollupActive && rollupRows.length === 0) { addRollupRow(); addRollupRow(); }
-  calculate();
+// ══ TAB SWITCHING ══
+function switchTab(tab) {
+  document.getElementById('tab-produkty').style.display = tab === 'produkty' ? 'block' : 'none';
+  document.getElementById('tab-darky').style.display   = tab === 'darky'    ? 'block' : 'none';
+  document.getElementById('tab-btn-produkty').classList.toggle('active', tab === 'produkty');
+  document.getElementById('tab-btn-darky').classList.toggle('active',    tab === 'darky');
 }
 
-function addRollupRow() {
-  const i = rollupRows.length;
-  rollupRows.push({ product: null, gramaz: 0 });
-  const container = document.getElementById('rollup-rows');
-  const div = document.createElement('div');
-  div.className = 'rollup-row';
-  div.id = 'rrow-' + i;
-  div.innerHTML = `
-    <div style="position:relative">
-      <input type="text" placeholder="Název nebo kód produktu…" oninput="rollupSearch(${i},this.value)" autocomplete="off"
-             style="width:100%;font-size:12px;padding:6px 10px;border:1.5px solid #d4c0a8;border-radius:8px"/>
-      <div id="rres-${i}" style="position:absolute;top:100%;left:0;right:0;background:white;border:1.5px solid var(--br);border-top:none;border-radius:0 0 6px 6px;max-height:160px;overflow-y:auto;z-index:200;display:none;font-size:12px"></div>
-    </div>
-    <input type="number" placeholder="g" min="1" oninput="rollupGramaz(${i},this.value)"
-           style="width:100%;font-size:12px;padding:6px 8px;border:1.5px solid #d4c0a8;border-radius:8px"/>
-    <button class="rm-btn" onclick="removeRollupRow(${i})">✕</button>`;
-  container.appendChild(div);
-}
-
-function removeRollupRow(i) {
-  document.getElementById('rrow-' + i)?.remove();
-  rollupRows[i] = null;
-  calculate();
-}
-
-function rollupSearch(i, q) {
-  const box = document.getElementById('rres-' + i);
-  if (!q || q.length < 2) { box.style.display = 'none'; return; }
-  const ql = q.toLowerCase();
-  const hits = PRODUKTY.filter(p => p.nazev.toLowerCase().includes(ql) || p.kod.includes(q)).slice(0, 20);
-  if (!hits.length) { box.style.display = 'none'; return; }
-  box.innerHTML = hits.map(p =>
-    `<div style="padding:5px 10px;cursor:pointer;border-bottom:1px solid #f5ede4"
-          onmousedown="rollupSelect(${i},${PRODUKTY.indexOf(p)},this)">${p.nazev} <span style="color:#aaa">${p.kod}</span></div>`
-  ).join('');
-  box.style.display = 'block';
-}
-
-function rollupSelect(i, prodIdx, el) {
-  rollupRows[i] = rollupRows[i] || {};
-  rollupRows[i].product = PRODUKTY[prodIdx];
-  const row = document.getElementById('rrow-' + i);
-  row.querySelector('input[type=text]').value = PRODUKTY[prodIdx].nazev;
-  el.closest('div[id^=rres]').style.display = 'none';
-  calculate();
-}
-
-function rollupGramaz(i, val) {
-  if (!rollupRows[i]) rollupRows[i] = {};
-  rollupRows[i].gramaz = parseFloat(val) || 0;
-  calculate();
-}
-
-function getBlendedKcKg() {
-  const valid = rollupRows.filter(r => r && r.product && r.gramaz > 0);
-  if (valid.length === 0) return null;
-  const totalG = valid.reduce((s, r) => s + r.gramaz, 0);
-  const weightedSum = valid.reduce((s, r) => s + r.product.kg_czk * (r.gramaz / 1000), 0);
-  const blended = (weightedSum / (totalG / 1000)) + 20; // +20 Kč/kg za míchání
-  const info = valid.map(r => `${r.gramaz}g ${r.product.nazev.substring(0,25)}… (${r.product.kg_czk} Kč/kg)`).join(', ');
-  document.getElementById('blend-info').style.display = 'block';
-  document.getElementById('blend-info').innerHTML =
-    `Blended nákupní cena: <strong>${blended.toFixed(2)} Kč/kg</strong> (váž. průměr + 20 Kč/kg míchání) | Celková gramáž: <strong>${totalG} g</strong><br><span style="color:#888">${info}</span>`;
-  return { kc: blended, totalG };
-}
-
-function onGramazChange() {
-  const val = document.getElementById('gramaz').value;
-  document.getElementById('gramaz-custom').style.display = val === 'custom' ? 'block' : 'none';
-  calculate();
-}
-
-// ── Cenové vzorce (z nw_core.py) ──
+// ══ CENOVÉ VZORCE ══
 function priceRoundMO(x) {
   const base = Math.ceil(x);
   for (let c = base; c < base + 10; c++) {
@@ -261,8 +367,6 @@ function priceRoundMO(x) {
   }
   return base + (9 - (base % 10));
 }
-function priceRoundVO(x) { return Math.round(x); }
-
 function moCZ(g, kc) {
   if (g === 50)   return priceRoundMO(((kc * 1.12) / 20) * 3 + 7);
   if (g === 100)  return priceRoundMO(((kc * 1.12) / 10) * 2.5 + 9);
@@ -273,104 +377,380 @@ function moCZ(g, kc) {
   return priceRoundMO((kc * (g / 1000) * 1.2 + 20) * 1.12);
 }
 function voCZ(g, kc, mo) {
-  if ([50,100,200,230,500].includes(g)) return priceRoundVO(mo * 0.8);
-  if (g === 1000) return priceRoundVO((kc * 1.2 + 10) * 1.12);
-  return priceRoundVO((kc * (g / 1000) * 1.1 + 20) * 1.12);
+  if ([50,100,200,230,500].includes(g)) return Math.round(mo * 0.8);
+  if (g === 1000) return Math.round((kc * 1.2 + 10) * 1.12);
+  return Math.round((kc * (g / 1000) * 1.1 + 20) * 1.12);
 }
 function nakupCena(g, kc) { return kc * g / 1000; }
+function roundTo9(x) {
+  const b = Math.floor(x);
+  for (let c = b; c <= b + 10; c++) { if (c % 10 === 9 && c >= x) return c; }
+  return b + 9;
+}
 
-// ── Vyhledávání ──
-function onSearch(q) {
-  const box = document.getElementById('search-results');
+// ══════════════════════════════════════════════
+// TAB PRODUKTY — stav + logika
+// ══════════════════════════════════════════════
+let pProduct = null;
+let pRollupActive = false;
+let pRollupRows = [];
+
+function pOnSearch(q) {
+  const box = document.getElementById('p-search-results');
   if (!q || q.length < 2) { box.classList.remove('open'); return; }
   const ql = q.toLowerCase();
-  const hits = PRODUKTY.filter(p =>
-    p.nazev.toLowerCase().includes(ql) || p.kod.includes(q)
-  ).slice(0, 30);
+  const hits = PRODUKTY.filter(p => p.nazev.toLowerCase().includes(ql) || p.kod.includes(q)).slice(0, 30);
   if (!hits.length) { box.classList.remove('open'); return; }
-  box.innerHTML = hits.map((p,i) =>
-    `<div class="search-item" data-i="${i}" onclick="selectProduct(${PRODUKTY.indexOf(p)})">
+  box.innerHTML = hits.map(p =>
+    `<div class="search-item" onclick="pSelectProduct(${PRODUKTY.indexOf(p)})">
       ${p.nazev}<span class="item-kod">${p.kod}</span>
     </div>`
   ).join('');
   box.classList.add('open');
 }
 
-function selectProduct(idx) {
-  selectedProduct = PRODUKTY[idx];
-  document.getElementById('search').value = selectedProduct.nazev;
-  document.getElementById('search-results').classList.remove('open');
-  document.getElementById('selected-hint').textContent = 'Kód: ' + selectedProduct.kod + ' | ' + selectedProduct.kg_czk + ' Kč/kg';
-
-  const sel = document.getElementById('gramaz');
+function pSelectProduct(idx) {
+  pProduct = PRODUKTY[idx];
+  document.getElementById('p-search').value = pProduct.nazev;
+  document.getElementById('p-search-results').classList.remove('open');
+  document.getElementById('p-selected-hint').textContent = 'Kód: ' + pProduct.kod + ' | ' + pProduct.kg_czk + ' Kč/kg';
+  const sel = document.getElementById('p-gramaz');
   sel.disabled = false;
   const GRAMAZE = [50, 100, 200, 500, 1000, 2000, 3000, 4000, 5000];
   sel.innerHTML = GRAMAZE.map(g =>
     `<option value="${g}">${g < 1000 ? g + ' g' : (g/1000) + ' kg'}</option>`
   ).join('') + '<option value="custom">✏️ Vlastní gramáž…</option>';
-  calculate();
+  pCalculate();
 }
 
-document.addEventListener('click', e => {
-  if (!e.target.closest('.search-wrap'))
-    document.getElementById('search-results').classList.remove('open');
-});
+function pOnGramazChange() {
+  const val = document.getElementById('p-gramaz').value;
+  document.getElementById('p-gramaz-custom').style.display = val === 'custom' ? 'block' : 'none';
+  pCalculate();
+}
 
-function calculate() {
-  const pocet = parseInt(document.getElementById('pocet').value) || 1;
+function pToggleRollup() {
+  pRollupActive = !pRollupActive;
+  document.getElementById('p-rollup-btn').classList.toggle('active', pRollupActive);
+  document.getElementById('p-rollup-section').classList.toggle('open', pRollupActive);
+  if (pRollupActive && pRollupRows.length === 0) { pAddRollupRow(); pAddRollupRow(); }
+  pCalculate();
+}
 
-  // Roll-up mode
-  if (rollupActive) {
-    const blend = getBlendedKcKg();
+function pAddRollupRow() {
+  const i = pRollupRows.length;
+  pRollupRows.push({ product: null, gramaz: 0 });
+  const container = document.getElementById('p-rollup-rows');
+  const div = document.createElement('div');
+  div.className = 'rollup-row';
+  div.id = 'prrow-' + i;
+  div.innerHTML = `
+    <div style="position:relative">
+      <input type="text" placeholder="Název nebo kód…" oninput="pRollupSearch(${i},this.value)" autocomplete="off"
+             style="width:100%;font-size:12px;padding:6px 10px;border:1.5px solid #d4c0a8;border-radius:8px"/>
+      <div id="prres-${i}" style="position:absolute;top:100%;left:0;right:0;background:white;border:1.5px solid var(--br);border-top:none;border-radius:0 0 6px 6px;max-height:160px;overflow-y:auto;z-index:200;display:none;font-size:12px"></div>
+    </div>
+    <input type="number" placeholder="g" min="1" oninput="pRollupGramaz(${i},this.value)"
+           style="width:100%;font-size:12px;padding:6px 8px;border:1.5px solid #d4c0a8;border-radius:8px"/>
+    <button class="rm-btn" onclick="pRemoveRollupRow(${i})">✕</button>`;
+  container.appendChild(div);
+}
+
+function pRemoveRollupRow(i) {
+  document.getElementById('prrow-' + i)?.remove();
+  pRollupRows[i] = null;
+  pCalculate();
+}
+
+function pRollupSearch(i, q) {
+  const box = document.getElementById('prres-' + i);
+  if (!q || q.length < 2) { box.style.display = 'none'; return; }
+  const ql = q.toLowerCase();
+  const hits = PRODUKTY.filter(p => p.nazev.toLowerCase().includes(ql) || p.kod.includes(q)).slice(0, 20);
+  if (!hits.length) { box.style.display = 'none'; return; }
+  box.innerHTML = hits.map(p =>
+    `<div style="padding:5px 10px;cursor:pointer;border-bottom:1px solid #f5ede4"
+          onmousedown="pRollupSelect(${i},${PRODUKTY.indexOf(p)},this)">${p.nazev} <span style="color:#aaa">${p.kod}</span></div>`
+  ).join('');
+  box.style.display = 'block';
+}
+
+function pRollupSelect(i, prodIdx, el) {
+  pRollupRows[i] = pRollupRows[i] || {};
+  pRollupRows[i].product = PRODUKTY[prodIdx];
+  document.getElementById('prrow-' + i).querySelector('input[type=text]').value = PRODUKTY[prodIdx].nazev;
+  el.closest('div[id^=prres]').style.display = 'none';
+  pCalculate();
+}
+
+function pRollupGramaz(i, val) {
+  if (!pRollupRows[i]) pRollupRows[i] = {};
+  pRollupRows[i].gramaz = parseFloat(val) || 0;
+  pCalculate();
+}
+
+function pGetBlended() {
+  const valid = pRollupRows.filter(r => r && r.product && r.gramaz > 0);
+  if (!valid.length) return null;
+  const totalG = valid.reduce((s, r) => s + r.gramaz, 0);
+  const blended = (valid.reduce((s, r) => s + r.product.kg_czk * (r.gramaz / 1000), 0) / (totalG / 1000)) + 20;
+  const info = valid.map(r => `${r.gramaz}g ${r.product.nazev.substring(0,25)}… (${r.product.kg_czk} Kč/kg)`).join(', ');
+  document.getElementById('p-blend-info').style.display = 'block';
+  document.getElementById('p-blend-info').innerHTML =
+    `Blended nákupní cena: <strong>${blended.toFixed(2)} Kč/kg</strong> (váž. průměr + 20 Kč/kg míchání) | Celkem: <strong>${totalG} g</strong><br><span style="color:#888">${info}</span>`;
+  return { kc: blended, totalG };
+}
+
+function pCalculate() {
+  const pocet = parseInt(document.getElementById('p-pocet').value) || 1;
+  if (pRollupActive) {
+    const blend = pGetBlended();
     if (!blend) return;
-    const { kc, totalG: g } = blend;
-    computeAndShow(g, kc, pocet);
+    pShow(blend.totalG, blend.kc, pocet);
     return;
   }
-
-  if (!selectedProduct) return;
-  const gramazSel = document.getElementById('gramaz').value;
+  if (!pProduct) return;
+  const gramazSel = document.getElementById('p-gramaz').value;
   const g = gramazSel === 'custom'
-    ? (parseInt(document.getElementById('gramaz-custom').value) || 0)
+    ? (parseInt(document.getElementById('p-gramaz-custom').value) || 0)
     : parseInt(gramazSel);
   if (!g) return;
-  const kc = selectedProduct.kg_czk;
-  computeAndShow(g, kc, pocet);
+  pShow(g, pProduct.kg_czk, pocet);
 }
 
-function computeAndShow(g, kc, pocet) {
-
+function pShow(g, kc, pocet) {
   const mo = moCZ(g, kc);
   const vo = voCZ(g, kc, mo);
   const nakup = nakupCena(g, kc);
   if (!mo) return;
   const zisk = mo - nakup;
   const marze = Math.round((zisk / mo) * 100);
-
-  document.getElementById('empty-state').style.display = 'none';
-  document.getElementById('result-content').style.display = 'block';
-
-  document.getElementById('r-mo').textContent = mo + ' Kč';
-  document.getElementById('r-vo').textContent = vo + ' Kč';
-  document.getElementById('r-nakup').textContent = Math.round(nakup) + ' Kč';
-  document.getElementById('r-marze').textContent = marze + ' %';
-  document.getElementById('r-marze-czk').textContent = 'zisk ' + Math.round(zisk) + ' Kč / ks';
-  document.getElementById('r-nakup-kg').textContent = kc.toLocaleString('cs') + ' Kč';
-  document.getElementById('r-nakup-ks').textContent = nakup.toFixed(2).replace('.', ',') + ' Kč';
-
-  const marze_el = document.getElementById('r-marze');
-  marze_el.style.color = marze >= 45 ? '#2e7d32' : marze >= 35 ? '#f57c00' : '#c62828';
-
+  document.getElementById('p-empty-state').style.display = 'none';
+  document.getElementById('p-result-content').style.display = 'block';
+  document.getElementById('p-r-mo').textContent = mo + ' Kč';
+  document.getElementById('p-r-vo').textContent = vo + ' Kč';
+  document.getElementById('p-r-nakup').textContent = Math.round(nakup) + ' Kč';
+  document.getElementById('p-r-marze').textContent = marze + ' %';
+  document.getElementById('p-r-marze-czk').textContent = 'zisk ' + Math.round(zisk) + ' Kč / ks';
+  document.getElementById('p-r-nakup-kg').textContent = kc.toLocaleString('cs') + ' Kč';
+  document.getElementById('p-r-nakup-ks').textContent = nakup.toFixed(2).replace('.', ',') + ' Kč';
+  document.getElementById('p-r-marze').style.color = marze >= 45 ? '#2e7d32' : marze >= 35 ? '#f57c00' : '#c62828';
   if (pocet > 1) {
-    document.getElementById('result-total').style.display = 'block';
-    document.getElementById('t-pocet').textContent = pocet + ' ks';
-    document.getElementById('t-mo').textContent = (mo * pocet).toLocaleString('cs') + ' Kč';
-    document.getElementById('t-vo').textContent = (vo * pocet).toLocaleString('cs') + ' Kč';
-    document.getElementById('t-zisk').textContent = (Math.round(zisk) * pocet).toLocaleString('cs') + ' Kč';
+    document.getElementById('p-result-total').style.display = 'block';
+    document.getElementById('p-t-pocet').textContent = pocet + ' ks';
+    document.getElementById('p-t-mo').textContent = (mo * pocet).toLocaleString('cs') + ' Kč';
+    document.getElementById('p-t-vo').textContent = (vo * pocet).toLocaleString('cs') + ' Kč';
+    document.getElementById('p-t-zisk').textContent = (Math.round(zisk) * pocet).toLocaleString('cs') + ' Kč';
   } else {
-    document.getElementById('result-total').style.display = 'none';
+    document.getElementById('p-result-total').style.display = 'none';
   }
 }
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('#tab-produkty .search-wrap'))
+    document.getElementById('p-search-results').classList.remove('open');
+});
+
+// ══════════════════════════════════════════════
+// TAB DÁRKY — stav + logika
+// ══════════════════════════════════════════════
+const D_VZORCE = {
+  sacek_knir:       { obal: 10,   prace: 5,    marze: 50, vo: 0.8 },
+  sacek_kolick:     { obal: 15,   prace: 10,   marze: 50, vo: 0.8 },
+  sacek_vanoce:     { obal: 5,    prace: 5,    marze: 50, vo: 0.8 },
+  zajicek:          { obal: 10,   prace: 10,   marze: 50, vo: 0.8 },
+  celofan:          { obal: 10,   prace: 10,   marze: 50, vo: 0.8 },
+  kornout:          { obal: 12,   prace: 7,    marze: 50, vo: 0.8 },
+  eko_kelimek:      { obal: 9.5,  prace: 7,    marze: 45, vo: 0.8 },
+  sklenic_deluxe:   { obal: 14,   prace: 7,    marze: 50, vo: 0.8 },
+  sklenic_exclusive:{ obal: 15,   prace: 6,    marze: 50, vo: 0.8 },
+  kazetka:          { obal: 8,    prace: 14,   marze: 47, vo: 0.8 },
+  krabice_kelimky:  { obal: 69,   prace: 17,   marze: 50, vo: 0.8 },
+  krabicka:         { obal: 17.5, prace: 27.5, marze: 50, vo: 0.7 },
+  kraft:            { obal: 8,    prace: 16,   marze: 54, vo: 0.7 },
+  krabicka_2x50:    { obal: 15,   prace: 20,   marze: null, formula: 'nasobek', N: 2.5, vo: 0.7 },
+  krabicka_4x80:    { obal: 15,   prace: 20,   marze: 55,   vo: 0.7, floor: 299 },
+  vanocni_krabicka: { obal: 15,   prace: 20,   marze: null, formula: 'nasobek', N: 2.5, vo: 0.7 },
+};
+
+let dRows = [];   // [{product, gramaz}]
+let dFormula = 'marze';
+let dMarze = 50;
+
+function dAddRow() {
+  if (dRows.length >= 12) return;
+  const i = dRows.length;
+  dRows.push({ product: null, gramaz: 0 });
+  const container = document.getElementById('d-prod-rows');
+  const div = document.createElement('div');
+  div.id = 'drow-' + i;
+  div.className = 'd-prod-row';
+  div.innerHTML = `
+    <div>
+      <div style="position:relative">
+        <input type="text" placeholder="Název nebo kód produktu…" autocomplete="off"
+               oninput="dRowSearch(${i},this.value)" onfocus="dRowSearch(${i},this.value)"
+               style="width:100%;font-size:12px;padding:7px 10px;border:1.5px solid #d4c0a8;border-radius:8px"/>
+        <div id="dres-${i}" style="position:absolute;top:100%;left:0;right:0;background:white;border:1.5px solid var(--br);border-top:none;border-radius:0 0 6px 6px;max-height:180px;overflow-y:auto;z-index:200;display:none;font-size:12px"></div>
+      </div>
+      <div class="d-prod-hint" id="dhint-${i}"></div>
+    </div>
+    <input type="number" placeholder="g" min="1" oninput="dRowGramaz(${i},this.value)"
+           style="width:100%;font-size:12px;padding:7px 8px;border:1.5px solid #d4c0a8;border-radius:8px"/>
+    <button class="d-rm" onclick="dRemoveRow(${i})">✕</button>`;
+  container.appendChild(div);
+}
+
+function dRemoveRow(i) {
+  document.getElementById('drow-' + i)?.remove();
+  dRows[i] = null;
+  dCalculate();
+}
+
+function dRowSearch(i, q) {
+  const box = document.getElementById('dres-' + i);
+  if (!q || q.length < 2) { box.style.display = 'none'; return; }
+  const ql = q.toLowerCase();
+  const hits = PRODUKTY.filter(p => p.nazev.toLowerCase().includes(ql) || p.kod.includes(q)).slice(0, 25);
+  if (!hits.length) { box.style.display = 'none'; return; }
+  box.innerHTML = hits.map(p =>
+    `<div style="padding:5px 10px;cursor:pointer;border-bottom:1px solid #f5ede4"
+          onmousedown="dRowSelect(${i},${PRODUKTY.indexOf(p)},this)">
+       ${p.nazev} <span style="color:#aaa;font-size:11px">${p.kod}</span>
+     </div>`
+  ).join('');
+  box.style.display = 'block';
+}
+
+function dRowSelect(i, idx, el) {
+  dRows[i] = dRows[i] || {};
+  dRows[i].product = PRODUKTY[idx];
+  const row = document.getElementById('drow-' + i);
+  row.querySelector('input[type=text]').value = PRODUKTY[idx].nazev;
+  document.getElementById('dhint-' + i).textContent = PRODUKTY[idx].kg_czk + ' Kč/kg';
+  el.closest('div[id^=dres]').style.display = 'none';
+  dCalculate();
+}
+
+function dRowGramaz(i, val) {
+  if (!dRows[i]) dRows[i] = {};
+  dRows[i].gramaz = parseFloat(val) || 0;
+  dCalculate();
+}
+
+function dApplyVzorec() {
+  const key = document.getElementById('d-vzorec-sel').value;
+  if (!key) return;
+  const v = D_VZORCE[key];
+  document.getElementById('d-obal-cena').value = v.obal;
+  document.getElementById('d-prace-cena').value = v.prace;
+  document.getElementById('d-vo-fakt').value = v.vo || 0.8;
+  if (v.formula === 'nasobek') {
+    dSetFormula('nasobek');
+    document.getElementById('d-nasobek-input').value = v.N || 2;
+  } else {
+    dSetFormula('marze');
+    if (v.marze) {
+      document.getElementById('d-marze-input').value = v.marze;
+      dMarze = v.marze;
+      document.querySelectorAll('.marze-btn').forEach(b =>
+        b.classList.toggle('active', parseInt(b.textContent) === v.marze));
+    }
+  }
+  dCalculate();
+}
+
+function dSetFormula(f) {
+  dFormula = f;
+  document.getElementById('fb-marze').classList.toggle('active', f === 'marze');
+  document.getElementById('fb-nasobek').classList.toggle('active', f === 'nasobek');
+  document.getElementById('d-marze-section').style.display = f === 'marze' ? 'block' : 'none';
+  document.getElementById('d-nasobek-section').style.display = f === 'nasobek' ? 'block' : 'none';
+  dCalculate();
+}
+
+function dSetMarze(pct) {
+  dMarze = pct;
+  document.getElementById('d-marze-input').value = pct;
+  document.querySelectorAll('.marze-btn').forEach(b =>
+    b.classList.toggle('active', parseInt(b.textContent) === pct));
+  dCalculate();
+}
+
+function dSyncMarzeInput() {
+  dMarze = parseFloat(document.getElementById('d-marze-input').value) || 50;
+  document.querySelectorAll('.marze-btn').forEach(b =>
+    b.classList.toggle('active', parseInt(b.textContent) === dMarze));
+  dCalculate();
+}
+
+function dCalculate() {
+  const valid = dRows.filter(r => r && r.product && r.gramaz > 0);
+
+  const totalG = valid.reduce((s, r) => s + r.gramaz, 0);
+  const prodCost = valid.reduce((s, r) => s + r.product.kg_czk * r.gramaz / 1000, 0);
+
+  if (totalG > 0) {
+    document.getElementById('d-prod-total').style.display = 'block';
+    document.getElementById('dc-gram').textContent = totalG + ' g';
+    document.getElementById('dc-prod').textContent = prodCost.toFixed(2) + ' Kč';
+  } else {
+    document.getElementById('d-prod-total').style.display = 'none';
+  }
+
+  const obal = parseFloat(document.getElementById('d-obal-cena').value) || 0;
+  const prace = parseFloat(document.getElementById('d-prace-cena').value) || 0;
+  const dph = parseFloat(document.getElementById('d-dph').value) || 1.12;
+  const voFakt = parseFloat(document.getElementById('d-vo-fakt').value) || 0.8;
+
+  if (!valid.length || (!obal && !prace)) {
+    document.getElementById('d-empty-state').style.display = 'block';
+    document.getElementById('d-result-content').style.display = 'none';
+    return;
+  }
+
+  const obalPrace = obal + prace;
+  const naklady = prodCost + obalPrace;
+
+  const vzorKey = document.getElementById('d-vzorec-sel').value;
+  const vzorCfg = D_VZORCE[vzorKey] || {};
+
+  let mo;
+  if (dFormula === 'marze') {
+    const m = dMarze / 100;
+    mo = roundTo9((naklady * dph) / (1 - m));
+  } else {
+    const N = parseFloat(document.getElementById('d-nasobek-input').value) || 2;
+    mo = roundTo9(naklady * N);
+  }
+
+  // floor price (např. 4×80g min 299 Kč)
+  if (vzorCfg.floor && mo < vzorCfg.floor) mo = vzorCfg.floor;
+
+  const vo = Math.round(mo * voFakt);
+  const realMarze = Math.round(((mo - naklady) / mo) * 100);
+  const zisk = mo - naklady;
+
+  document.getElementById('d-empty-state').style.display = 'none';
+  document.getElementById('d-result-content').style.display = 'block';
+
+  document.getElementById('dr-prod').textContent = prodCost.toFixed(2) + ' Kč';
+  document.getElementById('dr-obal').textContent = obalPrace.toFixed(2) + ' Kč';
+  document.getElementById('dr-nakl').textContent = naklady.toFixed(2) + ' Kč';
+  document.getElementById('dr-mo').textContent = mo + ' Kč';
+  document.getElementById('dr-vo').textContent = vo + ' Kč';
+  document.getElementById('dr-marze').textContent = realMarze + ' %';
+  document.getElementById('dr-marze').style.color = realMarze >= 45 ? '#2e7d32' : realMarze >= 35 ? '#f57c00' : '#c62828';
+  document.getElementById('dr-zisk').textContent = 'zisk ' + zisk.toFixed(0) + ' Kč/ks';
+  document.getElementById('dr-zisk-czk').textContent = zisk.toFixed(0) + ' Kč';
+  document.getElementById('dr-gram-label').textContent = totalG > 0 ? totalG + ' g obsahu' : '';
+  document.getElementById('dr-vo-label').textContent = 'MO × ' + voFakt;
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('#tab-darky'))
+    document.querySelectorAll('[id^=dres-]').forEach(b => b.style.display = 'none');
+});
 </script>
 </body>
 </html>
