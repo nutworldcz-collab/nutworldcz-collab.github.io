@@ -102,6 +102,12 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
     <div class="filter-row" id="filter-row">
       <button class="filter-btn active" data-list="all" onclick="setFilter('all',this)">Vše</button>
     </div>
+    <select id="sort-sel" onchange="renderCards()" style="border:1.5px solid #d4c0a8;border-radius:8px;padding:7px 10px;font-size:12px;font-family:inherit;background:white;color:#444;cursor:pointer">
+      <option value="date">Nejnovější</option>
+      <option value="due">Podle termínu</option>
+      <option value="value">Podle hodnoty</option>
+      <option value="name">Podle firmy A–Z</option>
+    </select>
   </div>
 
   <div class="summary" id="summary" style="display:none">
@@ -130,6 +136,14 @@ let allCards = [];
 let activeFilter = 'all';
 let refreshTimer = null;
 let countdown = 60;
+const CACHE_KEY = 'nw_zakazy_cache';
+
+function saveCache(lists, cards) {
+  try { localStorage.setItem(CACHE_KEY, JSON.stringify({ lists, cards, ts: Date.now() })); } catch(e) {}
+}
+function loadCache() {
+  try { return JSON.parse(localStorage.getItem(CACHE_KEY)); } catch(e) { return null; }
+}
 
 function api(path, params = {}) {
   const qs = new URLSearchParams({ key: KEY, token: TOKEN, ...params }).toString();
@@ -137,9 +151,22 @@ function api(path, params = {}) {
     .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
 }
 
-async function loadData() {
+async function loadData(silent = false) {
   clearInterval(refreshTimer);
-  document.getElementById('refresh-info').textContent = 'načítám…';
+  if (!silent) {
+    // Zobraz cache okamžitě, pokud existuje
+    const cache = loadCache();
+    if (cache) {
+      allLists = cache.lists;
+      allCards = cache.cards;
+      buildFilters();
+      renderCards();
+      const age = Math.round((Date.now() - cache.ts) / 60000);
+      document.getElementById('refresh-info').textContent = 'cache (' + age + ' min) · načítám…';
+    } else {
+      document.getElementById('refresh-info').textContent = 'načítám…';
+    }
+  }
   try {
     const [lists, cards] = await Promise.all([
       api(`/boards/${BOARD}/lists`),
@@ -147,6 +174,7 @@ async function loadData() {
     ]);
     allLists = lists.filter(l => !l.closed);
     allCards = cards.filter(c => !c.closed);
+    saveCache(allLists, allCards);
     buildFilters();
     renderCards();
     startCountdown();
@@ -154,12 +182,15 @@ async function loadData() {
     document.getElementById('refresh-info').textContent =
       'Aktualizováno ' + now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
   } catch(e) {
-    document.getElementById('main-content').innerHTML = `
-      <div class="state-box">
-        <div class="icon">⚠️</div>
-        <p>Nepodařilo se načíst data z Trella.<br><small>${e.message}</small></p>
-      </div>`;
-    document.getElementById('refresh-info').textContent = 'chyba';
+    if (allCards.length === 0) {
+      document.getElementById('main-content').innerHTML = `
+        <div class="state-box">
+          <div class="icon">⚠️</div>
+          <p>Nepodařilo se načíst data z Trella.<br><small>${e.message}</small></p>
+        </div>`;
+    }
+    document.getElementById('refresh-info').textContent = 'chyba · zobrazena cache';
+    startCountdown();
   }
 }
 
@@ -207,9 +238,17 @@ function parseCard(card) {
   const sumaMatch = desc.match(/Celkem s DPH\*\*: ([0-9 ,]+) Kč/);
   const suma = sumaMatch ? sumaMatch[1].trim() : null;
 
-  // Kontakt
+  // Kontakt — celý řádek
   const kontaktMatch = desc.match(/Kontakt\*\*: (.+)/);
-  const kontakt = kontaktMatch ? kontaktMatch[1].trim() : null;
+  const kontaktRaw = kontaktMatch ? kontaktMatch[1].trim() : null;
+
+  // Extrahuj telefon a email
+  const telMatch = kontaktRaw && kontaktRaw.match(/📞\s*([\+\d\s]{9,15})/);
+  const tel = telMatch ? telMatch[1].trim() : null;
+  const emailMatch = kontaktRaw && kontaktRaw.match(/📧\s*([^\s·]+@[^\s·]+)/);
+  const email = emailMatch ? emailMatch[1].trim() : null;
+  // Jméno kontaktu = část před první ·
+  const kontaktJmeno = kontaktRaw ? kontaktRaw.split('·')[0].trim() : null;
 
   // Rep
   const repMatch = desc.match(/Rep\*\*: (.+)/);
@@ -229,7 +268,7 @@ function parseCard(card) {
   const zakazkaMatch = desc.match(/\(https:\/\/[^)]+zakazka\.html[^)]*\)/);
   const zakazkaUrl = zakazkaMatch ? zakazkaMatch[0].slice(1,-1) : null;
 
-  return { firma, cislo, suma, kontakt, rep, produkty, zakazkaUrl };
+  return { firma, cislo, suma, kontaktJmeno, tel, email, rep, produkty, zakazkaUrl };
 }
 
 function listIndex(idList) {
@@ -261,6 +300,28 @@ function renderCards() {
 
   if (activeFilter !== 'all') cards = cards.filter(c => c.idList === activeFilter);
   if (q) cards = cards.filter(c => c.name.toLowerCase().includes(q));
+
+  // Řazení
+  const sort = document.getElementById('sort-sel')?.value || 'date';
+  if (sort === 'due') {
+    cards = [...cards].sort((a, b) => {
+      if (!a.due && !b.due) return 0;
+      if (!a.due) return 1;
+      if (!b.due) return -1;
+      return new Date(a.due) - new Date(b.due);
+    });
+  } else if (sort === 'value') {
+    cards = [...cards].sort((a, b) => {
+      const va = parseInt((parseCard(a).suma || '0').replace(/[ ,]/g,'')) || 0;
+      const vb = parseInt((parseCard(b).suma || '0').replace(/[ ,]/g,'')) || 0;
+      return vb - va;
+    });
+  } else if (sort === 'name') {
+    cards = [...cards].sort((a, b) => a.name.localeCompare(b.name, 'cs'));
+  } else {
+    cards = [...cards].sort((a, b) =>
+      new Date(b.dateLastActivity) - new Date(a.dateLastActivity));
+  }
 
   // Souhrn
   const sumEl = document.getElementById('summary');
@@ -309,8 +370,10 @@ function renderCards() {
       <div class="z-cislo">${esc(p.cislo)}</div>
       <div class="z-body">
         ${p.produkty.length ? p.produkty.map(pr => `• ${esc(pr)}`).join('<br>') + (p.produkty.length === 2 ? '<br><span style="color:#bbb">…</span>' : '') : ''}
-        ${p.kontakt ? `<br><strong>Kontakt:</strong> ${esc(p.kontakt)}` : ''}
-        ${p.rep && p.rep !== '-' ? `<br><strong>Rep:</strong> ${esc(p.rep)}` : ''}
+        ${p.kontaktJmeno && p.kontaktJmeno !== '-' ? `<br><strong>Kontakt:</strong> ${esc(p.kontaktJmeno)}` : ''}
+        ${p.tel ? `<br><a href="tel:${p.tel.replace(/\s/g,'')}" onclick="event.stopPropagation()" style="color:var(--leaf);font-weight:700;text-decoration:none">📞 ${esc(p.tel)}</a>` : ''}
+        ${p.email ? `<br><a href="mailto:${esc(p.email)}" onclick="event.stopPropagation()" style="color:var(--br);font-weight:600;text-decoration:none">📧 ${esc(p.email)}</a>` : ''}
+        ${p.rep && p.rep !== '-' ? `<br><span style="color:#aaa;font-size:11px">Rep: ${esc(p.rep)}</span>` : ''}
       </div>
       <div class="z-footer">
         <span class="z-status badge-${idx % 6}">${esc(lname)}</span>
