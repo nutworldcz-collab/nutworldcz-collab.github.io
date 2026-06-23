@@ -234,12 +234,12 @@ function parseCard(card) {
   const cislo  = nameParts[1] || '';
   const desc   = card.desc || '';
 
-  // Parsuj hodnotu z desc
-  const sumaMatch = desc.match(/Celkem s DPH\*\*: ([0-9 ,]+) Kč/);
+  // Parsuj hodnotu z desc  (**Pole:** value — colon je uvnitř **)
+  const sumaMatch = desc.match(/Celkem s DPH:\*\* ([0-9 ,]+) Kč/);
   const suma = sumaMatch ? sumaMatch[1].trim() : null;
 
   // Kontakt — celý řádek
-  const kontaktMatch = desc.match(/Kontakt\*\*: (.+)/);
+  const kontaktMatch = desc.match(/Kontakt:\*\* (.+)/);
   const kontaktRaw = kontaktMatch ? kontaktMatch[1].trim() : null;
 
   // Extrahuj telefon a email
@@ -251,7 +251,7 @@ function parseCard(card) {
   const kontaktJmeno = kontaktRaw ? kontaktRaw.split('·')[0].trim() : null;
 
   // Rep
-  const repMatch = desc.match(/Rep\*\*: (.+)/);
+  const repMatch = desc.match(/Rep:\*\* (.+)/);
   const rep = repMatch ? repMatch[1].trim() : null;
 
   // Produkty — první 2 řádky
