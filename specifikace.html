@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Nutworld — Specifikace produktů</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bd:#5c381f;--br:#83502e;--kraft:#f1e6da;--acc:#da1668;--leaf:#6fa044;--amb:#f7ab31}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;font-size:14px;min-height:100vh}
+.topbar{background:var(--bd);padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.topbar-title{font-family:'Exo 2',sans-serif;font-size:17px;font-weight:800;color:white}
+.topbar a{color:rgba(255,255,255,.6);font-size:12px;text-decoration:none}
+.topbar a:hover{color:white}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.refresh-info{font-size:11px;color:rgba(255,255,255,.5)}
+.btn-sm{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:white;font-size:12px;font-weight:600;padding:5px 12px;border-radius:20px;cursor:pointer;font-family:inherit}
+.btn-sm:hover{background:rgba(255,255,255,.25)}
+
+.container{max-width:1100px;margin:0 auto;padding:16px}
+
+/* Toolbar */
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.search-wrap{flex:1;min-width:220px;position:relative}
+.search-wrap::before{content:'🔍';position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:13px;pointer-events:none}
+.search-wrap input{width:100%;padding:9px 12px 9px 34px;border:1.5px solid #d4c0a8;border-radius:8px;font-size:14px;font-family:inherit;background:white}
+.search-wrap input:focus{outline:none;border-color:var(--br)}
+
+/* Kategorie tabs */
+.cat-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.cat-btn{padding:7px 16px;border-radius:20px;border:1.5px solid #d4c0a8;background:white;font-family:'Exo 2',sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:#666;transition:all .15s;white-space:nowrap}
+.cat-btn:hover:not(.active){background:var(--kraft)}
+.cat-btn.active{color:white;border-color:transparent}
+.cat-btn[data-cat="vse"].active{background:var(--bd)}
+.cat-btn[data-cat="orechy"].active{background:#83502e}
+.cat-btn[data-cat="ovoce"].active{background:#da1668}
+.cat-btn[data-cat="seminko"].active{background:#6fa044}
+.cat-btn[data-cat="ostatni"].active{background:#546e7a}
+
+/* Podkategorie filter */
+.sub-wrap{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;min-height:28px}
+.sub-btn{padding:4px 12px;border-radius:20px;border:1.5px solid #d4c0a8;background:white;font-size:11px;font-weight:600;cursor:pointer;color:#666;white-space:nowrap}
+.sub-btn.active{background:var(--kraft);border-color:var(--br);color:var(--bd)}
+.sub-btn:hover:not(.active){background:#f5ede4}
+
+/* Stats */
+.stats{font-size:12px;color:#888;margin-bottom:12px}
+.stats strong{color:var(--bd)}
+
+/* Grid */
+.spec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+
+/* Karta */
+.spec-card{background:white;border-radius:12px;padding:14px 16px;box-shadow:0 2px 8px rgba(0,0,0,.07);border-top:3px solid #ccc;display:flex;flex-direction:column;gap:8px;transition:box-shadow .15s}
+.spec-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.13)}
+.spec-card[data-cat="orechy"]{border-top-color:#83502e}
+.spec-card[data-cat="ovoce"]{border-top-color:#da1668}
+.spec-card[data-cat="seminko"]{border-top-color:#6fa044}
+.spec-card[data-cat="ostatni"]{border-top-color:#546e7a}
+.sc-header{display:flex;align-items:flex-start;gap:8px}
+.sc-kod{font-family:monospace;font-size:11px;color:#aaa;background:#f5ede4;padding:2px 7px;border-radius:6px;white-space:nowrap;flex-shrink:0;margin-top:2px}
+.sc-nazev{font-family:'Exo 2',sans-serif;font-weight:700;font-size:13px;color:var(--bd);line-height:1.3}
+.sc-meta{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px}
+.sc-sub{font-size:11px;color:#888;background:#f5f5f5;padding:2px 8px;border-radius:10px}
+.sc-cat{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.sc-cat.orechy{color:#83502e}
+.sc-cat.ovoce{color:#da1668}
+.sc-cat.seminko{color:#6fa044}
+.sc-cat.ostatni{color:#546e7a}
+.sc-actions{display:flex;gap:7px;margin-top:2px}
+.btn-pdf{display:flex;align-items:center;gap:5px;padding:7px 12px;border-radius:8px;border:none;font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;cursor:pointer;text-decoration:none;background:#e3f2fd;color:#1565c0;flex:1;justify-content:center}
+.btn-pdf:hover{background:#bbdefb}
+.btn-trello{display:flex;align-items:center;gap:5px;padding:7px 10px;border-radius:8px;border:1.5px solid #d4c0a8;background:white;font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;cursor:pointer;text-decoration:none;color:#555}
+.btn-trello:hover{background:var(--kraft)}
+
+/* Loading */
+.state-box{background:white;border-radius:12px;padding:48px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);grid-column:1/-1}
+.state-box p{color:#888;font-size:14px;margin-top:8px}
+.spinner{display:inline-block;width:36px;height:36px;border:3px solid var(--kraft);border-top-color:var(--br);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-title">📋 Specifikace produktů</span>
+  <a href="/">← Rozcestník</a>
+  <div class="topbar-right">
+    <span class="refresh-info" id="refresh-info">načítám…</span>
+    <button class="btn-sm" onclick="loadAll()">↻ Obnovit</button>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="toolbar">
+    <div class="search-wrap">
+      <input type="text" id="search" placeholder="Hledat název nebo kód (např. mandle, 101)…" oninput="render()"/>
+    </div>
+  </div>
+
+  <div class="cat-tabs">
+    <button class="cat-btn active" data-cat="vse" onclick="setCat('vse',this)">Vše</button>
+    <button class="cat-btn" data-cat="orechy" onclick="setCat('orechy',this)">🥜 Ořechy</button>
+    <button class="cat-btn" data-cat="ovoce" onclick="setCat('ovoce',this)">🍓 Sušené ovoce</button>
+    <button class="cat-btn" data-cat="seminko" onclick="setCat('seminko',this)">🌱 Semínka</button>
+    <button class="cat-btn" data-cat="ostatni" onclick="setCat('ostatni',this)">📦 Ostatní</button>
+  </div>
+
+  <div class="sub-wrap" id="sub-wrap"></div>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="spec-grid" id="grid">
+    <div class="state-box"><div class="spinner"></div><p>Načítám specifikace ze všech kategorií…</p></div>
+  </div>
+
+</div>
+
+<script>
+const KEY   = atob('MDM2M2ViYjE0OWRmMDRkMTI4NTY3MmEzMDgwMTYwYTI=');
+const TOKEN = atob('QVRUQTdiMWI4YTFjZWRjMTIyODI3ZmRiMmY4MGRjMjRiNThkMTA4NTVkOTY3ZTAwNDViNWU0ZDdkNmZkMzQwYzJmZWFDNEYxMTFGRQ==');
+
+const BOARDS = [
+  { id: '69d499ec3501b275fe7b9ffc', cat: 'orechy',  label: 'Ořechy' },
+  { id: '69cbb206544677ef5af0cccc', cat: 'ovoce',   label: 'Sušené ovoce' },
+  { id: '69d49adcbe3c129e1836cb06', cat: 'seminko', label: 'Semínka' },
+  { id: '69d5ee3d524fd628d0ad6bbe', cat: 'ostatni', label: 'Ostatní' },
+];
+
+const CACHE_KEY = 'nw_specifikace_cache';
+let allItems = [];   // { nazev, kod, cat, catLabel, sub, url, pdfUrl }
+let activeCat = 'vse';
+let activeSub = 'vse';
+
+function api(path, params = {}) {
+  const qs = new URLSearchParams({ key: KEY, token: TOKEN, ...params }).toString();
+  return fetch(`https://api.trello.com/1${path}?${qs}`).then(r => r.json());
+}
+
+function saveCache(data) {
+  try { localStorage.setItem(CACHE_KEY, JSON.stringify({ data, ts: Date.now() })); } catch(e) {}
+}
+function loadCache() {
+  try { return JSON.parse(localStorage.getItem(CACHE_KEY)); } catch(e) { return null; }
+}
+
+function parsePdfUrl(desc) {
+  if (!desc) return null;
+  const m = desc.match(/\(https?:\/\/[^)]+\.pdf[^)]*\)/i);
+  return m ? m[0].slice(1,-1) : null;
+}
+
+function parseKod(name) {
+  const m = name.match(/^([\w\/]+)\//);
+  return m ? m[1].trim() : null;
+}
+
+function parseNazev(name) {
+  const idx = name.indexOf('/');
+  return idx > -1 ? name.slice(idx + 1).trim() : name.trim();
+}
+
+async function loadBoard(board) {
+  const [lists, cards] = await Promise.all([
+    api(`/boards/${board.id}/lists`, { fields: 'name,id' }),
+    api(`/boards/${board.id}/cards`, { fields: 'name,desc,idList,url', filter: 'open' })
+  ]);
+  const listMap = {};
+  lists.forEach(l => { listMap[l.id] = l.name; });
+  return cards.map(c => ({
+    nazev:    parseNazev(c.name),
+    kod:      parseKod(c.name),
+    cat:      board.cat,
+    catLabel: board.label,
+    sub:      listMap[c.idList] || '—',
+    url:      c.url,
+    pdfUrl:   parsePdfUrl(c.desc),
+    raw:      c.name.toLowerCase(),
+  }));
+}
+
+async function loadAll(silent = false) {
+  const cache = loadCache();
+  if (cache) {
+    allItems = cache.data;
+    render();
+    const age = Math.round((Date.now() - cache.ts) / 60000);
+    document.getElementById('refresh-info').textContent = `cache (${age} min)`;
+  } else {
+    document.getElementById('refresh-info').textContent = 'načítám…';
+  }
+  try {
+    const results = await Promise.all(BOARDS.map(loadBoard));
+    allItems = results.flat();
+    saveCache(allItems);
+    render();
+    const now = new Date();
+    document.getElementById('refresh-info').textContent =
+      `Aktualizováno ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')} · ${allItems.length} spec`;
+  } catch(e) {
+    document.getElementById('refresh-info').textContent = 'chyba · zobrazena cache';
+    if (!allItems.length) {
+      document.getElementById('grid').innerHTML =
+        `<div class="state-box"><p>⚠️ Nepodařilo se načíst. ${e.message}</p></div>`;
+    }
+  }
+}
+
+function setCat(cat, el) {
+  activeCat = cat;
+  activeSub = 'vse';
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  render();
+}
+
+function setSub(sub) {
+  activeSub = sub;
+  document.querySelectorAll('.sub-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.sub === sub));
+  render();
+}
+
+function render() {
+  const q = (document.getElementById('search').value || '').toLowerCase().trim();
+
+  let items = allItems;
+  if (activeCat !== 'vse') items = items.filter(i => i.cat === activeCat);
+  if (activeSub !== 'vse') items = items.filter(i => i.sub === activeSub);
+  if (q) items = items.filter(i =>
+    i.raw.includes(q) || (i.kod && i.kod.toLowerCase().includes(q)));
+
+  // Podkategorie
+  const subSource = activeCat === 'vse' ? allItems : allItems.filter(i => i.cat === activeCat);
+  const subs = [...new Set(subSource.map(i => i.sub))].sort();
+  const subWrap = document.getElementById('sub-wrap');
+  if (activeCat !== 'vse') {
+    subWrap.innerHTML =
+      `<button class="sub-btn active" data-sub="vse" onclick="setSub('vse')">Vše (${subSource.length})</button>` +
+      subs.map(s => {
+        const cnt = subSource.filter(i => i.sub === s).length;
+        return `<button class="sub-btn" data-sub="${esc(s)}" onclick="setSub('${esc(s)}')">${esc(s)} (${cnt})</button>`;
+      }).join('');
+    // Obnoví active stav
+    document.querySelectorAll('.sub-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.sub === activeSub));
+  } else {
+    subWrap.innerHTML = '';
+  }
+
+  document.getElementById('stats').innerHTML =
+    `Zobrazeno <strong>${items.length}</strong> specifikací` +
+    (q ? ` pro „<strong>${esc(q)}</strong>"` : '') +
+    (allItems.length ? ` z celkem <strong>${allItems.length}</strong>` : '');
+
+  if (!items.length) {
+    document.getElementById('grid').innerHTML =
+      `<div class="state-box"><p>🔍 Žádná specifikace nenalezena.</p></div>`;
+    return;
+  }
+
+  document.getElementById('grid').innerHTML = items.map(item => `
+    <div class="spec-card" data-cat="${item.cat}">
+      <div class="sc-header">
+        ${item.kod ? `<span class="sc-kod">${esc(item.kod)}</span>` : ''}
+        <div class="sc-nazev">${esc(item.nazev)}</div>
+      </div>
+      <div class="sc-meta">
+        <span class="sc-sub">${esc(item.sub)}</span>
+        <span class="sc-cat ${item.cat}">${esc(item.catLabel)}</span>
+      </div>
+      <div class="sc-actions">
+        ${item.pdfUrl
+          ? `<a class="btn-pdf" href="${esc(item.pdfUrl)}" target="_blank">📄 Otevřít PDF</a>`
+          : `<a class="btn-pdf" href="${esc(item.url)}" target="_blank" style="background:#f5f5f5;color:#999">📄 PDF v Trellu</a>`}
+        <a class="btn-trello" href="${esc(item.url)}" target="_blank" title="Otevřít v Trellu">🃏</a>
+      </div>
+    </div>`).join('');
+}
+
+function esc(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+loadAll();
+</script>
+</body>
+</html>
