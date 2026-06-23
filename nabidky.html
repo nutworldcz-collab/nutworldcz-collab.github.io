@@ -212,11 +212,14 @@ function addRow() {
   const tr = document.createElement('tr');
   tr.id = 'row-' + id;
   tr.innerHTML = `
-    <td><input class="inp-kod" id="kod-${id}" placeholder="101" title="Kód produktu ze Shoptetu"/></td>
+    <td><input class="inp-kod" id="kod-${id}" placeholder="101"/></td>
     <td><input class="inp-nazev" id="nazev-${id}" placeholder="Název produktu, gramáž…" oninput="recalc(${id})"/></td>
     <td><input class="inp-ks" type="number" id="ks-${id}" value="1" min="1" oninput="recalc(${id})"/></td>
     <td style="white-space:nowrap"><input class="inp-cena" type="number" id="cena-${id}" placeholder="0,00" step="0.01" oninput="recalc(${id})"/> Kč</td>
-    <td style="white-space:nowrap"><input class="inp-cena" type="number" id="nakup-${id}" placeholder="0,00" step="0.01" oninput="recalc(${id})" style="background:#fff8e1;"/> Kč</td>
+    <td style="white-space:nowrap">
+      <input class="inp-cena" type="number" id="nakup-${id}" placeholder="⚠ povinné" step="0.01" oninput="recalc(${id})"
+             style="background:#fff8e1;border-color:#f7ab31;"/> Kč
+    </td>
     <td class="td-total" id="total-${id}">—</td>
     <td><button class="del-btn" onclick="delRow(${id})">×</button></td>`;
   document.getElementById('prod-tbody').appendChild(tr);
@@ -232,13 +235,26 @@ function recalc(id) {
   const ks    = parseFloat(document.getElementById('ks-'+id)?.value) || 0;
   const cena  = parseFloat(document.getElementById('cena-'+id)?.value);
   const nakup = parseFloat(document.getElementById('nakup-'+id)?.value);
+  const nakupEl = document.getElementById('nakup-'+id);
   const el    = document.getElementById('total-'+id);
   if (!el) return;
-  if (!ks || isNaN(cena) || cena <= 0) { el.textContent = '—'; return; }
+  if (!ks || isNaN(cena) || cena <= 0) { el.innerHTML = '—'; return; }
+
   const celkem = ks * cena;
-  const zisk   = (!isNaN(nakup) && nakup > 0) ? (cena - nakup) * ks : null;
-  el.innerHTML = num(celkem.toFixed(2)) + ' Kč' +
-    (zisk !== null ? `<br><span style="font-size:10px;color:${zisk>=0?'#2e7d32':'#c62828'};font-weight:700">zisk ${zisk>=0?'+':''}${num(zisk.toFixed(0))} Kč</span>` : '');
+
+  if (!isNaN(nakup) && nakup > 0) {
+    const marze = ((cena - nakup) / cena) * 100;
+    const zisk  = (cena - nakup) * ks;
+    const color = marze < 0 ? '#c62828' : marze < 15 ? '#e65100' : marze < 25 ? '#f57c00' : '#2e7d32';
+    const icon  = marze < 0 ? '🔴' : marze < 15 ? '🟠' : marze < 25 ? '🟡' : '🟢';
+    nakupEl.style.borderColor = color;
+    el.innerHTML =
+      `${num(celkem.toFixed(0))} Kč<br>` +
+      `<span style="font-size:10px;color:${color};font-weight:700">${icon} ${marze.toFixed(0)} % · zisk ${zisk>=0?'+':''}${num(zisk.toFixed(0))} Kč</span>`;
+  } else {
+    nakupEl.style.borderColor = '#f7ab31';
+    el.innerHTML = `${num(celkem.toFixed(0))} Kč<br><span style="font-size:10px;color:#f57c00">⚠ zadej nák. cenu</span>`;
+  }
 }
 
 // ── Odkaz zakázky ──
@@ -339,6 +355,16 @@ function generateOffer() {
     produkty.push({ kod, nazev, ks, cenaBezDph: cena, nakupCena: nakupKs, celkem });
   });
   if (!produkty.length) { alert('Přidej alespoň jeden produkt s názvem a cenou!'); return; }
+  const chybaNakup = produkty.filter(p => !p.nakupCena);
+  if (chybaNakup.length) {
+    alert('⚠️ Chybí nákupní cena u:\n' + chybaNakup.map(p => '• ' + p.nazev).join('\n') + '\n\nBez nákupní ceny nelze ověřit marži.');
+    return;
+  }
+  const podCenou = produkty.filter(p => p.nakupCena && p.cenaBezDph < p.nakupCena);
+  if (podCenou.length) {
+    const ok = confirm('🔴 POZOR — prodáváš pod nákupní cenou:\n' + podCenou.map(p => `• ${p.nazev}: prodej ${fmt(p.cenaBezDph)} < nákup ${fmt(p.nakupCena)} Kč`).join('\n') + '\n\nChceš přesto pokračovat?');
+    if (!ok) return;
+  }
   const doprava    = parseFloat(document.getElementById('doprava')?.value) || 0;
   const dphCastka  = parseFloat(((totalBezDph + doprava) * 0.12).toFixed(2));
   const totalSDph  = parseFloat((totalBezDph + doprava + dphCastka).toFixed(2));
