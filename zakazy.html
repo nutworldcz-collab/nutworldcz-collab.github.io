@@ -116,7 +116,6 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
   <div class="summary" id="summary" style="display:none">
     <div class="sum-box"><div class="sum-val" id="s-total">—</div><div class="sum-lbl">Zakázek celkem</div></div>
     <div class="sum-box"><div class="sum-val" id="s-open">—</div><div class="sum-lbl">Otevřených</div></div>
-    <div class="sum-box"><div class="sum-val" id="s-value">—</div><div class="sum-lbl">Hodnota (s DPH)</div></div>
     <div class="sum-box"><div class="sum-val" id="s-due">—</div><div class="sum-lbl">Termín dnes/zítra</div></div>
   </div>
 
@@ -372,7 +371,6 @@ function renderCards() {
       .reduce((s, l) => s + allCards.filter(c => c.idList === l.id).length, 0);
     document.getElementById('s-total').textContent = allCards.length;
     document.getElementById('s-open').textContent = openCount;
-    document.getElementById('s-value').textContent = totalValue > 0 ? fmt(totalValue) + ' Kč' : '—';
     document.getElementById('s-due').textContent = dueCount;
   }
 
@@ -395,7 +393,6 @@ function renderCards() {
     <div class="zakaz-card" style="border-left-color:${clr.border}" onclick="window.open('${card.url}','_blank')">
       <div class="z-header">
         <div class="z-firma">${esc(p.firma)}</div>
-        ${p.suma ? `<div class="z-suma">${p.suma} Kč</div>` : ''}
       </div>
       <div class="z-cislo">${esc(p.cislo)}</div>
       <div class="z-body">
