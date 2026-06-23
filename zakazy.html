@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Nutworld — Přehled zakázek</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bd:#5c381f;--br:#83502e;--kraft:#f1e6da;--acc:#da1668;--leaf:#6fa044;--amb:#f7ab31}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;font-size:14px;min-height:100vh}
+.topbar{background:var(--bd);padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.topbar-title{font-family:'Exo 2',sans-serif;font-size:17px;font-weight:800;color:white}
+.topbar a{color:rgba(255,255,255,.6);font-size:12px;text-decoration:none}
+.topbar a:hover{color:white}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.refresh-info{font-size:11px;color:rgba(255,255,255,.5)}
+.btn-refresh{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:white;font-size:12px;font-weight:600;padding:5px 12px;border-radius:20px;cursor:pointer;font-family:inherit}
+.btn-refresh:hover{background:rgba(255,255,255,.25)}
+
+.container{max-width:1100px;margin:0 auto;padding:16px}
+
+/* Toolbar */
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.search-box{flex:1;min-width:200px;position:relative}
+.search-box input{width:100%;border:1.5px solid #d4c0a8;border-radius:8px;padding:8px 12px 8px 34px;font-size:13px;font-family:inherit;background:white}
+.search-box::before{content:'🔍';position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:13px}
+.filter-row{display:flex;gap:6px;flex-wrap:wrap}
+.filter-btn{padding:6px 14px;border-radius:20px;border:1.5px solid #d4c0a8;background:white;font-size:12px;font-weight:600;cursor:pointer;color:#666;font-family:inherit;white-space:nowrap}
+.filter-btn.active{background:var(--bd);border-color:var(--bd);color:white}
+.filter-btn:hover:not(.active){background:var(--kraft)}
+
+/* Souhrn */
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+@media(max-width:600px){.summary{grid-template-columns:1fr 1fr}}
+.sum-box{background:white;border-radius:10px;padding:12px 16px;text-align:center;box-shadow:0 1px 6px rgba(0,0,0,.07)}
+.sum-val{font-family:'Exo 2',sans-serif;font-size:22px;font-weight:800;color:var(--bd)}
+.sum-lbl{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+
+/* Karty */
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:900px){.cards-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:550px){.cards-grid{grid-template-columns:1fr}}
+
+.zakaz-card{background:white;border-radius:12px;padding:16px 18px;box-shadow:0 2px 8px rgba(0,0,0,.07);border-left:4px solid #ccc;cursor:pointer;transition:box-shadow .15s}
+.zakaz-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.13)}
+.z-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;gap:8px}
+.z-firma{font-family:'Exo 2',sans-serif;font-weight:800;font-size:15px;color:var(--bd);line-height:1.2}
+.z-suma{font-family:'Exo 2',sans-serif;font-weight:800;font-size:14px;color:var(--bd);white-space:nowrap}
+.z-cislo{font-size:10px;color:#bbb;font-family:monospace;margin-bottom:8px}
+.z-body{font-size:12px;color:#555;line-height:1.7;margin-bottom:10px}
+.z-body strong{color:#333}
+.z-footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px}
+.z-status{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.z-due{font-size:11px;color:#888}
+.z-due.overdue{color:var(--acc);font-weight:700}
+.z-link{font-size:11px;color:var(--br);text-decoration:none;font-weight:600}
+.z-link:hover{text-decoration:underline}
+
+/* Status barvy */
+.list-0{border-left-color:#9b59b6}
+.list-1{border-left-color:var(--leaf)}
+.list-2{border-left-color:#1565c0}
+.list-3{border-left-color:var(--acc)}
+.list-4{border-left-color:var(--amb)}
+.list-5{border-left-color:#888}
+
+.badge-0{background:#f3e5f5;color:#7b1fa2}
+.badge-1{background:#e8f5e9;color:#2e7d32}
+.badge-2{background:#e3f2fd;color:#1565c0}
+.badge-3{background:#fff0f5;color:var(--acc)}
+.badge-4{background:#fff8e1;color:#f57c00}
+.badge-5{background:#f5f5f5;color:#666}
+
+/* Loading / error */
+.state-box{background:white;border-radius:12px;padding:48px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+.state-box .icon{font-size:40px;margin-bottom:12px}
+.state-box p{color:#888;font-size:14px}
+.spinner{display:inline-block;width:36px;height:36px;border:3px solid var(--kraft);border-top-color:var(--br);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.empty-group{padding:20px;text-align:center;color:#bbb;font-size:13px;grid-column:1/-1}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-title">🃏 Přehled zakázek</span>
+  <a href="/">← Rozcestník</a>
+  <div class="topbar-right">
+    <span class="refresh-info" id="refresh-info">načítám…</span>
+    <button class="btn-refresh" onclick="loadData()">↻ Obnovit</button>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="toolbar">
+    <div class="search-box">
+      <input type="text" id="search" placeholder="Hledat firmu nebo číslo…" oninput="renderCards()"/>
+    </div>
+    <div class="filter-row" id="filter-row">
+      <button class="filter-btn active" data-list="all" onclick="setFilter('all',this)">Vše</button>
+    </div>
+  </div>
+
+  <div class="summary" id="summary" style="display:none">
+    <div class="sum-box"><div class="sum-val" id="s-total">—</div><div class="sum-lbl">Zakázek celkem</div></div>
+    <div class="sum-box"><div class="sum-val" id="s-open">—</div><div class="sum-lbl">Otevřených</div></div>
+    <div class="sum-box"><div class="sum-val" id="s-value">—</div><div class="sum-lbl">Hodnota (s DPH)</div></div>
+    <div class="sum-box"><div class="sum-val" id="s-due">—</div><div class="sum-lbl">Termín dnes/zítra</div></div>
+  </div>
+
+  <div id="main-content">
+    <div class="state-box">
+      <div class="spinner"></div>
+      <p>Načítám zakázky z Trella…</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const KEY   = atob('MDM2M2ViYjE0OWRmMDRkMTI4NTY3MmEzMDgwMTYwYTI=');
+const TOKEN = atob('QVRUQTdiMWI4YTFjZWRjMTIyODI3ZmRiMmY4MGRjMjRiNThkMTA4NTVkOTY3ZTAwNDViNWU0ZDdkNmZkMzQwYzJmZWFDNEYxMTFGRQ==');
+const BOARD = '637f702c5e323c01d42feeac';
+
+let allLists = [];
+let allCards = [];
+let activeFilter = 'all';
+let refreshTimer = null;
+let countdown = 60;
+
+function api(path) {
+  return fetch(`https://api.trello.com/1${path}?key=${KEY}&token=${TOKEN}`)
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
+}
+
+async function loadData() {
+  clearInterval(refreshTimer);
+  document.getElementById('refresh-info').textContent = 'načítám…';
+  try {
+    const [lists, cards] = await Promise.all([
+      api(`/boards/${BOARD}/lists`),
+      api(`/boards/${BOARD}/cards&fields=name,desc,idList,due,dateLastActivity,labels,url`)
+    ]);
+    allLists = lists.filter(l => !l.closed);
+    allCards = cards.filter(c => !c.closed);
+    buildFilters();
+    renderCards();
+    startCountdown();
+    const now = new Date();
+    document.getElementById('refresh-info').textContent =
+      'Aktualizováno ' + now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+  } catch(e) {
+    document.getElementById('main-content').innerHTML = `
+      <div class="state-box">
+        <div class="icon">⚠️</div>
+        <p>Nepodařilo se načíst data z Trella.<br><small>${e.message}</small></p>
+      </div>`;
+    document.getElementById('refresh-info').textContent = 'chyba';
+  }
+}
+
+function startCountdown() {
+  countdown = 60;
+  clearInterval(refreshTimer);
+  refreshTimer = setInterval(() => {
+    countdown--;
+    document.getElementById('refresh-info').textContent =
+      'obnoví se za ' + countdown + ' s';
+    if (countdown <= 0) loadData();
+  }, 1000);
+}
+
+function buildFilters() {
+  const row = document.getElementById('filter-row');
+  const total = allCards.length;
+  row.innerHTML = `<button class="filter-btn active" data-list="all" onclick="setFilter('all',this)">Vše (${total})</button>`;
+  allLists.forEach(l => {
+    const cnt = allCards.filter(c => c.idList === l.id).length;
+    if (cnt === 0) return;
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn';
+    btn.dataset.list = l.id;
+    btn.textContent = l.name + ' (' + cnt + ')';
+    btn.onclick = function(){ setFilter(l.id, this); };
+    row.appendChild(btn);
+  });
+}
+
+function setFilter(listId, el) {
+  activeFilter = listId;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  renderCards();
+}
+
+function parseCard(card) {
+  const nameParts = card.name.split(' — ');
+  const firma  = nameParts[0] || card.name;
+  const cislo  = nameParts[1] || '';
+  const desc   = card.desc || '';
+
+  // Parsuj hodnotu z desc
+  const sumaMatch = desc.match(/Celkem s DPH\*\*: ([0-9 ,]+) Kč/);
+  const suma = sumaMatch ? sumaMatch[1].trim() : null;
+
+  // Kontakt
+  const kontaktMatch = desc.match(/Kontakt\*\*: (.+)/);
+  const kontakt = kontaktMatch ? kontaktMatch[1].trim() : null;
+
+  // Rep
+  const repMatch = desc.match(/Rep\*\*: (.+)/);
+  const rep = repMatch ? repMatch[1].trim() : null;
+
+  // Produkty — první 2 řádky
+  const prodMatch = desc.match(/### Produkty\n([\s\S]*?)(\n---|\n\n|$)/);
+  let produkty = [];
+  if (prodMatch) {
+    produkty = prodMatch[1].trim().split('\n')
+      .filter(l => l.startsWith('-'))
+      .map(l => l.replace(/^-\s*/, '').split(' · ')[0])
+      .slice(0, 2);
+  }
+
+  // Zakázka odkaz
+  const zakazkaMatch = desc.match(/\(https:\/\/[^)]+zakazka\.html[^)]*\)/);
+  const zakazkaUrl = zakazkaMatch ? zakazkaMatch[0].slice(1,-1) : null;
+
+  return { firma, cislo, suma, kontakt, rep, produkty, zakazkaUrl };
+}
+
+function listIndex(idList) {
+  return allLists.findIndex(l => l.id === idList);
+}
+
+function listName(idList) {
+  const l = allLists.find(l => l.id === idList);
+  return l ? l.name : '—';
+}
+
+function fmt(s) { return String(s).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); }
+
+function dueLabel(due) {
+  if (!due) return null;
+  const d = new Date(due);
+  const now = new Date();
+  const diff = Math.ceil((d - now) / 86400000);
+  const str = d.getDate() + '. ' + (d.getMonth()+1) + '.';
+  if (diff < 0)  return { text: 'Po termínu (' + str + ')', overdue: true };
+  if (diff === 0) return { text: 'Dnes! (' + str + ')', overdue: true };
+  if (diff === 1) return { text: 'Zítra (' + str + ')', overdue: false };
+  return { text: str, overdue: false };
+}
+
+function renderCards() {
+  const q = (document.getElementById('search').value || '').toLowerCase();
+  let cards = allCards;
+
+  if (activeFilter !== 'all') cards = cards.filter(c => c.idList === activeFilter);
+  if (q) cards = cards.filter(c => c.name.toLowerCase().includes(q));
+
+  // Souhrn
+  const sumEl = document.getElementById('summary');
+  if (allCards.length > 0) {
+    sumEl.style.display = 'grid';
+    let totalValue = 0;
+    let dueCount = 0;
+    allCards.forEach(c => {
+      const p = parseCard(c);
+      if (p.suma) totalValue += parseInt(p.suma.replace(/[ ,]/g,'')) || 0;
+      if (c.due) {
+        const diff = Math.ceil((new Date(c.due) - new Date()) / 86400000);
+        if (diff <= 1) dueCount++;
+      }
+    });
+    // Pokud nemáme suma data, ukaž alespoň počty
+    const openCount = allLists.slice(0, Math.ceil(allLists.length * 0.7))
+      .reduce((s, l) => s + allCards.filter(c => c.idList === l.id).length, 0);
+    document.getElementById('s-total').textContent = allCards.length;
+    document.getElementById('s-open').textContent = openCount;
+    document.getElementById('s-value').textContent = totalValue > 0 ? fmt(totalValue) + ' Kč' : '—';
+    document.getElementById('s-due').textContent = dueCount;
+  }
+
+  if (cards.length === 0) {
+    document.getElementById('main-content').innerHTML = `
+      <div class="state-box">
+        <div class="icon">🔍</div>
+        <p>${q || activeFilter !== 'all' ? 'Žádné zakázky neodpovídají filtru.' : 'Board je prázdný.'}</p>
+      </div>`;
+    return;
+  }
+
+  const html = cards.map(card => {
+    const p = parseCard(card);
+    const idx = listIndex(card.idList);
+    const lname = listName(card.idList);
+    const due = dueLabel(card.due);
+
+    return `
+    <div class="zakaz-card list-${idx % 6}" onclick="window.open('${card.url}','_blank')">
+      <div class="z-header">
+        <div class="z-firma">${esc(p.firma)}</div>
+        ${p.suma ? `<div class="z-suma">${p.suma} Kč</div>` : ''}
+      </div>
+      <div class="z-cislo">${esc(p.cislo)}</div>
+      <div class="z-body">
+        ${p.produkty.length ? p.produkty.map(pr => `• ${esc(pr)}`).join('<br>') + (p.produkty.length === 2 ? '<br><span style="color:#bbb">…</span>' : '') : ''}
+        ${p.kontakt ? `<br><strong>Kontakt:</strong> ${esc(p.kontakt)}` : ''}
+        ${p.rep && p.rep !== '-' ? `<br><strong>Rep:</strong> ${esc(p.rep)}` : ''}
+      </div>
+      <div class="z-footer">
+        <span class="z-status badge-${idx % 6}">${esc(lname)}</span>
+        <div style="display:flex;gap:10px;align-items:center">
+          ${due ? `<span class="z-due${due.overdue?' overdue':''}">📅 ${due.text}</span>` : ''}
+          ${p.zakazkaUrl ? `<a class="z-link" href="${p.zakazkaUrl}" onclick="event.stopPropagation()" target="_blank">Formulář zakázky →</a>` : ''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('main-content').innerHTML = `<div class="cards-grid">${html}</div>`;
+}
+
+function esc(s) {
+  if (!s) return '';
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+loadData();
+</script>
+</body>
+</html>
