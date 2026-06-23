@@ -57,20 +57,7 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .z-link{font-size:11px;color:var(--br);text-decoration:none;font-weight:600}
 .z-link:hover{text-decoration:underline}
 
-/* Status barvy */
-.list-0{border-left-color:#9b59b6}
-.list-1{border-left-color:var(--leaf)}
-.list-2{border-left-color:#1565c0}
-.list-3{border-left-color:var(--acc)}
-.list-4{border-left-color:var(--amb)}
-.list-5{border-left-color:#888}
-
-.badge-0{background:#f3e5f5;color:#7b1fa2}
-.badge-1{background:#e8f5e9;color:#2e7d32}
-.badge-2{background:#e3f2fd;color:#1565c0}
-.badge-3{background:#fff0f5;color:var(--acc)}
-.badge-4{background:#fff8e1;color:#f57c00}
-.badge-5{background:#f5f5f5;color:#666}
+/* Status barvy — dynamicky inline stylem */
 
 /* Loading / error */
 .state-box{background:white;border-radius:12px;padding:48px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07)}
@@ -271,13 +258,40 @@ function parseCard(card) {
   return { firma, cislo, suma, kontaktJmeno, tel, email, rep, produkty, zakazkaUrl };
 }
 
-function listIndex(idList) {
-  return allLists.findIndex(l => l.id === idList);
-}
-
 function listName(idList) {
   const l = allLists.find(l => l.id === idList);
   return l ? l.name : '—';
+}
+
+const LIST_MAP = {
+  '📋 Nabídky':                            { border:'#1565c0', bg:'#e3f2fd', text:'#1565c0' },
+  'Nové zakázky':                           { border:'#0277bd', bg:'#e1f5fe', text:'#0277bd' },
+  'Firma + informace':                      { border:'#546e7a', bg:'#eceff1', text:'#546e7a' },
+  'Je zadáno v k2':                         { border:'#6a1b9a', bg:'#f3e5f5', text:'#6a1b9a' },
+  'SDÍLENÁ VÝROBA BALÍRNA/MÁSLOVNA':       { border:'#e65100', bg:'#fff3e0', text:'#e65100' },
+  'Připravují se komponenty - Balírna':     { border:'#f57c00', bg:'#fff8e1', text:'#e65100' },
+  'Připravují se komponenty - Máslovna':    { border:'#f57c00', bg:'#fff8e1', text:'#e65100' },
+  'Kompletuje se dárek - Dárkovna':         { border:'#f7ab31', bg:'#fffde7', text:'#b8860b' },
+  'Připravují - VERPET Náchod':             { border:'#ff8f00', bg:'#fff8e1', text:'#e65100' },
+  'Hotovo - čeká na zabalení':              { border:'#2e7d32', bg:'#e8f5e9', text:'#2e7d32' },
+  'Výrobní plán - průvodky':                { border:'#546e7a', bg:'#eceff1', text:'#546e7a' },
+  'EuroPool - Hotovo':                      { border:'#1b5e20', bg:'#e8f5e9', text:'#1b5e20' },
+};
+
+function listColor(name) {
+  if (LIST_MAP[name]) return LIST_MAP[name];
+  const n = (name || '').toLowerCase();
+  if (n.includes('hotovo') || n.includes('dokončen'))
+    return { border:'#2e7d32', bg:'#e8f5e9', text:'#2e7d32' };
+  if (n.includes('výroba') || n.includes('kompletuje') || n.includes('připrav') || n.includes('verpet'))
+    return { border:'#f57c00', bg:'#fff8e1', text:'#e65100' };
+  if (n.includes('nabídka') || n.includes('nabídky') || n.includes('nové zakázky'))
+    return { border:'#1565c0', bg:'#e3f2fd', text:'#1565c0' };
+  if (n.includes('k2') || n.includes('zadáno'))
+    return { border:'#6a1b9a', bg:'#f3e5f5', text:'#6a1b9a' };
+  if (/202[2-6]|archiv/.test(n))
+    return { border:'#9e9e9e', bg:'#f5f5f5', text:'#757575' };
+  return { border:'#c8a882', bg:'#f1e6da', text:'#83502e' };
 }
 
 function fmt(s) { return String(s).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); }
@@ -357,12 +371,12 @@ function renderCards() {
 
   const html = cards.map(card => {
     const p = parseCard(card);
-    const idx = listIndex(card.idList);
     const lname = listName(card.idList);
+    const clr = listColor(lname);
     const due = dueLabel(card.due);
 
     return `
-    <div class="zakaz-card list-${idx % 6}" onclick="window.open('${card.url}','_blank')">
+    <div class="zakaz-card" style="border-left-color:${clr.border}" onclick="window.open('${card.url}','_blank')">
       <div class="z-header">
         <div class="z-firma">${esc(p.firma)}</div>
         ${p.suma ? `<div class="z-suma">${p.suma} Kč</div>` : ''}
@@ -376,10 +390,10 @@ function renderCards() {
         ${p.rep && p.rep !== '-' ? `<br><span style="color:#aaa;font-size:11px">Rep: ${esc(p.rep)}</span>` : ''}
       </div>
       <div class="z-footer">
-        <span class="z-status badge-${idx % 6}">${esc(lname)}</span>
-        <div style="display:flex;gap:10px;align-items:center">
+        <span class="z-status" style="background:${clr.bg};color:${clr.text}">${esc(lname)}</span>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
           ${due ? `<span class="z-due${due.overdue?' overdue':''}">📅 ${due.text}</span>` : ''}
-          ${p.zakazkaUrl ? `<a class="z-link" href="${p.zakazkaUrl}" onclick="event.stopPropagation()" target="_blank">Formulář zakázky →</a>` : ''}
+          ${p.zakazkaUrl ? `<a class="z-link" href="${p.zakazkaUrl}" onclick="event.stopPropagation()" target="_blank">Formulář →</a>` : ''}
         </div>
       </div>
     </div>`;
