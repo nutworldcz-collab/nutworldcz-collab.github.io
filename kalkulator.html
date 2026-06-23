@@ -94,6 +94,15 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
     <div class="card-title">💰 Výsledek</div>
     <div class="empty-state" id="empty-state">👆 Vyber produkt a gramáž</div>
     <div id="result-content" style="display:none">
+      <!-- Nákupní cena — základ pro kontrolu -->
+      <div style="background:#fff8e1;border:1.5px solid #f7ab31;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px">
+        <span style="font-weight:700;color:#5c381f">📦 Nákupní cena (základ):</span>
+        <span id="r-nakup-kg" style="font-weight:700;color:#83502e;margin-left:6px">—</span>
+        <span style="color:#888"> / kg bez DPH</span>
+        <span style="color:#bbb;margin:0 6px">|</span>
+        <span id="r-nakup-ks" style="font-weight:700;color:#83502e">—</span>
+        <span style="color:#888"> / ks bez DPH</span>
+      </div>
       <div class="result-grid">
         <div class="result-box highlight">
           <div class="result-label">MO cena / ks</div>
@@ -216,6 +225,8 @@ function calculate() {
   document.getElementById('r-nakup').textContent = Math.round(nakup) + ' Kč';
   document.getElementById('r-marze').textContent = marze + ' %';
   document.getElementById('r-marze-czk').textContent = 'zisk ' + Math.round(zisk) + ' Kč / ks';
+  document.getElementById('r-nakup-kg').textContent = kc.toLocaleString('cs') + ' Kč';
+  document.getElementById('r-nakup-ks').textContent = nakup.toFixed(2).replace('.', ',') + ' Kč';
 
   const marze_el = document.getElementById('r-marze');
   marze_el.style.color = marze >= 45 ? '#2e7d32' : marze >= 35 ? '#f57c00' : '#c62828';
