@@ -120,11 +120,12 @@ table.pt input.inp-cena{width:100px;text-align:right}
       <table class="pt">
         <thead>
           <tr>
-            <th style="width:12%">Kód</th>
-            <th style="width:43%">Produkt / popis</th>
-            <th style="width:8%">Ks</th>
-            <th style="width:16%">Cena/ks bez DPH</th>
-            <th style="width:12%">Celkem</th>
+            <th style="width:10%">Kód</th>
+            <th style="width:34%">Produkt / popis</th>
+            <th style="width:6%">Ks</th>
+            <th style="width:13%">Prodejní/ks</th>
+            <th style="width:13%">Nák./ks</th>
+            <th style="width:10%">Celkem</th>
             <th style="width:5%"></th>
           </tr>
         </thead>
@@ -215,6 +216,7 @@ function addRow() {
     <td><input class="inp-nazev" id="nazev-${id}" placeholder="Název produktu, gramáž…" oninput="recalc(${id})"/></td>
     <td><input class="inp-ks" type="number" id="ks-${id}" value="1" min="1" oninput="recalc(${id})"/></td>
     <td style="white-space:nowrap"><input class="inp-cena" type="number" id="cena-${id}" placeholder="0,00" step="0.01" oninput="recalc(${id})"/> Kč</td>
+    <td style="white-space:nowrap"><input class="inp-cena" type="number" id="nakup-${id}" placeholder="0,00" step="0.01" oninput="recalc(${id})" style="background:#fff8e1;"/> Kč</td>
     <td class="td-total" id="total-${id}">—</td>
     <td><button class="del-btn" onclick="delRow(${id})">×</button></td>`;
   document.getElementById('prod-tbody').appendChild(tr);
@@ -227,12 +229,16 @@ function recalcDoprava() {
   if (el) el.textContent = d > 0 ? `+ ${fmt(d*1.12)} Kč s DPH` : '';
 }
 function recalc(id) {
-  const ks   = parseFloat(document.getElementById('ks-'+id)?.value) || 0;
-  const cena = parseFloat(document.getElementById('cena-'+id)?.value);
-  const el   = document.getElementById('total-'+id);
+  const ks    = parseFloat(document.getElementById('ks-'+id)?.value) || 0;
+  const cena  = parseFloat(document.getElementById('cena-'+id)?.value);
+  const nakup = parseFloat(document.getElementById('nakup-'+id)?.value);
+  const el    = document.getElementById('total-'+id);
   if (!el) return;
   if (!ks || isNaN(cena) || cena <= 0) { el.textContent = '—'; return; }
-  el.textContent = num((ks * cena).toFixed(2)) + ' Kč';
+  const celkem = ks * cena;
+  const zisk   = (!isNaN(nakup) && nakup > 0) ? (cena - nakup) * ks : null;
+  el.innerHTML = num(celkem.toFixed(2)) + ' Kč' +
+    (zisk !== null ? `<br><span style="font-size:10px;color:${zisk>=0?'#2e7d32':'#c62828'};font-weight:700">zisk ${zisk>=0?'+':''}${num(zisk.toFixed(0))} Kč</span>` : '');
 }
 
 // ── Odkaz zakázky ──
@@ -241,12 +247,13 @@ function collectFormData() {
   const produkty = [];
   rows.forEach(tr => {
     const id = tr.id.replace('row-','');
-    const kod   = document.getElementById('kod-'+id)?.value.trim() || '';
-    const nazev = document.getElementById('nazev-'+id)?.value.trim();
-    const ks    = parseFloat(document.getElementById('ks-'+id)?.value) || 1;
-    const cena  = parseFloat(document.getElementById('cena-'+id)?.value);
+    const kod    = document.getElementById('kod-'+id)?.value.trim() || '';
+    const nazev  = document.getElementById('nazev-'+id)?.value.trim();
+    const ks     = parseFloat(document.getElementById('ks-'+id)?.value) || 1;
+    const cena   = parseFloat(document.getElementById('cena-'+id)?.value);
+    const nakup  = parseFloat(document.getElementById('nakup-'+id)?.value) || null;
     if (!nazev || isNaN(cena) || cena <= 0) return;
-    produkty.push({ kod, nazev, ks, cena });
+    produkty.push({ kod, nazev, ks, cena, nakup });
   });
   return {
     firma:       document.getElementById('firma').value.trim(),
@@ -321,14 +328,15 @@ function generateOffer() {
   let totalBezDph = 0, totalDph = 0;
   rows.forEach(tr => {
     const id = tr.id.replace('row-','');
-    const kod   = document.getElementById('kod-'+id)?.value.trim();
-    const nazev = document.getElementById('nazev-'+id)?.value.trim();
-    const ks    = parseFloat(document.getElementById('ks-'+id)?.value) || 1;
-    const cena  = parseFloat(document.getElementById('cena-'+id)?.value);
+    const kod      = document.getElementById('kod-'+id)?.value.trim();
+    const nazev    = document.getElementById('nazev-'+id)?.value.trim();
+    const ks       = parseFloat(document.getElementById('ks-'+id)?.value) || 1;
+    const cena     = parseFloat(document.getElementById('cena-'+id)?.value);
+    const nakupKs  = parseFloat(document.getElementById('nakup-'+id)?.value) || null;
     if (!nazev || isNaN(cena) || cena <= 0) return;
     const celkem = parseFloat((cena * ks).toFixed(2));
     totalBezDph += celkem;
-    produkty.push({ kod, nazev, ks, cenaBezDph: cena, celkem });
+    produkty.push({ kod, nazev, ks, cenaBezDph: cena, nakupCena: nakupKs, celkem });
   });
   if (!produkty.length) { alert('Přidej alespoň jeden produkt s názvem a cenou!'); return; }
   const doprava    = parseFloat(document.getElementById('doprava')?.value) || 0;
@@ -464,7 +472,11 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
   const totalBez = produkty.reduce((s,p) => s + p.ks * p.cenaBezDph, 0);
   const prodList = produkty.map(p => `- ${p.nazev} · ${p.ks} ks · ${fmt(p.cenaBezDph)} Kč`).join('\n');
   // Trello karta — BEZ CEN (vidí zaměstnanci)
-  const cardDesc = `## ${firma}\n**Číslo nabídky:** ${cislo}\n**Rep:** ${repName||'-'}\n**Kontakt:** ${kontakt||'-'}${telefon?' · 📞 '+telefon:''}${emailKlient?' · 📧 '+emailKlient:''}\n\n### Produkty\n${prodList.replace(/ · [\d, .]+ Kč/g, '')}\n\n---\n✅ [Otevřít formulář zakázky po schválení](${zakazkaUrl})`;
+  // Trello: prodejní cena/ks viditelná, nákupní a celkový součet NE
+  const trelloProdList = produkty.map(p =>
+    `- ${p.nazev} · ${p.ks} ks · ${fmt(p.cenaBezDph)} Kč/ks`
+  ).join('\n');
+  const cardDesc = `## ${firma}\n**Číslo nabídky:** ${cislo}\n**Rep:** ${repName||'-'}\n**Kontakt:** ${kontakt||'-'}${telefon?' · 📞 '+telefon:''}${emailKlient?' · 📧 '+emailKlient:''}\n\n### Produkty\n${trelloProdList}\n\n---\n✅ [Otevřít formulář zakázky po schválení](${zakazkaUrl})`;
 
   fetch(`https://api.trello.com/1/cards?key=${NW_KEY}&token=${NW_TOKEN}`, {
     method: 'POST',
@@ -490,9 +502,16 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
   });
 
   // Email vlastníkovi — PLNÝ finanční přehled (jen pro tebe)
-  const ownerProdList = produkty.map(p =>
-    `${p.nazev} · ${p.ks} ks · ${fmt(p.cenaBezDph)} Kč/ks = ${fmt(p.celkem)} Kč`
-  ).join('\n');
+  let totalNakup = 0;
+  const ownerProdList = produkty.map(p => {
+    const nakupKs = p.nakupCena || null;
+    const ziskKs  = nakupKs !== null ? (p.cenaBezDph - nakupKs) * p.ks : null;
+    if (nakupKs !== null) totalNakup += nakupKs * p.ks;
+    return `${p.nazev} · ${p.ks} ks · prodej ${fmt(p.cenaBezDph)} Kč/ks` +
+      (nakupKs !== null ? ` · nákup ${fmt(nakupKs)} Kč/ks · zisk ${ziskKs>=0?'+':''}${fmt(ziskKs)} Kč` : '') +
+      ` = ${fmt(p.celkem)} Kč`;
+  }).join('\n');
+  const celkovyZisk = totalNakup > 0 ? totalBez - totalNakup : null;
   const ownerBody =
     `Nová nabídka: ${firma}\n` +
     `Číslo: ${cislo}\n` +
@@ -502,8 +521,9 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
     (doprava > 0 ? `Doprava: ${fmt(doprava)} Kč\n` : '') +
     `Mezisoučet bez DPH: ${fmt(totalBez)} Kč\n` +
     `DPH 12 %: ${fmt(totalBez * 0.12)} Kč\n` +
-    `CELKEM S DPH: ${fmt(totalBez * 1.12)} Kč\n\n` +
-    `Trello: ${zakazkaUrl}`;
+    `CELKEM S DPH: ${fmt(totalBez * 1.12)} Kč\n` +
+    (celkovyZisk !== null ? `\n💰 CELKOVÝ ZISK (bez DPH): ${celkovyZisk >= 0 ? '+' : ''}${fmt(celkovyZisk)} Kč\n` : '') +
+    `\nZakázka: ${zakazkaUrl}`;
 
   fetch('https://script.google.com/macros/s/AKfycbzMTvsRtxdSLfTKexhIIkWZ1U6gbLkdJJpaWSFWxnQ6C-zrtf4UYNu37LqhODuUyPnr/exec', {
     method: 'POST',
