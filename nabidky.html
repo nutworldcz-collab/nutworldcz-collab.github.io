@@ -108,8 +108,9 @@ table.pt input.inp-cena{width:100px;text-align:right}
       <div class="field"><label>DIČ</label><input id="dic" placeholder="DIČ" /></div>
     </div>
     <div class="field"><label>Adresa</label><input id="adresa" placeholder="Ulice 123, 000 00 Město" /></div>
-    <div class="row2">
+    <div class="row3">
       <div class="field"><label>Kontaktní osoba</label><input id="kontakt" placeholder="Jméno Příjmení" /></div>
+      <div class="field"><label>Telefon</label><input id="telefon" type="tel" placeholder="+420 000 000 000" /></div>
       <div class="field"><label>Email klienta</label><input id="email-klient" placeholder="info@firma.cz" /></div>
     </div>
 
@@ -253,6 +254,7 @@ function collectFormData() {
     dic:         document.getElementById('dic').value.trim(),
     adresa:      document.getElementById('adresa').value.trim(),
     kontakt:     document.getElementById('kontakt').value.trim(),
+    telefon:     document.getElementById('telefon').value.trim(),
     emailKlient: document.getElementById('email-klient').value.trim(),
     repName:     document.getElementById('rep-name').value.trim(),
     repEmail:    document.getElementById('rep-email').value.trim(),
@@ -336,6 +338,7 @@ function generateOffer() {
   const dic = document.getElementById('dic').value.trim();
   const adresa = document.getElementById('adresa').value.trim();
   const kontakt = document.getElementById('kontakt').value.trim();
+  const telefon = document.getElementById('telefon').value.trim();
   const emailKlient = document.getElementById('email-klient').value.trim();
   const repName = document.getElementById('rep-name').value.trim() || 'Nutworld';
   const repEmail = document.getElementById('rep-email').value.trim() || 'info@nutworld.cz';
@@ -392,7 +395,7 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
     <div style="padding:12px 28px">
       <div style="font-family:'Exo 2',sans-serif;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:#83502e;margin-bottom:5px">Odběratel</div>
       <div style="font-family:'Exo 2',sans-serif;font-size:14px;font-weight:700;color:#5c381f;margin-bottom:3px">${firma}</div>
-      <div style="font-size:12px;color:#5a3a22;line-height:1.5">${adresa||''}${kontakt?'<br>'+kontakt:''}${emailKlient?'<br>'+emailKlient:''}</div>
+      <div style="font-size:12px;color:#5a3a22;line-height:1.5">${adresa||''}${kontakt?'<br>'+kontakt:''}${telefon?'<br>📞 '+telefon:''}${emailKlient?'<br>'+emailKlient:''}</div>
       ${ico||dic?`<div style="font-size:11px;color:#8a6a4a;margin-top:4px">${ico?'IČO: '+ico:''}${ico&&dic?' &nbsp;|&nbsp; ':''}${dic?'DIČ: '+dic:''}</div>`:''}
     </div>
   </div>
@@ -460,7 +463,7 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
 
   const totalBez = produkty.reduce((s,p) => s + p.ks * p.cenaBezDph, 0);
   const prodList = produkty.map(p => `- ${p.nazev} · ${p.ks} ks · ${fmt(p.cenaBezDph)} Kč`).join('\n');
-  const cardDesc = `## ${firma}\n**Číslo nabídky:** ${cislo}\n**Rep:** ${repName||'-'}\n**Celkem s DPH:** ${fmt(totalBez*1.12)} Kč\n\n### Produkty\n${prodList}\n\n---\n✅ [Otevřít formulář zakázky po schválení](${zakazkaUrl})`;
+  const cardDesc = `## ${firma}\n**Číslo nabídky:** ${cislo}\n**Rep:** ${repName||'-'}\n**Kontakt:** ${kontakt||'-'}${telefon?' · 📞 '+telefon:''}\n**Celkem s DPH:** ${fmt(totalBez*1.12)} Kč\n\n### Produkty\n${prodList}\n\n---\n✅ [Otevřít formulář zakázky po schválení](${zakazkaUrl})`;
 
   fetch(`https://api.trello.com/1/cards?key=${NW_KEY}&token=${NW_TOKEN}`, {
     method: 'POST',
