@@ -340,6 +340,8 @@ async function send() {
        { type: 'text', text: text + '\n\nFotografie produktu jsou přiloženy výše.' }]
     : text;
 
+  chatHistory.push({ role: 'user', content: userContent });
+
   // Detekuj URL ve zprávě — fetchni obsah přes Apps Script (timeout 25s)
   const urlMatch = text.match(/https?:\/\/[^\s]+/);
   if (urlMatch) {
@@ -355,8 +357,9 @@ async function send() {
       clearTimeout(t);
       const fd = await fr.json();
       if (fd.text) {
-        const injected = text + `\n\n[Obsah stránky ${urlMatch[0]}]:\n${fd.text}`;
-        chatHistory[chatHistory.length - 1].content = injected;
+        const last = chatHistory[chatHistory.length - 1];
+        const orig = typeof last.content === 'string' ? last.content : text;
+        last.content = orig + `\n\n[Obsah stránky ${urlMatch[0]}]:\n${fd.text}`;
       }
     } catch(e) {
       addMsg('assistant', '⚠️ Stránku se nepodařilo načíst — generuji bez obsahu stránky.');
