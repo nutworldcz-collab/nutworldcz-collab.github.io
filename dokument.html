@@ -340,7 +340,23 @@ async function send() {
        { type: 'text', text: text + '\n\nFotografie produktu jsou přiloženy výše.' }]
     : text;
 
-  chatHistory.push({ role: 'user', content: userContent });
+  // Detekuj URL ve zprávě — fetchni obsah přes Apps Script
+  const urlMatch = text.match(/https?:\/\/[^\s]+/);
+  if (urlMatch) {
+    try {
+      addMsg('assistant', `🔗 Čtu stránku ${urlMatch[0]}…`);
+      const fr = await fetch(PROXY_URL, {
+        method: 'POST', headers: {'Content-Type':'text/plain'},
+        body: JSON.stringify({action:'fetch_url', url: urlMatch[0]}),
+      });
+      const fd = await fr.json();
+      if (fd.text) {
+        const injected = text + `\n\n[Obsah stránky ${urlMatch[0]}]:\n${fd.text}`;
+        chatHistory[chatHistory.length - 1].content = injected;
+      }
+    } catch(e) { /* pokračuj bez fetche */ }
+  }
+
   showTyping();
 
   try {
