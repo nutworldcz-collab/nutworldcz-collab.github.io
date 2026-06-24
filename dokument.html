@@ -301,7 +301,7 @@ PRAVIDLA:
 - Prodejní argumenty do zvýrazněných boxů s amber border-left
 
 FORMÁT ODPOVĚDI:
-- Vrať VÝHRADNĚ čistý JSON objekt — žádné ```json fences, žádný text před ani za
+- Vrať VÝHRADNĚ čistý JSON objekt — žádné markdown fences, žádný text před ani za
 - První znak odpovědi musí být { a poslední }
 - HTML nesmí obsahovat DOCTYPE ani html/head/body tagy — jen obsah
 - V HTML nepoužívej JavaScript (žádné new Date(), žádné skripty) — datum dej jako statický text
@@ -316,8 +316,6 @@ Pokud byly přiloženy obrázky, vložíš je do dokumentu jako <img src="data:.
 async function send() {
   const textarea = document.getElementById('chat-input');
   const text = textarea.value.trim();
-  // DEBUG — vždy zobrazí co se děje
-  addMsg('assistant', `🔍 send() spuštěn. Text: "${text || '(prázdný)'}" | Stav tlačítka: disabled=${document.getElementById('send-btn').disabled}`);
   if (!text) return;
   document.getElementById('send-btn').disabled = false;
   document.getElementById('send-btn').textContent = '➤';
