@@ -314,16 +314,13 @@ Pokud byly přiloženy obrázky, vložíš je do dokumentu jako <img src="data:.
 // SEND & CALL CLAUDE
 // ═══════════════════════════════════════
 async function send() {
-  generating = false; // vždy reset
-  document.getElementById('send-btn').disabled = false;
-  document.getElementById('send-btn').textContent = '➤';
-
   const textarea = document.getElementById('chat-input');
   const text = textarea.value.trim();
-  if (!text) {
-    addMsg('assistant', '⚠️ Prázdný text — napiš co chceš vytvořit.');
-    return;
-  }
+  // DEBUG — vždy zobrazí co se děje
+  addMsg('assistant', `🔍 send() spuštěn. Text: "${text || '(prázdný)'}" | Stav tlačítka: disabled=${document.getElementById('send-btn').disabled}`);
+  if (!text) return;
+  document.getElementById('send-btn').disabled = false;
+  document.getElementById('send-btn').textContent = '➤';
 
   textarea.value = '';
   textarea.style.height = '';
