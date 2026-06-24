@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Nutworld — Generátor dokumentů</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bd:#5c381f;--br:#83502e;--kraft:#f1e6da;--acc:#da1668;--leaf:#6fa044;--amb:#f7ab31}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;font-size:14px;height:100vh;display:flex;flex-direction:column}
+
+.topbar{background:var(--bd);padding:10px 20px;display:flex;align-items:center;gap:12px;flex-shrink:0}
+.topbar-title{font-family:'Exo 2',sans-serif;font-size:16px;font-weight:800;color:white}
+.topbar a{color:rgba(255,255,255,.6);font-size:12px;text-decoration:none}
+.topbar a:hover{color:white}
+.topbar-right{margin-left:auto;display:flex;gap:8px}
+.btn-top{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:white;font-size:12px;font-weight:600;padding:6px 14px;border-radius:20px;cursor:pointer;font-family:inherit}
+.btn-top.primary{background:var(--amb);color:var(--bd);border-color:var(--amb);font-weight:800}
+.btn-top:hover{background:rgba(255,255,255,.25)}
+.btn-top.primary:hover{opacity:.9}
+
+.shell{display:grid;grid-template-columns:380px 1fr;flex:1;overflow:hidden;gap:0}
+@media(max-width:800px){.shell{grid-template-columns:1fr;grid-template-rows:auto 1fr}}
+
+/* ── LEVÝ PANEL ── */
+.left{background:white;display:flex;flex-direction:column;overflow-y:auto;border-right:1px solid #e0d0c0}
+.left-head{background:var(--kraft);padding:14px 18px;border-bottom:1px solid #d4c0a8;flex-shrink:0}
+.left-head h2{font-family:'Exo 2',sans-serif;font-size:14px;font-weight:700;color:var(--bd)}
+.left-body{padding:16px 18px;display:flex;flex-direction:column;gap:12px;flex:1}
+
+.field label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--br);margin-bottom:4px}
+.field input,.field select,.field textarea{width:100%;border:1.5px solid #d4c0a8;border-radius:8px;padding:8px 12px;font-size:13px;font-family:inherit;background:#fdf9f6;color:#2a1a0e;transition:border-color .15s}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--br)}
+.field textarea{resize:vertical;min-height:200px;line-height:1.6}
+
+.template-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.tmpl-btn{padding:8px 6px;border:1.5px solid #d4c0a8;border-radius:8px;background:#fdf9f6;cursor:pointer;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;color:#666;text-align:center;transition:all .15s}
+.tmpl-btn:hover{background:var(--kraft);border-color:var(--br);color:var(--bd)}
+.tmpl-btn.active{background:var(--bd);border-color:var(--bd);color:white}
+.tmpl-icon{font-size:16px;display:block;margin-bottom:2px}
+
+.hint{font-size:11px;color:#aaa;padding:6px 10px;background:#f9f5f1;border-radius:6px;border-left:3px solid var(--amb);line-height:1.5}
+
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* ── PRAVÝ PANEL ── */
+.right{background:#c8bdb2;display:flex;flex-direction:column;align-items:center;overflow-y:auto;padding:24px 16px}
+.a4-wrap{width:100%;max-width:794px;background:white;box-shadow:0 4px 24px rgba(0,0,0,.2);min-height:1123px;font-family:'Source Sans 3',Arial,sans-serif;font-size:13px;color:#2a1a0e;position:relative}
+
+/* ── DOC TEMPLATES (tisknutelné) ── */
+.doc-header{background:linear-gradient(135deg,var(--bd),var(--br));color:white;padding:18px 28px;display:flex;justify-content:space-between;align-items:flex-start}
+.doc-logo{font-family:'Exo 2',sans-serif;font-size:22px;font-weight:800}
+.doc-logo-sub{font-size:10px;opacity:.7;letter-spacing:2px;text-transform:uppercase;margin-top:2px}
+.doc-header-right{text-align:right;font-size:11px;opacity:.8;line-height:1.7}
+.doc-stripe{height:3px;background:linear-gradient(90deg,var(--acc),var(--amb),var(--leaf))}
+.doc-body{padding:24px 28px}
+.doc-title{font-family:'Exo 2',sans-serif;font-size:20px;font-weight:800;color:var(--bd);margin-bottom:6px}
+.doc-subtitle{font-size:11px;color:#888;letter-spacing:1px;text-transform:uppercase;margin-bottom:20px}
+.doc-recipient{background:var(--kraft);border-left:4px solid var(--br);padding:10px 14px;border-radius:0 8px 8px 0;margin-bottom:20px;font-size:13px;line-height:1.6}
+.doc-content{line-height:1.8;color:#1a1a0a}
+.doc-content p{margin-bottom:12px}
+.doc-footer{margin-top:32px;padding-top:16px;border-top:1px solid #e8ddd4;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#aaa}
+.doc-footer-brand{font-family:'Exo 2',sans-serif;font-weight:700;color:var(--br)}
+
+/* Katalog */
+.cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:8px}
+.cat-item{border:1.5px solid var(--kraft);border-radius:10px;padding:12px 14px;background:#fdf9f6}
+.cat-name{font-family:'Exo 2',sans-serif;font-weight:700;font-size:13px;color:var(--bd);margin-bottom:4px}
+.cat-desc{font-size:11.5px;color:#555;line-height:1.5;margin-bottom:6px}
+.cat-price{font-family:'Exo 2',sans-serif;font-weight:800;color:var(--acc);font-size:14px}
+.cat-badge{display:inline-block;padding:1px 8px;border-radius:10px;background:var(--kraft);font-size:10px;font-weight:600;color:var(--br);margin-top:4px}
+
+/* Ceník */
+.cenik-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:12.5px}
+.cenik-table th{background:var(--bd);color:white;padding:7px 12px;text-align:left;font-family:'Exo 2',sans-serif;font-size:11px;letter-spacing:.5px}
+.cenik-table td{padding:7px 12px;border-bottom:1px solid #f0e4d6}
+.cenik-table tr:nth-child(even) td{background:#fdf8f4}
+.cenik-table td:last-child{text-align:right;font-weight:700;color:var(--bd);font-family:'Exo 2',sans-serif}
+
+/* Info list */
+.info-section{margin-bottom:18px}
+.info-section h3{font-family:'Exo 2',sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--br);border-bottom:1.5px solid var(--kraft);padding-bottom:5px;margin-bottom:8px}
+.info-section p,.info-section li{font-size:12.5px;line-height:1.7;color:#333}
+.info-section ul{padding-left:16px}
+
+@media print{
+  body{height:auto}
+  .topbar,.left,.topbar-right{display:none!important}
+  .shell{display:block}
+  .right{padding:0;background:white}
+  .a4-wrap{max-width:none;width:100%;box-shadow:none;min-height:auto}
+}
+@page{size:A4;margin:0}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-title">📄 Generátor dokumentů</span>
+  <a href="/">← Rozcestník</a>
+  <div class="topbar-right">
+    <button class="btn-top" onclick="clearAll()">🗑 Smazat</button>
+    <button class="btn-top primary" onclick="window.print()">🖨 Tisk / PDF</button>
+  </div>
+</div>
+
+<div class="shell">
+
+<!-- ── LEVÝ PANEL ── -->
+<div class="left">
+  <div class="left-head">
+    <h2>Nastavení dokumentu</h2>
+  </div>
+  <div class="left-body">
+
+    <div class="field">
+      <label>Typ dokumentu</label>
+      <div class="template-grid">
+        <button class="tmpl-btn active" onclick="setTemplate('volny',this)"><span class="tmpl-icon">📝</span>Volný text</button>
+        <button class="tmpl-btn" onclick="setTemplate('dopis',this)"><span class="tmpl-icon">✉️</span>Dopis</button>
+        <button class="tmpl-btn" onclick="setTemplate('katalog',this)"><span class="tmpl-icon">📦</span>Katalog</button>
+        <button class="tmpl-btn" onclick="setTemplate('cenik',this)"><span class="tmpl-icon">💰</span>Ceník</button>
+        <button class="tmpl-btn" onclick="setTemplate('infolist',this)"><span class="tmpl-icon">ℹ️</span>Info list</button>
+        <button class="tmpl-btn" onclick="setTemplate('nabidka',this)"><span class="tmpl-icon">🤝</span>Nabídka</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Nadpis dokumentu</label>
+      <input type="text" id="doc-title" placeholder="Např. Produktová nabídka jaro 2026" oninput="update()"/>
+    </div>
+
+    <div id="recipient-wrap" class="field" style="display:none">
+      <label>Příjemce / Adresát</label>
+      <input type="text" id="recipient" placeholder="Jméno Příjmení, Firma s.r.o." oninput="update()"/>
+    </div>
+
+    <div class="field">
+      <label id="content-label">Obsah — vložte text</label>
+      <div class="hint" id="hint">Vložte nebo napište cokoliv — text bude zabalený do Nutworld šablony.</div>
+      <textarea id="content" placeholder="Sem vložte nebo napište obsah dokumentu…" oninput="update()" style="margin-top:6px"></textarea>
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label>Podpis / Odesílatel</label>
+        <input type="text" id="sender" placeholder="Vaše jméno" oninput="update()"/>
+      </div>
+      <div class="field">
+        <label>Datum</label>
+        <input type="text" id="doc-date" oninput="update()"/>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Poznámka pod čarou (volitelná)</label>
+      <input type="text" id="footnote" placeholder="Např. Ceny bez DPH, platnost 30 dní" oninput="update()"/>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── PRAVÝ PANEL ── -->
+<div class="right">
+  <div class="a4-wrap" id="preview">
+    <!-- generováno JS -->
+  </div>
+</div>
+
+</div>
+
+<script>
+let currentTemplate = 'volny';
+
+// Nastav dnešní datum
+document.getElementById('doc-date').value = new Date().toLocaleDateString('cs-CZ');
+
+function setTemplate(t, el) {
+  currentTemplate = t;
+  document.querySelectorAll('.tmpl-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  const hints = {
+    volny:   'Vložte cokoliv — text bude zabalený do Nutworld šablony.',
+    dopis:   'Vložte text dopisu. Každý odstavec = nový řádek.',
+    katalog: 'Každý produkt na nový řádek. Formát: Název | Popis | Cena\nnebo jen: Název produktu - 299 Kč',
+    cenik:   'Každá položka na řádek. Formát: Název | Cena\nnebo: Název produktu - 299 Kč',
+    infolist:'Sekce oddělte prázdným řádkem. První řádek sekce = nadpis sekce.',
+    nabidka: 'Text nabídky nebo seznam produktů s cenami. Příjemce vyplňte výše.',
+  };
+  const labels = {
+    volny:'Obsah — vložte text', dopis:'Text dopisu', katalog:'Produkty (jeden na řádek)',
+    cenik:'Položky ceníku (jedna na řádek)', infolist:'Sekce informačního listu', nabidka:'Text nabídky / produkty',
+  };
+  document.getElementById('hint').textContent = hints[t];
+  document.getElementById('content-label').textContent = labels[t];
+  document.getElementById('recipient-wrap').style.display = ['dopis','nabidka'].includes(t) ? 'block' : 'none';
+  update();
+}
+
+function update() {
+  const title    = document.getElementById('doc-title').value || 'Dokument';
+  const content  = document.getElementById('content').value || '';
+  const sender   = document.getElementById('sender').value || 'Nut World s.r.o.';
+  const date     = document.getElementById('doc-date').value || '';
+  const recipient= document.getElementById('recipient').value || '';
+  const footnote = document.getElementById('footnote').value || '';
+
+  const generators = {
+    volny:   genVolny,
+    dopis:   genDopis,
+    katalog: genKatalog,
+    cenik:   genCenik,
+    infolist:genInfolist,
+    nabidka: genNabidka,
+  };
+  document.getElementById('preview').innerHTML = (generators[currentTemplate] || genVolny)(title, content, sender, date, recipient, footnote);
+}
+
+// ── Hlavička dokumentu ──
+function docHeader(date) {
+  return `
+  <div class="doc-header">
+    <div>
+      <div class="doc-logo">🐿 Nutworld</div>
+      <div class="doc-logo-sub">Ořechy · Sušené ovoce · Dárky</div>
+    </div>
+    <div class="doc-header-right">
+      Nut World s.r.o.<br>
+      Hvězdova 1716/2, 140 00 Praha<br>
+      IČO: 27517357 · nutworld.cz<br>
+      ${date ? date : ''}
+    </div>
+  </div>
+  <div class="doc-stripe"></div>`;
+}
+
+function docFooter(sender, footnote) {
+  return `
+  <div class="doc-footer">
+    <div><span class="doc-footer-brand">🐿 Nutworld</span> · info@nutworld.cz · nutworld.cz</div>
+    <div>${footnote || sender || ''}</div>
+  </div>`;
+}
+
+function textToParas(text) {
+  return text.split('\n').map(l => l.trim()).filter(l => l)
+    .map(l => `<p>${esc(l)}</p>`).join('');
+}
+
+// ── Šablony ──
+function genVolny(title, content, sender, date, recipient, footnote) {
+  return docHeader(date) + `
+  <div class="doc-body">
+    <div class="doc-title">${esc(title)}</div>
+    <div class="doc-content">${textToParas(content) || '<p style="color:#ccc">Sem přijde váš text…</p>'}</div>
+    ${sender ? `<div style="margin-top:24px;font-size:13px"><strong>${esc(sender)}</strong></div>` : ''}
+    ${docFooter(sender, footnote)}
+  </div>`;
+}
+
+function genDopis(title, content, sender, date, recipient, footnote) {
+  return docHeader(date) + `
+  <div class="doc-body">
+    <div class="doc-title">${esc(title)}</div>
+    ${recipient ? `<div class="doc-recipient"><strong>Adresát:</strong><br>${esc(recipient)}</div>` : ''}
+    <div class="doc-content">${textToParas(content) || '<p style="color:#ccc">Text dopisu…</p>'}</div>
+    ${sender ? `<div style="margin-top:28px;font-size:13px">S pozdravem,<br><strong>${esc(sender)}</strong><br><span style="color:#888;font-size:11px">Nut World s.r.o.</span></div>` : ''}
+    ${docFooter(sender, footnote)}
+  </div>`;
+}
+
+function parseProducts(text) {
+  const lines = text.split('\n').map(l => l.trim()).filter(l => l);
+  return lines.map(line => {
+    // Formát: Název | Popis | Cena nebo Název | Cena
+    if (line.includes('|')) {
+      const parts = line.split('|').map(p => p.trim());
+      if (parts.length >= 3) return { name: parts[0], desc: parts[1], price: parts[2] };
+      if (parts.length === 2) return { name: parts[0], desc: '', price: parts[1] };
+    }
+    // Formát: Název - Cena nebo Název – 299 Kč
+    const priceMatch = line.match(/^(.+?)\s*[-–]\s*([\d, ]+\s*Kč.*)$/i);
+    if (priceMatch) return { name: priceMatch[1].trim(), desc: '', price: priceMatch[2].trim() };
+    // Jen název
+    return { name: line.replace(/^[\d.•\-*]+\s*/, ''), desc: '', price: '' };
+  });
+}
+
+function genKatalog(title, content, sender, date, recipient, footnote) {
+  const products = parseProducts(content);
+  const cards = products.map(p => `
+    <div class="cat-item">
+      <div class="cat-name">${esc(p.name)}</div>
+      ${p.desc ? `<div class="cat-desc">${esc(p.desc)}</div>` : ''}
+      ${p.price ? `<div class="cat-price">${esc(p.price)}</div>` : ''}
+    </div>`).join('') || '<p style="color:#ccc">Vložte produkty…</p>';
+
+  return docHeader(date) + `
+  <div class="doc-body">
+    <div class="doc-title">${esc(title)}</div>
+    <div class="doc-subtitle">Produktový katalog · Nut World s.r.o.</div>
+    <div class="cat-grid">${cards}</div>
+    ${docFooter(sender, footnote)}
+  </div>`;
+}
+
+function genCenik(title, content, sender, date, recipient, footnote) {
+  const items = parseProducts(content);
+  let num = 0;
+  const rows = items.map(p => {
+    num++;
+    return `<tr>
+      <td style="color:#aaa;font-family:monospace;width:30px">${num}.</td>
+      <td><strong>${esc(p.name)}</strong>${p.desc ? `<br><span style="font-size:11px;color:#888">${esc(p.desc)}</span>` : ''}</td>
+      <td>${esc(p.price) || '—'}</td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="3" style="color:#ccc;text-align:center;padding:20px">Vložte položky…</td></tr>';
+
+  return docHeader(date) + `
+  <div class="doc-body">
+    <div class="doc-title">${esc(title)}</div>
+    <div class="doc-subtitle">Ceník · Nut World s.r.o. · ${esc(date)}</div>
+    <table class="cenik-table">
+      <thead><tr><th>#</th><th>Produkt / Popis</th><th style="text-align:right">Cena</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    ${docFooter(sender, footnote)}
+  </div>`;
+}
+
+function genInfolist(title, content, sender, date, recipient, footnote) {
+  const blocks = content.split(/\n\s*\n/).filter(b => b.trim());
+  const sections = blocks.map(block => {
+    const lines = block.split('\n').map(l => l.trim()).filter(l => l);
+    if (!lines.length) return '';
+    const heading = lines[0];
+    const body = lines.slice(1);
+    const bodyHtml = body.length
+      ? body.map(l => l.startsWith('-') || l.startsWith('•')
+          ? `<li>${esc(l.replace(/^[-•]\s*/,''))}</li>`
+          : `<p>${esc(l)}</p>`
+        ).join('')
+      : '';
+    return `<div class="info-section">
+      <h3>${esc(heading)}</h3>
+      ${bodyHtml.includes('<li>') ? `<ul>${bodyHtml}</ul>` : bodyHtml}
+    </div>`;
+  }).join('') || '<p style="color:#ccc">Sekce oddělte prázdným řádkem. První řádek = nadpis sekce.</p>';
+
+  return docHeader(date) + `
+  <div class="doc-body">
+    <div class="doc-title">${esc(title)}</div>
+    ${sections}
+    ${docFooter(sender, footnote)}
+  </div>`;
+}
+
+function genNabidka(title, content, sender, date, recipient, footnote) {
+  // Zkus detekovat produkty (Cena nebo | v textu)
+  const lines = content.split('\n').map(l => l.trim()).filter(l => l);
+  const hasProducts = lines.some(l => l.includes('|') || /\d+\s*Kč/.test(l));
+
+  if (hasProducts) {
+    const items = parseProducts(content);
+    let total = 0;
+    const rows = items.map(p => {
+      const priceNum = parseFloat((p.price||'').replace(/[^\d,.]/g,'').replace(',','.')) || 0;
+      total += priceNum;
+      return `<tr>
+        <td><strong>${esc(p.name)}</strong>${p.desc?`<br><span style="font-size:11px;color:#888">${esc(p.desc)}</span>`:''}</td>
+        <td style="text-align:right;font-weight:700;color:var(--bd);font-family:\'Exo 2\',sans-serif">${esc(p.price)||'—'}</td>
+      </tr>`;
+    }).join('');
+    const totalRow = total > 0 ? `<tr style="background:#5c381f;color:white"><td style="padding:9px 12px;font-family:\'Exo 2\',sans-serif;font-weight:700">Celkem bez DPH</td><td style="padding:9px 12px;text-align:right;font-family:\'Exo 2\',sans-serif;font-weight:800;color:#f7ab31">${num2(total)} Kč</td></tr>` : '';
+
+    return docHeader(date) + `
+    <div class="doc-body">
+      <div class="doc-title">${esc(title)}</div>
+      ${recipient ? `<div class="doc-recipient"><strong>Pro:</strong> ${esc(recipient)}</div>` : ''}
+      <table class="cenik-table" style="margin-top:8px">
+        <thead><tr><th>Produkt</th><th style="text-align:right">Cena</th></tr></thead>
+        <tbody>${rows}${totalRow}</tbody>
+      </table>
+      ${sender ? `<div style="margin-top:24px;font-size:13px">S pozdravem,<br><strong>${esc(sender)}</strong></div>` : ''}
+      ${docFooter(sender, footnote)}
+    </div>`;
+  }
+
+  return genDopis(title, content, sender, date, recipient, footnote);
+}
+
+function num2(n) { return n.toLocaleString('cs-CZ', {minimumFractionDigits:2,maximumFractionDigits:2}); }
+function esc(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function clearAll() {
+  ['doc-title','content','sender','recipient','footnote'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('doc-date').value = new Date().toLocaleDateString('cs-CZ');
+  update();
+}
+
+update();
+</script>
+</body>
+</html>
