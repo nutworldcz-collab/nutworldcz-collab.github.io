@@ -300,15 +300,18 @@ PRAVIDLA:
 - Marže vždy zeleně (#6fa044) jako badge
 - Prodejní argumenty do zvýrazněných boxů s amber border-left
 
-FORMÁT ODPOVĚDI:
-- Vrať VÝHRADNĚ čistý JSON objekt — žádné markdown fences, žádný text před ani za
-- První znak odpovědi musí být { a poslední }
-- HTML nesmí obsahovat DOCTYPE ani html/head/body tagy — jen obsah
-- V HTML nepoužívej JavaScript (žádné new Date(), žádné skripty) — datum dej jako statický text
-- Šířka se renduje na ~760px
+FORMÁT ODPOVĚDI — ABSOLUTNĚ POVINNÉ:
+- VŽDY vrať čistý JSON objekt, první znak { poslední }
+- NIKDY nezačínej markdown fences, NIKDY nepřidávej text před nebo za JSON
+- I když se ptají na fotku, URL, nebo něco co nemůžeš udělat — vrať JSON s hezkou HTML odpovědí
+- HTML: žádný DOCTYPE, žádné html/head/body tagy, žádný JavaScript, datum jako statický text
+- Šířka ~760px, inline CSS
 
-{"html":"...","type":"prezentace|katalog|cenik|dopis|infolist|nabidka","note":"co bylo vytvořeno"}
-Pokud byly přiloženy obrázky, vložíš je do dokumentu jako <img src="data:...base64..."/>.`;
+Příklady:
+{"html":"<div style='padding:24px'>...krásný dokument...</div>","type":"prezentace","note":"Prezentace vytvořena"}
+{"html":"<div style='padding:24px;font-family:sans-serif'><h2>Fotka</h2><p>Nahraj fotku přes ikonku 📷 vlevo dole — pak ji přiložím do dokumentu.</p></div>","type":"info","note":"Pošli fotku přes upload"}
+
+Pokud uživatel nahraje obrázek jako přílohu (base64), vlož ho: <img src="data:image/jpeg;base64,..."/>`;
 
 // ═══════════════════════════════════════
 // SEND & CALL CLAUDE
@@ -356,7 +359,9 @@ async function send() {
       if (s !== -1 && e2 !== -1) clean = clean.slice(s, e2 + 1);
       parsed = JSON.parse(clean);
     } catch(e) {
-      parsed = { html: `<div style="padding:24px;color:red"><pre style="font-size:11px;white-space:pre-wrap">${escHtml(raw.slice(0,800))}</pre></div>`, type: 'volny', note: 'Chyba parsování — zkus znovu.' };
+      // Pokud není JSON — zobraz jako textovou zprávu v chatu
+      addMsg('assistant', escHtml(raw).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\n/g,'<br>'));
+      return;
     }
 
     renderDoc(parsed);
