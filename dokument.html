@@ -10,158 +10,74 @@
 :root{--bd:#5c381f;--br:#83502e;--kraft:#f1e6da;--acc:#da1668;--leaf:#6fa044;--amb:#f7ab31}
 body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;font-size:14px;height:100vh;display:flex;flex-direction:column;overflow:hidden}
 
+/* ── TOPBAR ── */
 .topbar{background:var(--bd);padding:10px 20px;display:flex;align-items:center;gap:12px;flex-shrink:0}
 .topbar-title{font-family:'Exo 2',sans-serif;font-size:16px;font-weight:800;color:white}
 .topbar a{color:rgba(255,255,255,.6);font-size:12px;text-decoration:none}
 .topbar-right{margin-left:auto;display:flex;gap:8px;align-items:center}
 .btn-print{background:var(--amb);border:none;color:var(--bd);font-family:'Exo 2',sans-serif;font-weight:800;font-size:13px;padding:7px 18px;border-radius:20px;cursor:pointer}
 .btn-sm{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:white;font-size:12px;font-weight:600;padding:6px 14px;border-radius:20px;cursor:pointer;font-family:inherit}
-.mode-badge{font-size:11px;color:rgba(255,255,255,.7);background:rgba(255,255,255,.12);padding:4px 10px;border-radius:12px}
+.btn-sm:hover{background:rgba(255,255,255,.25)}
+.doc-type{font-size:11px;color:rgba(255,255,255,.7);background:rgba(255,255,255,.12);padding:4px 10px;border-radius:12px}
 
-.shell{display:grid;grid-template-columns:400px 1fr;flex:1;overflow:hidden}
+/* ── LAYOUT ── */
+.shell{display:grid;grid-template-columns:380px 1fr;flex:1;overflow:hidden}
 
-/* ── LEVÝ PANEL ── */
-.left{display:flex;flex-direction:column;background:white;border-right:2px solid #e0d0c0;overflow-y:auto}
-.left-body{padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+/* ── LEVÝ PANEL — CHAT ── */
+.left{display:flex;flex-direction:column;background:white;border-right:2px solid #e0d0c0;overflow:hidden}
 
-.field label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--br);margin-bottom:5px}
-.field input,.field textarea{width:100%;border:1.5px solid #d4c0a8;border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;background:#fdf9f6;transition:border-color .15s}
-.field input:focus,.field textarea:focus{outline:none;border-color:var(--br);background:white}
-.field textarea{resize:vertical;min-height:260px;line-height:1.6}
+/* API key banner */
+.api-banner{background:linear-gradient(135deg,#fff8e1,#fff3cd);border-bottom:1.5px solid var(--amb);padding:12px 16px;display:flex;gap:10px;align-items:center;font-size:12px;color:#5c3000}
+.api-banner input{flex:1;border:1.5px solid #f7ab31;border-radius:8px;padding:6px 10px;font-size:12px;font-family:inherit;background:white}
+.api-banner input:focus{outline:none;border-color:var(--bd)}
+.api-banner button{background:var(--bd);color:white;border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap}
+.api-set-bar{background:var(--kraft);border-bottom:1px solid #d4c0a8;padding:7px 14px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--br)}
+.api-set-bar button{background:none;border:none;color:var(--br);font-size:11px;cursor:pointer;text-decoration:underline}
 
-.predmet-inp{border:2px solid var(--br)!important;border-radius:10px!important;font-family:'Exo 2',sans-serif!important;font-weight:700!important;font-size:14px!important;color:var(--bd)!important}
-.predmet-inp::placeholder{color:#c8a882!important;font-weight:400!important}
+/* Chat messages */
+.chat-msgs{flex:1;overflow-y:auto;padding:14px 14px 8px;display:flex;flex-direction:column;gap:10px}
+.msg{display:flex;gap:8px;align-items:flex-start}
+.msg.user{flex-direction:row-reverse}
+.msg-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.msg.assistant .msg-avatar{background:linear-gradient(135deg,var(--bd),var(--br))}
+.msg.user .msg-avatar{background:var(--acc)}
+.msg-bubble{max-width:calc(100% - 40px);padding:9px 13px;border-radius:12px;font-size:12.5px;line-height:1.55}
+.msg.assistant .msg-bubble{background:var(--kraft);border-radius:4px 12px 12px 12px;color:#2a1a0e}
+.msg.user .msg-bubble{background:linear-gradient(135deg,var(--acc),#b01255);color:white;border-radius:12px 4px 12px 12px}
+.msg-bubble em{font-style:normal;font-family:'Exo 2',sans-serif;font-weight:600}
+.typing{display:flex;gap:4px;align-items:center;padding:4px 0}
+.typing span{width:7px;height:7px;background:var(--br);border-radius:50%;animation:bounce .8s infinite}
+.typing span:nth-child(2){animation-delay:.15s}
+.typing span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
 
-.tip{background:var(--kraft);border-radius:8px;padding:10px 14px;font-size:11.5px;color:var(--bd);line-height:1.6}
-.tip strong{font-family:'Exo 2',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:5px}
-.tip-ex{display:inline-block;margin:2px;background:white;border:1px solid #c8a882;border-radius:12px;padding:3px 10px;font-size:11px;cursor:pointer;color:var(--br);font-weight:600}
-.tip-ex:hover{background:var(--bd);color:white;border-color:var(--bd)}
+/* Image upload strip */
+.upload-strip{padding:8px 14px;border-top:1px solid #f0e8df;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.thumb-sm{width:40px;height:40px;border-radius:5px;object-fit:cover;border:1.5px solid #d4c0a8;position:relative;cursor:pointer}
+.upload-btn{width:40px;height:40px;border-radius:5px;border:2px dashed #c8a882;background:#fdf9f6;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#c8a882}
+.upload-btn:hover{border-color:var(--br);color:var(--br);background:var(--kraft)}
 
-/* Upload zone */
-.upload-zone{border:2px dashed #c8a882;border-radius:10px;padding:14px;text-align:center;cursor:pointer;transition:all .2s;background:#fdf9f6}
-.upload-zone:hover,.upload-zone.drag{border-color:var(--br);background:var(--kraft)}
-.upload-zone input{display:none}
-.upload-zone p{font-size:12px;color:#888;margin-top:4px}
-.thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-.thumb{position:relative;width:52px;height:52px;border-radius:6px;overflow:hidden;border:1.5px solid #d4c0a8}
-.thumb img{width:100%;height:100%;object-fit:cover}
-.thumb .del{position:absolute;top:1px;right:1px;background:rgba(0,0,0,.6);color:white;border:none;border-radius:50%;width:16px;height:16px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+/* Chat input */
+.chat-input-wrap{padding:10px 12px;border-top:2px solid #e0d0c0;display:flex;gap:8px;align-items:flex-end}
+.chat-input-wrap textarea{flex:1;border:1.5px solid #d4c0a8;border-radius:10px;padding:9px 12px;font-size:13px;font-family:inherit;background:#fdf9f6;resize:none;min-height:42px;max-height:120px;line-height:1.5;transition:border-color .15s}
+.chat-input-wrap textarea:focus{outline:none;border-color:var(--br);background:white}
+.send-btn{background:linear-gradient(135deg,var(--bd),var(--br));color:white;border:none;border-radius:10px;width:42px;height:42px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.send-btn:disabled{opacity:.4;cursor:default}
+.send-btn:not(:disabled):hover{filter:brightness(1.1)}
 
-/* ── PRAVÝ PANEL ── */
+/* ── PRAVÝ PANEL — PREVIEW ── */
 .right{background:#9a8f85;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:20px 12px;gap:8px}
-.page-wrap{width:100%;max-width:760px;background:white;box-shadow:0 4px 20px rgba(0,0,0,.2);page-break-after:always}
-.page-wrap:last-child{page-break-after:auto}
-.placeholder{display:flex;align-items:center;justify-content:center;min-height:500px;color:#aaa;text-align:center}
-.placeholder p{font-size:13px;line-height:1.6;margin-top:8px}
-
-/* ══════════════════════════════════════════════
-   DOC STYLES — společné
-══════════════════════════════════════════════ */
-.dh{background:linear-gradient(135deg,#5c381f 0%,#83502e 55%,#a0622a 100%);color:white;padding:16px 28px;display:flex;justify-content:space-between;align-items:flex-start}
-.dh-logo{font-family:'Exo 2',sans-serif;font-size:22px;font-weight:800}
-.dh-sub{font-size:9px;opacity:.7;letter-spacing:2px;text-transform:uppercase;margin-top:1px}
-.dh-right{text-align:right;font-size:10px;opacity:.8;line-height:1.8}
-.dstripe{height:3px;background:linear-gradient(90deg,#da1668,#f7ab31,#6fa044)}
-.db{padding:22px 28px}
-.dfooter{margin-top:20px;padding-top:12px;border-top:1px solid #ede0d4;display:flex;justify-content:space-between;font-size:10px;color:#aaa}
-.dfooter-b{font-family:'Exo 2',sans-serif;font-weight:700;color:#83502e}
-
-/* ══ KATALOG — titulní stránka ══ */
-.cat-cover{min-height:600px;display:flex;flex-direction:column}
-.cat-cover-hero{background:linear-gradient(135deg,#5c381f 0%,#83502e 60%,#a0622a 100%);flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px 32px;color:white}
-.cat-cover-title{font-family:'Exo 2',sans-serif;font-size:26px;font-weight:800;line-height:1.25;margin-bottom:16px;max-width:500px}
-.cat-cover-bullets{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
-.cat-cover-bullets li{font-size:13px;opacity:.9;display:flex;align-items:center;gap:8px}
-.cat-cover-bullets li::before{content:'✓';color:var(--amb);font-weight:800;font-size:14px}
-.cat-cover-badge{background:rgba(247,171,49,.2);border:1.5px solid var(--amb);border-radius:20px;padding:6px 20px;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--amb)}
-.cat-cover-bottom{background:var(--kraft);padding:16px 28px;display:flex;justify-content:space-between;align-items:center}
-.cat-cover-bottom-brand{font-family:'Exo 2',sans-serif;font-size:14px;font-weight:700;color:var(--bd)}
-.cat-cover-bottom-note{font-size:11px;color:#888}
-
-/* ══ KATALOG — produktová stránka ══ */
-.cat-page{display:flex;flex-direction:column}
-.cat-page-header{background:var(--kraft);padding:10px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #d4c0a8}
-.cat-page-header-title{font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;color:var(--br);text-transform:uppercase;letter-spacing:1.5px}
-.cat-products{padding:16px 20px;display:flex;flex-direction:column;gap:14px;flex:1}
-
-.prod-block{display:grid;grid-template-columns:140px 1fr;gap:0;border:1.5px solid #ede0d4;border-radius:10px;overflow:hidden;background:white;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-.prod-img{background:linear-gradient(135deg,#f1e6da,#e8ddd4);display:flex;align-items:center;justify-content:center;min-height:130px;position:relative;overflow:hidden}
-.prod-img img{width:100%;height:100%;object-fit:cover}
-.prod-img-placeholder{text-align:center;color:#c8a882;padding:12px}
-.prod-img-placeholder .icon{font-size:32px;display:block;margin-bottom:4px}
-.prod-img-placeholder .name{font-size:9px;font-weight:600;color:#aaa;text-transform:uppercase;letter-spacing:.5px}
-.prod-content{padding:12px 14px;display:flex;flex-direction:column;gap:6px}
-.prod-name{font-family:'Exo 2',sans-serif;font-size:13px;font-weight:800;color:var(--bd);line-height:1.25}
-.prod-pitch{font-size:11px;color:#555;line-height:1.5}
-.prod-tags{display:flex;gap:4px;flex-wrap:wrap}
-.prod-tag{padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;background:var(--kraft);color:var(--br)}
-.prod-tag.win{background:#f3e5f5;color:#7b1fa2}
-.prod-tag.cof{background:#e3f2fd;color:#1565c0}
-.prod-tag.ret{background:#e8f5e9;color:#2e7d32}
-.prod-prices{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:center;margin-top:4px;padding-top:8px;border-top:1px solid #f0e4d6}
-.prod-price-sell{font-family:'Exo 2',sans-serif;font-size:20px;font-weight:800;color:var(--acc)}
-.prod-price-sell span{font-size:11px;font-weight:400;color:#aaa}
-.prod-price-box{background:#f9f9f9;border:1px solid #ede0d4;border-radius:6px;padding:4px 8px;font-size:10px;color:#666;line-height:1.6}
-.prod-margin{background:linear-gradient(135deg,var(--leaf),#4a9e2e);color:white;border-radius:6px;padding:4px 10px;font-family:'Exo 2',sans-serif;font-size:10px;font-weight:800;text-align:center;white-space:nowrap}
-.prod-argument{background:linear-gradient(135deg,#fff8e1,#fff3cd);border-left:3px solid var(--amb);padding:5px 9px;border-radius:0 6px 6px 0;font-size:10.5px;font-style:italic;color:#5c3000}
-
-/* ══ KATALOG — závěrečná stránka ══ */
-.cat-closing{min-height:400px;display:flex;flex-direction:column}
-.cat-closing-hero{background:linear-gradient(135deg,#5c381f,#83502e);color:white;padding:32px;text-align:center;flex:1}
-.cat-closing-title{font-family:'Exo 2',sans-serif;font-size:22px;font-weight:800;margin-bottom:20px}
-.cat-closing-points{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px}
-.cat-closing-point{background:rgba(255,255,255,.1);border-radius:8px;padding:12px;text-align:center}
-.cat-closing-point .icon{font-size:20px;margin-bottom:4px}
-.cat-closing-point .text{font-size:12px;font-weight:600}
-.cat-contact{background:var(--kraft);padding:18px 28px;text-align:center}
-.cat-contact-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--br);margin-bottom:8px}
-.cat-contact-info{font-family:'Exo 2',sans-serif;font-size:14px;font-weight:700;color:var(--bd)}
-
-/* ══ PREZENTACE — jednastránková ══ */
-.prez{display:flex;flex-direction:column;min-height:900px}
-.prez-hero{position:relative;background:linear-gradient(135deg,#5c381f 0%,#83502e 55%,#a0622a 100%);padding:28px 32px;display:flex;align-items:center;gap:24px;overflow:hidden}
-.prez-hero::after{content:'';position:absolute;top:-30px;right:-30px;width:200px;height:200px;border-radius:50%;background:rgba(247,171,49,.12);pointer-events:none}
-.prez-img-wrap{flex-shrink:0;width:180px;height:180px;border-radius:12px;overflow:hidden;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center}
-.prez-img-wrap img{width:100%;height:100%;object-fit:cover}
-.prez-img-placeholder{text-align:center;color:rgba(255,255,255,.5);font-size:11px}
-.prez-img-placeholder .icon{font-size:48px;display:block;margin-bottom:8px}
-.prez-title-area{flex:1;color:white}
-.prez-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;color:var(--amb);margin-bottom:6px}
-.prez-name{font-family:'Exo 2',sans-serif;font-size:28px;font-weight:800;line-height:1.15;margin-bottom:8px}
-.prez-tagline{font-size:13px;opacity:.85;line-height:1.5;max-width:380px}
-.prez-price-hero{background:rgba(247,171,49,.2);border:1.5px solid var(--amb);border-radius:10px;padding:8px 16px;text-align:center;flex-shrink:0}
-.prez-price-hero .amount{font-family:'Exo 2',sans-serif;font-size:26px;font-weight:800;color:var(--amb);display:block}
-.prez-price-hero .label{font-size:9px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:1px}
-
-.prez-body{flex:1;padding:20px 28px;display:flex;flex-direction:column;gap:16px}
-
-.prez-tags{display:flex;gap:8px;flex-wrap:wrap}
-.prez-tag{padding:5px 14px;border-radius:20px;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700}
-.prez-tag.wine{background:#f3e5f5;color:#7b1fa2;border:1.5px solid #ce93d8}
-.prez-tag.coffee{background:#e3f2fd;color:#1565c0;border:1.5px solid #90caf9}
-.prez-tag.gift{background:#e8f5e9;color:#2e7d32;border:1.5px solid #a5d6a7}
-.prez-tag.retail{background:#fff3e0;color:#e65100;border:1.5px solid #ffcc80}
-.prez-tag.snack{background:var(--kraft);color:var(--br);border:1.5px solid #c8a882}
-
-.prez-benefits{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.prez-benefit{display:flex;gap:10px;align-items:flex-start;background:#fdf9f6;border-radius:8px;padding:10px 12px;border:1px solid #ede0d4}
-.prez-benefit .tick{width:20px;height:20px;background:var(--br);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.prez-benefit .tick::after{content:'✓';color:white;font-size:10px;font-weight:800}
-.prez-benefit .text{font-size:12px;color:#333;line-height:1.45}
-
-.prez-desc{font-size:13px;line-height:1.8;color:#333;background:#fdf9f6;border-left:3px solid var(--br);padding:12px 16px;border-radius:0 8px 8px 0}
-
-.prez-footer-strip{background:linear-gradient(135deg,#5c381f,#83502e);color:white;padding:12px 28px;display:flex;justify-content:space-between;align-items:center;margin-top:auto}
-.prez-footer-brand{font-family:'Exo 2',sans-serif;font-size:13px;font-weight:800}
-.prez-footer-contact{font-size:11px;opacity:.8}
+.page-wrap{width:100%;max-width:760px;background:white;box-shadow:0 4px 20px rgba(0,0,0,.2)}
+.empty-preview{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;min-height:500px;color:rgba(255,255,255,.5);text-align:center;gap:10px}
+.empty-preview .icon{font-size:56px}
+.empty-preview p{font-size:14px;line-height:1.6}
 
 @media print{
   body{overflow:visible;height:auto}
   .topbar,.left{display:none!important}
   .shell{display:block}
   .right{padding:0;background:white;overflow:visible;align-items:stretch}
-  .page-wrap{box-shadow:none;page-break-after:always;max-width:none}
-  .page-wrap:last-child{page-break-after:auto}
+  .page-wrap{box-shadow:none;max-width:none}
 }
 @page{size:A4;margin:0}
 </style>
@@ -172,558 +88,346 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
   <span class="topbar-title">📄 Generátor dokumentů</span>
   <a href="/">← Rozcestník</a>
   <div class="topbar-right">
-    <span class="mode-badge" id="mode-badge">—</span>
-    <button class="btn-sm" onclick="doClear()">Smazat</button>
-    <button class="btn-print" onclick="window.print()">🖨 Tisk / PDF</button>
+    <span class="doc-type" id="doc-type" style="display:none"></span>
+    <button class="btn-sm" id="btn-clear" onclick="clearAll()" style="display:none">Smazat</button>
+    <button class="btn-print" id="btn-print" onclick="window.print()" style="display:none">🖨 Tisk / PDF</button>
   </div>
 </div>
 
 <div class="shell">
+
+<!-- ── LEVÝ PANEL ── -->
 <div class="left">
-<div class="left-body">
 
-  <div class="field">
-    <label>Předmět — co chcete vytvořit</label>
-    <input type="text" id="predmet" class="predmet-inp"
-      placeholder="Např: katalog pro vinotéky, ceník ořechy, dopis pro ABC..."
-      oninput="update()" autocomplete="off"/>
-  </div>
-
-  <div class="tip">
-    <strong>Příklady předmětu</strong>
-    <span class="tip-ex" onclick="setPredmet('prezentace mandle uzené 150g')">🛍 prezentace produktu</span>
-    <span class="tip-ex" onclick="setPredmet('katalog pro vinotéky a kavárny')">📦 katalog</span>
-    <span class="tip-ex" onclick="setPredmet('ceník velkoobchod 2026')">💰 ceník</span>
-    <span class="tip-ex" onclick="setPredmet('dopis pro partnera')">✉️ dopis</span>
-    <span class="tip-ex" onclick="setPredmet('info list produkt')">ℹ️ info list</span>
-  </div>
-  <div style="background:#fff3cd;border-radius:8px;padding:10px 14px;font-size:11.5px;color:#5c3000;border-left:3px solid var(--amb)">
-    <strong style="display:block;margin-bottom:3px;font-family:'Exo 2',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:1px">Tip: Prezentace produktu</strong>
-    Předmět: <em>prezentace kešu uzené 150g</em><br>
-    Obsah (volitelné):<br>
-    <code style="font-size:11px;background:rgba(0,0,0,.06);padding:2px 4px;border-radius:3px">Cena: 89 Kč
-- Pomalu uzené nad třešňovým dřevem
-- Ručně balené v ČR
-K vínu | Snack | Dárek</code>
-  </div>
-
-  <div class="field">
-    <label>Obsah — vložte text nebo strukturovaný prompt</label>
-    <textarea id="content" oninput="update()" placeholder="Vložte text, seznam produktů, nebo celý strukturovaný prompt...&#10;&#10;Systém automaticky rozpozná:&#10;• Katalog — pokud text obsahuje produkty s cenami a URL&#10;• Ceník — seznam s cenami&#10;• Dopis — textový obsah&#10;• Volný text — cokoliv jiného"></textarea>
-  </div>
-
-  <div class="field">
-    <label>Obrázky produktů (volitelné)</label>
-    <div class="upload-zone" id="drop-zone" onclick="document.getElementById('img-input').click()"
-         ondragover="event.preventDefault();this.classList.add('drag')"
-         ondragleave="this.classList.remove('drag')"
-         ondrop="handleDrop(event)">
-      <div style="font-size:24px">📷</div>
-      <div style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;color:var(--br);margin-top:4px">Přetáhněte fotky produktů nebo klikněte</div>
-      <p>JPG, PNG — budou přiřazeny k produktům v pořadí</p>
-      <input type="file" id="img-input" multiple accept="image/*" onchange="handleFiles(this.files)"/>
+  <!-- API key setup -->
+  <div id="api-banner" class="api-banner" style="display:none">
+    <div style="font-size:18px">🔑</div>
+    <div style="flex:1">
+      <div style="font-weight:700;font-family:'Exo 2',sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Anthropic API klíč</div>
+      <input type="password" id="api-key-input" placeholder="sk-ant-..." autocomplete="off"/>
     </div>
-    <div class="thumbs" id="thumbs"></div>
+    <button onclick="saveApiKey()">Uložit</button>
+  </div>
+  <div id="api-set-bar" class="api-set-bar" style="display:none">
+    <span>🔑 API klíč uložen</span>
+    <button onclick="changeApiKey()">Změnit</button>
+  </div>
+
+  <!-- Chat messages -->
+  <div class="chat-msgs" id="chat-msgs">
+    <div class="msg assistant">
+      <div class="msg-avatar">🐿</div>
+      <div class="msg-bubble">
+        Ahoj! Popiš co chceš vytvořit — já to celé udělám.<br><br>
+        <em>Příklady:</em><br>
+        "Prezentace na mandle uzené 150g, cena 89 Kč, k vínu"<br>
+        "Katalog pro vinotéky — 4 produkty s cenami a marží"<br>
+        "Dopis pro firmu ABC, pozvánka na ochutnávku 15. 7."<br>
+        "Ceník ořechů — mandle 25 Kč, kešu 35 Kč, mix 20 Kč"
+      </div>
+    </div>
+  </div>
+
+  <!-- Image upload -->
+  <div class="upload-strip" id="upload-strip">
+    <div class="upload-btn" onclick="document.getElementById('img-file').click()" title="Přidat fotky produktů">📷</div>
+    <input type="file" id="img-file" style="display:none" multiple accept="image/*" onchange="handleImgs(this.files)"/>
+    <span style="font-size:11px;color:#aaa">Fotky produktů (volitelné)</span>
+  </div>
+
+  <!-- Input -->
+  <div class="chat-input-wrap">
+    <textarea id="chat-input" placeholder="Co chceš vytvořit? Napiš libovolně…"
+      rows="2" onkeydown="onKey(event)"></textarea>
+    <button class="send-btn" id="send-btn" onclick="send()" title="Odeslat (Enter)">➤</button>
   </div>
 
 </div>
-</div>
 
+<!-- ── PRAVÝ PANEL ── -->
 <div class="right" id="right">
-  <div class="placeholder">
-    <div>
-      <div style="font-size:48px;text-align:center">📄</div>
-      <p>Vyplňte předmět a obsah vlevo<br>— náhled se zobrazí zde</p>
-    </div>
+  <div class="empty-preview">
+    <div class="icon">📄</div>
+    <p>Napiš co chceš vytvořit<br>a dokument se zobrazí zde</p>
   </div>
 </div>
+
 </div>
 
 <script>
-const TODAY = new Date().toLocaleDateString('cs-CZ');
-let uploadedImages = []; // [{name, dataUrl}]
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+let history = [];   // {role, content}
+let images = [];    // {name, b64, mime}
+let generating = false;
 
-// ── Obrázky ──
-function handleFiles(files) {
+// ═══════════════════════════════════════
+// API KEY
+// ═══════════════════════════════════════
+function initApiKey() {
+  const key = localStorage.getItem('nw_doc_api_key');
+  if (key) {
+    document.getElementById('api-set-bar').style.display = 'flex';
+  } else {
+    document.getElementById('api-banner').style.display = 'flex';
+  }
+}
+function saveApiKey() {
+  const v = document.getElementById('api-key-input').value.trim();
+  if (!v.startsWith('sk-')) { alert('Neplatný klíč (musí začínat sk-)'); return; }
+  localStorage.setItem('nw_doc_api_key', v);
+  document.getElementById('api-banner').style.display = 'none';
+  document.getElementById('api-set-bar').style.display = 'flex';
+}
+function changeApiKey() {
+  localStorage.removeItem('nw_doc_api_key');
+  document.getElementById('api-set-bar').style.display = 'none';
+  document.getElementById('api-banner').style.display = 'flex';
+}
+function getKey() { return localStorage.getItem('nw_doc_api_key'); }
+
+// ═══════════════════════════════════════
+// IMAGES
+// ═══════════════════════════════════════
+function handleImgs(files) {
   Array.from(files).forEach(f => {
     const reader = new FileReader();
     reader.onload = e => {
-      uploadedImages.push({name: f.name, dataUrl: e.target.result});
-      renderThumbs();
-      update();
+      const b64 = e.target.result.split(',')[1];
+      images.push({ name: f.name, b64, mime: f.type });
+      renderImgThumbs();
     };
     reader.readAsDataURL(f);
   });
 }
-function handleDrop(e) {
-  e.preventDefault();
-  document.getElementById('drop-zone').classList.remove('drag');
-  handleFiles(e.dataTransfer.files);
-}
-function removeImg(i) {
-  uploadedImages.splice(i, 1);
-  renderThumbs();
-  update();
-}
-function renderThumbs() {
-  document.getElementById('thumbs').innerHTML = uploadedImages.map((img, i) =>
-    `<div class="thumb"><img src="${img.dataUrl}"/><button class="del" onclick="removeImg(${i})">×</button></div>`
-  ).join('');
-}
-function getImg(i) {
-  return uploadedImages[i] ? uploadedImages[i].dataUrl : null;
-}
-
-// ── Helpers ──
-function esc(s) {
-  if (!s) return '';
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function setPredmet(v) { document.getElementById('predmet').value = v; update(); }
-function doClear() {
-  document.getElementById('predmet').value = '';
-  document.getElementById('content').value = '';
-  uploadedImages = [];
-  renderThumbs();
-  update();
-}
-
-// ── Czech slug decoder ──
-const CZ = {
-  'orechovy':'ořechový','orechu':'ořechů','orechy':'ořechy','orisku':'oříšků','orisky':'oříšky',
-  'mandle':'mandle','mandli':'mandlí','arasidy':'arašídy','arasid':'arašíd',
-  'kasu':'kešu','kesu':'kešu','pistacie':'pistácie','para':'para','makadamie':'makadamie',
-  'vlasske':'vlašské','vlassky':'vlašský','para':'para','leskovec':'líska',
-  'susene':'sušené','suseny':'sušený','suseneho':'sušeného',
-  'prazene':'pražené','prazenych':'pražených','prazeny':'pražený',
-  'solene':'solené','soleny':'slaný','slane':'slané','slany':'slaný',
-  'uzene':'uzené','uzeny':'uzený',
-  'cokoladove':'čokoládové','cokolada':'čokoláda','kakao':'kakao','kakaove':'kakaové',
-  'jogurtu':'jogurtu','jogurtove':'jogurtové','jahodovem':'jahodovém','jahodove':'jahodové',
-  'boruvky':'borůvky','maliny':'maliny','jahody':'jahody','brusinkach':'brusinky',
-  'merunky':'meruňky','svestky':'švestky','datle':'datle','fiky':'fíky','rozinky':'rozinky',
-  'kokosove':'kokosové','kokos':'kokos',
-  'medove':'medové','medu':'medu','skorici':'skořici','skorice':'skořice',
-  'darkova':'dárková','darkovy':'dárkový','darkove':'dárkové',
-  'kazetka':'kazetka','krabicka':'krabička','krabicky':'krabičky',
-  'pruhlednym':'průhledným','vickem':'víčkem','mislicka':'miska',
-  'prirodni':'přírodní','bio':'bio','raw':'raw',
-};
-const STOP = new Set(['a','v','s','na','z','se','pro','k','do','ze','pri','pod','nad','i','o','u']);
-
-function slugToName(url) {
-  try {
-    const parts = new URL(url.trim()).pathname.split('/').filter(p => p);
-    const slug = parts[parts.length - 1] || '';
-    return slug.split('-').map((w, i) => {
-      const lo = w.toLowerCase();
-      if (CZ[lo]) return i === 0 ? CZ[lo].charAt(0).toUpperCase() + CZ[lo].slice(1) : CZ[lo];
-      if (STOP.has(lo) && i > 0) return lo;
-      return w.charAt(0).toUpperCase() + w.slice(1);
-    }).join(' ');
-  } catch(e) { return url; }
-}
-
-// ── Detekce šablony ──
-function detectMode(predmet, content) {
-  const p = (predmet + ' ' + content).toLowerCase();
-  if (/prezentace|showcase|produkt\s|product\s/.test(predmet.toLowerCase())) return 'prezentace';
-  if (content.match(/https?:\/\/[^\s]+nutworld/i) || content.match(/nákup:\s*\d/i)) return 'katalog';
-  if (/katalog|sortiment|produktov/.test(p)) return 'katalog';
-  if (/cen[íi]k|ceník|ceny/.test(p)) return 'cenik';
-  if (/dopis|osloven|vážen/.test(p)) return 'dopis';
-  if (/info\s*list|informac|přehled/.test(p)) return 'infolist';
-  if (/nabídka|offer/.test(p)) return 'nabidka';
-  return 'volny';
-}
-
-// ── GENERÁTOR PREZENTACE ──
-function genPrezentace(predmet, content) {
-  // Název produktu = predmet bez "prezentace" slova
-  const productName = predmet
-    .replace(/^prezentace\s*/i, '')
-    .replace(/^showcase\s*/i, '')
-    .replace(/^produkt\s*/i, '')
-    .trim()
-    .split(' ').map((w,i) => i===0 ? w.charAt(0).toUpperCase()+w.slice(1) : w).join(' ');
-
-  // Parsuj obsah
-  let price = '';
-  let gramaz = '';
-  let desc = '';
-  const bullets = [];
-  const tags = [];
-
-  if (content.trim()) {
-    const lines = content.split('\n').map(l => l.trim()).filter(l => l);
-    lines.forEach(line => {
-      const cenM = line.match(/^[Cc]ena[:\s]*([\d,.]+\s*Kč.*)/);
-      if (cenM) { price = cenM[1].trim(); return; }
-      const gramM = line.match(/^[Gg]ramáž[:\s]*(.*)/);
-      if (gramM) { gramaz = gramM[1].trim(); return; }
-      // Tagy — řádek s | nebo slovem "k vínu", "ke kávě" apod.
-      if (line.includes('|') || /k vínu|ke kávě|dárek|snack|retail|impulz/i.test(line)) {
-        line.split(/[|,]/).map(t => t.trim()).filter(t => t).forEach(t => {
-          if (!tags.includes(t)) tags.push(t);
-        });
-        return;
-      }
-      // Bullet
-      if (line.startsWith('-') || line.startsWith('•')) {
-        bullets.push(line.replace(/^[-•]\s*/, ''));
-      } else if (bullets.length === 0 && !price && line.length > 10) {
-        desc = line;
-      }
-    });
-  }
-
-  // Defaultní bullets pokud žádné nejsou
-  if (bullets.length === 0) {
-    const nm = productName.toLowerCase();
-    if (/uzené|uzený/.test(nm))  bullets.push('Pomalu uzené — plná chuť', 'Ideální k vínu nebo pivu', 'Ručně balené v ČR');
-    else if (/medu|medové/.test(nm)) bullets.push('Přirozeně sladké bez přidaného cukru', 'Energie na celý den', 'Ručně balené v ČR');
-    else if (/krabičk|kazetka/.test(nm)) bullets.push('Krásné dárkové balení', 'Ideální jako firemní dárek', 'Expedice do 24 hodin');
-    else bullets.push('Prémiová kvalita surovin', 'Ručně balené v ČR', 'Bez konzervantů a přídatných látek');
-  }
-
-  // Defaultní tagy z názvu
-  if (tags.length === 0) {
-    const nm = productName.toLowerCase();
-    if (/uzené|uzený|solené|slané/.test(nm)) tags.push('K vínu', 'Snack');
-    if (/medové|kakaové|čokoládové|jogurt/.test(nm)) tags.push('Ke kávě', 'Snack');
-    if (/dárk|kazetka/.test(nm)) tags.push('Dárek', 'Retail');
-    if (tags.length === 0) tags.push('Snack', 'Retail');
-  }
-
-  // Obrázek
-  const img = getImg(0);
-  const imgHtml = img
-    ? `<img src="${img}" alt="${esc(productName)}"/>`
-    : `<div class="prez-img-placeholder"><span class="icon">📦</span><span style="font-size:10px">${esc(productName.slice(0,16))}</span></div>`;
-
-  // Tagy HTML
-  const tagClasses = {
-    'K vínu':'wine','Ke kávě':'coffee','Dárek':'gift',
-    'Retail':'retail','Snack':'snack','Impulzní nákup':'retail',
-  };
-  const tagsHtml = tags.map(t => {
-    const cls = Object.entries(tagClasses).find(([k]) => t.toLowerCase().includes(k.toLowerCase()));
-    return `<span class="prez-tag ${cls ? cls[1] : 'snack'}">${esc(t)}</span>`;
-  }).join('');
-
-  // Benefits HTML — max 4, ve 2 sloupcích
-  const bHtml = bullets.slice(0,4).map(b =>
-    `<div class="prez-benefit"><span class="tick"></span><span class="text">${esc(b)}</span></div>`
-  ).join('');
-
-  return `<div class="page-wrap"><div class="prez">
-    <div class="dstripe"></div>
-    <div class="prez-hero">
-      <div class="prez-img-wrap">${imgHtml}</div>
-      <div class="prez-title-area">
-        <div class="prez-label">🐿 Nutworld · Prémiové ořechy a snacky</div>
-        <div class="prez-name">${esc(productName)}</div>
-        ${gramaz ? `<div class="prez-tagline">Gramáž: ${esc(gramaz)}</div>` : ''}
-        ${desc ? `<div class="prez-tagline" style="margin-top:6px">${esc(desc)}</div>` : ''}
-      </div>
-      ${price ? `<div class="prez-price-hero"><span class="amount">${esc(price)}</span><span class="label">Prodejní cena</span></div>` : ''}
-    </div>
-    <div class="prez-body">
-      <div class="prez-tags">${tagsHtml}</div>
-      <div class="prez-benefits">${bHtml}</div>
-      <div class="prez-desc" style="margin-top:4px">
-        <strong style="font-family:'Exo 2',sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--br);display:block;margin-bottom:6px">O produktu</strong>
-        ${esc(productName)} je prémiový produkt vyráběný s důrazem na kvalitu surovin a autentickou chuť.
-        Ručně baleno v ČR. Bez umělých přídatných látek.
-      </div>
-    </div>
-    <div class="prez-footer-strip">
-      <div class="prez-footer-brand">🐿 Nutworld</div>
-      <div class="prez-footer-contact">info@nutworld.cz · nutworld.cz · IČO: 27517357</div>
-      <div style="font-size:10px;opacity:.7">${TODAY}</div>
-    </div>
-  </div></div>`;
-}
-
-// ── Parser komplexního promptu ──
-function parseKatalogPrompt(text) {
-  const result = {
-    titleText: '',
-    titleBullets: [],
-    pages: [],
-    closing: { title: 'Spolupráce s Nutworld', points: [], contact: '' },
-  };
-
-  // Titulek
-  const titleM = text.match(/[Tt]itulek[:\s]*\n+"?([^"\n]+)"?/);
-  if (titleM) {
-    result.titleText = titleM[1].trim().replace(/^"|"$/g, '');
-  } else {
-    // Fallback: první řádek který není instrukce
-    const firstLine = text.split('\n').find(l => {
-      const t = l.trim();
-      return t && !t.startsWith('#') && !t.startsWith('📌') && !t.startsWith('-') && !t.startsWith('https');
-    });
-    if (firstLine) result.titleText = firstLine.trim();
-  }
-
-  // Bullets z "Body:" sekce
-  const bodyM = text.match(/\bBody[:\s]*\n([\s\S]*?)(?=\n---|\n📌|$)/i);
-  if (bodyM) {
-    result.titleBullets = [...bodyM[1].matchAll(/^[-•]\s*(.+)$/gm)]
-      .map(m => m[1].trim()).filter(b => b.length > 2);
-  }
-
-  // Produkty — parsuj bloky oddělené ---
-  const allProducts = [];
-  const blocks = text.split(/\n---+\n?/);
-
-  blocks.forEach(block => {
-    const b = block.trim();
-    if (!b) return;
-
-    // "zopakuj" blok — zkopíruj první (nebo uvedený) produkt
-    if (/zopakuj|nejprodávan/i.test(b) && !b.match(/https?:\/\//)) {
-      if (allProducts.length > 0) {
-        allProducts.push({ ...allProducts[0], isRepeat: true });
-      }
-      return;
-    }
-
-    const urlM = b.match(/https?:\/\/[^\s)]+/);
-    if (!urlM) return;
-    const url = urlM[0];
-
-    const nakupM  = b.match(/nákup:\s*([\d,.]+)\s*Kč/i);
-    const prodejM = b.match(/prodej:\s*([\d,.]+)\s*Kč/i);
-    const marzeM  = b.match(/marže[^%]*?(\d+)\s*%/i);
-
-    const args = [];
-    const argM = b.match(/(?:důraz|👉)[:\s]*([\s\S]*?)(?=\n\n|$)/i);
-    if (argM) {
-      argM[1].split('\n')
-        .map(l => l.replace(/^[-•*👉]\s*/, '').trim())
-        .filter(l => l.length > 3 && !l.match(/https?:\/\//))
-        .slice(0, 3)
-        .forEach(l => args.push(l));
-    }
-
-    allProducts.push({
-      url,
-      name: slugToName(url),
-      nakup:  nakupM  ? nakupM[1]  : '',
-      prodej: prodejM ? prodejM[1] : '',
-      marze:  marzeM  ? marzeM[1]  : '',
-      args,
-    });
-  });
-
-  // Seskup po 3 na stránku
-  for (let i = 0; i < allProducts.length; i += 3) {
-    result.pages.push({ products: allProducts.slice(i, i + 3) });
-  }
-
-  // Závěrečná stránka — "ZÁVĚREČNÁ STRÁNKA" nebo "Spolupráce"
-  const closingM = text.match(/(?:ZÁVĚREČNÁ\s+STRÁNKA|"Spolupráce"|Spolupráce\b)([\s\S]*?)(?=📌\s*VÝSTUP|📌\s*CÍL|$)/i);
-  if (closingM) {
-    result.closing.points = closingM[1].split('\n')
-      .map(l => l.replace(/^[-•*+]\s*/, '').trim())
-      .filter(l => l.length > 3 && !l.match(/📌|✅|⚠️|kontakt|místo/i))
-      .slice(0, 6);
-  }
-
-  // Kontakt
-  const kontaktM = text.match(/\+ místo na kontakt|kontakt[:\s]*([^\n]+)/i);
-  if (kontaktM && kontaktM[1]) result.closing.contact = kontaktM[1].trim();
-
-  return result;
-}
-
-// ── Generátory ──
-function genCoverPage(data, predmet) {
-  const title = data.titleText || predmet || 'Prémiové produkty pro váš obchod';
-  const bullets = data.titleBullets.length ? data.titleBullets : [
-    'Ručně balené produkty z ČR',
-    'Vysoká kvalita surovin',
-    'Atraktivní marže pro vaše podnikání',
-    'Rychlé dodání'
-  ];
-  return `<div class="page-wrap"><div class="cat-cover">
-    <div class="dh"><div><div class="dh-logo">🐿 Nutworld</div><div class="dh-sub">Ořechy · Sušené ovoce · Dárky</div></div>
-    <div class="dh-right">Nut World s.r.o.<br>nutworld.cz · info@nutworld.cz<br>${TODAY}</div></div>
-    <div class="dstripe"></div>
-    <div class="cat-cover-hero">
-      <div style="font-size:48px;margin-bottom:16px">🐿</div>
-      <div class="cat-cover-title">${esc(title)}</div>
-      <ul class="cat-cover-bullets">${bullets.map(b=>`<li>${esc(b)}</li>`).join('')}</ul>
-      <div class="cat-cover-badge">Velkoobchodní katalog ${new Date().getFullYear()}</div>
-    </div>
-    <div class="cat-cover-bottom">
-      <div class="cat-cover-bottom-brand">🐿 Nutworld — prémiové ořechy a snacky</div>
-      <div class="cat-cover-bottom-note">nutworld.cz · info@nutworld.cz</div>
-    </div>
-  </div></div>`;
-}
-
-function genProductPage(page, pageIdx, totalPages) {
-  const products = page.products.map((p, i) => {
-    const imgIdx = pageIdx * 3 + i;
-    const img = getImg(imgIdx);
-    const imgHtml = img
-      ? `<img src="${img}" alt="${esc(p.name)}"/>`
-      : `<div class="prod-img-placeholder"><span class="icon">📦</span><span class="name">${esc(p.name.slice(0,20))}</span></div>`;
-
-    // Tagy z argumentů
-    const tags = [];
-    const a = (p.args.join(' ') + ' ').toLowerCase();
-    if (/ví[no]|wine/.test(a)) tags.push('<span class="prod-tag win">🍷 K vínu</span>');
-    if (/káv|kof|coffee/.test(a)) tags.push('<span class="prod-tag cof">☕ Ke kávě</span>');
-    if (/dárek|gift/.test(a)) tags.push('<span class="prod-tag ret">🎁 Dárek</span>');
-    if (/pokladn|impulz/.test(a)) tags.push('<span class="prod-tag ret">💡 Impulzní</span>');
-    if (!tags.length) tags.push('<span class="prod-tag ret">🛒 Retail</span>');
-
-    const mainArg = p.args[0] || 'Prémiový produkt vysoké kvality';
-    const subArg  = p.args[1] || '';
-
-    return `<div class="prod-block">
-      <div class="prod-img">${imgHtml}</div>
-      <div class="prod-content">
-        <div class="prod-name">${esc(p.name)}</div>
-        <div class="prod-pitch">${esc(mainArg)}${subArg ? ' · ' + esc(subArg) : ''}</div>
-        <div class="prod-tags">${tags.join('')}</div>
-        <div class="prod-prices">
-          <div class="prod-price-sell">${p.prodej ? p.prodej + ' Kč' : '—'} <span>s DPH</span></div>
-          <div class="prod-price-box">Nákup: ${p.nakup ? p.nakup + ' Kč' : '—'}<br>Prodej: ${p.prodej ? p.prodej + ' Kč' : '—'}</div>
-          ${p.marze ? `<div class="prod-margin">Marže<br>až ${p.marze} %</div>` : ''}
-        </div>
-        ${p.args[2] ? `<div class="prod-argument">"${esc(p.args[2])}"</div>` : ''}
-      </div>
-    </div>`;
-  }).join('');
-
-  return `<div class="page-wrap"><div class="cat-page">
-    <div class="cat-page-header">
-      <span class="cat-page-header-title">🐿 Nutworld — Produktová nabídka</span>
-      <span style="font-size:10px;color:#aaa">Strana ${pageIdx + 2} / ${totalPages + 2}</span>
-    </div>
-    <div class="cat-products">${products}</div>
-    <div style="padding:0 20px 12px;display:flex;justify-content:space-between;font-size:10px;color:#bbb;border-top:1px solid #f0e4d6;padding-top:8px">
-      <span class="dfooter-b" style="font-family:'Exo 2',sans-serif;font-weight:700;color:#83502e">🐿 Nutworld</span>
-      <span>nutworld.cz · info@nutworld.cz · IČO: 27517357</span>
-    </div>
-  </div></div>`;
-}
-
-function genClosingPage(closing) {
-  const points = closing.points.length ? closing.points : [
-    'Velkoobchodní spolupráce', 'Rychlá otočka produktů',
-    'Atraktivní marže', 'Rychlé dodání',
-    'Prémiová kvalita', 'Osobní přístup'
-  ];
-  const icons = ['🤝','⚡','💰','🚚','⭐','😊'];
-  return `<div class="page-wrap"><div class="cat-closing">
-    <div class="dh"><div><div class="dh-logo">🐿 Nutworld</div><div class="dh-sub">Ořechy · Sušené ovoce · Dárky</div></div>
-    <div class="dh-right">Nut World s.r.o.<br>nutworld.cz · info@nutworld.cz</div></div>
-    <div class="dstripe"></div>
-    <div class="cat-closing-hero">
-      <div class="cat-closing-title">${esc(closing.title)}</div>
-      <div class="cat-closing-points">
-        ${points.slice(0,6).map((p,i)=>`<div class="cat-closing-point">
-          <div class="icon">${icons[i]||'✓'}</div>
-          <div class="text">${esc(p)}</div>
-        </div>`).join('')}
-      </div>
-      <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:12px 20px;font-size:12px;max-width:420px;margin:0 auto">
-        Jsme malá česká firma, která si potrpí na kvalitu a osobní přístup. Rádi vám připravíme nabídku na míru.
-      </div>
-    </div>
-    <div class="cat-contact">
-      <div class="cat-contact-label">Kontaktujte nás</div>
-      <div class="cat-contact-info">${closing.contact || 'info@nutworld.cz · nutworld.cz · +420 XXX XXX XXX'}</div>
-    </div>
-  </div></div>`;
-}
-
-// ── Prosté šablony ──
-function dh2(date) {
-  return `<div class="dh"><div><div class="dh-logo">🐿 Nutworld</div><div class="dh-sub">Ořechy · Sušené ovoce · Dárky</div></div>
-    <div class="dh-right">Nut World s.r.o.<br>nutworld.cz<br>${date||TODAY}</div></div><div class="dstripe"></div>`;
-}
-function df2(note) {
-  return `<div class="dfooter"><span class="dfooter-b">🐿 Nutworld</span> · info@nutworld.cz · nutworld.cz<span>${esc(note||'')}</span></div>`;
-}
-function textToP(t) { return t.split('\n').map(l=>l.trim()).filter(l=>l).map(l=>`<p>${esc(l)}</p>`).join(''); }
-
-function parseProds(text) {
-  return text.split('\n').map(l=>l.trim()).filter(l=>l).map(line=>{
-    if (line.includes('|')) { const p=line.split('|').map(x=>x.trim()); return p.length>=3?{name:p[0],desc:p[1],price:p[2]}:{name:p[0],desc:'',price:p[1]}; }
-    const m=line.match(/^(.+?)\s*[-–]\s*([\d\s,.]+\s*Kč.*)$/i);
-    if (m) return {name:m[1].trim(),desc:'',price:m[2].trim()};
-    return {name:line.replace(/^[\d.•\-*]+\s*/,''),desc:'',price:''};
+function renderImgThumbs() {
+  const strip = document.getElementById('upload-strip');
+  // Remove old thumbs
+  strip.querySelectorAll('.thumb-sm').forEach(t => t.remove());
+  strip.querySelectorAll('.del-img').forEach(t => t.remove());
+  images.forEach((img, i) => {
+    const el = document.createElement('img');
+    el.className = 'thumb-sm';
+    el.src = `data:${img.mime};base64,${img.b64}`;
+    el.title = img.name + ' (klikni pro odebrání)';
+    el.onclick = () => { images.splice(i,1); renderImgThumbs(); };
+    strip.insertBefore(el, strip.querySelector('.upload-btn').nextSibling);
   });
 }
 
-function genSimple(mode, title, content, note) {
-  const wrap = inner => `<div class="page-wrap">${dh2()}${inner}</div>`;
-  if (mode === 'cenik') {
-    const items = parseProds(content);
-    let total = 0;
-    const rows = items.map((p,i)=>{ const n=parseFloat((p.price||'').replace(/[^\d,.]/g,'').replace(',','.')) || 0; total+=n;
-      return `<tr><td style="color:#aaa;font-family:monospace;width:26px">${i+1}.</td><td><strong>${esc(p.name)}</strong>${p.desc?`<br><span style="font-size:10px;color:#888">${esc(p.desc)}</span>`:''}</td><td>${esc(p.price)||'—'}</td></tr>`; }).join('');
-    const tot = total>0 ? `<tr style="background:#5c381f;color:white"><td></td><td style="padding:8px 10px;font-family:'Exo 2',sans-serif;font-weight:700">Celkem bez DPH</td><td style="padding:8px 10px;text-align:right;color:#f7ab31;font-family:'Exo 2',sans-serif;font-weight:800">${total.toLocaleString('cs-CZ',{minimumFractionDigits:2})} Kč</td></tr>` : '';
-    return wrap(`<div class="db"><div class="dtitle">${esc(title||'Ceník')}</div><div class="dsub">Ceník · Nut World s.r.o. · ${TODAY}</div>
-      <table class="ctable" style="width:100%;border-collapse:collapse;font-size:12.5px">
-        <thead><tr style="background:#5c381f;color:white"><th style="padding:6px 10px;text-align:left;font-size:10px">#</th><th style="padding:6px 10px;text-align:left;font-size:10px">Produkt</th><th style="padding:6px 10px;text-align:right;font-size:10px">Cena</th></tr></thead>
-        <tbody>${rows}${tot}</tbody></table>${df2(note)}</div>`);
-  }
-  if (mode === 'infolist') {
-    const blocks = content.split(/\n\s*\n/).filter(b=>b.trim());
-    const secs = blocks.map(block=>{
-      const lines=block.split('\n').map(l=>l.trim()).filter(l=>l);
-      if(!lines.length)return'';
-      const h=lines[0],body=lines.slice(1);
-      const bHtml=body.map(l=>l.startsWith('-')||l.startsWith('•')?`<li>${esc(l.replace(/^[-•]\s*/,''))}</li>`:`<p>${esc(l)}</p>`).join('');
-      return `<div style="margin-bottom:14px"><h3 style="font-family:'Exo 2',sans-serif;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#83502e;border-bottom:1.5px solid #f1e6da;padding-bottom:4px;margin-bottom:6px">${esc(h)}</h3>${bHtml.includes('<li>')?`<ul style="padding-left:14px;font-size:12px;line-height:1.7">${bHtml}</ul>`:`<div style="font-size:12px;line-height:1.7">${bHtml}</div>`}</div>`;
-    }).join('');
-    return wrap(`<div class="db"><div class="dtitle">${esc(title||'Informační list')}</div><div class="dsub">Info list · Nut World s.r.o. · ${TODAY}</div>${secs}${df2(note)}</div>`);
-  }
-  // dopis / volny
-  return wrap(`<div class="db"><div class="dtitle">${esc(title||'Dokument')}</div>
-    <div style="line-height:1.85;color:#1a1a0a;font-size:12.5px">${textToP(content)||'<p style="color:#ccc">Obsah…</p>'}</div>
-    ${df2(note)}</div>`);
+// ═══════════════════════════════════════
+// CHAT UI
+// ═══════════════════════════════════════
+function addMsg(role, text) {
+  const wrap = document.getElementById('chat-msgs');
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  const avatar = role === 'assistant' ? '🐿' : '👤';
+  div.innerHTML = `<div class="msg-avatar">${avatar}</div><div class="msg-bubble">${text}</div>`;
+  wrap.appendChild(div);
+  wrap.scrollTop = wrap.scrollHeight;
+  return div;
 }
 
-// ── Hlavní render ──
-function update() {
-  const predmet = document.getElementById('predmet').value.trim();
-  const content = document.getElementById('content').value;
-  if (!predmet && !content.trim()) {
-    document.getElementById('right').innerHTML = `<div class="placeholder"><div><div style="font-size:48px;text-align:center">📄</div><p>Vyplňte předmět a obsah vlevo<br>— náhled se zobrazí zde</p></div></div>`;
-    document.getElementById('mode-badge').textContent = '—';
+function showTyping() {
+  const wrap = document.getElementById('chat-msgs');
+  const div = document.createElement('div');
+  div.className = 'msg assistant';
+  div.id = 'typing-indicator';
+  div.innerHTML = `<div class="msg-avatar">🐿</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  wrap.appendChild(div);
+  wrap.scrollTop = wrap.scrollHeight;
+}
+function hideTyping() {
+  const t = document.getElementById('typing-indicator');
+  if (t) t.remove();
+}
+
+function onKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+}
+
+function clearAll() {
+  history = [];
+  images = [];
+  renderImgThumbs();
+  document.getElementById('chat-msgs').innerHTML = `
+    <div class="msg assistant"><div class="msg-avatar">🐿</div>
+    <div class="msg-bubble">Hotovo, začínáme znovu! Co chceš vytvořit?</div></div>`;
+  document.getElementById('right').innerHTML = `<div class="empty-preview"><div class="icon">📄</div><p>Napiš co chceš vytvořit<br>a dokument se zobrazí zde</p></div>`;
+  document.getElementById('doc-type').style.display = 'none';
+  document.getElementById('btn-clear').style.display = 'none';
+  document.getElementById('btn-print').style.display = 'none';
+}
+
+// ═══════════════════════════════════════
+// CLAUDE SYSTEM PROMPT
+// ═══════════════════════════════════════
+const SYSTEM = `Jsi generátor dokumentů pro Nutworld.cz — česká firma prémiové ořechy, sušené ovoce a dárky.
+
+FIRMA:
+Nut World s.r.o. · Hvězdova 1716/2, 140 00 Praha · IČO: 27517357 · nutworld.cz · info@nutworld.cz
+
+BRAND BARVY (používej přesně):
+- Tmavá hnědá: #5c381f
+- Hlavní hnědá: #83502e
+- Kraft pozadí: #f1e6da
+- Růžová akcent: #da1668
+- Zlatá: #f7ab31
+- Zelená: #6fa044
+
+FONTY (jsou načteny na stránce):
+- 'Exo 2' — nadpisy, ceny, labely (font-weight 700/800)
+- 'Source Sans 3' — body text
+
+KAŽDÝ DOKUMENT MUSÍ MÍT:
+1. Header: gradient background "linear-gradient(135deg,#5c381f,#83502e)", bílý text, vlevo "🐿 Nutworld" + podtitulek "Ořechy · Sušené ovoce · Dárky", vpravo firemní info + datum
+2. Barevný pruh 3px: "linear-gradient(90deg,#da1668,#f7ab31,#6fa044)"
+3. Hlavní obsah (padding 22-28px)
+4. Footer: border-top 1px solid #ede0d4, flexbox space-between, "🐿 Nutworld" vlevo, kontakt vpravo
+
+TYPY DOKUMENTŮ:
+- prezentace: 1 stránka pro 1 produkt — velký název, obrázek (pokud je), výhody jako checklisty, cena výrazná, tagy použití (K vínu / Ke kávě / Dárek / Snack), prodejní argumenty
+- katalog: titulní stránka + produktové stránky (3 produkty = 1 stránka: foto, název, popis, cena, marže, prodejní argument) + závěrečná stránka Spolupráce
+- cenik: tabulka s čísly, produkt, cena — celkový součet dole
+- dopis: příjemce, text, podpis
+- infolist: sekce s nadpisy oddělené prázdnou mezerou
+- nabidka: jako ceník ale s prodejním textem a součtem
+
+PRAVIDLA:
+- Používej VÝHRADNĚ inline CSS (žádné třídy, žádné styly v head)
+- Čeština
+- Makuj to krásné: zaoblené rohy, gradienty, shadows, karty
+- Ceny výrazné, velké, barva #da1668
+- Marže vždy zeleně (#6fa044) jako badge
+- Prodejní argumenty do zvýrazněných boxů s amber border-left
+
+FORMÁT ODPOVĚDI — vrať POUZE validní JSON (žádný markdown, žádný text před/za):
+{"html":"...HTML obsah dokumentu...","type":"prezentace|katalog|cenik|dopis|infolist|nabidka","note":"krátká zpráva uživateli co bylo vytvořeno"}
+
+HTML nesmí obsahovat DOCTYPE ani html/head/body tagy — jen obsah. Šířka se renduje na ~760px.
+Pokud byly přiloženy obrázky, vložíš je do dokumentu jako <img src="data:...base64..."/>.`;
+
+// ═══════════════════════════════════════
+// SEND & CALL CLAUDE
+// ═══════════════════════════════════════
+async function send() {
+  if (generating) return;
+  const key = getKey();
+  if (!key) {
+    document.getElementById('api-banner').style.display = 'flex';
+    document.getElementById('api-key-input').focus();
     return;
   }
-  const mode = detectMode(predmet, content);
-  const MODES = {prezentace:'🛍 Prezentace',katalog:'📦 Katalog',cenik:'💰 Ceník',dopis:'✉️ Dopis',infolist:'ℹ️ Info list',nabidka:'🤝 Nabídka',volny:'📝 Volný text'};
-  document.getElementById('mode-badge').textContent = MODES[mode]||mode;
 
-  let html = '';
-  if (mode === 'prezentace') {
-    html = genPrezentace(predmet, content);
-  } else if (mode === 'katalog') {
-    const data = parseKatalogPrompt(content || predmet);
-    // Doplň z predmetu pokud chybí
-    if (!data.titleText) data.titleText = predmet;
-    html += genCoverPage(data, predmet);
-    const total = data.pages.length;
-    data.pages.forEach((page, i) => { html += genProductPage(page, i, total); });
-    html += genClosingPage(data.closing);
+  const textarea = document.getElementById('chat-input');
+  const text = textarea.value.trim();
+  if (!text) return;
+
+  textarea.value = '';
+  textarea.style.height = '';
+  generating = true;
+  document.getElementById('send-btn').disabled = true;
+
+  addMsg('user', escHtml(text));
+
+  // Sestav user content — text + případné obrázky
+  let userContent;
+  if (images.length > 0) {
+    userContent = [
+      ...images.map(img => ({
+        type: 'image',
+        source: { type: 'base64', media_type: img.mime, data: img.b64 }
+      })),
+      { type: 'text', text: text + '\n\nFotografie produktu jsou přiloženy výše — vlož je do dokumentu.' }
+    ];
   } else {
-    html = genSimple(mode, predmet, content, '');
+    userContent = text;
   }
-  document.getElementById('right').innerHTML = html;
+
+  history.push({ role: 'user', content: userContent });
+  showTyping();
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-allow-browser': 'true',
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 8000,
+        system: SYSTEM,
+        messages: history,
+      })
+    });
+
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({}));
+      throw new Error(err.error?.message || `HTTP ${resp.status}`);
+    }
+
+    const data = await resp.json();
+    const raw = data.content[0].text.trim();
+    history.push({ role: 'assistant', content: raw });
+
+    hideTyping();
+
+    // Parse JSON response
+    let parsed;
+    try {
+      // Remove potential markdown code fences
+      const clean = raw.replace(/^```json\s*/,'').replace(/\s*```$/,'').trim();
+      parsed = JSON.parse(clean);
+    } catch(e) {
+      // Fallback: render raw as HTML
+      parsed = { html: raw, type: 'volny', note: 'Dokument vygenerován.' };
+    }
+
+    renderDoc(parsed);
+    addMsg('assistant', escHtml(parsed.note || 'Dokument je připraven!'));
+
+  } catch(e) {
+    hideTyping();
+    addMsg('assistant', `⚠️ Chyba: ${escHtml(e.message)}`);
+  }
+
+  generating = false;
+  document.getElementById('send-btn').disabled = false;
+  textarea.focus();
 }
 
-update();
+function renderDoc(parsed) {
+  const TYPE_LABELS = {
+    prezentace:'🛍 Prezentace', katalog:'📦 Katalog', cenik:'💰 Ceník',
+    dopis:'✉️ Dopis', infolist:'ℹ️ Info list', nabidka:'🤝 Nabídka', volny:'📝 Dokument'
+  };
+  const label = TYPE_LABELS[parsed.type] || '📄 Dokument';
+  document.getElementById('doc-type').textContent = label;
+  document.getElementById('doc-type').style.display = 'inline';
+  document.getElementById('btn-clear').style.display = 'inline';
+  document.getElementById('btn-print').style.display = 'inline';
+
+  document.getElementById('right').innerHTML =
+    `<div class="page-wrap">${parsed.html}</div>`;
+}
+
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// Auto-resize textarea
+document.getElementById('chat-input').addEventListener('input', function() {
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+});
+
+// Init
+initApiKey();
 </script>
 </body>
 </html>
