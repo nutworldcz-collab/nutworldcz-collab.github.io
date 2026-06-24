@@ -79,14 +79,30 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .state-box p{color:#888;font-size:14px;margin-top:8px}
 .spinner{display:inline-block;width:36px;height:36px;border:3px solid var(--kraft);border-top-color:var(--br);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* Směsi */
+.mix-card{background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.08);border-top:3px solid #2196f3}
+.mix-head{background:linear-gradient(135deg,#1a3a5c,#2196f3);color:white;padding:10px 14px}
+.mix-kod{font-family:monospace;font-size:10px;opacity:.7;margin-bottom:2px}
+.mix-nazev{font-family:"Exo 2",sans-serif;font-size:13px;font-weight:800;line-height:1.2}
+.mix-body{padding:12px 14px;display:flex;flex-direction:column;gap:8px;font-size:11.5px}
+.mix-sec label{display:block;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#2196f3;margin-bottom:4px}
+.mix-sec p{line-height:1.7;color:#1a1a1a}
+b.al{font-weight:700;background:#fff0f0;border-radius:2px;padding:0 1px}
+.al-box{background:#fff5f7;border:1.5px solid #da1668;border-radius:6px;padding:6px 10px;font-size:11px;color:#6b2f2f}
+.al-box strong{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:2px;color:#da1668}
+.stopy-box{background:#fff8e1;border:1px solid #f7ab31;border-radius:6px;padding:5px 9px;font-size:10.5px;color:#5c3000}
+.mix-foot{display:grid;grid-template-columns:1fr 1fr;gap:4px;border-top:1px solid #e8f0fe;padding-top:8px;margin-top:4px}
+.mf label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#bbb;display:block}
+.mf span{font-size:10.5px;color:#555}
 </style>
+
 </head>
 <body>
 
 <div class="topbar">
   <span class="topbar-title">📋 Specifikace produktů</span>
   <a href="/">← Rozcestník</a>
-  <a href="/mix-specifikace.html" style="background:rgba(255,255,255,.15);padding:4px 12px;border-radius:16px;font-size:12px;font-weight:600">🔀 Specifikace směsí →</a>
   <div class="topbar-right">
     <span class="refresh-info" id="refresh-info">načítám…</span>
     <button class="btn-sm" onclick="loadAll()">↻ Obnovit</button>
@@ -106,6 +122,7 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
     <button class="cat-btn" data-cat="orechy" onclick="setCat('orechy',this)">🥜 Ořechy</button>
     <button class="cat-btn" data-cat="ovoce" onclick="setCat('ovoce',this)">🍓 Sušené ovoce</button>
     <button class="cat-btn" data-cat="seminko" onclick="setCat('seminko',this)">🌱 Semínka</button>
+    <button class="cat-btn" data-cat="smesi" onclick="setCat('smesi',this)">🔀 Směsi NW</button>
     <button class="cat-btn" data-cat="ostatni" onclick="setCat('ostatni',this)">📦 Ostatní</button>
   </div>
 
@@ -120,172 +137,112 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 </div>
 
 <script>
+const MIX_DATA = [{"typ": "mix", "kod": "155", "nazev": "Prémiový ořechový mix", "cat": "smesi", "slozeni": "<b class=\"al\">MANDLE</b> jádra 30 % (MANDLE jádra 100 %, původ: USA), <b class=\"al\">KEŠU</b> ořechy jádra 30 % (KEŠU ořechy jádra 100 %, původ: Pobřeží slonoviny), <b class=\"al\"><b class=\"al\">LÍSKOV</b>Á</b> jádra 20 % (LÍSKOVÁ jádra 100 %, původ: Turecko, Ázerbájdžán), <b class=\"al\">PARA ořechy</b> jádra 12 % (PARA ořechy jádra 100 %, původ: Bolívie), <b class=\"al\">PISTÁCIOV</b>Á jádra 8 % (PISTÁCIOVÁ jádra 100 %, původ: Írán). Mícháno v České republice.", "alergeny": "Mandle, lískové ořechy, kešu, para ořechy, pistácie", "stopy": "Může obsahovat stopy: ARAŠÍDŮ, LEPKU, SEZAMU, SÓJI, MLÉKA, OXIDU SIŘIČITÉHO A SIŘIČITANŮ.", "blended": "298,50"}, {"typ": "mix", "kod": "158", "nazev": "Směs jader", "cat": "smesi", "slozeni": "<b class=\"al\">KEŠU</b> ořechy jádra 30 % (KEŠU ořechy jádra 100 %, původ: Pobřeží slonoviny), <b class=\"al\">PARA ořechy</b> jádra 30 % (PARA ořechy jádra 100 %, původ: Bolívie), <b class=\"al\"><b class=\"al\">LÍSKOV</b>Á</b> jádra 20 % (LÍSKOVÁ jádra 100 %, původ: Turecko, Ázerbájdžán), <b class=\"al\">MANDLE</b> jádra 20 % (MANDLE jádra 100 %, původ: USA). Mícháno v České republice.", "alergeny": "Mandle, lískové ořechy, kešu, para ořechy", "stopy": "Může obsahovat stopy: ARAŠÍDŮ, LEPKU, SEZAMU, SÓJI, MLÉKA, OXIDU SIŘIČITÉHO A SIŘIČITANŮ.", "blended": "309,60"}, {"typ": "mix", "kod": "1028", "nazev": "Slaný mix ALL IN ONE", "cat": "smesi", "slozeni": "<b class=\"al\">Arašídy</b> loupané pražené solené 20 % (ARAŠÍDY LOUPANÉ, sůl do 3 %, rostlinné oleje (slunečnicový/řepkový), původ: Argentina), arašídy ve wasabi 20 % (ARAŠÍDY 27,4 %, <b class=\"al\">PŠENIČN</b>Á MOUKA 22 %, cukr 20 %, kukuřičný škrob 16,6 %, kukuřičná mouka 7,1 %, palmový olej 4,6 %, sůl, SÓJOVÁ omáčka v prášku (<b class=\"al\">PŠENICE</b>, <b class=\"al\">SÓJA</b>, maltodextrin, sůl, koji, barvivo E150c), koření (maltodextrin, zahušťovací látka E414, hořčičné aroma, palmový olej, antioxidant E392), stabilizátor E500, bramborový škrob, antioxidant E330, barvivo E141, wasabi 0,003 %, původ: Čína), <b class=\"al\">pistácie</b> pražené solené ve skořápce 15 % (PISTÁCIE VE SKOŘÁPCE PRAŽENÉ SOLENÉ 98,8 %, sůl 1,2 %, původ: USA), <b class=\"al\">kešu</b> jádra pražená solená 15 % (KEŠU OŘECHY jádra pražená 98 %, sůl 1,5 %, rostlinný řepkový olej 0,5 %, původ: mimo EU), <b class=\"al\">mandle</b> uzené 15 % (pražená JÁDRA <b class=\"al\">MANDLÍ</b> 95,2 %, směs koření kouřového typu 3 % (maltodextrin, sůl, karamelový cukrový sirup, stabilizátor E504, rostlinný <b class=\"al\">kokos</b>ový olej, cukr, modifikovaný škrob E1450, konzervant E330, aroma), rostlinný řepkový olej 1,62 %, sůl 0,2 %, původ: Česká republika), mandle pražené solené 15 % (JÁDRA MANDLÍ loupaná pražená 98 %, sůl 1,5 %, rostlinný řepkový olej do 0,5 %, původ: Česká republika). Mícháno v České republice.", "alergeny": "Mandle, kešu, pistácie, kokos, arašídy, sója, lepek (pšenice)", "stopy": "Může obsahovat stopy: RYB, MLÉKA, CELERU, SEZAMU.", "blended": "192,09"}, {"typ": "mix", "kod": "1037", "nazev": "Brustáciový mix", "cat": "smesi", "slozeni": "Brusinky sušené slazené 60 % (63 % klikva velkoplodá, 36 % třtinový cukr, max. 1 % rostlinný (slunečnicový) olej, původ: Kanada, USA), <b class=\"al\">pistáciov</b>á jádra loupaná 40 % (PISTÁCIOVÁ JÁDRA 100 %, původ: Írán). Mícháno v České republice.", "alergeny": "Pistácie", "stopy": "Může obsahovat stopy: ARAŠÍDŮ.", "blended": "334,80"}, {"typ": "mix", "kod": "1040", "nazev": "Antioxidační směs", "cat": "smesi", "slozeni": "Brusinky sušené slazené 34 % (63 % klikva velkoplodá, 36 % třtinový cukr, max. 1 % rostlinný (slunečnicový) olej, původ: Kanada, USA), <b class=\"al\">mandlov</b>á jádra natural 33 % (JÁDRA <b class=\"al\">MANDLÍ</b> natural, původ: USA), rozinky obří zlaté 33 % (rozinky 99,5 %, slunečnicový olej 0,5 %, konzervant: <b class=\"al\">OXID SIŘIČITÝ</b> <b class=\"al\">E220</b>, původ: Chile). Mícháno v České republice.", "alergeny": "Mandle, oxid siřičitý", "stopy": "Může obsahovat stopy: SKOŘÁPKOVÝCH PLODŮ, ARAŠÍDŮ.", "blended": "165,29"}, {"typ": "mix", "kod": "1985", "nazev": "Mandle tří barev", "cat": "smesi", "slozeni": "<b class=\"al\">Mandlov</b>á jádra pražená v mléčné čokoládě 33 % (mléčná čokoláda (cukr, kakaové máslo, SUŠENÉ <b class=\"al\"><b class=\"al\">MLÉK</b>O</b>, SUŠENÁ <b class=\"al\">SYROVÁTKA</b>, kakaová hmota, emulgátor: lecitiny (<b class=\"al\">SÓJA</b>), aróma (vanilín)), MANDLOVÁ jádra pražená, leštící směs (glukózový sirup, povlaková látka (arabská guma, šelak), rostlinný olej (<b class=\"al\">kokos</b>ový, řepkový), dextrin), původ: Slovensko), mandlová jádra pražená v hořké čokoládě 33 % (hořká čokoláda (kakaová hmota, cukr, kakaové máslo, emulgátor: lecitiny (SÓJA), vanilkový extrakt), MANDLOVÁ JÁDRA pražená, leštící směs (glukózový sirup, povlaková látka (arabská guma, šelak), rostlinný olej (kokosový, řepkový), dextrin), původ: Slovensko), mandlová jádra v bílé čokoládě 34 % (bílá čokoláda (cukr, kakaové máslo, SUŠENÉ MLÉKO, emulgátor: lecitiny (SÓJA), vanilkový extrakt), MANDLOVÁ JÁDRA pražená, leštící směs (glukózový sirup, povlaková látka (arabská guma, šelak), rostlinný olej (kokosový, řepkový), dextrin), původ: Slovensko). Vyrobeno v ČR.", "alergeny": "Mandle, kokos, mléko, sója", "stopy": "Může obsahovat stopy: ARAŠÍDŮ, JINÝCH SKOŘÁPKOVÝCH PLODŮ, SEZAMU, MLÉKA.", "blended": "229,37"}, {"typ": "mix", "kod": "2342", "nazev": "Směs ořechů DELUXE", "cat": "smesi", "slozeni": "<b class=\"al\">ARAŠÍDY</b> pražené nesolené 20 % (ARAŠÍDY pražené nesolené 100 %, původ: mimo EU), <b class=\"al\">KEŠU</b> ořechy jádra 30 % (KEŠU ořechy jádra 100 %, původ: Pobřeží slonoviny), <b class=\"al\">MANDLE</b> jádra 30 % (MANDLE jádra 100 %, původ: USA), <b class=\"al\"><b class=\"al\">LÍSKOV</b>Á</b> jádra 15 % (LÍSKOVÁ jádra 100 %, původ: Turecko, Ázerbájdžán), <b class=\"al\">PEKANOVÉ</b> OŘECHY jádra 5 % (PEKANOVÉ OŘECHY jádra 100 %, původ: Jihoafrická republika). Mícháno v České republice.", "alergeny": "Mandle, lískové ořechy, kešu, pekanové ořechy, arašídy", "stopy": "Může obsahovat stopy: LEPKU, SEZAMU, SÓJI, MLÉKA, OXIDU SIŘIČITÉHO A SIŘIČITANŮ.", "blended": "212,79"}, {"typ": "mix", "kod": "2345", "nazev": "Šťastné srdce", "cat": "smesi", "slozeni": "<b class=\"al\">KEŠU</b> ořechy jádra 20 % (KEŠU OŘECHY jádra ww320 100 %, původ: Pobřeží slonoviny), <b class=\"al\">MANDLOV</b>Á jádra natural 20 % (JÁDRA <b class=\"al\">MANDLÍ</b> natural, původ: USA), <b class=\"al\">VLAŠSK</b>Á JÁDRA 20 % (VLAŠSKÁ JÁDRA 100 %, původ: Chile), jádra tykve 20 % (jádra tykve 100 %, původ: Čína), brusinky sušené slazené 20 % (63 % klikva velkoplodá, 36 % třtinový cukr, max. 1 % rostlinný (slunečnicový) olej, původ: Kanada, USA). Mícháno v České republice.", "alergeny": "Mandle, kešu, vlašské ořechy", "stopy": "Může obsahovat stopy: ARAŠÍDŮ, LEPKU, SEZAMU, SÓJI, MLÉKA, OXIDU SIŘIČITÉHO A SIŘIČITANŮ.", "blended": "175,00"}, {"typ": "mix", "kod": "2504", "nazev": "Lískovce tříbarevné", "cat": "smesi", "slozeni": "<b class=\"al\"><b class=\"al\">Lískov</b>ce</b> jádra pražená v hořké čokoládě 33 % (hořká čokoláda 79 % (kakaová hmota, cukr, kakaové máslo, emulgátor: <b class=\"al\">sójový</b> lecitin (<b class=\"al\">SÓJA</b>)), <b class=\"al\">LÍSKOVÁ</b> JÁDRA 21 %), lískovce jádra pražená v mléčné čokoládě 33 % (mléčná čokoláda 79 % (cukr, kakaové máslo, SUŠENÉ <b class=\"al\"><b class=\"al\">MLÉK</b>O</b>, kakaová hmota, emulgátor: sójový lecitin (SÓJA)), LÍSKOVÁ JÁDRA 21 %), lískovce jádra pražená v bílé čokoládě 34 % (bílá čokoláda 79 % (cukr, kakaové máslo, SUŠENÉ MLÉKO, emulgátor: sójový lecitin (SÓJA)), LÍSKOVÁ JÁDRA 21 %). Míchano v České republice.", "alergeny": "Lískové ořechy, mléko, sója", "stopy": "Může obsahovat stopy: arašídy, ostatní stromové ořechy.", "blended": "268,31"}, {"typ": "mix", "kod": "3091", "nazev": "Směs ořechů pražená nesolená", "cat": "smesi", "slozeni": "<b class=\"al\">ARAŠÍDY</b> loupané pražené 24 % (ARAŠÍDY loupané pražené, původ: mimo EU), <b class=\"al\">KEŠU</b> JÁDRA pražená 23 % (KEŠU JÁDRA pražená 99,5 %, rostlinný řepkový olej 0,5 %, původ: mimo EU), <b class=\"al\">MANDLOV</b>Á jádra pražená 23 % (mandlová jádra pražená, původ: USA), JÁDRA <b class=\"al\">LÍSKOV</b>ÝCH OŘECHŮ pražená blanšírovaná 15 % (JÁDRA LÍSKOVÝCH OŘECHŮ 100 %, původ: Turecko / Ázerbájdžán), <b class=\"al\">PISTÁCIE</b> ve skořápce pražené 15 % (PISTÁCIE VE SKOŘÁPCE PRAŽENÉ 100 %, původ: USA, Írán). Mícháno v České republice.", "alergeny": "Mandle, lískové ořechy, kešu, pistácie, arašídy", "stopy": "Může obsahovat stopy: LEPKU, SEZAMU.", "blended": "241,86"}, {"typ": "mix", "kod": "3097", "nazev": "Směs ořechů a rozinek", "cat": "smesi", "slozeni": "Rozinky zlaté jumbo 15 % (rozinky 99,5 %, slunečnicový olej 0,5 %, konzervant: <b class=\"al\">OXID SIŘIČITÝ</b> <b class=\"al\">E220</b>, původ: Chile), rozinky sušené nesířené 15 % (sušené hrozny révy vinné 99,7 %, rostlinný (slunečnicový) olej max. 0,3 %, původ: Írán), <b class=\"al\">MANDLOV</b>Á JÁDRA natural 15 % (JÁDRA <b class=\"al\">MANDLÍ</b> natural, původ: USA), <b class=\"al\"><b class=\"al\">LÍSKOV</b>Á</b> JÁDRA 12 % (LÍSKOVÁ JÁDRA 100 %, původ: Turecko, Ázerbájdžán), <b class=\"al\">ARAŠÍDY</b> loupané pražené 12 % (ARAŠÍDY loupané pražené, původ: mimo EU), <b class=\"al\">VLAŠSK</b>Á JÁDRA 11 % (VLAŠSKÁ JÁDRA 100 %, původ: Chile), hrozinky sušené 10 % (sušené hrozinky, slunečnicový olej max. 1 %, původ: Jižní Afrika, Írán, Turecko, Chile, Čína), <b class=\"al\">PARA OŘECHY</b> jádra 10 % (PARA OŘECHY JÁDRA 100 %, původ: Bolívie). Mícháno v České republice.", "alergeny": "Mandle, lískové ořechy, para ořechy, vlašské ořechy, arašídy, oxid siřičitý", "stopy": "Může obsahovat stopy: KEŠU, LEPKU, SEZAMU.", "blended": "197,84"}, {"typ": "mix", "kod": "4446", "nazev": "Kešu tří barev", "cat": "smesi", "slozeni": "<b class=\"al\">Kešu</b> jádra pražená v mléčné čokoládě 33 % (mléčná čokoláda 79 % (cukr, kakaové máslo, SUŠENÉ <b class=\"al\"><b class=\"al\">MLÉK</b>O</b>, kakaová hmota, emulgátor: <b class=\"al\">sójový</b> lecitin (<b class=\"al\">SÓJA</b>)), KEŠU JÁDRA 21 %), kešu jádra pražená v hořké čokoládě 33 % (hořká čokoláda 79 % (kakaová hmota, cukr, kakaové máslo, emulgátor: sójový lecitin (SÓJA)), KEŠU JÁDRA 21 %), kešu jádra v bílé čokoládě 34 % (bílá čokoláda 72 % (cukr, kakaové máslo, sušené plnotučné MLÉKO, <b class=\"al\">LAKTÓZA</b>, emulgátor: sójový lecitin (SÓJA)), KEŠU JÁDRA 28 %). Míchano v České republice.", "alergeny": "Kešu, mléko, sója", "stopy": "Může obsahovat stopy: arašídy, ostatní stromové ořechy.", "blended": "256,86"}, {"typ": "mix", "kod": "5484", "nazev": "Arašídy tří barev", "cat": "smesi", "slozeni": "<b class=\"al\">ARAŠÍDY</b> v mléčné čokoládě 40 % (ARAŠÍDY jádra pražená ve slupce 50 %, mléčná čokoláda 49 % (cukr, kakaové máslo, SUŠENÉ <b class=\"al\"><b class=\"al\">MLÉK</b>O</b>, SUŠENÁ <b class=\"al\">SYROVÁTKA</b>, kakaová hmota, emulgátor: lecitiny (<b class=\"al\">SÓJA</b>), aróma (vanilín)), leštící směs 1 % (glukózový sirup, povlaková látka (arabská guma, šelak), rostlinný olej (<b class=\"al\">kokos</b>ový, řepkový), dextrin)), ARAŠÍDY v hořké čokoládě 40 % (hořká čokoláda 54 % (kakaová hmota, cukr, kakaové máslo, emulgátor: lecitiny (SÓJA), vanilkový extrakt), ARAŠÍDY jádra pražená v slupce 45 %, leštící směs 1 % (glukózový sirup, povlaková látka (arabská guma, šelak), rostlinný olej (kokosový, řepkový), dextrin)), ARAŠÍDY v bílé čokoládě 20 % (bílá čokoláda 75 % (cukr, kakaové máslo, sušené plnotučné MLÉKO, <b class=\"al\">LAKTÓZA</b>, sušené odstředěné MLÉKO, <b class=\"al\">SÓJOVÝ</b> lecitin, přírodní vanilkové aroma), ARAŠÍDY - PODZEMNICE OLEJNÁ 25 %, leštidlo: arabská guma)", "alergeny": "Kokos, arašídy, mléko, sója", "stopy": "Může obsahovat stopy: OBILOVINY OBSAHUJÍCÍ LEPEK, MLÉKO A LAKTÓZU, SÓJU, SKOŘÁPKOVÉ PLODY, SEZAM, SO2/SIŘIČITANY.", "blended": "157,00"}, {"typ": "mix", "kod": "5499", "nazev": "Směs kešu a mandle natural", "cat": "smesi", "slozeni": "<b class=\"al\">KEŠU</b> ořechy jádra 50 % (KEŠU OŘECHY jádra ww320 100 %, původ: Pobřeží slonoviny), <b class=\"al\">MANDLOV</b>Á jádra natural 50 % (JÁDRA <b class=\"al\">MANDLÍ</b> natural, původ: USA). Mícháno v České republice.", "alergeny": "Mandle, kešu", "stopy": "Může obsahovat stopy: ARAŠÍDŮ, LEPKU, SEZAMU, SÓJI, MLÉKA, OXIDU SIŘIČITÉHO A SIŘIČITANŮ.", "blended": "215,51"}, {"typ": "mix", "kod": "5511", "nazev": "Slaný mix EXCLUSIVE", "cat": "smesi", "slozeni": "<b class=\"al\">Mandle</b> pražené solené 30 % (JÁDRA <b class=\"al\">MANDLÍ</b> loupaná pražená 98 %, sůl 1,5 %, rostlinný řepkový olej do 0,5 %, původ: Česká republika), <b class=\"al\">kešu</b> jádra pražená solená 30 % (KEŠU OŘECHY jádra pražená 98 %, sůl 1,5 %, rostlinný řepkový olej 0,5 %, původ: mimo EU), <b class=\"al\">makadamov</b>é ořechy pražené solené 10 % (MAKADAMOVÉ OŘECHY, sůl 1,6 %, arabská guma 0,01 %, původ: Jihoafrická republika), <b class=\"al\">arašídy</b> loupané pražené solené 30 % (ARAŠÍDY LOUPANÉ, sůl do 3 %, rostlinné oleje (slunečnicový/řepkový), původ: Argentina). Mícháno v České republice.", "alergeny": "Mandle, kešu, makadamové ořechy, arašídy", "stopy": "Může obsahovat stopy: LEPKU, SEZAMU, SÓJI, MLÉKA, OXIDU SIŘIČITÉHO A SIŘIČITANŮ.", "blended": "220,98"}, {"typ": "mix", "kod": "2702", "nazev": "Studentská směs", "cat": "smesi", "slozeni": "<b class=\"al\">ARAŠÍDY</b> loupané pražené 25 % (ARAŠÍDY loupané pražené, původ: mimo EU), <b class=\"al\">MANDLOV</b>Á jádra natural 25 % (JÁDRA <b class=\"al\">MANDLÍ</b> natural, původ: USA), rozinky sušené nesířené 20 % (sušené hrozny révy vinné 99,7 %, rostlinný (slunečnicový) olej max. 0,3 %, původ: Írán), <b class=\"al\">KEŠU</b> ořechy jádra 20 % (KEŠU OŘECHY jádra ww320 100 %, původ: Pobřeží slonoviny), <b class=\"al\">kokos</b>ové plátky 10 % (KOKOS plátky 100 %, původ: Srí Lanka / Filipíny / Vietnam / Indonésie). Mícháno v České republice.", "alergeny": "Mandle, kešu, kokos, arašídy", "stopy": "Může obsahovat stopy: LEPKU, SEZAMU, SÓJI, MLÉKA, OXIDU SIŘIČITÉHO A SIŘIČITANŮ.", "blended": "153,93"}, {"typ": "mix", "kod": "2423", "nazev": "Tropická směs", "cat": "smesi", "slozeni": "Ananas kandovaný kostky 25 % (ananas jádro 53,4 %, cukr 44,59 %, regulátor kyselosti: kyselina citronová E330, konzervant: DI<b class=\"al\">SIŘIČITAN</b> SODNÝ E223 0,01 %, původ: Thajsko), rozinky sušené nesířené 25 % (sušené hrozny révy vinné 99,7 %, rostlinný (slunečnicový) olej max. 0,3 %, původ: Írán), banánové plátky sušené 20 % (banánové plátky sušené 70 %, <b class=\"al\">kokos</b>ový olej 10,98 %, třtinový cukr 17 %, med 2 %, konzervant: <b class=\"al\">OXID SIŘIČITÝ</b> <b class=\"al\">E220</b>, původ: Filipíny), kokosové kostky sladké 15 % (kokosové kostky 62 %, cukr 37,995 %, konzervant: OXID SIŘIČITÝ E220, původ: Thajsko), papája kandovaná kostky 15 % (papája 57,75 %, cukr 42,24 %, konzervant: DISIŘIČITAN SODNÝ E223 0,01 %, původ: Thajsko). Mícháno v České republice.", "alergeny": "Kokos, oxid siřičitý", "stopy": "Může obsahovat stopy: LEPKU, ARAŠÍDŮ, SÓJI, MLÉKA, SKOŘÁPKOVÝCH PLODŮ, SEZAMU.", "blended": "127,33"}, {"typ": "mix", "kod": "2738", "nazev": "MIX Mandle & Meruňky", "cat": "smesi", "slozeni": "<b class=\"al\">Mandlov</b>á jádra v bílé čokoládě 33 % (bílá čokoláda (cukr, kakaové máslo, SUŠENÉ <b class=\"al\"><b class=\"al\">MLÉK</b>O</b>, emulgátor: lecitiny (<b class=\"al\">SÓJA</b>), vanilkový extrakt), MANDLOVÁ JÁDRA pražená, leštící směs (glukózový sirup, povlaková látka (arabská guma, šelak), rostlinný olej (<b class=\"al\">kokos</b>ový, řepkový), dextrin), původ: Slovensko), meruňky v jahodovém jogurtu 33 % (jogurtová poleva (cukr, rostlinný tuk palmový, <b class=\"al\">SYROVÁTKA</b> Z MLÉKA, rýžová mouka, JOGURTOVÝ PUDR Z MLÉKA 3 %, slunečnicový lecitin, arabská guma, šelak, barvivo E120, příchuť), meruňky 30 % (meruňky, rýžová mouka, <b class=\"al\">OXID SIŘIČITÝ</b> <b class=\"al\">E220</b>), původ: Velká Británie), čokoládové <b class=\"al\">mandle</b> karamel mořská sůl 34 % (cukr, MANDLE (24,75 %), kakaové máslo, celé MLÉKO v prášku, <b class=\"al\">laktóza</b> (z MLÉKA), odstředěné MLÉKO v prášku, slunečnicový olej, kakaová hmota, emulgátor (E322) lecithin ze SOJy, přírodní vanilkové aroma, mořská sůl, glazovací látka (E414), aroma, koření, glazovací látka (E904), původ: Nizozemsko). Vyrobeno v ČR.", "alergeny": "Mandle, kokos, mléko, sója, oxid siřičitý", "stopy": "Může obsahovat stopy: ARAŠÍDŮ, JINÝCH SKOŘÁPKOVÝCH PLODŮ, SEZAMU, LEPKU, PŠENICE, LÍSKOVÝCH OŘECHŮ, VLAŠSKÝCH OŘECHŮ, KEŠU, PEKANOVÝCH OŘECHŮ, PARA OŘECHŮ, PISTÁCIÍ, MAKADAMOVÝCH OŘECHŮ.", "blended": "258,22"}, {"typ": "mix", "kod": "3082", "nazev": "Rozinky obří MIX", "cat": "smesi", "slozeni": "Rozinky zlaté jumbo 50 % (rozinky 99,5 %, slunečnicový olej 0,5 %, konzervant: <b class=\"al\">OXID SIŘIČITÝ</b> <b class=\"al\">E220</b>, původ: Chile), rozinky sušené nesířené 50 % (sušené hrozny révy vinné 99,7 %, rostlinný (slunečnicový) olej max. 0,3 %, původ: Írán). Mícháno v České republice.", "alergeny": "Oxid siřičitý", "stopy": "Může obsahovat stopy: SKOŘÁPKOVÝCH PLODŮ.", "blended": "127,00"}, {"typ": "mix", "kod": "1967", "nazev": "Rozinky v polevách MIX", "cat": "smesi", "slozeni": "Rozinky v jogurtu 50 % (rozinky 34 %, jogurtová poleva 66 % (cukr, rostlinný tuk palmový, <b class=\"al\">SYROVÁTKA</b> (<b class=\"al\"><b class=\"al\">MLÉK</b>O</b>), rýžová mouka, JOGURTOVÝ pudr (MLÉKO) 3 %, emulgátor: slunečnicový lecitin, leštidla: arabská guma, šelak), původ: Velká Británie), rozinky v mléčné čokoládě 33,3 % (rozinky 50 %, mléčná čokoláda 48 % (cukr, sušené plnotučné MLÉKO, kakaová hmota, kakaové máslo, sušená SYROVÁTKA (MLÉKO), emulgátor: <b class=\"al\">SÓJOVÝ</b> lecitin, přírodní vanilkové aroma), glukózový sirup, leštidla: arabská guma, šelak, slunečnicový olej, původ: Holandsko), rozinky v karamelu 16,7 % (rozinky 36 %, cukr, rostlinný tuk, SYROVÁTKA (MLÉKO), rýžová mouka, šelak, arabská guma, emulgátor: slunečnicový lecitin, původ: Velká Británie). Mícháno v České republice.", "alergeny": "Mléko, sója", "stopy": "Může obsahovat stopy: LEPKU, ARAŠÍDŮ, SKOŘÁPKOVÝCH PLODŮ, SEZAMU, OXIDU SIŘIČITÉHO A SIŘIČITANŮ.", "blended": "169,00"}, {"typ": "mix", "kod": "4443", "nazev": "Arašídové hrudky MIX barev", "cat": "smesi", "slozeni": "<b class=\"al\">Arašídov</b>é hrudky v bílé čokoládě 25 % (<b class=\"al\">ARAŠÍDY</b> 50 %, cukr 26,5 %, kakaové máslo 12,5 %, celé <b class=\"al\"><b class=\"al\">MLÉK</b>O</b> v prášku 7,3 %, <b class=\"al\">laktóza</b> (z MLÉKA) 2,5 %, odtučněné MLÉKO v prášku 1 %, emulgátor E322 lecitin ze SOJ <1 %, přírodní vanilkové aroma <1 %, původ: Nizozemsko), arašídové hrudky v mléčné čokoládě 25 % (ARAŠÍDY 50 %, cukr 24,5 %, kakaové máslo 10,3 %, celé sušené MLÉKO 6,8 %, kakaová hmota 3,5 %, syrovátkový prášek (obsahuje MLÉKO) 3,3 %, laktóza (z MLÉKA) 1,3 %, emulgátor E322 lecitin ze SOJ <1 %, přírodní vanilkové aroma <1 %, původ: Nizozemsko), arašídové hrudky v hořké čokoládě 25 % (ARAŠÍDY 50 %, cukr 24,5 %, kakaová hmota 20 %, kakaové máslo 5,3 %, emulgátor E322 <b class=\"al\">SÓJOVÝ</b> lecitin <1 %, původ: Nizozemsko), arašídové hrudky slaný karamel 25 % (ARAŠÍDY 50 %, cukr 23,9 %, kakaové máslo 13,18 %, celé sušené MLÉKO 11,69 %, kakaová hmota 0,5 %, mořská sůl 0,25 %, emulgátor E322 SÓJOVÝ lecitin 0,12 %, aromata 0,12 %, přírodní vanilkové aroma 0,12 %, koření 0,12 %, původ: Nizozemsko). Mícháno v České republice.", "alergeny": "Arašídy, mléko, sója", "stopy": "Může obsahovat stopy: LEPKU, MANDLÍ, LÍSKOVÝCH OŘECHŮ, VLAŠSKÝCH OŘECHŮ, KEŠU OŘECHŮ, PEKANOVÝCH OŘECHŮ, PARA OŘECHŮ, PISTÁCIÍ, MAKADAMOVÝCH OŘECHŮ.", "blended": "235,69"}, {"typ": "mix", "kod": "6450", "nazev": "Zdravá energie", "cat": "smesi", "slozeni": "Mochyně peruánská physalis 25 % (sušená mochyně peruánská 100 %, původ: Kolumbie/Peru), sušená moruše 25 % (sušená moruše 100 %, původ: Turecko), brusinky sušené slazené 25 % (63 % klikva velkoplodá, 36 % třtinový cukr, max. 1 % rostlinný (slunečnicový) olej, původ: Kanada, USA), bobule kustovnice goji 25 % (bobule kustovnice (goji), konzervant: <b class=\"al\">OXID SIŘIČITÝ</b> <b class=\"al\">E220</b>, původ: Čína). Mícháno v České republice.", "alergeny": "Oxid siřičitý", "stopy": "Může obsahovat stopy: SKOŘÁPKOVÝCH PLODŮ.", "blended": "252,00"}, {"typ": "mix", "kod": "5502", "nazev": "Salátová semínková", "cat": "smesi", "slozeni": "Slunečnicová semena 30 % (slunečnicová semena 100 %, původ: Bulharsko / Rumunsko / Moldávie / Česká republika / Maďarsko), <b class=\"al\">SEZAM</b>OVÁ semínka 30 % (SEZAMOVÁ SEMÍNKA 100 %, původ: Indie, Bolívie, Nigérie, Somálsko, Turecko), dýňová semena 30 % (dýňová semena 100 %, původ: Čína), <b class=\"al\"><b class=\"al\">PINIOV</b>Á</b> jádra 10 % (PINIOVÁ JÁDRA loupaná 100 %, původ: Mongolsko). Mícháno v České republice.", "alergeny": "Piniová jádra, sezam", "stopy": "Může obsahovat stopy: ARAŠÍDŮ.", "blended": "144,25"}, {"typ": "mix", "kod": "2474", "nazev": "Semínková směs", "cat": "smesi", "slozeni": "Lněné semínko hnědé 20 % (lněné semínko 100 %, původ: Rusko / Slovensko / Kazachstán / ČR / Ukrajina), zlatý len 20 % (zlatý len 100 %, původ: Česká republika / Ukrajina / Polsko / Rusko / Kazachstán), slunečnicová semena 20 % (slunečnicová semena 100 %, původ: Bulharsko / Rumunsko / Moldávie / Česká republika / Maďarsko), <b class=\"al\">SEZAM</b>OVÁ semínka 20 % (SEZAMOVÁ SEMÍNKA 100 %, původ: Indie / Bolívie / Nigérie / Somálsko / Turecko), dýňová semena 10 % (dýňová semena 100 %, původ: Čína), chia semínka 10 % (chia semínka 100 %, původ: Argentina / Bolívie / Peru / Paraguay / Mexiko / Uganda / Indie). Mícháno v České republice.", "alergeny": "Sezam", "stopy": "", "blended": "65,90"}, {"typ": "mix", "kod": "5505", "nazev": "Semínka + kešu + mandle", "cat": "smesi", "slozeni": "Slunečnicová semena 30 % (slunečnicová semena 100 %, původ: Bulharsko / Rumunsko / Moldávie / Česká republika / Maďarsko), dýňová semena 30 % (dýňová semena 100 %, původ: Čína), <b class=\"al\">MANDLOV</b>Á jádra natural 20 % (JÁDRA <b class=\"al\">MANDLÍ</b> natural, původ: USA), <b class=\"al\">KEŠU</b> ořechy jádra 20 % (KEŠU OŘECHY jádra ww320 100 %, původ: Pobřeží slonoviny). Mícháno v České republice.", "alergeny": "Mandle, kešu", "stopy": "Může obsahovat stopy: ARAŠÍDŮ, LEPKU, SEZAMU, SÓJI, MLÉKA, OXIDU SIŘIČITÉHO A SIŘIČITANŮ.", "blended": "134,65"}, {"typ": "mix", "kod": "4452", "nazev": "Preclíky tří barev", "cat": "smesi", "slozeni": "Preclíky v hořké čokoládě 33 % (slaný preclík 50 % (<b class=\"al\">PŠENIČN</b>Á mouka, řepkový olej, sůl 3,5 %, extrakt z JEČMENNÉHO sladu, cukr, kypřící látka: uhličitan sodný, regulátor kyselosti: hydroxid sodný), hořká čokoláda 49 % (kakaová hmota, cukr, kakaové máslo, emulgátor: lecitiny (<b class=\"al\">SÓJA</b>), vanilkový extrakt), leštící směs 1 % (glukózový sirup, povlaková látka (arabská guma, šelak), rostlinný olej (<b class=\"al\">kokos</b>ový, řepkový), dextrin)), preclíky v mléčné čokoládě 33 % (slaný preclík 50 % (PŠENIČNÁ mouka, řepkový olej, sůl 3,5 %, extrakt z JEČMENNÉHO sladu, cukr, kypřící látka: uhličitan sodný, regulátor kyselosti: hydroxid sodný), mléčná čokoláda 49 % (cukr, kakaové máslo, SUŠENÉ <b class=\"al\"><b class=\"al\">MLÉK</b>O</b>, SUŠENÁ <b class=\"al\">SYROVÁTKA</b>, kakaová hmota, emulgátor: lecitiny (SÓJA), aróma vanilín), leštící směs 1 % (glukózový sirup, povlaková látka (arabská guma, šelak), rostlinný olej (kokosový, řepkový), dextrin)), preclíky v bílé čokoládě 34 % (bílá čokoláda 66 % (cukr, kakaové máslo, sušené MLÉKO, sušená SMETANA, emulgátor: lecitiny; přírodní vanilkové aroma), preclíky solené 33 % (PŠENIČNÁ MOUKA, řepkový olej, jedlá sůl 2 %, regulátor kyselosti: hydroxid sodný; mořská sůl 0,9 %, droždí, JEČNÝ SLADOVÝ VÝTAŽEK, kypřicí látka: hydrogenuhličitan sodný), leštící směs (tapiokový škrob, cukr, leštící látka: šelak)). Mícháno v České republice.", "alergeny": "Kokos, mléko, sója, lepek (pšenice)", "stopy": "Může obsahovat stopy: ARAŠÍDŮ, MLÉKA, VAJEC, SÓJI, JINÝCH OBILOVIN OBSAHUJÍCÍCH LEPEK, SKOŘÁPKOVÝCH PLODŮ, SEZAMU.", "blended": "254,18"}, {"typ": "mix", "kod": "2693", "nazev": "Skořicový MIX", "cat": "smesi", "slozeni": "<b class=\"al\">Mandle</b> v mléčné čokoládě se skořicí 33 % (mléčná čokoláda 79 % (cukr, kakaové máslo, SUŠENÉ <b class=\"al\"><b class=\"al\">MLÉK</b>O</b>, SUŠENÁ <b class=\"al\">SYROVÁTKA</b>, kakaová hmota, emulgátor: lecitiny (<b class=\"al\">SÓJA</b>), aróma (vanilín)), <b class=\"al\">MANDLOV</b>Á JÁDRA pražená 20 %, skořice mletá 1 %, původ: Slovensko), <b class=\"al\"><b class=\"al\">lískov</b>ce</b> v mléčné čokoládě se skořicí 33 % (mléčná čokoláda 79 % (cukr, kakaové máslo, SUŠENÉ MLÉKO, SUŠENÁ SYROVÁTKA, kakaová hmota, emulgátor: lecitiny (SÓJA), aróma (vanilín)), <b class=\"al\">LÍSKOVÁ</b> JÁDRA pražená 20 %, skořice mletá 1 %, původ: Slovensko), datle v hořké čokoládě se skořicí 34 % (SUŠENÉ DATLE 48 ± 3 %, hořká čokoláda 48 ± 3 % (cukr, kakaová hmota, kakaové máslo, rostlinné tuky (palmový olej, olej z máslovníku), MLÉČNÝ TUK, emulgátory: LECITINY a polyglycerylpolyricinoleát; přírodní aroma, SUŠENÉ MLÉKO), mletá skořice 4 %, původ: Česká republika). Mícháno v České republice.", "alergeny": "Mandle, lískové ořechy, mléko, sója", "stopy": "Může obsahovat stopy: OBILOVIN OBSAHUJÍCÍCH LEPEK, ARAŠÍDŮ, SÓJI, JINÝCH SKOŘÁPKOVÝCH PLODŮ, SEZAMOVÝCH SEMEN.", "blended": "250,05"}, {"typ": "mix", "kod": "2699", "nazev": "Tiramisu směs", "cat": "smesi", "slozeni": "<b class=\"al\">Mandle</b> tiramisu 40 % (MANDLE 31 %, tiramisu poleva 69 % (cukr, rostlinný olej palmový, <b class=\"al\">SYROVÁTKA</b> (<b class=\"al\"><b class=\"al\">MLÉK</b>O</b>), rýžová mouka, slunečnicový lecitin, arabská guma, šelak, příchuť tiramisu, kakaová hmota, kakaové máslo), původ: Velká Británie), <b class=\"al\">kešu</b> tiramisu 40 % (KEŠU OŘECHY 31 %, tiramisu poleva 69 % (cukr, rostlinný palmový olej, SYROVÁTKA (MLÉKO), rýžová mouka, slunečnicový lecitin, arabská guma, šelak, tiramisu aroma, kakaová hmota, kakaové máslo), původ: Velká Británie), <b class=\"al\">para ořechy</b> tiramisu 20 % (PARA ořechy - jádra 33 %, tiramisu poleva 67 % (cukr, rostlinný olej palmový, SYROVÁTKA (MLÉKO), rýžová mouka, slunečnicový lecitin, arabská guma, šelak, příchuť tiramisu, kakaová hmota, kakaové máslo), původ: Velká Británie). Mícháno v České republice.", "alergeny": "Mandle, kešu, para ořechy, mléko", "stopy": "Může obsahovat stopy: ARAŠÍDŮ, OBILOVIN OBSAHUJÍCÍCH LEPEK, SÓJI, MLÉKA, JINÝCH SKOŘÁPKOVÝCH PLODŮ, SEZAMOVÝCH SEMEN.", "blended": "220,60"}, {"typ": "mix", "kod": "2705", "nazev": "Kešu v čokoládě MIX", "cat": "smesi", "slozeni": "<b class=\"al\">Kešu</b> v bílé čokoládě 33 % (bílá čokoláda 72 % (cukr, kakaové máslo, sušené plnotučné <b class=\"al\"><b class=\"al\">MLÉK</b>O</b>, <b class=\"al\">LAKTÓZA</b>, sušené odstředěné MLÉKO, <b class=\"al\">SOJOVÝ</b> lecitin, přírodní vanilkové aroma), KEŠU jádra 28 %, leštidlo: arabská guma, původ: Holandsko), kešu v mléčné čokoládě 33 % (mléčná čokoláda 74 % (cukr, kakaové máslo, SUŠENÉ MLÉKO, SUŠENÁ <b class=\"al\">SYROVÁTKA</b>, kakaová hmota, emulgátor: lecitiny (<b class=\"al\">SÓJA</b>), aróma (vanilín)), KEŠU JÁDRA pražená 25 %, leštící směs 1 % (glukózový sirup, povlaková látka (arabská guma, šelak), rostlinný olej (<b class=\"al\">kokos</b>ový, řepkový), dextrin), původ: Slovensko), kešu tiramisu 34 % (KEŠU OŘECHY 31 %, tiramisu poleva 69 % (cukr, rostlinný palmový olej, SYROVÁTKA (MLÉKO), rýžová mouka, slunečnicový lecitin, arabská guma, šelak, tiramisu aroma, kakaová hmota, kakaové máslo), původ: Velká Británie). Mícháno v České republice.", "alergeny": "Kešu, kokos, mléko, sója", "stopy": "Může obsahovat stopy: ARAŠÍDŮ, OBILOVIN OBSAHUJÍCÍCH LEPEK, JINÝCH SKOŘÁPKOVÝCH PLODŮ, SEZAMOVÝCH SEMEN.", "blended": "250,34"}, {"typ": "mix", "kod": "2708", "nazev": "Sladká směs DELUXE", "cat": "smesi", "slozeni": "<b class=\"al\">Mandle</b> v hořké čokoládě 27,5 % (hořká čokoláda 79 % (kakaová hmota, cukr, kakaové máslo, emulgátor: lecitiny (<b class=\"al\">SÓJA</b>), vanilkový extrakt), <b class=\"al\">MANDLOV</b>Á JÁDRA pražená 20 %, leštící směs 1 % (glukózový sirup, povlaková látka (arabská guma, šelak), rostlinný olej (<b class=\"al\">kokos</b>ový, řepkový), dextrin), původ: Slovensko), <b class=\"al\">kešu</b> v bílé čokoládě 25 % (bílá čokoláda 72 % (cukr, kakaové máslo, sušené plnotučné <b class=\"al\"><b class=\"al\">MLÉK</b>O</b>, <b class=\"al\">LAKTÓZA</b>, sušené odstředěné MLÉKO, <b class=\"al\">SOJOVÝ</b> lecitin, přírodní vanilkové aroma), KEŠU jádra 28 %, leštidlo: arabská guma, původ: Holandsko), <b class=\"al\">para ořechy</b> tiramisu 20 % (PARA ořechy - jádra 33 %, tiramisu poleva 67 % (cukr, rostlinný olej palmový, <b class=\"al\">SYROVÁTKA</b> (MLÉKO), rýžová mouka, slunečnicový lecitin, arabská guma, šelak, příchuť tiramisu, kakaová hmota, kakaové máslo), původ: Velká Británie), <b class=\"al\"><b class=\"al\">lískov</b>ce</b> ořechy v mléčné čokoládě 27,5 % (mléčná čokoláda 79 % (cukr, kakaové máslo, SUŠENÉ MLÉKO, SUŠENÁ SYROVÁTKA, kakaová hmota, emulgátor: lecitiny (SÓJA), aróma (vanilín)), LÍSKOVCE jádra pražená 20 %, leštící směs 1 % (glukózový sirup, povlaková látka (arabská guma, šelak), rostlinný olej (kokosový, řepkový), dextrin), původ: Slovensko). Mícháno v České republice.", "alergeny": "Mandle, lískové ořechy, kešu, para ořechy, kokos, mléko, sója", "stopy": "Může obsahovat stopy: ARAŠÍDŮ, OBILOVIN OBSAHUJÍCÍCH LEPEK, MLÉKA, SÓJI, JINÝCH SKOŘÁPKOVÝCH PLODŮ, SEZAMOVÝCH SEMEN.", "blended": "253,55"}, {"typ": "mix", "kod": "2762", "nazev": "Banánový chips DUO mix", "cat": "smesi", "slozeni": "Banánové chipsy v hořké čokoládě 50 % (kandovaný smažený banán plátky 50 % (banán, <b class=\"al\">kokos</b>ový olej, cukr, banánové aroma), hořká čokoláda 49 % (kakaová hmota, cukr, kakaové máslo, emulgátor: lecitiny (<b class=\"al\">SÓJA</b>), vanilkový extrakt), leštící směs 1 % (glukózový sirup, povlaková látka (arabská guma, šelak), rostlinný olej (kokosový, řepkový), dextrin), původ: Slovensko), banánové chipsy v jogurtové polevě 50 % (poleva s jogurtovou příchutí 56 ± 3 % (cukr, plně ztužený palmojádrový tuk, sušená <b class=\"al\">syrovátka</b>, sušený jogurt 2 % (<b class=\"al\"><b class=\"al\">MLÉK</b>O</b>, jogurtová kultura), regulátor kyselosti: kyselina citronová, emulgátory: lecitiny, aroma), zpracované banánové plátky 43 % (banán 70 %, kokosový olej, cukr, aroma), leštící směs (tapiokový škrob, cukr, leštící látka: šelak), původ: Česká republika). Mícháno v České republice.", "alergeny": "Kokos, mléko, sója", "stopy": "Může obsahovat stopy: OBILOVIN OBSAHUJÍCÍCH LEPEK, ARAŠÍDŮ, MLÉKA, SÓJOVÝCH BOBŮ, SKOŘÁPKOVÝCH PLODŮ, SEZAMOVÝCH SEMEN.", "blended": "174,00"}, {"typ": "mix", "kod": "4896", "nazev": "Směs mandlí v čokoládě BROWN", "cat": "smesi", "slozeni": "<b class=\"al\">Mandle</b> tiramisu 40 % (MANDLE 31 %, tiramisu poleva 69 % (cukr, rostlinný olej palmový, <b class=\"al\">SYROVÁTKA</b> (<b class=\"al\"><b class=\"al\">MLÉK</b>O</b>), rýžová mouka, slunečnicový lecitin, arabská guma, šelak, příchuť tiramisu, kakaová hmota, kakaové máslo), původ: Velká Británie), <b class=\"al\">mandlov</b>á jádra pražená v mléčné čokoládě 40 % (mléčná čokoláda 79 % (cukr, kakaové máslo, SUŠENÉ MLÉKO, SUŠENÁ SYROVÁTKA, kakaová hmota, emulgátor: lecitiny (<b class=\"al\">SÓJA</b>), aróma (vanilín)), MANDLOVÁ jádra pražená 20 %, leštící směs 1 % (glukózový sirup, povlakující látka (arabská guma, šelak), rostlinný olej (<b class=\"al\">kokos</b>ový, řepkový), dextrin), původ: Slovensko), mandle čokoládové karamel mořská sůl 20 % (cukr, MANDLE 24,75 %, kakaové máslo, celé MLÉKO v prášku, <b class=\"al\">laktóza</b> (z MLÉKA), odstředěné MLÉKO v prášku, slunečnicový olej, kakaová hmota, emulgátor (E322) lecithin ze SOJe, přírodní vanilkové aroma, mořská sůl, glazovací látka (E414), aroma, koření, glazovací látka (E904), původ: Nizozemsko). Mícháno v České republice.", "alergeny": "Mandle, kokos, mléko, sója", "stopy": "Může obsahovat stopy: ARAŠÍDŮ, OBILOVIN OBSAHUJÍCÍCH LEPEK, SÓJI, LÍSKOVCE OŘECHŮ, VLAŠSKÝCH OŘECHŮ, KEŠU, PEKANOVÝCH OŘECHŮ, PARA OŘECHŮ, PISTÁCIÍ, MAKADAMOVÝCH OŘECHŮ, SEZAMU.", "blended": "231,85"}];
+
 const KEY   = atob('MDM2M2ViYjE0OWRmMDRkMTI4NTY3MmEzMDgwMTYwYTI=');
 const TOKEN = atob('QVRUQTdiMWI4YTFjZWRjMTIyODI3ZmRiMmY4MGRjMjRiNThkMTA4NTVkOTY3ZTAwNDViNWU0ZDdkNmZkMzQwYzJmZWFDNEYxMTFGRQ==');
-
 const BOARDS = [
-  { id: '69d499ec3501b275fe7b9ffc', cat: 'orechy',  label: 'Ořechy' },
-  { id: '69cbb206544677ef5af0cccc', cat: 'ovoce',   label: 'Sušené ovoce' },
-  { id: '69d49adcbe3c129e1836cb06', cat: 'seminko', label: 'Semínka' },
-  { id: '69d5ee3d524fd628d0ad6bbe', cat: 'ostatni', label: 'Ostatní' },
+  {id:'69d499ec3501b275fe7b9ffc',cat:'orechy', label:'Ořechy'},
+  {id:'69cbb206544677ef5af0cccc',cat:'ovoce',  label:'Sušené ovoce'},
+  {id:'69d49adcbe3c129e1836cb06',cat:'seminko',label:'Semínka'},
+  {id:'69d5ee3d524fd628d0ad6bbe',cat:'ostatni',label:'Ostatní'},
 ];
+const CACHE_KEY='nw_specifikace_v2';
+let allItems=[], activeCat='vse', activeSub='vse';
 
-const CACHE_KEY = 'nw_specifikace_cache';
-let allItems = [];   // { nazev, kod, cat, catLabel, sub, url, pdfUrl }
-let activeCat = 'vse';
-let activeSub = 'vse';
+function api(path,params={}){
+  const qs=new URLSearchParams({key:KEY,token:TOKEN,...params}).toString();
+  return fetch(`https://api.trello.com/1${path}?${qs}`).then(r=>r.json());
+}
+function saveCache(d){try{localStorage.setItem(CACHE_KEY,JSON.stringify({d,ts:Date.now()}));}catch(e){}}
+function loadCache(){try{return JSON.parse(localStorage.getItem(CACHE_KEY));}catch(e){return null;}}
+function parsePdf(desc){if(!desc)return null;const m=desc.match(/\(https?:\/\/[^)]+\.pdf[^)]*\)/i);return m?m[0].slice(1,-1):null;}
+function parseKod(n){const m=n.match(/^([\w\/]+)\//);return m?m[1].trim():null;}
+function parseNazev(n){const i=n.indexOf('/');return i>-1?n.slice(i+1).trim():n.trim();}
 
-function api(path, params = {}) {
-  const qs = new URLSearchParams({ key: KEY, token: TOKEN, ...params }).toString();
-  return fetch(`https://api.trello.com/1${path}?${qs}`).then(r => r.json());
+async function loadBoard(b){
+  const [lists,cards]=await Promise.all([api(`/boards/${b.id}/lists`,{fields:'name,id'}),api(`/boards/${b.id}/cards`,{fields:'name,desc,idList,url',filter:'open'})]);
+  const lm={};lists.forEach(l=>lm[l.id]=l.name);
+  return cards.map(c=>({typ:'produkt',nazev:parseNazev(c.name),kod:parseKod(c.name),cat:b.cat,catLabel:b.label,sub:lm[c.idList]||'—',url:c.url,pdfUrl:parsePdf(c.desc),raw:c.name.toLowerCase()}));
 }
 
-function saveCache(data) {
-  try { localStorage.setItem(CACHE_KEY, JSON.stringify({ data, ts: Date.now() })); } catch(e) {}
-}
-function loadCache() {
-  try { return JSON.parse(localStorage.getItem(CACHE_KEY)); } catch(e) { return null; }
-}
-
-function parsePdfUrl(desc) {
-  if (!desc) return null;
-  const m = desc.match(/\(https?:\/\/[^)]+\.pdf[^)]*\)/i);
-  return m ? m[0].slice(1,-1) : null;
-}
-
-function parseKod(name) {
-  const m = name.match(/^([\w\/]+)\//);
-  return m ? m[1].trim() : null;
-}
-
-function parseNazev(name) {
-  const idx = name.indexOf('/');
-  return idx > -1 ? name.slice(idx + 1).trim() : name.trim();
-}
-
-async function loadBoard(board) {
-  const [lists, cards] = await Promise.all([
-    api(`/boards/${board.id}/lists`, { fields: 'name,id' }),
-    api(`/boards/${board.id}/cards`, { fields: 'name,desc,idList,url', filter: 'open' })
-  ]);
-  const listMap = {};
-  lists.forEach(l => { listMap[l.id] = l.name; });
-  return cards.map(c => ({
-    nazev:    parseNazev(c.name),
-    kod:      parseKod(c.name),
-    cat:      board.cat,
-    catLabel: board.label,
-    sub:      listMap[c.idList] || '—',
-    url:      c.url,
-    pdfUrl:   parsePdfUrl(c.desc),
-    raw:      c.name.toLowerCase(),
-  }));
-}
-
-async function loadAll(silent = false) {
-  const cache = loadCache();
-  if (cache) {
-    allItems = cache.data;
+async function loadAll(){
+  const cache=loadCache();
+  if(cache){allItems=[...cache.d,...MIX_DATA];render();const age=Math.round((Date.now()-cache.ts)/60000);document.getElementById('refresh-info').textContent=`cache (${age} min)`;}
+  else{document.getElementById('refresh-info').textContent='načítám…';}
+  try{
+    const res=await Promise.all(BOARDS.map(loadBoard));
+    const trello=res.flat();
+    saveCache(trello);
+    allItems=[...trello,...MIX_DATA];
     render();
-    const age = Math.round((Date.now() - cache.ts) / 60000);
-    document.getElementById('refresh-info').textContent = `cache (${age} min)`;
-  } else {
-    document.getElementById('refresh-info').textContent = 'načítám…';
-  }
-  try {
-    const results = await Promise.all(BOARDS.map(loadBoard));
-    allItems = results.flat();
-    saveCache(allItems);
-    render();
-    const now = new Date();
-    document.getElementById('refresh-info').textContent =
-      `Aktualizováno ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')} · ${allItems.length} spec`;
-  } catch(e) {
-    document.getElementById('refresh-info').textContent = 'chyba · zobrazena cache';
-    if (!allItems.length) {
-      document.getElementById('grid').innerHTML =
-        `<div class="state-box"><p>⚠️ Nepodařilo se načíst. ${e.message}</p></div>`;
-    }
-  }
+    const now=new Date();
+    document.getElementById('refresh-info').textContent=`Aktualizováno ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')} · ${allItems.length} spec`;
+  }catch(e){document.getElementById('refresh-info').textContent='chyba · cache';}
 }
 
-function setCat(cat, el) {
-  activeCat = cat;
-  activeSub = 'vse';
-  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  render();
+function setCat(cat,el){activeCat=cat;activeSub='vse';document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');render();}
+function setSub(sub){activeSub=sub;document.querySelectorAll('.sub-btn').forEach(b=>b.classList.toggle('active',b.dataset.sub===sub));render();}
+
+function render(){
+  const q=(document.getElementById('search').value||'').toLowerCase().trim();
+  let items=allItems;
+  if(activeCat!=='vse') items=items.filter(i=>i.cat===activeCat);
+  if(activeSub!=='vse') items=items.filter(i=>i.sub===activeSub);
+  if(q) items=items.filter(i=>(i.raw||i.nazev.toLowerCase()).includes(q)||(i.kod&&i.kod.toLowerCase().includes(q)));
+
+  // Podkategorie — jen pro Trello kategorie
+  const subWrap=document.getElementById('sub-wrap');
+  if(activeCat!=='vse'&&activeCat!=='smesi'){
+    const src=allItems.filter(i=>i.cat===activeCat&&i.typ==='produkt');
+    const subs=[...new Set(src.map(i=>i.sub))].sort();
+    subWrap.innerHTML=`<button class="sub-btn active" data-sub="vse" onclick="setSub('vse')">Vše (${src.length})</button>`+subs.map(s=>`<button class="sub-btn" data-sub="${esc(s)}" onclick="setSub('${esc(s)}')">${esc(s)} (${src.filter(i=>i.sub===s).length})</button>`).join('');
+    document.querySelectorAll('.sub-btn').forEach(b=>b.classList.toggle('active',b.dataset.sub===activeSub));
+  }else{subWrap.innerHTML='';}
+
+  document.getElementById('stats').innerHTML=`Zobrazeno <strong>${items.length}</strong> z <strong>${allItems.length}</strong>`;
+
+  if(!items.length){document.getElementById('grid').innerHTML='<div class="state-box"><p>🔍 Nic nenalezeno.</p></div>';return;}
+
+  document.getElementById('grid').innerHTML=items.map(item=>
+    item.typ==='mix' ? renderMix(item) : renderProdukt(item)
+  ).join('');
 }
 
-function setSub(sub) {
-  activeSub = sub;
-  document.querySelectorAll('.sub-btn').forEach(b =>
-    b.classList.toggle('active', b.dataset.sub === sub));
-  render();
+function renderProdukt(item){
+  const colors={orechy:'#83502e',ovoce:'#da1668',seminko:'#6fa044',ostatni:'#546e7a'};
+  const c=colors[item.cat]||'#888';
+  return `<div class="spec-card" data-cat="${item.cat}" style="border-top-color:${c}">
+    <div class="sc-header">
+      ${item.kod?`<span class="sc-kod">${esc(item.kod)}</span>`:''}
+      <div class="sc-nazev">${esc(item.nazev)}</div>
+    </div>
+    <div class="sc-meta"><span class="sc-sub">${esc(item.sub)}</span><span class="sc-cat" style="color:${c};font-size:10px;font-weight:700">${esc(item.catLabel)}</span></div>
+    <div class="sc-actions">
+      ${item.pdfUrl?`<a class="btn-pdf" href="${esc(item.pdfUrl)}" target="_blank">📄 Otevřít PDF</a>`:`<a class="btn-pdf" href="${esc(item.url)}" target="_blank" style="background:#f5f5f5;color:#999">📄 PDF v Trellu</a>`}
+      <a class="btn-trello" href="${esc(item.url)}" target="_blank" title="Trello">🃏</a>
+    </div>
+  </div>`;
 }
 
-function render() {
-  const q = (document.getElementById('search').value || '').toLowerCase().trim();
-
-  let items = allItems;
-  if (activeCat !== 'vse') items = items.filter(i => i.cat === activeCat);
-  if (activeSub !== 'vse') items = items.filter(i => i.sub === activeSub);
-  if (q) items = items.filter(i =>
-    i.raw.includes(q) || (i.kod && i.kod.toLowerCase().includes(q)));
-
-  // Podkategorie
-  const subSource = activeCat === 'vse' ? allItems : allItems.filter(i => i.cat === activeCat);
-  const subs = [...new Set(subSource.map(i => i.sub))].sort();
-  const subWrap = document.getElementById('sub-wrap');
-  if (activeCat !== 'vse') {
-    subWrap.innerHTML =
-      `<button class="sub-btn active" data-sub="vse" onclick="setSub('vse')">Vše (${subSource.length})</button>` +
-      subs.map(s => {
-        const cnt = subSource.filter(i => i.sub === s).length;
-        return `<button class="sub-btn" data-sub="${esc(s)}" onclick="setSub('${esc(s)}')">${esc(s)} (${cnt})</button>`;
-      }).join('');
-    // Obnoví active stav
-    document.querySelectorAll('.sub-btn').forEach(b =>
-      b.classList.toggle('active', b.dataset.sub === activeSub));
-  } else {
-    subWrap.innerHTML = '';
-  }
-
-  document.getElementById('stats').innerHTML =
-    `Zobrazeno <strong>${items.length}</strong> specifikací` +
-    (q ? ` pro „<strong>${esc(q)}</strong>"` : '') +
-    (allItems.length ? ` z celkem <strong>${allItems.length}</strong>` : '');
-
-  if (!items.length) {
-    document.getElementById('grid').innerHTML =
-      `<div class="state-box"><p>🔍 Žádná specifikace nenalezena.</p></div>`;
-    return;
-  }
-
-  document.getElementById('grid').innerHTML = items.map(item => `
-    <div class="spec-card" data-cat="${item.cat}">
-      <div class="sc-header">
-        ${item.kod ? `<span class="sc-kod">${esc(item.kod)}</span>` : ''}
-        <div class="sc-nazev">${esc(item.nazev)}</div>
+function renderMix(m){
+  return `<div class="mix-card">
+    <div class="mix-head"><div class="mix-kod">${m.kod} · Směs NW</div><div class="mix-nazev">${esc(m.nazev)}</div></div>
+    <div class="mix-body">
+      <div class="mix-sec"><label>Složení</label><p>${m.slozeni||'<em style="color:#aaa">Složení nebylo importováno</em>'}</p></div>
+      ${m.alergeny?`<div class="al-box"><strong>Alergeny</strong>${m.alergeny}</div>`:''}
+      ${m.stopy?`<div class="stopy-box">⚠ ${m.stopy}</div>`:''}
+      <div class="mix-foot">
+        <div class="mf"><label>Výrobce</label><span>Nut World s.r.o.</span></div>
+        <div class="mf"><label>Původ</label><span>Česká republika</span></div>
+        <div class="mf"><label>Nák. cena</label><span>${m.blended} Kč/kg</span></div>
+        <div class="mf"><label>Verze</label><span>Pracovní · 24.06.2026</span></div>
       </div>
-      <div class="sc-meta">
-        <span class="sc-sub">${esc(item.sub)}</span>
-        <span class="sc-cat ${item.cat}">${esc(item.catLabel)}</span>
-      </div>
-      <div class="sc-actions">
-        ${item.pdfUrl
-          ? `<a class="btn-pdf" href="${esc(item.pdfUrl)}" target="_blank">📄 Otevřít PDF</a>`
-          : `<a class="btn-pdf" href="${esc(item.url)}" target="_blank" style="background:#f5f5f5;color:#999">📄 PDF v Trellu</a>`}
-        <a class="btn-trello" href="${esc(item.url)}" target="_blank" title="Otevřít v Trellu">🃏</a>
-      </div>
-    </div>`).join('');
+    </div>
+  </div>`;
 }
 
-function esc(s) {
-  if (!s) return '';
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
+function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 loadAll();
 </script>
 </body>
