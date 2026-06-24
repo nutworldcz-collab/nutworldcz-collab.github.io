@@ -157,7 +157,7 @@ let generating = false;
 // ═══════════════════════════════════════
 // PROXY — Apps Script (klíč je na serveru)
 // ═══════════════════════════════════════
-const PROXY_URL = 'https://script.google.com/macros/s/AKfycbzm53GtxNoRLI_nVGdZFe_fvi3hFroDYkrnH8bKovnmsSfLt9W77eM4DqX5RSmP40qP/exec';
+const PROXY_URL = 'https://script.google.com/macros/s/AKfycbyB2V0l9gc3OFh-yx2SlfTkWP4PmPhus7IF00g3qIjTzpSbRskXiJ5a0rGBQ0EKlyU/exec';
 const PROXY_READY = true;
 
 // Fallback: přímé volání s klíčem v localStorage (dočasně)
@@ -360,6 +360,12 @@ async function send() {
         const last = chatHistory[chatHistory.length - 1];
         const orig = typeof last.content === 'string' ? last.content : text;
         last.content = orig + `\n\n[Obsah stránky ${urlMatch[0]}]:\n${fd.text}`;
+      }
+      // Automaticky načti fotku ze stránky
+      if (fd.imgBase64) {
+        images.unshift({ name: 'url-photo', b64: fd.imgBase64, mime: fd.imgMime || 'image/jpeg' });
+        renderImgThumbs();
+        addMsg('assistant', '📷 Fotka načtena ze stránky.');
       }
     } catch(e) {
       addMsg('assistant', '⚠️ Stránku se nepodařilo načíst — generuji bez obsahu stránky.');
