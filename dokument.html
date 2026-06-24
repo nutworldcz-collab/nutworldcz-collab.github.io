@@ -300,10 +300,14 @@ PRAVIDLA:
 - Marže vždy zeleně (#6fa044) jako badge
 - Prodejní argumenty do zvýrazněných boxů s amber border-left
 
-FORMÁT ODPOVĚDI — vrať POUZE validní JSON (žádný markdown, žádný text před/za):
-{"html":"...HTML obsah dokumentu...","type":"prezentace|katalog|cenik|dopis|infolist|nabidka","note":"krátká zpráva uživateli co bylo vytvořeno"}
+FORMÁT ODPOVĚDI:
+- Vrať VÝHRADNĚ čistý JSON objekt — žádné ```json fences, žádný text před ani za
+- První znak odpovědi musí být { a poslední }
+- HTML nesmí obsahovat DOCTYPE ani html/head/body tagy — jen obsah
+- V HTML nepoužívej JavaScript (žádné new Date(), žádné skripty) — datum dej jako statický text
+- Šířka se renduje na ~760px
 
-HTML nesmí obsahovat DOCTYPE ani html/head/body tagy — jen obsah. Šířka se renduje na ~760px.
+{"html":"...","type":"prezentace|katalog|cenik|dopis|infolist|nabidka","note":"co bylo vytvořeno"}
 Pokud byly přiloženy obrázky, vložíš je do dokumentu jako <img src="data:...base64..."/>.`;
 
 // ═══════════════════════════════════════
@@ -380,15 +384,15 @@ async function send() {
 
     hideTyping();
 
-    // Parse JSON response
+    // Parse JSON response — robustně vyřízni první { ... } blok
     let parsed;
     try {
-      // Remove potential markdown code fences
-      const clean = raw.replace(/^```json\s*/,'').replace(/\s*```$/,'').trim();
+      let clean = raw.replace(/^```[\w]*\s*/m, '').replace(/\s*```\s*$/m, '').trim();
+      const s = clean.indexOf('{'), e2 = clean.lastIndexOf('}');
+      if (s !== -1 && e2 !== -1) clean = clean.slice(s, e2 + 1);
       parsed = JSON.parse(clean);
     } catch(e) {
-      // Fallback: render raw as HTML
-      parsed = { html: raw, type: 'volny', note: 'Dokument vygenerován.' };
+      parsed = { html: `<div style="padding:24px;font-family:sans-serif;color:red">Chyba parsování odpovědi:<br><pre style="font-size:11px;white-space:pre-wrap">${escHtml(raw.slice(0,500))}</pre></div>`, type: 'volny', note: 'Chyba — zkus znovu.' };
     }
 
     renderDoc(parsed);
