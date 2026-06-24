@@ -314,7 +314,9 @@ Pokud byly přiloženy obrázky, vložíš je do dokumentu jako <img src="data:.
 // SEND & CALL CLAUDE
 // ═══════════════════════════════════════
 async function send() {
-  if (generating) return;
+  // Reset stuck state
+  if (generating) { generating = false; document.getElementById('send-btn').disabled = false; }
+
   const key = getKey();
   if (!PROXY_READY && !key) {
     document.getElementById('api-banner').style.display = 'flex';
@@ -329,6 +331,7 @@ async function send() {
   textarea.style.height = '';
   generating = true;
   document.getElementById('send-btn').disabled = true;
+  document.getElementById('send-btn').textContent = '⏳';
 
   addMsg('user', escHtml(text));
 
@@ -414,6 +417,7 @@ async function send() {
 
   generating = false;
   document.getElementById('send-btn').disabled = false;
+  document.getElementById('send-btn').textContent = '➤';
   textarea.focus();
 }
 
