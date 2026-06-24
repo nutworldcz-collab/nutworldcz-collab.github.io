@@ -354,8 +354,9 @@ async function send() {
     const data = await resp.json();
     const raw = (data.content?.[0]?.text || '').trim();
     // Ulož jen krátké shrnutí, ne celé HTML (šetří kontext)
+    const photoNote = images.length > 0 ? ' [Fotka produktu je k dispozici — při úpravách vždy vlož src="FOTO_PRODUKTU"]' : '';
     const summary = raw.slice(0, 200).replace(/[\n\r]/g, ' ');
-    chatHistory.push({ role: 'assistant', content: `[Dokument vygenerován: ${summary}...]` });
+    chatHistory.push({ role: 'assistant', content: `[Dokument vygenerován: ${summary}...${photoNote}]` });
     hideTyping();
 
     // Parsuj formát: TYPE:...\nNOTE:...\n<DOC>...</DOC>
@@ -369,9 +370,7 @@ async function send() {
       if (images.length > 0) {
         html = html.replace(/FOTO_PRODUKTU/g, `data:${images[0].mime};base64,${images[0].b64}`);
       }
-      // Teprve teď smaž fotky
-      images = [];
-      renderImgThumbs();
+      // Fotky NEMAŽ — zůstanou pro případné další úpravy dokumentu
       parsed = { type: typeM[1], note: noteM ? noteM[1].trim() : 'Hotovo', html };
     } else {
       // Fallback: zobraz jako chat zprávu
