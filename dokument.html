@@ -155,22 +155,23 @@ let images = [];    // {name, b64, mime}
 let generating = false;
 
 // ═══════════════════════════════════════
-// API KEY — uložen v localStorage
-// Init: otevři URL s #key=sk-ant-... jednou
+// PROXY — Apps Script (klíč je na serveru)
 // ═══════════════════════════════════════
+const PROXY_URL = 'https://script.google.com/macros/s/AKfycbzMTvsRtxdSLfTKexhIIkWZ1U6gbLkdJJpaWSFWxnQ6C-zrtf4UYNu37LqhODuUyPnr/exec';
+const PROXY_READY = false; // přepni na true po nasazení proxy kódu do Apps Scriptu
+
+// Fallback: přímé volání s klíčem v localStorage (dočasně)
 function initApiKey() {
-  // Zkontroluj URL hash — pokud obsahuje klíč, ulož ho a odstraň z URL
   const hash = location.hash;
   if (hash.startsWith('#key=')) {
     const k = decodeURIComponent(hash.slice(5));
     if (k.startsWith('sk-')) {
       localStorage.setItem('nw_doc_api_key', k);
       history.replaceState(null, '', location.pathname);
-      return; // klíč uložen, banner nepotřeba
+      return;
     }
   }
-  // Pokud klíč není v localStorage, zobraz banner
-  if (!localStorage.getItem('nw_doc_api_key')) {
+  if (!PROXY_READY && !localStorage.getItem('nw_doc_api_key')) {
     document.getElementById('api-banner').style.display = 'flex';
     document.getElementById('api-key-input').focus();
   }
@@ -181,7 +182,7 @@ function saveApiKey() {
   localStorage.setItem('nw_doc_api_key', v);
   document.getElementById('api-banner').style.display = 'none';
 }
-function getKey() { return localStorage.getItem('nw_doc_api_key'); }
+function getKey() { return localStorage.getItem('nw_doc_api_key') || ''; }
 
 // ═══════════════════════════════════════
 // IMAGES
@@ -344,22 +345,29 @@ async function send() {
   history.push({ role: 'user', content: userContent });
   showTyping();
 
+  const payload = { model: 'claude-sonnet-4-6', max_tokens: 8000, system: SYSTEM, messages: history };
+
   try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': key,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-allow-browser': 'true',
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 8000,
-        system: SYSTEM,
-        messages: history,
-      })
-    });
+    let resp;
+    if (PROXY_READY) {
+      // Volání přes Apps Script proxy (klíč na serveru)
+      resp = await fetch(PROXY_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'claude', payload }),
+      });
+    } else {
+      // Přímé volání (fallback — klíč v localStorage)
+      resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': key,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-allow-browser': 'true',
+        },
+        body: JSON.stringify(payload),
+      });
+    }
 
     if (!resp.ok) {
       const err = await resp.json().catch(() => ({}));
