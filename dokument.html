@@ -312,7 +312,7 @@ Pokud byly přiloženy obrázky, vložíš je do dokumentu jako <img src="data:.
 async function send() {
   if (generating) return;
   const key = getKey();
-  if (!key) {
+  if (!PROXY_READY && !key) {
     document.getElementById('api-banner').style.display = 'flex';
     document.getElementById('api-key-input').focus();
     return;
