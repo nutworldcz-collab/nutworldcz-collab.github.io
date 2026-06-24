@@ -314,88 +314,46 @@ Pokud byly přiloženy obrázky, vložíš je do dokumentu jako <img src="data:.
 // SEND & CALL CLAUDE
 // ═══════════════════════════════════════
 async function send() {
-  // Reset stuck state
-  if (generating) { generating = false; document.getElementById('send-btn').disabled = false; }
+  generating = false; // vždy reset
+  document.getElementById('send-btn').disabled = false;
+  document.getElementById('send-btn').textContent = '➤';
 
-  const key = getKey();
-  if (!PROXY_READY && !key) {
-    document.getElementById('api-banner').style.display = 'flex';
-    document.getElementById('api-key-input').focus();
-    return;
-  }
   const textarea = document.getElementById('chat-input');
   const text = textarea.value.trim();
-  if (!text) return;
+  if (!text) {
+    addMsg('assistant', '⚠️ Prázdný text — napiš co chceš vytvořit.');
+    return;
+  }
 
   textarea.value = '';
   textarea.style.height = '';
-  generating = true;
   document.getElementById('send-btn').disabled = true;
   document.getElementById('send-btn').textContent = '⏳';
 
   addMsg('user', escHtml(text));
 
-  // Sestav user content — text + případné obrázky
-  let userContent;
-  if (images.length > 0) {
-    userContent = [
-      ...images.map(img => ({
-        type: 'image',
-        source: { type: 'base64', media_type: img.mime, data: img.b64 }
-      })),
-      { type: 'text', text: text + '\n\nFotografie produktu jsou přiloženy výše — vlož je do dokumentu.' }
-    ];
-  } else {
-    userContent = text;
-  }
+  const userContent = images.length > 0
+    ? [...images.map(img => ({ type: 'image', source: { type: 'base64', media_type: img.mime, data: img.b64 } })),
+       { type: 'text', text: text + '\n\nFotografie produktu jsou přiloženy výše.' }]
+    : text;
 
   chatHistory.push({ role: 'user', content: userContent });
   showTyping();
 
-  const payload = { model: 'claude-sonnet-4-6', max_tokens: 8000, system: SYSTEM, messages: chatHistory };
-
   try {
-    let resp;
-    if (PROXY_READY) {
-      // Volání přes Apps Script proxy (klíč na serveru)
-      const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), 60000);
-      try {
-        resp = await fetch(PROXY_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({ action: 'claude', payload }),
-          signal: ctrl.signal,
-        });
-      } finally {
-        clearTimeout(timer);
-      }
-    } else {
-      // Přímé volání (fallback — klíč v localStorage)
-      resp = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': key,
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-allow-browser': 'true',
-        },
-        body: JSON.stringify(payload),
-      });
-    }
+    const payload = { model: 'claude-sonnet-4-6', max_tokens: 8000, system: SYSTEM, messages: chatHistory };
 
-    if (!resp.ok) {
-      const err = await resp.json().catch(() => ({}));
-      throw new Error(err.error?.message || `HTTP ${resp.status}`);
-    }
+    const resp = await fetch(PROXY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action: 'claude', payload }),
+    });
 
     const data = await resp.json();
-    const raw = data.content[0].text.trim();
+    const raw = (data.content?.[0]?.text || '').trim();
     chatHistory.push({ role: 'assistant', content: raw });
-
     hideTyping();
 
-    // Parse JSON response — robustně vyřízni první { ... } blok
     let parsed;
     try {
       let clean = raw.replace(/^```[\w]*\s*/m, '').replace(/\s*```\s*$/m, '').trim();
@@ -403,7 +361,7 @@ async function send() {
       if (s !== -1 && e2 !== -1) clean = clean.slice(s, e2 + 1);
       parsed = JSON.parse(clean);
     } catch(e) {
-      parsed = { html: `<div style="padding:24px;font-family:sans-serif;color:red">Chyba parsování odpovědi:<br><pre style="font-size:11px;white-space:pre-wrap">${escHtml(raw.slice(0,500))}</pre></div>`, type: 'volny', note: 'Chyba — zkus znovu.' };
+      parsed = { html: `<div style="padding:24px;color:red"><pre style="font-size:11px;white-space:pre-wrap">${escHtml(raw.slice(0,800))}</pre></div>`, type: 'volny', note: 'Chyba parsování — zkus znovu.' };
     }
 
     renderDoc(parsed);
@@ -411,14 +369,14 @@ async function send() {
 
   } catch(e) {
     hideTyping();
-    addMsg('assistant', `⚠️ Chyba: ${escHtml(e.message)}<br><small style="opacity:.7">Otevři DevTools (F12) → Console pro detaily.</small>`);
-    console.error('Send error:', e);
+    chatHistory.pop(); // odeber neúspěšný user msg z historie
+    addMsg('assistant', `⚠️ ${escHtml(e.message)}`);
+    console.error(e);
+  } finally {
+    document.getElementById('send-btn').disabled = false;
+    document.getElementById('send-btn').textContent = '➤';
+    textarea.focus();
   }
-
-  generating = false;
-  document.getElementById('send-btn').disabled = false;
-  document.getElementById('send-btn').textContent = '➤';
-  textarea.focus();
 }
 
 function renderDoc(parsed) {
