@@ -150,7 +150,7 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 // ═══════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════
-let history = [];   // {role, content}
+let chatHistory = [];   // {role, content}
 let images = [];    // {name, b64, mime}
 let generating = false;
 
@@ -246,7 +246,7 @@ function onKey(e) {
 }
 
 function clearAll() {
-  history = [];
+  chatHistory = [];
   images = [];
   renderImgThumbs();
   document.getElementById('chat-msgs').innerHTML = `
@@ -349,10 +349,10 @@ async function send() {
     userContent = text;
   }
 
-  history.push({ role: 'user', content: userContent });
+  chatHistory.push({ role: 'user', content: userContent });
   showTyping();
 
-  const payload = { model: 'claude-sonnet-4-6', max_tokens: 8000, system: SYSTEM, messages: history };
+  const payload = { model: 'claude-sonnet-4-6', max_tokens: 8000, system: SYSTEM, messages: chatHistory };
 
   try {
     let resp;
@@ -391,7 +391,7 @@ async function send() {
 
     const data = await resp.json();
     const raw = data.content[0].text.trim();
-    history.push({ role: 'assistant', content: raw });
+    chatHistory.push({ role: 'assistant', content: raw });
 
     hideTyping();
 
