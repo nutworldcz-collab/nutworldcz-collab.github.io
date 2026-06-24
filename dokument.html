@@ -355,11 +355,18 @@ async function send() {
     let resp;
     if (PROXY_READY) {
       // Volání přes Apps Script proxy (klíč na serveru)
-      resp = await fetch(PROXY_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify({ action: 'claude', payload }),
-      });
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 60000);
+      try {
+        resp = await fetch(PROXY_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({ action: 'claude', payload }),
+          signal: ctrl.signal,
+        });
+      } finally {
+        clearTimeout(timer);
+      }
     } else {
       // Přímé volání (fallback — klíč v localStorage)
       resp = await fetch('https://api.anthropic.com/v1/messages', {
@@ -401,7 +408,8 @@ async function send() {
 
   } catch(e) {
     hideTyping();
-    addMsg('assistant', `⚠️ Chyba: ${escHtml(e.message)}`);
+    addMsg('assistant', `⚠️ Chyba: ${escHtml(e.message)}<br><small style="opacity:.7">Otevři DevTools (F12) → Console pro detaily.</small>`);
+    console.error('Send error:', e);
   }
 
   generating = false;
