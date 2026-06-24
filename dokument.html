@@ -300,18 +300,21 @@ PRAVIDLA:
 - Marže vždy zeleně (#6fa044) jako badge
 - Prodejní argumenty do zvýrazněných boxů s amber border-left
 
-FORMÁT ODPOVĚDI — ABSOLUTNĚ POVINNÉ:
-- VŽDY vrať čistý JSON objekt, první znak { poslední }
-- NIKDY nezačínej markdown fences, NIKDY nepřidávej text před nebo za JSON
-- I když se ptají na fotku, URL, nebo něco co nemůžeš udělat — vrať JSON s hezkou HTML odpovědí
-- HTML: žádný DOCTYPE, žádné html/head/body tagy, žádný JavaScript, datum jako statický text
-- Šířka ~760px, inline CSS
+FORMÁT ODPOVĚDI — PŘESNĚ TAKTO, BEZ ODCHYLEK:
 
-Příklady:
-{"html":"<div style='padding:24px'>...krásný dokument...</div>","type":"prezentace","note":"Prezentace vytvořena"}
-{"html":"<div style='padding:24px;font-family:sans-serif'><h2>Fotka</h2><p>Nahraj fotku přes ikonku 📷 vlevo dole — pak ji přiložím do dokumentu.</p></div>","type":"info","note":"Pošli fotku přes upload"}
+TYPE:prezentace
+NOTE:Krátká zpráva co bylo vytvořeno
+<DOC>
+...celý HTML obsah dokumentu...
+</DOC>
 
-Pokud uživatel nahraje obrázek jako přílohu (base64), vlož ho: <img src="data:image/jpeg;base64,..."/>`;
+Pravidla:
+- První řádek vždy TYPE: (prezentace|katalog|cenik|dopis|infolist|nabidka|info)
+- Druhý řádek vždy NOTE: s krátkou českou zprávou
+- HTML obsah mezi <DOC> a </DOC> — žádný DOCTYPE, žádné html/head/body, žádný JS
+- Datum jako statický text (dnešní: 24.6.2026), šířka ~760px, inline CSS
+- Pokud uživatel nahraje obrázek jako přílohu, vlož: <img src="data:image/jpeg;base64,..."/>
+- Pokud se ptají na URL/fotku bez uploadu, odpověz v HTML s instrukcemi jak fotku nahrát`;
 
 // ═══════════════════════════════════════
 // SEND & CALL CLAUDE
@@ -352,14 +355,15 @@ async function send() {
     chatHistory.push({ role: 'assistant', content: raw });
     hideTyping();
 
+    // Parsuj formát: TYPE:...\nNOTE:...\n<DOC>...</DOC>
     let parsed;
-    try {
-      let clean = raw.replace(/^```[\w]*\s*/m, '').replace(/\s*```\s*$/m, '').trim();
-      const s = clean.indexOf('{'), e2 = clean.lastIndexOf('}');
-      if (s !== -1 && e2 !== -1) clean = clean.slice(s, e2 + 1);
-      parsed = JSON.parse(clean);
-    } catch(e) {
-      // Pokud není JSON — zobraz jako textovou zprávu v chatu
+    const typeM = raw.match(/^TYPE:\s*(\w+)/m);
+    const noteM = raw.match(/^NOTE:\s*(.+)/m);
+    const docM  = raw.match(/<DOC>([\s\S]*?)<\/DOC>/);
+    if (typeM && docM) {
+      parsed = { type: typeM[1], note: noteM ? noteM[1].trim() : 'Hotovo', html: docM[1].trim() };
+    } else {
+      // Fallback: zobraz jako chat zprávu
       addMsg('assistant', escHtml(raw).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\n/g,'<br>'));
       return;
     }
