@@ -117,6 +117,44 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .cat-contact-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--br);margin-bottom:8px}
 .cat-contact-info{font-family:'Exo 2',sans-serif;font-size:14px;font-weight:700;color:var(--bd)}
 
+/* ══ PREZENTACE — jednastránková ══ */
+.prez{display:flex;flex-direction:column;min-height:900px}
+.prez-hero{position:relative;background:linear-gradient(135deg,#5c381f 0%,#83502e 55%,#a0622a 100%);padding:28px 32px;display:flex;align-items:center;gap:24px;overflow:hidden}
+.prez-hero::after{content:'';position:absolute;top:-30px;right:-30px;width:200px;height:200px;border-radius:50%;background:rgba(247,171,49,.12);pointer-events:none}
+.prez-img-wrap{flex-shrink:0;width:180px;height:180px;border-radius:12px;overflow:hidden;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center}
+.prez-img-wrap img{width:100%;height:100%;object-fit:cover}
+.prez-img-placeholder{text-align:center;color:rgba(255,255,255,.5);font-size:11px}
+.prez-img-placeholder .icon{font-size:48px;display:block;margin-bottom:8px}
+.prez-title-area{flex:1;color:white}
+.prez-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;color:var(--amb);margin-bottom:6px}
+.prez-name{font-family:'Exo 2',sans-serif;font-size:28px;font-weight:800;line-height:1.15;margin-bottom:8px}
+.prez-tagline{font-size:13px;opacity:.85;line-height:1.5;max-width:380px}
+.prez-price-hero{background:rgba(247,171,49,.2);border:1.5px solid var(--amb);border-radius:10px;padding:8px 16px;text-align:center;flex-shrink:0}
+.prez-price-hero .amount{font-family:'Exo 2',sans-serif;font-size:26px;font-weight:800;color:var(--amb);display:block}
+.prez-price-hero .label{font-size:9px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:1px}
+
+.prez-body{flex:1;padding:20px 28px;display:flex;flex-direction:column;gap:16px}
+
+.prez-tags{display:flex;gap:8px;flex-wrap:wrap}
+.prez-tag{padding:5px 14px;border-radius:20px;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700}
+.prez-tag.wine{background:#f3e5f5;color:#7b1fa2;border:1.5px solid #ce93d8}
+.prez-tag.coffee{background:#e3f2fd;color:#1565c0;border:1.5px solid #90caf9}
+.prez-tag.gift{background:#e8f5e9;color:#2e7d32;border:1.5px solid #a5d6a7}
+.prez-tag.retail{background:#fff3e0;color:#e65100;border:1.5px solid #ffcc80}
+.prez-tag.snack{background:var(--kraft);color:var(--br);border:1.5px solid #c8a882}
+
+.prez-benefits{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.prez-benefit{display:flex;gap:10px;align-items:flex-start;background:#fdf9f6;border-radius:8px;padding:10px 12px;border:1px solid #ede0d4}
+.prez-benefit .tick{width:20px;height:20px;background:var(--br);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.prez-benefit .tick::after{content:'✓';color:white;font-size:10px;font-weight:800}
+.prez-benefit .text{font-size:12px;color:#333;line-height:1.45}
+
+.prez-desc{font-size:13px;line-height:1.8;color:#333;background:#fdf9f6;border-left:3px solid var(--br);padding:12px 16px;border-radius:0 8px 8px 0}
+
+.prez-footer-strip{background:linear-gradient(135deg,#5c381f,#83502e);color:white;padding:12px 28px;display:flex;justify-content:space-between;align-items:center;margin-top:auto}
+.prez-footer-brand{font-family:'Exo 2',sans-serif;font-size:13px;font-weight:800}
+.prez-footer-contact{font-size:11px;opacity:.8}
+
 @media print{
   body{overflow:visible;height:auto}
   .topbar,.left{display:none!important}
@@ -153,10 +191,20 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 
   <div class="tip">
     <strong>Příklady předmětu</strong>
-    <span class="tip-ex" onclick="setPredmet('katalog pro vinotéky a kavárny')">katalog pro vinotéky</span>
-    <span class="tip-ex" onclick="setPredmet('ceník velkoobchod 2026')">ceník</span>
-    <span class="tip-ex" onclick="setPredmet('dopis pro partnera')">dopis</span>
-    <span class="tip-ex" onclick="setPredmet('info list produkt')">info list</span>
+    <span class="tip-ex" onclick="setPredmet('prezentace mandle uzené 150g')">🛍 prezentace produktu</span>
+    <span class="tip-ex" onclick="setPredmet('katalog pro vinotéky a kavárny')">📦 katalog</span>
+    <span class="tip-ex" onclick="setPredmet('ceník velkoobchod 2026')">💰 ceník</span>
+    <span class="tip-ex" onclick="setPredmet('dopis pro partnera')">✉️ dopis</span>
+    <span class="tip-ex" onclick="setPredmet('info list produkt')">ℹ️ info list</span>
+  </div>
+  <div style="background:#fff3cd;border-radius:8px;padding:10px 14px;font-size:11.5px;color:#5c3000;border-left:3px solid var(--amb)">
+    <strong style="display:block;margin-bottom:3px;font-family:'Exo 2',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:1px">Tip: Prezentace produktu</strong>
+    Předmět: <em>prezentace kešu uzené 150g</em><br>
+    Obsah (volitelné):<br>
+    <code style="font-size:11px;background:rgba(0,0,0,.06);padding:2px 4px;border-radius:3px">Cena: 89 Kč
+- Pomalu uzené nad třešňovým dřevem
+- Ručně balené v ČR
+K vínu | Snack | Dárek</code>
   </div>
 
   <div class="field">
@@ -279,6 +327,7 @@ function slugToName(url) {
 // ── Detekce šablony ──
 function detectMode(predmet, content) {
   const p = (predmet + ' ' + content).toLowerCase();
+  if (/prezentace|showcase|produkt\s|product\s/.test(predmet.toLowerCase())) return 'prezentace';
   if (content.match(/https?:\/\/[^\s]+nutworld/i) || content.match(/nákup:\s*\d/i)) return 'katalog';
   if (/katalog|sortiment|produktov/.test(p)) return 'katalog';
   if (/cen[íi]k|ceník|ceny/.test(p)) return 'cenik';
@@ -286,6 +335,114 @@ function detectMode(predmet, content) {
   if (/info\s*list|informac|přehled/.test(p)) return 'infolist';
   if (/nabídka|offer/.test(p)) return 'nabidka';
   return 'volny';
+}
+
+// ── GENERÁTOR PREZENTACE ──
+function genPrezentace(predmet, content) {
+  // Název produktu = predmet bez "prezentace" slova
+  const productName = predmet
+    .replace(/^prezentace\s*/i, '')
+    .replace(/^showcase\s*/i, '')
+    .replace(/^produkt\s*/i, '')
+    .trim()
+    .split(' ').map((w,i) => i===0 ? w.charAt(0).toUpperCase()+w.slice(1) : w).join(' ');
+
+  // Parsuj obsah
+  let price = '';
+  let gramaz = '';
+  let desc = '';
+  const bullets = [];
+  const tags = [];
+
+  if (content.trim()) {
+    const lines = content.split('\n').map(l => l.trim()).filter(l => l);
+    lines.forEach(line => {
+      const cenM = line.match(/^[Cc]ena[:\s]*([\d,.]+\s*Kč.*)/);
+      if (cenM) { price = cenM[1].trim(); return; }
+      const gramM = line.match(/^[Gg]ramáž[:\s]*(.*)/);
+      if (gramM) { gramaz = gramM[1].trim(); return; }
+      // Tagy — řádek s | nebo slovem "k vínu", "ke kávě" apod.
+      if (line.includes('|') || /k vínu|ke kávě|dárek|snack|retail|impulz/i.test(line)) {
+        line.split(/[|,]/).map(t => t.trim()).filter(t => t).forEach(t => {
+          if (!tags.includes(t)) tags.push(t);
+        });
+        return;
+      }
+      // Bullet
+      if (line.startsWith('-') || line.startsWith('•')) {
+        bullets.push(line.replace(/^[-•]\s*/, ''));
+      } else if (bullets.length === 0 && !price && line.length > 10) {
+        desc = line;
+      }
+    });
+  }
+
+  // Defaultní bullets pokud žádné nejsou
+  if (bullets.length === 0) {
+    const nm = productName.toLowerCase();
+    if (/uzené|uzený/.test(nm))  bullets.push('Pomalu uzené — plná chuť', 'Ideální k vínu nebo pivu', 'Ručně balené v ČR');
+    else if (/medu|medové/.test(nm)) bullets.push('Přirozeně sladké bez přidaného cukru', 'Energie na celý den', 'Ručně balené v ČR');
+    else if (/krabičk|kazetka/.test(nm)) bullets.push('Krásné dárkové balení', 'Ideální jako firemní dárek', 'Expedice do 24 hodin');
+    else bullets.push('Prémiová kvalita surovin', 'Ručně balené v ČR', 'Bez konzervantů a přídatných látek');
+  }
+
+  // Defaultní tagy z názvu
+  if (tags.length === 0) {
+    const nm = productName.toLowerCase();
+    if (/uzené|uzený|solené|slané/.test(nm)) tags.push('K vínu', 'Snack');
+    if (/medové|kakaové|čokoládové|jogurt/.test(nm)) tags.push('Ke kávě', 'Snack');
+    if (/dárk|kazetka/.test(nm)) tags.push('Dárek', 'Retail');
+    if (tags.length === 0) tags.push('Snack', 'Retail');
+  }
+
+  // Obrázek
+  const img = getImg(0);
+  const imgHtml = img
+    ? `<img src="${img}" alt="${esc(productName)}"/>`
+    : `<div class="prez-img-placeholder"><span class="icon">📦</span><span style="font-size:10px">${esc(productName.slice(0,16))}</span></div>`;
+
+  // Tagy HTML
+  const tagClasses = {
+    'K vínu':'wine','Ke kávě':'coffee','Dárek':'gift',
+    'Retail':'retail','Snack':'snack','Impulzní nákup':'retail',
+  };
+  const tagsHtml = tags.map(t => {
+    const cls = Object.entries(tagClasses).find(([k]) => t.toLowerCase().includes(k.toLowerCase()));
+    return `<span class="prez-tag ${cls ? cls[1] : 'snack'}">${esc(t)}</span>`;
+  }).join('');
+
+  // Benefits HTML — max 4, ve 2 sloupcích
+  const bHtml = bullets.slice(0,4).map(b =>
+    `<div class="prez-benefit"><span class="tick"></span><span class="text">${esc(b)}</span></div>`
+  ).join('');
+
+  return `<div class="page-wrap"><div class="prez">
+    <div class="dstripe"></div>
+    <div class="prez-hero">
+      <div class="prez-img-wrap">${imgHtml}</div>
+      <div class="prez-title-area">
+        <div class="prez-label">🐿 Nutworld · Prémiové ořechy a snacky</div>
+        <div class="prez-name">${esc(productName)}</div>
+        ${gramaz ? `<div class="prez-tagline">Gramáž: ${esc(gramaz)}</div>` : ''}
+        ${desc ? `<div class="prez-tagline" style="margin-top:6px">${esc(desc)}</div>` : ''}
+      </div>
+      ${price ? `<div class="prez-price-hero"><span class="amount">${esc(price)}</span><span class="label">Prodejní cena</span></div>` : ''}
+    </div>
+    <div class="prez-body">
+      <div class="prez-tags">${tagsHtml}</div>
+      <div class="prez-benefits">${bHtml}</div>
+      <div class="prez-desc" style="margin-top:4px">
+        <strong style="font-family:'Exo 2',sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--br);display:block;margin-bottom:6px">O produktu</strong>
+        ${esc(productName)} je prémiový produkt vyráběný s důrazem na kvalitu surovin a autentickou chuť.
+        Ručně baleno v ČR. Bez umělých přídatných látek.
+      </div>
+    </div>
+    <div class="prez-footer-strip">
+      <div class="prez-footer-brand">🐿 Nutworld</div>
+      <div class="prez-footer-contact">info@nutworld.cz · nutworld.cz · IČO: 27517357</div>
+      <div style="font-size:10px;opacity:.7">${TODAY}</div>
+    </div>
+  </div></div>`;
 }
 
 // ── Parser komplexního promptu ──
@@ -546,11 +703,13 @@ function update() {
     return;
   }
   const mode = detectMode(predmet, content);
-  const MODES = {katalog:'📦 Katalog',cenik:'💰 Ceník',dopis:'✉️ Dopis',infolist:'ℹ️ Info list',nabidka:'🤝 Nabídka',volny:'📝 Volný text'};
+  const MODES = {prezentace:'🛍 Prezentace',katalog:'📦 Katalog',cenik:'💰 Ceník',dopis:'✉️ Dopis',infolist:'ℹ️ Info list',nabidka:'🤝 Nabídka',volny:'📝 Volný text'};
   document.getElementById('mode-badge').textContent = MODES[mode]||mode;
 
   let html = '';
-  if (mode === 'katalog') {
+  if (mode === 'prezentace') {
+    html = genPrezentace(predmet, content);
+  } else if (mode === 'katalog') {
     const data = parseKatalogPrompt(content || predmet);
     // Doplň z predmetu pokud chybí
     if (!data.titleText) data.titleText = predmet;
