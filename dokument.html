@@ -8,88 +8,89 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--bd:#5c381f;--br:#83502e;--kraft:#f1e6da;--acc:#da1668;--leaf:#6fa044;--amb:#f7ab31}
-body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;font-size:14px;height:100vh;display:flex;flex-direction:column}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;font-size:14px;height:100vh;display:flex;flex-direction:column;overflow:hidden}
 
 .topbar{background:var(--bd);padding:10px 20px;display:flex;align-items:center;gap:12px;flex-shrink:0}
 .topbar-title{font-family:'Exo 2',sans-serif;font-size:16px;font-weight:800;color:white}
 .topbar a{color:rgba(255,255,255,.6);font-size:12px;text-decoration:none}
-.topbar a:hover{color:white}
-.topbar-right{margin-left:auto;display:flex;gap:8px}
-.btn-top{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:white;font-size:12px;font-weight:600;padding:6px 14px;border-radius:20px;cursor:pointer;font-family:inherit}
-.btn-top.primary{background:var(--amb);color:var(--bd);border-color:var(--amb);font-weight:800}
-.btn-top:hover{background:rgba(255,255,255,.25)}
-.btn-top.primary:hover{opacity:.9}
+.topbar-right{margin-left:auto;display:flex;gap:8px;align-items:center}
+.btn-print{background:var(--amb);border:none;color:var(--bd);font-family:'Exo 2',sans-serif;font-weight:800;font-size:13px;padding:7px 18px;border-radius:20px;cursor:pointer}
+.btn-clear{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:white;font-size:12px;font-weight:600;padding:6px 14px;border-radius:20px;cursor:pointer;font-family:inherit}
+.detected{font-size:11px;color:rgba(255,255,255,.6);padding:4px 10px;border-radius:12px;background:rgba(255,255,255,.1)}
 
-.shell{display:grid;grid-template-columns:380px 1fr;flex:1;overflow:hidden;gap:0}
-@media(max-width:800px){.shell{grid-template-columns:1fr;grid-template-rows:auto 1fr}}
+.shell{display:grid;grid-template-columns:400px 1fr;flex:1;overflow:hidden}
+@media(max-width:800px){.shell{grid-template-columns:1fr;overflow:visible}body{overflow:auto;height:auto}}
 
 /* ── LEVÝ PANEL ── */
-.left{background:white;display:flex;flex-direction:column;overflow-y:auto;border-right:1px solid #e0d0c0}
-.left-head{background:var(--kraft);padding:14px 18px;border-bottom:1px solid #d4c0a8;flex-shrink:0}
-.left-head h2{font-family:'Exo 2',sans-serif;font-size:14px;font-weight:700;color:var(--bd)}
-.left-body{padding:16px 18px;display:flex;flex-direction:column;gap:12px;flex:1}
+.left{display:flex;flex-direction:column;background:white;border-right:2px solid #e0d0c0;overflow:hidden}
 
-.field label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--br);margin-bottom:4px}
-.field input,.field select,.field textarea{width:100%;border:1.5px solid #d4c0a8;border-radius:8px;padding:8px 12px;font-size:13px;font-family:inherit;background:#fdf9f6;color:#2a1a0e;transition:border-color .15s}
-.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--br)}
-.field textarea{resize:vertical;min-height:200px;line-height:1.6}
+.input-area{padding:16px 18px;display:flex;flex-direction:column;gap:10px;flex:1;overflow-y:auto}
 
-.template-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.tmpl-btn{padding:8px 6px;border:1.5px solid #d4c0a8;border-radius:8px;background:#fdf9f6;cursor:pointer;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;color:#666;text-align:center;transition:all .15s}
-.tmpl-btn:hover{background:var(--kraft);border-color:var(--br);color:var(--bd)}
-.tmpl-btn.active{background:var(--bd);border-color:var(--bd);color:white}
-.tmpl-icon{font-size:16px;display:block;margin-bottom:2px}
+.predmet-wrap{position:relative}
+.predmet-wrap input{width:100%;border:2px solid var(--br);border-radius:10px;padding:11px 14px;font-size:15px;font-family:'Exo 2',sans-serif;font-weight:700;color:var(--bd);background:#fdf9f6;transition:border-color .15s}
+.predmet-wrap input::placeholder{color:#c8a882;font-weight:400}
+.predmet-wrap input:focus{outline:none;border-color:var(--bd);background:white}
+.predmet-label{position:absolute;top:-9px;left:10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--br);background:white;padding:0 4px}
 
-.hint{font-size:11px;color:#aaa;padding:6px 10px;background:#f9f5f1;border-radius:6px;border-left:3px solid var(--amb);line-height:1.5}
+.content-wrap{position:relative;flex:1;display:flex;flex-direction:column}
+.content-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#aaa;margin-bottom:5px}
+.content-wrap textarea{flex:1;border:1.5px solid #d4c0a8;border-radius:10px;padding:12px 14px;font-size:13px;font-family:inherit;background:#fdf9f6;color:#1a1a1a;resize:none;line-height:1.7;min-height:320px;transition:border-color .15s}
+.content-wrap textarea:focus{outline:none;border-color:var(--br);background:white}
 
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tip{background:var(--kraft);border-radius:8px;padding:10px 14px;font-size:11.5px;color:var(--bd);line-height:1.6}
+.tip strong{display:block;margin-bottom:4px;font-family:'Exo 2',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:1px}
+.tip-examples{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.tip-ex{background:white;border:1px solid #c8a882;border-radius:12px;padding:3px 10px;font-size:11px;cursor:pointer;color:var(--br);font-weight:600}
+.tip-ex:hover{background:var(--bd);color:white;border-color:var(--bd)}
 
-/* ── PRAVÝ PANEL ── */
-.right{background:#c8bdb2;display:flex;flex-direction:column;align-items:center;overflow-y:auto;padding:24px 16px}
-.a4-wrap{width:100%;max-width:794px;background:white;box-shadow:0 4px 24px rgba(0,0,0,.2);min-height:1123px;font-family:'Source Sans 3',Arial,sans-serif;font-size:13px;color:#2a1a0e;position:relative}
+/* ── PRAVÝ PANEL — A4 náhled ── */
+.right{background:#b0a598;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:20px 12px}
+.a4{width:100%;max-width:760px;background:white;box-shadow:0 6px 30px rgba(0,0,0,.25);min-height:1000px;font-family:'Source Sans 3',Arial,sans-serif;font-size:12.5px;color:#1a1a1a}
 
-/* ── DOC TEMPLATES (tisknutelné) ── */
-.doc-header{background:linear-gradient(135deg,var(--bd),var(--br));color:white;padding:18px 28px;display:flex;justify-content:space-between;align-items:flex-start}
-.doc-logo{font-family:'Exo 2',sans-serif;font-size:22px;font-weight:800}
-.doc-logo-sub{font-size:10px;opacity:.7;letter-spacing:2px;text-transform:uppercase;margin-top:2px}
-.doc-header-right{text-align:right;font-size:11px;opacity:.8;line-height:1.7}
-.doc-stripe{height:3px;background:linear-gradient(90deg,var(--acc),var(--amb),var(--leaf))}
-.doc-body{padding:24px 28px}
-.doc-title{font-family:'Exo 2',sans-serif;font-size:20px;font-weight:800;color:var(--bd);margin-bottom:6px}
-.doc-subtitle{font-size:11px;color:#888;letter-spacing:1px;text-transform:uppercase;margin-bottom:20px}
-.doc-recipient{background:var(--kraft);border-left:4px solid var(--br);padding:10px 14px;border-radius:0 8px 8px 0;margin-bottom:20px;font-size:13px;line-height:1.6}
-.doc-content{line-height:1.8;color:#1a1a0a}
-.doc-content p{margin-bottom:12px}
-.doc-footer{margin-top:32px;padding-top:16px;border-top:1px solid #e8ddd4;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#aaa}
-.doc-footer-brand{font-family:'Exo 2',sans-serif;font-weight:700;color:var(--br)}
+/* ── DOCUMENT STYLES ── */
+.dh{background:linear-gradient(135deg,#5c381f,#83502e);color:white;padding:16px 26px;display:flex;justify-content:space-between;align-items:flex-start}
+.dh-logo{font-family:'Exo 2',sans-serif;font-size:20px;font-weight:800}
+.dh-sub{font-size:9px;opacity:.7;letter-spacing:2px;text-transform:uppercase;margin-top:1px}
+.dh-right{text-align:right;font-size:10.5px;opacity:.8;line-height:1.7}
+.dstripe{height:3px;background:linear-gradient(90deg,#da1668,#f7ab31,#6fa044)}
+.db{padding:22px 26px}
+.dtitle{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:800;color:#5c381f;margin-bottom:4px}
+.dsub{font-size:10px;color:#aaa;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:16px}
+.drcp{background:#f1e6da;border-left:4px solid #83502e;padding:8px 13px;border-radius:0 6px 6px 0;margin-bottom:16px;font-size:12px;line-height:1.6}
+.dcontent{line-height:1.85;color:#1a1a0a}
+.dcontent p{margin-bottom:10px}
+.dfooter{margin-top:28px;padding-top:12px;border-top:1px solid #f0e4d6;display:flex;justify-content:space-between;font-size:10.5px;color:#aaa}
+.dfooter-brand{font-family:'Exo 2',sans-serif;font-weight:700;color:#83502e}
 
-/* Katalog */
-.cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:8px}
-.cat-item{border:1.5px solid var(--kraft);border-radius:10px;padding:12px 14px;background:#fdf9f6}
-.cat-name{font-family:'Exo 2',sans-serif;font-weight:700;font-size:13px;color:var(--bd);margin-bottom:4px}
-.cat-desc{font-size:11.5px;color:#555;line-height:1.5;margin-bottom:6px}
-.cat-price{font-family:'Exo 2',sans-serif;font-weight:800;color:var(--acc);font-size:14px}
-.cat-badge{display:inline-block;padding:1px 8px;border-radius:10px;background:var(--kraft);font-size:10px;font-weight:600;color:var(--br);margin-top:4px}
+.cgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:6px}
+.citem{border:1.5px solid #f1e6da;border-radius:8px;padding:10px 12px;background:#fdf9f6}
+.cname{font-family:'Exo 2',sans-serif;font-weight:700;font-size:12.5px;color:#5c381f;margin-bottom:3px}
+.cdesc{font-size:11px;color:#666;line-height:1.45;margin-bottom:5px}
+.cprice{font-family:'Exo 2',sans-serif;font-weight:800;color:#da1668;font-size:13px}
 
-/* Ceník */
-.cenik-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:12.5px}
-.cenik-table th{background:var(--bd);color:white;padding:7px 12px;text-align:left;font-family:'Exo 2',sans-serif;font-size:11px;letter-spacing:.5px}
-.cenik-table td{padding:7px 12px;border-bottom:1px solid #f0e4d6}
-.cenik-table tr:nth-child(even) td{background:#fdf8f4}
-.cenik-table td:last-child{text-align:right;font-weight:700;color:var(--bd);font-family:'Exo 2',sans-serif}
+.ctable{width:100%;border-collapse:collapse;margin-top:6px;font-size:12px}
+.ctable th{background:#5c381f;color:white;padding:6px 10px;text-align:left;font-family:'Exo 2',sans-serif;font-size:10px;letter-spacing:.5px}
+.ctable td{padding:6px 10px;border-bottom:1px solid #f0e4d6}
+.ctable tr:nth-child(even) td{background:#fdf8f4}
+.ctable td:last-child{text-align:right;font-weight:700;color:#5c381f;font-family:'Exo 2',sans-serif}
+.ctotal td{background:#5c381f!important;color:white;padding:8px 10px;font-family:'Exo 2',sans-serif;font-weight:700}
+.ctotal td:last-child{color:#f7ab31;font-size:14px}
 
-/* Info list */
-.info-section{margin-bottom:18px}
-.info-section h3{font-family:'Exo 2',sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--br);border-bottom:1.5px solid var(--kraft);padding-bottom:5px;margin-bottom:8px}
-.info-section p,.info-section li{font-size:12.5px;line-height:1.7;color:#333}
-.info-section ul{padding-left:16px}
+.isec{margin-bottom:14px}
+.isec h3{font-family:'Exo 2',sans-serif;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#83502e;border-bottom:1.5px solid #f1e6da;padding-bottom:4px;margin-bottom:6px}
+.isec p,.isec li{font-size:12px;line-height:1.7;color:#333}
+.isec ul{padding-left:14px}
+
+.placeholder{display:flex;align-items:center;justify-content:center;flex:1;min-height:600px;color:#aaa;text-align:center;padding:40px}
+.placeholder-icon{font-size:48px;margin-bottom:12px}
+.placeholder p{font-size:13px;line-height:1.6}
 
 @media print{
-  body{height:auto}
-  .topbar,.left,.topbar-right{display:none!important}
+  body{overflow:visible;height:auto}
+  .topbar,.left{display:none!important}
   .shell{display:block}
-  .right{padding:0;background:white}
-  .a4-wrap{max-width:none;width:100%;box-shadow:none;min-height:auto}
+  .right{padding:0;background:white;overflow:visible}
+  .a4{max-width:none;width:100%;box-shadow:none;min-height:auto}
 }
 @page{size:A4;margin:0}
 </style>
@@ -100,305 +101,244 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
   <span class="topbar-title">📄 Generátor dokumentů</span>
   <a href="/">← Rozcestník</a>
   <div class="topbar-right">
-    <button class="btn-top" onclick="clearAll()">🗑 Smazat</button>
-    <button class="btn-top primary" onclick="window.print()">🖨 Tisk / PDF</button>
+    <span class="detected" id="detected">—</span>
+    <button class="btn-clear" onclick="clear()">Smazat</button>
+    <button class="btn-print" onclick="window.print()">🖨 Tisk / PDF</button>
   </div>
 </div>
 
 <div class="shell">
 
-<!-- ── LEVÝ PANEL ── -->
-<div class="left">
-  <div class="left-head">
-    <h2>Nastavení dokumentu</h2>
-  </div>
-  <div class="left-body">
+  <div class="left">
+    <div class="input-area">
 
-    <div class="field">
-      <label>Typ dokumentu</label>
-      <div class="template-grid">
-        <button class="tmpl-btn active" onclick="setTemplate('volny',this)"><span class="tmpl-icon">📝</span>Volný text</button>
-        <button class="tmpl-btn" onclick="setTemplate('dopis',this)"><span class="tmpl-icon">✉️</span>Dopis</button>
-        <button class="tmpl-btn" onclick="setTemplate('katalog',this)"><span class="tmpl-icon">📦</span>Katalog</button>
-        <button class="tmpl-btn" onclick="setTemplate('cenik',this)"><span class="tmpl-icon">💰</span>Ceník</button>
-        <button class="tmpl-btn" onclick="setTemplate('infolist',this)"><span class="tmpl-icon">ℹ️</span>Info list</button>
-        <button class="tmpl-btn" onclick="setTemplate('nabidka',this)"><span class="tmpl-icon">🤝</span>Nabídka</button>
+      <div style="position:relative">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--br);margin-bottom:5px">Předmět — co chcete vytvořit</div>
+        <input type="text" id="predmet"
+          placeholder="Např: katalog jarní nabídka, ceník ořechy, dopis pro ABC s.r.o."
+          oninput="update()" autocomplete="off"
+          style="width:100%;border:2px solid var(--br);border-radius:10px;padding:11px 14px;font-size:14px;font-family:'Exo 2',sans-serif;font-weight:700;color:var(--bd);background:#fdf9f6"/>
+      </div>
+
+      <div class="tip">
+        <strong>Příklady předmětu</strong>
+        <div class="tip-examples">
+          <span class="tip-ex" onclick="setPredmet('katalog jarní nabídka ořechy')">katalog jarní nabídka</span>
+          <span class="tip-ex" onclick="setPredmet('ceník produktů 2026')">ceník produktů</span>
+          <span class="tip-ex" onclick="setPredmet('dopis pro firmu ABC')">dopis pro firmu</span>
+          <span class="tip-ex" onclick="setPredmet('info list kešu ořechy')">info list produkt</span>
+          <span class="tip-ex" onclick="setPredmet('nabídka firemní dárky')">nabídka dárky</span>
+          <span class="tip-ex" onclick="setPredmet('volný dokument')">volný text</span>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#aaa;margin-bottom:5px">Obsah — vložte nebo napište</div>
+        <textarea id="content" oninput="update()" rows="16"
+          placeholder="Sem vložte nebo napište obsah…&#10;&#10;Pro katalog: každý produkt na řádek&#10;  Název produktu | Popis | Cena&#10;  nebo: Název - 299 Kč&#10;&#10;Pro ceník: Produkt | Cena&#10;&#10;Pro info list: sekce oddělte prázdným řádkem,&#10;první řádek sekce = nadpis&#10;&#10;Pro dopis / volný text: libovolný text"
+          style="width:100%;border:1.5px solid #d4c0a8;border-radius:10px;padding:12px 14px;font-size:13px;font-family:inherit;background:#fdf9f6;resize:none;line-height:1.7;min-height:320px"></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="a4" id="preview">
+      <div class="placeholder">
+        <div>
+          <div class="placeholder-icon">📄</div>
+          <p>Vyplňte předmět a obsah vlevo<br>— náhled se zobrazí zde</p>
+        </div>
       </div>
     </div>
-
-    <div class="field">
-      <label>Nadpis dokumentu</label>
-      <input type="text" id="doc-title" placeholder="Např. Produktová nabídka jaro 2026" oninput="update()"/>
-    </div>
-
-    <div id="recipient-wrap" class="field" style="display:none">
-      <label>Příjemce / Adresát</label>
-      <input type="text" id="recipient" placeholder="Jméno Příjmení, Firma s.r.o." oninput="update()"/>
-    </div>
-
-    <div class="field">
-      <label id="content-label">Obsah — vložte text</label>
-      <div class="hint" id="hint">Vložte nebo napište cokoliv — text bude zabalený do Nutworld šablony.</div>
-      <textarea id="content" placeholder="Sem vložte nebo napište obsah dokumentu…" oninput="update()" style="margin-top:6px"></textarea>
-    </div>
-
-    <div class="row2">
-      <div class="field">
-        <label>Podpis / Odesílatel</label>
-        <input type="text" id="sender" placeholder="Vaše jméno" oninput="update()"/>
-      </div>
-      <div class="field">
-        <label>Datum</label>
-        <input type="text" id="doc-date" oninput="update()"/>
-      </div>
-    </div>
-
-    <div class="field">
-      <label>Poznámka pod čarou (volitelná)</label>
-      <input type="text" id="footnote" placeholder="Např. Ceny bez DPH, platnost 30 dní" oninput="update()"/>
-    </div>
-
   </div>
-</div>
-
-<!-- ── PRAVÝ PANEL ── -->
-<div class="right">
-  <div class="a4-wrap" id="preview">
-    <!-- generováno JS -->
-  </div>
-</div>
 
 </div>
 
 <script>
-let currentTemplate = 'volny';
+const TODAY = new Date().toLocaleDateString('cs-CZ');
 
-// Nastav dnešní datum
-document.getElementById('doc-date').value = new Date().toLocaleDateString('cs-CZ');
-
-function setTemplate(t, el) {
-  currentTemplate = t;
-  document.querySelectorAll('.tmpl-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  const hints = {
-    volny:   'Vložte cokoliv — text bude zabalený do Nutworld šablony.',
-    dopis:   'Vložte text dopisu. Každý odstavec = nový řádek.',
-    katalog: 'Každý produkt na nový řádek. Formát: Název | Popis | Cena\nnebo jen: Název produktu - 299 Kč',
-    cenik:   'Každá položka na řádek. Formát: Název | Cena\nnebo: Název produktu - 299 Kč',
-    infolist:'Sekce oddělte prázdným řádkem. První řádek sekce = nadpis sekce.',
-    nabidka: 'Text nabídky nebo seznam produktů s cenami. Příjemce vyplňte výše.',
-  };
-  const labels = {
-    volny:'Obsah — vložte text', dopis:'Text dopisu', katalog:'Produkty (jeden na řádek)',
-    cenik:'Položky ceníku (jedna na řádek)', infolist:'Sekce informačního listu', nabidka:'Text nabídky / produkty',
-  };
-  document.getElementById('hint').textContent = hints[t];
-  document.getElementById('content-label').textContent = labels[t];
-  document.getElementById('recipient-wrap').style.display = ['dopis','nabidka'].includes(t) ? 'block' : 'none';
+function setPredmet(val) {
+  document.getElementById('predmet').value = val;
   update();
 }
 
-function update() {
-  const title    = document.getElementById('doc-title').value || 'Dokument';
-  const content  = document.getElementById('content').value || '';
-  const sender   = document.getElementById('sender').value || 'Nut World s.r.o.';
-  const date     = document.getElementById('doc-date').value || '';
-  const recipient= document.getElementById('recipient').value || '';
-  const footnote = document.getElementById('footnote').value || '';
-
-  const generators = {
-    volny:   genVolny,
-    dopis:   genDopis,
-    katalog: genKatalog,
-    cenik:   genCenik,
-    infolist:genInfolist,
-    nabidka: genNabidka,
-  };
-  document.getElementById('preview').innerHTML = (generators[currentTemplate] || genVolny)(title, content, sender, date, recipient, footnote);
+function clear() {
+  document.getElementById('predmet').value = '';
+  document.getElementById('content').value = '';
+  update();
 }
 
-// ── Hlavička dokumentu ──
-function docHeader(date) {
-  return `
-  <div class="doc-header">
-    <div>
-      <div class="doc-logo">🐿 Nutworld</div>
-      <div class="doc-logo-sub">Ořechy · Sušené ovoce · Dárky</div>
-    </div>
-    <div class="doc-header-right">
-      Nut World s.r.o.<br>
-      Hvězdova 1716/2, 140 00 Praha<br>
-      IČO: 27517357 · nutworld.cz<br>
-      ${date ? date : ''}
-    </div>
-  </div>
-  <div class="doc-stripe"></div>`;
+// ── Detekce šablony z předmětu ──
+function detectTemplate(predmet) {
+  const p = predmet.toLowerCase();
+  if (/katalog|produkty|sortiment|nabídka produkt/.test(p)) return 'katalog';
+  if (/cen[íi]k|ceny|ceník|price/.test(p)) return 'cenik';
+  if (/dopis|osloven|vážen|milý|milá/.test(p)) return 'dopis';
+  if (/info|informac|list|přehled|datasheet/.test(p)) return 'infolist';
+  if (/nabídka|poptávk|offer/.test(p)) return 'nabidka';
+  return 'volny';
 }
 
-function docFooter(sender, footnote) {
-  return `
-  <div class="doc-footer">
-    <div><span class="doc-footer-brand">🐿 Nutworld</span> · info@nutworld.cz · nutworld.cz</div>
-    <div>${footnote || sender || ''}</div>
-  </div>`;
-}
+const TEMPLATE_NAMES = {
+  katalog:'📦 Katalog', cenik:'💰 Ceník', dopis:'✉️ Dopis',
+  infolist:'ℹ️ Info list', nabidka:'🤝 Nabídka', volny:'📝 Volný text'
+};
 
-function textToParas(text) {
-  return text.split('\n').map(l => l.trim()).filter(l => l)
-    .map(l => `<p>${esc(l)}</p>`).join('');
-}
-
-// ── Šablony ──
-function genVolny(title, content, sender, date, recipient, footnote) {
-  return docHeader(date) + `
-  <div class="doc-body">
-    <div class="doc-title">${esc(title)}</div>
-    <div class="doc-content">${textToParas(content) || '<p style="color:#ccc">Sem přijde váš text…</p>'}</div>
-    ${sender ? `<div style="margin-top:24px;font-size:13px"><strong>${esc(sender)}</strong></div>` : ''}
-    ${docFooter(sender, footnote)}
-  </div>`;
-}
-
-function genDopis(title, content, sender, date, recipient, footnote) {
-  return docHeader(date) + `
-  <div class="doc-body">
-    <div class="doc-title">${esc(title)}</div>
-    ${recipient ? `<div class="doc-recipient"><strong>Adresát:</strong><br>${esc(recipient)}</div>` : ''}
-    <div class="doc-content">${textToParas(content) || '<p style="color:#ccc">Text dopisu…</p>'}</div>
-    ${sender ? `<div style="margin-top:28px;font-size:13px">S pozdravem,<br><strong>${esc(sender)}</strong><br><span style="color:#888;font-size:11px">Nut World s.r.o.</span></div>` : ''}
-    ${docFooter(sender, footnote)}
-  </div>`;
-}
-
+// ── Parsery ──
 function parseProducts(text) {
-  const lines = text.split('\n').map(l => l.trim()).filter(l => l);
-  return lines.map(line => {
-    // Formát: Název | Popis | Cena nebo Název | Cena
+  return text.split('\n').map(l => l.trim()).filter(l => l).map(line => {
     if (line.includes('|')) {
-      const parts = line.split('|').map(p => p.trim());
-      if (parts.length >= 3) return { name: parts[0], desc: parts[1], price: parts[2] };
-      if (parts.length === 2) return { name: parts[0], desc: '', price: parts[1] };
+      const p = line.split('|').map(x => x.trim());
+      return p.length >= 3 ? {name:p[0],desc:p[1],price:p[2]} : {name:p[0],desc:'',price:p[1]};
     }
-    // Formát: Název - Cena nebo Název – 299 Kč
-    const priceMatch = line.match(/^(.+?)\s*[-–]\s*([\d, ]+\s*Kč.*)$/i);
-    if (priceMatch) return { name: priceMatch[1].trim(), desc: '', price: priceMatch[2].trim() };
-    // Jen název
-    return { name: line.replace(/^[\d.•\-*]+\s*/, ''), desc: '', price: '' };
+    const m = line.match(/^(.+?)\s*[-–]\s*([\d\s,.]+\s*Kč.*)$/i);
+    if (m) return {name:m[1].trim(),desc:'',price:m[2].trim()};
+    return {name:line.replace(/^[\d.•\-*]+\s*/,''),desc:'',price:''};
   });
 }
 
-function genKatalog(title, content, sender, date, recipient, footnote) {
-  const products = parseProducts(content);
-  const cards = products.map(p => `
-    <div class="cat-item">
-      <div class="cat-name">${esc(p.name)}</div>
-      ${p.desc ? `<div class="cat-desc">${esc(p.desc)}</div>` : ''}
-      ${p.price ? `<div class="cat-price">${esc(p.price)}</div>` : ''}
-    </div>`).join('') || '<p style="color:#ccc">Vložte produkty…</p>';
-
-  return docHeader(date) + `
-  <div class="doc-body">
-    <div class="doc-title">${esc(title)}</div>
-    <div class="doc-subtitle">Produktový katalog · Nut World s.r.o.</div>
-    <div class="cat-grid">${cards}</div>
-    ${docFooter(sender, footnote)}
-  </div>`;
+function textToP(text) {
+  return text.split('\n').map(l=>l.trim()).filter(l=>l).map(l=>`<p>${esc(l)}</p>`).join('');
 }
 
-function genCenik(title, content, sender, date, recipient, footnote) {
-  const items = parseProducts(content);
-  let num = 0;
-  const rows = items.map(p => {
-    num++;
-    return `<tr>
-      <td style="color:#aaa;font-family:monospace;width:30px">${num}.</td>
-      <td><strong>${esc(p.name)}</strong>${p.desc ? `<br><span style="font-size:11px;color:#888">${esc(p.desc)}</span>` : ''}</td>
-      <td>${esc(p.price) || '—'}</td>
-    </tr>`;
-  }).join('') || '<tr><td colspan="3" style="color:#ccc;text-align:center;padding:20px">Vložte položky…</td></tr>';
-
-  return docHeader(date) + `
-  <div class="doc-body">
-    <div class="doc-title">${esc(title)}</div>
-    <div class="doc-subtitle">Ceník · Nut World s.r.o. · ${esc(date)}</div>
-    <table class="cenik-table">
-      <thead><tr><th>#</th><th>Produkt / Popis</th><th style="text-align:right">Cena</th></tr></thead>
-      <tbody>${rows}</tbody>
-    </table>
-    ${docFooter(sender, footnote)}
-  </div>`;
+// ── Extrahuj příjemce z předmětu ──
+function extractRecipient(predmet) {
+  const m = predmet.match(/(?:pro|dle|od|attn[.:])?\s+([A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][a-záčďéěíňóřšťúůýž\s]+(?:s\.r\.o\.|a\.s\.|spol\.|Ltd\.?)?)/);
+  return m ? m[1].trim() : '';
 }
 
-function genInfolist(title, content, sender, date, recipient, footnote) {
-  const blocks = content.split(/\n\s*\n/).filter(b => b.trim());
-  const sections = blocks.map(block => {
-    const lines = block.split('\n').map(l => l.trim()).filter(l => l);
+// ── Hlavička / patička ──
+function dh(date) {
+  return `<div class="dh">
+    <div><div class="dh-logo">🐿 Nutworld</div><div class="dh-sub">Ořechy · Sušené ovoce · Dárky</div></div>
+    <div class="dh-right">Nut World s.r.o.<br>Hvězdova 1716/2, 140 00 Praha<br>IČO: 27517357 · nutworld.cz<br>${date||TODAY}</div>
+  </div><div class="dstripe"></div>`;
+}
+function df(note) {
+  return `<div class="dfooter"><div><span class="dfooter-brand">🐿 Nutworld</span> · info@nutworld.cz · nutworld.cz</div><div>${esc(note||'')}</div></div>`;
+}
+
+// ── Šablony ──
+function genKatalog(title, text, note) {
+  const items = parseProducts(text);
+  const cards = items.length ? items.map(p=>`
+    <div class="citem">
+      <div class="cname">${esc(p.name)}</div>
+      ${p.desc?`<div class="cdesc">${esc(p.desc)}</div>`:''}
+      ${p.price?`<div class="cprice">${esc(p.price)}</div>`:''}
+    </div>`).join('') : '<p style="color:#ccc">Produkty se zobrazí zde…</p>';
+  return dh() + `<div class="db">
+    <div class="dtitle">${esc(title)||'Produktový katalog'}</div>
+    <div class="dsub">Katalog · Nut World s.r.o. · ${TODAY}</div>
+    <div class="cgrid">${cards}</div>
+    ${df(note)}</div>`;
+}
+
+function genCenik(title, text, note) {
+  const items = parseProducts(text);
+  let total = 0;
+  const rows = items.length ? items.map((p,i)=>{
+    const n = parseFloat((p.price||'').replace(/[^\d,.]/g,'').replace(',','.')) || 0;
+    total += n;
+    return `<tr><td style="color:#aaa;font-family:monospace;width:28px">${i+1}.</td>
+      <td><strong>${esc(p.name)}</strong>${p.desc?`<br><span style="font-size:10px;color:#888">${esc(p.desc)}</span>`:''}</td>
+      <td>${esc(p.price)||'—'}</td></tr>`;
+  }).join('') : '<tr><td colspan="3" style="color:#ccc;text-align:center;padding:16px">Položky se zobrazí zde…</td></tr>';
+  const totalRow = total>0 ? `<tr class="ctotal"><td></td><td>Celkem bez DPH</td><td>${total.toLocaleString('cs-CZ',{minimumFractionDigits:2})} Kč</td></tr>` : '';
+  return dh() + `<div class="db">
+    <div class="dtitle">${esc(title)||'Ceník'}</div>
+    <div class="dsub">Ceník · Nut World s.r.o. · ${TODAY}</div>
+    <table class="ctable"><thead><tr><th>#</th><th>Produkt / Popis</th><th style="text-align:right">Cena</th></tr></thead>
+    <tbody>${rows}${totalRow}</tbody></table>
+    ${df(note)}</div>`;
+}
+
+function genDopis(title, text, note, recipient) {
+  return dh() + `<div class="db">
+    <div class="dtitle">${esc(title)||'Dopis'}</div>
+    ${recipient?`<div class="drcp"><strong>Příjemce:</strong><br>${esc(recipient)}</div>`:''}
+    <div class="dcontent">${textToP(text)||'<p style="color:#ccc">Text dopisu…</p>'}</div>
+    <div style="margin-top:24px;font-size:12px;color:#555">S pozdravem,<br><strong>Nut World s.r.o.</strong></div>
+    ${df(note)}</div>`;
+}
+
+function genInfolist(title, text, note) {
+  const blocks = text.split(/\n\s*\n/).filter(b=>b.trim());
+  const secs = blocks.map(block=>{
+    const lines = block.split('\n').map(l=>l.trim()).filter(l=>l);
     if (!lines.length) return '';
-    const heading = lines[0];
-    const body = lines.slice(1);
-    const bodyHtml = body.length
-      ? body.map(l => l.startsWith('-') || l.startsWith('•')
-          ? `<li>${esc(l.replace(/^[-•]\s*/,''))}</li>`
-          : `<p>${esc(l)}</p>`
-        ).join('')
-      : '';
-    return `<div class="info-section">
-      <h3>${esc(heading)}</h3>
-      ${bodyHtml.includes('<li>') ? `<ul>${bodyHtml}</ul>` : bodyHtml}
-    </div>`;
-  }).join('') || '<p style="color:#ccc">Sekce oddělte prázdným řádkem. První řádek = nadpis sekce.</p>';
-
-  return docHeader(date) + `
-  <div class="doc-body">
-    <div class="doc-title">${esc(title)}</div>
-    ${sections}
-    ${docFooter(sender, footnote)}
-  </div>`;
+    const h = lines[0], body = lines.slice(1);
+    const bHtml = body.map(l=>l.startsWith('-')||l.startsWith('•')
+      ? `<li>${esc(l.replace(/^[-•]\s*/,''))}</li>` : `<p>${esc(l)}</p>`).join('');
+    return `<div class="isec"><h3>${esc(h)}</h3>${bHtml.includes('<li>')?`<ul>${bHtml}</ul>`:bHtml}</div>`;
+  }).join('') || '<p style="color:#ccc">Sekce se zobrazí zde…</p>';
+  return dh() + `<div class="db">
+    <div class="dtitle">${esc(title)||'Informační list'}</div>
+    <div class="dsub">Info list · Nut World s.r.o. · ${TODAY}</div>
+    ${secs}${df(note)}</div>`;
 }
 
-function genNabidka(title, content, sender, date, recipient, footnote) {
-  // Zkus detekovat produkty (Cena nebo | v textu)
-  const lines = content.split('\n').map(l => l.trim()).filter(l => l);
-  const hasProducts = lines.some(l => l.includes('|') || /\d+\s*Kč/.test(l));
-
-  if (hasProducts) {
-    const items = parseProducts(content);
+function genNabidka(title, text, note, recipient) {
+  const lines = text.split('\n').map(l=>l.trim()).filter(l=>l);
+  const hasPrices = lines.some(l=>l.includes('|')||/\d+\s*Kč/.test(l));
+  if (hasPrices) {
+    const items = parseProducts(text);
     let total = 0;
-    const rows = items.map(p => {
-      const priceNum = parseFloat((p.price||'').replace(/[^\d,.]/g,'').replace(',','.')) || 0;
-      total += priceNum;
-      return `<tr>
-        <td><strong>${esc(p.name)}</strong>${p.desc?`<br><span style="font-size:11px;color:#888">${esc(p.desc)}</span>`:''}</td>
-        <td style="text-align:right;font-weight:700;color:var(--bd);font-family:\'Exo 2\',sans-serif">${esc(p.price)||'—'}</td>
-      </tr>`;
+    const rows = items.map(p=>{
+      const n = parseFloat((p.price||'').replace(/[^\d,.]/g,'').replace(',','.')) || 0;
+      total += n;
+      return `<tr><td><strong>${esc(p.name)}</strong>${p.desc?`<br><span style="font-size:10px;color:#888">${esc(p.desc)}</span>`:''}</td>
+        <td>${esc(p.price)||'—'}</td></tr>`;
     }).join('');
-    const totalRow = total > 0 ? `<tr style="background:#5c381f;color:white"><td style="padding:9px 12px;font-family:\'Exo 2\',sans-serif;font-weight:700">Celkem bez DPH</td><td style="padding:9px 12px;text-align:right;font-family:\'Exo 2\',sans-serif;font-weight:800;color:#f7ab31">${num2(total)} Kč</td></tr>` : '';
+    const totalRow = total>0 ? `<tr class="ctotal"><td><strong>Celkem bez DPH</strong></td><td>${total.toLocaleString('cs-CZ',{minimumFractionDigits:2})} Kč</td></tr>` : '';
+    return dh() + `<div class="db">
+      <div class="dtitle">${esc(title)||'Nabídka'}</div>
+      <div class="dsub">Nabídka · Nut World s.r.o. · ${TODAY}</div>
+      ${recipient?`<div class="drcp"><strong>Pro:</strong> ${esc(recipient)}</div>`:''}
+      <table class="ctable"><thead><tr><th>Produkt / Popis</th><th style="text-align:right">Cena</th></tr></thead>
+      <tbody>${rows}${totalRow}</tbody></table>
+      <div style="margin-top:20px;font-size:12px;color:#555">S pozdravem, <strong>Nut World s.r.o.</strong></div>
+      ${df(note)}</div>`;
+  }
+  return genDopis(title, text, note, recipient);
+}
 
-    return docHeader(date) + `
-    <div class="doc-body">
-      <div class="doc-title">${esc(title)}</div>
-      ${recipient ? `<div class="doc-recipient"><strong>Pro:</strong> ${esc(recipient)}</div>` : ''}
-      <table class="cenik-table" style="margin-top:8px">
-        <thead><tr><th>Produkt</th><th style="text-align:right">Cena</th></tr></thead>
-        <tbody>${rows}${totalRow}</tbody>
-      </table>
-      ${sender ? `<div style="margin-top:24px;font-size:13px">S pozdravem,<br><strong>${esc(sender)}</strong></div>` : ''}
-      ${docFooter(sender, footnote)}
-    </div>`;
+function genVolny(title, text, note) {
+  return dh() + `<div class="db">
+    <div class="dtitle">${esc(title)||'Dokument'}</div>
+    <div class="dcontent">${textToP(text)||'<p style="color:#ccc">Obsah dokumentu…</p>'}</div>
+    ${df(note)}</div>`;
+}
+
+// ── Hlavní update ──
+function update() {
+  const predmet  = document.getElementById('predmet').value.trim();
+  const content  = document.getElementById('content').value;
+  const template = detectTemplate(predmet);
+  const recipient = extractRecipient(predmet);
+
+  document.getElementById('detected').textContent = predmet ? TEMPLATE_NAMES[template] : '—';
+
+  if (!predmet && !content.trim()) {
+    document.getElementById('preview').innerHTML = `<div class="placeholder"><div><div class="placeholder-icon">📄</div><p>Vyplňte předmět a obsah vlevo<br>— náhled se zobrazí zde</p></div></div>`;
+    return;
   }
 
-  return genDopis(title, content, sender, date, recipient, footnote);
+  const generators = {
+    katalog: () => genKatalog(predmet, content, ''),
+    cenik:   () => genCenik(predmet, content, 'Ceny bez DPH'),
+    dopis:   () => genDopis(predmet, content, '', recipient),
+    infolist:() => genInfolist(predmet, content, ''),
+    nabidka: () => genNabidka(predmet, content, 'Nabídka platí 30 dní', recipient),
+    volny:   () => genVolny(predmet, content, ''),
+  };
+  document.getElementById('preview').innerHTML = (generators[template] || generators.volny)();
 }
 
-function num2(n) { return n.toLocaleString('cs-CZ', {minimumFractionDigits:2,maximumFractionDigits:2}); }
 function esc(s) {
   if (!s) return '';
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function clearAll() {
-  ['doc-title','content','sender','recipient','footnote'].forEach(id => document.getElementById(id).value='');
-  document.getElementById('doc-date').value = new Date().toLocaleDateString('cs-CZ');
-  update();
 }
 
 update();
