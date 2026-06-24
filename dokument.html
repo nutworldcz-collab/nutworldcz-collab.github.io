@@ -340,33 +340,43 @@ async function send() {
        { type: 'text', text: text + '\n\nFotografie produktu jsou přiloženy výše.' }]
     : text;
 
-  // Detekuj URL ve zprávě — fetchni obsah přes Apps Script
+  // Detekuj URL ve zprávě — fetchni obsah přes Apps Script (timeout 25s)
   const urlMatch = text.match(/https?:\/\/[^\s]+/);
   if (urlMatch) {
     try {
-      addMsg('assistant', `🔗 Čtu stránku ${urlMatch[0]}…`);
+      addMsg('assistant', `🔗 Čtu stránku…`);
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), 25000);
       const fr = await fetch(PROXY_URL, {
         method: 'POST', headers: {'Content-Type':'text/plain'},
         body: JSON.stringify({action:'fetch_url', url: urlMatch[0]}),
+        signal: ctrl.signal,
       });
+      clearTimeout(t);
       const fd = await fr.json();
       if (fd.text) {
         const injected = text + `\n\n[Obsah stránky ${urlMatch[0]}]:\n${fd.text}`;
         chatHistory[chatHistory.length - 1].content = injected;
       }
-    } catch(e) { /* pokračuj bez fetche */ }
+    } catch(e) {
+      addMsg('assistant', '⚠️ Stránku se nepodařilo načíst — generuji bez obsahu stránky.');
+    }
   }
 
   showTyping();
 
   try {
-    const payload = { model: 'claude-sonnet-4-6', max_tokens: 8000, system: SYSTEM, messages: chatHistory };
+    const payload = { model: 'claude-sonnet-4-6', max_tokens: 4000, system: SYSTEM, messages: chatHistory };
 
+    const claudeCtrl = new AbortController();
+    const claudeTimer = setTimeout(() => claudeCtrl.abort(), 55000);
     const resp = await fetch(PROXY_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify({ action: 'claude', payload }),
+      signal: claudeCtrl.signal,
     });
+    clearTimeout(claudeTimer);
 
     const data = await resp.json();
     const raw = (data.content?.[0]?.text || '').trim();
