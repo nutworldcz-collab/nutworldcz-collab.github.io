@@ -357,23 +357,21 @@ async function send() {
     const summary = raw.slice(0, 200).replace(/[\n\r]/g, ' ');
     chatHistory.push({ role: 'assistant', content: `[Dokument vygenerován: ${summary}...]` });
     hideTyping();
-    // Po odeslání smaž fotky — byly použity, příště začínáme čistě
-    images = [];
-    renderImgThumbs();
 
     // Parsuj formát: TYPE:...\nNOTE:...\n<DOC>...</DOC>
     let parsed;
     const typeM = raw.match(/^TYPE:\s*(\w+)/m);
     const noteM = raw.match(/^NOTE:\s*(.+)/m);
-    // </DOC> je volitelné — funguje i při truncated response
     const docM  = raw.match(/<DOC>([\s\S]*?)(?:<\/DOC>|$)/);
     if (typeM && docM) {
       let html = docM[1].trim();
-      // Nahraď placeholder skutečnou fotkou (pokud ji user nahrál)
+      // Nahraď placeholder skutečnou fotkou (nejdřív vložit, pak smazat)
       if (images.length > 0) {
-        // Nahraď placeholder — funguje s jednoduchými i dvojitými uvozovkami
         html = html.replace(/FOTO_PRODUKTU/g, `data:${images[0].mime};base64,${images[0].b64}`);
       }
+      // Teprve teď smaž fotky
+      images = [];
+      renderImgThumbs();
       parsed = { type: typeM[1], note: noteM ? noteM[1].trim() : 'Hotovo', html };
     } else {
       // Fallback: zobraz jako chat zprávu
