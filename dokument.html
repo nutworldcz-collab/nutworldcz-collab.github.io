@@ -357,6 +357,7 @@ async function send() {
       // Volání přes Apps Script proxy (klíč na serveru)
       resp = await fetch(PROXY_URL, {
         method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify({ action: 'claude', payload }),
       });
     } else {
