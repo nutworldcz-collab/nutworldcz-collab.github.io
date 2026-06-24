@@ -352,8 +352,13 @@ async function send() {
 
     const data = await resp.json();
     const raw = (data.content?.[0]?.text || '').trim();
-    chatHistory.push({ role: 'assistant', content: raw });
+    // Ulož jen krátké shrnutí, ne celé HTML (šetří kontext)
+    const summary = raw.slice(0, 200).replace(/[\n\r]/g, ' ');
+    chatHistory.push({ role: 'assistant', content: `[Dokument vygenerován: ${summary}...]` });
     hideTyping();
+    // Po odeslání smaž fotky — byly použity, příště začínáme čistě
+    images = [];
+    renderImgThumbs();
 
     // Parsuj formát: TYPE:...\nNOTE:...\n<DOC>...</DOC>
     let parsed;
