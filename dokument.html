@@ -402,7 +402,7 @@ async function send() {
     const payload = { model: 'claude-sonnet-4-6', max_tokens: 7000, system: SYSTEM, messages: chatHistory };
 
     const claudeCtrl = new AbortController();
-    const claudeTimer = setTimeout(() => claudeCtrl.abort(), 55000);
+    const claudeTimer = setTimeout(() => claudeCtrl.abort(), 110000); // 110s — PDF potřebuje více času
     const resp = await fetch(PROXY_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain' },
@@ -450,8 +450,11 @@ async function send() {
 
   } catch(e) {
     hideTyping();
-    chatHistory.pop(); // odeber neúspěšný user msg z historie
-    addMsg('assistant', `⚠️ ${escHtml(e.message)}`);
+    chatHistory.pop();
+    const msg = e.name === 'AbortError'
+      ? '⏱️ Timeout — dokument je příliš složitý. Zkus zadat méně obsahu najednou nebo rozděl na části.'
+      : `⚠️ ${escHtml(e.message)}`;
+    addMsg('assistant', msg);
     console.error(e);
   } finally {
     document.getElementById('send-btn').disabled = false;
