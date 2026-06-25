@@ -77,13 +77,26 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
 
 <div class="wrap">
 
-  <!-- MANAŽEŘI -->
+  <!-- TÝM -->
   <div>
     <div class="section-label">Tým</div>
-    <a class="tool-card" href="/zamestnanci.html" style="text-decoration:none">
-      <span class="tool-icon">👥</span>
-      <div><div class="tool-title">Manažeři</div><div class="tool-desc">Jana, Tomáš, Martin, Markéta, Pavlína, Renata, Simona, Lucie, Rita — kontakty, poznámky, témata</div></div>
-    </a>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+
+      <!-- Úkoly & alerty -->
+      <div style="background:white;border-radius:12px;padding:16px;box-shadow:0 1px 6px rgba(0,0,0,.07)">
+        <div style="font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#a08060;margin-bottom:10px">📋 Úkoly manažerů</div>
+        <div id="dash-tasks" style="font-size:12.5px;color:#6b4c30">Načítám…</div>
+        <a href="/zamestnanci.html" style="display:inline-block;margin-top:10px;font-size:11px;font-weight:700;color:var(--br);text-decoration:none">→ Všichni manažeři</a>
+      </div>
+
+      <!-- Poslední schůzky -->
+      <div style="background:white;border-radius:12px;padding:16px;box-shadow:0 1px 6px rgba(0,0,0,.07)">
+        <div style="font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#a08060;margin-bottom:10px">📓 Poslední schůzky</div>
+        <div id="dash-meets" style="font-size:12.5px;color:#6b4c30">Načítám…</div>
+        <a href="/zamestnanci.html" style="display:inline-block;margin-top:10px;font-size:11px;font-weight:700;color:var(--br);text-decoration:none">→ Záznamy schůzek</a>
+      </div>
+
+    </div>
   </div>
 
   <!-- RYCHLÉ LINKY EXTERNAL -->
@@ -227,6 +240,57 @@ const mesice = ['ledna','února','března','dubna','května','června','červenc
 document.getElementById('datum').textContent =
   dny[d.getDay()] + ' ' + d.getDate() + '. ' + mesice[d.getMonth()] + ' ' + d.getFullYear()
   + ' · ' + String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+
+const TODAY = new Date().toISOString().slice(0,10);
+function ld(k,def){try{return JSON.parse(localStorage.getItem(k))??def}catch{return def}}
+function fmtD(iso){if(!iso)return'';const[y,m,dd]=iso.split('-');return`${dd}.${m}.`}
+
+// ── ÚKOLY ──
+(function(){
+  const mgrs = ld('nw_managers_v2', []);
+  const tasks = ld('nw_tasks_v1', {});
+  let rows = [];
+  mgrs.forEach(m => {
+    (tasks[m.id]||[]).filter(t=>!t.done).forEach(t => {
+      const over = t.due && t.due < TODAY;
+      const tod  = t.due === TODAY;
+      rows.push({ name: m.name.split(' ')[0], text: t.text, due: t.due, over, tod });
+    });
+  });
+  rows.sort((a,b) => (a.over?0:a.tod?1:2) - (b.over?0:b.tod?1:2));
+  const el = document.getElementById('dash-tasks');
+  if (!rows.length) { el.innerHTML = '<span style="color:#b0966a">Žádné otevřené úkoly 🎉</span>'; return; }
+  el.innerHTML = rows.slice(0,6).map(r => {
+    const col = r.over ? '#da1668' : r.tod ? '#b8860b' : '#6b4c30';
+    const tag = r.over ? `<span style="font-size:10px;background:#fde8ef;color:#da1668;border-radius:8px;padding:1px 6px;font-weight:700">! po term.</span>`
+               : r.tod ? `<span style="font-size:10px;background:#fff8e1;color:#b8860b;border-radius:8px;padding:1px 6px;font-weight:700">dnes</span>`
+               : r.due ? `<span style="font-size:10px;color:#a08060">${fmtD(r.due)}</span>` : '';
+    return `<div style="display:flex;gap:7px;align-items:baseline;padding:4px 0;border-bottom:1px solid #f5f0ea">
+      <span style="font-size:11px;font-weight:700;color:var(--br);white-space:nowrap">${r.name}</span>
+      <span style="flex:1;color:${col}">${r.text}</span>${tag}</div>`;
+  }).join('') + (rows.length > 6 ? `<div style="font-size:11px;color:#a08060;margin-top:6px">+ ${rows.length-6} dalších</div>` : '');
+})();
+
+// ── SCHŮZKY ──
+(function(){
+  const mgrs = ld('nw_managers_v2', []);
+  const meets = ld('nw_meetings_v1', {});
+  const nameMap = {};
+  mgrs.forEach(m => nameMap[m.id] = m.name.split(' ')[0]);
+  let all = [];
+  Object.keys(meets).forEach(mid => {
+    (meets[mid]||[]).forEach(m => all.push({...m, managerName: nameMap[mid]||mid}));
+  });
+  all.sort((a,b) => b.date.localeCompare(a.date));
+  const el = document.getElementById('dash-meets');
+  if (!all.length) { el.innerHTML = '<span style="color:#b0966a">Zatím žádné záznamy</span>'; return; }
+  el.innerHTML = all.slice(0,5).map(m => `
+    <div style="display:flex;gap:7px;align-items:baseline;padding:4px 0;border-bottom:1px solid #f5f0ea">
+      <span style="font-size:11px;color:#a08060;white-space:nowrap">${fmtD(m.date)}</span>
+      <span style="font-size:11px;font-weight:700;color:var(--br);white-space:nowrap">${m.managerName||''}</span>
+      <span style="flex:1;color:#2a1a0e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${m.topic||''}</span>
+    </div>`).join('') + (all.length > 5 ? `<div style="font-size:11px;color:#a08060;margin-top:6px">+ ${all.length-5} dalších</div>` : '');
+})();
 </script>
 </body>
 </html>
