@@ -1,0 +1,46 @@
+{
+  "generated": "2026-06-25T16:21:26",
+  "period": "2026-06-18 – 2026-06-24",
+  "channels": {
+    "Meta CZ": {
+      "error": "400 Client Error: Bad Request for url: https://graph.facebook.com/v21.0/act_1367393200144/insights?fields=spend%2Cimpressions%2Cclicks%2Cactions%2Caction_values&time_range=%7B%22since%22%3A+%222026-06-11%22%2C+%22until%22%3A+%222026-06-17%22%7D&level=account&access_token=EAATZCYSrDrLABRfOXYZCrg3WCwFlXgOitNpVlYZBzs5J0oFIq79q1FnqlyiWitjMOsTTKkoWgzcbcvI4CyG1eEPMLND1VWOzoEqWflgoLuiAM2W7rjQ92dro8SD9Je8OPXf2OShwlKfGN0sTozutW5sJqTl7xYwaFfyzMrbZBkArnulxz1wk5QWfsJ4QmROXaKYZD"
+    },
+    "Meta SK": {
+      "spend": 323.0,
+      "revenue": 773.0,
+      "pno": 41.7,
+      "conversions": 27.0,
+      "clicks": 2036,
+      "prev_spend": 450.0,
+      "prev_pno": 13.5
+    },
+    "Google CZ": {
+      "spend": 29153.0,
+      "revenue": 172626.0,
+      "pno": 16.9,
+      "conversions": 222.4,
+      "clicks": 2898,
+      "prev_spend": 61597.0,
+      "prev_pno": 11.6
+    },
+    "Google SK": {
+      "spend": 6094.0,
+      "revenue": 34506.0,
+      "pno": 17.7,
+      "conversions": 44.7,
+      "clicks": 838,
+      "prev_spend": 10773.0,
+      "prev_pno": 14.4
+    }
+  },
+  "anomalies": [
+    "⚠️ Meta CZ: chyba připojení",
+    "🔴 Meta SK: PNO 41.7% — nad break-even (40%)",
+    "🟡 Meta SK: PNO zhoršilo o 28.3pp vs minulý týden",
+    "🟡 Google CZ: útrata -53% vs minulý týden",
+    "🟡 Google SK: útrata -43% vs minulý týden"
+  ],
+  "priorities": [
+    "Zkontrolovat kampaně Meta SK — PNO 41.7%"
+  ]
+}
