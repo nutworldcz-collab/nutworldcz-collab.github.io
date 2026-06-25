@@ -50,6 +50,33 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .kpi-label{font-size:11px;color:#8a6040}
 .kpi-note{font-size:10px;color:#b0966a;margin-top:3px}
 
+/* EMAIL DASHBOARD */
+.email-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.email-tab{font-family:"Exo 2",sans-serif;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;border:2px solid transparent;cursor:pointer;transition:all .15s;background:white;color:#a08060}
+.email-tab.active{border-color:var(--br);color:var(--bd)}
+.email-tab .cnt{display:inline-block;background:#f1e6da;color:var(--br);border-radius:10px;padding:0 6px;margin-left:4px;font-size:10px}
+.email-tab.active .cnt{background:var(--br);color:white}
+.email-list{background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 5px rgba(0,0,0,.07)}
+.email-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:10px 14px;border-bottom:1px solid #f5ede3;transition:background .1s}
+.email-row:last-child{border-bottom:none}
+.email-row:hover{background:#fdfaf7}
+.email-row.resolved{opacity:.4}
+.email-row.unread .esubj{font-weight:700}
+.email-meta{min-width:0}
+.esender{font-size:11px;color:var(--br);font-weight:700;margin-bottom:1px;display:flex;align-items:center;gap:5px}
+.esubj{font-size:13px;color:#2a1a0e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ebadge{font-size:9px;font-weight:800;padding:1px 5px;border-radius:3px;color:white;flex-shrink:0}
+.ebadge.ol{background:#0078d4}.ebadge.gm{background:#ea4335}.ebadge.nw{background:#83502e}
+.eunread{width:7px;height:7px;background:var(--acc);border-radius:50%;flex-shrink:0}
+.email-actions{display:flex;gap:6px;flex-shrink:0}
+.btn-reply{font-family:"Exo 2",sans-serif;font-size:11px;font-weight:700;padding:5px 10px;border-radius:8px;background:var(--bd);color:white;text-decoration:none;white-space:nowrap;transition:background .15s}
+.btn-reply:hover{background:var(--acc)}
+.btn-done{font-size:11px;padding:5px 8px;border-radius:8px;background:#f1e6da;color:var(--br);border:none;cursor:pointer;font-family:"Exo 2",sans-serif;font-weight:700;transition:background .15s}
+.btn-done:hover{background:#e0cfc0}
+.email-empty{padding:20px;text-align:center;color:#b0966a;font-size:13px}
+.email-meta-bar{display:flex;gap:12px;align-items:center;padding:10px 14px;background:#fdfaf7;border-bottom:1px solid #f5ede3;font-size:12px;color:#a08060}
+.email-meta-bar strong{color:var(--bd)}
+
 /* AUTOMATIZACE */
 .auto-list{background:white;border-radius:12px;padding:18px;box-shadow:0 1px 5px rgba(0,0,0,.07)}
 .auto-item{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #f0e8df;font-size:13px}
@@ -100,6 +127,16 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
       </div>
 
     </div>
+  </div>
+
+  <!-- EMAIL DASHBOARD -->
+  <div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div class="section-label" style="margin-bottom:0">📬 Dnešní emaily</div>
+      <span id="email-meta-info" style="font-size:11px;color:#a08060"></span>
+    </div>
+    <div class="email-tabs" id="email-tabs"></div>
+    <div class="email-list" id="email-list"><div class="email-empty">Načítám emaily…</div></div>
   </div>
 
   <!-- RYCHLÉ LINKY EXTERNAL -->
@@ -237,6 +274,91 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
 </div>
 
 <script>
+// ── EMAIL DASHBOARD ──────────────────────────────────────────────────────────
+(async function(){
+  const CATS = {
+    b2b:      {label:'B2B poptávky', color:'#da1668'},
+    zakaznik: {label:'Zákazníci',    color:'#83502e'},
+    dodavatel:{label:'Dodavatelé',   color:'#5c381f'},
+    tym:      {label:'Tým',          color:'#f7ab31'},
+    ostatni:  {label:'Ostatní',      color:'#6fa044'},
+    sluzby:   {label:'Služby',       color:'#6fa044'},
+  };
+  const BADGE = {Exchange:'<span class="ebadge ol">OL</span>', Google:'<span class="ebadge gm">GM</span>', Nutworld:'<span class="ebadge nw">NW</span>'};
+  const ORDER = ['b2b','zakaznik','dodavatel','tym','ostatni','sluzby'];
+  const DONE_KEY = 'nw_email_done_v1';
+
+  function getDone(){try{return JSON.parse(localStorage.getItem(DONE_KEY)||'{}')}catch{return{}}}
+  function setDone(k,v){const d=getDone();if(v)d[k]=1;else delete d[k];localStorage.setItem(DONE_KEY,JSON.stringify(d))}
+  function emailKey(e){return e.sender_email+'|'+e.subject}
+
+  let allEmails=[], activeCat='all';
+
+  function renderTabs(emails){
+    const done=getDone();
+    const counts={all:0};
+    ORDER.forEach(c=>counts[c]=0);
+    emails.forEach(e=>{
+      if(!done[emailKey(e)]){counts.all++;counts[e.category]=(counts[e.category]||0)+1}
+    });
+    const tabs=[{k:'all',label:'Vše'},...ORDER.filter(c=>counts[c]>0).map(c=>({k:c,label:CATS[c]?.label||c}))];
+    document.getElementById('email-tabs').innerHTML = tabs.map(t=>
+      `<div class="email-tab${activeCat===t.k?' active':''}" onclick="window._emailTab('${t.k}')">${t.label}<span class="cnt">${counts[t.k]||0}</span></div>`
+    ).join('');
+  }
+
+  function renderList(emails){
+    const done=getDone();
+    const filtered = emails.filter(e=> activeCat==='all' || e.category===activeCat);
+    const el = document.getElementById('email-list');
+    if(!filtered.length){el.innerHTML='<div class="email-empty">Žádné emaily v této kategorii 🎉</div>';return}
+    el.innerHTML = filtered.map(e=>{
+      const key = emailKey(e);
+      const isDone = !!done[key];
+      const badge = BADGE[e.account]||'';
+      const unreadDot = e.unread && !isDone ? '<span class="eunread"></span>' : '';
+      const catColor = CATS[e.category]?.color||'#83502e';
+      const replyUrl = `mailto:${e.sender_email}?subject=Re:%20${encodeURIComponent(e.subject)}`;
+      return `<div class="email-row${isDone?' resolved':''}${e.unread?' unread':''}" data-key="${key.replace(/"/g,'&quot;')}">
+        <div class="email-meta">
+          <div class="esender">${unreadDot}${badge}<span style="color:${catColor}">${e.sender_short}</span></div>
+          <div class="esubj">${e.subject}</div>
+        </div>
+        <div class="email-actions">
+          <a class="btn-reply" href="${replyUrl}">Odpovědět</a>
+          <button class="btn-done" onclick="window._emailDone('${key.replace(/'/g,"\\'")}',this)">${isDone?'↩ Zpět':'✓ Hotovo'}</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  window._emailTab = function(cat){activeCat=cat;renderTabs(allEmails);renderList(allEmails)};
+  window._emailDone = function(key,btn){
+    const d=getDone(); const was=!!d[key];
+    setDone(key,!was);
+    renderTabs(allEmails); renderList(allEmails);
+  };
+
+  try {
+    const res = await fetch('https://nutworldcz-collab.github.io/report_email.json?_='+Date.now());
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data = await res.json();
+    allEmails = data.emails||[];
+
+    const gen = data.generated ? new Date(data.generated) : null;
+    const timeStr = gen ? gen.getHours()+':'+String(gen.getMinutes()).padStart(2,'0') : '';
+    document.getElementById('email-meta-info').textContent =
+      `Aktualizováno ${timeStr} · ${data.total} zpráv · ${data.spam_skipped} spam přeskočen`;
+
+    renderTabs(allEmails);
+    renderList(allEmails);
+  } catch(err) {
+    document.getElementById('email-list').innerHTML =
+      '<div class="email-empty">Report není dostupný — spustí se ráno v 7:30 🕖</div>';
+    console.warn('Email report:', err);
+  }
+})();
+
 const d = new Date();
 const dny = ['neděle','pondělí','úterý','středa','čtvrtek','pátek','sobota'];
 const mesice = ['ledna','února','března','dubna','května','června','července','srpna','září','října','listopadu','prosince'];
