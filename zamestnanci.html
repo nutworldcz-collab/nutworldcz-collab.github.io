@@ -28,11 +28,12 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .alert-today{background:#fff8e1;border-left:4px solid var(--amb)}
 
 /* GRID */
-.wrap{max-width:1060px;margin:0 auto;padding:18px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.wrap{max-width:1200px;margin:0 auto;padding:18px 16px;display:flex;flex-direction:column;gap:12px}
 
 /* KARTA */
-.card{background:white;border-radius:14px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.08);display:flex;flex-direction:column}
-.card-header{padding:14px 16px;display:flex;gap:12px;align-items:flex-start;border-bottom:1px solid #f0e8df}
+.card{background:white;border-radius:14px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.08);display:grid;grid-template-columns:280px 1fr 260px;min-height:0}
+@media(max-width:900px){.card{grid-template-columns:1fr}}
+.card-header{padding:16px 18px;display:flex;gap:12px;align-items:flex-start;border-right:1px solid #f0e8df}
 .avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:"Exo 2",sans-serif;font-size:15px;font-weight:800;color:white;flex-shrink:0}
 .av-0{background:linear-gradient(135deg,#5c381f,#83502e)} .av-1{background:linear-gradient(135deg,#b8860b,#c9982e)}
 .av-2{background:linear-gradient(135deg,#1a4a7a,#2e78c0)} .av-3{background:linear-gradient(135deg,#da1668,#e84d8a)}
@@ -57,7 +58,7 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .s-alert{background:var(--acc);border-color:var(--acc)}
 
 /* SEKCE */
-.section{padding:10px 16px;border-bottom:1px solid #f0e8df}
+.section{padding:14px 16px;border-right:1px solid #f0e8df}
 .sec-title{font-family:"Exo 2",sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#a08060;font-weight:700;margin-bottom:7px;display:flex;align-items:center;gap:5px}
 .badge{background:var(--acc);color:white;border-radius:10px;padding:1px 6px;font-size:9px;font-weight:800}
 .badge-amb{background:var(--amb);color:var(--bd)}
@@ -82,8 +83,8 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .btn-add-t{background:var(--bd);border:none;border-radius:7px;color:white;font-size:15px;width:26px;height:26px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
 
 /* POZNÁMKY */
-.notes-section{padding:10px 16px}
-.notes{width:100%;border:1.5px solid #ede0d4;border-radius:8px;padding:7px 9px;font-size:12px;font-family:inherit;resize:vertical;min-height:52px;line-height:1.6;background:#fdf9f6;transition:border-color .15s}
+.notes-section{padding:14px 16px}
+.notes{width:100%;border:1.5px solid #ede0d4;border-radius:8px;padding:7px 9px;font-size:12px;font-family:inherit;resize:none;height:calc(100% - 28px);min-height:80px;line-height:1.6;background:#fdf9f6;transition:border-color .15s}
 .notes:focus{outline:none;border-color:var(--br)}
 .notes::placeholder{color:#c0a880}
 
