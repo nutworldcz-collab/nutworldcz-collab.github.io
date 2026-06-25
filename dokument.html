@@ -122,9 +122,11 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 
   <!-- Image upload -->
   <div class="upload-strip" id="upload-strip">
-    <div class="upload-btn" onclick="document.getElementById('img-file').click()" title="Přidat fotky produktů">📷</div>
+    <div class="upload-btn" onclick="document.getElementById('img-file').click()" title="Přidat fotky">📷</div>
     <input type="file" id="img-file" style="display:none" multiple accept="image/*" onchange="handleImgs(this.files)"/>
-    <span style="font-size:11px;color:#aaa">Fotky produktů (volitelné)</span>
+    <div class="upload-btn" onclick="document.getElementById('pdf-file').click()" title="Přidat PDF" style="font-size:14px">📄</div>
+    <input type="file" id="pdf-file" style="display:none" multiple accept="application/pdf" onchange="handlePdfs(this.files)"/>
+    <span id="upload-label" style="font-size:11px;color:#aaa">Fotky nebo PDF (volitelné)</span>
   </div>
 
   <!-- Input -->
@@ -152,6 +154,7 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 // ═══════════════════════════════════════
 let chatHistory = [];   // {role, content}
 let images = [];    // {name, b64, mime}
+let pdfs = [];      // {name, b64}
 let generating = false;
 
 // ═══════════════════════════════════════
@@ -187,6 +190,19 @@ function getKey() { return localStorage.getItem('nw_doc_api_key') || ''; }
 // ═══════════════════════════════════════
 // IMAGES
 // ═══════════════════════════════════════
+function handlePdfs(files) {
+  Array.from(files).forEach(f => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const b64 = e.target.result.split(',')[1];
+      pdfs.push({ name: f.name, b64 });
+      document.getElementById('upload-label').textContent = `${images.length} foto, ${pdfs.length} PDF`;
+      renderImgThumbs();
+    };
+    reader.readAsDataURL(f);
+  });
+}
+
 function handleImgs(files) {
   Array.from(files).forEach(f => {
     const reader = new FileReader();
@@ -336,10 +352,17 @@ async function send() {
 
   addMsg('user', escHtml(text));
 
-  const userContent = images.length > 0
-    ? [...images.map(img => ({ type: 'image', source: { type: 'base64', media_type: img.mime, data: img.b64 } })),
-       { type: 'text', text: text + '\n\nFotografie produktu jsou přiloženy výše.' }]
-    : text;
+  let userContent;
+  const hasMixed = images.length > 0 || pdfs.length > 0;
+  if (hasMixed) {
+    userContent = [
+      ...pdfs.map(p => ({ type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: p.b64 } })),
+      ...images.map(img => ({ type: 'image', source: { type: 'base64', media_type: img.mime, data: img.b64 } })),
+      { type: 'text', text: text + (pdfs.length ? `\n\nPDF dokumenty (${pdfs.map(p=>p.name).join(', ')}) jsou přiloženy výše — zpracuj jejich obsah.` : '') + (images.length ? '\n\nFotografie produktu jsou přiloženy výše.' : '') }
+    ];
+  } else {
+    userContent = text;
+  }
 
   chatHistory.push({ role: 'user', content: userContent });
 
@@ -412,7 +435,9 @@ async function send() {
       if (images.length > 0) {
         html = html.replace(/FOTO_PRODUKTU/g, `data:${images[0].mime};base64,${images[0].b64}`);
       }
-      // Fotky NEMAŽ — zůstanou pro případné další úpravy dokumentu
+      // PDFs smaž po použití (jsou velké), fotky nech pro refinementy
+      pdfs = [];
+      document.getElementById('upload-label').textContent = images.length ? `${images.length} foto` : 'Fotky nebo PDF (volitelné)';
       parsed = { type: typeM[1], note: noteM ? noteM[1].trim() : 'Hotovo', html };
     } else {
       // Fallback: zobraz jako chat zprávu
