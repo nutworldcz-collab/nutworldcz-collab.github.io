@@ -182,7 +182,7 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
     <button class="panel-close" onclick="closeMeetPanel()">✕</button>
   </div>
   <div class="panel-actions">
-    <button class="act-btn act-cal" id="panel-cal-btn">📅 Naplánovat schůzku</button>
+    <a class="act-btn act-cal" id="panel-cal-btn" href="#" target="_blank">📅 Naplánovat schůzku</a>
     <button class="act-btn act-meet" onclick="toggleNewMeetForm()">+ Zaznamenat schůzku</button>
   </div>
   <div class="panel-body">
@@ -290,10 +290,9 @@ function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').
 
 // ── CALENDAR URL ──
 function calUrl(mgr){
-  const dt=new Date();dt.setDate(dt.getDate()+1);
-  const ds=dt.toISOString().replace(/-|:|\.\d{3}/g,'').slice(0,15)+'00Z';
-  const de=new Date(dt.getTime()+30*60000).toISOString().replace(/-|:|\.\d{3}/g,'').slice(0,15)+'00Z';
-  const p=new URLSearchParams({action:'TEMPLATE',text:`1:1 ${mgr.name}`,details:`Schůzka s ${mgr.name} (${mgr.role})`,dates:`${ds}/${de}`});
+  const gdt=d=>d.toISOString().replace(/-|:|\.\d{3}/g,'');
+  const dt=new Date();dt.setDate(dt.getDate()+1);dt.setHours(9,0,0,0);
+  const p=new URLSearchParams({action:'TEMPLATE',text:`1:1 ${mgr.name}`,details:`Schůzka s ${mgr.name} (${mgr.role})`,dates:`${gdt(dt)}/${gdt(new Date(dt.getTime()+30*60000))}`});
   if(mgr.email)p.set('add',mgr.email);
   return`https://calendar.google.com/calendar/render?${p}`;
 }
@@ -416,7 +415,7 @@ function openMeetPanel(mid){
   _currentMid=mid;
   const m=mgrs().find(x=>x.id===mid);
   document.getElementById('panel-title').textContent=`📓 ${m.name}`;
-  document.getElementById('panel-cal-btn')._calUrl=calUrl(m);
+  document.getElementById('panel-cal-btn').href=calUrl(m);
   const form=document.getElementById('new-meet-form');
   form.classList.remove('open');
   document.getElementById('f-date').value=TODAY;
@@ -554,8 +553,6 @@ function sendDigest(){
   sendEmail(ME,`Přehled úkolů manažerů — ${fmtDate(TODAY)}`,body);
 }
 
-// ── PANEL-CAL-BTN as link ──
-document.getElementById('panel-cal-btn').addEventListener('click',function(){window.open(this._calUrl,'_blank');});
 
 render();
 </script>
