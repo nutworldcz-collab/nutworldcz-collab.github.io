@@ -416,9 +416,7 @@ function openMeetPanel(mid){
   _currentMid=mid;
   const m=mgrs().find(x=>x.id===mid);
   document.getElementById('panel-title').textContent=`📓 ${m.name}`;
-  document.getElementById('panel-cal-btn').href=calUrl(m);
-  document.getElementById('panel-cal-btn').onclick=null;
-  document.getElementById('panel-cal-btn').setAttribute('target','_blank');
+  document.getElementById('panel-cal-btn')._calUrl=calUrl(m);
   const form=document.getElementById('new-meet-form');
   form.classList.remove('open');
   document.getElementById('f-date').value=TODAY;
@@ -557,7 +555,7 @@ function sendDigest(){
 }
 
 // ── PANEL-CAL-BTN as link ──
-document.getElementById('panel-cal-btn').addEventListener('click',function(){window.open(this.getAttribute('href'),'_blank');});
+document.getElementById('panel-cal-btn').addEventListener('click',function(){window.open(this._calUrl,'_blank');});
 
 render();
 </script>
