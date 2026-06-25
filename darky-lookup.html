@@ -17,10 +17,9 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .search-box{background:white;border-radius:16px;padding:28px 28px 24px;box-shadow:0 2px 12px rgba(0,0,0,.08);margin-bottom:24px}
 .search-box h1{font-family:"Exo 2",sans-serif;font-size:22px;font-weight:800;color:var(--bd);margin-bottom:6px}
 .search-box p{font-size:13px;color:#6b4c30;margin-bottom:18px}
-.search-row{display:flex;gap:10px;align-items:center}
-.search-input{flex:1;border:2px solid #d4c0a8;border-radius:10px;padding:12px 16px;font-size:16px;font-family:inherit;background:#fdf9f6;transition:border-color .15s}
+.search-input{width:100%;border:2px solid #d4c0a8;border-radius:10px;padding:12px 16px;font-size:16px;font-family:inherit;background:#fdf9f6;transition:border-color .15s}
 .search-input:focus{outline:none;border-color:var(--br);background:white}
-.product-badge{display:inline-flex;align-items:center;gap:8px;background:var(--kraft);border:2px solid var(--br);border-radius:10px;padding:8px 16px;font-family:"Exo 2",sans-serif;font-weight:700;font-size:14px;color:var(--bd)}
+.product-badge{display:inline-flex;align-items:center;gap:8px;background:var(--kraft);border:2px solid var(--br);border-radius:10px;padding:8px 16px;font-family:"Exo 2",sans-serif;font-weight:700;font-size:14px;color:var(--bd);margin-top:14px}
 .product-badge .kod{background:var(--br);color:white;border-radius:6px;padding:2px 8px;font-size:13px}
 .results-header{font-family:"Exo 2",sans-serif;font-size:14px;font-weight:600;color:var(--br);margin-bottom:14px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
@@ -29,18 +28,17 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .card-kod{font-family:"Exo 2",sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;color:var(--br);text-transform:uppercase;margin-bottom:3px}
 .card-name{font-family:"Exo 2",sans-serif;font-size:14px;font-weight:700;color:var(--bd);margin-bottom:10px;line-height:1.3}
 .chip{display:inline-block;background:var(--kraft);border-radius:20px;padding:2px 10px;font-size:11px;font-weight:600;color:var(--br);margin-bottom:10px}
-.obsah{font-size:12px;color:#5a3a1a;line-height:1.7}
-.obsah-item{display:inline-block;margin-right:4px;margin-bottom:3px;background:#f5f0ea;border-radius:5px;padding:2px 7px}
+.obsah-item{display:inline-block;margin-right:4px;margin-bottom:3px;background:#f5f0ea;border-radius:5px;padding:2px 7px;font-size:12px}
 .obsah-item.match{background:#5c381f;color:white;font-weight:700}
 .ceny{display:flex;gap:12px;margin-top:10px;padding-top:10px;border-top:1px solid #ede0d4}
 .cena-mo{font-family:"Exo 2",sans-serif;font-size:17px;font-weight:800;color:var(--acc)}
 .cena-vo{font-size:12px;color:#888;align-self:flex-end;padding-bottom:2px}
 .empty{text-align:center;padding:48px 20px;color:#a08060;font-size:14px}
-.empty .icon{font-size:40px;margin-bottom:10px}
 .hint{text-align:center;padding:48px 20px;color:#a08060}
 .hint .icon{font-size:48px;margin-bottom:12px}
 .hint p{font-size:14px;line-height:1.7}
 .hint code{background:var(--kraft);padding:2px 7px;border-radius:4px;font-family:monospace;color:var(--bd)}
+.updated{font-size:11px;color:#b0966a;margin-top:16px}
 </style>
 </head>
 <body>
@@ -52,10 +50,9 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
   <div class="search-box">
     <h1>Kde je produkt?</h1>
     <p>Zadej kód základního produktu — ukáže se seznam všech dárků, kde je obsažený.</p>
-    <div class="search-row">
-      <input class="search-input" id="q" type="text" placeholder="Kód produktu (např. 89, 101, 4794...)" autofocus oninput="search(this.value)"/>
-    </div>
-    <div id="product-info" style="margin-top:14px;display:none"></div>
+    <input class="search-input" id="q" type="text" placeholder="Kód produktu (např. 89, 101, 4794...)" autofocus oninput="search(this.value)"/>
+    <div id="product-info"></div>
+    <div class="updated" id="updated"></div>
   </div>
   <div id="results-header" class="results-header" style="display:none"></div>
   <div id="results"></div>
@@ -65,7 +62,6 @@ const DATA = {"darky": [{"kod": "480XVXUCI", "nazev": "Dárková ořechová krab
 const darky = DATA.darky;
 const cenik = DATA.cenik;
 
-// Build index: kod -> [{darek, gramaz}]
 const index = {};
 darky.forEach(d => {
   d.obsah.split(',').forEach(item => {
@@ -81,44 +77,29 @@ function search(q) {
   const infoEl = document.getElementById('product-info');
   const headerEl = document.getElementById('results-header');
   const resultsEl = document.getElementById('results');
-
   if (!q) {
-    infoEl.style.display = 'none';
+    infoEl.innerHTML = '';
     headerEl.style.display = 'none';
     resultsEl.innerHTML = renderHint();
     return;
   }
-
-  // Exact match first, then partial
   let hits = index[q] || [];
-  let isExact = hits.length > 0;
-  
-  if (!isExact) {
-    // Partial: all codes starting with q
-    Object.keys(index).forEach(kod => {
-      if (kod.startsWith(q)) hits = hits.concat(index[kod]);
-    });
+  if (!hits.length) {
+    Object.keys(index).forEach(kod => { if (kod.startsWith(q)) hits = hits.concat(index[kod]); });
   }
-
-  // Product info
   const productName = cenik[q] || '';
-  if (productName) {
-    infoEl.style.display = 'block';
-    infoEl.innerHTML = `<div class="product-badge"><span class="kod">${esc(q)}</span> ${esc(productName)}</div>`;
-  } else {
-    infoEl.style.display = 'none';
-  }
-
+  infoEl.innerHTML = productName
+    ? `<div class="product-badge"><span class="kod">${esc(q)}</span> ${esc(productName)}</div>`
+    : '';
   headerEl.style.display = 'block';
-  if (hits.length === 0) {
+  if (!hits.length) {
     headerEl.textContent = '';
-    resultsEl.innerHTML = `<div class="empty"><div class="icon">🔎</div>Žádný dárek s kódem <strong>${esc(q)}</strong> nenalezen.</div>`;
+    resultsEl.innerHTML = `<div class="empty">Žádný dárek s kódem <strong>${esc(q)}</strong> nenalezen.</div>`;
     return;
   }
-
-  // Sort by name
   hits.sort((a, b) => a.darek.nazev.localeCompare(b.darek.nazev, 'cs'));
-  headerEl.textContent = `${hits.length} dárk${hits.length === 1 ? '' : hits.length < 5 ? 'y' : 'ů'} obsahuje produkt ${q}${productName ? ' (' + productName.split(' ').slice(0,3).join(' ') + '...)' : ''}`;
+  const pocet = hits.length;
+  headerEl.textContent = `${pocet} dárk${pocet===1?'':pocet<5?'y':'ů'} obsahuje produkt ${q}${productName?' ('+productName.split(' ').slice(0,3).join(' ')+'...)':''}`;
   resultsEl.innerHTML = `<div class="grid">${hits.map(h => renderCard(h, q)).join('')}</div>`;
 }
 
@@ -127,14 +108,13 @@ function renderCard(hit, q) {
   const obsahItems = d.obsah.split(',').map(item => {
     const [kod, gramaz] = item.trim().split(':');
     const isMatch = kod === q;
-    const name = cenik[kod] ? cenik[kod].split(' ').slice(0,3).join(' ') : kod;
-    return `<span class="obsah-item${isMatch ? ' match' : ''}" title="${esc(cenik[kod]||kod)}">${esc(kod)} ${gramaz ? gramaz+'g' : ''}</span>`;
+    return `<span class="obsah-item${isMatch?' match':''}" title="${esc(cenik[kod]||kod)}">${esc(kod)} ${gramaz?gramaz+'g':''}</span>`;
   }).join('');
   return `<div class="card">
     <div class="card-kod">${esc(d.kod)}</div>
     <div class="card-name">${esc(d.nazev)}</div>
     <div><span class="chip">${esc(d.obal)}</span></div>
-    <div class="obsah">${obsahItems}</div>
+    <div>${obsahItems}</div>
     <div class="ceny">
       <div class="cena-mo">${esc(d.cena)} Kč</div>
       <div class="cena-vo">VO ${esc(d.vo)} Kč</div>
@@ -143,17 +123,15 @@ function renderCard(hit, q) {
 }
 
 function renderHint() {
-  return `<div class="hint">
-    <div class="icon">🐿️</div>
-    <p>Sem napiš kód produktu a hned uvidíš,<br>ve kterých dárcích je obsažený.<br><br>
-    Třeba <code>89</code> (mandle uzené) nebo <code>101</code> (kešu přírodní).</p>
-  </div>`;
+  return `<div class="hint"><div class="icon">🐿️</div>
+    <p>Napiš kód produktu a hned uvidíš,<br>ve kterých dárcích je obsažený.<br><br>
+    Třeba <code>89</code> (mandle uzené) nebo <code>101</code> (kešu přírodní).</p></div>`;
 }
 
 function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-// Init
 document.getElementById('results').innerHTML = renderHint();
+document.getElementById('updated').textContent = 'Data: 358 dárků · 275 produktů';
 </script>
 </body>
 </html>
