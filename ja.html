@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Dashboard — Nutworld</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bd:#5c381f;--br:#83502e;--kraft:#f1e6da;--acc:#da1668;--amb:#f7ab31;--leaf:#6fa044}
+body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;min-height:100vh}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,#5c381f 0%,#83502e 60%,#a0622a 100%);padding:28px 28px 24px;position:relative;overflow:hidden}
+.header::after{content:"🐿";position:absolute;right:28px;top:50%;transform:translateY(-50%);font-size:64px;opacity:.15}
+.header-greeting{font-family:"Exo 2",sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:4px}
+.header-name{font-family:"Exo 2",sans-serif;font-size:28px;font-weight:800;color:white;margin-bottom:2px}
+.header-date{font-size:13px;color:rgba(255,255,255,.55);margin-top:6px}
+.color-bar{height:3px;background:linear-gradient(90deg,#da1668,#f7ab31,#6fa044)}
+
+/* LAYOUT */
+.wrap{max-width:1060px;margin:0 auto;padding:24px 16px;display:flex;flex-direction:column;gap:24px}
+
+/* SECTION */
+.section-label{font-family:"Exo 2",sans-serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:#a07850;margin-bottom:10px;padding-left:2px}
+
+/* RYCHLÉ LINKY — velké ikonky */
+.quick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:10px}
+.quick-btn{background:white;border-radius:12px;padding:14px 8px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;color:#2a1a0e;box-shadow:0 1px 5px rgba(0,0,0,.07);transition:all .15s;border:2px solid transparent}
+.quick-btn:hover{border-color:var(--br);box-shadow:0 3px 12px rgba(0,0,0,.12);transform:translateY(-2px)}
+.quick-btn .icon{font-size:24px}
+.quick-btn .label{font-family:"Exo 2",sans-serif;font-size:10px;font-weight:700;text-align:center;color:var(--bd);line-height:1.3}
+
+/* NÁSTROJE GRID */
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.tool-card{background:white;border-radius:12px;padding:16px;text-decoration:none;color:#2a1a0e;box-shadow:0 1px 5px rgba(0,0,0,.07);display:flex;gap:12px;align-items:flex-start;border-left:4px solid var(--kraft);transition:all .15s}
+.tool-card:hover{border-left-color:var(--br);box-shadow:0 3px 12px rgba(0,0,0,.12)}
+.tool-card.pink{border-left-color:#f9d0df}
+.tool-card.pink:hover{border-left-color:var(--acc)}
+.tool-card.green{border-left-color:#d4ebbd}
+.tool-card.green:hover{border-left-color:var(--leaf)}
+.tool-icon{font-size:22px;flex-shrink:0;margin-top:1px}
+.tool-title{font-family:"Exo 2",sans-serif;font-size:13px;font-weight:700;color:var(--bd);margin-bottom:2px}
+.tool-desc{font-size:11px;color:#6b4c30;line-height:1.5}
+
+/* KPI řádek */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.kpi{background:white;border-radius:12px;padding:16px 18px;box-shadow:0 1px 5px rgba(0,0,0,.07)}
+.kpi-value{font-family:"Exo 2",sans-serif;font-size:22px;font-weight:800;color:var(--acc);margin-bottom:2px}
+.kpi-label{font-size:11px;color:#8a6040}
+.kpi-note{font-size:10px;color:#b0966a;margin-top:3px}
+
+/* AUTOMATIZACE */
+.auto-list{background:white;border-radius:12px;padding:18px;box-shadow:0 1px 5px rgba(0,0,0,.07)}
+.auto-item{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #f0e8df;font-size:13px}
+.auto-item:last-child{border-bottom:none}
+.auto-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot-green{background:var(--leaf)}
+.dot-amber{background:var(--amb)}
+.auto-name{font-weight:600;color:var(--bd);flex:1}
+.auto-when{font-size:11px;color:#a08060;margin-left:auto}
+
+@media(max-width:600px){
+  .header-name{font-size:22px}
+  .quick-grid{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-greeting">Nutworld · Jednatel</div>
+  <div class="header-name">Ahoj, Vlčáku 🐿</div>
+  <div class="header-date" id="datum"></div>
+</div>
+<div class="color-bar"></div>
+
+<div class="wrap">
+
+  <!-- RYCHLÉ LINKY EXTERNAL -->
+  <div>
+    <div class="section-label">Rychlý přístup</div>
+    <div class="quick-grid">
+      <a class="quick-btn" href="https://www.facebook.com/business/tools/ads-manager" target="_blank">
+        <span class="icon">📣</span><span class="label">Meta Ads</span>
+      </a>
+      <a class="quick-btn" href="https://ads.google.com" target="_blank">
+        <span class="icon">🔵</span><span class="label">Google Ads</span>
+      </a>
+      <a class="quick-btn" href="https://nutworld.myshoptet.com/admin/" target="_blank">
+        <span class="icon">🛒</span><span class="label">Shoptet</span>
+      </a>
+      <a class="quick-btn" href="https://trello.com" target="_blank">
+        <span class="icon">📋</span><span class="label">Trello</span>
+      </a>
+      <a class="quick-btn" href="https://mail.google.com/mail/u/0/#inbox" target="_blank">
+        <span class="icon">📧</span><span class="label">Gmail</span>
+      </a>
+      <a class="quick-btn" href="https://drive.google.com" target="_blank">
+        <span class="icon">💾</span><span class="label">Drive</span>
+      </a>
+      <a class="quick-btn" href="https://www.canva.com" target="_blank">
+        <span class="icon">🎨</span><span class="label">Canva</span>
+      </a>
+      <a class="quick-btn" href="https://analytics.google.com" target="_blank">
+        <span class="icon">📈</span><span class="label">Analytics</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- KPI -->
+  <div>
+    <div class="section-label">Výkonnostní baseline (jún 2026)</div>
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-value">23,7M</div>
+        <div class="kpi-label">Obrat / rok</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-value">1 205 Kč</div>
+        <div class="kpi-label">AOV (průměrná objednávka)</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-value">120 Kč</div>
+        <div class="kpi-label">Google CPA</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-value">15,6 %</div>
+        <div class="kpi-label">PNO</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERNÍ NÁSTROJE -->
+  <div>
+    <div class="section-label">Interní nástroje</div>
+    <div class="tools-grid">
+      <a class="tool-card" href="/kalkulator.html">
+        <span class="tool-icon">🧮</span>
+        <div><div class="tool-title">Kalkulátor cen</div><div class="tool-desc">MO/VO a marže — produkty i dárky</div></div>
+      </a>
+      <a class="tool-card" href="/marze.html">
+        <span class="tool-icon">📊</span>
+        <div><div class="tool-title">Přehled marží</div><div class="tool-desc">Vždy aktuální z ceníku, auto-update</div></div>
+      </a>
+      <a class="tool-card" href="/darky-lookup.html">
+        <span class="tool-icon">🔍</span>
+        <div><div class="tool-title">Kde je produkt?</div><div class="tool-desc">Kód produktu → všechny dárky kde je</div></div>
+      </a>
+      <a class="tool-card" href="/dokument.html">
+        <span class="tool-icon">📄</span>
+        <div><div class="tool-title">Generátor dokumentů</div><div class="tool-desc">Ceník, katalog, dopis, nabídka — AI</div></div>
+      </a>
+      <a class="tool-card" href="/nabidky.html">
+        <span class="tool-icon">🤝</span>
+        <div><div class="tool-title">Nabídky</div><div class="tool-desc">B2B nabídky pro zákazníky</div></div>
+      </a>
+      <a class="tool-card" href="/zakazy.html">
+        <span class="tool-icon">📦</span>
+        <div><div class="tool-title">Zakázky</div><div class="tool-desc">Správa B2B zakázek</div></div>
+      </a>
+      <a class="tool-card pink" href="/specifikace.html">
+        <span class="tool-icon">📋</span>
+        <div><div class="tool-title">Specifikace produktů</div><div class="tool-desc">PDF specifikace s alergeny</div></div>
+      </a>
+      <a class="tool-card pink" href="/specifikace-generator.html">
+        <span class="tool-icon">⚗️</span>
+        <div><div class="tool-title">Generátor specifikací</div><div class="tool-desc">Vytvoř NW specifikaci z dodavatelského PDF</div></div>
+      </a>
+      <a class="tool-card pink" href="/stitky.html">
+        <span class="tool-icon">🏷️</span>
+        <div><div class="tool-title">Canva štítky</div><div class="tool-desc">Legislativní štítky CZ + SK</div></div>
+      </a>
+      <a class="tool-card green" href="/generator.html">
+        <span class="tool-icon">📝</span>
+        <div><div class="tool-title">Formulář delegace</div><div class="tool-desc">Poptávky od kolegů → pipeline</div></div>
+      </a>
+      <a class="tool-card green" href="/k2.html">
+        <span class="tool-icon">📈</span>
+        <div><div class="tool-title">K2 Porovnání</div><div class="tool-desc">Porovnání ceníků dodavatelů vs K2</div></div>
+      </a>
+      <a class="tool-card green" href="/cenik.html">
+        <span class="tool-icon">📋</span>
+        <div><div class="tool-title">Porovnání ceníků</div><div class="tool-desc">Dva CSV ceníky — co se změnilo</div></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- AUTOMATIZACE -->
+  <div>
+    <div class="section-label">Automatizace (launchd)</div>
+    <div class="auto-list">
+      <div class="auto-item"><div class="auto-dot dot-green"></div><div class="auto-name">Poptávka watcher</div><div class="auto-when">každých 5 min</div></div>
+      <div class="auto-item"><div class="auto-dot dot-green"></div><div class="auto-name">B2B zakázky → Trello</div><div class="auto-when">každou minutu</div></div>
+      <div class="auto-item"><div class="auto-dot dot-green"></div><div class="auto-name">Gmail morning report</div><div class="auto-when">8:00 denně</div></div>
+      <div class="auto-item"><div class="auto-dot dot-green"></div><div class="auto-name">Meta Ads report</div><div class="auto-when">8:30 denně</div></div>
+      <div class="auto-item"><div class="auto-dot dot-green"></div><div class="auto-name">Trello report</div><div class="auto-when">8:00 denně</div></div>
+      <div class="auto-item"><div class="auto-dot dot-green"></div><div class="auto-name">Blog CZ + SK</div><div class="auto-when">každé 3 dny</div></div>
+      <div class="auto-item"><div class="auto-dot dot-green"></div><div class="auto-name">Canva štítky watcher</div><div class="auto-when">každých 5 min</div></div>
+      <div class="auto-item"><div class="auto-dot dot-green"></div><div class="auto-name">Generátor marží + dárky lookup</div><div class="auto-when">každých 30 min</div></div>
+      <div class="auto-item"><div class="auto-dot dot-green"></div><div class="auto-name">Memory backup</div><div class="auto-when">13:00 + 21:00</div></div>
+      <div class="auto-item"><div class="auto-dot dot-green"></div><div class="auto-name">Zdraví automatizací</div><div class="auto-when">8:45 denně → email</div></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const d = new Date();
+const dny = ['neděle','pondělí','úterý','středa','čtvrtek','pátek','sobota'];
+const mesice = ['ledna','února','března','dubna','května','června','července','srpna','září','října','listopadu','prosince'];
+document.getElementById('datum').textContent =
+  dny[d.getDay()] + ' ' + d.getDate() + '. ' + mesice[d.getMonth()] + ' ' + d.getFullYear()
+  + ' · ' + String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+</script>
+</body>
+</html>
