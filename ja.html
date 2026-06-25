@@ -139,6 +139,24 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
     <div class="email-list" id="email-list"><div class="email-empty">Načítám emaily…</div></div>
   </div>
 
+  <!-- ADS REPORT -->
+  <div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div class="section-label" style="margin-bottom:0">📊 Reklama (posledních 7 dní)</div>
+      <span id="ads-meta-info" style="font-size:11px;color:#a08060"></span>
+    </div>
+    <div id="ads-block"><div class="email-empty" style="background:white;border-radius:12px;padding:20px">Načítám…</div></div>
+  </div>
+
+  <!-- TRELLO -->
+  <div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div class="section-label" style="margin-bottom:0">📋 Trello notifikace</div>
+      <span id="trello-meta-info" style="font-size:11px;color:#a08060"></span>
+    </div>
+    <div id="trello-block"><div class="email-empty" style="background:white;border-radius:12px;padding:20px">Načítám…</div></div>
+  </div>
+
   <!-- RYCHLÉ LINKY EXTERNAL -->
   <div>
     <div class="section-label">Rychlý přístup</div>
@@ -369,6 +387,102 @@ document.getElementById('datum').textContent =
 const TODAY = new Date().toISOString().slice(0,10);
 function ld(k,def){try{return JSON.parse(localStorage.getItem(k))??def}catch{return def}}
 function fmtD(iso){if(!iso)return'';const[y,m,dd]=iso.split('-');return`${dd}.${m}.`}
+
+// ── ADS REPORT ───────────────────────────────────────────────────────────────
+(async function(){
+  function pnoBadge(p){
+    if(p===null||p===undefined) return {dot:'⚪',color:'#aaa'};
+    if(p<20) return {dot:'🟢',color:'#6fa044'};
+    if(p<40) return {dot:'🟡',color:'#b8860b'};
+    return {dot:'🔴',color:'#da1668'};
+  }
+  function arrow(curr,prev){
+    if(!prev) return '';
+    const pct=((curr-prev)/prev*100);
+    return `<span style="font-size:10px;color:${pct>0?'#6fa044':'#da1668'}">${pct>0?'▲':'▼'}${Math.abs(pct).toFixed(0)}%</span>`;
+  }
+  try {
+    const res = await fetch('https://nutworldcz-collab.github.io/report_ads.json?_='+Date.now());
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data = await res.json();
+    const gen = data.generated ? new Date(data.generated) : null;
+    const timeStr = gen ? gen.getHours()+':'+String(gen.getMinutes()).padStart(2,'0') : '';
+    document.getElementById('ads-meta-info').textContent = `Aktualizováno ${timeStr} · ${data.period||''}`;
+
+    let html = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:14px">`;
+    let totalSpend=0, totalRev=0;
+    for(const [name,ch] of Object.entries(data.channels||{})){
+      if(ch.error){
+        html+=`<div style="background:white;border-radius:12px;padding:14px;box-shadow:0 1px 5px rgba(0,0,0,.07);border-left:4px solid #ddd"><div style="font-size:12px;font-weight:700;color:#a08060;margin-bottom:4px">${name}</div><div style="font-size:12px;color:#da1668">⚠ Chyba připojení</div></div>`;
+        continue;
+      }
+      const b = pnoBadge(ch.pno);
+      totalSpend+=ch.spend||0; totalRev+=ch.revenue||0;
+      html+=`<div style="background:white;border-radius:12px;padding:14px;box-shadow:0 1px 5px rgba(0,0,0,.07);border-left:4px solid ${b.color}">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <div style="font-family:'Exo 2',sans-serif;font-size:12px;font-weight:700;color:var(--bd)">${name}</div>
+          <div style="font-size:18px">${b.dot} <span style="font-size:13px;font-weight:700;color:${b.color}">${ch.pno!==null?ch.pno+'%':'—'}</span></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:12px;color:#6b4c30">
+          <div>Útrata: <strong>${(ch.spend||0).toLocaleString('cs')} Kč</strong> ${arrow(ch.spend,ch.prev_spend)}</div>
+          <div>Tržby: <strong>${(ch.revenue||0).toLocaleString('cs')} Kč</strong></div>
+          <div>Konverze: <strong>${ch.conversions||0}</strong></div>
+          <div>Kliky: <strong>${(ch.clicks||0).toLocaleString('cs')}</strong></div>
+        </div>
+      </div>`;
+    }
+    html+='</div>';
+
+    if((data.anomalies||[]).length){
+      html+=`<div style="background:white;border-radius:12px;padding:14px;box-shadow:0 1px 5px rgba(0,0,0,.07)">`;
+      html+=`<div style="font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#a08060;margin-bottom:8px">⚡ Anomálie & priority</div>`;
+      data.anomalies.forEach(a=>{ html+=`<div style="font-size:12px;padding:3px 0;border-bottom:1px solid #f5ede3;color:#2a1a0e">${a}</div>`; });
+      if((data.priorities||[]).length){ data.priorities.forEach((p,i)=>{ html+=`<div style="font-size:12px;padding:3px 0;border-bottom:1px solid #f5ede3;color:#5c381f"><strong>${i+1}.</strong> ${p}</div>`; }); }
+      html+='</div>';
+    }
+
+    document.getElementById('ads-block').innerHTML = html;
+  } catch(e){
+    document.getElementById('ads-block').innerHTML='<div class="email-empty" style="background:white;border-radius:12px;padding:20px">Report není dostupný — spustí se ráno v 8:30 🕖</div>';
+  }
+})();
+
+// ── TRELLO ────────────────────────────────────────────────────────────────────
+(async function(){
+  const TYPE_ICON = {mentionedOnCard:'💬',commentCard:'💬',addedToCard:'➕',cardDueSoon:'⏰',changeCard:'✏️',createdCard:'🆕',updateCheckItemStateOnCard:'☑️'};
+  try {
+    const res = await fetch('https://nutworldcz-collab.github.io/report_trello.json?_='+Date.now());
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data = await res.json();
+    document.getElementById('trello-meta-info').textContent = `${data.date||''} · ${data.total} notifikací`;
+
+    if(!data.total){
+      document.getElementById('trello-block').innerHTML='<div style="background:white;border-radius:12px;padding:16px;text-align:center;color:#6fa044;font-size:13px;font-weight:600;box-shadow:0 1px 5px rgba(0,0,0,.07)">✅ Žádné nové notifikace</div>';
+      return;
+    }
+    let html='<div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 5px rgba(0,0,0,.07)">';
+    (data.notifications||[]).slice(0,15).forEach(n=>{
+      const icon = TYPE_ICON[n.type]||'🔔';
+      const time = n.time ? new Date(n.time).toLocaleTimeString('cs',{hour:'2-digit',minute:'2-digit'}) : '';
+      const comment = n.comment ? `<div style="font-size:11px;color:#83502e;font-style:italic;margin-top:2px;padding:4px 8px;background:#faf6f2;border-left:2px solid #f7ab31;border-radius:0 4px 4px 0">"${n.comment}"</div>` : '';
+      html+=`<div style="padding:10px 14px;border-bottom:1px solid #f5ede3">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+          <div style="min-width:0">
+            <div style="font-size:12px;color:#a08060;margin-bottom:2px">${icon} ${n.label} · <span style="color:#83502e;font-weight:600">${n.creator}</span> · ${n.board}</div>
+            ${n.card_url ? `<a href="${n.card_url}" target="_blank" style="font-size:13px;font-weight:600;color:#2a1a0e;text-decoration:none">${n.card}</a>` : `<div style="font-size:13px;font-weight:600">${n.card}</div>`}
+            ${comment}
+          </div>
+          <div style="font-size:11px;color:#a08060;white-space:nowrap;flex-shrink:0">${time}</div>
+        </div>
+      </div>`;
+    });
+    if(data.total>15) html+=`<div style="padding:10px 14px;font-size:12px;color:#a08060">+ ${data.total-15} dalších notifikací</div>`;
+    html+='</div>';
+    document.getElementById('trello-block').innerHTML=html;
+  } catch(e){
+    document.getElementById('trello-block').innerHTML='<div class="email-empty" style="background:white;border-radius:12px;padding:20px">Report není dostupný — spustí se ráno v 8:00 🕖</div>';
+  }
+})();
 
 // ── ÚKOLY ──
 (function(){
