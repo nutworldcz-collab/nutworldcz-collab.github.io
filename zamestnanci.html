@@ -294,7 +294,9 @@ function calUrl(mgr){
   const gdt=d=>d.toISOString().replace(/-|:|\.\d{3}/g,'');
   const dt=new Date();dt.setDate(dt.getDate()+1);dt.setHours(9,0,0,0);
   const p=new URLSearchParams({action:'TEMPLATE',text:`1:1 ${mgr.name}`,details:`Schůzka s ${mgr.name} (${mgr.role})`,dates:`${gdt(dt)}/${gdt(new Date(dt.getTime()+30*60000))}`});
-  if(mgr.email)p.set('add',mgr.email);
+  // Přidat manažera + claudie jako účastníky → událost se uloží i do claudie kalendáře → ranní digest
+  const guests=[mgr.email,'claudie.nutworld.cz@gmail.com'].filter(Boolean).join(',');
+  if(guests)p.set('add',guests);
   return`https://calendar.google.com/calendar/render?${p}`;
 }
 
