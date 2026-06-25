@@ -137,6 +137,25 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .tb-checklist{background:#e8f5e0;color:#3a7020}
 .tb-notes{background:#fff0e0;color:#8a4000}
 .tb-links{background:#e0eeff;color:#003388}
+.tb-docs{background:#e8f0fe;color:#1a56db}
+
+/* Dokumenty sekce */
+.doc-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f5f0ea}
+.doc-item:last-child{border:none}
+.doc-icon{font-size:18px;flex-shrink:0}
+.doc-info{flex:1;min-width:0}
+.doc-name{font-size:13px;font-weight:600;color:var(--bd);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.doc-url{font-size:11px;color:#a08060;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.doc-open{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--br);text-decoration:none;border:1.5px solid #d4c0a8;border-radius:10px;padding:3px 9px;flex-shrink:0}
+.doc-open:hover{background:var(--kraft)}
+.doc-del{background:none;border:none;color:#d4c0a8;cursor:pointer;font-size:13px;flex-shrink:0}
+.doc-del:hover{color:var(--acc)}
+.add-doc-row{display:flex;flex-direction:column;gap:7px;margin-top:10px;padding-top:10px;border-top:1px solid #f0e8df}
+.doc-inp{width:100%;border:1.5px solid #d4c0a8;border-radius:7px;padding:6px 9px;font-size:12px;font-family:inherit;background:#fdf9f6}
+.doc-inp:focus{outline:none;border-color:var(--br)}
+.btn-drive{display:inline-flex;align-items:center;gap:6px;background:#1a56db;border:none;border-radius:8px;color:white;font-size:11px;font-weight:700;padding:6px 12px;cursor:pointer;font-family:inherit;margin-top:4px}
+.btn-drive:hover{filter:brightness(1.1)}
+.btn-drive-sec{background:#f0f4ff;border:1.5px solid #b3c8f0;border-radius:8px;color:#1a56db;font-size:11px;font-weight:700;padding:5px 11px;cursor:pointer;font-family:inherit}
 </style>
 </head>
 <body>
@@ -226,6 +245,7 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
       <select id="s-type">
         <option value="checklist">☑ Checklist (seznam položek s checkboxy)</option>
         <option value="notes">📝 Poznámky (volný text)</option>
+        <option value="docs">📁 Dokumenty (odkazy na Drive, soubory, weby)</option>
       </select>
     </div>
     <div><label>Emoji ikona (volitelné)</label><input id="s-icon" placeholder="📋" style="max-width:80px"/></div>
@@ -405,7 +425,7 @@ function renderOneSekce(s,i){
   const icon=s.icon||'📋';
   const items=s.items||[];
   const doneCount=items.filter(x=>x.done).length;
-  const typeBadge=s.type==='checklist'?'<span class="type-badge tb-checklist">Checklist</span>':'<span class="type-badge tb-notes">Poznámky</span>';
+  const typeBadge=s.type==='checklist'?'<span class="type-badge tb-checklist">Checklist</span>':s.type==='docs'?'<span class="type-badge tb-docs">Dokumenty</span>':'<span class="type-badge tb-notes">Poznámky</span>';
 
   let bodyHtml='';
   if(s.type==='checklist'){
@@ -418,6 +438,29 @@ function renderOneSekce(s,i){
       <div class="add-check-row">
         <input class="check-inp" id="ci-${s.id}" placeholder="Přidat položku…" onkeydown="if(event.key==='Enter')addCheckItem('${s.id}')"/>
         <button class="btn-add-c" onclick="addCheckItem('${s.id}')">Přidat</button>
+      </div>
+    </div>`;
+  } else if(s.type==='docs'){
+    const docs=s.docs||[];
+    const docRows=docs.map((d,j)=>`
+      <div class="doc-item">
+        <span class="doc-icon">${d.icon||docIcon(d.url)}</span>
+        <div class="doc-info">
+          <div class="doc-name">${esc(d.name)}</div>
+          <div class="doc-url">${esc(d.url)}</div>
+        </div>
+        <a class="doc-open" href="${esc(d.url)}" target="_blank">Otevřít ↗</a>
+        <button class="doc-del" onclick="delDoc('${s.id}',${j})">✕</button>
+      </div>`).join('');
+    const mgr=ALL_MGRS.find(m=>m.id===MID)||{};
+    bodyHtml=`<div>${docRows||'<p style="color:#b0966a;font-size:12px;padding:6px 0">Zatím žádné dokumenty.</p>'}
+      <div class="add-doc-row">
+        <input class="doc-inp" id="dn-${s.id}" placeholder="Název dokumentu (např. HACCP plán 2026)"/>
+        <input class="doc-inp" id="du-${s.id}" placeholder="URL (Google Drive, PDF, web…)"/>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button class="btn-drive-sec" onclick="addDoc('${s.id}')">+ Přidat odkaz</button>
+          <button class="btn-drive" onclick="createDriveFolder('${s.id}','${esc(mgr.name)}')">📁 Vytvořit Drive složku</button>
+        </div>
       </div>
     </div>`;
   } else {
@@ -521,6 +564,58 @@ document.querySelectorAll('.overlay').forEach(el=>el.addEventListener('click',e=
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// ── DOKUMENTY ──
+const PROXY='https://script.google.com/macros/s/AKfycbyB2V0l9gc3OFh-yx2SlfTkWP4PmPhus7IF00g3qIjTzpSbRskXiJ5a0rGBQ0EKlyU/exec';
+
+function docIcon(url=''){
+  if(url.includes('docs.google.com/document'))return '📄';
+  if(url.includes('docs.google.com/spreadsheet'))return '📊';
+  if(url.includes('docs.google.com/presentation'))return '📊';
+  if(url.includes('drive.google.com'))return '📁';
+  if(url.includes('.pdf'))return '📕';
+  return '🔗';
+}
+function addDoc(sid){
+  const name=document.getElementById('dn-'+sid).value.trim();
+  const url=document.getElementById('du-'+sid).value.trim();
+  if(!name||!url)return;
+  const secs=ld(SECK,{});
+  const s=(secs[MID]||[]).find(x=>x.id===sid);
+  if(s){if(!s.docs)s.docs=[];s.docs.push({name,url,icon:docIcon(url)});sv(SECK,secs);renderSekce();}
+}
+function delDoc(sid,idx){
+  const secs=ld(SECK,{});
+  const s=(secs[MID]||[]).find(x=>x.id===sid);
+  if(s&&s.docs){s.docs.splice(idx,1);sv(SECK,secs);renderSekce();}
+}
+async function createDriveFolder(sid,managerName){
+  const btn=event.target;
+  btn.textContent='⏳ Vytvářím…';btn.disabled=true;
+  try{
+    const resp=await fetch(PROXY,{
+      method:'POST',headers:{'Content-Type':'text/plain'},
+      body:JSON.stringify({action:'create_drive_folder',managerName,sectionId:sid})
+    });
+    const data=await resp.json();
+    if(data.ok&&data.url){
+      const secs=ld(SECK,{});
+      const s=(secs[MID]||[]).find(x=>x.id===sid);
+      if(s){if(!s.docs)s.docs=[];s.docs.unshift({name:`📁 Drive — ${managerName}`,url:data.url,icon:'📁'});sv(SECK,secs);}
+      btn.textContent='✅ Hotovo!';
+      setTimeout(()=>renderSekce(),800);
+    } else {
+      // Fallback — otevři Drive manuálně
+      window.open('https://drive.google.com','_blank');
+      btn.textContent='📁 Vytvořit Drive složku';btn.disabled=false;
+      alert('Apps Script ještě nemá create_drive_folder akci. Otevírám Drive — složku vytvoř ručně a URL vlož do odkazu.');
+    }
+  }catch(e){
+    window.open('https://drive.google.com','_blank');
+    btn.textContent='📁 Vytvořit Drive složku';btn.disabled=false;
+    alert('Připoj Apps Script pro automatické vytváření složek. Prozatím otevírám Drive.');
+  }
+}
 
 // ── DEFAULTNÍ SEKCE PRO LUCII TURKOVOU ──
 function seedLucieSekce(){
