@@ -312,7 +312,8 @@ Pravidla:
 - První řádek vždy TYPE: (prezentace|katalog|cenik|dopis|infolist|nabidka|info)
 - Druhý řádek vždy NOTE: s krátkou českou zprávou
 - HTML obsah mezi <DOC> a </DOC> — žádný DOCTYPE, žádné html/head/body, žádný JS
-- Datum jako statický text (dnešní: 24.6.2026), šířka ~760px, inline CSS
+- Datum jako statický text (dnešní: 25.6.2026), šířka ~760px, inline CSS
+- Vždy vygeneruj CELÝ dokument — nikdy neořezávej, dokončí vše i když je text dlouhý
 - Pokud uživatel nahraje obrázky jako přílohy, vlož do HTML přesně: FOTO_1 pro první obrázek, FOTO_2 pro druhý, atd.
 - Příklad: <img src="FOTO_1" style="width:100%;height:100%;object-fit:cover"/>
 - NIKDY nevkládej base64 data přímo — jen placeholder FOTO_1, FOTO_2...
@@ -375,7 +376,7 @@ async function send() {
   showTyping();
 
   try {
-    const payload = { model: 'claude-sonnet-4-6', max_tokens: 4000, system: SYSTEM, messages: chatHistory };
+    const payload = { model: 'claude-sonnet-4-6', max_tokens: 7000, system: SYSTEM, messages: chatHistory };
 
     const claudeCtrl = new AbortController();
     const claudeTimer = setTimeout(() => claudeCtrl.abort(), 55000);
