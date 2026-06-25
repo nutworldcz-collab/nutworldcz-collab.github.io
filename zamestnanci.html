@@ -351,6 +351,7 @@ function render(){
             ${m.trello?`<a class="act-btn act-trello" href="${esc(m.trello)}" target="_blank">🗂 Trello</a><button class="act-btn act-del" onclick="editTrello('${m.id}')">✏</button>`
               :`<button class="act-btn act-del" onclick="editTrello('${m.id}')">+ Trello</button>`}
             <button class="act-btn act-meet" onclick="openMeetPanel('${m.id}')">📓 Schůzky ${mBadge}</button>
+            <a class="act-btn act-meet" href="/manazer.html?id=${m.id}" style="background:var(--bd);color:white;border-color:var(--bd);text-decoration:none">→ Profil</a>
             <button class="act-btn act-del" onclick="deleteManager('${m.id}')">Odebrat</button>
           </div>
         </div>

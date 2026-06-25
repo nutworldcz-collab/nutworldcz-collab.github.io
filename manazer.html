@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Profil manažera — Nutworld</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bd:#5c381f;--br:#83502e;--kraft:#f1e6da;--acc:#da1668;--amb:#f7ab31;--leaf:#6fa044}
+body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;min-height:100vh}
+
+.topbar{background:var(--bd);padding:11px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50}
+.topbar-title{font-family:"Exo 2",sans-serif;font-size:16px;font-weight:800;color:white}
+.topbar a{color:rgba(255,255,255,.6);font-size:12px;text-decoration:none}
+.topbar a:hover{color:white}
+.topbar-right{margin-left:auto;display:flex;gap:8px}
+.btn-top{background:var(--amb);border:none;color:var(--bd);font-family:"Exo 2",sans-serif;font-weight:800;font-size:12px;padding:6px 14px;border-radius:20px;cursor:pointer}
+
+/* PROFIL HEADER */
+.profile-header{background:linear-gradient(135deg,#5c381f,#83502e,#a0622a);padding:24px 28px;display:flex;gap:18px;align-items:center}
+.avatar-lg{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:"Exo 2",sans-serif;font-size:24px;font-weight:800;color:white;flex-shrink:0;border:3px solid rgba(255,255,255,.3)}
+.av-0{background:rgba(0,0,0,.25)} .av-1{background:rgba(0,0,0,.2)} .av-2{background:rgba(0,0,0,.3)}
+.av-3{background:rgba(180,30,80,.4)} .av-4{background:rgba(30,120,30,.3)} .av-5{background:rgba(100,30,100,.3)}
+.av-6{background:rgba(120,50,20,.3)} .av-7{background:rgba(20,100,80,.3)} .av-8{background:rgba(50,50,120,.3)}
+.profile-name{font-family:"Exo 2",sans-serif;font-size:22px;font-weight:800;color:white;margin-bottom:3px}
+.profile-role{font-size:13px;color:rgba(255,255,255,.75);margin-bottom:10px}
+.profile-links{display:flex;gap:8px;flex-wrap:wrap}
+.plink{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;padding:4px 10px;border-radius:12px;text-decoration:none;border:1.5px solid rgba(255,255,255,.35);color:rgba(255,255,255,.9);background:rgba(255,255,255,.12);cursor:pointer;font-family:inherit}
+.plink:hover{background:rgba(255,255,255,.22)}
+.color-bar{height:3px;background:linear-gradient(90deg,#da1668,#f7ab31,#6fa044)}
+.status-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:12px;margin-left:auto}
+.sb-ok{background:rgba(111,160,68,.25);color:#c8f0a0}
+.sb-watch{background:rgba(247,171,49,.25);color:#ffe090}
+.sb-alert{background:rgba(218,22,104,.25);color:#ffb0c8}
+
+/* TABS */
+.tabs{background:white;border-bottom:2px solid #f0e8df;display:flex;padding:0 20px}
+.tab{font-family:"Exo 2",sans-serif;font-size:13px;font-weight:700;padding:13px 16px;color:#a08060;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .15s}
+.tab:hover{color:var(--br)}
+.tab.active{color:var(--bd);border-bottom-color:var(--br)}
+
+/* OBSAH */
+.wrap{max-width:900px;margin:0 auto;padding:22px 16px}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* PŘEHLED */
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.info-card{background:white;border-radius:12px;padding:18px;box-shadow:0 1px 5px rgba(0,0,0,.07)}
+.ic-title{font-family:"Exo 2",sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#a08060;margin-bottom:10px}
+.notes-full{width:100%;border:1.5px solid #ede0d4;border-radius:8px;padding:9px 11px;font-size:13px;font-family:inherit;resize:vertical;min-height:100px;line-height:1.6;background:#fdf9f6}
+.notes-full:focus{outline:none;border-color:var(--br)}
+
+/* ÚKOLY */
+.task-panel{background:white;border-radius:12px;padding:18px;box-shadow:0 1px 5px rgba(0,0,0,.07)}
+.task-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #f5f0ea}
+.task-item:last-child{border:none}
+.task-check{accent-color:var(--br);width:16px;height:16px;cursor:pointer;flex-shrink:0}
+.task-text{flex:1;font-size:13px;line-height:1.4}
+.task-text.done{text-decoration:line-through;color:#b0966a}
+.task-due{font-size:11px;font-weight:600;padding:1px 7px;border-radius:8px}
+.due-ok{color:#a08060;background:#f5f0ea} .due-today{color:#7a4a00;background:#fff0b0} .due-over{color:white;background:var(--acc)}
+.task-del{background:none;border:none;color:#d4c0a8;cursor:pointer;font-size:13px;flex-shrink:0}
+.task-del:hover{color:var(--acc)}
+.add-task-row{display:flex;gap:8px;margin-top:10px}
+.task-inp{flex:1;border:1.5px solid #d4c0a8;border-radius:8px;padding:7px 10px;font-size:13px;font-family:inherit;background:#fdf9f6}
+.task-inp:focus{outline:none;border-color:var(--br)}
+.date-inp{border:1.5px solid #d4c0a8;border-radius:8px;padding:6px 8px;font-size:12px;font-family:inherit;background:#fdf9f6;width:120px}
+.date-inp:focus{outline:none;border-color:var(--br)}
+.btn-add-t{background:var(--bd);border:none;border-radius:8px;color:white;width:30px;height:30px;font-size:16px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+
+/* SCHŮZKY */
+.meet-entry{border:1.5px solid #ede0d4;border-radius:10px;margin-bottom:10px;overflow:hidden;background:white}
+.meet-head{padding:11px 16px;cursor:pointer;display:flex;align-items:center;gap:10px;background:#fdf9f6}
+.meet-head:hover{background:var(--kraft)}
+.meet-date{font-family:"Exo 2",sans-serif;font-size:12px;font-weight:700;color:var(--br);flex-shrink:0}
+.meet-topic{font-size:13px;font-weight:600;color:var(--bd);flex:1}
+.meet-body{display:none;padding:14px 16px;border-top:1px solid #ede0d4}
+.meet-body.open{display:block}
+.meet-sec-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#a08060;margin-bottom:5px;margin-top:10px}
+.meet-sec-label:first-child{margin-top:0}
+.meet-bullets{list-style:none}
+.meet-bullets li{font-size:12px;line-height:1.6}
+.meet-bullets li::before{content:"• ";color:var(--br);font-weight:700}
+.meet-text{font-size:12px;line-height:1.7;white-space:pre-line;color:#2a1a0e}
+
+/* ══ MOJE SEKCE ══ */
+.sekce-grid{display:flex;flex-direction:column;gap:14px}
+.sekce-card{background:white;border-radius:12px;box-shadow:0 1px 5px rgba(0,0,0,.07);overflow:hidden}
+.sekce-header{padding:14px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #f0e8df;cursor:pointer}
+.sekce-header:hover{background:#fdf9f6}
+.sekce-icon{font-size:18px;flex-shrink:0}
+.sekce-title{font-family:"Exo 2",sans-serif;font-size:14px;font-weight:800;color:var(--bd);flex:1}
+.sekce-meta{font-size:11px;color:#a08060}
+.sekce-expand{font-size:12px;color:#a08060;flex-shrink:0;transition:transform .2s}
+.sekce-expand.open{transform:rotate(180deg)}
+.sekce-body{display:none;padding:16px 18px}
+.sekce-body.open{display:block}
+.sekce-del{background:none;border:none;color:#d4c0a8;font-size:13px;cursor:pointer;padding:2px 5px}
+.sekce-del:hover{color:var(--acc)}
+
+/* Checklist */
+.check-item{display:flex;align-items:flex-start;gap:9px;padding:6px 0;border-bottom:1px solid #f5f0ea}
+.check-item:last-child{border:none}
+.check-item input[type=checkbox]{accent-color:var(--br);width:16px;height:16px;flex-shrink:0;margin-top:2px;cursor:pointer}
+.check-label{font-size:13px;line-height:1.4;flex:1}
+.check-label.done{text-decoration:line-through;color:#b0966a}
+.check-note{font-size:11px;color:#a08060;margin-top:1px}
+.add-check-row{display:flex;gap:7px;margin-top:10px}
+.check-inp{flex:1;border:1.5px solid #d4c0a8;border-radius:7px;padding:6px 9px;font-size:12px;font-family:inherit;background:#fdf9f6}
+.check-inp:focus{outline:none;border-color:var(--br)}
+.btn-add-c{background:var(--bd);border:none;border-radius:7px;color:white;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;flex-shrink:0}
+
+/* Notes sekce */
+.sekce-notes{width:100%;border:1.5px solid #ede0d4;border-radius:8px;padding:9px 11px;font-size:13px;font-family:inherit;resize:vertical;min-height:80px;line-height:1.6;background:#fdf9f6}
+.sekce-notes:focus{outline:none;border-color:var(--br)}
+
+/* Tlačítka dole */
+.btn-add-sekce{display:inline-flex;align-items:center;gap:6px;background:white;border:2px dashed #d4c0a8;border-radius:12px;padding:12px 20px;font-family:"Exo 2",sans-serif;font-weight:700;font-size:13px;color:#a08060;cursor:pointer;transition:all .15s;width:100%;justify-content:center}
+.btn-add-sekce:hover{border-color:var(--br);color:var(--br);background:var(--kraft)}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;display:none;align-items:center;justify-content:center}
+.overlay.open{display:flex}
+.modal{background:white;border-radius:16px;padding:24px;width:90%;max-width:420px;display:flex;flex-direction:column;gap:12px}
+.modal h2{font-family:"Exo 2",sans-serif;font-size:16px;font-weight:800;color:var(--bd)}
+.modal label{font-size:11px;font-weight:600;color:var(--br);display:block;margin-bottom:3px}
+.modal input,.modal select,.modal textarea{width:100%;border:1.5px solid #d4c0a8;border-radius:8px;padding:8px 10px;font-size:13px;font-family:inherit;background:#fdf9f6}
+.modal input:focus,.modal select:focus,.modal textarea:focus{outline:none;border-color:var(--br)}
+.modal-btns{display:flex;gap:8px;justify-content:flex-end;margin-top:4px}
+.btn-cancel{background:#f0e8df;border:none;border-radius:20px;padding:7px 16px;font-size:12px;font-weight:700;color:var(--br);cursor:pointer;font-family:inherit}
+.btn-save{background:var(--bd);border:none;border-radius:20px;padding:7px 16px;font-size:12px;font-weight:700;color:white;cursor:pointer;font-family:inherit}
+
+/* TYPE BADGES */
+.type-badge{font-size:10px;font-weight:700;padding:1px 7px;border-radius:8px}
+.tb-checklist{background:#e8f5e0;color:#3a7020}
+.tb-notes{background:#fff0e0;color:#8a4000}
+.tb-links{background:#e0eeff;color:#003388}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-title" id="topbar-name">Profil manažera</span>
+  <a href="/zamestnanci.html">← Manažeři</a>
+  <div class="topbar-right">
+    <a class="btn-top" id="btn-cal" href="#" target="_blank" style="text-decoration:none">📅 Naplánovat</a>
+  </div>
+</div>
+
+<div class="profile-header" id="profile-header">
+  <div class="avatar-lg av-0" id="ph-avatar"></div>
+  <div style="flex:1">
+    <div class="profile-name" id="ph-name">—</div>
+    <div class="profile-role" id="ph-role">—</div>
+    <div class="profile-links" id="ph-links"></div>
+  </div>
+  <div class="status-badge sb-ok" id="ph-status" style="cursor:pointer" onclick="cycleStatus()">● OK</div>
+</div>
+<div class="color-bar"></div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('prehled',this)">Přehled</div>
+  <div class="tab" onclick="showTab('ukoly',this)">📋 Úkoly</div>
+  <div class="tab" onclick="showTab('schuzky',this)">📓 Schůzky</div>
+  <div class="tab" onclick="showTab('sekce',this)">🗂 Moje sekce</div>
+</div>
+
+<div class="wrap">
+
+  <!-- PŘEHLED -->
+  <div class="tab-content active" id="tab-prehled">
+    <div class="overview-grid">
+      <div class="info-card" style="grid-column:1/-1">
+        <div class="ic-title">💬 Poznámky</div>
+        <textarea class="notes-full" id="main-notes" placeholder="Aktuální situace, co sledovat, témata k řešení…" onblur="saveNote(this.value)"></textarea>
+      </div>
+      <div class="info-card" id="overview-tasks">
+        <div class="ic-title">📋 Otevřené úkoly</div>
+        <div id="ov-tasks-list" style="font-size:13px;color:#6b4c30"></div>
+        <a href="#" onclick="showTab('ukoly',null)" style="font-size:11px;font-weight:700;color:var(--br);text-decoration:none;display:block;margin-top:8px">→ Všechny úkoly</a>
+      </div>
+      <div class="info-card" id="overview-meets">
+        <div class="ic-title">📓 Poslední schůzky</div>
+        <div id="ov-meets-list" style="font-size:13px;color:#6b4c30"></div>
+        <a href="#" onclick="showTab('schuzky',null)" style="font-size:11px;font-weight:700;color:var(--br);text-decoration:none;display:block;margin-top:8px">→ Všechny schůzky</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ÚKOLY -->
+  <div class="tab-content" id="tab-ukoly">
+    <div class="task-panel">
+      <div id="task-list"></div>
+      <div class="add-task-row">
+        <input class="task-inp" id="t-inp" placeholder="Nový úkol…" onkeydown="if(event.key==='Enter')addTask()"/>
+        <input class="date-inp" type="date" id="t-date"/>
+        <button class="btn-add-t" onclick="addTask()">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCHŮZKY -->
+  <div class="tab-content" id="tab-schuzky">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
+      <button class="btn-save" onclick="openNewMeet()">+ Zaznamenat schůzku</button>
+    </div>
+    <div id="meet-list"></div>
+  </div>
+
+  <!-- MOJE SEKCE -->
+  <div class="tab-content" id="tab-sekce">
+    <div class="sekce-grid" id="sekce-grid"></div>
+    <button class="btn-add-sekce" style="margin-top:14px" onclick="openAddSekce()">+ Přidat sekci</button>
+  </div>
+
+</div>
+
+<!-- Modal: nová sekce -->
+<div class="overlay" id="modal-sekce">
+  <div class="modal">
+    <h2>Nová sekce</h2>
+    <div><label>Název sekce</label><input id="s-name" placeholder="EU 1169/2011 Checklist"/></div>
+    <div><label>Typ</label>
+      <select id="s-type">
+        <option value="checklist">☑ Checklist (seznam položek s checkboxy)</option>
+        <option value="notes">📝 Poznámky (volný text)</option>
+      </select>
+    </div>
+    <div><label>Emoji ikona (volitelné)</label><input id="s-icon" placeholder="📋" style="max-width:80px"/></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Zrušit</button>
+      <button class="btn-save" onclick="addSekce()">Přidat</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: nová schůzka -->
+<div class="overlay" id="modal-meet">
+  <div class="modal" style="max-width:480px">
+    <h2>Zaznamenat schůzku</h2>
+    <div><label>Datum</label><input type="date" id="m-date"/></div>
+    <div><label>Téma</label><input id="m-topic" placeholder="Quarterly review, legislativa…"/></div>
+    <div><label>Klíčové body (každý na nový řádek)</label><textarea id="m-points" rows="3" placeholder="• Probrali jsme X&#10;• Dohodli jsme Y"></textarea></div>
+    <div><label>Akce / úkoly</label><textarea id="m-actions" rows="2" placeholder="• Lucie zpracuje do 30.6.&#10;• Jan schválí etikety"></textarea></div>
+    <div><label>Celý zápis (volitelné)</label><textarea id="m-notes" rows="3"></textarea></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Zrušit</button>
+      <button class="btn-save" onclick="saveMeet()">Uložit</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── STORAGE KEYS ──
+const MK='nw_managers_v2', TK='nw_tasks_v1', NK='nw_notes_v1', MEETK='nw_meetings_v1', SECK='nw_sections_v1';
+const TODAY = new Date().toISOString().slice(0,10);
+const ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}};
+const sv=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+
+// ── PARSE URL PARAM ──
+const MID = new URLSearchParams(location.search).get('id') || '';
+const ALL_MGRS = ld(MK,[]);
+const AVAIL_IDX = ['av-0','av-1','av-2','av-3','av-4','av-5','av-6','av-7','av-8'];
+
+function initProfile() {
+  const idx = ALL_MGRS.findIndex(m=>m.id===MID);
+  const m = ALL_MGRS[idx] || {id:MID,name:'Neznámý',role:'',email:'',phone:'',trello:'',status:'ok'};
+
+  // Topbar & header
+  document.getElementById('topbar-name').textContent = m.name;
+  document.title = m.name + ' — Nutworld';
+
+  const av = document.getElementById('ph-avatar');
+  av.textContent = m.name.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+  av.className = 'avatar-lg ' + (AVAIL_IDX[idx%9] || 'av-0');
+
+  document.getElementById('ph-name').textContent = m.name;
+  document.getElementById('ph-role').textContent = m.role;
+
+  // Status
+  renderStatus(m.status||'ok');
+
+  // Links
+  const lnk = document.getElementById('ph-links');
+  lnk.innerHTML = [
+    m.email ? `<a class="plink" href="mailto:${esc(m.email)}">✉ ${esc(m.email)}</a>` : '',
+    m.phone ? `<a class="plink" href="tel:${esc(m.phone)}">📞 ${esc(m.phone)}</a>` : '',
+    m.trello ? `<a class="plink" href="${esc(m.trello)}" target="_blank">🗂 Trello</a>` : '',
+  ].join('');
+
+  // Calendar button
+  const calBtn = document.getElementById('btn-cal');
+  const gdt = d => d.toISOString().replace(/-|:|\.\d{3}/g,'');
+  const dt = new Date(); dt.setDate(dt.getDate()+1); dt.setHours(9,0,0,0);
+  const p = new URLSearchParams({action:'TEMPLATE',text:`1:1 ${m.name}`,details:`Schůzka s ${m.name} (${m.role})`,dates:`${gdt(dt)}/${gdt(new Date(dt.getTime()+30*60000))}`});
+  const guests = [m.email,'claudie.nutworld.cz@gmail.com'].filter(Boolean).join(',');
+  if(guests) p.set('add',guests);
+  calBtn.href = 'https://calendar.google.com/calendar/render?' + p;
+
+  // Notes
+  const notes = ld(NK,{});
+  document.getElementById('main-notes').value = notes[MID] || '';
+
+  renderTasks();
+  renderMeets();
+  renderSekce();
+  renderOverview();
+}
+
+// ── STATUS ──
+const STATUS_CYCLE={ok:'watch',watch:'alert',alert:'ok'};
+const STATUS_LABELS={ok:'● OK',watch:'⚠ Sledovat',alert:'🚨 Problém'};
+const STATUS_CLASSES={ok:'sb-ok',watch:'sb-watch',alert:'sb-alert'};
+function renderStatus(s){
+  const el=document.getElementById('ph-status');
+  el.textContent=STATUS_LABELS[s||'ok'];
+  el.className='status-badge '+STATUS_CLASSES[s||'ok'];
+}
+function cycleStatus(){
+  const ms=ld(MK,[]);
+  const m=ms.find(x=>x.id===MID);
+  if(!m)return;
+  m.status=STATUS_CYCLE[m.status||'ok'];
+  sv(MK,ms);
+  renderStatus(m.status);
+}
+
+// ── NOTES ──
+function saveNote(v){const ns=ld(NK,{});ns[MID]=v;sv(NK,ns);}
+
+// ── TASKS ──
+function fmtD(iso){if(!iso)return'';const[y,m,d]=iso.split('-');return`${d}.${m}.`;}
+function dueClass(iso){if(!iso)return'due-ok';if(iso<TODAY)return'due-over';if(iso===TODAY)return'due-today';return'due-ok';}
+function dueLabel(iso){if(!iso)return'';if(iso<TODAY)return'⚠ '+fmtD(iso);if(iso===TODAY)return'⬤ dnes';return fmtD(iso);}
+
+function renderTasks(){
+  const ts=(ld(TK,{})[MID]||[]);
+  document.getElementById('task-list').innerHTML = ts.length
+    ? ts.map(t=>`<div class="task-item">
+        <input type="checkbox" class="task-check" ${t.done?'checked':''} onchange="toggleTask('${t.id}',this.checked)"/>
+        <span class="task-text ${t.done?'done':''}">${esc(t.text)}</span>
+        ${t.due?`<span class="task-due ${dueClass(t.due)}">${dueLabel(t.due)}</span>`:''}
+        <button class="task-del" onclick="delTask('${t.id}')">✕</button>
+      </div>`).join('')
+    : '<p style="color:#b0966a;font-size:13px;padding:8px 0">Žádné úkoly.</p>';
+}
+function addTask(){
+  const inp=document.getElementById('t-inp'),dat=document.getElementById('t-date');
+  const text=inp.value.trim();if(!text)return;
+  const ts=ld(TK,{});if(!ts[MID])ts[MID]=[];
+  ts[MID].unshift({id:Date.now().toString(36),text,due:dat.value||'',done:false});
+  sv(TK,ts);inp.value='';dat.value='';renderTasks();renderOverview();
+}
+function toggleTask(tid,done){const ts=ld(TK,{}),t=(ts[MID]||[]).find(x=>x.id===tid);if(t){t.done=done;sv(TK,ts);renderTasks();renderOverview();}}
+function delTask(tid){const ts=ld(TK,{});ts[MID]=(ts[MID]||[]).filter(x=>x.id!==tid);sv(TK,ts);renderTasks();renderOverview();}
+document.getElementById('t-inp').addEventListener('keydown',e=>{if(e.key==='Enter')addTask();});
+
+// ── MEETS ──
+function renderMeets(){
+  const ms=(ld(MEETK,{})[MID]||[]);
+  const el=document.getElementById('meet-list');
+  if(!ms.length){el.innerHTML='<p style="color:#b0966a;font-size:13px;background:white;border-radius:10px;padding:16px">Žádné záznamy schůzek.</p>';return;}
+  el.innerHTML=ms.map((m,i)=>`
+    <div class="meet-entry">
+      <div class="meet-head" onclick="toggleMeet('mb${i}','me${i}')">
+        <span class="meet-date">${fmtDate(m.date)}</span>
+        <span class="meet-topic">${esc(m.topic)}</span>
+        <span class="sekce-expand" id="me${i}">▾</span>
+      </div>
+      <div class="meet-body" id="mb${i}">
+        ${m.points?.length?`<div class="meet-sec-label">Klíčové body</div><ul class="meet-bullets">${m.points.map(p=>`<li>${esc(p)}</li>`).join('')}</ul>`:''}
+        ${m.actions?.length?`<div class="meet-sec-label">Akce</div><ul class="meet-bullets">${m.actions.map(a=>`<li>${esc(a)}</li>`).join('')}</ul>`:''}
+        ${m.notes?`<div class="meet-sec-label">Zápis</div><div class="meet-text">${esc(m.notes)}</div>`:''}
+        <button class="btn-cancel" style="margin-top:12px;font-size:11px" onclick="delMeet('${m.id}')">Smazat záznam</button>
+      </div>
+    </div>`).join('');
+}
+function toggleMeet(bodyId,iconId){
+  const b=document.getElementById(bodyId),ic=document.getElementById(iconId);
+  b.classList.toggle('open');ic.classList.toggle('open');
+}
+function fmtDate(iso){if(!iso)return'';const[y,m,d]=iso.split('-');return`${d}.${m}.${y}`;}
+function openNewMeet(){document.getElementById('m-date').value=TODAY;openModal('modal-meet');}
+function saveMeet(){
+  const topic=document.getElementById('m-topic').value.trim();if(!topic)return;
+  const points=document.getElementById('m-points').value.split('\n').map(s=>s.replace(/^[•\-]\s*/,'')).filter(Boolean);
+  const actions=document.getElementById('m-actions').value.split('\n').map(s=>s.replace(/^[•\-]\s*/,'')).filter(Boolean);
+  const meet={id:Date.now().toString(36),date:document.getElementById('m-date').value||TODAY,topic,points,actions,notes:document.getElementById('m-notes').value.trim()};
+  const ms=ld(MEETK,{});if(!ms[MID])ms[MID]=[];
+  ms[MID].unshift(meet);sv(MEETK,ms);
+  ['m-topic','m-points','m-actions','m-notes'].forEach(id=>document.getElementById(id).value='');
+  closeModal();renderMeets();renderOverview();
+}
+function delMeet(id){if(!confirm('Smazat záznam?'))return;const ms=ld(MEETK,{});ms[MID]=(ms[MID]||[]).filter(m=>m.id!==id);sv(MEETK,ms);renderMeets();}
+
+// ── SEKCE ──
+function renderSekce(){
+  const all=(ld(SECK,{})[MID]||[]);
+  const grid=document.getElementById('sekce-grid');
+  grid.innerHTML=all.map((s,i)=>renderOneSekce(s,i)).join('');
+}
+function renderOneSekce(s,i){
+  const icon=s.icon||'📋';
+  const items=s.items||[];
+  const doneCount=items.filter(x=>x.done).length;
+  const typeBadge=s.type==='checklist'?'<span class="type-badge tb-checklist">Checklist</span>':'<span class="type-badge tb-notes">Poznámky</span>';
+
+  let bodyHtml='';
+  if(s.type==='checklist'){
+    bodyHtml=`<div>${items.map((it,j)=>`
+      <div class="check-item">
+        <input type="checkbox" ${it.done?'checked':''} onchange="toggleCheckItem('${s.id}',${j},this.checked)"/>
+        <div><div class="check-label ${it.done?'done':''}">${esc(it.text)}</div>${it.note?`<div class="check-note">${esc(it.note)}</div>`:''}</div>
+        <button class="task-del" onclick="delCheckItem('${s.id}',${j})">✕</button>
+      </div>`).join('')}
+      <div class="add-check-row">
+        <input class="check-inp" id="ci-${s.id}" placeholder="Přidat položku…" onkeydown="if(event.key==='Enter')addCheckItem('${s.id}')"/>
+        <button class="btn-add-c" onclick="addCheckItem('${s.id}')">Přidat</button>
+      </div>
+    </div>`;
+  } else {
+    bodyHtml=`<textarea class="sekce-notes" placeholder="Volné poznámky…" onblur="saveSekceNotes('${s.id}',this.value)">${esc(s.notes||'')}</textarea>`;
+  }
+
+  const meta = s.type==='checklist' ? `${doneCount}/${items.length}` : '';
+
+  return `<div class="sekce-card">
+    <div class="sekce-header" onclick="toggleSekce('sb-${s.id}','si-${s.id}')">
+      <span class="sekce-icon">${icon}</span>
+      <span class="sekce-title">${esc(s.name)}</span>
+      ${typeBadge}
+      ${meta?`<span class="sekce-meta">${meta}</span>`:''}
+      <button class="sekce-del" onclick="event.stopPropagation();delSekce('${s.id}')" title="Smazat sekci">✕</button>
+      <span class="sekce-expand" id="si-${s.id}">▾</span>
+    </div>
+    <div class="sekce-body" id="sb-${s.id}">${bodyHtml}</div>
+  </div>`;
+}
+function toggleSekce(bodyId,iconId){
+  const b=document.getElementById(bodyId),ic=document.getElementById(iconId);
+  if(b){b.classList.toggle('open');if(ic)ic.classList.toggle('open');}
+}
+
+function addCheckItem(sid){
+  const inp=document.getElementById('ci-'+sid);
+  const text=inp.value.trim();if(!text)return;
+  const secs=ld(SECK,{});
+  const s=(secs[MID]||[]).find(x=>x.id===sid);
+  if(s){if(!s.items)s.items=[];s.items.push({text,done:false});sv(SECK,secs);renderSekce();}
+}
+function toggleCheckItem(sid,idx,done){
+  const secs=ld(SECK,{});
+  const s=(secs[MID]||[]).find(x=>x.id===sid);
+  if(s&&s.items[idx]){s.items[idx].done=done;sv(SECK,secs);renderSekce();}
+}
+function delCheckItem(sid,idx){
+  const secs=ld(SECK,{});
+  const s=(secs[MID]||[]).find(x=>x.id===sid);
+  if(s){s.items.splice(idx,1);sv(SECK,secs);renderSekce();}
+}
+function saveSekceNotes(sid,val){
+  const secs=ld(SECK,{});
+  const s=(secs[MID]||[]).find(x=>x.id===sid);
+  if(s){s.notes=val;sv(SECK,secs);}
+}
+function delSekce(sid){
+  if(!confirm('Smazat sekci?'))return;
+  const secs=ld(SECK,{});
+  secs[MID]=(secs[MID]||[]).filter(x=>x.id!==sid);
+  sv(SECK,secs);renderSekce();
+}
+
+function openAddSekce(){openModal('modal-sekce');document.getElementById('s-name').focus();}
+function addSekce(){
+  const name=document.getElementById('s-name').value.trim();if(!name)return;
+  const type=document.getElementById('s-type').value;
+  const icon=document.getElementById('s-icon').value.trim()||'📋';
+  const secs=ld(SECK,{});if(!secs[MID])secs[MID]=[];
+  secs[MID].push({id:Date.now().toString(36),name,type,icon,items:[],notes:''});
+  sv(SECK,secs);
+  ['s-name','s-icon'].forEach(id=>document.getElementById(id).value='');
+  closeModal();renderSekce();
+}
+
+// ── PŘEHLED WIDGET ──
+function renderOverview(){
+  const ts=(ld(TK,{})[MID]||[]).filter(t=>!t.done).slice(0,4);
+  const ms=(ld(MEETK,{})[MID]||[]).slice(0,3);
+  document.getElementById('ov-tasks-list').innerHTML = ts.length
+    ? ts.map(t=>`<div style="display:flex;gap:8px;align-items:center;padding:4px 0;border-bottom:1px solid #f5f0ea">
+        <span style="font-size:12px;flex:1;color:#2a1a0e">${esc(t.text)}</span>
+        ${t.due?`<span class="task-due ${dueClass(t.due)}" style="font-size:10px">${dueLabel(t.due)}</span>`:''}
+      </div>`).join('')
+    : '<span style="color:#b0966a;font-size:12px">Žádné úkoly 🎉</span>';
+  document.getElementById('ov-meets-list').innerHTML = ms.length
+    ? ms.map(m=>`<div style="display:flex;gap:8px;align-items:baseline;padding:4px 0;border-bottom:1px solid #f5f0ea">
+        <span style="font-size:11px;color:#a08060;white-space:nowrap">${fmtDate(m.date)}</span>
+        <span style="font-size:12px;color:#2a1a0e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(m.topic)}</span>
+      </div>`).join('')
+    : '<span style="color:#b0966a;font-size:12px">Žádné záznamy</span>';
+}
+
+// ── TABS ──
+function showTab(id, el){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(el)el.classList.add('active');
+  else {
+    const tabs={prehled:0,ukoly:1,schuzky:2,sekce:3};
+    document.querySelectorAll('.tab')[tabs[id]||0].classList.add('active');
+  }
+}
+
+// ── MODAL ──
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(){document.querySelectorAll('.overlay').forEach(el=>el.classList.remove('open'));}
+document.querySelectorAll('.overlay').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)closeModal();}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// ── DEFAULTNÍ SEKCE PRO LUCII TURKOVOU ──
+function seedLucieSekce(){
+  const secs=ld(SECK,{});
+  if(secs[MID]&&secs[MID].length>0)return; // already seeded
+  const mgr=ALL_MGRS.find(m=>m.id===MID);
+  if(!mgr||!mgr.name.toLowerCase().includes('turkov'))return;
+
+  secs[MID]=[
+    {
+      id:'lucie-eu1169',
+      name:'EU 1169/2011 — Povinné údaje na obalu',
+      type:'checklist',icon:'⚖️',notes:'',
+      items:[
+        {text:'Název potraviny — přesný, nezavádějící',done:false},
+        {text:'Složení — sestupně dle hmotnosti, alergeny tučně',done:false},
+        {text:'Alergeny — zvýraznění v seznamu složek (14 hlavních)',done:false},
+        {text:'Čisté množství — gramáž nebo objem',done:false},
+        {text:'Datum minimální trvanlivosti nebo spotřeby',done:false},
+        {text:'Podmínky skladování — pokud je třeba',done:false},
+        {text:'Název a adresa provozovatele — Nutworld s.r.o.',done:false},
+        {text:'Země původu — povinná u ořechů a ovoce',done:false},
+        {text:'Výživové hodnoty — tabulka na 100g',done:false},
+        {text:'Šarže / LOT číslo — pro sledovatelnost',done:false},
+      ]
+    },
+    {
+      id:'lucie-audity',
+      name:'Plán interních auditů',
+      type:'checklist',icon:'🔍',notes:'',
+      items:[
+        {text:'Interní audit provozovny — Q3 2026',done:false},
+        {text:'Audit etiket — namátková kontrola 5–10 % produktů (měsíčně)',done:false},
+        {text:'Kontrola záznamů — kompletnost provozních záznamů (měsíčně)',done:false},
+        {text:'Dodavatelský audit — hodnocení klíčových dodavatelů (ročně)',done:false},
+        {text:'Přezkoumání HACCP — aktualizace plánu (ročně)',done:false},
+        {text:'Interní audit provozovny — Q4 2026',done:false},
+      ]
+    },
+    {
+      id:'lucie-haccp',
+      name:'HACCP — přehled klíčových rizik',
+      type:'checklist',icon:'⚠️',notes:'',
+      items:[
+        {text:'Křížová kontaminace alergenů — ořechy, arašídy, lepek (jeden provoz)',done:false},
+        {text:'Cizí předměty — skořápky, části obalů při přebalování',done:false},
+        {text:'Záměna produktů — podobné produkty ve stejných obalech',done:false},
+        {text:'Trvanlivost — správné datum spotřeby na etiketě',done:false},
+        {text:'Denní záznamy CCP vedeny a archivovány',done:false},
+      ]
+    },
+    {
+      id:'lucie-skoleni',
+      name:'Plán školení zaměstnanců 2026',
+      type:'checklist',icon:'🎓',notes:'',
+      items:[
+        {text:'Vstupní hygienické školení — noví zaměstnanci',done:false},
+        {text:'HACCP základní — při nástupu + 1× ročně',done:false},
+        {text:'Alergeny — při nástupu + při změně sortimentu',done:false},
+        {text:'Označování produktů — při nástupu + při novém produktu',done:false},
+        {text:'Recall postup — 1× ročně',done:false},
+      ]
+    },
+    {
+      id:'lucie-notes',
+      name:'Pracovní poznámky',
+      type:'notes',icon:'📝',notes:'',items:[]
+    },
+  ];
+  sv(SECK,secs);
+}
+
+// ── INIT ──
+if(!MID){document.body.innerHTML='<p style="padding:40px;text-align:center;color:#a08060">Chybí parametr ?id=... — <a href="/zamestnanci.html">zpět na manažery</a></p>';}
+else{seedLucieSekce();initProfile();}
+</script>
+</body>
+</html>
