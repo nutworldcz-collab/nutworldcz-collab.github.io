@@ -8,99 +8,156 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--bd:#5c381f;--br:#83502e;--kraft:#f1e6da;--acc:#da1668;--amb:#f7ab31;--leaf:#6fa044}
-body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;min-height:100vh}
+body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;min-height:100vh;overflow-x:hidden}
 
 /* TOPBAR */
-.topbar{background:var(--bd);padding:11px 20px;display:flex;align-items:center;gap:12px}
+.topbar{background:var(--bd);padding:11px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50}
 .topbar-title{font-family:"Exo 2",sans-serif;font-size:16px;font-weight:800;color:white}
 .topbar a{color:rgba(255,255,255,.6);font-size:12px;text-decoration:none}
 .topbar a:hover{color:white}
 .topbar-right{margin-left:auto;display:flex;gap:8px}
-.btn-top{background:var(--amb);border:none;color:var(--bd);font-family:"Exo 2",sans-serif;font-weight:800;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer}
+.btn-top{background:var(--amb);border:none;color:var(--bd);font-family:"Exo 2",sans-serif;font-weight:800;font-size:12px;padding:6px 14px;border-radius:20px;cursor:pointer}
 .btn-top:hover{filter:brightness(1.08)}
+.btn-top.outline{background:rgba(255,255,255,.15);color:white;border:1px solid rgba(255,255,255,.3)}
+.btn-top.outline:hover{background:rgba(255,255,255,.25)}
 
-/* ALERT BANNER */
-.alert-bar{display:none;margin:16px 16px 0;max-width:1060px;margin-left:auto;margin-right:auto}
-.alert-item{border-radius:10px;padding:10px 14px;margin-bottom:8px;font-size:13px;display:flex;align-items:flex-start;gap:10px}
+/* ALERTS */
+.alert-bar{max-width:1060px;margin:14px auto 0;padding:0 16px;display:none}
+.alert-item{border-radius:10px;padding:10px 14px;margin-bottom:8px;font-size:12.5px;display:flex;gap:10px}
 .alert-overdue{background:#fde8ef;border-left:4px solid var(--acc)}
 .alert-today{background:#fff8e1;border-left:4px solid var(--amb)}
-.alert-icon{font-size:16px;flex-shrink:0}
-.alert-text strong{font-family:"Exo 2",sans-serif;font-weight:700}
 
-/* LAYOUT */
-.wrap{max-width:1060px;margin:0 auto;padding:20px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+/* GRID */
+.wrap{max-width:1060px;margin:0 auto;padding:18px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
 
 /* KARTA */
-.card{background:white;border-radius:14px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.09);display:flex;flex-direction:column}
-.card-header{padding:16px 18px 14px;display:flex;gap:13px;align-items:flex-start;border-bottom:1px solid #f0e8df}
-.avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:"Exo 2",sans-serif;font-size:16px;font-weight:800;color:white;flex-shrink:0}
-.av-0{background:linear-gradient(135deg,#5c381f,#83502e)}
-.av-1{background:linear-gradient(135deg,#b8860b,#c9982e)}
-.av-2{background:linear-gradient(135deg,#1a4a7a,#2e78c0)}
-.av-3{background:linear-gradient(135deg,#da1668,#e84d8a)}
-.av-4{background:linear-gradient(135deg,#2d5a1b,#6fa044)}
-.av-5{background:linear-gradient(135deg,#6b2f6b,#a855a8)}
-.av-6{background:linear-gradient(135deg,#7a3a1a,#c06030)}
-.av-7{background:linear-gradient(135deg,#1a5c4a,#2da882)}
+.card{background:white;border-radius:14px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.08);display:flex;flex-direction:column}
+.card-header{padding:14px 16px;display:flex;gap:12px;align-items:flex-start;border-bottom:1px solid #f0e8df}
+.avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:"Exo 2",sans-serif;font-size:15px;font-weight:800;color:white;flex-shrink:0}
+.av-0{background:linear-gradient(135deg,#5c381f,#83502e)} .av-1{background:linear-gradient(135deg,#b8860b,#c9982e)}
+.av-2{background:linear-gradient(135deg,#1a4a7a,#2e78c0)} .av-3{background:linear-gradient(135deg,#da1668,#e84d8a)}
+.av-4{background:linear-gradient(135deg,#2d5a1b,#6fa044)} .av-5{background:linear-gradient(135deg,#6b2f6b,#a855a8)}
+.av-6{background:linear-gradient(135deg,#7a3a1a,#c06030)} .av-7{background:linear-gradient(135deg,#1a5c4a,#2da882)}
 .av-8{background:linear-gradient(135deg,#3a3a6b,#6868b8)}
-.mgr-name{font-family:"Exo 2",sans-serif;font-size:15px;font-weight:800;color:var(--bd);margin-bottom:1px}
-.mgr-role{font-size:11px;font-weight:600;color:var(--br);margin-bottom:6px}
-.mgr-links{display:flex;gap:6px;flex-wrap:wrap}
-.link-btn{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:12px;text-decoration:none;border:1.5px solid;cursor:pointer;background:none;font-family:inherit;transition:all .12s}
-.link-mail{color:var(--br);border-color:#d4c0a8}
-.link-mail:hover{background:var(--kraft)}
-.link-trello{color:#0052cc;border-color:#b3c8f0}
-.link-trello:hover{background:#e8f0fe}
-.link-trello-add{color:#a08060;border-color:#d4c0a8;font-size:10px}
-.link-trello-add:hover{background:var(--kraft)}
-.link-del{color:#c0a880;border-color:transparent;font-size:10px;margin-left:auto}
-.link-del:hover{color:var(--acc)}
+.mgr-info{flex:1;min-width:0}
+.mgr-name{font-family:"Exo 2",sans-serif;font-size:14px;font-weight:800;color:var(--bd);margin-bottom:1px}
+.mgr-role{font-size:11px;color:var(--br);font-weight:600;margin-bottom:7px}
+.mgr-actions{display:flex;flex-wrap:wrap;gap:5px}
+.act-btn{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:600;padding:4px 9px;border-radius:12px;text-decoration:none;border:1.5px solid;cursor:pointer;background:none;font-family:inherit;transition:all .12s;white-space:nowrap}
+.act-mail{color:var(--br);border-color:#d4c0a8}.act-mail:hover{background:var(--kraft)}
+.act-cal{color:#0d6efd;border-color:#b3cffd}.act-cal:hover{background:#e8f0fe}
+.act-trello{color:#0052cc;border-color:#b3c8f0}.act-trello:hover{background:#e8f0fe}
+.act-meet{color:#5c381f;border-color:#c8a882;background:var(--kraft)}.act-meet:hover{filter:brightness(.95)}
+.act-del{color:#c0a880;border-color:transparent;font-size:10px}.act-del:hover{color:var(--acc)}
 
-/* ÚKOLY */
-.section{padding:12px 18px;border-bottom:1px solid #f0e8df}
-.section-title{font-family:"Exo 2",sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#a08060;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+/* STATUS DOT */
+.status-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:4px;cursor:pointer;border:2px solid #e0d0c0}
+.s-ok{background:var(--leaf);border-color:var(--leaf)}
+.s-watch{background:var(--amb);border-color:var(--amb)}
+.s-alert{background:var(--acc);border-color:var(--acc)}
+
+/* SEKCE */
+.section{padding:10px 16px;border-bottom:1px solid #f0e8df}
+.sec-title{font-family:"Exo 2",sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#a08060;font-weight:700;margin-bottom:7px;display:flex;align-items:center;gap:5px}
 .badge{background:var(--acc);color:white;border-radius:10px;padding:1px 6px;font-size:9px;font-weight:800}
 .badge-amb{background:var(--amb);color:var(--bd)}
-.task-list{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
-.task-item{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid #f8f4f0}
-.task-item:last-child{border-bottom:none}
-.task-check{width:16px;height:16px;accent-color:var(--br);flex-shrink:0;margin-top:2px;cursor:pointer}
-.task-text{flex:1;font-size:12.5px;line-height:1.4;word-break:break-word}
+.badge-meet{background:var(--kraft);color:var(--br);border:1px solid #d4c0a8}
+
+/* ÚKOLY */
+.task-list{display:flex;flex-direction:column;gap:3px;margin-bottom:7px}
+.task-item{display:flex;align-items:center;gap:7px;padding:4px 0;border-bottom:1px solid #f8f4f0}
+.task-item:last-child{border:none}
+.task-check{width:15px;height:15px;accent-color:var(--br);flex-shrink:0;cursor:pointer}
+.task-text{flex:1;font-size:12px;line-height:1.4}
 .task-text.done{text-decoration:line-through;color:#b0966a}
-.task-due{font-size:10px;font-weight:600;padding:1px 6px;border-radius:8px;flex-shrink:0;white-space:nowrap}
-.due-ok{color:#a08060;background:#f5f0ea}
-.due-today{color:#7a4a00;background:#fff0b0}
-.due-over{color:white;background:var(--acc)}
-.task-del{background:none;border:none;color:#d4c0a8;font-size:13px;cursor:pointer;flex-shrink:0;padding:0 2px;line-height:1}
+.task-due{font-size:10px;font-weight:600;padding:1px 6px;border-radius:8px;flex-shrink:0}
+.due-ok{color:#a08060;background:#f5f0ea} .due-today{color:#7a4a00;background:#fff0b0} .due-over{color:white;background:var(--acc)}
+.task-del{background:none;border:none;color:#d4c0a8;font-size:12px;cursor:pointer;flex-shrink:0}
 .task-del:hover{color:var(--acc)}
-.add-task{display:flex;gap:6px;align-items:center}
-.task-input{flex:1;border:1.5px solid #d4c0a8;border-radius:7px;padding:6px 9px;font-size:12px;font-family:inherit;background:#fdf9f6}
+.add-task{display:flex;gap:5px}
+.task-input{flex:1;border:1.5px solid #d4c0a8;border-radius:7px;padding:5px 8px;font-size:12px;font-family:inherit;background:#fdf9f6}
 .task-input:focus{outline:none;border-color:var(--br)}
-.date-input{border:1.5px solid #d4c0a8;border-radius:7px;padding:5px 7px;font-size:11px;font-family:inherit;background:#fdf9f6;color:#5a3a1a;width:115px}
+.date-input{border:1.5px solid #d4c0a8;border-radius:7px;padding:4px 6px;font-size:11px;font-family:inherit;background:#fdf9f6;width:108px}
 .date-input:focus{outline:none;border-color:var(--br)}
-.btn-addtask{background:var(--bd);border:none;border-radius:7px;color:white;font-size:16px;width:28px;height:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.btn-addtask:hover{filter:brightness(1.15)}
+.btn-add-t{background:var(--bd);border:none;border-radius:7px;color:white;font-size:15px;width:26px;height:26px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
 
 /* POZNÁMKY */
-.notes-section{padding:12px 18px;flex:1;display:flex;flex-direction:column}
-.notes{width:100%;border:1.5px solid #ede0d4;border-radius:8px;padding:8px 10px;font-size:12px;font-family:inherit;resize:vertical;min-height:56px;line-height:1.6;background:#fdf9f6;transition:border-color .15s;flex:1}
-.notes:focus{outline:none;border-color:var(--br);background:white}
+.notes-section{padding:10px 16px}
+.notes{width:100%;border:1.5px solid #ede0d4;border-radius:8px;padding:7px 9px;font-size:12px;font-family:inherit;resize:vertical;min-height:52px;line-height:1.6;background:#fdf9f6;transition:border-color .15s}
+.notes:focus{outline:none;border-color:var(--br)}
 .notes::placeholder{color:#c0a880}
 
-/* MODAL */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;display:none;align-items:center;justify-content:center}
-.overlay.open{display:flex}
-.modal{background:white;border-radius:16px;padding:26px;width:90%;max-width:420px;display:flex;flex-direction:column;gap:13px}
-.modal h2{font-family:"Exo 2",sans-serif;font-size:17px;font-weight:800;color:var(--bd)}
-.modal label{font-size:11px;font-weight:600;color:var(--br);display:block;margin-bottom:3px}
-.modal input{width:100%;border:1.5px solid #d4c0a8;border-radius:8px;padding:8px 11px;font-size:13px;font-family:inherit;background:#fdf9f6}
-.modal input:focus{outline:none;border-color:var(--br)}
-.modal-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:2px}
-.btn-cancel{background:#f0e8df;border:none;border-radius:20px;padding:8px 18px;font-size:13px;font-weight:700;color:var(--br);cursor:pointer;font-family:inherit}
-.btn-save{background:var(--bd);border:none;border-radius:20px;padding:8px 18px;font-size:13px;font-weight:700;color:white;cursor:pointer;font-family:inherit}
+/* ═══ PANEL SCHŮZEK ═══ */
+.meet-panel{position:fixed;top:0;right:-100%;width:min(600px,100vw);height:100vh;background:white;box-shadow:-4px 0 24px rgba(0,0,0,.18);z-index:200;transition:right .25s ease;display:flex;flex-direction:column;overflow:hidden}
+.meet-panel.open{right:0}
+.panel-topbar{background:var(--bd);padding:12px 18px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.panel-title{font-family:"Exo 2",sans-serif;font-size:14px;font-weight:800;color:white;flex:1}
+.panel-close{background:rgba(255,255,255,.2);border:none;color:white;font-size:18px;width:30px;height:30px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.panel-close:hover{background:rgba(255,255,255,.35)}
+.panel-actions{padding:12px 18px;border-bottom:1px solid #f0e8df;display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap}
+.panel-body{flex:1;overflow-y:auto;padding:14px 18px}
 
-/* TRELLO MODAL */
-.trello-modal{background:white;border-radius:16px;padding:26px;width:90%;max-width:380px;display:flex;flex-direction:column;gap:13px}
+/* Nová schůzka form */
+.new-meet-form{background:var(--kraft);border-radius:12px;padding:16px;margin-bottom:14px;border:2px solid #d4c0a8;display:none}
+.new-meet-form.open{display:block}
+.form-row{margin-bottom:10px}
+.form-label{font-size:11px;font-weight:700;color:var(--br);display:block;margin-bottom:3px;font-family:"Exo 2",sans-serif;letter-spacing:.5px}
+.form-input{width:100%;border:1.5px solid #d4c0a8;border-radius:7px;padding:7px 10px;font-size:13px;font-family:inherit;background:white}
+.form-input:focus{outline:none;border-color:var(--br)}
+.form-textarea{width:100%;border:1.5px solid #d4c0a8;border-radius:7px;padding:7px 10px;font-size:12px;font-family:inherit;resize:vertical;min-height:70px;line-height:1.6;background:white}
+.form-textarea:focus{outline:none;border-color:var(--br)}
+.bullets-list{display:flex;flex-direction:column;gap:4px;margin-bottom:5px}
+.bullet-row{display:flex;gap:5px}
+.bullet-input{flex:1;border:1.5px solid #d4c0a8;border-radius:7px;padding:5px 8px;font-size:12px;font-family:inherit;background:white}
+.bullet-input:focus{outline:none;border-color:var(--br)}
+.btn-add-bullet{background:var(--bd);border:none;border-radius:6px;color:white;font-size:13px;padding:0 8px;cursor:pointer;flex-shrink:0}
+.form-btns{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+.btn-sm-save{background:var(--bd);border:none;border-radius:16px;color:white;font-family:"Exo 2",sans-serif;font-weight:700;font-size:12px;padding:7px 16px;cursor:pointer}
+.btn-sm-cancel{background:#e8d8c5;border:none;border-radius:16px;color:var(--br);font-family:"Exo 2",sans-serif;font-weight:700;font-size:12px;padding:7px 14px;cursor:pointer}
+
+/* Záznamy schůzek */
+.meet-entry{border:1.5px solid #ede0d4;border-radius:10px;margin-bottom:10px;overflow:hidden}
+.meet-entry-header{padding:10px 14px;cursor:pointer;display:flex;align-items:center;gap:8px;background:#fdf9f6}
+.meet-entry-header:hover{background:var(--kraft)}
+.meet-date{font-family:"Exo 2",sans-serif;font-size:12px;font-weight:700;color:var(--br);flex-shrink:0}
+.meet-topic{font-size:13px;font-weight:600;color:var(--bd);flex:1}
+.meet-expand{font-size:11px;color:#a08060;flex-shrink:0}
+.meet-body{display:none;padding:12px 14px;border-top:1px solid #ede0d4}
+.meet-body.open{display:block}
+.meet-section{margin-bottom:10px}
+.meet-section-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#a08060;margin-bottom:4px}
+.meet-section-text{font-size:12px;line-height:1.6;color:#2a1a0e;white-space:pre-line}
+.meet-bullets{list-style:none;display:flex;flex-direction:column;gap:3px}
+.meet-bullets li::before{content:"•  ";color:var(--br);font-weight:700}
+.meet-bullets li{font-size:12px;line-height:1.5}
+.meet-actions{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+.btn-send{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:5px 11px;border-radius:14px;border:1.5px solid;cursor:pointer;background:none;font-family:inherit}
+.btn-send-full{color:#0d6efd;border-color:#b3cffd}.btn-send-full:hover{background:#e8f0fe}
+.btn-send-brief{color:var(--br);border-color:#d4c0a8}.btn-send-brief:hover{background:var(--kraft)}
+.btn-send-del{color:#c0a880;border-color:transparent;margin-left:auto}.btn-send-del:hover{color:var(--acc)}
+.empty-meets{text-align:center;padding:32px 16px;color:#a08060;font-size:13px}
+
+/* OVERLAY */
+.panel-overlay{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:199;display:none}
+.panel-overlay.open{display:block}
+
+/* MODAL přidat */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:300;display:none;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:white;border-radius:16px;padding:24px;width:90%;max-width:420px;display:flex;flex-direction:column;gap:12px}
+.modal h2{font-family:"Exo 2",sans-serif;font-size:16px;font-weight:800;color:var(--bd)}
+.modal label{font-size:11px;font-weight:600;color:var(--br);display:block;margin-bottom:3px}
+.modal input{width:100%;border:1.5px solid #d4c0a8;border-radius:8px;padding:8px 10px;font-size:13px;font-family:inherit;background:#fdf9f6}
+.modal input:focus{outline:none;border-color:var(--br)}
+.modal-btns{display:flex;gap:8px;justify-content:flex-end;margin-top:4px}
+.btn-cancel{background:#f0e8df;border:none;border-radius:20px;padding:7px 16px;font-size:12px;font-weight:700;color:var(--br);cursor:pointer;font-family:inherit}
+.btn-save{background:var(--bd);border:none;border-radius:20px;padding:7px 16px;font-size:12px;font-weight:700;color:white;cursor:pointer;font-family:inherit}
+
+/* DIGEST */
+.digest-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:300;display:none;align-items:center;justify-content:center}
+.digest-overlay.open{display:flex}
+.digest-modal{background:white;border-radius:16px;padding:24px;width:90%;max-width:540px;max-height:80vh;display:flex;flex-direction:column;gap:12px}
+.digest-body{flex:1;overflow-y:auto;font-size:12px;line-height:1.7;white-space:pre-wrap;background:#fdf9f6;border:1.5px solid #ede0d4;border-radius:8px;padding:12px}
 </style>
 </head>
 <body>
@@ -109,243 +166,398 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
   <span class="topbar-title">👥 Manažeři</span>
   <a href="/ja.html">← Dashboard</a>
   <div class="topbar-right">
-    <button class="btn-top" onclick="openModal()">+ Přidat manažera</button>
+    <button class="btn-top outline" onclick="showDigest()">📧 Přehled úkolů</button>
+    <button class="btn-top" onclick="openAddModal()">+ Přidat</button>
   </div>
 </div>
 
 <div id="alert-bar" class="alert-bar"></div>
 <div class="wrap" id="grid"></div>
 
-<!-- Modal: Přidat manažera -->
-<div class="overlay" id="overlay-add">
+<!-- Panel schůzek -->
+<div class="panel-overlay" id="panel-overlay" onclick="closeMeetPanel()"></div>
+<div class="meet-panel" id="meet-panel">
+  <div class="panel-topbar">
+    <div class="panel-title" id="panel-title">Schůzky</div>
+    <button class="panel-close" onclick="closeMeetPanel()">✕</button>
+  </div>
+  <div class="panel-actions">
+    <button class="act-btn act-cal" id="panel-cal-btn">📅 Naplánovat schůzku</button>
+    <button class="act-btn act-meet" onclick="toggleNewMeetForm()">+ Zaznamenat schůzku</button>
+  </div>
+  <div class="panel-body">
+    <div class="new-meet-form" id="new-meet-form">
+      <div class="form-row">
+        <label class="form-label">Datum</label>
+        <input class="form-input" type="date" id="f-date"/>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Téma schůzky</label>
+        <input class="form-input" type="text" id="f-topic" placeholder="Quarterly review, 1:1, projekt X…"/>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Klíčové body</label>
+        <div class="bullets-list" id="f-points"></div>
+        <button class="btn-add-bullet" onclick="addBullet('f-points')">+ bod</button>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Akce & úkoly z schůzky</label>
+        <div class="bullets-list" id="f-actions"></div>
+        <button class="btn-add-bullet" onclick="addBullet('f-actions')">+ akce</button>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Poznámky / celý zápis</label>
+        <textarea class="form-textarea" id="f-notes" placeholder="Volné poznámky ze schůzky…"></textarea>
+      </div>
+      <div class="form-btns">
+        <button class="btn-sm-cancel" onclick="toggleNewMeetForm()">Zrušit</button>
+        <button class="btn-sm-save" onclick="saveMeeting()">Uložit schůzku</button>
+      </div>
+    </div>
+    <div id="meet-list"></div>
+  </div>
+</div>
+
+<!-- Modals -->
+<div class="modal-overlay" id="modal-add">
   <div class="modal">
     <h2>Přidat manažera</h2>
     <div><label>Jméno a příjmení</label><input id="m-name" placeholder="Jana Nývltová"/></div>
-    <div><label>Pozice / oblast</label><input id="m-role" placeholder="Provozní ředitel"/></div>
+    <div><label>Pozice</label><input id="m-role" placeholder="Provozní ředitel"/></div>
     <div><label>Email</label><input id="m-email" placeholder="jana.nyvltova@nutworld.cz"/></div>
-    <div><label>Telefon (volitelné)</label><input id="m-phone" placeholder="+420 777 000 000"/></div>
-    <div><label>Trello URL (volitelné)</label><input id="m-trello" placeholder="https://trello.com/b/..."/></div>
+    <div><label>Telefon</label><input id="m-phone" placeholder="+420 777 000 000"/></div>
+    <div><label>Trello URL</label><input id="m-trello" placeholder="https://trello.com/b/…"/></div>
     <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal('overlay-add')">Zrušit</button>
+      <button class="btn-cancel" onclick="closeModal('modal-add')">Zrušit</button>
       <button class="btn-save" onclick="addManager()">Přidat</button>
     </div>
   </div>
 </div>
 
-<!-- Modal: Trello URL -->
-<div class="overlay" id="overlay-trello">
-  <div class="trello-modal">
+<div class="modal-overlay" id="modal-trello">
+  <div class="modal" style="max-width:380px">
     <h2>Trello board</h2>
-    <div><label>URL Trello boardu pro tohoto manažera</label><input id="t-url" placeholder="https://trello.com/b/..."/></div>
+    <div><label>URL Trello boardu</label><input id="t-url" placeholder="https://trello.com/b/…"/></div>
     <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal('overlay-trello')">Zrušit</button>
+      <button class="btn-cancel" onclick="closeModal('modal-trello')">Zrušit</button>
       <button class="btn-save" onclick="saveTrello()">Uložit</button>
     </div>
   </div>
 </div>
 
-<script>
-const MK = 'nw_managers_v2';
-const TK = 'nw_tasks_v1';
-const NK = 'nw_notes_v1';
+<div class="digest-overlay" id="digest-overlay">
+  <div class="digest-modal">
+    <h2 style="font-family:'Exo 2',sans-serif;font-size:16px;font-weight:800;color:var(--bd)">📧 Přehled úkolů</h2>
+    <div class="digest-body" id="digest-body"></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('digest-overlay')">Zavřít</button>
+      <button class="btn-save" onclick="sendDigest()">Odeslat emailem</button>
+    </div>
+  </div>
+</div>
 
-const DEFAULTS = [
-  {id:'jana-nyvltova',      name:'Jana Nývltová',       role:'Provozní ředitel',               email:'jana.nyvltova@nutworld.cz',       phone:'', trello:''},
-  {id:'tomas-hamernik',     name:'Tomáš Hamerník',      role:'Obchodní manažer & vedoucí obchodu', email:'tomas.hamernik@nutworld.cz', phone:'', trello:''},
-  {id:'martin-werner',      name:'Martin Werner',        role:'Obchodní manažer',               email:'martin.werner@nutworld.cz',       phone:'', trello:''},
-  {id:'marketa-costachova', name:'Markéta Costachová',  role:'Obchodní manažer externí',       email:'marketa.costachova@nutworld.cz',  phone:'', trello:''},
-  {id:'pavlina-prochazkova',name:'Pavlína Procházková', role:'Marketing',                      email:'pavlina.prochazkova@nutworld.cz', phone:'', trello:''},
-  {id:'renata-posepna',     name:'Renata Pošepná',       role:'Vedoucí dárkové výroby',         email:'renata.posepna@nutworld.cz',      phone:'', trello:''},
-  {id:'simona',             name:'Simona',               role:'Vedoucí balící výroby',          email:'',                                phone:'', trello:''},
-  {id:'lucie-turkova',      name:'Lucie Turková',        role:'Legislativa & kvalita',          email:'lucie.turkova@nutworld.cz',       phone:'', trello:''},
-  {id:'rita',               name:'Rita',                 role:'Vedoucí dopravy',                email:'',                                phone:'', trello:''},
+<script>
+const MK='nw_managers_v2', TK='nw_tasks_v1', NK='nw_notes_v1', MEETK='nw_meetings_v1';
+const PROXY='https://script.google.com/macros/s/AKfycbyB2V0l9gc3OFh-yx2SlfTkWP4PmPhus7IF00g3qIjTzpSbRskXiJ5a0rGBQ0EKlyU/exec';
+const ME='nutworld.cz@gmail.com';
+const TODAY=new Date().toISOString().slice(0,10);
+
+const DEFAULTS=[
+  {id:'jana-nyvltova',      name:'Jana Nývltová',       role:'Provozní ředitel',                  email:'jana.nyvltova@nutworld.cz',       phone:'',trello:'',status:'ok'},
+  {id:'tomas-hamernik',     name:'Tomáš Hamerník',      role:'Obchodní manažer & vedoucí obchodu',email:'tomas.hamernik@nutworld.cz',       phone:'',trello:'',status:'ok'},
+  {id:'martin-werner',      name:'Martin Werner',        role:'Obchodní manažer',                  email:'martin.werner@nutworld.cz',        phone:'',trello:'',status:'ok'},
+  {id:'marketa-costachova', name:'Markéta Costachová',  role:'Obchodní manažer externí',          email:'marketa.costachova@nutworld.cz',   phone:'',trello:'',status:'ok'},
+  {id:'pavlina-prochazkova',name:'Pavlína Procházková', role:'Marketing',                         email:'pavlina.prochazkova@nutworld.cz',  phone:'',trello:'',status:'ok'},
+  {id:'renata-posepna',     name:'Renata Pošepná',       role:'Vedoucí dárkové výroby',            email:'renata.posepna@nutworld.cz',       phone:'',trello:'',status:'ok'},
+  {id:'simona',             name:'Simona',               role:'Vedoucí balící výroby',             email:'',                                 phone:'',trello:'',status:'ok'},
+  {id:'lucie-turkova',      name:'Lucie Turková',        role:'Legislativa & kvalita',             email:'lucie.turkova@nutworld.cz',        phone:'',trello:'',status:'ok'},
+  {id:'rita',               name:'Rita',                 role:'Vedoucí dopravy',                   email:'',                                 phone:'',trello:'',status:'ok'},
 ];
 
-const load  = (k, def) => { try { return JSON.parse(localStorage.getItem(k)) ?? def; } catch { return def; } };
-const save  = (k, v)   => localStorage.setItem(k, JSON.stringify(v));
-const mgrs  = ()       => load(MK, DEFAULTS);
-const tasks = ()       => load(TK, {});
-const notes = ()       => load(NK, {});
+const load=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}};
+const save=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+const mgrs=()=>load(MK,DEFAULTS);
+const allTasks=()=>load(TK,{});
+const allNotes=()=>load(NK,{});
+const allMeets=()=>load(MEETK,{});
 
-const TODAY = new Date().toISOString().slice(0,10);
+function fmtDate(iso){if(!iso)return'';const[y,m,d]=iso.split('-');return`${d}.${m}.${y}`;}
+function fmtShort(iso){if(!iso)return'';const[y,m,d]=iso.split('-');return`${d}.${m}.`;}
+function dueClass(iso){if(!iso)return'';if(iso<TODAY)return'due-over';if(iso===TODAY)return'due-today';return'due-ok';}
+function dueLabel(iso){if(!iso)return'';if(iso<TODAY)return'⚠ '+fmtShort(iso);if(iso===TODAY)return'⬤ dnes';return fmtShort(iso);}
+function initials(n){return n.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
-function fmtDate(iso) {
-  if (!iso) return '';
-  const [y,m,d] = iso.split('-');
-  return `${d}.${m}.`;
+// ── CALENDAR URL ──
+function calUrl(mgr){
+  const dt=new Date();dt.setDate(dt.getDate()+1);
+  const ds=dt.toISOString().replace(/-|:|\.\d{3}/g,'').slice(0,15)+'00Z';
+  const de=new Date(dt.getTime()+30*60000).toISOString().replace(/-|:|\.\d{3}/g,'').slice(0,15)+'00Z';
+  const p=new URLSearchParams({action:'TEMPLATE',text:`1:1 ${mgr.name}`,details:`Schůzka s ${mgr.name} (${mgr.role})`,dates:`${ds}/${de}`});
+  if(mgr.email)p.set('add',mgr.email);
+  return`https://calendar.google.com/calendar/render?${p}`;
 }
-function dueClass(iso) {
-  if (!iso) return '';
-  if (iso < TODAY) return 'due-over';
-  if (iso === TODAY) return 'due-today';
-  return 'due-ok';
-}
-function dueLabel(iso) {
-  if (!iso) return '';
-  if (iso < TODAY) return '⚠ ' + fmtDate(iso);
-  if (iso === TODAY) return '⬤ dnes';
-  return fmtDate(iso);
-}
-function initials(n) { return n.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase(); }
 
-// --- ALERTS ---
-function renderAlerts() {
-  const all = tasks(), ms = mgrs();
-  let html = '';
-  ms.forEach(m => {
-    (all[m.id]||[]).filter(t=>!t.done && t.due).forEach(t => {
-      if (t.due < TODAY)
-        html += `<div class="alert-item alert-overdue"><span class="alert-icon">🚨</span><span class="alert-text"><strong>${esc(m.name)}:</strong> ${esc(t.text)} — <em>po termínu ${fmtDate(t.due)}</em></span></div>`;
-      else if (t.due === TODAY)
-        html += `<div class="alert-item alert-today"><span class="alert-icon">⏰</span><span class="alert-text"><strong>${esc(m.name)}:</strong> ${esc(t.text)} — <em>dnes!</em></span></div>`;
+// ── STATUS ──
+const STATUS_CYCLE={ok:'watch',watch:'alert',alert:'ok'};
+const STATUS_DOT={ok:'s-ok',watch:'s-watch',alert:'s-alert'};
+const STATUS_TITLE={ok:'OK',watch:'Sledovat',alert:'🚨 Problém'};
+function cycleStatus(mid){
+  const ms=mgrs(),m=ms.find(x=>x.id===mid);
+  if(m){m.status=STATUS_CYCLE[m.status||'ok'];save(MK,ms);render();}
+}
+
+// ── ALERTS ──
+function renderAlerts(){
+  const ts=allTasks(),ms=mgrs();
+  let html='';
+  ms.forEach(m=>{
+    (ts[m.id]||[]).filter(t=>!t.done&&t.due).forEach(t=>{
+      if(t.due<TODAY) html+=`<div class="alert-item alert-overdue">🚨 <strong>${esc(m.name)}:</strong> ${esc(t.text)} — po termínu ${fmtShort(t.due)}</div>`;
+      else if(t.due===TODAY) html+=`<div class="alert-item alert-today">⏰ <strong>${esc(m.name)}:</strong> ${esc(t.text)} — <em>dnes!</em></div>`;
     });
   });
-  const bar = document.getElementById('alert-bar');
-  bar.innerHTML = html;
-  bar.style.display = html ? 'block' : 'none';
+  const bar=document.getElementById('alert-bar');
+  bar.innerHTML=html;bar.style.display=html?'block':'none';
 }
 
-// --- RENDER ---
-function render() {
-  const ms = mgrs(), ts = tasks(), ns = notes();
-  document.getElementById('grid').innerHTML = ms.map((m,i) => {
-    const mt = ts[m.id] || [];
-    const open = mt.filter(t=>!t.done);
-    const overdue = open.filter(t=>t.due && t.due < TODAY).length;
-    const dueToday = open.filter(t=>t.due === TODAY).length;
-    const badgeHtml = overdue
-      ? `<span class="badge">${overdue} po term.</span>`
-      : dueToday ? `<span class="badge badge-amb">${dueToday} dnes</span>` : '';
+// ── RENDER CARDS ──
+function render(){
+  const ms=mgrs(),ts=allTasks(),ns=allNotes(),meets=allMeets();
+  document.getElementById('grid').innerHTML=ms.map((m,i)=>{
+    const mt=ts[m.id]||[];
+    const open=mt.filter(t=>!t.done);
+    const overdue=open.filter(t=>t.due&&t.due<TODAY).length;
+    const dueToday=open.filter(t=>t.due===TODAY).length;
+    const meetCount=(meets[m.id]||[]).length;
+    const badge=overdue?`<span class="badge">${overdue} !</span>`:dueToday?`<span class="badge badge-amb">${dueToday} dnes</span>`:'';
+    const mBadge=meetCount?`<span class="badge badge-meet">${meetCount}</span>`:'';
+    const statusDot=m.status||'ok';
 
-    const trelloHtml = m.trello
-      ? `<a class="link-btn link-trello" href="${esc(m.trello)}" target="_blank">🗂 Trello</a>
-         <button class="link-btn link-trello-add" onclick="editTrello('${m.id}')">✏</button>`
-      : `<button class="link-btn link-trello-add" onclick="editTrello('${m.id}')">+ Trello</button>`;
-
-    const tasksHtml = mt.map(t => `
-      <div class="task-item" id="ti-${t.id}">
-        <input type="checkbox" class="task-check" ${t.done?'checked':''} onchange="toggleTask('${m.id}','${t.id}',this.checked)"/>
-        <span class="task-text ${t.done?'done':''}">${esc(t.text)}</span>
-        ${t.due ? `<span class="task-due ${dueClass(t.due)}">${dueLabel(t.due)}</span>` : ''}
-        <button class="task-del" onclick="delTask('${m.id}','${t.id}')">✕</button>
-      </div>`).join('');
-
-    return `<div class="card">
+    return`<div class="card">
       <div class="card-header">
         <div class="avatar av-${i%9}">${esc(initials(m.name))}</div>
-        <div style="flex:1;min-width:0">
-          <div class="mgr-name">${esc(m.name)}</div>
+        <div class="mgr-info">
+          <div style="display:flex;align-items:flex-start;gap:6px">
+            <div class="mgr-name">${esc(m.name)}</div>
+            <div class="status-dot ${STATUS_DOT[statusDot]}" onclick="cycleStatus('${m.id}')" title="${STATUS_TITLE[statusDot]} — klikni pro změnu"></div>
+          </div>
           <div class="mgr-role">${esc(m.role)}</div>
-          <div class="mgr-links">
-            ${m.email ? `<a class="link-btn link-mail" href="mailto:${esc(m.email)}">✉ Email</a>` : ''}
-            ${m.phone ? `<a class="link-btn link-mail" href="tel:${esc(m.phone)}">📞 ${esc(m.phone)}</a>` : ''}
-            ${trelloHtml}
-            <button class="link-btn link-del" onclick="deleteManager('${m.id}')">Odebrat</button>
+          <div class="mgr-actions">
+            ${m.email?`<a class="act-btn act-mail" href="mailto:${esc(m.email)}">✉ Email</a>`:''}
+            <a class="act-btn act-cal" href="${calUrl(m)}" target="_blank">📅 Schůzka</a>
+            ${m.trello?`<a class="act-btn act-trello" href="${esc(m.trello)}" target="_blank">🗂 Trello</a><button class="act-btn act-del" onclick="editTrello('${m.id}')">✏</button>`
+              :`<button class="act-btn act-del" onclick="editTrello('${m.id}')">+ Trello</button>`}
+            <button class="act-btn act-meet" onclick="openMeetPanel('${m.id}')">📓 Schůzky ${mBadge}</button>
+            <button class="act-btn act-del" onclick="deleteManager('${m.id}')">Odebrat</button>
           </div>
         </div>
       </div>
-
       <div class="section">
-        <div class="section-title">📋 Úkoly ${badgeHtml}</div>
-        <div class="task-list">${tasksHtml}</div>
+        <div class="sec-title">📋 Úkoly ${badge}</div>
+        <div class="task-list">${mt.map(t=>`
+          <div class="task-item">
+            <input type="checkbox" class="task-check" ${t.done?'checked':''} onchange="toggleTask('${m.id}','${t.id}',this.checked)"/>
+            <span class="task-text ${t.done?'done':''}">${esc(t.text)}</span>
+            ${t.due?`<span class="task-due ${dueClass(t.due)}">${dueLabel(t.due)}</span>`:''}
+            <button class="task-del" onclick="delTask('${m.id}','${t.id}')">✕</button>
+          </div>`).join('')}
+        </div>
         <div class="add-task">
           <input class="task-input" id="ti-${m.id}" placeholder="Nový úkol…" onkeydown="if(event.key==='Enter')addTask('${m.id}')"/>
-          <input class="date-input" type="date" id="td-${m.id}" value="" min="${TODAY}"/>
-          <button class="btn-addtask" onclick="addTask('${m.id}')" title="Přidat">+</button>
+          <input class="date-input" type="date" id="td-${m.id}" min="${TODAY}"/>
+          <button class="btn-add-t" onclick="addTask('${m.id}')">+</button>
         </div>
       </div>
-
       <div class="notes-section">
-        <div class="section-title" style="margin-bottom:6px">💬 Poznámky</div>
-        <textarea class="notes" placeholder="Témata, aktuální situace, co sledovat…" onblur="saveNote('${m.id}',this.value)">${esc(ns[m.id]||'')}</textarea>
+        <div class="sec-title" style="margin-bottom:5px">💬 Poznámky</div>
+        <textarea class="notes" placeholder="Témata, situace, co sledovat…" onblur="saveNote('${m.id}',this.value)">${esc(ns[m.id]||'')}</textarea>
       </div>
     </div>`;
   }).join('');
   renderAlerts();
 }
 
-// --- TASKS ---
-function addTask(mid) {
-  const inp = document.getElementById('ti-'+mid);
-  const datInp = document.getElementById('td-'+mid);
-  const text = inp.value.trim();
-  if (!text) return;
-  const ts = tasks();
-  if (!ts[mid]) ts[mid] = [];
-  ts[mid].unshift({ id: Date.now().toString(36), text, due: datInp.value||'', done: false });
-  save(TK, ts);
-  inp.value = ''; datInp.value = '';
-  render();
+// ── TASKS ──
+function addTask(mid){
+  const inp=document.getElementById('ti-'+mid),dat=document.getElementById('td-'+mid);
+  const text=inp.value.trim();if(!text)return;
+  const ts=allTasks();if(!ts[mid])ts[mid]=[];
+  ts[mid].unshift({id:Date.now().toString(36),text,due:dat.value||'',done:false});
+  save(TK,ts);inp.value='';dat.value='';render();
 }
-function toggleTask(mid, tid, done) {
-  const ts = tasks();
-  const t = (ts[mid]||[]).find(x=>x.id===tid);
-  if (t) { t.done = done; save(TK, ts); render(); }
-}
-function delTask(mid, tid) {
-  const ts = tasks();
-  ts[mid] = (ts[mid]||[]).filter(x=>x.id!==tid);
-  save(TK, ts); render();
+function toggleTask(mid,tid,done){const ts=allTasks(),t=(ts[mid]||[]).find(x=>x.id===tid);if(t){t.done=done;save(TK,ts);render();}}
+function delTask(mid,tid){const ts=allTasks();ts[mid]=(ts[mid]||[]).filter(x=>x.id!==tid);save(TK,ts);render();}
+function saveNote(mid,val){const ns=allNotes();ns[mid]=val;save(NK,ns);}
+
+// ── MANAGERS ──
+let _trelloId=null;
+function editTrello(mid){_trelloId=mid;document.getElementById('t-url').value=mgrs().find(x=>x.id===mid)?.trello||'';openModal('modal-trello');document.getElementById('t-url').focus();}
+function saveTrello(){const ms=mgrs(),m=ms.find(x=>x.id===_trelloId);if(m){m.trello=document.getElementById('t-url').value.trim();save(MK,ms);}closeModal('modal-trello');render();}
+function deleteManager(mid){if(!confirm('Odebrat?'))return;save(MK,mgrs().filter(m=>m.id!==mid));render();}
+function openAddModal(){openModal('modal-add');document.getElementById('m-name').focus();}
+function addManager(){
+  const name=document.getElementById('m-name').value.trim();if(!name)return;
+  const id=name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'')+'-'+Date.now().toString(36);
+  const ms=mgrs();
+  ms.push({id,name,role:document.getElementById('m-role').value.trim(),email:document.getElementById('m-email').value.trim(),phone:document.getElementById('m-phone').value.trim(),trello:document.getElementById('m-trello').value.trim(),status:'ok'});
+  save(MK,ms);closeModal('modal-add');['m-name','m-role','m-email','m-phone','m-trello'].forEach(f=>document.getElementById(f).value='');render();
 }
 
-// --- NOTES ---
-function saveNote(mid, val) {
-  const ns = notes();
-  ns[mid] = val;
-  save(NK, ns);
+// ── MODALS ──
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-overlay,.digest-overlay').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('open');}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelectorAll('.modal-overlay.open,.digest-overlay.open').forEach(el=>el.classList.remove('open'));closeMeetPanel();}});
+
+// ── MEET PANEL ──
+let _currentMid=null;
+function openMeetPanel(mid){
+  _currentMid=mid;
+  const m=mgrs().find(x=>x.id===mid);
+  document.getElementById('panel-title').textContent=`📓 ${m.name}`;
+  document.getElementById('panel-cal-btn').href=calUrl(m);
+  document.getElementById('panel-cal-btn').onclick=null;
+  document.getElementById('panel-cal-btn').setAttribute('target','_blank');
+  const form=document.getElementById('new-meet-form');
+  form.classList.remove('open');
+  document.getElementById('f-date').value=TODAY;
+  document.getElementById('f-topic').value='';
+  document.getElementById('f-notes').value='';
+  document.getElementById('f-points').innerHTML='<div class="bullet-row"><input class="bullet-input" placeholder="Klíčový bod…"/></div>';
+  document.getElementById('f-actions').innerHTML='<div class="bullet-row"><input class="bullet-input" placeholder="Akce / úkol…"/></div>';
+  renderMeetList(mid);
+  document.getElementById('meet-panel').classList.add('open');
+  document.getElementById('panel-overlay').classList.add('open');
+}
+function closeMeetPanel(){
+  document.getElementById('meet-panel').classList.remove('open');
+  document.getElementById('panel-overlay').classList.remove('open');
+  _currentMid=null;
+}
+function toggleNewMeetForm(){document.getElementById('new-meet-form').classList.toggle('open');}
+
+function addBullet(listId){
+  const row=document.createElement('div');row.className='bullet-row';
+  row.innerHTML='<input class="bullet-input" placeholder="…"/>';
+  document.getElementById(listId).appendChild(row);
+  row.querySelector('input').focus();
 }
 
-// --- MANAGERS ---
-let _trelloEditing = null;
-function editTrello(mid) {
-  _trelloEditing = mid;
-  const m = mgrs().find(x=>x.id===mid);
-  document.getElementById('t-url').value = m?.trello||'';
-  document.getElementById('overlay-trello').classList.add('open');
-  document.getElementById('t-url').focus();
-}
-function saveTrello() {
-  const ms = mgrs();
-  const m = ms.find(x=>x.id===_trelloEditing);
-  if (m) { m.trello = document.getElementById('t-url').value.trim(); save(MK, ms); }
-  closeModal('overlay-trello'); render();
+function getBullets(listId){
+  return Array.from(document.getElementById(listId).querySelectorAll('input')).map(i=>i.value.trim()).filter(Boolean);
 }
 
-function deleteManager(mid) {
-  if (!confirm('Odebrat manažera ze seznamu?')) return;
-  save(MK, mgrs().filter(m=>m.id!==mid)); render();
+function saveMeeting(){
+  const topic=document.getElementById('f-topic').value.trim();
+  if(!topic){document.getElementById('f-topic').focus();return;}
+  const meet={id:Date.now().toString(36),date:document.getElementById('f-date').value||TODAY,topic,points:getBullets('f-points'),actions:getBullets('f-actions'),notes:document.getElementById('f-notes').value.trim()};
+  const ms=allMeets();if(!ms[_currentMid])ms[_currentMid]=[];
+  ms[_currentMid].unshift(meet);save(MEETK,ms);
+  document.getElementById('new-meet-form').classList.remove('open');
+  renderMeetList(_currentMid);render();
 }
 
-function openModal() {
-  document.getElementById('overlay-add').classList.add('open');
-  document.getElementById('m-name').focus();
+function renderMeetList(mid){
+  const meets=(allMeets()[mid]||[]);
+  const el=document.getElementById('meet-list');
+  if(!meets.length){el.innerHTML='<div class="empty-meets">📋 Žádné záznamy schůzek.<br>Klikni + Zaznamenat schůzku.</div>';return;}
+  el.innerHTML=meets.map((m,i)=>`
+    <div class="meet-entry">
+      <div class="meet-entry-header" onclick="toggleMeetBody('mb-${mid}-${i}')">
+        <span class="meet-date">${fmtDate(m.date)}</span>
+        <span class="meet-topic">${esc(m.topic)}</span>
+        <span class="meet-expand">▾</span>
+      </div>
+      <div class="meet-body" id="mb-${mid}-${i}">
+        ${m.points?.length?`<div class="meet-section"><div class="meet-section-label">Klíčové body</div><ul class="meet-bullets">${m.points.map(p=>`<li>${esc(p)}</li>`).join('')}</ul></div>`:''}
+        ${m.actions?.length?`<div class="meet-section"><div class="meet-section-label">Akce & úkoly</div><ul class="meet-bullets">${m.actions.map(a=>`<li>${esc(a)}</li>`).join('')}</ul></div>`:''}
+        ${m.notes?`<div class="meet-section"><div class="meet-section-label">Zápis</div><div class="meet-section-text">${esc(m.notes)}</div></div>`:''}
+        <div class="meet-actions">
+          <button class="btn-send btn-send-full" onclick="sendMeeting('${mid}','${m.id}','full')">📧 Celý zápis</button>
+          <button class="btn-send btn-send-brief" onclick="sendMeeting('${mid}','${m.id}','brief')">📋 Jen body & akce</button>
+          <button class="btn-send btn-send-del" onclick="deleteMeeting('${mid}','${m.id}')">Smazat</button>
+        </div>
+      </div>
+    </div>`).join('');
 }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-function addManager() {
-  const name  = document.getElementById('m-name').value.trim();
-  const role  = document.getElementById('m-role').value.trim();
-  const email = document.getElementById('m-email').value.trim();
-  const phone = document.getElementById('m-phone').value.trim();
-  const trello= document.getElementById('m-trello').value.trim();
-  if (!name) { document.getElementById('m-name').focus(); return; }
-  const id = name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'') + '-' + Date.now().toString(36);
-  const ms = mgrs();
-  ms.push({id, name, role, email, phone, trello});
-  save(MK, ms);
-  closeModal('overlay-add');
-  ['m-name','m-role','m-email','m-phone','m-trello'].forEach(f=>document.getElementById(f).value='');
-  render();
+function toggleMeetBody(id){document.getElementById(id).classList.toggle('open');}
+
+function deleteMeeting(mid,id){
+  if(!confirm('Smazat záznam?'))return;
+  const ms=allMeets();ms[mid]=(ms[mid]||[]).filter(m=>m.id!==id);save(MEETK,ms);renderMeetList(mid);render();
 }
 
-document.querySelectorAll('.overlay').forEach(el =>
-  el.addEventListener('click', e => { if(e.target===el) el.classList.remove('open'); })
-);
-document.addEventListener('keydown', e => {
-  if (e.key==='Escape') document.querySelectorAll('.overlay.open').forEach(el=>el.classList.remove('open'));
-});
+// ── SEND MEETING EMAIL ──
+function sendMeeting(mid,meetId,mode){
+  const m=mgrs().find(x=>x.id===mid);
+  const meet=(allMeets()[mid]||[]).find(x=>x.id===meetId);
+  if(!m||!meet)return;
 
-function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  const dateStr=fmtDate(meet.date);
+  const subject=`Zápis ze schůzky — ${m.name} — ${dateStr}`;
+
+  let body=`Zápis ze schůzky\n${'─'.repeat(40)}\nÚčastníci: Jan Vlček & ${m.name} (${m.role})\nDatum: ${dateStr}\nTéma: ${meet.topic}\n\n`;
+
+  if(meet.points?.length){
+    body+=`KLÍČOVÉ BODY:\n${meet.points.map(p=>`• ${p}`).join('\n')}\n\n`;
+  }
+  if(meet.actions?.length){
+    body+=`AKCE & ÚKOLY:\n${meet.actions.map(a=>`• ${a}`).join('\n')}\n\n`;
+  }
+  if(mode==='full'&&meet.notes){
+    body+=`ZÁPIS:\n${meet.notes}\n\n`;
+  }
+  body+=`---\nOdesláno z Nutworld Manager Dashboard`;
+
+  // Zkus Apps Script, fallback mailto
+  sendEmail(ME, subject, body, m.email);
+}
+
+async function sendEmail(to, subject, body, cc=''){
+  try {
+    const htmlBody = body.replace(/\n/g,'<br>').replace(/─+/g,'<hr style="border:1px solid #ede0d4">');
+    const resp = await fetch(PROXY, {
+      method:'POST', headers:{'Content-Type':'text/plain'},
+      body: JSON.stringify({action:'send_email', to, subject, body, htmlBody, cc})
+    });
+    const data = await resp.json();
+    if(data.ok) { alert('✅ Email odeslán přes claudie.nutworld.cz!'); return; }
+  } catch(e){}
+  // Fallback: mailto
+  const ccParam = cc ? `&cc=${encodeURIComponent(cc)}` : '';
+  window.open(`mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}${ccParam}&body=${encodeURIComponent(body)}`);
+}
+
+// ── DIGEST ──
+function showDigest(){
+  const ms=mgrs(),ts=allTasks();
+  const d=new Date();
+  let text=`PŘEHLED ÚKOLŮ — ${fmtDate(TODAY)}\n${'═'.repeat(45)}\n\n`;
+  ms.forEach(m=>{
+    const open=(ts[m.id]||[]).filter(t=>!t.done);
+    if(!open.length)return;
+    text+=`${m.name.toUpperCase()} (${m.role})\n${'─'.repeat(35)}\n`;
+    const ov=open.filter(t=>t.due&&t.due<TODAY);
+    const tod=open.filter(t=>t.due===TODAY);
+    const rest=open.filter(t=>!t.due||t.due>TODAY);
+    ov.forEach(t=>text+=`  🔴 [po term. ${fmtShort(t.due)}] ${t.text}\n`);
+    tod.forEach(t=>text+=`  🟡 [dnes] ${t.text}\n`);
+    rest.forEach(t=>text+=`  ⬜ ${t.due?'['+fmtShort(t.due)+'] ':''}${t.text}\n`);
+    text+='\n';
+  });
+  if(text.trim().endsWith('═'.repeat(45)))text+='Žádné otevřené úkoly.\n';
+  document.getElementById('digest-body').textContent=text;
+  openModal('digest-overlay');
+}
+function sendDigest(){
+  const body=document.getElementById('digest-body').textContent;
+  sendEmail(ME,`Přehled úkolů manažerů — ${fmtDate(TODAY)}`,body);
+}
+
+// ── PANEL-CAL-BTN as link ──
+document.getElementById('panel-cal-btn').addEventListener('click',function(){window.open(this.getAttribute('href'),'_blank');});
 
 render();
 </script>
