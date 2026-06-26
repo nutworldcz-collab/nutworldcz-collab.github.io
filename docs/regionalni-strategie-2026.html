@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nutworld — Regionální strategie 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Sans 3', Arial, sans-serif;
+    font-size: 15px;
+    color: #2d1f0f;
+    background: #faf7f3;
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #5c381f 0%, #83502e 55%, #a0622a 100%);
+    color: white;
+    padding: 40px 48px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(247,171,49,.15);
+  }
+  .header-label {
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #f7ab31;
+    margin-bottom: 10px;
+    font-family: 'Exo 2', sans-serif;
+  }
+  .header h1 {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .header-sub {
+    font-size: 15px;
+    opacity: .85;
+    margin-top: 6px;
+  }
+  .header-meta {
+    margin-top: 20px;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .header-meta span {
+    background: rgba(255,255,255,.15);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 13px;
+    color: #fff;
+  }
+
+  /* LAYOUT */
+  .content {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 40px 24px 60px;
+  }
+
+  /* SECTION */
+  .section {
+    margin-bottom: 40px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .section-num {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #83502e, #a0622a);
+    color: white;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .section h2 {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #5c381f;
+  }
+
+  /* CARD */
+  .card {
+    background: #f1e6da;
+    border: 2px solid #c8976a;
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+  }
+  .card-title {
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: #5c381f;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title::before {
+    content: '';
+    display: inline-block;
+    width: 28px; height: 2px;
+    background: #f7ab31;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .card p, .card li {
+    color: #4a3020;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  .card ul {
+    padding-left: 18px;
+    margin-top: 6px;
+  }
+  .card li {
+    margin-bottom: 4px;
+  }
+
+  /* TABLE */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  thead tr {
+    background: linear-gradient(135deg, #5c381f, #83502e);
+    color: white;
+  }
+  thead th {
+    padding: 10px 14px;
+    text-align: left;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+  }
+  tbody tr:nth-child(odd) { background: #f1e6da; }
+  tbody tr:nth-child(even) { background: #f9f3ed; }
+  tbody td {
+    padding: 9px 14px;
+    color: #3a2510;
+    vertical-align: top;
+  }
+  table { border-radius: 10px; overflow: hidden; }
+
+  /* FUNNEL */
+  .funnel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin: 20px 0;
+  }
+  .funnel-step {
+    background: #f1e6da;
+    border: 2px solid #c8976a;
+    border-radius: 10px;
+    padding: 12px 28px;
+    text-align: center;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: #5c381f;
+    width: 320px;
+  }
+  .funnel-arrow {
+    font-size: 22px;
+    color: #f7ab31;
+    line-height: 1.4;
+  }
+
+  /* PRIORITY LIST */
+  .priority-list {
+    counter-reset: priority;
+    list-style: none;
+    padding: 0;
+  }
+  .priority-list li {
+    counter-increment: priority;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid #e0cebc;
+  }
+  .priority-list li:last-child { border-bottom: none; }
+  .priority-list li::before {
+    content: counter(priority);
+    width: 28px; height: 28px;
+    background: #f7ab31;
+    color: #5c381f;
+    border-radius: 50%;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .priority-list li span {
+    font-size: 14px;
+    color: #3a2510;
+    line-height: 1.6;
+  }
+  .priority-list li strong {
+    color: #5c381f;
+  }
+
+  /* BUDGET BOX */
+  .budget-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 16px 0;
+  }
+  .budget-item {
+    background: #f1e6da;
+    border: 2px solid #c8976a;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+  }
+  .budget-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #83502e;
+    font-family: 'Exo 2', sans-serif;
+    margin-bottom: 6px;
+  }
+  .budget-value {
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    color: #5c381f;
+  }
+  .budget-note {
+    font-size: 12px;
+    color: #7a5a3a;
+    margin-top: 4px;
+  }
+
+  /* HIGHLIGHT BOX */
+  .highlight {
+    background: #fff5e0;
+    border-left: 4px solid #f7ab31;
+    border-radius: 0 10px 10px 0;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-size: 14px;
+    color: #3a2510;
+  }
+  .highlight strong { color: #5c381f; }
+
+  /* DIVIDER */
+  .divider {
+    height: 2px;
+    background: linear-gradient(90deg, #c8976a, transparent);
+    margin: 36px 0;
+    border-radius: 2px;
+  }
+
+  /* FOOTER */
+  .footer {
+    background: #5c381f;
+    color: rgba(255,255,255,.7);
+    text-align: center;
+    padding: 20px;
+    font-size: 13px;
+  }
+  .footer strong { color: #f7ab31; }
+
+  /* PRINT */
+  @media print {
+    body { background: white; }
+    .content { padding: 20px 12px; }
+    .header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    thead tr { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .section-num { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .card { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .budget-item { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .priority-list li::before { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .print-btn { display: none; }
+    .divider { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+
+  .print-btn {
+    position: fixed;
+    bottom: 28px; right: 28px;
+    background: linear-gradient(135deg, #83502e, #a0622a);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 12px 24px;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(92,56,31,.3);
+    transition: transform .15s;
+  }
+  .print-btn:hover { transform: scale(1.04); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-label">Nutworld.cz — Interní dokument</div>
+  <h1>Regionální strategie<br>propagace 2026</h1>
+  <div class="header-sub">Organická viditelnost · Placená reklama · Web</div>
+  <div class="header-meta">
+    <span>📅 Červen 2026</span>
+    <span>📍 Pilot: 1 region</span>
+    <span>💰 Budget: ~10 000 Kč/měs.</span>
+    <span>🎯 B2C + B2B</span>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- SEKCE 1: ORGANICKÁ VIDITELNOST -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <h2>Organická viditelnost</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Odběrná místa — největší páka</div>
+      <p>Nejde jen o logistiku — jsou to fyzické billboardy. Každý balíček, který si někdo vyzvedne v kavárně nebo fitku, vidí desítky dalších lidí. Výběr míst = výběr publika.</p>
+      <ul>
+        <li>3–5 pilotních míst v jedné lokalitě (kavárny, fitka, delikatesy, co-working)</li>
+        <li>Spustit v jednom regionu, ověřit model, pak škálovat</li>
+        <li>Cíl: místa kde jsou lidé, kteří za kvalitu platí</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Dobročinné akce jako PR nástroj</div>
+      <p>Partnerství s lokálním spolkem (hasiči, škola, sportovci) + věcný dar = zmínka na soc. sítích, místní tisk, živé kontakty.</p>
+      <ul>
+        <li>Věcný dar: dárkové krabičky na tombolu / degustace</li>
+        <li>Nízké náklady, vysoký komunitní dosah</li>
+        <li>Ideální načasování: před Vánoci nebo Velikonocemi</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Reaktivace historických kontaktů</div>
+      <ul>
+        <li>Segmentovat: kdo je lokálně zakotvený — restaurace, firmy, organizátoři</li>
+        <li>Jedna personalizovaná zpráva s konkrétní nabídkou &gt; 100× cold outreach</li>
+        <li>Nekopírovat obecný newsletter — lokální nabídka, konkrétní CTA</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Micro-influenceři v regionu</div>
+      <ul>
+        <li>Foodblogger, fitko, rodinný účet 2k followers — vydá víc než jeden velký</li>
+        <li>Autentické video nebo story s produktem</li>
+        <li>Barter nebo malá odměna v produktech</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SEKCE 2: PLACENÁ REKLAMA -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <h2>Placená propagace — Meta + Google</h2>
+    </div>
+
+    <div class="highlight">
+      <strong>Základní logika:</strong> Meta = vytváříš poptávku (lidé tě neznají, ale zasáhneš je). Google = zachytáváš poptávku (lidé už hledají, ty musíš být první).<br>
+      Poměr investic: <strong>60 % Meta / 40 % Google</strong>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Facebook / Instagram — kampaně</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Kampaň</th>
+            <th>Formát</th>
+            <th>Cíl</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Brand awareness</td><td>Reels / video</td><td>Zásah v regionu, povědomí</td></tr>
+          <tr><td>Odběrná místa</td><td>Karta s mapou</td><td>"Vyzvedni si u nás v XY"</td></tr>
+          <tr><td>Sezóna / dárky</td><td>Carousel produktů</td><td>Přímé konverze</td></tr>
+          <tr><td>B2B firemní dárky</td><td>Single image + CTA</td><td>Lead → poptávkový formulář</td></tr>
+        </tbody>
+      </table>
+      <ul>
+        <li><strong>Geo-targeting:</strong> okruh 20–30 km od odběrných míst</li>
+        <li><strong>Kreativa:</strong> autentická, ne studiová — záběry balení, dílna, veverka jako recurring prvek</li>
+        <li><strong>Po 2 týdnech:</strong> remarketingová vrstva na videa + web návštěvníky s konkrétní nabídkou</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Google Ads — kampaně</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Kampaň</th>
+            <th>Klíčová slova / zaměření</th>
+            <th>Poznámka</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Search — brand</td><td>"Nutworld", "Nutworld oříšky"</td><td>Ochrana brandu, levné kliknutí</td></tr>
+          <tr><td>Search — kategorie</td><td>"oříšky [město]", "zdravé svačiny", "firemní dárky ořechy"</td><td>Vysoký intent</td></tr>
+          <tr><td>Performance Max</td><td>Geo region + produktový feed</td><td>Shoptet feed → Google Merchant</td></tr>
+          <tr><td>Search — B2B</td><td>"firemní vánoční dárky [město]"</td><td>Spustit od října</td></tr>
+        </tbody>
+      </table>
+      <ul>
+        <li><strong>Google Business Profile</strong> = první krok ještě před placenou reklamou — vyplnit/aktualizovat se všemi odběrnými místy</li>
+        <li><strong>Negativní klíčová slova hned:</strong> recept, kalorie, wiki, alergeny, složení</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Konverzní funnel</div>
+      <div class="funnel">
+        <div class="funnel-step">Meta Awareness — region</div>
+        <div class="funnel-arrow">↓</div>
+        <div class="funnel-step">Web / odběrné místo / poptávka</div>
+        <div class="funnel-arrow">↓</div>
+        <div class="funnel-step">Google Search — zachytí googlers</div>
+        <div class="funnel-arrow">↓</div>
+        <div class="funnel-step">Meta retargeting — uzavře nekupující</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Budget na start (jeden region)</div>
+      <div class="budget-box">
+        <div class="budget-item">
+          <div class="budget-label">Meta Ads</div>
+          <div class="budget-value">5–8K</div>
+          <div class="budget-note">Kč / měsíc</div>
+        </div>
+        <div class="budget-item">
+          <div class="budget-label">Google Ads</div>
+          <div class="budget-value">3–5K</div>
+          <div class="budget-note">Kč / měsíc</div>
+        </div>
+        <div class="budget-item">
+          <div class="budget-label">Celkem</div>
+          <div class="budget-value">~10K</div>
+          <div class="budget-note">Kč / měsíc</div>
+        </div>
+      </div>
+      <p style="font-size:13px; color:#7a5a3a; margin-top:8px;">Po prvním měsíci vyhodnotit PNO + ROAS a škálovat co funguje.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SEKCE 3: WEB -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <h2>Web — úpravy pro regionální strategii</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Musí mít (před spuštěním kampaní)</div>
+      <ul>
+        <li><strong>Stránka "Kde nás najdeš"</strong> — mapa + seznam odběrných míst + otevírací doba. Google Maps embed. Landing page pro Meta geo kampaně.</li>
+        <li><strong>B2B landing page "Firemní dárky"</strong> — prodejní stránka (ne eshop). 3 pilíře (výběr, balení, doručení), ukázky produktů, reference firem, kontaktní formulář. CTA: "Nezávazná poptávka".</li>
+        <li><strong>UTM tracking</strong> — každý Meta a Google odkaz s UTM parametry. Bez toho nevíš co funguje.</li>
+        <li><strong>Lokální social proof</strong> — recenze nebo loga firem z regionu na homepage nebo B2B stránce.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Druhá vlna (po ověření modelu)</div>
+      <ul>
+        <li>Dedikované landing pages per region — vyšší relevance Google Search</li>
+        <li>Pop-up / banner pro nové návštěvníky z regionu: "Máme odběrné místo u vás v XY"</li>
+        <li>Blog / recepty s lokálním hrákem — lehké SEO, long-term traffic</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SEKCE 4: PRIORITNÍ PLÁN -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <h2>Prioritní plán akcí</h2>
+    </div>
+
+    <div class="card">
+      <ul class="priority-list">
+        <li><span><strong>Google Business Profile</strong> — vyplnit/aktualizovat se všemi odběrnými místy (organická viditelnost na mapách zdarma)</span></li>
+        <li><span><strong>Pilotní odběrná místa</strong> — 3–5 pečlivě vybraných v jedné lokalitě (kavárny, fitka, co-working)</span></li>
+        <li><span><strong>Web: stránka odběrných míst + B2B landing page</strong> — musí existovat před spuštěním placené reklamy</span></li>
+        <li><span><strong>UTM tracking</strong> — nastavit pro všechny kampaně Meta + Google</span></li>
+        <li><span><strong>Meta kampaně</strong> — brand awareness + odběrná místa v regionu</span></li>
+        <li><span><strong>Google Ads</strong> — brand search + kategorie (Performance Max po stabilizaci)</span></li>
+        <li><span><strong>Dobročinná akce</strong> jako PR aktivace — ideálně před Vánoci nebo Velikonocemi</span></li>
+        <li><span><strong>Reaktivace historických kontaktů</strong> — segmentace + personalizovaná lokální nabídka</span></li>
+        <li><span><strong>Vyhodnocení po 30 dnech</strong> — PNO + ROAS + návštěvnost odběrných míst → škálování</span></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <strong>Nutworld.cz</strong> — Interní strategický dokument · Červen 2026 · Důvěrné
+</div>
+
+<button class="print-btn" onclick="window.print()">⬇ Uložit jako PDF</button>
+
+</body>
+</html>
