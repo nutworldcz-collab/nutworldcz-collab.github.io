@@ -95,11 +95,11 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
     <div class="setup-desc">Úkoly se ukládají do cloudu — aby je mohl číst ranní email i dashboard. K tomu potřebuju GitHub token (jednou, uloží se v prohlížeči).</div>
     <div class="setup-steps">
       <ol>
-        <li>Jdi na <a href="https://github.com/settings/tokens?type=beta" target="_blank">github.com/settings/tokens</a></li>
-        <li>Klikni <strong>Generate new token (fine-grained)</strong></li>
-        <li>Repository access: <strong>Only selected → nutworldcz-collab.github.io</strong></li>
-        <li>Permissions → Contents: <strong>Read and write</strong></li>
-        <li>Zkopíruj token a vlož sem:</li>
+        <li>Jdi na <a href="https://github.com/settings/tokens" target="_blank">github.com/settings/tokens</a></li>
+        <li>Klikni <strong>Generate new token → Tokens (classic)</strong></li>
+        <li>Zaškrtni scope: <strong>public_repo</strong></li>
+        <li>Klikni <strong>Generate token</strong> a zkopíruj ho</li>
+        <li>Vlož sem:</li>
       </ol>
     </div>
     <input type="password" class="tok-input" id="tok-in" placeholder="github_pat_..."/>
@@ -167,7 +167,7 @@ function init(){
 
 function saveToken(){
   const t = document.getElementById('tok-in').value.trim();
-  if(!t || !t.startsWith('github_')){ alert('Vlož platný GitHub token (začíná github_pat_...)'); return; }
+  if(!t || (!t.startsWith('github_pat_') && !t.startsWith('ghp_'))){ alert('Vlož platný GitHub token (začíná ghp_ nebo github_pat_...)'); return; }
   localStorage.setItem(TOK_KEY, t);
   document.getElementById('setup').style.display='none';
   sync();
