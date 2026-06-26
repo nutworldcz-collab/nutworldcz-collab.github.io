@@ -88,6 +88,22 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .auto-name{font-weight:600;color:var(--bd);flex:1}
 .auto-when{font-size:11px;color:#a08060;margin-left:auto}
 
+/* DOKUMENTY */
+.doc-card{background:white;border-radius:12px;padding:16px 18px;box-shadow:0 1px 5px rgba(0,0,0,.07);display:flex;flex-direction:column;gap:8px;border-top:3px solid var(--amb);transition:all .15s}
+.doc-card:hover{box-shadow:0 3px 14px rgba(0,0,0,.12);transform:translateY(-2px)}
+.doc-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.doc-tag{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:10px;white-space:nowrap;flex-shrink:0}
+.doc-tag.strategie{background:#fff3d6;color:#b8860b}
+.doc-tag.report{background:#f0f7e8;color:#4a8020}
+.doc-tag.analyza{background:#f0eaff;color:#6030b0}
+.doc-tag.navod{background:#fde8ef;color:#c01050}
+.doc-title{font-family:"Exo 2",sans-serif;font-size:14px;font-weight:700;color:var(--bd);line-height:1.3}
+.doc-desc{font-size:12px;color:#6b4c30;line-height:1.5;flex:1}
+.doc-footer{display:flex;justify-content:space-between;align-items:center;margin-top:4px}
+.doc-date{font-size:11px;color:#a08060}
+.doc-open{font-family:"Exo 2",sans-serif;font-size:11px;font-weight:700;padding:5px 12px;border-radius:8px;background:var(--bd);color:white;text-decoration:none;transition:background .15s}
+.doc-open:hover{background:var(--acc)}
+
 @media(max-width:600px){
   .header-name{font-size:22px}
   .quick-grid{grid-template-columns:repeat(4,1fr)}
@@ -268,6 +284,12 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
         <div><div class="tool-title">Porovnání ceníků</div><div class="tool-desc">Dva CSV ceníky — co se změnilo</div></div>
       </a>
     </div>
+  </div>
+
+  <!-- DOKUMENTY -->
+  <div>
+    <div class="section-label">📄 Dokumenty &amp; materiály</div>
+    <div id="docs-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px"></div>
   </div>
 
   <!-- AUTOMATIZACE -->
@@ -510,6 +532,32 @@ function fmtD(iso){if(!iso)return'';const[y,m,dd]=iso.split('-');return`${dd}.${
       <span style="font-size:11px;font-weight:700;color:var(--br);white-space:nowrap">${r.name}</span>
       <span style="flex:1;color:${col}">${r.text}</span>${tag}</div>`;
   }).join('') + (rows.length > 6 ? `<div style="font-size:11px;color:#a08060;margin-top:6px">+ ${rows.length-6} dalších</div>` : '');
+})();
+
+// ── DOKUMENTY ──────────────────────────────────────────────────────────────
+(function(){
+  const DOCS = [
+    {
+      tag:'strategie', title:'Regionální strategie propagace 2026',
+      desc:'Organická viditelnost, Meta + Google kampaně, úpravy webu. Prioritní plán 9 kroků.',
+      date:'červen 2026', url:'https://nutworldcz-collab.github.io/docs/regionalni-strategie-2026.html'
+    },
+  ];
+  const grid = document.getElementById('docs-grid');
+  if(!grid) return;
+  if(!DOCS.length){ grid.innerHTML='<div style="background:white;border-radius:12px;padding:16px;color:#a08060;font-size:13px">Zatím žádné dokumenty.</div>'; return; }
+  grid.innerHTML = DOCS.map(d => `
+    <div class="doc-card">
+      <div class="doc-header">
+        <div class="doc-title">${d.title}</div>
+        <span class="doc-tag ${d.tag}">${d.tag.charAt(0).toUpperCase()+d.tag.slice(1)}</span>
+      </div>
+      <div class="doc-desc">${d.desc}</div>
+      <div class="doc-footer">
+        <span class="doc-date">📅 ${d.date}</span>
+        <a class="doc-open" href="${d.url}" target="_blank">Otevřít →</a>
+      </div>
+    </div>`).join('');
 })();
 
 // ── SCHŮZKY ──
