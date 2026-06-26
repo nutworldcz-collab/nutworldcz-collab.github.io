@@ -156,6 +156,17 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
     <div class="email-list" id="email-list"><div class="email-empty">Načítám emaily…</div></div>
   </div>
 
+  <!-- MOJE ÚKOLY WIDGET -->
+  <div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div class="section-label" style="margin-bottom:0">📋 Moje úkoly dnes</div>
+      <a href="/ukoly.html" style="font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;color:var(--br);text-decoration:none">Správce úkolů →</a>
+    </div>
+    <div id="ukoly-block" style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 5px rgba(0,0,0,.07)">
+      <div class="email-empty">Načítám…</div>
+    </div>
+  </div>
+
   <!-- ADS REPORT -->
   <div>
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
@@ -178,6 +189,9 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
   <div>
     <div class="section-label">Rychlý přístup</div>
     <div class="quick-grid">
+      <a class="quick-btn" href="/ukoly.html">
+        <span class="icon">📋</span><span class="label">Moje úkoly</span>
+      </a>
       <a class="quick-btn" href="https://www.facebook.com/business/tools/ads-manager" target="_blank">
         <span class="icon">📣</span><span class="label">Meta Ads</span>
       </a>
@@ -532,6 +546,54 @@ function fmtD(iso){if(!iso)return'';const[y,m,dd]=iso.split('-');return`${dd}.${
       <span style="font-size:11px;font-weight:700;color:var(--br);white-space:nowrap">${r.name}</span>
       <span style="flex:1;color:${col}">${r.text}</span>${tag}</div>`;
   }).join('') + (rows.length > 6 ? `<div style="font-size:11px;color:#a08060;margin-top:6px">+ ${rows.length-6} dalších</div>` : '');
+})();
+
+// ── MOJE ÚKOLY WIDGET ───────────────────────────────────────────────────────
+(async function(){
+  const TODAY = new Date().toISOString().slice(0,10);
+  function fmt(iso){ if(!iso)return''; const[,m,d]=iso.split('-'); return`${+d}.${+m}.`; }
+
+  // Zkus localStorage první (stejná doména) pak fallback na JSON
+  let tasks = [];
+  try{
+    const ls = localStorage.getItem('nw_ukoly_v1');
+    if(ls) tasks = JSON.parse(ls);
+    else throw new Error('no ls');
+  }catch{
+    try{
+      const r = await fetch('https://nutworldcz-collab.github.io/report_ukoly.json?_='+Date.now());
+      if(r.ok){ const d=await r.json(); tasks=d.tasks||[]; }
+    }catch(e){ console.warn('ukoly widget:',e); }
+  }
+
+  const el = document.getElementById('ukoly-block');
+  const open = tasks.filter(t=>!t.done);
+  const todayItems = open.filter(t=>t.due&&t.due<=TODAY).sort((a,b)=>(a.priority==='urgent'?0:1)-(b.priority==='urgent'?0:1)||a.due.localeCompare(b.due));
+  const nodate = open.filter(t=>!t.due);
+
+  if(!open.length){ el.innerHTML='<div class="email-empty" style="color:#6fa044">Žádné otevřené úkoly 🎉</div>'; return; }
+
+  let html = '';
+  if(todayItems.length){
+    todayItems.forEach(t=>{
+      const urg = t.priority==='urgent';
+      const over = t.due && t.due < TODAY;
+      const col = over?'#c01050':urg?'#c01050':'#2a1a0e';
+      const tag = over ? `<span style="font-size:10px;background:#fde8ef;color:#c01050;padding:1px 6px;border-radius:8px;font-weight:700">po term.</span>`
+                 : urg ? `<span style="font-size:10px;background:#fde8ef;color:#c01050;padding:1px 6px;border-radius:8px;font-weight:700">urgent</span>`
+                 : `<span style="font-size:10px;color:#b8860b;font-weight:700">dnes</span>`;
+      html+=`<div style="display:flex;align-items:center;gap:8px;padding:9px 14px;border-bottom:1px solid #f5ede3">
+        <div style="width:7px;height:7px;border-radius:50%;background:${col};flex-shrink:0"></div>
+        <div style="flex:1;font-size:13px;color:${col}">${t.text}</div>${tag}</div>`;
+    });
+  }
+  if(nodate.length){
+    html+=`<div style="padding:8px 14px;font-size:12px;color:#a08060;border-top:1px solid #f5ede3">+ ${nodate.length} bez data · <a href="/ukoly.html" style="color:var(--br);font-weight:700">zobrazit vše</a></div>`;
+  } else if(open.length > todayItems.length){
+    const fut = open.length - todayItems.length;
+    html+=`<div style="padding:8px 14px;font-size:12px;color:#a08060;border-top:1px solid #f5ede3">+ ${fut} nadcházejících · <a href="/ukoly.html" style="color:var(--br);font-weight:700">zobrazit vše</a></div>`;
+  }
+  el.innerHTML = html || '<div class="email-empty">Žádné úkoly na dnes 🎉</div>';
 })();
 
 // ── DOKUMENTY ──────────────────────────────────────────────────────────────
