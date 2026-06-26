@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Moje úkoly — Nutworld</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bd:#5c381f;--br:#83502e;--kraft:#f1e6da;--acc:#da1668;--amb:#f7ab31;--leaf:#6fa044}
+body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;min-height:100vh}
+
+.header{background:linear-gradient(135deg,#5c381f 0%,#83502e 60%,#a0622a 100%);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.header-left{display:flex;align-items:center;gap:14px}
+.back-btn{font-family:"Exo 2",sans-serif;font-size:12px;font-weight:700;color:rgba(255,255,255,.7);text-decoration:none;padding:5px 12px;border-radius:8px;background:rgba(255,255,255,.12);transition:background .15s}
+.back-btn:hover{background:rgba(255,255,255,.22)}
+.header-title{font-family:"Exo 2",sans-serif;font-size:22px;font-weight:800;color:white}
+.sync-status{font-size:12px;padding:4px 12px;border-radius:20px;font-family:"Exo 2",sans-serif;font-weight:700;transition:all .3s}
+.sync-ok{background:rgba(111,160,68,.3);color:#c0f0a0}
+.sync-ing{background:rgba(247,171,49,.3);color:#ffe090}
+.sync-err{background:rgba(218,22,104,.3);color:#ffc0d0}
+.color-bar{height:3px;background:linear-gradient(90deg,#da1668,#f7ab31,#6fa044)}
+
+.wrap{max-width:700px;margin:0 auto;padding:24px 16px 60px;display:flex;flex-direction:column;gap:18px}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:white;border-radius:12px;padding:14px 16px;box-shadow:0 1px 5px rgba(0,0,0,.07);text-align:center}
+.stat-val{font-family:"Exo 2",sans-serif;font-size:28px;font-weight:800;color:var(--acc)}
+.stat-lbl{font-size:11px;color:#8a6040;margin-top:2px}
+
+.add-form{background:white;border-radius:12px;padding:14px 16px;box-shadow:0 1px 5px rgba(0,0,0,.07)}
+.add-row{display:flex;gap:8px;flex-wrap:wrap}
+.add-input{flex:1;min-width:180px;font-family:"Source Sans 3",sans-serif;font-size:14px;border:2px solid #e0cebc;border-radius:8px;padding:10px 14px;outline:none;color:#2a1a0e;transition:border-color .15s}
+.add-input:focus{border-color:var(--br)}
+.add-date{font-family:"Source Sans 3",sans-serif;font-size:13px;border:2px solid #e0cebc;border-radius:8px;padding:9px 10px;outline:none;color:#2a1a0e;background:white;cursor:pointer;width:145px;transition:border-color .15s}
+.add-date:focus{border-color:var(--br)}
+.pri-wrap{display:flex;border-radius:8px;overflow:hidden;border:2px solid #e0cebc}
+.pri-btn{font-family:"Exo 2",sans-serif;font-size:11px;font-weight:700;padding:9px 12px;background:white;color:#a08060;border:none;cursor:pointer;transition:all .15s}
+.pri-btn.active.normal{background:var(--br);color:white}
+.pri-btn.active.urgent{background:var(--acc);color:white}
+.add-btn{font-family:"Exo 2",sans-serif;font-size:13px;font-weight:700;padding:10px 18px;background:var(--bd);color:white;border:none;border-radius:8px;cursor:pointer;transition:background .15s;white-space:nowrap}
+.add-btn:hover{background:var(--acc)}
+
+.sec-label{font-family:"Exo 2",sans-serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:#a07850;margin-bottom:8px;padding-left:2px}
+.task-list{background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 5px rgba(0,0,0,.07)}
+.task-empty{padding:16px;text-align:center;color:#b0966a;font-size:13px}
+.task-row{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid #f5ede3;transition:background .1s}
+.task-row:last-child{border-bottom:none}
+.task-row:hover{background:#fdfaf7}
+.task-row.done-row{opacity:.4}
+.cb{width:18px;height:18px;border:2px solid #c8976a;border-radius:5px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;transition:all .15s;background:white;color:white}
+.cb.checked{background:var(--leaf);border-color:var(--leaf)}
+.cb.urg{border-color:var(--acc)}
+.task-text{flex:1;font-size:14px;color:#2a1a0e;line-height:1.4}
+.done-row .task-text{text-decoration:line-through;color:#a08060}
+.task-due{font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;flex-shrink:0}
+.due-over{background:#fde8ef;color:#c01050}
+.due-today{background:#fff3d6;color:#b8860b}
+.due-soon{background:#f0f7e8;color:#4a8020}
+.due-fut{background:#f1e6da;color:#83502e}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dot-urg{background:var(--acc)}
+.dot-norm{background:#c8976a}
+.del-btn{font-size:18px;color:#c8976a;cursor:pointer;padding:0 5px;border:none;background:none;line-height:1;flex-shrink:0;transition:color .15s}
+.del-btn:hover{color:#da1668}
+
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;display:flex;align-items:center;justify-content:center;padding:16px}
+.setup-box{background:white;border-radius:16px;padding:28px;max-width:460px;width:100%}
+.setup-title{font-family:"Exo 2",sans-serif;font-size:18px;font-weight:800;color:var(--bd);margin-bottom:8px}
+.setup-desc{font-size:13px;color:#6b4c30;line-height:1.7;margin-bottom:14px}
+.setup-steps{background:#f1e6da;border-radius:10px;padding:14px 16px;margin-bottom:14px;font-size:13px;color:#3a2510;line-height:1.9}
+.setup-steps ol{padding-left:18px}
+.setup-steps a{color:var(--br);font-weight:700}
+.tok-input{width:100%;font-family:monospace;font-size:13px;border:2px solid #e0cebc;border-radius:8px;padding:10px 12px;outline:none;color:#2a1a0e;margin-bottom:12px}
+.tok-input:focus{border-color:var(--br)}
+.setup-btn{width:100%;font-family:"Exo 2",sans-serif;font-size:14px;font-weight:700;padding:12px;background:var(--bd);color:white;border:none;border-radius:8px;cursor:pointer}
+.setup-btn:hover{background:var(--acc)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <a href="/ja.html" class="back-btn">← Dashboard</a>
+    <div class="header-title">📋 Moje úkoly</div>
+  </div>
+  <div id="sync-st" class="sync-status sync-ok">✓ Synced</div>
+</div>
+<div class="color-bar"></div>
+
+<!-- SETUP -->
+<div class="overlay" id="setup" style="display:none">
+  <div class="setup-box">
+    <div class="setup-title">Nastavení synchronizace</div>
+    <div class="setup-desc">Úkoly se ukládají do cloudu — aby je mohl číst ranní email i dashboard. K tomu potřebuju GitHub token (jednou, uloží se v prohlížeči).</div>
+    <div class="setup-steps">
+      <ol>
+        <li>Jdi na <a href="https://github.com/settings/tokens?type=beta" target="_blank">github.com/settings/tokens</a></li>
+        <li>Klikni <strong>Generate new token (fine-grained)</strong></li>
+        <li>Repository access: <strong>Only selected → nutworldcz-collab.github.io</strong></li>
+        <li>Permissions → Contents: <strong>Read and write</strong></li>
+        <li>Zkopíruj token a vlož sem:</li>
+      </ol>
+    </div>
+    <input type="password" class="tok-input" id="tok-in" placeholder="github_pat_..."/>
+    <button class="setup-btn" onclick="saveToken()">Uložit a pokračovat →</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="stats">
+    <div class="stat"><div class="stat-val" id="s-dnes">0</div><div class="stat-lbl">Dnes & po termínu</div></div>
+    <div class="stat"><div class="stat-val" id="s-open" style="color:var(--br)">0</div><div class="stat-lbl">Celkem otevřeno</div></div>
+    <div class="stat"><div class="stat-val" id="s-done" style="color:var(--leaf)">0</div><div class="stat-lbl">Splněno tento týden</div></div>
+  </div>
+
+  <div class="add-form">
+    <div class="add-row">
+      <input type="text" class="add-input" id="add-txt" placeholder="Co potřebuješ udělat?" onkeydown="if(event.key==='Enter')addTask()"/>
+      <input type="date" class="add-date" id="add-dt"/>
+      <div class="pri-wrap">
+        <button class="pri-btn normal active" id="p-norm" onclick="setPri('normal')">Normální</button>
+        <button class="pri-btn urgent" id="p-urg" onclick="setPri('urgent')">! Urgent</button>
+      </div>
+      <button class="add-btn" onclick="addTask()">+ Přidat</button>
+    </div>
+  </div>
+
+  <div id="sec-today" style="display:none">
+    <div class="sec-label" id="lbl-today">Dnes & po termínu</div>
+    <div class="task-list" id="lst-today"></div>
+  </div>
+
+  <div id="sec-future" style="display:none">
+    <div class="sec-label">Nadcházející</div>
+    <div class="task-list" id="lst-future"></div>
+  </div>
+
+  <div id="sec-nodate" style="display:none">
+    <div class="sec-label">Bez data</div>
+    <div class="task-list" id="lst-nodate"></div>
+  </div>
+
+  <div id="sec-done" style="display:none">
+    <div class="sec-label">Splněné</div>
+    <div class="task-list" id="lst-done"></div>
+  </div>
+
+</div>
+
+<script>
+const TODAY = new Date().toISOString().slice(0,10);
+const LS_KEY = 'nw_ukoly_v1';
+const GH_REPO = 'nutworldcz-collab/nutworldcz-collab.github.io';
+const GH_FILE = 'report_ukoly.json';
+const TOK_KEY = 'nw_gh_token';
+
+let tasks = [], pri = 'normal', syncT = null;
+
+function init(){
+  if(!localStorage.getItem(TOK_KEY)) document.getElementById('setup').style.display='flex';
+  try{ tasks = JSON.parse(localStorage.getItem(LS_KEY)||'[]'); }catch{ tasks=[]; }
+  document.getElementById('add-dt').value = TODAY;
+  render();
+}
+
+function saveToken(){
+  const t = document.getElementById('tok-in').value.trim();
+  if(!t || !t.startsWith('github_')){ alert('Vlož platný GitHub token (začíná github_pat_...)'); return; }
+  localStorage.setItem(TOK_KEY, t);
+  document.getElementById('setup').style.display='none';
+  sync();
+}
+
+function setPri(p){
+  pri = p;
+  document.getElementById('p-norm').className = 'pri-btn normal' + (p==='normal'?' active':'');
+  document.getElementById('p-urg').className  = 'pri-btn urgent' + (p==='urgent'?' active':'');
+}
+
+function addTask(){
+  const text = document.getElementById('add-txt').value.trim();
+  if(!text) return;
+  tasks.push({ id: Date.now()+'_'+Math.random().toString(36).slice(2,6),
+    text, due: document.getElementById('add-dt').value||null,
+    priority: pri, done: false, created: TODAY });
+  document.getElementById('add-txt').value = '';
+  save(); render();
+}
+
+function toggleDone(id){
+  const t = tasks.find(x=>x.id===id); if(!t) return;
+  t.done = !t.done; if(t.done) t.doneDate=TODAY; else delete t.doneDate;
+  save(); render();
+}
+
+function del(id){ tasks = tasks.filter(x=>x.id!==id); save(); render(); }
+
+function save(){
+  localStorage.setItem(LS_KEY, JSON.stringify(tasks));
+  if(syncT) clearTimeout(syncT);
+  syncT = setTimeout(sync, 1500);
+}
+
+function fmt(iso){ if(!iso)return''; const[,m,d]=iso.split('-'); return`${+d}.${+m}.`; }
+
+function dueTag(due){
+  if(!due) return '';
+  if(due < TODAY) return `<span class="task-due due-over">⚠ ${fmt(due)}</span>`;
+  if(due === TODAY) return `<span class="task-due due-today">Dnes</span>`;
+  const diff = Math.round((new Date(due)-new Date(TODAY))/86400000);
+  return diff<=3
+    ? `<span class="task-due due-soon">${fmt(due)}</span>`
+    : `<span class="task-due due-fut">${fmt(due)}</span>`;
+}
+
+function taskHtml(t){
+  const urg = t.priority==='urgent';
+  return `<div class="task-row${t.done?' done-row':''}">
+    <div class="cb${t.done?' checked':''}${urg&&!t.done?' urg':''}" onclick="toggleDone('${t.id}')">${t.done?'✓':''}</div>
+    <div class="dot ${urg?'dot-urg':'dot-norm'}"></div>
+    <div class="task-text">${t.text}</div>
+    ${dueTag(t.due)}
+    <button class="del-btn" onclick="del('${t.id}')">×</button>
+  </div>`;
+}
+
+function render(){
+  const open = tasks.filter(t=>!t.done);
+  const done = tasks.filter(t=>t.done);
+  const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate()-7);
+  const wk = weekAgo.toISOString().slice(0,10);
+
+  const todayItems = open.filter(t=>t.due&&t.due<=TODAY).sort((a,b)=>(a.priority==='urgent'?0:1)-(b.priority==='urgent'?0:1)||a.due.localeCompare(b.due));
+  const futureItems = open.filter(t=>t.due&&t.due>TODAY).sort((a,b)=>a.due.localeCompare(b.due));
+  const nodateItems = open.filter(t=>!t.due).sort((a,b)=>(a.priority==='urgent'?0:1)-(b.priority==='urgent'?0:1));
+  const doneWeek = done.filter(t=>t.doneDate&&t.doneDate>=wk).length;
+
+  document.getElementById('s-dnes').textContent = todayItems.length;
+  document.getElementById('s-open').textContent = open.length;
+  document.getElementById('s-done').textContent = doneWeek;
+
+  function fill(sec, lst, items){
+    document.getElementById(sec).style.display = items.length?'':'none';
+    document.getElementById(lst).innerHTML = items.length ? items.map(taskHtml).join('') : '';
+  }
+  fill('sec-today','lst-today',todayItems);
+  fill('sec-future','lst-future',futureItems);
+  fill('sec-nodate','lst-nodate',nodateItems);
+  const secDone = document.getElementById('sec-done');
+  secDone.style.display = done.length?'':'none';
+  document.getElementById('lst-done').innerHTML = done.slice(0,15).map(taskHtml).join('');
+}
+
+function setSt(s){
+  const el = document.getElementById('sync-st');
+  const map = {ok:['sync-ok','✓ Synced'],ing:['sync-ing','↻ Ukládám…'],err:['sync-err','⚠ Chyba sync']};
+  el.className='sync-status '+map[s][0]; el.textContent=map[s][1];
+}
+
+async function sync(){
+  const token = localStorage.getItem(TOK_KEY); if(!token) return;
+  setSt('ing');
+  try{
+    let sha=null;
+    const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${GH_FILE}`,
+      {headers:{Authorization:`Bearer ${token}`,Accept:'application/vnd.github+json'}});
+    if(r.ok){ sha=(await r.json()).sha; }
+
+    const payload = {generated:new Date().toISOString(),tasks};
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(payload,null,2))));
+    const body = {message:'chore: sync ukoly',content};
+    if(sha) body.sha=sha;
+
+    const wr = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${GH_FILE}`,
+      {method:'PUT',headers:{Authorization:`Bearer ${token}`,Accept:'application/vnd.github+json','Content-Type':'application/json'},
+       body:JSON.stringify(body)});
+    if(!wr.ok) throw new Error('PUT '+wr.status);
+    setSt('ok');
+  }catch(e){console.error(e);setSt('err');}
+}
+
+init();
+</script>
+</body>
+</html>
