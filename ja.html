@@ -108,6 +108,38 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
   .header-name{font-size:22px}
   .quick-grid{grid-template-columns:repeat(4,1fr)}
 }
+
+/* CHECKLIST */
+.cl-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.cl-filters{display:flex;gap:6px;flex-wrap:wrap}
+.cl-filter{font-family:'Exo 2',sans-serif;font-size:10px;font-weight:700;padding:4px 10px;border-radius:14px;border:2px solid transparent;cursor:pointer;transition:all .15s;background:white;color:#a08060}
+.cl-filter.active{border-color:var(--br);color:var(--bd)}
+.cl-progress{background:#f1e6da;border-radius:8px;height:6px;margin-bottom:14px;overflow:hidden}
+.cl-progress-bar{height:100%;background:linear-gradient(90deg,#da1668,#f7ab31);border-radius:8px;transition:width .4s}
+.cl-progress-label{font-size:11px;color:#a08060;margin-bottom:6px;text-align:right}
+.cl-list{background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 5px rgba(0,0,0,.07)}
+.cl-item{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid #f5ede3;cursor:pointer;transition:background .1s;border-left:4px solid transparent}
+.cl-item:last-child{border-bottom:none}
+.cl-item:hover{background:#fdfaf7}
+.cl-item.done{opacity:.35}
+.cl-item.done .cl-text{text-decoration:line-through;color:#a08060}
+.cl-item.p-critical{border-left-color:#da1668}
+.cl-item.p-high{border-left-color:#f7ab31}
+.cl-item.p-medium{border-left-color:#f7d060}
+.cl-item.p-low{border-left-color:#6fa044}
+.cl-check{width:18px;height:18px;border-radius:5px;border:2px solid #ddd;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .15s}
+.cl-item.done .cl-check{background:#6fa044;border-color:#6fa044;color:white}
+.cl-item:not(.done):hover .cl-check{border-color:var(--br)}
+.cl-text{font-size:13px;color:#2a1a0e;flex:1;line-height:1.4}
+.cl-tags{display:flex;gap:4px;flex-shrink:0}
+.cl-tag{font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap}
+.cl-tag.cz{background:#e8f4fd;color:#0078d4}
+.cl-tag.sk{background:#f0f7e8;color:#2d7a1f}
+.cl-tag.czsk{background:#f1e6da;color:#83502e}
+.cl-reset{font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;padding:5px 12px;border-radius:8px;background:#f1e6da;color:var(--br);border:none;cursor:pointer;transition:background .15s}
+.cl-reset:hover{background:#e0cfc0}
+.cl-hidden{display:none}
+
 </style>
 </head>
 <body>
@@ -324,6 +356,26 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
       <div class="auto-item"><div class="auto-dot dot-green"></div><div class="auto-name">Memory backup</div><div class="auto-when">13:00 + 21:00</div></div>
       <div class="auto-item"><div class="auto-dot dot-green"></div><div class="auto-name">Zdraví automatizací</div><div class="auto-when">8:45 denně → email</div></div>
     </div>
+  </div>
+
+  <!-- E-SHOP CHECKLIST -->
+  <div>
+    <div class="cl-header">
+      <div class="section-label" style="margin-bottom:0">✅ E-shop UX checklist (nutworld.cz + .sk)</div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <div class="cl-filters">
+          <div class="cl-filter active" onclick="clFilter('all',this)">Vše</div>
+          <div class="cl-filter" onclick="clFilter('critical',this)">🔴 Kritické</div>
+          <div class="cl-filter" onclick="clFilter('high',this)">🟠 Vysoká</div>
+          <div class="cl-filter" onclick="clFilter('medium',this)">🟡 Střední</div>
+          <div class="cl-filter" onclick="clFilter('low',this)">🟢 Nízká</div>
+        </div>
+        <button class="cl-reset" onclick="clReset()">↩ Reset</button>
+      </div>
+    </div>
+    <div class="cl-progress-label" id="cl-label">0 / 29 hotovo</div>
+    <div class="cl-progress"><div class="cl-progress-bar" id="cl-bar" style="width:0%"></div></div>
+    <div class="cl-list" id="cl-list"></div>
   </div>
 
 </div>
@@ -642,6 +694,82 @@ function fmtD(iso){if(!iso)return'';const[y,m,dd]=iso.split('-');return`${dd}.${
       <span style="flex:1;color:#2a1a0e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${m.topic||''}</span>
     </div>`).join('') + (all.length > 5 ? `<div style="font-size:11px;color:#a08060;margin-top:6px">+ ${all.length-5} dalších</div>` : '');
 })();
+
+// ── E-SHOP CHECKLIST ─────────────────────────────────────────────────────────
+(function(){
+  const KEY = 'nw_eshop_checklist_v1';
+  const TASKS = [
+    {id:1,  p:'critical', site:'sk',   text:'Přidat telefonní číslo +421 (nebo zobrazit CZ+SK obě čísla)'},
+    {id:2,  p:'critical', site:'sk',   text:'Opravit hero text — přepsat slovensky (teď je česky)'},
+    {id:3,  p:'critical', site:'sk',   text:'Opravit celé navigační menu — všechny položky musí být slovensky'},
+    {id:4,  p:'critical', site:'sk',   text:'Opravit prázdnou stránku /firemni-darky-2/ → přesměrovat na /firemne-darceky/'},
+    {id:5,  p:'critical', site:'sk',   text:'Přejmenovat brand "Nutworld.cz" → "Nutworld" (filtr i popisek produktu)'},
+    {id:6,  p:'critical', site:'sk',   text:'Opravit social media — neodkazovat z SK webu na CZ Instagram/Facebook'},
+    {id:7,  p:'critical', site:'czsk', text:'Odstranit bariéru registrace pro psaní recenzí — stačí jen email + jméno'},
+    {id:8,  p:'critical', site:'czsk', text:'Aktivovat automatický email po doručení s žádostí o recenzi'},
+    {id:9,  p:'critical', site:'czsk', text:'Přidat B2B poptávkový formulář přímo na stránku firemní dárky'},
+    {id:10, p:'high',     site:'czsk', text:'Zobrazit info o dopravě zdarma přímo na produktové stránce'},
+    {id:11, p:'high',     site:'czsk', text:'Přidat záruční box pod tlačítko Do košíku — "Vrátíme peníze do 14 dní"'},
+    {id:12, p:'high',     site:'czsk', text:'Nahradit rotující banner statickým hero s jednou nabídkou a jedním CTA'},
+    {id:13, p:'high',     site:'czsk', text:'Přidat sekci Bestsellery / Začni tady (10 nejprodávanějších) na kategorie'},
+    {id:14, p:'high',     site:'czsk', text:'Přidat urgenci na produktové stránky — "Pouze X ks skladem" nebo badge'},
+    {id:15, p:'high',     site:'sk',   text:'Přidat WhatsApp tlačítko pro kontakt (SK zákazníci preferují WhatsApp)'},
+    {id:16, p:'high',     site:'sk',   text:'Vytvořit B2B landing page v slovenštině — příběh, výhody, formulář'},
+    {id:17, p:'high',     site:'czsk', text:'Přidat referenční klienty na B2B stránku (i anonymně — banky, IT, automotive)'},
+    {id:18, p:'medium',   site:'czsk', text:'Vytvořit Gift Finder — kvíz 3 otázky (pro koho / příležitost / budget) → 5 tipů'},
+    {id:19, p:'medium',   site:'czsk', text:'Přidat filtry do kategorie Ořechy — Bez alergenu, Bez cukru, Lyofilizované'},
+    {id:20, p:'medium',   site:'czsk', text:'Přidat badge LYOFILIZOVÁNO ke lyofilizovaným produktům v gridu'},
+    {id:21, p:'medium',   site:'czsk', text:'Propojit blog s produkty — sekce "Produkty z tohoto článku" pod každým článkem'},
+    {id:22, p:'medium',   site:'sk',   text:'Přidat rozcestník darčeků podle ceny — Do 10€ / Do 20€ / Do 50€ / Nad 50€'},
+    {id:23, p:'medium',   site:'sk',   text:'Napsat a publikovat SK blog v slovenštině (3–4 články měsíčně)'},
+    {id:24, p:'medium',   site:'sk',   text:'Vytvořit sezónní micro-pages pro SK svátky — MDŽ, Deň matiek, Vianoce'},
+    {id:25, p:'low',      site:'czsk', text:'Přidat social proof badge na homepage — "Přes 50 000 spokojených zákazníků"'},
+    {id:26, p:'low',      site:'czsk', text:'Přidat FAQ sekci na produktové stránky (3–5 nejčastějších otázek)'},
+    {id:27, p:'low',      site:'cz',   text:'Přidat otevírací dobu provozovny v Hronově do footeru a na Kontakty'},
+    {id:28, p:'low',      site:'cz',   text:'Odstranit / filtrovat recenze zaměstnanců u vlastních produktů'},
+    {id:29, p:'low',      site:'sk',   text:'Sekci AKCIA — zvýšit slevy min. na –20% nebo přejmenovat na Výhodné balenia'},
+  ];
+  const SITE_LABEL = {cz:'CZ', sk:'SK', czsk:'CZ+SK'};
+  const SITE_CLASS  = {cz:'cz', sk:'sk', czsk:'czsk'};
+
+  function getDone(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}'); }catch{ return {}; } }
+  function toggleDone(id){ const d=getDone(); if(d[id])delete d[id]; else d[id]=1; localStorage.setItem(KEY,JSON.stringify(d)); }
+
+  let activeFilter = 'all';
+
+  function render(){
+    const done = getDone();
+    const doneCount = TASKS.filter(t=>done[t.id]).length;
+    document.getElementById('cl-label').textContent = doneCount + ' / ' + TASKS.length + ' hotovo';
+    document.getElementById('cl-bar').style.width = Math.round(doneCount/TASKS.length*100) + '%';
+
+    const visible = activeFilter==='all' ? TASKS : TASKS.filter(t=>t.p===activeFilter);
+    document.getElementById('cl-list').innerHTML = visible.map(t => {
+      const isDone = !!done[t.id];
+      return `<div class="cl-item p-${t.p}${isDone?' done':''}" onclick="clToggle(${t.id})">
+        <div class="cl-check">${isDone?'✓':''}</div>
+        <div class="cl-text">${t.text}</div>
+        <div class="cl-tags"><span class="cl-tag ${SITE_CLASS[t.site]}">${SITE_LABEL[t.site]}</span></div>
+      </div>`;
+    }).join('');
+  }
+
+  window.clToggle = function(id){ toggleDone(id); render(); };
+  window.clFilter = function(f, el){
+    activeFilter = f;
+    document.querySelectorAll('.cl-filter').forEach(x=>x.classList.remove('active'));
+    el.classList.add('active');
+    render();
+  };
+  window.clReset = function(){
+    if(!confirm('Opravdu resetovat všechny odškrtnuté úkoly?')) return;
+    localStorage.removeItem(KEY);
+    render();
+  };
+
+  render();
+})();
+
 </script>
 </body>
 </html>
