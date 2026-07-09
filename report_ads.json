@@ -1,51 +1,53 @@
 {
-  "generated": "2026-07-08T08:30:17",
-  "period": "2026-07-01 – 2026-07-07",
+  "generated": "2026-07-09T08:30:24",
+  "period": "2026-07-02 – 2026-07-08",
   "channels": {
     "Meta CZ": {
-      "spend": 4185.0,
-      "revenue": 3505.0,
-      "pno": 119.4,
-      "conversions": 5.0,
-      "clicks": 785,
-      "prev_spend": 4300.0,
-      "prev_pno": 46.5
+      "spend": 4705.0,
+      "revenue": 10686.0,
+      "pno": 44.0,
+      "conversions": 10.0,
+      "clicks": 874,
+      "prev_spend": 4459.0,
+      "prev_pno": 48.3
     },
     "Meta SK": {
-      "spend": 137.0,
-      "revenue": 152.0,
-      "pno": 90.2,
+      "spend": 140.0,
+      "revenue": 117.0,
+      "pno": 119.4,
       "conversions": 5.0,
-      "clicks": 692,
-      "prev_spend": 141.0,
-      "prev_pno": 162.2
+      "clicks": 709,
+      "prev_spend": 144.0,
+      "prev_pno": 103.1
     },
     "Google CZ": {
-      "spend": 1632.0,
-      "revenue": 22628.0,
-      "pno": 7.2,
-      "conversions": 21.8,
-      "clicks": 252,
-      "prev_spend": 1093.0,
-      "prev_pno": 15.0
+      "spend": 2369.0,
+      "revenue": 26703.0,
+      "pno": 8.9,
+      "conversions": 26.8,
+      "clicks": 328,
+      "prev_spend": 710.0,
+      "prev_pno": 15.3
     },
     "Google SK": {
-      "spend": 774.0,
-      "revenue": 5285.0,
-      "pno": 14.7,
-      "conversions": 4.0,
-      "clicks": 92,
-      "prev_spend": 551.0,
-      "prev_pno": 14.2
+      "spend": 1049.0,
+      "revenue": 5800.0,
+      "pno": 18.1,
+      "conversions": 5.0,
+      "clicks": 117,
+      "prev_spend": 312.0,
+      "prev_pno": 16.4
     }
   },
   "anomalies": [
-    "🔴 Meta CZ: PNO 119.4% — nad break-even (40%)",
-    "🟡 Meta CZ: PNO zhoršilo o 72.9pp vs minulý týden",
-    "🔴 Meta SK: PNO 90.2% — nad break-even (40%)"
+    "🔴 Meta CZ: PNO 44.0% — nad break-even (40%)",
+    "🔴 Meta SK: PNO 119.4% — nad break-even (40%)",
+    "🟡 Meta SK: PNO zhoršilo o 16.3pp vs minulý týden",
+    "🟡 Google CZ: útrata +234% vs minulý týden",
+    "🟡 Google SK: útrata +236% vs minulý týden"
   ],
   "priorities": [
-    "Zkontrolovat kampaně Meta CZ — PNO 119.4%",
-    "Zkontrolovat kampaně Meta SK — PNO 90.2%"
+    "Zkontrolovat kampaně Meta SK — PNO 119.4%",
+    "Zkontrolovat kampaně Meta CZ — PNO 44.0%"
   ]
 }
