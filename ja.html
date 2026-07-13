@@ -77,6 +77,12 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .email-empty{padding:20px;text-align:center;color:#b0966a;font-size:13px}
 .email-meta-bar{display:flex;gap:12px;align-items:center;padding:10px 14px;background:#fdfaf7;border-bottom:1px solid #f5ede3;font-size:12px;color:#a08060}
 .email-meta-bar strong{color:var(--bd)}
+.eai{margin-top:7px;background:#f7f3ef;border-left:3px solid var(--br);border-radius:0 8px 8px 0;padding:7px 10px;font-size:11px;line-height:1.55;color:#3d2912}
+.eai-shrn{color:#3d2912}
+.eai-akce{margin-top:4px;font-weight:700;color:var(--br)}
+.eai-tag{display:inline-block;font-size:9px;font-weight:800;padding:1px 6px;border-radius:4px;margin-right:5px;vertical-align:middle}
+.eai-tag.reaguji{background:#da1668;color:#fff}
+.eai-tag.info{background:#e8ddd4;color:#83502e}
 
 /* AUTOMATIZACE */
 .auto-list{background:white;border-radius:12px;padding:18px;box-shadow:0 1px 5px rgba(0,0,0,.07)}
@@ -426,15 +432,20 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
       const unreadDot = e.unread && !isDone ? '<span class="eunread"></span>' : '';
       const catColor = CATS[e.category]?.color||'#83502e';
       const replyUrl = `mailto:${e.sender_email}?subject=Re:%20${encodeURIComponent(e.subject)}`;
+      const ai = e.ai || null;
+      const aiTag = ai ? (ai.tyka_se ? '<span class="eai-tag reaguji">● Reaguj</span>' : '<span class="eai-tag info">● Info</span>') : '';
+      const aiShrn = ai ? String(ai.shrnuti || ai['shrnutí'] || '').replace(/`/g,"'") : '';
+      const aiAkce = (ai && ai.tyka_se && ai.akce) ? String(ai.akce).replace(/`/g,"'") : '';
+      const aiBox = ai ? `<div class="eai">${aiTag}<span class="eai-shrn">${aiShrn}</span>${aiAkce ? `<div class="eai-akce">→ ${aiAkce}</div>` : ''}</div>` : '';
       return `<div class="email-row${isDone?' resolved':''}${e.unread?' unread':''}" data-key="${key.replace(/"/g,'&quot;')}">
         <div class="email-meta">
           <div class="esender">${unreadDot}${badge}<span style="color:${catColor}">${e.sender_short}</span></div>
           <div class="esubj">${e.subject}</div>
-          ${e.preview ? `<div class="epreview">${e.preview}</div>` : ''}
+          ${aiBox}
         </div>
         <div class="email-actions">
           <a class="btn-reply" href="${replyUrl}">Odpovědět</a>
-          <button class="btn-done" onclick="window._emailDone('${key.replace(/'/g,"\\'")}',this)">${isDone?'↩ Zpět':'✓ Hotovo'}</button>
+          <button class="btn-done" onclick="window._emailDone('${key.replace(/'/g,"\'")}',this)">${isDone?'↩ Zpět':'✓ Hotovo'}</button>
         </div>
       </div>`;
     }).join('');
