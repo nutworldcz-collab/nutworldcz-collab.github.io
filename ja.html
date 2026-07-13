@@ -434,9 +434,9 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
       const replyUrl = `mailto:${e.sender_email}?subject=Re:%20${encodeURIComponent(e.subject)}`;
       const ai = e.ai || null;
       const aiTag = ai ? (ai.tyka_se ? '<span class="eai-tag reaguji">● Reaguj</span>' : '<span class="eai-tag info">● Info</span>') : '';
-      const aiShrn = ai ? String(ai.shrnuti || ai['shrnutí'] || '').replace(/`/g,"'") : '';
-      const aiAkce = (ai && ai.tyka_se && ai.akce) ? String(ai.akce).replace(/`/g,"'") : '';
-      const aiBox = ai ? `<div class="eai">${aiTag}<span class="eai-shrn">${aiShrn}</span>${aiAkce ? `<div class="eai-akce">→ ${aiAkce}</div>` : ''}</div>` : '';
+      const aiShrn = ai ? (ai.shrn || '') : '';
+      const aiAkce = (ai && ai.tyka_se && ai.akce) ? ai.akce : '';
+      const aiBox = ai ? ('<div class="eai">' + aiTag + '<span class="eai-shrn">' + aiShrn + '</span>' + (aiAkce ? '<div class="eai-akce">→ ' + aiAkce + '</div>' : '') + '</div>') : '';
       return `<div class="email-row${isDone?' resolved':''}${e.unread?' unread':''}" data-key="${key.replace(/"/g,'&quot;')}">
         <div class="email-meta">
           <div class="esender">${unreadDot}${badge}<span style="color:${catColor}">${e.sender_short}</span></div>
