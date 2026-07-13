@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-13T09:22:33",
+  "generated": "2026-07-13T09:25:57",
   "total": 5,
   "spam_skipped": 0,
   "emails": [
@@ -34,7 +34,12 @@
       "preview": "Ahoj Honzo, zaslal jsem jim nabídku na několik dalších produktů a srdíčko jsem tam rovnou nedal 😊 Pěkný den Tomáš",
       "category": "tym",
       "sender_short": "Tomáš Hamerník",
-      "sender_email": "tomas.hamernik@nutworld.cz"
+      "sender_email": "tomas.hamernik@nutworld.cz",
+      "ai": {
+        "shrnutí": "Tomáš informuje, že zaslal nabídku na další produkty bez srdíčka (emotikonu), což je vnitřní komunikace o procesu stanovování cen.",
+        "tyka_se": false,
+        "akce": "Jen pro info, nemusíš reagovat"
+      }
     },
     {
       "account": "Exchange",
@@ -45,7 +50,12 @@
       "preview": "Ahoj Honzo, to je super. Myslím",
       "category": "tym",
       "sender_short": "Tomáš Hamerník",
-      "sender_email": "tomas.hamernik@nutworld.cz"
+      "sender_email": "tomas.hamernik@nutworld.cz",
+      "ai": {
+        "shrnutí": "Tomáš potvrzuje, že situace s výjimkou ALBI je vyřešena/schválena a projevuje souhlas.",
+        "tyka_se": false,
+        "akce": "Jen pro info, nemusíš reagovat"
+      }
     },
     {
       "account": "Google",
@@ -56,7 +66,12 @@
       "preview": "Big price drops on up to 60% off deals ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ￼ . . -30% . CZK30.29 . -5% . CZK33.34 . -5% . CZK25.93 . Explore deals",
       "category": "ostatni",
       "sender_short": "AliExpress",
-      "sender_email": "aeug-curated-selection21@selections.aliexpress.com"
+      "sender_email": "aeug-curated-selection21@selections.aliexpress.com",
+      "ai": {
+        "shrnutí": "Propagační email od AliExpressu s nabídkou slev až 60% na produkty během Sourcing Festivalu.",
+        "tyka_se": false,
+        "akce": "Jen pro info, nemusíš reagovat"
+      }
     }
   ]
 }
