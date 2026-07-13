@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-13T09:25:57",
+  "generated": "2026-07-13T09:34:30",
   "total": 5,
   "spam_skipped": 0,
   "emails": [
@@ -36,9 +36,9 @@
       "sender_short": "Tomáš Hamerník",
       "sender_email": "tomas.hamernik@nutworld.cz",
       "ai": {
-        "shrnutí": "Tomáš informuje, že zaslal nabídku na další produkty bez srdíčka (emotikonu), což je vnitřní komunikace o procesu stanovování cen.",
+        "shrn": "Tomáš informuje, že zaslal nabídku na další produkty bez srdíčka. Jde o potvrzení akce bez vyžadovaného rozhodnutí.",
         "tyka_se": false,
-        "akce": "Jen pro info, nemusíš reagovat"
+        "akce": null
       }
     },
     {
@@ -52,9 +52,9 @@
       "sender_short": "Tomáš Hamerník",
       "sender_email": "tomas.hamernik@nutworld.cz",
       "ai": {
-        "shrnutí": "Tomáš potvrzuje, že situace s výjimkou ALBI je vyřešena/schválena a projevuje souhlas.",
+        "shrn": "Tomáš potvrzuje, že něco je super a vyjadřuje souhlas. Jde o krátkou potvrzovací zprávu bez vyžadovaného vstupu.",
         "tyka_se": false,
-        "akce": "Jen pro info, nemusíš reagovat"
+        "akce": null
       }
     },
     {
@@ -68,9 +68,9 @@
       "sender_short": "AliExpress",
       "sender_email": "aeug-curated-selection21@selections.aliexpress.com",
       "ai": {
-        "shrnutí": "Propagační email od AliExpressu s nabídkou slev až 60% na produkty během Sourcing Festivalu.",
+        "shrn": "Marketingový email od AliExpress o slevách na sourcing festival. Jde o spam/obchodní nabídku bez relevance pro řízení podniku.",
         "tyka_se": false,
-        "akce": "Jen pro info, nemusíš reagovat"
+        "akce": null
       }
     }
   ]
