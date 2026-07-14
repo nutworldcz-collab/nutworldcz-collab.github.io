@@ -63,6 +63,12 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .send-btn:disabled{opacity:.4;cursor:default}
 .send-btn:not(:disabled):hover{filter:brightness(1.1)}
 
+/* ── MODE SELECTOR ── */
+.mode-row{display:flex;gap:6px;padding:6px 0 2px}
+.mode-btn{flex:1;padding:6px 8px;border:1.5px solid #c8976a;border-radius:20px;background:#fff;color:#83502e;font-size:11px;font-family:inherit;cursor:pointer;font-weight:600;transition:all .15s;white-space:nowrap}
+.mode-btn.active{background:#83502e;color:#fff;border-color:#83502e}
+.mode-hint{font-size:10px;color:#b09070;padding:0 2px 4px;line-height:1.4}
+
 /* ── PRAVÝ PANEL — PREVIEW ── */
 .right{background:#9a8f85;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:20px 12px;gap:8px}
 .page-wrap{width:100%;max-width:760px;background:white;box-shadow:0 4px 20px rgba(0,0,0,.2)}
@@ -130,6 +136,13 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
     <span id="upload-label" style="font-size:11px;color:#aaa">Fotky nebo PDF (volitelné)</span>
   </div>
 
+  <!-- Mode selector -->
+  <div class="mode-row">
+    <button id="mode-btn-creative" class="mode-btn active" onclick="setMode('creative')">✨ Kreativně</button>
+    <button id="mode-btn-convert" class="mode-btn" onclick="setMode('convert')">📄 Přetvořit 1:1</button>
+  </div>
+  <div id="mode-hint" class="mode-hint">Vymyslí obsah kreativně — prezentace, katalogy, nabídky</div>
+
   <!-- Input -->
   <div class="chat-input-wrap">
     <textarea id="chat-input" placeholder="Co chceš vytvořit? Napiš libovolně…"
@@ -163,6 +176,32 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 let chatHistory = [];   // {role, content}
 let images = [];    // {name, b64, mime}
 let pdfs = [];      // {name, b64}
+let docMode = 'creative'; // 'creative' | 'convert'
+
+// ═══════════════════════════════════════
+// MODE
+// ═══════════════════════════════════════
+function setMode(m) {
+  docMode = m;
+  document.getElementById('mode-btn-creative').classList.toggle('active', m === 'creative');
+  document.getElementById('mode-btn-convert').classList.toggle('active', m === 'convert');
+  const hint = document.getElementById('mode-hint');
+  const ta = document.getElementById('chat-input');
+  if (m === 'convert') {
+    hint.textContent = 'Zachová veškerý obsah přesně 1:1 — jen vizuálně přetvoří do Nutworld stylu';
+    ta.placeholder = 'Nahraj PDF nebo popiš dokument — přetvořím ho 1:1 do Nutworld stylu…';
+  } else {
+    hint.textContent = 'Vymyslí obsah kreativně — prezentace, katalogy, nabídky';
+    ta.placeholder = 'Co chceš vytvořit? Napiš libovolně…';
+  }
+}
+
+function getModeInstruction() {
+  if (docMode === 'convert') {
+    return `\n\n━━━ MÓD: PŘETVOŘIT 1:1 ━━━\nZACHOVEJ VEŠKERÝ OBSAH PŘESNĚ TAK JAK JE:\n• Veškeré texty beze změny\n• Strukturu a pořadí sekcí\n• Všechna čísla, jména, data, hodnoty\n• Číslování, odrážky, tabulky\nTvůj JEDINÝ úkol = vizuální přetvoření do Nutworld stylu.\nNIC nepřidávej, NIC nevynechávej, NA OBSAH NESAHEJ.`;
+  }
+  return `\n\n━━━ MÓD: KREATIVNÍ ━━━\nBuď kreativní a vizuálně atraktivní — prodejní argumenty, checklisty, boxy, tagy, ikony, karty s výhodami.`;
+}
 let generating = false;
 let currentDocHtml = '';
 let lastDocTail = '';  // content before footer, for continuation context
@@ -211,6 +250,8 @@ function handlePdfs(files) {
     };
     reader.readAsDataURL(f);
   });
+  // PDF nahráno → auto-přepnout na Přetvořit 1:1
+  setMode('convert');
 }
 
 function handleImgs(files) {
@@ -374,15 +415,16 @@ async function send() {
   addMsg('user', escHtml(text));
 
   let userContent;
+  const modeInstr = getModeInstruction();
   const hasMixed = images.length > 0 || pdfs.length > 0;
   if (hasMixed) {
     userContent = [
       ...pdfs.map(p => ({ type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: p.b64 } })),
       ...images.map(img => ({ type: 'image', source: { type: 'base64', media_type: img.mime, data: img.b64 } })),
-      { type: 'text', text: text + (pdfs.length ? `\n\nPDF dokumenty (${pdfs.map(p=>p.name).join(', ')}) jsou přiloženy výše — zpracuj jejich obsah.` : '') + (images.length ? '\n\nFotografie produktu jsou přiloženy výše.' : '') }
+      { type: 'text', text: text + (pdfs.length ? `\n\nPDF dokumenty (${pdfs.map(p=>p.name).join(', ')}) jsou přiloženy výše — zpracuj jejich obsah.` : '') + (images.length ? '\n\nFotografie produktu jsou přiloženy výše.' : '') + modeInstr }
     ];
   } else {
-    userContent = text;
+    userContent = text + modeInstr;
   }
 
   chatHistory.push({ role: 'user', content: userContent });
@@ -543,8 +585,8 @@ async function sendBatch(text, n) {
     if (prog) prog.textContent = `Stránka ${i + 1} / ${n}…`;
 
     const pageInstruction = isFirst
-      ? `\n\n---\nBATCH mód — stránka ${i + 1} z ${n}.\nPokud jsou v požadavku produkty/položky (seznam, CSV, čísla), použij POLOŽKU Č.${i + 1}.\nVygeneruj CELÝ dokument (header + obsah + footer).\nBuď výstižný — max 3–5 sekcí. Bez zbytečně dlouhých CSS komentářů.`
-      : `\n\n---\nBATCH mód — stránka ${i + 1} z ${n}.\nPokud jsou v požadavku produkty/položky, použij POLOŽKU Č.${i + 1}.\nVygeneruj POUZE obsah stránky — BEZ header gradientu, BEZ barevného pruhu, BEZ footer.\nZačni přímo nadpisem / prvním obsahovým blokem.\nBuď výstižný — max 3–5 sekcí.\nFormát: TYPE:... NOTE:... <DOC>...</DOC>`;
+      ? `\n\n---\nBATCH mód — stránka ${i + 1} z ${n}.\nPokud jsou v požadavku produkty/položky (seznam, CSV, čísla), použij POLOŽKU Č.${i + 1}.\nVygeneruj CELÝ dokument (header + obsah + footer).\nBuď výstižný — max 3–5 sekcí.${getModeInstruction()}`
+      : `\n\n---\nBATCH mód — stránka ${i + 1} z ${n}.\nPokud jsou v požadavku produkty/položky, použij POLOŽKU Č.${i + 1}.\nVygeneruj POUZE obsah stránky — BEZ header gradientu, BEZ barevného pruhu, BEZ footer.\nZačni přímo nadpisem / prvním obsahovým blokem.\nBuď výstižný — max 3–5 sekcí.${getModeInstruction()}`;
 
     showTyping();
 
