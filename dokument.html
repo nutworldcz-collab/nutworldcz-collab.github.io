@@ -543,7 +543,11 @@ async function send() {
     const model = hasKey() ? 'claude-sonnet-4-6' : 'claude-haiku-4-5-20251001';
     const maxTok = hasKey() ? 8000 : 2500;
     const payload = { model, max_tokens: maxTok, system: SYSTEM, messages: chatHistory };
-    const data = await claudeCall(payload, hasKey() ? 180000 : 55000);
+    let data = await claudeCall(payload, hasKey() ? 180000 : 55000);
+    // Fallback na Haiku 3 pokud 4.5 nefunguje přes proxy
+    if (!hasKey() && data?.error?.message?.includes('model')) {
+      data = await claudeCall({ ...payload, model: 'claude-3-haiku-20240307' }, 55000);
+    }
     const raw = (data.content?.[0]?.text || '').trim();
     const stopReason = data.stop_reason || '?';
     addMsg('assistant', `🔍 ${raw.length} znaků · stop: <b>${stopReason}</b> · TYPE: ${raw.match(/^TYPE:/m) ? 'ok' : 'chybí'} · DOC: ${raw.includes('<DOC>') ? 'ok' : 'chybí'}`);
@@ -665,7 +669,10 @@ async function sendBatch(text, n) {
       successCount++;
       addMsg('assistant', `✓ Stránka ${i + 1}/${n}: ${noteM?.[1]?.trim() || typeM[1]}`);
     } else {
-      addMsg('assistant', `⚠️ Stránka ${i + 1} — nesprávný formát odpovědi.`);
+      // Debug: ukaž co přišlo
+      const preview = raw ? raw.slice(0, 200).replace(/</g,'&lt;') : '[prázdná odpověď]';
+      const apiErr = data?.error?.message || '';
+      addMsg('assistant', `⚠️ Stránka ${i + 1} — špatný formát.<br><small style="color:#888">${apiErr || preview}</small>`);
     }
 
     if (i < n - 1) await new Promise(r => setTimeout(r, 300));
@@ -686,14 +693,23 @@ async function callPageApi(prompt) {
     try { return await claudeCall(payload, 180000); }
     catch(e) { addMsg('assistant', `⚠️ API chyba: ${escHtml(e.message)}`); return null; }
   } else {
-    // Zaměstnanci: Haiku přes proxy — 10× rychlejší, vejde se do 60s
-    const payload = { model: 'claude-haiku-4-5-20251001', max_tokens: 2500, system: SYSTEM, messages: msgs };
-    try { return await claudeCall(payload, 55000); }
-    catch(e) {
-      if (e.name === 'AbortError') { addMsg('assistant', `⏱ Timeout — zkus kratší zadání.`); }
-      else { addMsg('assistant', `⚠️ API chyba: ${escHtml(e.message)}`); }
-      return null;
+    // Zaměstnanci: Haiku přes proxy — zkus 4.5, fallback na 3
+    for (const model of ['claude-haiku-4-5-20251001', 'claude-3-haiku-20240307']) {
+      const payload = { model, max_tokens: 2500, system: SYSTEM, messages: msgs };
+      try {
+        const data = await claudeCall(payload, 55000);
+        // Pokud API vrátilo chybu modelu, zkus další
+        if (data?.error?.type === 'invalid_request_error' && data?.error?.message?.includes('model')) {
+          addMsg('assistant', `⚙️ Model ${model} nedostupný, zkouším alternativu…`);
+          continue;
+        }
+        return data;
+      } catch(e) {
+        if (e.name === 'AbortError') { addMsg('assistant', `⏱ Timeout — zkus kratší zadání.`); return null; }
+        if (model === 'claude-3-haiku-20240307') { addMsg('assistant', `⚠️ API chyba: ${escHtml(e.message)}`); return null; }
+      }
     }
+    return null;
   }
 }
 
@@ -716,7 +732,11 @@ async function autoContinue(depth) {
     const model = hasKey() ? 'claude-sonnet-4-6' : 'claude-haiku-4-5-20251001';
     const maxTok = hasKey() ? 8000 : 2500;
     const payload = { model, max_tokens: maxTok, system: SYSTEM, messages: chatHistory };
-    const data = await claudeCall(payload, hasKey() ? 180000 : 55000);
+    let data = await claudeCall(payload, hasKey() ? 180000 : 55000);
+    // Fallback na Haiku 3 pokud 4.5 nefunguje přes proxy
+    if (!hasKey() && data?.error?.message?.includes('model')) {
+      data = await claudeCall({ ...payload, model: 'claude-3-haiku-20240307' }, 55000);
+    }
     const raw = (data.content?.[0]?.text || '').trim();
     const stopR = data.stop_reason || '?';
     console.log(`[autoContinue ${depth}] ${raw.length} chars, stop_reason: ${stopR}`);
