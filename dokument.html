@@ -96,25 +96,25 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
     <button class="btn-sm" id="btn-clear" onclick="clearAll()" style="display:none">Smazat</button>
     <span id="page-counter" style="font-size:11px;color:#83502e;font-weight:600;margin-left:4px"></span>
     <button class="btn-print" id="btn-print" onclick="window.print()" style="display:none">🖨 Tisk / PDF</button>
+    <span id="key-status" onclick="toggleKeyPanel()" style="font-size:10px;cursor:pointer;padding:3px 8px;border-radius:10px;background:rgba(255,255,255,.15);color:rgba(255,255,255,.8);margin-left:8px;white-space:nowrap">🔑 API klíč</span>
+    <span id="clear-key-btn" onclick="clearApiKey()" title="Odebrat klíč" style="display:none;color:rgba(255,255,255,.5);cursor:pointer;margin-left:2px;font-size:11px">✕</span>
   </div>
+</div>
+
+<!-- Key panel — pod topbarem -->
+<div id="key-panel" style="display:none;background:#3a200e;padding:6px 16px;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.1)">
+  <span style="font-size:11px;color:rgba(255,255,255,.7);white-space:nowrap">Anthropic API klíč:</span>
+  <input type="password" id="api-key-input" placeholder="sk-ant-…" autocomplete="off"
+    style="flex:1;border:1px solid rgba(255,255,255,.3);border-radius:6px;padding:4px 8px;font-size:11px;background:rgba(255,255,255,.1);color:#fff;min-width:0"
+    onkeydown="if(event.key==='Enter')saveApiKey()"/>
+  <button onclick="saveApiKey()" style="padding:4px 12px;background:#f7ab31;color:#2d1a0e;border:none;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap">Uložit</button>
+  <span style="font-size:10px;color:rgba(255,255,255,.5)">Uloží se v prohlížeči · bez timeoutu</span>
 </div>
 
 <div class="shell">
 
 <!-- ── LEVÝ PANEL ── -->
 <div class="left">
-
-  <!-- API klíč — přímý přístup bez timeoutu -->
-  <div style="display:flex;align-items:center;justify-content:flex-end;padding:4px 0 0">
-    <span id="key-status" onclick="toggleKeyPanel()" style="font-size:10px;cursor:pointer;padding:2px 6px;border-radius:10px;background:#f1e6da">🔑 Přidat klíč</span>
-    <span id="clear-key-btn" onclick="clearApiKey()" style="font-size:10px;color:#c0a080;cursor:pointer;margin-left:4px;display:none" title="Odebrat klíč">✕</span>
-  </div>
-  <div id="key-panel" style="display:none;gap:4px;padding:4px 0 2px;align-items:center">
-    <input type="password" id="api-key-input" placeholder="sk-ant-…" autocomplete="off"
-      style="flex:1;border:1.5px solid #c8976a;border-radius:8px;padding:5px 8px;font-size:11px;min-width:0"
-      onkeydown="if(event.key==='Enter')saveApiKey()"/>
-    <button onclick="saveApiKey()" style="padding:5px 10px;background:#83502e;color:#fff;border:none;border-radius:8px;font-size:11px;cursor:pointer">OK</button>
-  </div>
 
   <!-- Chat messages -->
   <div class="chat-msgs" id="chat-msgs">
