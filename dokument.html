@@ -452,6 +452,34 @@ Pravidla:
 - Pokud se ptají na URL/fotku bez uploadu, odpověz v HTML s instrukcemi jak fotku nahrát
 - Pokud uživatel říká "pokračovat" nebo "pokračuj", VŽDY odpověz ve formátu TYPE:/NOTE:/<DOC>...</DOC> — nikdy holým textem`;
 
+// Zjednodušený SYSTEM pro Haiku — kratší, přímočařejší, spolehlivější
+const SYSTEM_HAIKU = `Jsi generátor dokumentů pro Nutworld.cz (ořechy, sušené ovoce, dárky). Firma: Nut World s.r.o. · Hvězdova 1716/2, Praha · nutworld.cz
+
+BARVY: tmavá hnědá #5c381f · hlavní hnědá #83502e · pozadí #f1e6da · růžová #da1668 · zlatá #f7ab31
+
+KAŽDÝ DOKUMENT MUSÍ ZAČÍNAT TÍMTO HEADEREM (přesně takto):
+<div style="background:linear-gradient(135deg,#5c381f,#83502e);color:#fff;padding:18px 24px 14px;border-bottom:4px solid #f7ab31;margin-bottom:18px">
+  <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#f7ab31;margin-bottom:4px">🐿 Nutworld s.r.o.</div>
+  <div style="font-size:20px;font-weight:700">[NÁZEV DOKUMENTU]</div>
+  <div style="font-size:10px;color:rgba(255,255,255,.65);margin-top:6px">Hvězdova 1716/2, 140 00 Praha · nutworld.cz · [DNEŠNÍ DATUM]</div>
+</div>
+
+OBSAH: sekce s nadpisy (#5c381f, border-left:3px solid #83502e), odrážky, tabulky. Pozadí sekcí #faf7f4. Zaoblené rohy 6px.
+
+KAŽDÝ DOKUMENT MUSÍ KONČIT TÍMTO FOOTEREM:
+<div style="margin-top:20px;padding-top:10px;border-top:1px solid #e8ddd2;font-size:9px;color:#aaa;display:flex;justify-content:space-between">
+  <span>🐿 Nutworld s.r.o.</span><span>nutworld.cz · info@nutworld.cz</span>
+</div>
+
+FORMÁT ODPOVĚDI — PŘESNĚ TAKTO:
+TYPE:infolist
+NOTE:Krátká česká zpráva
+<DOC>
+...HTML dokumentu (inline CSS, bez DOCTYPE/html/head/body/JS)...
+</DOC>
+
+Pravidla: inline CSS, čeština, šířka ~760px, datum dnešní (${new Date().toLocaleDateString('cs-CZ')}).`;
+
 // ═══════════════════════════════════════
 // SEND & CALL CLAUDE
 // ═══════════════════════════════════════
@@ -542,9 +570,9 @@ async function send() {
   try {
     const model = hasKey() ? 'claude-sonnet-4-6' : 'claude-haiku-4-5-20251001';
     const maxTok = hasKey() ? 8000 : 2500;
-    const payload = { model, max_tokens: maxTok, system: SYSTEM, messages: chatHistory };
+    const sys = hasKey() ? SYSTEM : SYSTEM_HAIKU;
+    const payload = { model, max_tokens: maxTok, system: sys, messages: chatHistory };
     let data = await claudeCall(payload, hasKey() ? 180000 : 55000);
-    // Fallback na Haiku 3 pokud 4.5 nefunguje přes proxy
     if (!hasKey() && data?.error?.message?.includes('model')) {
       data = await claudeCall({ ...payload, model: 'claude-3-haiku-20240307' }, 55000);
     }
@@ -688,19 +716,18 @@ async function sendBatch(text, n) {
 async function callPageApi(prompt) {
   const msgs = [{ role: 'user', content: prompt }];
   if (hasKey()) {
-    // Vlastník: Sonnet přes přímé API — žádný timeout
+    // Vlastník: Sonnet + plný SYSTEM
     const payload = { model: 'claude-sonnet-4-6', max_tokens: 8000, system: SYSTEM, messages: msgs };
     try { return await claudeCall(payload, 180000); }
     catch(e) { addMsg('assistant', `⚠️ API chyba: ${escHtml(e.message)}`); return null; }
   } else {
-    // Zaměstnanci: Haiku přes proxy — zkus 4.5, fallback na 3
+    // Zaměstnanci: Haiku + zjednodušený SYSTEM — zkus 4.5, fallback na 3
     for (const model of ['claude-haiku-4-5-20251001', 'claude-3-haiku-20240307']) {
-      const payload = { model, max_tokens: 2500, system: SYSTEM, messages: msgs };
+      const payload = { model, max_tokens: 2500, system: SYSTEM_HAIKU, messages: msgs };
       try {
         const data = await claudeCall(payload, 55000);
-        // Pokud API vrátilo chybu modelu, zkus další
-        if (data?.error?.type === 'invalid_request_error' && data?.error?.message?.includes('model')) {
-          addMsg('assistant', `⚙️ Model ${model} nedostupný, zkouším alternativu…`);
+        if (data?.error?.message?.includes('model')) {
+          addMsg('assistant', `⚙️ Přepínám model…`);
           continue;
         }
         return data;
@@ -731,9 +758,9 @@ async function autoContinue(depth) {
   try {
     const model = hasKey() ? 'claude-sonnet-4-6' : 'claude-haiku-4-5-20251001';
     const maxTok = hasKey() ? 8000 : 2500;
-    const payload = { model, max_tokens: maxTok, system: SYSTEM, messages: chatHistory };
+    const sys = hasKey() ? SYSTEM : SYSTEM_HAIKU;
+    const payload = { model, max_tokens: maxTok, system: sys, messages: chatHistory };
     let data = await claudeCall(payload, hasKey() ? 180000 : 55000);
-    // Fallback na Haiku 3 pokud 4.5 nefunguje přes proxy
     if (!hasKey() && data?.error?.message?.includes('model')) {
       data = await claudeCall({ ...payload, model: 'claude-3-haiku-20240307' }, 55000);
     }
