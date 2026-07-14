@@ -525,7 +525,7 @@ async function sendBatch(text, n) {
   currentDocHtml = '';
   lastDocTail = '';
   chatHistory = [];
-  document.getElementById('right').innerHTML = `<div class="empty-preview"><div class="icon">📄</div><p>Generuji stránku 1 z ${n}…</p></div>`;
+  document.getElementById('right').innerHTML = `<div class="empty-preview"><div class="icon">📄</div><div id="batch-progress" style="font-size:13px;color:#83502e;margin-top:8px">Připravuji…</div></div>`;
   document.getElementById('doc-type').style.display = 'none';
   document.getElementById('btn-clear').style.display = 'none';
   document.getElementById('btn-print').style.display = 'none';
@@ -533,64 +533,82 @@ async function sendBatch(text, n) {
 
   addMsg('user', escHtml(text) + ` <span style="color:#83502e;font-weight:600">[${n} stránek]</span>`);
 
-  let firstType = 'prezentace';
   let successCount = 0;
 
   for (let i = 0; i < n; i++) {
     const isFirst = i === 0;
-    const progressEl = document.getElementById('right').querySelector('p');
-    if (progressEl) progressEl.textContent = `Generuji stránku ${i + 1} z ${n}…`;
+
+    // Update progress — safe: only targets the dedicated div, not document content
+    const prog = document.getElementById('batch-progress');
+    if (prog) prog.textContent = `Stránka ${i + 1} / ${n}…`;
 
     const pageInstruction = isFirst
-      ? `\n\n---\nBATCH instrukce: Generuješ stránku ${i + 1} z ${n}.\nPokud požadavek obsahuje více produktů nebo položek (seznam, CSV, číslované body), použij POLOŽKU Č.${i + 1}.\nVygeneruj CELÝ dokument — header, obsah, footer.`
-      : `\n\n---\nBATCH instrukce: Generuješ stránku ${i + 1} z ${n} (pokračování stejné serie).\nPokud požadavek obsahuje více produktů nebo položek, použij POLOŽKU Č.${i + 1}.\nVygeneruj POUZE obsah stránky — BEZ header gradientu, BEZ barevného pruhu, BEZ footer bloku.\nZačni přímo obsahem (nadpis produktu, sekce, karty).\nFormát odpovědi jako vždy: TYPE:..., NOTE:..., <DOC>...</DOC>`;
+      ? `\n\n---\nBATCH mód — stránka ${i + 1} z ${n}.\nPokud jsou v požadavku produkty/položky (seznam, CSV, čísla), použij POLOŽKU Č.${i + 1}.\nVygeneruj CELÝ dokument (header + obsah + footer).\nBuď výstižný — max 3–5 sekcí. Bez zbytečně dlouhých CSS komentářů.`
+      : `\n\n---\nBATCH mód — stránka ${i + 1} z ${n}.\nPokud jsou v požadavku produkty/položky, použij POLOŽKU Č.${i + 1}.\nVygeneruj POUZE obsah stránky — BEZ header gradientu, BEZ barevného pruhu, BEZ footer.\nZačni přímo nadpisem / prvním obsahovým blokem.\nBuď výstižný — max 3–5 sekcí.\nFormát: TYPE:... NOTE:... <DOC>...</DOC>`;
 
     showTyping();
 
-    try {
-      const msgs = [{ role: 'user', content: text + pageInstruction }];
-      const payload = { model: 'claude-sonnet-4-6', max_tokens: 8192, system: SYSTEM, messages: msgs };
-      const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), 100000);
-      const resp = await fetch(PROXY_URL, {
-        method: 'POST', headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify({ action: 'claude', payload }), signal: ctrl.signal
-      });
-      clearTimeout(timer);
-      const data = await resp.json();
-      const raw = (data.content?.[0]?.text || '').trim();
-      hideTyping();
+    const data = await callPageApi(text + pageInstruction);
+    hideTyping();
 
-      const typeM = raw.match(/^TYPE:\s*(\w+)/m);
-      const noteM = raw.match(/^NOTE:\s*(.+)/m);
-      const docM  = raw.match(/<DOC>([\s\S]*?)(?:<\/DOC>|$)/);
-
-      if (typeM && docM) {
-        if (isFirst) firstType = typeM[1];
-        let html = docM[1].trim();
-        images.forEach((img, idx) => {
-          html = html.replace(new RegExp(`FOTO_${idx + 1}`, 'g'), `data:${img.mime};base64,${img.b64}`);
-        });
-        if (images.length > 0) html = html.replace(/FOTO_PRODUKTU/g, `data:${images[0].mime};base64,${images[0].b64}`);
-        renderDoc({ type: typeM[1], note: noteM?.[1]?.trim() || '', html }, !isFirst);
-        successCount++;
-        addMsg('assistant', `✓ Stránka ${i + 1}/${n}: ${noteM?.[1]?.trim() || typeM[1]}`);
-      } else {
-        addMsg('assistant', `⚠️ Stránka ${i + 1} — nesprávný formát. Přeskakuji.`);
-      }
-    } catch(e) {
-      hideTyping();
-      const isTimeout = e.name === 'AbortError';
-      addMsg('assistant', `⚠️ Stránka ${i + 1} selhala${isTimeout ? ' (timeout)' : ''}: ${escHtml(e.message)}`);
+    if (!data) {
+      addMsg('assistant', `⚠️ Stránka ${i + 1}/${n} — selhala, přeskakuji.`);
+      if (i < n - 1) await new Promise(r => setTimeout(r, 300));
+      continue;
     }
 
-    if (i < n - 1) await new Promise(r => setTimeout(r, 400));
+    const raw = (data.content?.[0]?.text || '').trim();
+    const typeM = raw.match(/^TYPE:\s*(\w+)/m);
+    const noteM = raw.match(/^NOTE:\s*(.+)/m);
+    const docM  = raw.match(/<DOC>([\s\S]*?)(?:<\/DOC>|$)/);
+
+    if (typeM && docM) {
+      let html = docM[1].trim();
+      images.forEach((img, idx) => {
+        html = html.replace(new RegExp(`FOTO_${idx + 1}`, 'g'), `data:${img.mime};base64,${img.b64}`);
+      });
+      if (images.length > 0) html = html.replace(/FOTO_PRODUKTU/g, `data:${images[0].mime};base64,${images[0].b64}`);
+      renderDoc({ type: typeM[1], note: noteM?.[1]?.trim() || '', html }, !isFirst);
+      successCount++;
+      addMsg('assistant', `✓ Stránka ${i + 1}/${n}: ${noteM?.[1]?.trim() || typeM[1]}`);
+    } else {
+      addMsg('assistant', `⚠️ Stránka ${i + 1} — nesprávný formát odpovědi.`);
+    }
+
+    if (i < n - 1) await new Promise(r => setTimeout(r, 300));
   }
 
   addMsg('assistant', `✅ Hotovo — ${successCount} z ${n} stránek vygenerováno.`);
   btn.disabled = false;
   btn.textContent = '➤';
   textarea.focus();
+}
+
+// Jedno API volání pro batch stránku — timeout 55s, při selhání retry s kratším tokenem
+async function callPageApi(prompt) {
+  for (const maxTok of [4000, 2500]) {
+    try {
+      const msgs = [{ role: 'user', content: prompt }];
+      const payload = { model: 'claude-sonnet-4-6', max_tokens: maxTok, system: SYSTEM, messages: msgs };
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 55000);
+      const resp = await fetch(PROXY_URL, {
+        method: 'POST', headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ action: 'claude', payload }), signal: ctrl.signal
+      });
+      clearTimeout(timer);
+      return await resp.json();
+    } catch(e) {
+      if (e.name === 'AbortError' && maxTok > 2000) {
+        addMsg('assistant', `⏱ Timeout — zkouším znovu (kratší verze)…`);
+        await new Promise(r => setTimeout(r, 800));
+        continue;
+      }
+      addMsg('assistant', `⚠️ API chyba: ${escHtml(e.message)}`);
+      return null;
+    }
+  }
+  return null;
 }
 
 async function autoContinue(depth) {
