@@ -104,8 +104,8 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 <!-- Key panel — pod topbarem -->
 <div id="key-panel" style="display:none;background:#3a200e;padding:6px 16px;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.1)">
   <span style="font-size:11px;color:rgba(255,255,255,.7);white-space:nowrap">Anthropic API klíč:</span>
-  <input type="password" id="api-key-input" placeholder="sk-ant-…" autocomplete="off"
-    style="flex:1;border:1px solid rgba(255,255,255,.3);border-radius:6px;padding:4px 8px;font-size:11px;background:rgba(255,255,255,.1);color:#fff;min-width:0"
+  <input type="text" id="api-key-input" placeholder="sk-ant-…" autocomplete="new-password" spellcheck="false"
+    style="flex:1;border:1px solid rgba(255,255,255,.3);border-radius:6px;padding:4px 8px;font-size:11px;background:rgba(255,255,255,.1);color:#fff;min-width:0;font-family:monospace"
     onkeydown="if(event.key==='Enter')saveApiKey()"/>
   <button onclick="saveApiKey()" style="padding:4px 12px;background:#f7ab31;color:#2d1a0e;border:none;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap">Uložit</button>
   <span style="font-size:10px;color:rgba(255,255,255,.5)">Uloží se v prohlížeči · bez timeoutu</span>
