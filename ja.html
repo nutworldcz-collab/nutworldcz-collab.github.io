@@ -528,7 +528,14 @@ function fmtD(iso){if(!iso)return'';const[y,m,dd]=iso.split('-');return`${dd}.${
     const data = await res.json();
     const gen = data.generated ? new Date(data.generated) : null;
     const timeStr = gen ? gen.getHours()+':'+String(gen.getMinutes()).padStart(2,'0') : '';
-    document.getElementById('ads-meta-info').textContent = `Aktualizováno ${timeStr} · ${data.period||''}`;
+    const today = new Date().toISOString().slice(0,10);
+    const genDay = gen ? gen.toISOString().slice(0,10) : '';
+    const dayLabel = genDay===today ? 'Dnes' : genDay ? genDay.split('-').reverse().join('.') : '';
+    const periodParts = (data.period||'').split('–').map(s=>s.trim());
+    const periodShort = periodParts.length===2
+      ? periodParts.map(p=>{ const[,m,d]=p.split('-'); return`${+d}.${+m}.`; }).join('–')
+      : data.period||'';
+    document.getElementById('ads-meta-info').textContent = `${dayLabel} v ${timeStr} · Období: ${periodShort}`;
 
     let html = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:14px">`;
     let totalSpend=0, totalRev=0;
