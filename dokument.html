@@ -96,19 +96,7 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
     <button class="btn-sm" id="btn-clear" onclick="clearAll()" style="display:none">Smazat</button>
     <span id="page-counter" style="font-size:11px;color:#83502e;font-weight:600;margin-left:4px"></span>
     <button class="btn-print" id="btn-print" onclick="window.print()" style="display:none">🖨 Tisk / PDF</button>
-    <span id="key-status" onclick="toggleKeyPanel()" style="font-size:10px;cursor:pointer;padding:3px 8px;border-radius:10px;background:rgba(255,255,255,.15);color:rgba(255,255,255,.8);margin-left:8px;white-space:nowrap">🔑 API klíč</span>
-    <span id="clear-key-btn" onclick="clearApiKey()" title="Odebrat klíč" style="display:none;color:rgba(255,255,255,.5);cursor:pointer;margin-left:2px;font-size:11px">✕</span>
   </div>
-</div>
-
-<!-- Key panel — pod topbarem -->
-<div id="key-panel" style="display:none;background:#3a200e;padding:6px 16px;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.1)">
-  <span style="font-size:11px;color:rgba(255,255,255,.7);white-space:nowrap">Anthropic API klíč:</span>
-  <input type="text" id="api-key-input" placeholder="sk-ant-…" autocomplete="new-password" spellcheck="false"
-    style="flex:1;border:1px solid rgba(255,255,255,.3);border-radius:6px;padding:4px 8px;font-size:11px;background:rgba(255,255,255,.1);color:#fff;min-width:0;font-family:monospace"
-    onkeydown="if(event.key==='Enter')saveApiKey()"/>
-  <button onclick="saveApiKey()" style="padding:4px 12px;background:#f7ab31;color:#2d1a0e;border:none;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap">Uložit</button>
-  <span style="font-size:10px;color:rgba(255,255,255,.5)">Uloží se v prohlížeči · bez timeoutu</span>
 </div>
 
 <div class="shell">
@@ -159,6 +147,21 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
         <span style="font-size:9px;color:#a08060;white-space:nowrap">str.</span>
       </div>
     </div>
+  </div>
+
+  <!-- API klíč — vždy viditelný na dně panelu -->
+  <div style="border-top:1px solid #e8ddd2;padding:8px 12px;background:#faf7f4">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span id="key-status" onclick="toggleKeyPanel()" style="font-size:11px;cursor:pointer;color:#83502e;font-weight:600;flex:1">🔑 Nastavit API klíč</span>
+      <span id="clear-key-btn" onclick="clearApiKey()" title="Odebrat klíč" style="display:none;font-size:11px;color:#c0a080;cursor:pointer">✕ odebrat</span>
+    </div>
+    <div id="key-panel" style="display:none;margin-top:6px;gap:6px;align-items:center">
+      <input type="text" id="api-key-input" placeholder="sk-ant-api03-…" autocomplete="off" spellcheck="false"
+        style="flex:1;border:1.5px solid #c8976a;border-radius:8px;padding:6px 10px;font-size:11px;font-family:monospace;background:#fff;color:#2d1a0e;min-width:0"
+        onkeydown="if(event.key==='Enter')saveApiKey()"/>
+      <button onclick="saveApiKey()" style="padding:6px 14px;background:#83502e;color:#fff;border:none;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap">Uložit</button>
+    </div>
+    <div style="font-size:10px;color:#b09070;margin-top:3px">Bez klíče: proxy (timeout). S klíčem: přímý přístup, bez limitu.</div>
   </div>
 
 </div>
@@ -240,8 +243,9 @@ function clearApiKey() {
 }
 function toggleKeyPanel() {
   const p = document.getElementById('key-panel');
-  p.style.display = p.style.display === 'none' ? 'flex' : 'none';
-  if (p.style.display !== 'none') document.getElementById('api-key-input').focus();
+  const isHidden = p.style.display === 'none' || p.style.display === '';
+  p.style.display = isHidden ? 'flex' : 'none';
+  if (isHidden) { document.getElementById('api-key-input').value = ''; document.getElementById('api-key-input').focus(); }
 }
 function updateKeyStatus() {
   const el = document.getElementById('key-status');
