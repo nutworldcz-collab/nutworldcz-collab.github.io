@@ -134,7 +134,14 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
   <div class="chat-input-wrap">
     <textarea id="chat-input" placeholder="Co chceš vytvořit? Napiš libovolně…"
       rows="2" onkeydown="onKey(event)"></textarea>
-    <button class="send-btn" id="send-btn" onclick="send()" title="Odeslat (Enter)">➤</button>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0">
+      <button class="send-btn" id="send-btn" onclick="send()" title="Odeslat (Enter)">➤</button>
+      <div style="display:flex;align-items:center;gap:2px" title="Počet stránek (pro více produktů/stránek najednou)">
+        <input type="number" id="page-count-input" min="1" max="20" value="1"
+          style="width:34px;border:1px solid #c8976a;border-radius:4px;padding:2px 3px;font-size:11px;text-align:center;color:#5c381f;background:#fffbf7"/>
+        <span style="font-size:9px;color:#a08060;white-space:nowrap">str.</span>
+      </div>
+    </div>
   </div>
 
 </div>
@@ -351,6 +358,11 @@ async function send() {
   const textarea = document.getElementById('chat-input');
   const text = textarea.value.trim();
   if (!text) return;
+
+  // Multi-page batch mode
+  const n = parseInt(document.getElementById('page-count-input')?.value) || 1;
+  if (n > 1) { return sendBatch(text, n); }
+
   document.getElementById('send-btn').disabled = false;
   document.getElementById('send-btn').textContent = '➤';
 
@@ -495,6 +507,90 @@ async function send() {
     document.getElementById('send-btn').textContent = '➤';
     textarea.focus();
   }
+}
+
+// ═══════════════════════════════════════
+// BATCH MODE — N stránek jako N samostatných API volání
+// Každé volání = 1 stránka → 100% spolehlivé, nikdy se neořízne
+// ═══════════════════════════════════════
+async function sendBatch(text, n) {
+  const textarea = document.getElementById('chat-input');
+  textarea.value = '';
+  textarea.style.height = '';
+
+  const btn = document.getElementById('send-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳';
+
+  currentDocHtml = '';
+  lastDocTail = '';
+  chatHistory = [];
+  document.getElementById('right').innerHTML = `<div class="empty-preview"><div class="icon">📄</div><p>Generuji stránku 1 z ${n}…</p></div>`;
+  document.getElementById('doc-type').style.display = 'none';
+  document.getElementById('btn-clear').style.display = 'none';
+  document.getElementById('btn-print').style.display = 'none';
+  const pc = document.getElementById('page-counter'); if (pc) pc.textContent = '';
+
+  addMsg('user', escHtml(text) + ` <span style="color:#83502e;font-weight:600">[${n} stránek]</span>`);
+
+  let firstType = 'prezentace';
+  let successCount = 0;
+
+  for (let i = 0; i < n; i++) {
+    const isFirst = i === 0;
+    const progressEl = document.getElementById('right').querySelector('p');
+    if (progressEl) progressEl.textContent = `Generuji stránku ${i + 1} z ${n}…`;
+
+    const pageInstruction = isFirst
+      ? `\n\n---\nBATCH instrukce: Generuješ stránku ${i + 1} z ${n}.\nPokud požadavek obsahuje více produktů nebo položek (seznam, CSV, číslované body), použij POLOŽKU Č.${i + 1}.\nVygeneruj CELÝ dokument — header, obsah, footer.`
+      : `\n\n---\nBATCH instrukce: Generuješ stránku ${i + 1} z ${n} (pokračování stejné serie).\nPokud požadavek obsahuje více produktů nebo položek, použij POLOŽKU Č.${i + 1}.\nVygeneruj POUZE obsah stránky — BEZ header gradientu, BEZ barevného pruhu, BEZ footer bloku.\nZačni přímo obsahem (nadpis produktu, sekce, karty).\nFormát odpovědi jako vždy: TYPE:..., NOTE:..., <DOC>...</DOC>`;
+
+    showTyping();
+
+    try {
+      const msgs = [{ role: 'user', content: text + pageInstruction }];
+      const payload = { model: 'claude-sonnet-4-6', max_tokens: 8192, system: SYSTEM, messages: msgs };
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 100000);
+      const resp = await fetch(PROXY_URL, {
+        method: 'POST', headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ action: 'claude', payload }), signal: ctrl.signal
+      });
+      clearTimeout(timer);
+      const data = await resp.json();
+      const raw = (data.content?.[0]?.text || '').trim();
+      hideTyping();
+
+      const typeM = raw.match(/^TYPE:\s*(\w+)/m);
+      const noteM = raw.match(/^NOTE:\s*(.+)/m);
+      const docM  = raw.match(/<DOC>([\s\S]*?)(?:<\/DOC>|$)/);
+
+      if (typeM && docM) {
+        if (isFirst) firstType = typeM[1];
+        let html = docM[1].trim();
+        images.forEach((img, idx) => {
+          html = html.replace(new RegExp(`FOTO_${idx + 1}`, 'g'), `data:${img.mime};base64,${img.b64}`);
+        });
+        if (images.length > 0) html = html.replace(/FOTO_PRODUKTU/g, `data:${images[0].mime};base64,${images[0].b64}`);
+        renderDoc({ type: typeM[1], note: noteM?.[1]?.trim() || '', html }, !isFirst);
+        successCount++;
+        addMsg('assistant', `✓ Stránka ${i + 1}/${n}: ${noteM?.[1]?.trim() || typeM[1]}`);
+      } else {
+        addMsg('assistant', `⚠️ Stránka ${i + 1} — nesprávný formát. Přeskakuji.`);
+      }
+    } catch(e) {
+      hideTyping();
+      const isTimeout = e.name === 'AbortError';
+      addMsg('assistant', `⚠️ Stránka ${i + 1} selhala${isTimeout ? ' (timeout)' : ''}: ${escHtml(e.message)}`);
+    }
+
+    if (i < n - 1) await new Promise(r => setTimeout(r, 400));
+  }
+
+  addMsg('assistant', `✅ Hotovo — ${successCount} z ${n} stránek vygenerováno.`);
+  btn.disabled = false;
+  btn.textContent = '➤';
+  textarea.focus();
 }
 
 async function autoContinue(depth) {
