@@ -104,12 +104,16 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 <!-- ── LEVÝ PANEL ── -->
 <div class="left">
 
-  <!-- API key banner — zobrazí se POUZE pokud klíč chybí -->
-  <div id="api-banner" class="api-banner" style="display:none">
-    <span>🔑</span>
-    <input type="password" id="api-key-input" placeholder="Vlož API klíč (sk-ant-...)..." autocomplete="off"
+  <!-- API klíč — přímý přístup bez timeoutu -->
+  <div style="display:flex;align-items:center;justify-content:flex-end;padding:4px 0 0">
+    <span id="key-status" onclick="toggleKeyPanel()" style="font-size:10px;cursor:pointer;padding:2px 6px;border-radius:10px;background:#f1e6da">🔑 Přidat klíč</span>
+    <span id="clear-key-btn" onclick="clearApiKey()" style="font-size:10px;color:#c0a080;cursor:pointer;margin-left:4px;display:none" title="Odebrat klíč">✕</span>
+  </div>
+  <div id="key-panel" style="display:none;gap:4px;padding:4px 0 2px;align-items:center">
+    <input type="password" id="api-key-input" placeholder="sk-ant-…" autocomplete="off"
+      style="flex:1;border:1.5px solid #c8976a;border-radius:8px;padding:5px 8px;font-size:11px;min-width:0"
       onkeydown="if(event.key==='Enter')saveApiKey()"/>
-    <button onclick="saveApiKey()">OK</button>
+    <button onclick="saveApiKey()" style="padding:5px 10px;background:#83502e;color:#fff;border:none;border-radius:8px;font-size:11px;cursor:pointer">OK</button>
   </div>
 
   <!-- Chat messages -->
@@ -207,34 +211,89 @@ let currentDocHtml = '';
 let lastDocTail = '';  // content before footer, for continuation context
 
 // ═══════════════════════════════════════
-// PROXY — Apps Script (klíč je na serveru)
+// PROXY + PŘÍMÝ PŘÍSTUP
 // ═══════════════════════════════════════
 const PROXY_URL = 'https://script.google.com/macros/s/AKfycbyB2V0l9gc3OFh-yx2SlfTkWP4PmPhus7IF00g3qIjTzpSbRskXiJ5a0rGBQ0EKlyU/exec';
-const PROXY_READY = true;
 
-// Fallback: přímé volání s klíčem v localStorage (dočasně)
+function getKey() { return localStorage.getItem('nw_doc_api_key') || ''; }
+function hasKey()  { return getKey().startsWith('sk-ant-'); }
+
 function initApiKey() {
   const hash = location.hash;
   if (hash.startsWith('#key=')) {
     const k = decodeURIComponent(hash.slice(5));
-    if (k.startsWith('sk-')) {
-      localStorage.setItem('nw_doc_api_key', k);
-      history.replaceState(null, '', location.pathname);
-      return;
-    }
+    if (k.startsWith('sk-')) { localStorage.setItem('nw_doc_api_key', k); history.replaceState(null,'',location.pathname); }
   }
-  if (!PROXY_READY && !localStorage.getItem('nw_doc_api_key')) {
-    document.getElementById('api-banner').style.display = 'flex';
-    document.getElementById('api-key-input').focus();
-  }
+  updateKeyStatus();
 }
 function saveApiKey() {
   const v = document.getElementById('api-key-input').value.trim();
-  if (!v.startsWith('sk-')) return;
+  if (!v.startsWith('sk-')) { alert('Klíč musí začínat sk-ant-...'); return; }
   localStorage.setItem('nw_doc_api_key', v);
-  document.getElementById('api-banner').style.display = 'none';
+  document.getElementById('api-key-input').value = '';
+  document.getElementById('key-panel').style.display = 'none';
+  updateKeyStatus();
 }
-function getKey() { return localStorage.getItem('nw_doc_api_key') || ''; }
+function clearApiKey() {
+  localStorage.removeItem('nw_doc_api_key');
+  updateKeyStatus();
+}
+function toggleKeyPanel() {
+  const p = document.getElementById('key-panel');
+  p.style.display = p.style.display === 'none' ? 'flex' : 'none';
+  if (p.style.display !== 'none') document.getElementById('api-key-input').focus();
+}
+function updateKeyStatus() {
+  const el = document.getElementById('key-status');
+  const clr = document.getElementById('clear-key-btn');
+  if (!el) return;
+  if (hasKey()) {
+    el.textContent = '🟢 Přímý přístup';
+    el.title = 'API klíč nastaven — žádný timeout. Klikni pro změnu.';
+    el.style.color = '#3a7d44';
+    if (clr) clr.style.display = 'inline';
+  } else {
+    el.textContent = '🔑 Přidat klíč';
+    el.title = 'Bez klíče: proxy (může timeoutnout). S klíčem: přímý přístup bez limitu.';
+    el.style.color = '#a08060';
+    if (clr) clr.style.display = 'none';
+  }
+}
+
+// Hlavní Claude volání — přímé (bez timeoutu) když je klíč, proxy jako záloha
+async function claudeCall(payload, timeoutMs) {
+  if (hasKey()) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), timeoutMs || 180000);
+    try {
+      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': getKey(),
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify(payload),
+        signal: ctrl.signal
+      });
+      clearTimeout(timer);
+      if (!resp.ok) { const e = await resp.json().catch(()=>{}); throw new Error(e?.error?.message || `HTTP ${resp.status}`); }
+      return await resp.json();
+    } catch(e) { clearTimeout(timer); throw e; }
+  }
+  // Záloha: proxy (pozor na 55s timeout)
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs || 55000);
+  try {
+    const resp = await fetch(PROXY_URL, {
+      method: 'POST', headers: {'Content-Type':'text/plain'},
+      body: JSON.stringify({action:'claude', payload}), signal: ctrl.signal
+    });
+    clearTimeout(timer);
+    return await resp.json();
+  } catch(e) { clearTimeout(timer); throw e; }
+}
 
 // ═══════════════════════════════════════
 // IMAGES
@@ -480,19 +539,9 @@ async function send() {
   showTyping();
 
   try {
-    const payload = { model: 'claude-sonnet-4-6', max_tokens: 16000, system: SYSTEM, messages: chatHistory };
-
-    const claudeCtrl = new AbortController();
-    const claudeTimer = setTimeout(() => claudeCtrl.abort(), 110000); // 110s — PDF potřebuje více času
-    const resp = await fetch(PROXY_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ action: 'claude', payload }),
-      signal: claudeCtrl.signal,
-    });
-    clearTimeout(claudeTimer);
-
-    const data = await resp.json();
+    const maxTok = hasKey() ? 8000 : 4000;
+    const payload = { model: 'claude-sonnet-4-6', max_tokens: maxTok, system: SYSTEM, messages: chatHistory };
+    const data = await claudeCall(payload, hasKey() ? 180000 : 55000);
     const raw = (data.content?.[0]?.text || '').trim();
     const stopReason = data.stop_reason || '?';
     addMsg('assistant', `🔍 ${raw.length} znaků · stop: <b>${stopReason}</b> · TYPE: ${raw.match(/^TYPE:/m) ? 'ok' : 'chybí'} · DOC: ${raw.includes('<DOC>') ? 'ok' : 'chybí'}`);
@@ -628,20 +677,16 @@ async function sendBatch(text, n) {
 
 // Jedno API volání pro batch stránku — timeout 55s, při selhání retry s kratším tokenem
 async function callPageApi(prompt) {
-  for (const maxTok of [4000, 2500]) {
+  // Přímý přístup: žádný timeout problém
+  // Proxy záloha: zkus 4000 tok, při timeoutu retry 2000
+  const tiers = hasKey() ? [[8000, 180000]] : [[4000, 55000], [2000, 50000]];
+  for (const [maxTok, tm] of tiers) {
     try {
       const msgs = [{ role: 'user', content: prompt }];
       const payload = { model: 'claude-sonnet-4-6', max_tokens: maxTok, system: SYSTEM, messages: msgs };
-      const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), 55000);
-      const resp = await fetch(PROXY_URL, {
-        method: 'POST', headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify({ action: 'claude', payload }), signal: ctrl.signal
-      });
-      clearTimeout(timer);
-      return await resp.json();
+      return await claudeCall(payload, tm);
     } catch(e) {
-      if (e.name === 'AbortError' && maxTok > 2000) {
+      if (e.name === 'AbortError' && tiers.length > 1) {
         addMsg('assistant', `⏱ Timeout — zkouším znovu (kratší verze)…`);
         await new Promise(r => setTimeout(r, 800));
         continue;
@@ -669,15 +714,9 @@ async function autoContinue(depth) {
   chatHistory.push({ role: 'user', content: contMsg });
 
   try {
-    const payload = { model: 'claude-sonnet-4-6', max_tokens: 16000, system: SYSTEM, messages: chatHistory };
-    const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), 110000);
-    const resp = await fetch(PROXY_URL, {
-      method: 'POST', headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ action: 'claude', payload }), signal: ctrl.signal
-    });
-    clearTimeout(timer);
-    const data = await resp.json();
+    const maxTok = hasKey() ? 8000 : 4000;
+    const payload = { model: 'claude-sonnet-4-6', max_tokens: maxTok, system: SYSTEM, messages: chatHistory };
+    const data = await claudeCall(payload, hasKey() ? 180000 : 55000);
     const raw = (data.content?.[0]?.text || '').trim();
     const stopR = data.stop_reason || '?';
     console.log(`[autoContinue ${depth}] ${raw.length} chars, stop_reason: ${stopR}`);
