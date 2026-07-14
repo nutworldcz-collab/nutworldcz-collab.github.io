@@ -1,147 +1,207 @@
 {
-  "generated": "2026-07-13T03:00:11",
-  "date": "2026-07-12",
-  "total": 14,
+  "generated": "2026-07-14T03:00:13",
+  "date": "2026-07-13",
+  "total": 20,
   "notifications": [
     {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "Konica",
-      "card_url": "https://trello.com/c/8MT4AhN0",
+      "type": "addAttachmentToCard",
+      "label": "addAttachmentToCard",
+      "card": "Mandarin oriental",
+      "card_url": "https://trello.com/c/EdpR8VRR",
       "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
+      "creator": "Renata Pošepná",
       "comment": "",
-      "time": "2026-07-12T15:25:38.438Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "Konica",
-      "card_url": "https://trello.com/c/8MT4AhN0",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "",
-      "time": "2026-07-12T15:25:09.069Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "PHO YOU",
-      "card_url": "https://trello.com/c/25nMt5ao",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "",
-      "time": "2026-07-12T14:54:00.523Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "MARRIOTT",
-      "card_url": "https://trello.com/c/pEl4T0Ed",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "",
-      "time": "2026-07-12T14:53:28.050Z"
-    },
-    {
-      "type": "addedToCard",
-      "label": "Přidán/a na kartu",
-      "card": "MARRIOTT",
-      "card_url": "https://trello.com/c/pEl4T0Ed",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "",
-      "time": "2026-07-12T14:45:24.080Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "PHO YOU",
-      "card_url": "https://trello.com/c/25nMt5ao",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "",
-      "time": "2026-07-12T14:30:37.899Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "EURO POOL test",
-      "card_url": "https://trello.com/c/c2LCg9xY",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "",
-      "time": "2026-07-12T10:18:39.611Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "Konica",
-      "card_url": "https://trello.com/c/8MT4AhN0",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "@marketacostachova prosím vkládas do špatného sloupečku ",
-      "time": "2026-07-12T08:55:24.699Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "PHO YOU",
-      "card_url": "https://trello.com/c/25nMt5ao",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "@marketacostachova večer nahraji objednavku do shoptetu a poté zaplanuji. Tak zjistím zda a kolik chybi",
-      "time": "2026-07-12T08:54:25.538Z"
-    },
-    {
-      "type": "cardDueSoon",
-      "label": "Karta má brzy termín",
-      "card": "Martin Kubíček",
-      "card_url": "https://trello.com/c/4adNeJEV",
-      "board": "Firmy dárky + objednávky",
-      "creator": "",
-      "comment": "",
-      "time": "2026-07-12T08:54:19.486Z"
+      "time": "2026-07-13T17:49:38.116Z"
     },
     {
       "type": "addAttachmentToCard",
       "label": "addAttachmentToCard",
-      "card": "Konica",
-      "card_url": "https://trello.com/c/8MT4AhN0",
+      "card": "Mandarin oriental",
+      "card_url": "https://trello.com/c/EdpR8VRR",
       "board": "Firmy dárky + objednávky",
       "creator": "Renata Pošepná",
       "comment": "",
-      "time": "2026-07-12T08:36:54.831Z"
+      "time": "2026-07-13T17:49:34.008Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "MARRIOTT",
+      "card_url": "https://trello.com/c/pEl4T0Ed",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Doprava NutWorld",
+      "comment": "",
+      "time": "2026-07-13T12:33:09.906Z"
+    },
+    {
+      "type": "markedCompleteCard",
+      "label": "markedCompleteCard",
+      "card": "MARRIOTT",
+      "card_url": "https://trello.com/c/pEl4T0Ed",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Doprava NutWorld",
+      "comment": "",
+      "time": "2026-07-13T12:33:02.354Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "PHO YOU",
+      "card_url": "https://trello.com/c/25nMt5ao",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Balírna",
+      "comment": "",
+      "time": "2026-07-13T12:16:19.166Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "MARRIOTT",
+      "card_url": "https://trello.com/c/pEl4T0Ed",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Balírna",
+      "comment": "",
+      "time": "2026-07-13T12:15:07.179Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "GOLEM GROUP s.r.o.",
+      "card_url": "https://trello.com/c/FxsK5Bcy",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Balírna",
+      "comment": "",
+      "time": "2026-07-13T12:14:59.054Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "Mandarin oriental",
+      "card_url": "https://trello.com/c/EdpR8VRR",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Balírna",
+      "comment": "",
+      "time": "2026-07-13T11:17:05.819Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "Konica",
+      "card_url": "https://trello.com/c/8MT4AhN0",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Balírna",
+      "comment": "",
+      "time": "2026-07-13T11:16:56.009Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "Martin Kubíček",
+      "card_url": "https://trello.com/c/4adNeJEV",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Doprava NutWorld",
+      "comment": "",
+      "time": "2026-07-13T11:06:35.503Z"
+    },
+    {
+      "type": "markedCompleteCard",
+      "label": "markedCompleteCard",
+      "card": "Martin Kubíček",
+      "card_url": "https://trello.com/c/4adNeJEV",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Doprava NutWorld",
+      "comment": "",
+      "time": "2026-07-13T11:06:34.441Z"
+    },
+    {
+      "type": "mentionedOnCard",
+      "label": "Zmíněn/a v komentáři",
+      "card": "ALBI objednávka na 16.7.2026",
+      "card_url": "https://trello.com/c/PkLeCPfM",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Jana Nývltová",
+      "comment": "@card Holandsko bylo objednáno hned po dovolené, ale bohužel dodání již nebude tak rychle jako dříve na základě nových zákonů, platných od 1.7. A dodávka dorazi az v pátek ráno, tudíž, termín se nesti",
+      "time": "2026-07-13T09:11:36.230Z"
+    },
+    {
+      "type": "cardDueSoon",
+      "label": "Karta má brzy termín",
+      "card": "Mandarin oriental",
+      "card_url": "https://trello.com/c/EdpR8VRR",
+      "board": "Firmy dárky + objednávky",
+      "creator": "",
+      "comment": "",
+      "time": "2026-07-13T08:54:32.459Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "Martin Kubíček",
+      "card_url": "https://trello.com/c/4adNeJEV",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Renata Pošepná",
+      "comment": "",
+      "time": "2026-07-13T08:50:24.867Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "NÁCHOD",
+      "card_url": "https://trello.com/c/K3kK3DYq",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Renata Pošepná",
+      "comment": "",
+      "time": "2026-07-13T08:49:11.629Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "Konica",
+      "card_url": "https://trello.com/c/8MT4AhN0",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Balírna",
+      "comment": "",
+      "time": "2026-07-13T08:47:41.436Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "MARRIOTT",
+      "card_url": "https://trello.com/c/pEl4T0Ed",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Balírna",
+      "comment": "",
+      "time": "2026-07-13T08:47:24.337Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "NÁCHOD",
+      "card_url": "https://trello.com/c/K3kK3DYq",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Balírna",
+      "comment": "",
+      "time": "2026-07-13T08:47:13.887Z"
+    },
+    {
+      "type": "addAttachmentToCard",
+      "label": "addAttachmentToCard",
+      "card": "ES Cofee",
+      "card_url": "https://trello.com/c/PNh62JCi",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Martin Werner",
+      "comment": "",
+      "time": "2026-07-13T07:13:19.907Z"
     },
     {
       "type": "addedToCard",
       "label": "Přidán/a na kartu",
-      "card": "EDI/2026/22",
-      "card_url": "https://trello.com/c/kdKOQaFt",
-      "board": "ALZA",
-      "creator": "Renata Pošepná",
+      "card": "ES Cofee",
+      "card_url": "https://trello.com/c/PNh62JCi",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Martin Werner",
       "comment": "",
-      "time": "2026-07-12T08:30:46.323Z"
-    },
-    {
-      "type": "mentionedOnCard",
-      "label": "Zmíněn/a v komentáři",
-      "card": "objednávka Vilgain z 3.7.2026",
-      "card_url": "https://trello.com/c/WmOY8svK",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Renata Pošepná",
-      "comment": "@card  štítky na Doypacky jsou nahrané v Avery",
-      "time": "2026-07-12T08:19:28.560Z"
-    },
-    {
-      "type": "mentionedOnCard",
-      "label": "Zmíněn/a v komentáři",
-      "card": "objednávka Vilgain z 7.7.2026",
-      "card_url": "https://trello.com/c/lpPJuG05",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Renata Pošepná",
-      "comment": "@card štítky na doypacky jsou nahrané v Avery",
-      "time": "2026-07-12T08:18:57.528Z"
+      "time": "2026-07-13T06:47:45.365Z"
     }
   ]
 }
