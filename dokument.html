@@ -149,19 +149,16 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
     </div>
   </div>
 
-  <!-- API klíč — vždy viditelný na dně panelu -->
-  <div style="border-top:1px solid #e8ddd2;padding:8px 12px;background:#faf7f4">
-    <div style="display:flex;align-items:center;gap:8px">
-      <span id="key-status" onclick="toggleKeyPanel()" style="font-size:11px;cursor:pointer;color:#83502e;font-weight:600;flex:1">🔑 Nastavit API klíč</span>
-      <span id="clear-key-btn" onclick="clearApiKey()" title="Odebrat klíč" style="display:none;font-size:11px;color:#c0a080;cursor:pointer">✕ odebrat</span>
-    </div>
+  <!-- API klíč — skrytý odkaz pro admina -->
+  <div style="border-top:1px solid #e8ddd2;padding:5px 12px;background:#faf7f4;text-align:right">
+    <span id="key-status" onclick="toggleKeyPanel()" style="font-size:10px;cursor:pointer;color:#c8b090">🔑</span>
+    <span id="clear-key-btn" onclick="clearApiKey()" title="Odebrat klíč" style="display:none;font-size:10px;color:#c0a080;cursor:pointer;margin-left:4px">✕</span>
     <div id="key-panel" style="display:none;margin-top:6px;gap:6px;align-items:center">
-      <input type="text" id="api-key-input" placeholder="sk-ant-api03-…" autocomplete="off" spellcheck="false"
+      <input type="text" id="api-key-input" placeholder="sk-ant-…" autocomplete="off" spellcheck="false"
         style="flex:1;border:1.5px solid #c8976a;border-radius:8px;padding:6px 10px;font-size:11px;font-family:monospace;background:#fff;color:#2d1a0e;min-width:0"
         onkeydown="if(event.key==='Enter')saveApiKey()"/>
-      <button onclick="saveApiKey()" style="padding:6px 14px;background:#83502e;color:#fff;border:none;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap">Uložit</button>
+      <button onclick="saveApiKey()" style="padding:6px 14px;background:#83502e;color:#fff;border:none;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap">OK</button>
     </div>
-    <div style="font-size:10px;color:#b09070;margin-top:3px">Bez klíče: proxy (timeout). S klíčem: přímý přístup, bez limitu.</div>
   </div>
 
 </div>
@@ -543,8 +540,9 @@ async function send() {
   showTyping();
 
   try {
-    const maxTok = hasKey() ? 8000 : 4000;
-    const payload = { model: 'claude-sonnet-4-6', max_tokens: maxTok, system: SYSTEM, messages: chatHistory };
+    const model = hasKey() ? 'claude-sonnet-4-6' : 'claude-haiku-4-5-20251001';
+    const maxTok = hasKey() ? 8000 : 2500;
+    const payload = { model, max_tokens: maxTok, system: SYSTEM, messages: chatHistory };
     const data = await claudeCall(payload, hasKey() ? 180000 : 55000);
     const raw = (data.content?.[0]?.text || '').trim();
     const stopReason = data.stop_reason || '?';
@@ -681,25 +679,22 @@ async function sendBatch(text, n) {
 
 // Jedno API volání pro batch stránku — timeout 55s, při selhání retry s kratším tokenem
 async function callPageApi(prompt) {
-  // Přímý přístup: žádný timeout problém
-  // Proxy záloha: zkus 4000 tok, při timeoutu retry 2000
-  const tiers = hasKey() ? [[8000, 180000]] : [[4000, 55000], [2000, 50000]];
-  for (const [maxTok, tm] of tiers) {
-    try {
-      const msgs = [{ role: 'user', content: prompt }];
-      const payload = { model: 'claude-sonnet-4-6', max_tokens: maxTok, system: SYSTEM, messages: msgs };
-      return await claudeCall(payload, tm);
-    } catch(e) {
-      if (e.name === 'AbortError' && tiers.length > 1) {
-        addMsg('assistant', `⏱ Timeout — zkouším znovu (kratší verze)…`);
-        await new Promise(r => setTimeout(r, 800));
-        continue;
-      }
-      addMsg('assistant', `⚠️ API chyba: ${escHtml(e.message)}`);
+  const msgs = [{ role: 'user', content: prompt }];
+  if (hasKey()) {
+    // Vlastník: Sonnet přes přímé API — žádný timeout
+    const payload = { model: 'claude-sonnet-4-6', max_tokens: 8000, system: SYSTEM, messages: msgs };
+    try { return await claudeCall(payload, 180000); }
+    catch(e) { addMsg('assistant', `⚠️ API chyba: ${escHtml(e.message)}`); return null; }
+  } else {
+    // Zaměstnanci: Haiku přes proxy — 10× rychlejší, vejde se do 60s
+    const payload = { model: 'claude-haiku-4-5-20251001', max_tokens: 2500, system: SYSTEM, messages: msgs };
+    try { return await claudeCall(payload, 55000); }
+    catch(e) {
+      if (e.name === 'AbortError') { addMsg('assistant', `⏱ Timeout — zkus kratší zadání.`); }
+      else { addMsg('assistant', `⚠️ API chyba: ${escHtml(e.message)}`); }
       return null;
     }
   }
-  return null;
 }
 
 async function autoContinue(depth) {
@@ -718,8 +713,9 @@ async function autoContinue(depth) {
   chatHistory.push({ role: 'user', content: contMsg });
 
   try {
-    const maxTok = hasKey() ? 8000 : 4000;
-    const payload = { model: 'claude-sonnet-4-6', max_tokens: maxTok, system: SYSTEM, messages: chatHistory };
+    const model = hasKey() ? 'claude-sonnet-4-6' : 'claude-haiku-4-5-20251001';
+    const maxTok = hasKey() ? 8000 : 2500;
+    const payload = { model, max_tokens: maxTok, system: SYSTEM, messages: chatHistory };
     const data = await claudeCall(payload, hasKey() ? 180000 : 55000);
     const raw = (data.content?.[0]?.text || '').trim();
     const stopR = data.stop_reason || '?';
