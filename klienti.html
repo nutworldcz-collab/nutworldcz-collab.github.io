@@ -54,6 +54,7 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .act-meet{color:#5c381f;border-color:#c8a882;background:var(--kraft)}.act-meet:hover{filter:brightness(.95)}
 .act-del{color:#c0a880;border-color:transparent;font-size:10px}.act-del:hover{color:var(--acc)}
 .act-edit{color:#0d6efd;border-color:transparent;font-size:10px}.act-edit:hover{color:#0052cc}
+.act-drive{color:#188038;border-color:#a8d5b5}.act-drive:hover{background:#e8f5ec}
 
 .status-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:4px;cursor:pointer;border:2px solid #e0d0c0}
 .s-ok{background:var(--leaf);border-color:var(--leaf)}
@@ -353,6 +354,7 @@ function render(){
             ${c.web?`<a class="act-btn act-web" href="${esc(c.web)}" target="_blank">🌐 Web</a>`:''}
             <a class="act-btn act-cal" href="${calUrl(c)}" target="_blank">📅 Schůzka</a>
             <button class="act-btn act-meet" onclick="openMeetPanel('${esc(c.id)}')">📓 Schůzky ${mBadge}</button>
+            <a class="act-btn act-drive" href="https://drive.google.com/drive/search?q=${encodeURIComponent(c.company)}" target="_blank">📁 Drive</a>
             <button class="act-btn act-edit" onclick="openEditModal('${esc(c.id)}')">✏ Upravit</button>
             <button class="act-btn act-del" onclick="deleteClient('${esc(c.id)}')">Odebrat</button>
           </div>
