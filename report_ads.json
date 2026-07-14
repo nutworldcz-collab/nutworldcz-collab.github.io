@@ -1,51 +1,51 @@
 {
-  "generated": "2026-07-13T09:11:12",
-  "period": "2026-07-06 – 2026-07-12",
+  "generated": "2026-07-14T08:30:15",
+  "period": "2026-07-07 – 2026-07-13",
   "channels": {
     "Meta CZ": {
-      "spend": 6835.0,
-      "revenue": 21885.0,
-      "pno": 31.2,
-      "conversions": 22.0,
-      "clicks": 1100,
-      "prev_spend": 4203.0,
-      "prev_pno": 119.3
+      "spend": 7639.0,
+      "revenue": 25027.0,
+      "pno": 30.5,
+      "conversions": 26.0,
+      "clicks": 1107,
+      "prev_spend": 4234.0,
+      "prev_pno": 120.2
     },
     "Meta SK": {
-      "spend": 178.0,
+      "spend": 190.0,
       "revenue": 266.0,
-      "pno": 66.9,
+      "pno": 71.3,
       "conversions": 8.0,
-      "clicks": 716,
-      "prev_spend": 139.0,
-      "prev_pno": 91.2
+      "clicks": 712,
+      "prev_spend": 138.0,
+      "prev_pno": 90.8
     },
     "Google CZ": {
-      "spend": 4712.0,
-      "revenue": 41156.0,
-      "pno": 11.4,
-      "conversions": 40.4,
-      "clicks": 576,
-      "prev_spend": 648.0,
-      "prev_pno": 5.4
+      "spend": 5262.0,
+      "revenue": 38330.0,
+      "pno": 13.7,
+      "conversions": 41.9,
+      "clicks": 611,
+      "prev_spend": 1040.0,
+      "prev_pno": 4.4
     },
     "Google SK": {
-      "spend": 1873.0,
-      "revenue": 8927.0,
-      "pno": 21.0,
-      "conversions": 10.9,
-      "clicks": 181,
-      "prev_spend": 289.0,
-      "prev_pno": 24.7
+      "spend": 1865.0,
+      "revenue": 9549.0,
+      "pno": 19.5,
+      "conversions": 12.2,
+      "clicks": 180,
+      "prev_spend": 699.0,
+      "prev_pno": 27.6
     }
   },
   "anomalies": [
-    "🟡 Meta CZ: útrata +63% vs minulý týden",
-    "🔴 Meta SK: PNO 66.9% — nad break-even (40%)",
-    "🟡 Google CZ: útrata +627% vs minulý týden",
-    "🟡 Google SK: útrata +549% vs minulý týden"
+    "🟡 Meta CZ: útrata +80% vs minulý týden",
+    "🔴 Meta SK: PNO 71.3% — nad break-even (40%)",
+    "🟡 Google CZ: útrata +406% vs minulý týden",
+    "🟡 Google SK: útrata +167% vs minulý týden"
   ],
   "priorities": [
-    "Zkontrolovat kampaně Meta SK — PNO 66.9%"
+    "Zkontrolovat kampaně Meta SK — PNO 71.3%"
   ]
 }
