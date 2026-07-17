@@ -75,6 +75,14 @@ h1,h2,h3,h4{font-family:'Exo 2',sans-serif}
 .marze-ok{color:#2e7d32;font-weight:700}
 .marze-warn{color:#e65100;font-weight:700}
 .marze-bad{color:#c62828;font-weight:700}
+.vyr-lock{background:var(--kraft);border:1.5px dashed #c8976a;border-radius:10px;padding:20px;text-align:center;margin-top:12px}
+.vyr-lock h3{font-family:'Exo 2',sans-serif;color:var(--br);font-size:15px;margin-bottom:6px}
+.vyr-lock p{font-size:12px;color:#7a5a3a;margin-bottom:12px}
+.pin-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.pin-inp{border:1.5px solid #c8976a;border-radius:8px;padding:8px 12px;font-size:15px;width:130px;text-align:center;letter-spacing:3px;font-family:monospace;background:#fff}
+.pin-inp:focus{outline:none;border-color:var(--br)}
+.pin-btn{background:var(--bd);color:white;border:none;font-family:'Exo 2',sans-serif;font-weight:700;font-size:13px;padding:9px 18px;border-radius:8px;cursor:pointer}
+.pin-btn:hover{background:var(--br)}
 </style>
 </head>
 <body>
@@ -133,25 +141,37 @@ h1,h2,h3,h4{font-family:'Exo 2',sans-serif}
           <div class="total-box">Celkem s DPH: <span id="s-total"></span></div>
         </div>
 
-        <!-- Výrobní tabulka -->
-        <div style="font-family:'Exo 2',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#c62828;margin:16px 0 6px">Zadání výroby — interní ceny</div>
-        <table class="prod-table" id="vyroba-table">
-          <thead><tr>
-            <th>Produkt</th>
-            <th style="text-align:right">Ks</th>
-            <th style="text-align:right">Prod. cena/ks</th>
-            <th style="text-align:right;width:110px">Výr. cena/ks</th>
-            <th style="text-align:right">Marže</th>
-          </tr></thead>
-          <tbody id="v-produkty"></tbody>
-          <tfoot>
-            <tr style="background:#fdecea">
-              <td colspan="2" style="padding:7px 10px;font-weight:700;font-size:12px;color:#c62828">Celkový zisk</td>
-              <td colspan="2" style="text-align:right;padding:7px 10px;font-size:12px;color:#666" id="v-celkem-prod"></td>
-              <td style="text-align:right;padding:7px 10px;font-weight:700;color:#c62828" id="v-celkem-zisk"></td>
-            </tr>
-          </tfoot>
-        </table>
+        <!-- Výrobní tabulka — jen pro vlastníka -->
+        <div id="vyr-locked" class="vyr-lock">
+          <h3>🔒 Náklady & zisk — jen pro vlastníka</h3>
+          <p>Tato sekce zobrazuje nákupní ceny a marže.</p>
+          <div class="pin-row">
+            <input class="pin-inp" id="pin-inp" type="password" placeholder="PIN" maxlength="20"
+              onkeydown="if(event.key==='Enter')tryUnlock()"/>
+            <button class="pin-btn" onclick="tryUnlock()">Odemknout →</button>
+          </div>
+          <div id="pin-err" style="display:none;margin-top:8px;font-size:12px;color:var(--acc)">Nesprávný PIN.</div>
+        </div>
+        <div id="vyr-table-wrap" style="display:none">
+          <div style="font-family:'Exo 2',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#c62828;margin:16px 0 6px">Náklady & zisk — interní přehled</div>
+          <table class="prod-table" id="vyroba-table">
+            <thead><tr>
+              <th>Produkt</th>
+              <th style="text-align:right">Ks</th>
+              <th style="text-align:right">Prod. cena/ks</th>
+              <th style="text-align:right;width:110px">Nákup/ks</th>
+              <th style="text-align:right">Marže</th>
+            </tr></thead>
+            <tbody id="v-produkty"></tbody>
+            <tfoot>
+              <tr style="background:#fdecea">
+                <td colspan="2" style="padding:7px 10px;font-weight:700;font-size:12px;color:#c62828">Celkový zisk</td>
+                <td colspan="2" style="text-align:right;padding:7px 10px;font-size:12px;color:#666" id="v-celkem-prod"></td>
+                <td style="text-align:right;padding:7px 10px;font-weight:700;color:#c62828" id="v-celkem-zisk"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
       </div>
 
       <!-- Doplňující pole -->
@@ -273,6 +293,32 @@ h1,h2,h3,h4{font-family:'Exo 2',sans-serif}
 
 <script>
 let offerData = null;
+const OWNER_PIN = 'nw2026';
+
+function tryUnlock() {
+  const val = document.getElementById('pin-inp').value.trim().toLowerCase();
+  if (val === OWNER_PIN) {
+    sessionStorage.setItem('nw_unlocked', '1');
+    document.getElementById('pin-err').style.display = 'none';
+    showVyrTable();
+  } else {
+    document.getElementById('pin-err').style.display = 'block';
+    document.getElementById('pin-inp').value = '';
+    document.getElementById('pin-inp').focus();
+  }
+}
+
+function showVyrTable() {
+  document.getElementById('vyr-locked').style.display = 'none';
+  document.getElementById('vyr-table-wrap').style.display = 'block';
+  if (offerData) {
+    offerData.produkty.forEach((p, i) => {
+      const inp = document.getElementById('vyr-' + i);
+      if (inp && p.nakup && !inp.value) inp.value = Number(p.nakup).toFixed(2);
+    });
+    recalcMarze();
+  }
+}
 
 // Auto-load z URL hash při otevření stránky
 window.addEventListener('load', () => {
@@ -313,6 +359,8 @@ function parseAndLoad(encoded) {
     document.getElementById('step3').classList.add('active');
     // Prefill obchodak
     if (offerData.repName) document.getElementById('obchodak').value = offerData.repName;
+    // Odemkni pokud již byl PIN zadán dříve v této session
+    if (sessionStorage.getItem('nw_unlocked') === '1') showVyrTable();
     hideError();
   } catch(e) {
     showError('Nepodařilo se načíst data — odkaz je poškozený nebo neúplný.');
@@ -437,14 +485,18 @@ async function createTrelloCard() {
   setLoading(true, 'Vytváří se karta…');
 
   const d = offerData;
-  let totalBez = 0, totalZisk = 0, totalNakl = 0;
+  let totalBez = 0;
 
-  const prodDesc = d.produkty.map((p, i) => {
+  // Náklady/zisk z dat nabídky — pro owner email (nezávisle na PIN)
+  let emailNakl = 0, emailZisk = 0;
+  d.produkty.forEach(p => {
+    if (p.nakup) { emailNakl += p.nakup * p.ks; emailZisk += (p.cena - p.nakup) * p.ks; }
+  });
+
+  // Trello karta — BEZ nákupních cen (vidí celý tým)
+  const prodDesc = d.produkty.map((p) => {
     const c = p.ks * p.cena; totalBez += c;
-    const vyr = parseFloat(document.getElementById('vyr-'+i)?.value) || 0;
-    if (vyr) { totalNakl += vyr*p.ks; totalZisk += (p.cena-vyr)*p.ks; }
-    const vyrStr = vyr ? ` | výr. ${vyr.toFixed(2)} Kč | zisk ${num(((p.cena-vyr)*p.ks).toFixed(0))} Kč` : '';
-    return `**${p.nazev}**\n- ${p.ks} ks | prod. ${p.cena.toFixed(2)} Kč | celkem ${num(c.toFixed(0))} Kč${vyrStr}`;
+    return `**${p.nazev}**\n- ${p.ks} ks | prod. ${p.cena.toFixed(2)} Kč | celkem ${num(c.toFixed(0))} Kč`;
   }).join('\n\n');
 
   const dph = totalBez * 0.12;
@@ -469,7 +521,7 @@ ${prodDesc}
 ## 💰 Souhrn
 **Celkem bez DPH:** ${num(totalBez.toFixed(0))} Kč
 **DPH 12 %:** ${num(dph.toFixed(0))} Kč
-**Celkem s DPH:** ${num((totalBez+dph).toFixed(0))} Kč${totalZisk ? `\n**Zisk:** ${num(totalZisk.toFixed(0))} Kč (marže ${(totalZisk/(totalZisk+totalNakl)*100).toFixed(1)} %)` : ''}
+**Celkem s DPH:** ${num((totalBez+dph).toFixed(0))} Kč
 
 ## ✏️ Personalizace
 **Logo:** ${logo||'—'} | **Vlastní složení:** ${vlSlozeni||'—'} | **Vlastní obal:** ${vlObal||'—'}
@@ -530,6 +582,52 @@ ${d.poznamka ? `\n*Poznámka z nabídky: ${d.poznamka}*` : ''}`;
     document.getElementById('btn-create').style.display = 'none';
     document.getElementById('step3').classList.add('done');
     document.getElementById('step3').classList.remove('active');
+
+    // Owner email — plný finanční přehled
+    try {
+      const ownerProdLines = d.produkty.map(p => {
+        const c = p.ks * p.cena;
+        const nakupKs = p.nakup;
+        const ziskKs  = nakupKs ? (p.cena - nakupKs) * p.ks : null;
+        return `${p.kod ? p.kod + ' — ' : ''}${p.nazev} × ${p.ks} ks\n` +
+          `  Prod: ${p.cena.toFixed(2)} Kč/ks · Celkem: ${num(c.toFixed(0))} Kč` +
+          (nakupKs ? `\n  Nákup: ${nakupKs.toFixed(2)} Kč/ks · Zisk: ${num(ziskKs.toFixed(0))} Kč` : '');
+      }).join('\n\n');
+
+      const marzeStr = (emailZisk && emailNakl)
+        ? ` (marže ${(emailZisk / (emailZisk + emailNakl) * 100).toFixed(1)} %)`
+        : '';
+
+      const ownerBody = `🚀 NOVÁ ZAKÁZKA — ${d.firma}\n\n` +
+        `Firma: ${d.firma}\n` +
+        `IČO: ${d.ico || '-'} | DIČ: ${d.dic || '-'}\n` +
+        `Kontakt: ${d.kontakt || '-'}${d.emailKlient ? ' · ' + d.emailKlient : ''}${d.telefon ? ' · ' + d.telefon : ''}\n\n` +
+        `PRODUKTY:\n${ownerProdLines}\n\n` +
+        `Celkem bez DPH: ${num(totalBez.toFixed(0))} Kč\n` +
+        `DPH 12 %: ${num(dph.toFixed(0))} Kč\n` +
+        `Celkem s DPH: ${num((totalBez + dph).toFixed(0))} Kč\n` +
+        (emailZisk ? `💰 ZISK: +${num(emailZisk.toFixed(0))} Kč${marzeStr}\n` : '') +
+        `\nTermín: ${fmt(termin)}\n` +
+        `Obchodák: ${obchodak}\n` +
+        `Doprava: ${doruceni}\n` +
+        (prani ? `Přání: ${prani}\n` : '') +
+        (persPopis ? `Personalizace: ${persPopis}\n` : '') +
+        (poznamka ? `Interní poznámka: ${poznamka}\n` : '') +
+        `\nTrello: ${card.url}`;
+
+      fetch('https://script.google.com/macros/s/AKfycbzMTvsRtxdSLfTKexhIIkWZ1U6gbLkdJJpaWSFWxnQ6C-zrtf4UYNu37LqhODuUyPnr/exec', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          type: 'owner_zakazka',
+          to: 'nutworld.cz@gmail.com',
+          subject: `🚀 Zakázka — ${d.firma} — ${num((totalBez + dph).toFixed(0))} Kč`,
+          body: ownerBody
+        })
+      });
+    } catch(emailErr) {
+      console.warn('Owner email se nepodařilo odeslat:', emailErr);
+    }
 
   } catch(e) {
     setLoading(false);
