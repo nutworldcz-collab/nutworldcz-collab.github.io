@@ -75,6 +75,23 @@ h1,h2,h3,h4{font-family:'Exo 2',sans-serif}
 .marze-ok{color:#2e7d32;font-weight:700}
 .marze-warn{color:#e65100;font-weight:700}
 .marze-bad{color:#c62828;font-weight:700}
+.popis-btn-sp{background:none;border:none;cursor:pointer;font-size:13px;padding:2px 5px;color:#ccc;line-height:1;vertical-align:middle}
+.popis-btn-sp:hover{color:#83502e}
+.popis-row-sp td{padding:0 8px 8px!important;background:#fdfaf7}
+.popis-inp-sp{width:100%;border:1.5px solid #d4c0a8;border-radius:6px;padding:7px 10px;font-family:inherit;font-size:12px;color:#2a1a0e;background:#fffdf8;resize:vertical;min-height:36px}
+.popis-inp-sp:focus{outline:none;border-color:#83502e}
+.popis-add-wrap{display:flex;gap:6px;margin-top:5px;position:relative}
+.popis-search-sp{flex:1;border:1.5px solid #d4c0a8;border-radius:6px;padding:6px 10px;font-size:12px;color:#2a1a0e;background:#fff;font-family:inherit}
+.popis-search-sp::placeholder{color:#bbb}
+.popis-search-sp:focus{outline:none;border-color:#83502e}
+.ac-drop-sp{position:absolute;top:calc(100% + 2px);left:0;right:0;background:#fff;border:1.5px solid #c8976a;border-radius:0 0 8px 8px;z-index:300;max-height:200px;overflow-y:auto;box-shadow:0 6px 20px rgba(0,0,0,.12);display:none}
+.ac-drop-sp.open{display:block}
+.ac-item-sp{display:flex;align-items:center;gap:10px;padding:7px 12px;cursor:pointer;border-bottom:1px solid #f1e6da;font-size:12px}
+.ac-item-sp:hover,.ac-item-sp.sel{background:#fdf8f4}
+.ac-item-sp:last-child{border-bottom:none}
+.ac-kod-sp{font-family:monospace;color:#83502e;font-weight:700;font-size:11px;min-width:36px}
+.ac-nazev-sp{color:#2a1a0e;flex:1;line-height:1.3}
+.ac-gram-sp{font-size:10px;color:#aaa;white-space:nowrap}
 .vyr-lock{background:var(--kraft);border:1.5px dashed #c8976a;border-radius:10px;padding:20px;text-align:center;margin-top:12px}
 .vyr-lock h3{font-family:'Exo 2',sans-serif;color:var(--br);font-size:15px;margin-bottom:6px}
 .vyr-lock p{font-size:12px;color:#7a5a3a;margin-bottom:12px}
@@ -134,6 +151,7 @@ h1,h2,h3,h4{font-family:'Exo 2',sans-serif}
             <th style="text-align:right">Ks</th>
             <th style="text-align:right">Cena/ks bez DPH</th>
             <th style="text-align:right">Celkem</th>
+            <th style="width:28px"></th>
           </tr></thead>
           <tbody id="s-produkty"></tbody>
         </table>
@@ -294,6 +312,8 @@ h1,h2,h3,h4{font-family:'Exo 2',sans-serif}
 <script>
 let offerData = null;
 const OWNER_PIN = 'nw2026';
+const PRODUKTY = [{"kod": "164", "nazev": "ANANAS PLÁTKY", "kg_czk": 108.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "2123", "nazev": "ANANAS PLÁTKY MIX", "kg_czk": 140.54, "gramaze": [200, 500, 1000, 3000]}, {"kod": "3298", "nazev": "ANANAS PLÁTKY S PŘÍCHUTÍ JABLKO", "kg_czk": 119.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "3304", "nazev": "ANANAS PLÁTKY S PŘÍCHUTÍ JAHODA", "kg_czk": 127.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "1040", "nazev": "ANTIOXIDAČNÍ SMĚS", "kg_czk": 165.29, "gramaze": [500, 3000]}, {"kod": "4443", "nazev": "ARAŠÍDOVÉ HRUDKY MIX BAREV", "kg_czk": 235.69, "gramaze": [200, 500, 1000, 2000]}, {"kod": "56", "nazev": "ARAŠÍDY LOUPANÉ PRAŽENÉ SOLENÉ", "kg_czk": 59.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "10264", "nazev": "ARAŠÍDY V BÍLÉ ČOKOLÁDĚ", "kg_czk": 209.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "719", "nazev": "ARAŠÍDY V CHILLI TĚSTÍČKU", "kg_czk": 145.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "1976", "nazev": "ARAŠÍDY V CUKRU S PŘÍDAVKEM MEDU", "kg_czk": 86.0, "gramaze": [100, 200, 500, 1000, 5000]}, {"kod": "4146", "nazev": "ARAŠÍDY V KARAMELU S CHILLI", "kg_czk": 159.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "176", "nazev": "BANÁN KOUSKY <4CM", "kg_czk": 99.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "170", "nazev": "BANÁN SUŠENÉ PLÁTKY", "kg_czk": 89.0, "gramaze": [200, 500, 1000]}, {"kod": "2294", "nazev": "BANÁN V POLEVĚ S JOGURTOVOU PŘÍCHUTÍ", "kg_czk": 142.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "8742", "nazev": "BANÁNKY ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "2759", "nazev": "BANÁNOVÉ CHIPSY V HOŘKÉ ČOKOLÁDĚ", "kg_czk": 159.0, "gramaze": [200, 3000]}, {"kod": "5475", "nazev": "BANÁNOVÉ CHIPSY V MLÉČNÉ ČOKOLÁDĚ", "kg_czk": 159.0, "gramaze": [200, 500, 1000, 3000, 4000]}, {"kod": "2762", "nazev": "BANÁNOVÝ CHIPS DUO MIX", "kg_czk": 174.0, "gramaze": [200, 3000]}, {"kod": "3717", "nazev": "BAREVNÁ SMĚS ROZINEK", "kg_czk": 8.85, "gramaze": [100, 200, 500, 1000, 5000]}, {"kod": "3722", "nazev": "BLANŠÍROVANÉ SMAŽENÉ VALENCIJSKÉ LANÝŽOVÉ MANDLE", "kg_czk": 375.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "3720", "nazev": "BLANŠÍROVANÉ SMAŽENÉ VALENCIJSKÉ MANDLE", "kg_czk": 335.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "3721", "nazev": "BLANŠÍROVANÉ SMAŽENÉ VALENCIJSKÉ MANDLE S JEMNÝMI BYLINKAMI", "kg_czk": 356.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "182", "nazev": "BORŮVKY SUŠENÉ NESÍŘENÉ", "kg_czk": 362.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "179", "nazev": "BRUSINKY SUŠENÉ NESÍŘENÉ", "kg_czk": 108.0, "gramaze": [200, 500, 1000]}, {"kod": "1037", "nazev": "BRUSTÁCIOVÝ MIX", "kg_czk": 334.8, "gramaze": [200, 3000]}, {"kod": "269", "nazev": "CANTALOUPE PLÁTKY BEZ SO2", "kg_czk": 265.0, "gramaze": [200, 500, 1000]}, {"kod": "8541", "nazev": "CHIA SEMÍNKA", "kg_czk": 79.0, "gramaze": []}, {"kod": "2357", "nazev": "CORNFLAKES V MLÉČNÉ ČOKOLÁDĚ", "kg_czk": 195.0, "gramaze": [100, 200, 500, 1000, 5000]}, {"kod": "188", "nazev": "DATLE DEGLET NOUR", "kg_czk": 83.0, "gramaze": [500, 1000, 5000]}, {"kod": "191", "nazev": "DATLE MEDJOOL", "kg_czk": 168.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "2663", "nazev": "DATLE V HOŘKÉ ČOKOLÁDĚ A SKOŘICI", "kg_czk": 235.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "8751", "nazev": "DUHOVÉ MINI PENDREKY", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "1805", "nazev": "FAZOLKY ŽELÉ", "kg_czk": 179.0, "gramaze": [230, 1000]}, {"kod": "230", "nazev": "HROZINKY SUŠENÉ", "kg_czk": 64.5, "gramaze": [200, 500, 1000, 10000]}, {"kod": "3537", "nazev": "HRUŠKY BEZ PŘIDANÉHO CUKRU", "kg_czk": 149.0, "gramaze": [200, 500, 10000]}, {"kod": "4167", "nazev": "JABLEČNÉ TRUBIČKY MÁČENÉ V HOŘKÉ ČOKOLÁDĚ", "kg_czk": 498.1481, "gramaze": [100]}, {"kod": "4170", "nazev": "JABLEČNÉ TRUBIČKY MÁČENÉ V JOGURTU", "kg_czk": 498.1481, "gramaze": [100]}, {"kod": "4197", "nazev": "JABLEČNÉ TRUBIČKY MÁČENÉ V KAROBU", "kg_czk": 498.1481, "gramaze": [100]}, {"kod": "3540", "nazev": "JABLKA SUŠENÁ KROUŽKY", "kg_czk": 137.0, "gramaze": [200, 500, 10000]}, {"kod": "10269", "nazev": "JAHODOVÉ SNY ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "10271", "nazev": "JAHODY LYOFILIZOVANÉ V MLÉČNÉ ČOKOLÁDĚ", "kg_czk": 345.0, "gramaze": [200, 1000, 4000]}, {"kod": "242", "nazev": "JÁDRA TYKVE GWS AA", "kg_czk": 87.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "242", "nazev": "JÁDRA TYKVE GWS AA", "kg_czk": 87.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "10473", "nazev": "JÁDRA TYKVE NATURAL GWS – BIO", "kg_czk": 134.0, "gramaze": [100, 200, 500, 1000]}, {"kod": "203", "nazev": "KANDOVANÉ KIWI BEZ AZO BARVIV", "kg_czk": 129.0, "gramaze": [200, 500, 1000]}, {"kod": "3633", "nazev": "KARAMELOVÝ FONDÁN SLANÝ KARAMEL", "kg_czk": 159.0, "gramaze": [200, 500, 1000, 2000]}, {"kod": "3632", "nazev": "KARAMELOVÝ FONDÁN VANILKA", "kg_czk": 159.0, "gramaze": [200, 500, 1000, 2000]}, {"kod": "1771", "nazev": "KARAMELOVÝ FONDÁN VANILKA A ČOKOLÁDA", "kg_czk": 159.0, "gramaze": [200, 500, 1000, 2000]}, {"kod": "3634", "nazev": "KARAMELOVÝ FONDÁN ČOKOLÁDA", "kg_czk": 149.0, "gramaze": [200]}, {"kod": "10503", "nazev": "KEŠU EXCLUSIVE MIX", "kg_czk": 299.0, "gramaze": [100, 200, 500, 3000]}, {"kod": "2570", "nazev": "KEŠU JÁDRA PRAŽENÁ NESOLENÁ", "kg_czk": 235.4, "gramaze": [200, 3000]}, {"kod": "10724", "nazev": "KEŠU KOUSKY 5-8MM", "kg_czk": 136.0, "gramaze": [200, 500, 1000, 22000]}, {"kod": "110", "nazev": "KEŠU NATURAL WW320", "kg_czk": 201.01, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "2537", "nazev": "KEŠU S PŘÍCHUTÍ CHILLI", "kg_czk": 245.566, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "2297", "nazev": "KEŠU TIRAMISU", "kg_czk": 198.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "1340", "nazev": "KEŠU V BÍLÉ ČOKOLÁDĚ", "kg_czk": 289.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "10262", "nazev": "KEŠU V BÍLÉ ČOKOLÁDĚ S KOKOSEM", "kg_czk": 299.0, "gramaze": [100, 200, 500, 1000, 3000, 4000]}, {"kod": "2705", "nazev": "KEŠU V ČOKOLÁDĚ MIX", "kg_czk": 250.34, "gramaze": [200, 3000]}, {"kod": "152", "nazev": "KOKOS CHIPS", "kg_czk": 98.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "7564", "nazev": "KOKOS CHIPS S KARAMELEM A MOŘSKOU SOLÍ", "kg_czk": 149.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "2753", "nazev": "KOKOSOVÉ KOSTKY", "kg_czk": 169.0, "gramaze": [200, 500, 3000, 5000]}, {"kod": "9673", "nazev": "KOLA LÁHVE ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "248", "nazev": "KONOPNÉ SEMÍNKO LOUPANÉ", "kg_czk": 142.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "4296", "nazev": "KUKUŘIČNÉ LUPÍNKY V POLEVĚ S JOGURTOVOU PŘÍCHUTÍ", "kg_czk": 129.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "206", "nazev": "KUSTOVNICE ČÍNSKÁ GOJI", "kg_czk": 197.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "10251", "nazev": "KYSELÉ HOUSENKY ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "2726", "nazev": "KÁVOVÝ MIX SLADKÝ", "kg_czk": 275.98, "gramaze": [200, 3000]}, {"kod": "251", "nazev": "LNĚNÉ SEMÍNKO", "kg_czk": 26.5, "gramaze": [500, 1000, 3000]}, {"kod": "3107", "nazev": "LÍSKOVCE JÁDRA PRAŽENÁ V BÍLÉ ČOKOLÁDĚ", "kg_czk": 279.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "3108", "nazev": "LÍSKOVCE V JOGURTOVÉ POLEVĚ", "kg_czk": 192.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "10730", "nazev": "LÍSKOVÁ JÁDRA DRŤ 2-4MM PRAŽENÁ", "kg_czk": 345.0, "gramaze": [10, 200, 500, 1000, 10000]}, {"kod": "10261", "nazev": "LÍSKOVÉ OŘECHY TIRAMISU", "kg_czk": 209.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "146", "nazev": "MAKADAMOVÉ OŘECHY", "kg_czk": 399.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "4893", "nazev": "MAKADAMOVÉ OŘECHY PRAŽENÉ NA SUCHO, SOLENÉ", "kg_czk": 459.0, "gramaze": [100, 200, 500, 1000, 5000]}, {"kod": "1808", "nazev": "MALINY A OSTRUŽINY SMĚS", "kg_czk": 149.0, "gramaze": [230, 1000]}, {"kod": "2738", "nazev": "MANDLE A MERUŇKY DRAŽOVANÉ", "kg_czk": 258.22, "gramaze": [200, 3000]}, {"kod": "3995", "nazev": "MANDLE CAPPUCCINO", "kg_czk": 299.0, "gramaze": [50, 100, 200, 500, 1000, 3000]}, {"kod": "3993", "nazev": "MANDLE EXCLUSIVE MIX", "kg_czk": 289.0, "gramaze": [50, 100, 200, 500, 3000]}, {"kod": "4212", "nazev": "MANDLE JAHODOVÉ BÍLÁ ČOKOLÁDA", "kg_czk": 349.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "9945", "nazev": "MANDLE JÁDRA PRAŽENÁ SOLENÁ S PŘÍCHUTÍ HOŘČICE", "kg_czk": 223.0667, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "3723", "nazev": "MANDLE LOUPANÉ S PŘÍCHUTÍ ČERVENÉ PAPRIKY A CHILLI", "kg_czk": 356.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "8977", "nazev": "MANDLE MALINOVÉ BÍLÁ ČOKOLÁDA", "kg_czk": 252.0, "gramaze": [100, 200, 500, 1000, 5000]}, {"kod": "86", "nazev": "MANDLE PLÁTKY", "kg_czk": 210.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "101", "nazev": "MANDLE PRAŽENÉ SOLENÉ", "kg_czk": 226.156, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "9543", "nazev": "MANDLE PRAŽENÉ SOLENÉ S PŘÍCHUTÍ LANÝŽE A PARMAZÁNU VALENCIE DELUXE", "kg_czk": 367.5, "gramaze": [200]}, {"kod": "95", "nazev": "MANDLE PRAŽENÉ V MEDU A SOLI", "kg_czk": 259.0, "gramaze": [50, 100, 200, 500, 1000, 3000]}, {"kod": "1964", "nazev": "MANDLE TIRAMISU", "kg_czk": 189.0, "gramaze": [50, 100, 200, 500, 1000, 3000]}, {"kod": "10736", "nazev": "MANDLE TŘÍSKY, HRANOLKY", "kg_czk": 232.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "89", "nazev": "MANDLE UZENÉ", "kg_czk": 218.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "1988", "nazev": "MANDLE V BÍLÉ ČOKOLÁDĚ OBALENÉ KOKOSEM", "kg_czk": 289.0, "gramaze": [100, 200, 500, 1000, 3000, 4000]}, {"kod": "9811", "nazev": "MANDLE V JOGURTOVÉ POLEVĚ", "kg_czk": 188.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "9921", "nazev": "MANDLE V MLÉČNÉ ČOKOLÁDĚ A MALINOVÉM PRÁŠKU", "kg_czk": 309.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "10011", "nazev": "MANDLE ZASNĚŽENÉ V MLÉČNÉ ČOKOLÁDĚ", "kg_czk": 265.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "80", "nazev": "MANDLOVÁ JÁDRA NATURAL 23/25", "kg_czk": 195.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "4038", "nazev": "MANDLOVÁ JÁDRA PRAŽENÁ V MLÉČNÉ ČOKOLÁDĚ", "kg_czk": 210.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "212", "nazev": "MANGO PLÁTKY NESÍŘENÉ", "kg_czk": 274.0, "gramaze": [200, 500, 1000]}, {"kod": "635", "nazev": "MANGO PLÁTKY PROSLAZENÉ", "kg_czk": 144.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "8745", "nazev": "MAXI HADI ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "10233", "nazev": "MAXI MEDVĚDI ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "4794", "nazev": "MEDOVÁ SMĚS SE SOLÍ", "kg_czk": 187.725, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "10257", "nazev": "MEDVÍDCI TUTTI FRUTTI ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "2573", "nazev": "MERLÍK CHILSKÝ (QUINOA) – BÍLÁ", "kg_czk": 67.0, "gramaze": [200, 1000, 3000]}, {"kod": "218", "nazev": "MERUŇKY SUŠENÉ I. JAKOST", "kg_czk": 275.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "2018", "nazev": "MERUŇKY V JAHODOVÉM JOGURTU", "kg_czk": 205.44, "gramaze": [200, 500, 1000, 3000]}, {"kod": "3111", "nazev": "MERUŇKY V POLEVĚ S JOGURTOVOU PŘÍCHUTÍ", "kg_czk": 178.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "4440", "nazev": "MINI LENTILKY BEZ „PALMÁČE\";Cukr, kakaové máslo 14,5 %, sušená SYROVÁTKA, kakaový prášek se sníženým obsahem tuku 5,5 %, škrob, sušené plnotučné MLÉKO, emulgátor: lecitiny, leštící látky (arabská guma, karnaubský vosk, včelí vosk), koncentráty (hroznové víno, ředkev, černý rybíz, citron), extrakty (světlice barvířská, ječný slad, mořská řasa)\"", "kg_czk": 159.0, "gramaze": [230]}, {"kod": "324", "nazev": "MOCHYNĚ PERUÁNSKÁ – PHYSALIS", "kg_czk": 345.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "5892", "nazev": "MOTÝLCI ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "260", "nazev": "MÁK MLETÝ 100%", "kg_czk": 79.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "257", "nazev": "MÁK MODRÝ", "kg_czk": 66.0, "gramaze": [500, 1000, 3000]}, {"kod": "1768", "nazev": "NUGÁT MANDLOVÝ BÍLÝ", "kg_czk": 189.0, "gramaze": [200, 1000]}, {"kod": "4302", "nazev": "PAPAYA PLÁTKY", "kg_czk": 98.0, "gramaze": [200, 500, 5000]}, {"kod": "296", "nazev": "PAPAYA PLÁTKY BEZ SO2", "kg_czk": 245.0, "gramaze": [200, 500, 1000]}, {"kod": "2747", "nazev": "PAPÁJA KANDOVANÁ, KOSTKY", "kg_czk": 98.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "143", "nazev": "PARA OŘECHY", "kg_czk": 445.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "2117", "nazev": "PARA OŘECHY V TIRAMISU", "kg_czk": 229.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "1521", "nazev": "PEKÁN KARAMELIZOVANÝ CLASSIC", "kg_czk": 354.5, "gramaze": [200, 500, 1000, 5000]}, {"kod": "10558", "nazev": "PEČENÉ RÝŽOVÉ CHIPSY S PŘÍCHUTÍ CHILLI", "kg_czk": 120.0, "gramaze": [150, 300]}, {"kod": "10564", "nazev": "PEČENÉ RÝŽOVÉ SNACKY S PŘÍCHUTÍ BBQ", "kg_czk": 120.0, "gramaze": [150, 300]}, {"kod": "10570", "nazev": "PEČENÉ RÝŽOVÉ SNACKY S PŘÍCHUTÍ ORIGINÁLNÍ SÓJOVÉ OMÁČKY", "kg_czk": 120.0, "gramaze": [150, 300]}, {"kod": "149", "nazev": "PINIOVÁ JÁDRA", "kg_czk": 725.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "137", "nazev": "PISTÁCIE LOUPANÉ", "kg_czk": 630.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "131", "nazev": "PISTÁCIE PRAŽENÉ NELOUPANÉ JUMBO", "kg_czk": 245.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "134", "nazev": "PISTÁCIE PRAŽENÉ SOLENÉ NELOUPANÉ JUMBO", "kg_czk": 252.0, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "4452", "nazev": "PRECLÍKY TŘÍ BAREV", "kg_czk": 254.18, "gramaze": [200, 500, 1000, 2000]}, {"kod": "4449", "nazev": "PRECLÍKY V BÍLÉ ČOKOLÁDĚ", "kg_czk": 252.0, "gramaze": [200, 500, 1000, 2000]}, {"kod": "155", "nazev": "PRÉMIOVÝ OŘECHOVÝ MIX", "kg_czk": 298.5, "gramaze": [50, 100, 200, 500, 1000, 3000]}, {"kod": "3082", "nazev": "ROZINKY OBŘÍ MIX", "kg_czk": 127.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "233", "nazev": "ROZINKY OBŘÍ ZLATÉ", "kg_czk": 129.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "1967", "nazev": "ROZINKY V POLEVÁCH MIX", "kg_czk": 169.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "5502", "nazev": "SALÁTOVÁ SMĚS SEMÍNEK A PINIOVÝCH OŘECHŮ", "kg_czk": 144.25, "gramaze": [500, 3000]}, {"kod": "2474", "nazev": "SEMÍNKOVÁ SMĚS", "kg_czk": 65.9, "gramaze": [500, 1000, 3000]}, {"kod": "263", "nazev": "SEZAMOVÁ SEMÍNKA", "kg_czk": 51.0, "gramaze": [500, 1000, 3000]}, {"kod": "2693", "nazev": "SKOŘICOVÝ MIX", "kg_czk": 250.05, "gramaze": [200, 3000]}, {"kod": "2708", "nazev": "SLADKÁ SMĚS DELUXE", "kg_czk": 253.55, "gramaze": [200, 3000]}, {"kod": "1028", "nazev": "SLANÝ MIX ALL IN ONE", "kg_czk": 192.09, "gramaze": [200, 500, 1000, 3000]}, {"kod": "5511", "nazev": "SLANÝ MIX EXCLUSIVE", "kg_czk": 220.98, "gramaze": [50, 100, 200, 500, 3000]}, {"kod": "161", "nazev": "SLANÝ PÁRTY MIX", "kg_czk": 239.27, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "266", "nazev": "SLUNEČNICE", "kg_czk": 34.5, "gramaze": [500, 1000, 3000]}, {"kod": "10479", "nazev": "SLUNEČNICE BIO", "kg_czk": 58.0, "gramaze": [200, 500, 1000]}, {"kod": "1991", "nazev": "SLUNEČNICE V BAREVNÉ KRUSTĚ", "kg_czk": 119.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "158", "nazev": "SMĚS JADER", "kg_czk": 309.6, "gramaze": [100, 200, 500, 1000, 3000]}, {"kod": "5499", "nazev": "SMĚS KEŠU A MANDLE NATURAL", "kg_czk": 215.51, "gramaze": [500, 3000]}, {"kod": "4896", "nazev": "SMĚS MANDLÍ V ČOKOLÁDĚ BROWN", "kg_czk": 231.85, "gramaze": [100, 200, 500, 3000]}, {"kod": "6450", "nazev": "SMĚS OVOCE ZDRAVÁ ENERGIE", "kg_czk": 252.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "3097", "nazev": "SMĚS OŘECHŮ A ROZINEK", "kg_czk": 197.84, "gramaze": [200, 500, 1000, 3000]}, {"kod": "2342", "nazev": "SMĚS OŘECHŮ DELUXE", "kg_czk": 212.79, "gramaze": [500, 3000]}, {"kod": "3091", "nazev": "SMĚS OŘECHŮ PRAŽENÁ NESOLENÁ", "kg_czk": 241.86, "gramaze": [200, 500, 1000, 3000]}, {"kod": "2345", "nazev": "SMĚS OŘECHŮ ŠŤASTNÉ SRDCE", "kg_czk": 175.0, "gramaze": [500, 3000]}, {"kod": "5505", "nazev": "SMĚS SEMÍNEK, KEŠU A MANDLÍ NATURAL", "kg_czk": 134.65, "gramaze": [500, 1000, 3000]}, {"kod": "3979", "nazev": "SOLENÉ MINI PRECLÍKY", "kg_czk": 84.0, "gramaze": [200, 500, 1000, 5000]}, {"kod": "10245", "nazev": "SOVIČKY ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "2702", "nazev": "STUDENTSKÁ SMĚS", "kg_czk": 153.93, "gramaze": [500, 1000, 3000]}, {"kod": "224", "nazev": "SUŠENÁ MORUŠE", "kg_czk": 278.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "224", "nazev": "SUŠENÁ MORUŠE", "kg_czk": 278.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "227", "nazev": "SUŠENÉ ROZINKY NESÍŘENÉ (RTU)", "kg_czk": 85.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "236", "nazev": "SUŠENÉ ŠVESTKY", "kg_czk": 92.0, "gramaze": [200, 500, 1000, 10000]}, {"kod": "2699", "nazev": "TIRAMISU SMĚS", "kg_czk": 220.6, "gramaze": [50, 100, 200, 500, 1000]}, {"kod": "2423", "nazev": "TROPICKÁ SMĚS", "kg_czk": 127.33, "gramaze": [100, 500, 2000]}, {"kod": "10020", "nazev": "TROPICKÝ MIX ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "3076", "nazev": "TŘEŠNĚ", "kg_czk": 185.0, "gramaze": [200, 500, 1000]}, {"kod": "1949", "nazev": "TŘÍBAREVNÁ SLUNEČNICE", "kg_czk": 199.0, "gramaze": [200, 500, 1000, 3000]}, {"kod": "9679", "nazev": "UPÍŘÍ ZUBY ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "8739", "nazev": "VEJCE ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "10239", "nazev": "VESELÍ SMAJLÍCI ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "4506", "nazev": "VESELÝ HAMBURGER ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "239", "nazev": "VIŠNĚ", "kg_czk": 499.0, "gramaze": [200, 500, 1000]}, {"kod": "122", "nazev": "VLAŠSKÁ JÁDRA CHILE", "kg_czk": 165.0, "gramaze": [500, 1000, 3000]}, {"kod": "3993VAN", "nazev": "VÁNOČNÍ MANDLE EXCLUSIVE", "kg_czk": 289.0, "gramaze": [200]}, {"kod": "254", "nazev": "ZLATÝ LEN", "kg_czk": 34.5, "gramaze": [500, 1000, 3000]}, {"kod": "1418", "nazev": "ZÁZVOR KOUSKY BEZ SO2", "kg_czk": 199.0, "gramaze": [200, 500, 1000]}, {"kod": "2576", "nazev": "ČERNÁ QUINOA", "kg_czk": 89.0, "gramaze": [200, 1000, 3000]}, {"kod": "3729", "nazev": "ČOKOLÁDOVÉ BONITO'S MIX (MLÉČNÁ/HOŘKÁ/BÍLÁ)", "kg_czk": 9.3, "gramaze": [200, 3000, 5000]}, {"kod": "2024", "nazev": "ČOKOLÁDOVÉ ROZINKY HOŘKÁ JUMBO", "kg_czk": 199.0, "gramaze": [100, 200, 500, 1000, 3000, 5000]}, {"kod": "6465", "nazev": "Čokoládové kamínky", "kg_czk": 114.0, "gramaze": [200, 500, 5000]}, {"kod": "4797", "nazev": "ŽABKY ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}, {"kod": "2000", "nazev": "ŽELÉ STEVIA MEDVÍDCI BEZ CUKRU SE SLADIDLY", "kg_czk": 189.0, "gramaze": [230]}, {"kod": "1832", "nazev": "ŽÍŽALKY ŽELÉ", "kg_czk": 89.0, "gramaze": [230, 1000]}];
+
 
 function tryUnlock() {
   const val = document.getElementById('pin-inp').value.trim().toLowerCase();
@@ -381,14 +401,16 @@ function renderSummary(d) {
   let totalBez = 0;
   const tbody = document.getElementById('s-produkty');
   tbody.innerHTML = '';
-  d.produkty.forEach(p => {
+  d.produkty.forEach((p, i) => {
     const celkem = p.ks * p.cena;
     totalBez += celkem;
     const tr = document.createElement('tr');
+    tr.id = 'srow-' + i;
     const kodSpan = p.kod ? `<span style="font-size:10px;color:#aaa;font-family:monospace;margin-right:5px">${p.kod}</span>` : '';
     tr.innerHTML = `<td>${kodSpan}${p.nazev}</td><td style="text-align:right">${p.ks} ks</td>
       <td style="text-align:right">${p.cena.toFixed(2).replace('.',',')} Kč</td>
-      <td style="text-align:right"><strong>${num(celkem.toFixed(2))} Kč</strong></td>`;
+      <td style="text-align:right"><strong>${num(celkem.toFixed(2))} Kč</strong></td>
+      <td><button class="popis-btn-sp" title="Složení dárku" onclick="togglePopisProd(${i})">📦</button></td>`;
     tbody.appendChild(tr);
   });
   document.getElementById('s-total').textContent = num((totalBez * 1.12).toFixed(2)) + ' Kč';
@@ -431,6 +453,82 @@ function recalcMarze() {
     document.getElementById('v-celkem-zisk').innerHTML =
       `<span class="${marzeCelkem >= 40 ? 'marze-ok' : marzeCelkem >= 25 ? 'marze-warn' : 'marze-bad'}">${num(totalZisk.toFixed(0))} Kč · ${marzeCelkem.toFixed(1)} %</span>`;
   }
+}
+
+function togglePopisProd(i) {
+  const existingRow = document.getElementById('popis-row-sp-'+i);
+  if (existingRow) { existingRow.remove(); return; }
+  const mainRow = document.getElementById('srow-'+i);
+  const cols = mainRow.cells.length;
+  const tr = document.createElement('tr');
+  tr.id = 'popis-row-sp-'+i;
+  tr.className = 'popis-row-sp';
+  tr.innerHTML = `<td colspan="${cols}">
+    <textarea class="popis-inp-sp" id="popis-sp-${i}" placeholder="Složení dárku — doplní se automaticky kliknutím níže…" rows="2"></textarea>
+    <div class="popis-add-wrap">
+      <input class="popis-search-sp" id="popis-ss-${i}" placeholder="+ Přidat produkt — piš název nebo kód…" autocomplete="off"/>
+      <div class="ac-drop-sp" id="popis-dd-${i}"></div>
+    </div>
+  </td>`;
+  mainRow.after(tr);
+  buildPopisProdAC(i);
+  document.getElementById('popis-ss-'+i).focus();
+}
+
+function buildPopisProdAC(i) {
+  const inp  = document.getElementById('popis-ss-'+i);
+  const drop = document.getElementById('popis-dd-'+i);
+  const ta   = document.getElementById('popis-sp-'+i);
+  let selIdx = 0, matches = [];
+
+  function insert(p) {
+    const text = `${p.nazev} (kód ${p.kod})`;
+    const curr = ta.value.trim();
+    ta.value = curr ? curr + ', ' + text : text;
+    inp.value = '';
+    drop.classList.remove('open');
+    inp.focus();
+  }
+
+  function renderDrop(m, q) {
+    matches = m; selIdx = 0;
+    if (!m.length) { drop.classList.remove('open'); return; }
+    drop.innerHTML = m.map((p, j) => {
+      const gramy = p.gramaze && p.gramaze.length ? p.gramaze.map(g => g+'g').join(' · ') : '';
+      const hl = s => q ? s.replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<strong>$1</strong>') : s;
+      return `<div class="ac-item-sp${j===0?' sel':''}" data-j="${j}">
+        <span class="ac-kod-sp">${p.kod}</span>
+        <span class="ac-nazev-sp">${hl(p.nazev)}</span>
+        ${gramy ? `<span class="ac-gram-sp">${gramy}</span>` : ''}
+      </div>`;
+    }).join('');
+    drop.classList.add('open');
+    drop.querySelectorAll('.ac-item-sp').forEach((el, j) => {
+      el.addEventListener('mousedown', e => { e.preventDefault(); insert(m[j]); });
+    });
+  }
+
+  inp.addEventListener('input', () => {
+    const q = inp.value.trim();
+    if (!q) { drop.classList.remove('open'); return; }
+    const ql = q.toLowerCase();
+    const m = /^\d/.test(q)
+      ? PRODUKTY.filter(p => String(p.kod).startsWith(q)).slice(0, 10)
+      : PRODUKTY.filter(p => ql.split(/\s+/).every(w => p.nazev.toLowerCase().includes(w))).slice(0, 10);
+    renderDrop(m, /^\d/.test(q) ? '' : ql);
+  });
+
+  inp.addEventListener('keydown', e => {
+    if (!drop.classList.contains('open')) return;
+    const items = drop.querySelectorAll('.ac-item-sp');
+    if (e.key === 'ArrowDown') { e.preventDefault(); selIdx = Math.min(selIdx+1, items.length-1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); selIdx = Math.max(selIdx-1, 0); }
+    else if (e.key === 'Enter' || e.key === 'Tab') { e.preventDefault(); insert(matches[selIdx]); return; }
+    else if (e.key === 'Escape') { drop.classList.remove('open'); return; }
+    items.forEach((el, j) => el.classList.toggle('sel', j===selIdx));
+  });
+
+  inp.addEventListener('blur', () => setTimeout(() => drop.classList.remove('open'), 150));
 }
 
 const T_KEY   = atob('MDM2M2ViYjE0OWRmMDRkMTI4NTY3MmEzMDgwMTYwYTI=');
@@ -494,9 +592,11 @@ async function createTrelloCard() {
   });
 
   // Trello karta — BEZ nákupních cen (vidí celý tým)
-  const prodDesc = d.produkty.map((p) => {
+  const prodDesc = d.produkty.map((p, idx) => {
     const c = p.ks * p.cena; totalBez += c;
-    return `**${p.nazev}**\n- ${p.ks} ks | prod. ${p.cena.toFixed(2)} Kč | celkem ${num(c.toFixed(0))} Kč`;
+    const slozeni = document.getElementById('popis-sp-'+idx)?.value.trim();
+    return `**${p.nazev}**\n- ${p.ks} ks | prod. ${p.cena.toFixed(2)} Kč | celkem ${num(c.toFixed(0))} Kč` +
+      (slozeni ? `\n  📦 ${slozeni}` : '');
   }).join('\n\n');
 
   const dph = totalBez * 0.12;
@@ -585,13 +685,15 @@ ${d.poznamka ? `\n*Poznámka z nabídky: ${d.poznamka}*` : ''}`;
 
     // Owner email — plný finanční přehled
     try {
-      const ownerProdLines = d.produkty.map(p => {
+      const ownerProdLines = d.produkty.map((p, idx) => {
         const c = p.ks * p.cena;
         const nakupKs = p.nakup;
         const ziskKs  = nakupKs ? (p.cena - nakupKs) * p.ks : null;
+        const slozeni = document.getElementById('popis-sp-'+idx)?.value.trim();
         return `${p.kod ? p.kod + ' — ' : ''}${p.nazev} × ${p.ks} ks\n` +
           `  Prod: ${p.cena.toFixed(2)} Kč/ks · Celkem: ${num(c.toFixed(0))} Kč` +
-          (nakupKs ? `\n  Nákup: ${nakupKs.toFixed(2)} Kč/ks · Zisk: ${num(ziskKs.toFixed(0))} Kč` : '');
+          (nakupKs ? `\n  Nákup: ${nakupKs.toFixed(2)} Kč/ks · Zisk: ${num(ziskKs.toFixed(0))} Kč` : '') +
+          (slozeni ? `\n  📦 ${slozeni}` : '');
       }).join('\n\n');
 
       const marzeStr = (emailZisk && emailNakl)
