@@ -72,6 +72,23 @@ table.pt input.inp-cena{width:100px;text-align:right}
 .empty-preview{padding:60px 24px;text-align:center;color:#aaa}
 .empty-preview p{font-size:14px;margin-top:8px}
 
+/* ── AUTOCOMPLETE ── */
+.ac-wrap{position:relative}
+.ac-drop{position:absolute;top:calc(100% + 2px);left:0;right:0;background:#fff;border:1.5px solid #c8976a;border-radius:0 0 8px 8px;z-index:200;max-height:240px;overflow-y:auto;box-shadow:0 6px 20px rgba(0,0,0,.12);display:none}
+.ac-drop.open{display:block}
+.ac-item{display:flex;align-items:center;gap:10px;padding:8px 12px;cursor:pointer;border-bottom:1px solid #f1e6da;font-size:12.5px}
+.ac-item:hover,.ac-item.sel{background:#fdf8f4}
+.ac-item:last-child{border-bottom:none}
+.ac-kod{font-family:monospace;color:#83502e;font-weight:700;font-size:11px;min-width:40px}
+.ac-nazev{color:#2a1a0e;flex:1;line-height:1.3}
+.ac-gram{font-size:10px;color:#aaa;white-space:nowrap}
+/* ── POPIS ŘÁDEK ── */
+.popis-row td{padding:0 6px 6px!important;border-bottom:1px solid #ede0d4}
+.popis-inp{width:100%;border:1.5px solid #d4c0a8;border-radius:6px;padding:7px 10px;font-family:inherit;font-size:12px;color:#2a1a0e;background:#fffdf8;resize:vertical;min-height:36px}
+.popis-inp:focus{outline:none;border-color:#83502e}
+.popis-btn{background:none;border:none;cursor:pointer;font-size:14px;padding:2px 5px;color:#ccc;line-height:1}
+.popis-btn:hover{color:#83502e}
+
 /* ── PRINT ── */
 @media print{body{background:white}.shell{display:block;padding:0}#form-panel{display:none}#preview-wrap{position:static}.preview-actions{display:none}#preview-frame{min-height:100vh}}
 
@@ -254,8 +271,8 @@ function addRow() {
   const tr = document.createElement('tr');
   tr.id = 'row-' + id;
   tr.innerHTML = `
-    <td><input class="inp-kod" id="kod-${id}" placeholder="101"/></td>
-    <td><input class="inp-nazev" id="nazev-${id}" placeholder="Název produktu, gramáž…" oninput="recalc(${id})"/></td>
+    <td><div class="ac-wrap"><input class="inp-kod" id="kod-${id}" placeholder="101" autocomplete="off"/><div class="ac-drop" id="acd-kod-${id}"></div></div></td>
+    <td><div class="ac-wrap"><input class="inp-nazev" id="nazev-${id}" placeholder="Název produktu, gramáž…" autocomplete="off" oninput="recalc(${id})"/><div class="ac-drop" id="acd-nazev-${id}"></div></div></td>
     <td><input class="inp-ks" type="number" id="ks-${id}" value="1" min="1" oninput="recalc(${id})"/></td>
     <td style="white-space:nowrap"><input class="inp-cena" type="number" id="cena-${id}" placeholder="0,00" step="0.01" oninput="recalc(${id})"/> <span class="cur-sym">Kč</span></td>
     <td style="white-space:nowrap">
@@ -263,8 +280,12 @@ function addRow() {
              style="background:#fff8e1;border-color:#f7ab31;"/> <span class="cur-sym">Kč</span>
     </td>
     <td class="td-total" id="total-${id}">—</td>
-    <td><button class="del-btn" onclick="delRow(${id})">×</button></td>`;
+    <td style="white-space:nowrap">
+      <button class="popis-btn" title="Popis / složení dárku" onclick="togglePopis(${id})">📦</button>
+      <button class="del-btn" onclick="delRow(${id})">×</button>
+    </td>`;
   document.getElementById('prod-tbody').appendChild(tr);
+  buildAC(id);
   document.getElementById('nazev-'+id).focus();
 }
 function delRow(id) { document.getElementById('row-'+id)?.remove(); }
@@ -299,6 +320,112 @@ function recalc(id) {
   }
 }
 
+// ── Autocomplete naseptávač ──
+function buildAC(id) {
+  const kodInp   = document.getElementById('kod-'+id);
+  const nazevInp = document.getElementById('nazev-'+id);
+  const dropKod   = document.getElementById('acd-kod-'+id);
+  const dropNazev = document.getElementById('acd-nazev-'+id);
+
+  function highlight(text, q) {
+    if (!q) return text;
+    const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+    return text.replace(re, '<strong>$1</strong>');
+  }
+
+  function showDrop(drop, matches, q, byKod) {
+    if (!matches.length) { drop.classList.remove('open'); return; }
+    drop.innerHTML = matches.map((p,i) => {
+      const gramy = p.gramaze && p.gramaze.length ? p.gramaze.map(g => g+'g').join(' · ') : '';
+      return `<div class="ac-item${i===0?' sel':''}" data-idx="${i}">
+        <span class="ac-kod">${byKod ? '<strong>'+p.kod+'</strong>' : p.kod}</span>
+        <span class="ac-nazev">${byKod ? p.nazev : highlight(p.nazev, q)}</span>
+        ${gramy ? `<span class="ac-gram">${gramy}</span>` : ''}
+      </div>`;
+    }).join('');
+    drop.classList.add('open');
+    let selIdx = 0;
+
+    drop.querySelectorAll('.ac-item').forEach((el, i) => {
+      el.addEventListener('mousedown', e => {
+        e.preventDefault();
+        fillRow(id, matches[i]);
+        drop.classList.remove('open');
+      });
+    });
+
+    // Keyboard nav
+    function onKey(e) {
+      if (!drop.classList.contains('open')) return;
+      const items = drop.querySelectorAll('.ac-item');
+      if (e.key === 'ArrowDown') { e.preventDefault(); selIdx = Math.min(selIdx+1, items.length-1); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); selIdx = Math.max(selIdx-1, 0); }
+      else if (e.key === 'Enter' || e.key === 'Tab') {
+        e.preventDefault();
+        fillRow(id, matches[selIdx]);
+        drop.classList.remove('open');
+        return;
+      } else if (e.key === 'Escape') { drop.classList.remove('open'); return; }
+      items.forEach((el,i) => el.classList.toggle('sel', i===selIdx));
+    }
+    kodInp.onkeydown = nazevInp.onkeydown = onKey;
+  }
+
+  function fillRow(id, p) {
+    document.getElementById('kod-'+id).value   = p.kod;
+    document.getElementById('nazev-'+id).value = p.nazev;
+    recalc(id);
+  }
+
+  // Vyhledávání podle kódu
+  kodInp.addEventListener('input', () => {
+    const q = kodInp.value.trim();
+    dropNazev.classList.remove('open');
+    if (!q) { dropKod.classList.remove('open'); return; }
+    const m = PRODUKTY.filter(p => String(p.kod).startsWith(q)).slice(0, 10);
+    showDrop(dropKod, m, q, true);
+  });
+
+  // Vyhledávání podle názvu
+  nazevInp.addEventListener('input', () => {
+    const q = nazevInp.value.trim().toLowerCase();
+    dropKod.classList.remove('open');
+    if (q.length < 2) { dropNazev.classList.remove('open'); return; }
+    const words = q.split(/\s+/);
+    const m = PRODUKTY.filter(p => words.every(w => p.nazev.toLowerCase().includes(w))).slice(0, 10);
+    showDrop(dropNazev, m, q, false);
+  });
+
+  // Zavřít při odchodu focusu
+  [kodInp, nazevInp].forEach(inp => {
+    inp.addEventListener('blur', () => {
+      setTimeout(() => {
+        dropKod.classList.remove('open');
+        dropNazev.classList.remove('open');
+      }, 150);
+    });
+  });
+}
+
+// ── Popis / složení dárku ──
+function togglePopis(id) {
+  const existingRow = document.getElementById('popis-row-'+id);
+  if (existingRow) {
+    existingRow.remove();
+    return;
+  }
+  const mainRow = document.getElementById('row-'+id);
+  const cols = mainRow.cells.length;
+  const tr = document.createElement('tr');
+  tr.id = 'popis-row-'+id;
+  tr.className = 'popis-row';
+  tr.innerHTML = `<td colspan="${cols}">
+    <textarea class="popis-inp" id="popis-${id}" placeholder="Popis dárku / složení sady — např. Mandle uzené 200g (kód 89), Kešu 200g (kód 110), Pistácie 100g (kód 134)…" rows="2"></textarea>
+  </td>`;
+  mainRow.after(tr);
+  document.getElementById('popis-'+id).focus();
+}
+
 // ── Odkaz zakázky ──
 function collectFormData() {
   const rows = document.querySelectorAll('#prod-tbody tr');
@@ -310,8 +437,9 @@ function collectFormData() {
     const ks     = parseFloat(document.getElementById('ks-'+id)?.value) || 1;
     const cena   = parseFloat(document.getElementById('cena-'+id)?.value);
     const nakup  = parseFloat(document.getElementById('nakup-'+id)?.value) || null;
+    const popis  = document.getElementById('popis-'+id)?.value.trim() || '';
     if (!nazev || isNaN(cena) || cena <= 0) return;
-    produkty.push({ kod, nazev, ks, cena, nakup });
+    produkty.push({ kod, nazev, ks, cena, nakup, popis });
   });
   return {
     firma:       document.getElementById('firma').value.trim(),
@@ -391,10 +519,11 @@ function generateOffer() {
     const ks       = parseFloat(document.getElementById('ks-'+id)?.value) || 1;
     const cena     = parseFloat(document.getElementById('cena-'+id)?.value);
     const nakupKs  = parseFloat(document.getElementById('nakup-'+id)?.value) || null;
+    const popis    = document.getElementById('popis-'+id)?.value.trim() || '';
     if (!nazev || isNaN(cena) || cena <= 0) return;
     const celkem = parseFloat((cena * ks).toFixed(2));
     totalBezDph += celkem;
-    produkty.push({ kod, nazev, ks, cenaBezDph: cena, nakupCena: nakupKs, celkem });
+    produkty.push({ kod, nazev, ks, cenaBezDph: cena, nakupCena: nakupKs, celkem, popis });
   });
   if (!produkty.length) { alert('Přidej alespoň jeden produkt s názvem a cenou!'); return; }
   const chybaNakup = produkty.filter(p => !p.nakupCena);
@@ -432,7 +561,7 @@ function generateOffer() {
       <td style="padding:9px 12px;text-align:right">${p.ks} ks</td>
       <td style="padding:9px 12px;text-align:right">${fmt(p.cenaBezDph)} ${curSym}</td>
       <td style="padding:9px 12px;text-align:right"><strong>${fmt(p.celkem)} ${curSym}</strong></td>
-    </tr>`).join('');
+    </tr>${p.popis ? `<tr><td colspan="4" style="padding:3px 12px 8px 28px;font-size:11px;color:#8a6a4a;font-style:italic">📦 ${p.popis}</td></tr>` : ''}`).join('');
   const dopravRow = doprava > 0 ? `
     <tr style="background:#fdf8f4">
       <td style="padding:9px 12px;color:#888;font-style:italic">Doprava</td>
