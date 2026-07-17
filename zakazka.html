@@ -78,20 +78,25 @@ h1,h2,h3,h4{font-family:'Exo 2',sans-serif}
 .popis-btn-sp{background:none;border:none;cursor:pointer;font-size:13px;padding:2px 5px;color:#ccc;line-height:1;vertical-align:middle}
 .popis-btn-sp:hover{color:#83502e}
 .popis-row-sp td{padding:0 8px 8px!important;background:#fdfaf7}
-.popis-inp-sp{width:100%;border:1.5px solid #d4c0a8;border-radius:6px;padding:7px 10px;font-family:inherit;font-size:12px;color:#2a1a0e;background:#fffdf8;resize:vertical;min-height:36px}
-.popis-inp-sp:focus{outline:none;border-color:#83502e}
-.popis-add-wrap{display:flex;gap:6px;margin-top:5px;position:relative}
-.popis-search-sp{flex:1;border:1.5px solid #d4c0a8;border-radius:6px;padding:6px 10px;font-size:12px;color:#2a1a0e;background:#fff;font-family:inherit}
-.popis-search-sp::placeholder{color:#bbb}
-.popis-search-sp:focus{outline:none;border-color:#83502e}
-.ac-drop-sp{position:absolute;top:calc(100% + 2px);left:0;right:0;background:#fff;border:1.5px solid #c8976a;border-radius:0 0 8px 8px;z-index:300;max-height:200px;overflow-y:auto;box-shadow:0 6px 20px rgba(0,0,0,.12);display:none}
-.ac-drop-sp.open{display:block}
-.ac-item-sp{display:flex;align-items:center;gap:10px;padding:7px 12px;cursor:pointer;border-bottom:1px solid #f1e6da;font-size:12px}
-.ac-item-sp:hover,.ac-item-sp.sel{background:#fdf8f4}
-.ac-item-sp:last-child{border-bottom:none}
-.ac-kod-sp{font-family:monospace;color:#83502e;font-weight:700;font-size:11px;min-width:36px}
-.ac-nazev-sp{color:#2a1a0e;flex:1;line-height:1.3}
-.ac-gram-sp{font-size:10px;color:#aaa;white-space:nowrap}
+.slozeni-wrap{padding:8px 10px 10px;background:#faf7f3;border-top:1px solid #ede0d4}
+.slozeni-rows{display:flex;flex-direction:column;gap:5px;margin-bottom:7px}
+.slozeni-row{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.slozeni-search-wrap{position:relative;flex:0 0 170px}
+.slozeni-kod-inp{width:100%;padding:5px 8px;border:1.5px solid #c8976a;border-radius:6px;font-size:12px;font-family:inherit;color:#2a1a0e}
+.slozeni-kod-inp:focus{outline:none;border-color:#83502e}
+.slozeni-ac-drop{position:absolute;top:calc(100% + 2px);left:0;right:0;background:#fff;border:1.5px solid #c8976a;border-radius:0 0 8px 8px;z-index:400;max-height:200px;overflow-y:auto;box-shadow:0 6px 20px rgba(0,0,0,.12);display:none}
+.slozeni-ac-drop.open{display:block}
+.slozeni-ac-item{padding:6px 10px;cursor:pointer;font-size:12px;display:flex;gap:8px;align-items:center}
+.slozeni-ac-item:hover,.slozeni-ac-item.sel{background:#f1e6da}
+.slozeni-nazev{flex:1;min-width:120px;padding:5px 8px;border:1px solid #ddd;border-radius:6px;font-size:12px;background:#f5f0ea;color:#666;font-family:inherit}
+.slozeni-gram{flex:0 0 75px;padding:5px 8px;border:1.5px solid #c8976a;border-radius:6px;font-size:12px;font-family:inherit;color:#2a1a0e}
+.slozeni-gram:focus{outline:none;border-color:#83502e}
+.slozeni-obal{flex:1;min-width:110px;padding:5px 8px;border:1.5px solid #c8976a;border-radius:6px;font-size:12px;font-family:inherit;color:#2a1a0e}
+.slozeni-obal:focus{outline:none;border-color:#83502e}
+.slozeni-rm{background:none;border:none;color:#c0392b;cursor:pointer;font-size:15px;padding:0 3px;line-height:1;opacity:.7}
+.slozeni-rm:hover{opacity:1}
+.slozeni-add-btn{background:none;border:1.5px dashed #c8976a;color:#83502e;border-radius:6px;padding:4px 12px;font-size:11px;cursor:pointer;font-family:inherit}
+.slozeni-add-btn:hover{background:#f1e6da}
 .vyr-lock{background:var(--kraft);border:1.5px dashed #c8976a;border-radius:10px;padding:20px;text-align:center;margin-top:12px}
 .vyr-lock h3{font-family:'Exo 2',sans-serif;color:var(--br);font-size:15px;margin-bottom:6px}
 .vyr-lock p{font-size:12px;color:#7a5a3a;margin-bottom:12px}
@@ -464,30 +469,49 @@ function togglePopisProd(i) {
   tr.id = 'popis-row-sp-'+i;
   tr.className = 'popis-row-sp';
   tr.innerHTML = `<td colspan="${cols}">
-    <textarea class="popis-inp-sp" id="popis-sp-${i}" placeholder="Složení dárku — doplní se automaticky kliknutím níže…" rows="2"></textarea>
-    <div class="popis-add-wrap">
-      <input class="popis-search-sp" id="popis-ss-${i}" placeholder="+ Přidat produkt — piš název nebo kód…" autocomplete="off"/>
-      <div class="ac-drop-sp" id="popis-dd-${i}"></div>
+    <div class="slozeni-wrap">
+      <div class="slozeni-rows" id="slozeni-rows-sp-${i}"></div>
+      <button class="slozeni-add-btn" type="button" onclick="addSlozeniRow('sp-${i}')">+ Přidat produkt do složení</button>
     </div>
   </td>`;
   mainRow.after(tr);
-  buildPopisProdAC(i);
-  document.getElementById('popis-ss-'+i).focus();
+  addSlozeniRow('sp-'+i);
 }
 
-function buildPopisProdAC(i) {
-  const inp  = document.getElementById('popis-ss-'+i);
-  const drop = document.getElementById('popis-dd-'+i);
-  const ta   = document.getElementById('popis-sp-'+i);
+function addSlozeniRow(cid) {
+  const rows = document.getElementById('slozeni-rows-'+cid);
+  const idx = rows.children.length;
+  const div = document.createElement('div');
+  div.className = 'slozeni-row';
+  div.innerHTML = `
+    <div class="slozeni-search-wrap">
+      <input class="slozeni-kod-inp" id="slozeni-s-${cid}-${idx}" placeholder="Kód nebo název…" autocomplete="off"/>
+      <div class="slozeni-ac-drop" id="slozeni-d-${cid}-${idx}"></div>
+    </div>
+    <input class="slozeni-nazev" id="slozeni-n-${cid}-${idx}" readonly placeholder="Název produktu"/>
+    <input class="slozeni-gram" id="slozeni-g-${cid}-${idx}" placeholder="Gramáž"/>
+    <input class="slozeni-obal" id="slozeni-o-${cid}-${idx}" placeholder="Obal / balení (sáček, sklo…)"/>
+    <button class="slozeni-rm" type="button" title="Odebrat" onclick="this.closest('.slozeni-row').remove()">✕</button>
+  `;
+  rows.appendChild(div);
+  buildSlozeniAC(cid, idx);
+  document.getElementById('slozeni-s-'+cid+'-'+idx).focus();
+}
+
+function buildSlozeniAC(cid, idx) {
+  const inp      = document.getElementById('slozeni-s-'+cid+'-'+idx);
+  const drop     = document.getElementById('slozeni-d-'+cid+'-'+idx);
+  const nazevInp = document.getElementById('slozeni-n-'+cid+'-'+idx);
+  const gramInp  = document.getElementById('slozeni-g-'+cid+'-'+idx);
   let selIdx = 0, matches = [];
 
-  function insert(p) {
-    const text = `${p.nazev} (kód ${p.kod})`;
-    const curr = ta.value.trim();
-    ta.value = curr ? curr + ', ' + text : text;
-    inp.value = '';
+  function pick(p) {
+    inp.value = String(p.kod);
+    nazevInp.value = p.nazev;
+    if (p.gramaze && p.gramaze.length === 1) gramInp.value = p.gramaze[0] + 'g';
+    else if (p.gramaze && p.gramaze.length > 1) { gramInp.value = ''; gramInp.placeholder = p.gramaze.map(g => g+'g').join(' / '); }
     drop.classList.remove('open');
-    inp.focus();
+    gramInp.focus();
   }
 
   function renderDrop(m, q) {
@@ -496,15 +520,13 @@ function buildPopisProdAC(i) {
     drop.innerHTML = m.map((p, j) => {
       const gramy = p.gramaze && p.gramaze.length ? p.gramaze.map(g => g+'g').join(' · ') : '';
       const hl = s => q ? s.replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<strong>$1</strong>') : s;
-      return `<div class="ac-item-sp${j===0?' sel':''}" data-j="${j}">
-        <span class="ac-kod-sp">${p.kod}</span>
-        <span class="ac-nazev-sp">${hl(p.nazev)}</span>
-        ${gramy ? `<span class="ac-gram-sp">${gramy}</span>` : ''}
+      return `<div class="slozeni-ac-item${j===0?' sel':''}" data-j="${j}">
+        <span class="ac-kod">${p.kod}</span><span class="ac-nazev">${hl(p.nazev)}</span>${gramy ? `<span class="ac-gram">${gramy}</span>` : ''}
       </div>`;
     }).join('');
     drop.classList.add('open');
-    drop.querySelectorAll('.ac-item-sp').forEach((el, j) => {
-      el.addEventListener('mousedown', e => { e.preventDefault(); insert(m[j]); });
+    drop.querySelectorAll('.slozeni-ac-item').forEach((el, j) => {
+      el.addEventListener('mousedown', e => { e.preventDefault(); pick(m[j]); });
     });
   }
 
@@ -520,15 +542,28 @@ function buildPopisProdAC(i) {
 
   inp.addEventListener('keydown', e => {
     if (!drop.classList.contains('open')) return;
-    const items = drop.querySelectorAll('.ac-item-sp');
+    const items = drop.querySelectorAll('.slozeni-ac-item');
     if (e.key === 'ArrowDown') { e.preventDefault(); selIdx = Math.min(selIdx+1, items.length-1); }
     else if (e.key === 'ArrowUp') { e.preventDefault(); selIdx = Math.max(selIdx-1, 0); }
-    else if (e.key === 'Enter' || e.key === 'Tab') { e.preventDefault(); insert(matches[selIdx]); return; }
+    else if (e.key === 'Enter' || e.key === 'Tab') { e.preventDefault(); pick(matches[selIdx]); return; }
     else if (e.key === 'Escape') { drop.classList.remove('open'); return; }
     items.forEach((el, j) => el.classList.toggle('sel', j===selIdx));
   });
 
   inp.addEventListener('blur', () => setTimeout(() => drop.classList.remove('open'), 150));
+}
+
+function getSlozeniText(cid) {
+  const rows = document.getElementById('slozeni-rows-'+cid);
+  if (!rows) return '';
+  return Array.from(rows.querySelectorAll('.slozeni-row')).map(row => {
+    const kod   = row.querySelector('.slozeni-kod-inp')?.value.trim();
+    const nazev = row.querySelector('.slozeni-nazev')?.value.trim();
+    const gram  = row.querySelector('.slozeni-gram')?.value.trim();
+    const obal  = row.querySelector('.slozeni-obal')?.value.trim();
+    if (!nazev && !kod) return null;
+    return [nazev || ('kód '+kod), gram, obal].filter(Boolean).join(' ') + (kod && nazev ? ` (kód ${kod})` : '');
+  }).filter(Boolean).join(', ');
 }
 
 const T_KEY   = atob('MDM2M2ViYjE0OWRmMDRkMTI4NTY3MmEzMDgwMTYwYTI=');
@@ -594,7 +629,7 @@ async function createTrelloCard() {
   // Trello karta — BEZ nákupních cen (vidí celý tým)
   const prodDesc = d.produkty.map((p, idx) => {
     const c = p.ks * p.cena; totalBez += c;
-    const slozeni = document.getElementById('popis-sp-'+idx)?.value.trim();
+    const slozeni = getSlozeniText('sp-'+idx);
     return `**${p.nazev}**\n- ${p.ks} ks | prod. ${p.cena.toFixed(2)} Kč | celkem ${num(c.toFixed(0))} Kč` +
       (slozeni ? `\n  📦 ${slozeni}` : '');
   }).join('\n\n');
@@ -689,7 +724,7 @@ ${d.poznamka ? `\n*Poznámka z nabídky: ${d.poznamka}*` : ''}`;
         const c = p.ks * p.cena;
         const nakupKs = p.nakup;
         const ziskKs  = nakupKs ? (p.cena - nakupKs) * p.ks : null;
-        const slozeni = document.getElementById('popis-sp-'+idx)?.value.trim();
+        const slozeni = getSlozeniText('sp-'+idx);
         return `${p.kod ? p.kod + ' — ' : ''}${p.nazev} × ${p.ks} ks\n` +
           `  Prod: ${p.cena.toFixed(2)} Kč/ks · Celkem: ${num(c.toFixed(0))} Kč` +
           (nakupKs ? `\n  Nákup: ${nakupKs.toFixed(2)} Kč/ks · Zisk: ${num(ziskKs.toFixed(0))} Kč` : '') +
