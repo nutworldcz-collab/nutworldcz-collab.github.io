@@ -88,6 +88,12 @@ table.pt input.inp-cena{width:100px;text-align:right}
 .popis-inp:focus{outline:none;border-color:#83502e}
 .popis-btn{background:none;border:none;cursor:pointer;font-size:14px;padding:2px 5px;color:#ccc;line-height:1}
 .popis-btn:hover{color:#83502e}
+.popis-add-wrap{display:flex;gap:6px;margin-top:5px;position:relative}
+.popis-search{flex:1;border:1.5px solid #d4c0a8;border-radius:6px;padding:6px 10px;font-size:12px;color:#2a1a0e;background:#fff;font-family:inherit}
+.popis-search::placeholder{color:#bbb}
+.popis-search:focus{outline:none;border-color:#83502e}
+.popis-drop{position:absolute;top:calc(100% + 2px);left:0;right:0;background:#fff;border:1.5px solid #c8976a;border-radius:0 0 8px 8px;z-index:300;max-height:200px;overflow-y:auto;box-shadow:0 6px 20px rgba(0,0,0,.12);display:none}
+.popis-drop.open{display:block}
 
 /* ── PRINT ── */
 @media print{body{background:white}.shell{display:block;padding:0}#form-panel{display:none}#preview-wrap{position:static}.preview-actions{display:none}#preview-frame{min-height:100vh}}
@@ -410,20 +416,79 @@ function buildAC(id) {
 // ── Popis / složení dárku ──
 function togglePopis(id) {
   const existingRow = document.getElementById('popis-row-'+id);
-  if (existingRow) {
-    existingRow.remove();
-    return;
-  }
+  if (existingRow) { existingRow.remove(); return; }
   const mainRow = document.getElementById('row-'+id);
   const cols = mainRow.cells.length;
   const tr = document.createElement('tr');
   tr.id = 'popis-row-'+id;
   tr.className = 'popis-row';
   tr.innerHTML = `<td colspan="${cols}">
-    <textarea class="popis-inp" id="popis-${id}" placeholder="Popis dárku / složení sady — např. Mandle uzené 200g (kód 89), Kešu 200g (kód 110), Pistácie 100g (kód 134)…" rows="2"></textarea>
+    <textarea class="popis-inp" id="popis-${id}" placeholder="Složení dárku — doplní se automaticky kliknutím níže…" rows="2"></textarea>
+    <div class="popis-add-wrap">
+      <input class="popis-search" id="popis-s-${id}" placeholder="+ Přidat produkt — piš název nebo kód…" autocomplete="off"/>
+      <div class="popis-drop" id="popis-d-${id}"></div>
+    </div>
   </td>`;
   mainRow.after(tr);
-  document.getElementById('popis-'+id).focus();
+  buildPopisAC(id);
+  document.getElementById('popis-s-'+id).focus();
+}
+
+function buildPopisAC(id) {
+  const inp  = document.getElementById('popis-s-'+id);
+  const drop = document.getElementById('popis-d-'+id);
+  const ta   = document.getElementById('popis-'+id);
+  let selIdx = 0, matches = [];
+
+  function insert(p) {
+    const text = `${p.nazev} (kód ${p.kod})`;
+    const curr = ta.value.trim();
+    ta.value = curr ? curr + ', ' + text : text;
+    inp.value = '';
+    drop.classList.remove('open');
+    inp.focus();
+  }
+
+  function renderDrop(m, q) {
+    matches = m;
+    selIdx = 0;
+    if (!m.length) { drop.classList.remove('open'); return; }
+    drop.innerHTML = m.map((p, i) => {
+      const gramy = p.gramaze && p.gramaze.length ? p.gramaze.map(g => g+'g').join(' · ') : '';
+      const hl = s => q ? s.replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<strong>$1</strong>') : s;
+      return `<div class="ac-item${i===0?' sel':''}" data-i="${i}">
+        <span class="ac-kod">${p.kod}</span>
+        <span class="ac-nazev">${hl(p.nazev)}</span>
+        ${gramy ? `<span class="ac-gram">${gramy}</span>` : ''}
+      </div>`;
+    }).join('');
+    drop.classList.add('open');
+    drop.querySelectorAll('.ac-item').forEach((el, i) => {
+      el.addEventListener('mousedown', e => { e.preventDefault(); insert(m[i]); });
+    });
+  }
+
+  inp.addEventListener('input', () => {
+    const q = inp.value.trim();
+    if (!q) { drop.classList.remove('open'); return; }
+    const ql = q.toLowerCase();
+    const m = /^\d/.test(q)
+      ? PRODUKTY.filter(p => String(p.kod).startsWith(q)).slice(0, 10)
+      : PRODUKTY.filter(p => ql.split(/\s+/).every(w => p.nazev.toLowerCase().includes(w))).slice(0, 10);
+    renderDrop(m, /^\d/.test(q) ? '' : ql);
+  });
+
+  inp.addEventListener('keydown', e => {
+    if (!drop.classList.contains('open')) return;
+    const items = drop.querySelectorAll('.ac-item');
+    if (e.key === 'ArrowDown') { e.preventDefault(); selIdx = Math.min(selIdx+1, items.length-1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); selIdx = Math.max(selIdx-1, 0); }
+    else if (e.key === 'Enter' || e.key === 'Tab') { e.preventDefault(); insert(matches[selIdx]); return; }
+    else if (e.key === 'Escape') { drop.classList.remove('open'); return; }
+    items.forEach((el, i) => el.classList.toggle('sel', i===selIdx));
+  });
+
+  inp.addEventListener('blur', () => setTimeout(() => drop.classList.remove('open'), 150));
 }
 
 // ── Odkaz zakázky ──
