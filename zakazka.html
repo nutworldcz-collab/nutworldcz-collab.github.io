@@ -535,7 +535,7 @@ function buildSlozeniAC(cid, idx) {
     if (!q) { drop.classList.remove('open'); return; }
     const ql = q.toLowerCase();
     const m = /^\d/.test(q)
-      ? PRODUKTY.filter(p => String(p.kod).startsWith(q)).slice(0, 10)
+      ? (() => { const qk=q.replace(/\/.*$/,''); return PRODUKTY.filter(p=>String(p.kod).startsWith(qk)).sort((a,b)=>{const ka=String(a.kod),kb=String(b.kod);if(ka===qk&&kb!==qk)return -1;if(kb===qk&&ka!==qk)return 1;return ka.length-kb.length}).slice(0,10); })()
       : PRODUKTY.filter(p => ql.split(/\s+/).every(w => p.nazev.toLowerCase().includes(w))).slice(0, 10);
     renderDrop(m, /^\d/.test(q) ? '' : ql);
   });
