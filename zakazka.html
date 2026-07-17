@@ -615,11 +615,11 @@ ${d.poznamka ? `\n*Poznámka z nabídky: ${d.poznamka}*` : ''}`;
         (poznamka ? `Interní poznámka: ${poznamka}\n` : '') +
         `\nTrello: ${card.url}`;
 
-      fetch('https://script.google.com/macros/s/AKfycbzMTvsRtxdSLfTKexhIIkWZ1U6gbLkdJJpaWSFWxnQ6C-zrtf4UYNu37LqhODuUyPnr/exec', {
+      await fetch('https://script.google.com/macros/s/AKfycbzMTvsRtxdSLfTKexhIIkWZ1U6gbLkdJJpaWSFWxnQ6C-zrtf4UYNu37LqhODuUyPnr/exec', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
-          type: 'owner_zakazka',
+          type: 'owner_nabidka',
           to: 'nutworld.cz@gmail.com',
           subject: `🚀 Zakázka — ${d.firma} — ${num((totalBez + dph).toFixed(0))} Kč`,
           body: ownerBody
