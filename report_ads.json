@@ -1,30 +1,30 @@
 {
-  "generated": "2026-07-19T08:41:01",
-  "period": "2026-07-12 – 2026-07-18",
+  "generated": "2026-07-20T08:42:46",
+  "period": "2026-07-13 – 2026-07-19",
   "channels": {
     "Meta CZ": {
-      "error": "400 Client Error: Bad Request for url: https://graph.facebook.com/v21.0/act_1367393200144/insights?fields=spend%2Cimpressions%2Cclicks%2Cactions%2Caction_values&time_range=%7B%22since%22%3A+%222026-07-12%22%2C+%22until%22%3A+%222026-07-18%22%7D&level=account&access_token=EAATZCYSrDrLABRfOXYZCrg3WCwFlXgOitNpVlYZBzs5J0oFIq79q1FnqlyiWitjMOsTTKkoWgzcbcvI4CyG1eEPMLND1VWOzoEqWflgoLuiAM2W7rjQ92dro8SD9Je8OPXf2OShwlKfGN0sTozutW5sJqTl7xYwaFfyzMrbZBkArnulxz1wk5QWfsJ4QmROXaKYZD"
+      "error": "400 Client Error: Bad Request for url: https://graph.facebook.com/v21.0/act_1367393200144/insights?fields=spend%2Cimpressions%2Cclicks%2Cactions%2Caction_values&time_range=%7B%22since%22%3A+%222026-07-13%22%2C+%22until%22%3A+%222026-07-19%22%7D&level=account&access_token=EAATZCYSrDrLABRfOXYZCrg3WCwFlXgOitNpVlYZBzs5J0oFIq79q1FnqlyiWitjMOsTTKkoWgzcbcvI4CyG1eEPMLND1VWOzoEqWflgoLuiAM2W7rjQ92dro8SD9Je8OPXf2OShwlKfGN0sTozutW5sJqTl7xYwaFfyzMrbZBkArnulxz1wk5QWfsJ4QmROXaKYZD"
     },
     "Meta SK": {
-      "error": "400 Client Error: Bad Request for url: https://graph.facebook.com/v21.0/act_1306037980788341/insights?fields=spend%2Cimpressions%2Cclicks%2Cactions%2Caction_values&time_range=%7B%22since%22%3A+%222026-07-12%22%2C+%22until%22%3A+%222026-07-18%22%7D&level=account&access_token=EAATZCYSrDrLABRfOXYZCrg3WCwFlXgOitNpVlYZBzs5J0oFIq79q1FnqlyiWitjMOsTTKkoWgzcbcvI4CyG1eEPMLND1VWOzoEqWflgoLuiAM2W7rjQ92dro8SD9Je8OPXf2OShwlKfGN0sTozutW5sJqTl7xYwaFfyzMrbZBkArnulxz1wk5QWfsJ4QmROXaKYZD"
+      "error": "400 Client Error: Bad Request for url: https://graph.facebook.com/v21.0/act_1306037980788341/insights?fields=spend%2Cimpressions%2Cclicks%2Cactions%2Caction_values&time_range=%7B%22since%22%3A+%222026-07-13%22%2C+%22until%22%3A+%222026-07-19%22%7D&level=account&access_token=EAATZCYSrDrLABRfOXYZCrg3WCwFlXgOitNpVlYZBzs5J0oFIq79q1FnqlyiWitjMOsTTKkoWgzcbcvI4CyG1eEPMLND1VWOzoEqWflgoLuiAM2W7rjQ92dro8SD9Je8OPXf2OShwlKfGN0sTozutW5sJqTl7xYwaFfyzMrbZBkArnulxz1wk5QWfsJ4QmROXaKYZD"
     },
     "Google CZ": {
-      "spend": 5330.0,
-      "revenue": 48524.0,
-      "pno": 11.0,
-      "conversions": 44.9,
-      "clicks": 665,
-      "prev_spend": 4121.0,
-      "prev_pno": 10.3
+      "spend": 5398.0,
+      "revenue": 43377.0,
+      "pno": 12.4,
+      "conversions": 46.0,
+      "clicks": 692,
+      "prev_spend": 4713.0,
+      "prev_pno": 9.7
     },
     "Google SK": {
-      "spend": 2080.0,
-      "revenue": 9714.0,
-      "pno": 21.4,
-      "conversions": 10.3,
-      "clicks": 166,
-      "prev_spend": 1730.0,
-      "prev_pno": 19.5
+      "spend": 2036.0,
+      "revenue": 8877.0,
+      "pno": 22.9,
+      "conversions": 9.3,
+      "clicks": 164,
+      "prev_spend": 1873.0,
+      "prev_pno": 19.6
     }
   },
   "anomalies": [
@@ -32,6 +32,6 @@
     "⚠️ Meta SK: chyba připojení"
   ],
   "priorities": [
-    "Nejlepší kanál: Google CZ (PNO 11.0%) — zvýšit budget?"
+    "Nejlepší kanál: Google CZ (PNO 12.4%) — zvýšit budget?"
   ]
 }
