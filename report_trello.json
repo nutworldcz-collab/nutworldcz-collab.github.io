@@ -1,17 +1,37 @@
 {
-  "generated": "2026-07-20T04:00:55",
-  "date": "2026-07-19",
-  "total": 14,
+  "generated": "2026-07-27T07:00:34",
+  "date": "2026-07-26",
+  "total": 4,
   "notifications": [
     {
       "type": "cardDueSoon",
       "label": "Karta má brzy termín",
-      "card": "EMEDIS",
-      "card_url": "https://trello.com/c/yFXSAS4l",
+      "card": "ALZA - EDI/2026/24",
+      "card_url": "https://trello.com/c/mJ5Lp22f",
       "board": "Firmy dárky + objednávky",
       "creator": "",
       "comment": "",
-      "time": "2026-07-19T18:44:22.405Z"
+      "time": "2026-07-26T18:44:39.038Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "Vilgain objednávka",
+      "card_url": "https://trello.com/c/QCbTiyAM",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Jana Nývltová",
+      "comment": "",
+      "time": "2026-07-26T10:30:29.852Z"
+    },
+    {
+      "type": "commentCard",
+      "label": "Nový komentář",
+      "card": "Umakov",
+      "card_url": "https://trello.com/c/IFyk3Rls",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Renata Pošepná",
+      "comment": "@jananyvltova 80g obojí a sáček 6x4 ",
+      "time": "2026-07-26T08:38:07.467Z"
     },
     {
       "type": "commentCard",
@@ -20,128 +40,8 @@
       "card_url": "https://trello.com/c/IFyk3Rls",
       "board": "Firmy dárky + objednávky",
       "creator": "Jana Nývltová",
-      "comment": "@martinwerner63 Veltlín nemají",
-      "time": "2026-07-19T17:47:22.163Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "EMEDIS",
-      "card_url": "https://trello.com/c/yFXSAS4l",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "",
-      "time": "2026-07-19T17:42:47.834Z"
-    },
-    {
-      "type": "addedToCard",
-      "label": "Přidán/a na kartu",
-      "card": "EMEDIS",
-      "card_url": "https://trello.com/c/yFXSAS4l",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "",
-      "time": "2026-07-19T17:42:33.803Z"
-    },
-    {
-      "type": "mentionedOnCard",
-      "label": "Zmíněn/a v komentáři",
-      "card": "objednávka Vilgain z 7.7.2026",
-      "card_url": "https://trello.com/c/lpPJuG05",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Renata Pošepná",
-      "comment": " @card Info ohledně balení po kolika kusech do kartonu atd. [Přehled VP a GTIN14 u Vilgain výrobků.docx](https://trello.com/1/cards/6a4dee46c4acf900aa3fa182/attachments/6a5cd719baa0cb20b73240a9/downlo",
-      "time": "2026-07-19T13:54:37.059Z"
-    },
-    {
-      "type": "addAttachmentToCard",
-      "label": "addAttachmentToCard",
-      "card": "objednávka Vilgain z 7.7.2026",
-      "card_url": "https://trello.com/c/lpPJuG05",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Renata Pošepná",
-      "comment": "",
-      "time": "2026-07-19T13:54:33.314Z"
-    },
-    {
-      "type": "mentionedOnCard",
-      "label": "Zmíněn/a v komentáři",
-      "card": "objednávka Vilgain z 3.7.2026",
-      "card_url": "https://trello.com/c/WmOY8svK",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Renata Pošepná",
-      "comment": "@card  Info ohledně balení po kolika kusech do kartonu atd. [Přehled VP a GTIN14 u Vilgain výrobků.docx](https://trello.com/1/cards/6a4dec57a03b5f1c1d1f40c1/attachments/6a5cd6d63bf850f5e7659361/downlo",
-      "time": "2026-07-19T13:53:32.827Z"
-    },
-    {
-      "type": "addAttachmentToCard",
-      "label": "addAttachmentToCard",
-      "card": "objednávka Vilgain z 3.7.2026",
-      "card_url": "https://trello.com/c/WmOY8svK",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Renata Pošepná",
-      "comment": "",
-      "time": "2026-07-19T13:53:27.127Z"
-    },
-    {
-      "type": "cardDueSoon",
-      "label": "Karta má brzy termín",
-      "card": "NPÚ, ÚPS na Sychrově",
-      "card_url": "https://trello.com/c/OMKQcvCr",
-      "board": "Firmy dárky + objednávky",
-      "creator": "",
-      "comment": "",
-      "time": "2026-07-19T11:17:36.477Z"
-    },
-    {
-      "type": "addedToCard",
-      "label": "Přidán/a na kartu",
-      "card": "EDI/2026/23",
-      "card_url": "https://trello.com/c/Z56dMOir",
-      "board": "ALZA",
-      "creator": "Renata Pošepná",
-      "comment": "",
-      "time": "2026-07-19T09:55:11.194Z"
-    },
-    {
-      "type": "addAttachmentToCard",
-      "label": "addAttachmentToCard",
-      "card": "Umakov",
-      "card_url": "https://trello.com/c/IFyk3Rls",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Renata Pošepná",
-      "comment": "",
-      "time": "2026-07-19T09:31:20.789Z"
-    },
-    {
-      "type": "addAttachmentToCard",
-      "label": "addAttachmentToCard",
-      "card": "Umakov",
-      "card_url": "https://trello.com/c/IFyk3Rls",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Renata Pošepná",
-      "comment": "",
-      "time": "2026-07-19T09:31:18.223Z"
-    },
-    {
-      "type": "mentionedOnCard",
-      "label": "Zmíněn/a v komentáři",
-      "card": "objednávka Vilgain z 7.7.2026",
-      "card_url": "https://trello.com/c/lpPJuG05",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Renata Pošepná",
-      "comment": "@card štítky na kartony jsou v Avery, musí se pak ještě doplnit kód produktu, ty já nevidím. - DOPLNĚNO",
-      "time": "2026-07-19T09:27:55.825Z"
-    },
-    {
-      "type": "mentionedOnCard",
-      "label": "Zmíněn/a v komentáři",
-      "card": "objednávka Vilgain z 3.7.2026",
-      "card_url": "https://trello.com/c/WmOY8svK",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Renata Pošepná",
-      "comment": "@card  štítky na kartony jsou v Avery, musí se pak ještě doplnit kód produktu, ty já nevidím. - DOPLNĚNO",
-      "time": "2026-07-19T09:27:32.448Z"
+      "comment": "@darky70 prosím kolik je těch srdíček a žížalek? a sáček? Děkuji",
+      "time": "2026-07-26T08:33:10.489Z"
     }
   ]
 }
