@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nové produkty – Nutworld</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --brown:      #5c381f;
+  --brown-mid:  #83502e;
+  --kraft:      #f1e6da;
+  --amber:      #f7ab31;
+  --bg:         #e8ddd3;
+  --card-bg:    #fff;
+  --col-bg:     #ede3d8;
+  --text:       #2d2013;
+  --text-light: #8a6a50;
+  --border:     #d4c4b0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── HEADER ── */
+.header {
+  background: var(--brown);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+.logo { font-size:18px; font-weight:900; letter-spacing:2px; color:#fff; }
+.logo span { color: var(--amber); }
+.board-title {
+  font-size:14px; font-weight:700; color: rgba(255,255,255,.75);
+  border-left: 1px solid rgba(255,255,255,.2);
+  padding-left: 16px;
+}
+.header-right { margin-left:auto; display:flex; align-items:center; gap:10px; }
+.last-updated { font-size:11px; color:rgba(255,255,255,.45); }
+.btn-refresh {
+  background: rgba(247,171,49,.2); border:1px solid rgba(247,171,49,.4);
+  color: var(--amber); font-size:12px; font-weight:700; padding:5px 12px;
+  border-radius:20px; cursor:pointer; letter-spacing:.5px;
+  transition: background .15s;
+}
+.btn-refresh:hover { background: rgba(247,171,49,.35); }
+.btn-refresh.spinning { opacity:.6; pointer-events:none; }
+
+/* ── BOARD ── */
+.board {
+  flex: 1;
+  display: flex;
+  gap: 10px;
+  padding: 12px 14px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  align-items: flex-start;
+}
+
+/* ── COLUMN ── */
+.col {
+  background: var(--col-bg);
+  border-radius: 10px;
+  width: 230px;
+  flex-shrink: 0;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+}
+.col-header {
+  padding: 10px 12px 8px;
+  border-bottom: 2px solid var(--amber);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.col-name {
+  font-size: 11px; font-weight: 700; color: var(--brown);
+  text-transform: uppercase; letter-spacing: .5px;
+  line-height: 1.3; flex: 1;
+}
+.col-count {
+  background: var(--brown); color: #fff;
+  font-size: 10px; font-weight: 700;
+  border-radius: 10px; padding: 1px 7px;
+  flex-shrink: 0;
+}
+.col-cards {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-height: 40px;
+}
+.col-cards::-webkit-scrollbar { width:4px; }
+.col-cards::-webkit-scrollbar-track { background:transparent; }
+.col-cards::-webkit-scrollbar-thumb { background: var(--border); border-radius:4px; }
+
+/* ── CARD ── */
+.card {
+  background: var(--card-bg);
+  border-radius: 7px;
+  padding: 8px 10px;
+  cursor: pointer;
+  border: 1px solid #e8ddd3;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+  transition: box-shadow .12s, transform .12s;
+  user-select: none;
+}
+.card:hover { box-shadow: 0 3px 10px rgba(0,0,0,.12); transform: translateY(-1px); }
+.card.dragging { opacity:.4; transform: rotate(1deg); }
+.card.drag-over { border: 2px dashed var(--amber); }
+
+.card-labels {
+  display: flex; flex-wrap: wrap; gap: 3px;
+  margin-bottom: 5px;
+}
+.label-chip {
+  height: 6px; border-radius: 3px; min-width: 24px;
+}
+.card-name {
+  font-size: 12px; color: var(--text); line-height: 1.4; font-weight: 500;
+}
+.card-code {
+  font-size: 10px; color: var(--text-light); margin-bottom: 2px; font-weight: 700;
+}
+.card-meta {
+  display: flex; align-items: center; gap: 6px; margin-top: 5px;
+}
+.card-due {
+  font-size: 10px; padding: 1px 6px; border-radius: 10px;
+  font-weight: 600;
+}
+.card-due.overdue { background:#fde8e8; color:#c0392b; }
+.card-due.soon    { background:#fff3cd; color:#856404; }
+.card-due.ok      { background:#d4edda; color:#155724; }
+
+/* DROP TARGET HIGHLIGHT */
+.col-cards.drag-target { background: rgba(247,171,49,.08); border-radius:6px; }
+
+/* ── LOADING ── */
+.loading {
+  position:fixed; inset:0; background: rgba(92,56,31,.85);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:14px; z-index:100;
+}
+.loading-spinner {
+  width:40px; height:40px; border:4px solid rgba(247,171,49,.3);
+  border-top-color: var(--amber); border-radius:50%;
+  animation: spin .7s linear infinite;
+}
+.loading-text { color:#fff; font-size:14px; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position:fixed; inset:0; background:rgba(0,0,0,.5);
+  display:flex; align-items:center; justify-content:center;
+  z-index:200; padding:20px;
+}
+.modal {
+  background:#fff; border-radius:12px; max-width:540px; width:100%;
+  max-height:80vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,.3);
+}
+.modal-header {
+  background: var(--brown); padding:16px 20px;
+  border-radius:12px 12px 0 0; position:sticky; top:0;
+  display:flex; align-items:flex-start; gap:10px;
+}
+.modal-title { color:#fff; font-size:14px; font-weight:700; line-height:1.4; flex:1; }
+.modal-close {
+  color:rgba(255,255,255,.7); font-size:20px; cursor:pointer; flex-shrink:0;
+  line-height:1; padding:0 4px;
+}
+.modal-close:hover { color:#fff; }
+.modal-body { padding:20px; }
+.modal-col { font-size:11px; color: var(--text-light); margin-bottom:12px;
+  text-transform:uppercase; letter-spacing:.5px; font-weight:700; }
+.modal-labels { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:14px; }
+.modal-label-chip {
+  height:8px; border-radius:4px; min-width:32px; display:inline-block;
+}
+.modal-label-named {
+  font-size:11px; padding:2px 8px; border-radius:10px; font-weight:600;
+  display:flex; align-items:center; gap:5px;
+}
+.modal-desc {
+  font-size:13px; line-height:1.6; color: var(--text);
+  white-space: pre-wrap; background: #faf7f4; padding:12px;
+  border-radius:8px; border:1px solid var(--border);
+  max-height:240px; overflow-y:auto;
+}
+.modal-desc:empty::before { content:'Bez popisu'; color:#bbb; }
+.modal-trello {
+  margin-top:14px; display:inline-flex; align-items:center; gap:6px;
+  font-size:12px; color: var(--brown-mid); text-decoration:none;
+  font-weight:700; border:1px solid var(--border); padding:5px 12px;
+  border-radius:20px;
+}
+.modal-trello:hover { background: var(--kraft); }
+.modal-move { margin-top:14px; }
+.modal-move label { font-size:11px; color: var(--text-light); font-weight:700;
+  text-transform:uppercase; letter-spacing:.5px; display:block; margin-bottom:6px; }
+.modal-move select {
+  width:100%; padding:8px 10px; border:1px solid var(--border);
+  border-radius:8px; font-size:13px; background:#fff; cursor:pointer;
+}
+.modal-move-btn {
+  margin-top:8px; width:100%; padding:9px; background:var(--brown);
+  color:#fff; border:none; border-radius:8px; font-size:13px; font-weight:700;
+  cursor:pointer; transition: background .15s;
+}
+.modal-move-btn:hover { background: var(--brown-mid); }
+.modal-move-btn:disabled { opacity:.5; pointer-events:none; }
+
+/* ── EMPTY ── */
+.empty-col {
+  text-align:center; font-size:11px; color: var(--text-light);
+  padding:20px 10px; font-style:italic;
+}
+
+/* ── ERROR ── */
+.error-bar {
+  background:#c0392b; color:#fff; text-align:center;
+  padding:8px; font-size:13px; display:none;
+}
+</style>
+</head>
+<body>
+
+<div class="loading" id="loading">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">Načítám nástěnku...</div>
+</div>
+
+<div class="error-bar" id="errorBar"></div>
+
+<div class="header">
+  <div class="logo">NUT<span>WORLD</span></div>
+  <div class="board-title">Nové produkty</div>
+  <div class="header-right">
+    <span class="last-updated" id="lastUpdated"></span>
+    <button class="btn-refresh" id="btnRefresh" onclick="loadBoard()">Obnovit</button>
+    <a href="/" style="color:rgba(255,255,255,.5);font-size:12px;text-decoration:none;margin-left:8px">&#8592; Zpět</a>
+  </div>
+</div>
+
+<div class="board" id="board"></div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" style="display:none" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-close" onclick="closeModal()">&#10005;</div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-col" id="modalCol"></div>
+      <div class="modal-labels" id="modalLabels"></div>
+      <div class="modal-desc" id="modalDesc"></div>
+      <div class="modal-move">
+        <label>Přesunout do sloupce:</label>
+        <select id="moveSelect"></select>
+        <button class="modal-move-btn" id="moveBtnModal" onclick="moveCardFromModal()">Přesunout</button>
+      </div>
+      <div style="margin-top:10px">
+        <a class="modal-trello" id="modalLink" href="#" target="_blank">
+          Otevrit v Trellu &#8599;
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const KEY   = atob('MDM2M2ViYjE0OWRmMDRkMTI4NTY3MmEzMDgwMTYwYTI=');
+const TOKEN = atob('QVRUQTdiMWI4YTFjZWRjMTIyODI3ZmRiMmY4MGRjMjRiNThkMTA4NTVkOTY3ZTAwNDViNWU0ZDdkNmZkMzQwYzJmZWFDNEYxMTFGRQ==');
+const BOARD = 'tq8b9qlt';
+const BASE  = 'https://api.trello.com/1';
+
+// Trello label color → CSS color
+const LABEL_COLORS = {
+  green:'#61bd4f', yellow:'#f2d600', orange:'#ff9f1a', red:'#eb5a46',
+  purple:'#c377e0', blue:'#0079bf', sky:'#00c2e0', lime:'#51e898',
+  pink:'#ff78cb', black:'#344563', green_dark:'#519839', yellow_dark:'#d9b51c',
+  orange_dark:'#d79b00', red_dark:'#ae4132', purple_dark:'#89609e',
+  blue_dark:'#055a8c', sky_dark:'#0098b7', lime_dark:'#4bbf6b',
+  pink_dark:'#c9558f', black_dark:'#091e42',
+};
+
+let lists = [];
+let cards = [];
+let dragCardId = null;
+let activeCardId = null;
+
+async function api(path, method='GET', body=null) {
+  const sep = path.includes('?') ? '&' : '?';
+  const url = `${BASE}${path}${sep}key=${KEY}&token=${TOKEN}`;
+  const opts = { method };
+  if (body) { opts.headers={'Content-Type':'application/json'}; opts.body=JSON.stringify(body); }
+  const r = await fetch(url, opts);
+  if (!r.ok) throw new Error(`Trello API ${r.status}: ${await r.text()}`);
+  return r.json();
+}
+
+async function loadBoard() {
+  const btn = document.getElementById('btnRefresh');
+  btn.classList.add('spinning');
+  btn.textContent = '...';
+  try {
+    [lists, cards] = await Promise.all([
+      api(`/boards/${BOARD}/lists?filter=open`),
+      api(`/boards/${BOARD}/cards?filter=open&fields=id,name,desc,idList,labels,due,dueComplete,shortUrl`),
+    ]);
+    renderBoard();
+    document.getElementById('lastUpdated').textContent =
+      'Aktualizováno ' + new Date().toLocaleTimeString('cs-CZ', {hour:'2-digit',minute:'2-digit'});
+    document.getElementById('errorBar').style.display = 'none';
+  } catch(e) {
+    showError('Chyba načítání: ' + e.message);
+  } finally {
+    document.getElementById('loading').style.display = 'none';
+    btn.classList.remove('spinning');
+    btn.textContent = 'Obnovit';
+  }
+}
+
+function renderBoard() {
+  const board = document.getElementById('board');
+  board.innerHTML = '';
+  for (const list of lists) {
+    const listCards = cards.filter(c => c.idList === list.id);
+    board.appendChild(makeColumn(list, listCards));
+  }
+  // Update move select in modal if open
+  const sel = document.getElementById('moveSelect');
+  sel.innerHTML = lists.map(l => `<option value="${l.id}">${l.name}</option>`).join('');
+}
+
+function makeColumn(list, colCards) {
+  const col = document.createElement('div');
+  col.className = 'col';
+  col.dataset.listId = list.id;
+
+  col.innerHTML = `
+    <div class="col-header">
+      <div class="col-name">${esc(list.name)}</div>
+      <div class="col-count">${colCards.length}</div>
+    </div>
+    <div class="col-cards" id="cards-${list.id}"
+      ondragover="onDragOver(event)" ondragleave="onDragLeave(event)"
+      ondrop="onDrop(event,'${list.id}')">
+      ${colCards.length === 0 ? '<div class="empty-col">Prázdný sloupec</div>' : ''}
+    </div>`;
+
+  const container = col.querySelector('.col-cards');
+  for (const card of colCards) {
+    container.appendChild(makeCard(card));
+  }
+  return col;
+}
+
+function makeCard(card) {
+  const el = document.createElement('div');
+  el.className = 'card';
+  el.draggable = true;
+  el.dataset.cardId = card.id;
+
+  const labelsHtml = card.labels.map(l =>
+    `<div class="label-chip" style="background:${LABEL_COLORS[l.color]||'#ccc'}" title="${esc(l.name)}"></div>`
+  ).join('');
+
+  const codeMatch = card.name.match(/^([0-9A-Z][0-9A-Z\/\-]*[0-9A-Z])\s*[-–]/i);
+  const code = codeMatch ? codeMatch[1] : '';
+  const displayName = code ? card.name.replace(code, '').replace(/^\s*[-–]\s*/, '').trim() : card.name;
+
+  const dueHtml = makeDue(card.due, card.dueComplete);
+
+  el.innerHTML = `
+    ${labelsHtml ? `<div class="card-labels">${labelsHtml}</div>` : ''}
+    ${code ? `<div class="card-code">${esc(code)}</div>` : ''}
+    <div class="card-name">${esc(displayName)}</div>
+    ${dueHtml ? `<div class="card-meta">${dueHtml}</div>` : ''}`;
+
+  el.addEventListener('dragstart', e => {
+    dragCardId = card.id;
+    setTimeout(() => el.classList.add('dragging'), 0);
+    e.dataTransfer.effectAllowed = 'move';
+  });
+  el.addEventListener('dragend', () => {
+    el.classList.remove('dragging');
+    dragCardId = null;
+  });
+  el.addEventListener('click', () => openModal(card));
+  return el;
+}
+
+function makeDue(due, done) {
+  if (!due) return '';
+  const d = new Date(due);
+  const now = new Date();
+  const diff = (d - now) / 864e5;
+  const label = d.toLocaleDateString('cs-CZ', {day:'numeric',month:'short'});
+  if (done) return `<span class="card-due ok">&#10003; ${label}</span>`;
+  if (diff < 0) return `<span class="card-due overdue">${label}</span>`;
+  if (diff < 3) return `<span class="card-due soon">${label}</span>`;
+  return `<span class="card-due ok">${label}</span>`;
+}
+
+// ── DRAG & DROP ──────────────────────────────────────────────────────
+
+function onDragOver(e) {
+  e.preventDefault();
+  e.currentTarget.classList.add('drag-target');
+}
+function onDragLeave(e) {
+  e.currentTarget.classList.remove('drag-target');
+}
+async function onDrop(e, listId) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-target');
+  if (!dragCardId) return;
+  const card = cards.find(c => c.id === dragCardId);
+  if (!card || card.idList === listId) return;
+  await moveCard(card, listId);
+}
+
+async function moveCard(card, listId) {
+  try {
+    await api(`/cards/${card.id}`, 'PUT', { idList: listId });
+    card.idList = listId;
+    renderBoard();
+    document.getElementById('lastUpdated').textContent =
+      'Aktualizováno ' + new Date().toLocaleTimeString('cs-CZ', {hour:'2-digit',minute:'2-digit'});
+  } catch(e) {
+    showError('Přesun se nepodařil: ' + e.message);
+  }
+}
+
+// ── MODAL ────────────────────────────────────────────────────────────
+
+function openModal(card) {
+  activeCardId = card.id;
+  const list = lists.find(l => l.id === card.idList);
+
+  document.getElementById('modalTitle').textContent = card.name;
+  document.getElementById('modalCol').textContent = list ? list.name : '';
+
+  const labelsEl = document.getElementById('modalLabels');
+  labelsEl.innerHTML = card.labels.map(l => {
+    const color = LABEL_COLORS[l.color] || '#ccc';
+    if (l.name) {
+      return `<span class="modal-label-named" style="background:${color}22;color:${color};border:1px solid ${color}44">
+        <span style="width:8px;height:8px;border-radius:50%;background:${color};display:inline-block"></span>
+        ${esc(l.name)}</span>`;
+    }
+    return `<span class="modal-label-chip" style="background:${color}"></span>`;
+  }).join('');
+
+  // Clean description — remove image markdown
+  const cleanDesc = (card.desc || '').replace(/!\[.*?\]\(.*?\)/g, '[obrázek]').trim();
+  document.getElementById('modalDesc').textContent = cleanDesc;
+  document.getElementById('modalLink').href = card.shortUrl || `https://trello.com/c/${card.id}`;
+
+  const sel = document.getElementById('moveSelect');
+  sel.innerHTML = lists.map(l =>
+    `<option value="${l.id}" ${l.id===card.idList?'selected':''}>${l.name}</option>`
+  ).join('');
+
+  document.getElementById('modalOverlay').style.display = 'flex';
+}
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('modalOverlay')) return;
+  document.getElementById('modalOverlay').style.display = 'none';
+  activeCardId = null;
+}
+
+async function moveCardFromModal() {
+  const sel = document.getElementById('moveSelect');
+  const listId = sel.value;
+  const card = cards.find(c => c.id === activeCardId);
+  if (!card) return;
+  const btn = document.getElementById('moveBtnModal');
+  btn.disabled = true;
+  btn.textContent = 'Přesouvám...';
+  await moveCard(card, listId);
+  btn.disabled = false;
+  btn.textContent = 'Přesunout';
+  document.getElementById('modalOverlay').style.display = 'none';
+}
+
+// ── UTILS ─────────────────────────────────────────────────────────────
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function showError(msg) {
+  const bar = document.getElementById('errorBar');
+  bar.textContent = msg;
+  bar.style.display = 'block';
+}
+
+// Close modal on Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.getElementById('modalOverlay').style.display = 'none';
+});
+
+// Auto-refresh every 90 seconds
+setInterval(loadBoard, 90000);
+
+loadBoard();
+</script>
+</body>
+</html>
