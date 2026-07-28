@@ -1,6 +1,71 @@
 {
-  "generated": "2026-07-28T07:30:12",
-  "total": 0,
+  "generated": "2026-07-28T09:29:21",
+  "total": 4,
   "spam_skipped": 0,
-  "emails": []
+  "emails": [
+    {
+      "account": "Exchange",
+      "sender": "VBH Knoblochová Veronika <veronika.knoblochova@vbh.cz>",
+      "subject": "RE: poptávka",
+      "date": "úterý 28. července 2026 8:50:47",
+      "unread": false,
+      "preview": "Dobrý den",
+      "category": "b2b",
+      "sender_short": "VBH Knoblochová Veronika",
+      "sender_email": "veronika.knoblochova@vbh.cz",
+      "ai": {
+        "shrn": "B2B poptávka od společnosti VBH. Email vyžaduje Janovo rozhodnutí ohledně nabídky či odpovědi.",
+        "tyka_se": true,
+        "akce": "Prostudovat poptávku a připravit odpověď/nabídku"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Legislativa Nutworld <legislativa@nutworld.cz>",
+      "subject": "2791",
+      "date": "úterý 28. července 2026 7:51:28",
+      "unread": true,
+      "preview": "Hojda",
+      "category": "tym",
+      "sender_short": "Legislativa Nutworld",
+      "sender_email": "legislativa@nutworld.cz",
+      "ai": {
+        "shrn": "Interní zpráva od týmu legislativy s číslem 2791. Obsah není jasný.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "CrossFit <crossfit@mail.crossfit.com>",
+      "subject": "260728 Workout of the Day: Linda",
+      "date": "úterý 28. července 2026 2:32:12",
+      "unread": true,
+      "preview": "￼ ￼ ￼ TUESDAY",
+      "category": "ostatni",
+      "sender_short": "CrossFit",
+      "sender_email": "crossfit@mail.crossfit.com",
+      "ai": {
+        "shrn": "Duplikát automatického emailu ze cvičebny CrossFit se stejným cvičebním plánem. Není relevantní pro Nutworld.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "CrossFit <crossfit@mail.crossfit.com>",
+      "subject": "260728 Workout of the Day: Linda",
+      "date": "úterý 28. července 2026 2:31:19",
+      "unread": true,
+      "preview": "￼ ￼ ￼ TUESDAY",
+      "category": "ostatni",
+      "sender_short": "CrossFit",
+      "sender_email": "crossfit@mail.crossfit.com",
+      "ai": {
+        "shrn": "Duplikát automatického emailu ze cvičebny CrossFit se stejným cvičebním plánem. Není relevantní pro Nutworld.",
+        "tyka_se": false,
+        "akce": null
+      }
+    }
+  ]
 }
