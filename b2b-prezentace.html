@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Nutworld — B2B Prezentace pro klienty</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--br:#83502e;--bd:#5c381f;--kraft:#f1e6da;--acc:#da1668;--amb:#f7ab31;--leaf:#6fa044;--white:#fff}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;font-size:14px;min-height:100vh}
+h1,h2,h3{font-family:'Exo 2',sans-serif}
+
+/* HEADER */
+.page-header{background:linear-gradient(135deg,var(--bd) 0%,var(--br) 100%);padding:18px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.2)}
+.back-btn{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:white;font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;padding:6px 12px;border-radius:20px;text-decoration:none;transition:background .15s;flex-shrink:0}
+.back-btn:hover{background:rgba(255,255,255,.22)}
+.header-title{flex:1}
+.header-title h1{font-size:18px;font-weight:800;color:white;letter-spacing:.5px;line-height:1.1}
+.header-title p{font-size:11px;color:rgba(241,230,218,.7);margin-top:2px;letter-spacing:.3px}
+.header-badge{background:var(--amb);color:var(--bd);font-family:'Exo 2',sans-serif;font-weight:800;font-size:11px;padding:4px 12px;border-radius:20px;flex-shrink:0;white-space:nowrap}
+
+/* WRAP */
+.wrap{max-width:1100px;margin:0 auto;padding:28px 20px}
+
+/* FIRMA SEKCE */
+.firma-section{margin-bottom:32px}
+.firma-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.firma-name{font-family:'Exo 2',sans-serif;font-size:20px;font-weight:800;color:var(--bd)}
+.firma-dot{width:8px;height:8px;border-radius:50%;background:var(--amb);flex-shrink:0}
+.firma-meta{font-size:12px;color:#a08060}
+
+/* PREZENTACE GRID */
+.prez-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+
+/* KARTA */
+.prez-card{background:white;border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.08);border-top:3px solid var(--amb);transition:all .2s;display:flex;flex-direction:column}
+.prez-card:hover{box-shadow:0 6px 20px rgba(0,0,0,.14);transform:translateY(-2px)}
+.prez-card-body{padding:18px 20px;flex:1;display:flex;flex-direction:column;gap:6px}
+.prez-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:10px;margin-bottom:2px}
+.prez-title{font-family:'Exo 2',sans-serif;font-size:15px;font-weight:700;color:var(--bd);line-height:1.3}
+.prez-desc{font-size:12.5px;color:#6b4c30;line-height:1.55;flex:1}
+.prez-footer{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#fdf8f4;border-top:1px solid #ede0d4;margin-top:auto}
+.prez-date{font-size:11px;color:#a08060}
+.prez-open{font-family:'Exo 2',sans-serif;font-size:12px;font-weight:700;padding:7px 16px;border-radius:10px;background:var(--bd);color:white;text-decoration:none;transition:background .15s;display:inline-flex;align-items:center;gap:5px}
+.prez-open:hover{background:var(--acc)}
+
+/* PRÁZDNÝ STAV */
+.empty-state{background:white;border-radius:14px;padding:40px 24px;text-align:center;color:#a08060;box-shadow:0 1px 6px rgba(0,0,0,.07)}
+.empty-state p{font-size:14px;margin-top:8px}
+
+/* PŘIDAT NOVOU — info box */
+.add-info{background:white;border-radius:14px;padding:18px 22px;box-shadow:0 1px 6px rgba(0,0,0,.07);display:flex;align-items:center;gap:14px;margin-top:8px;border:1.5px dashed #c8976a}
+.add-info-icon{font-size:24px;flex-shrink:0}
+.add-info-text{font-size:12.5px;color:#6b4c30;line-height:1.5}
+.add-info-text strong{color:var(--bd);font-weight:700}
+
+/* TAG COLORS */
+.tag-kazetky{background:#fff3d6;color:#b8860b}
+.tag-sety{background:#fde8ef;color:#c01050}
+.tag-katalog{background:#f0f7e8;color:#4a8020}
+.tag-cenova{background:#f0eaff;color:#6030b0}
+.tag-vas{background:#e8f4fd;color:#0060b0}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="/ja.html" class="back-btn">← Zpět</a>
+  <div class="header-title">
+    <h1>🗂 B2B Prezentace</h1>
+    <p>Nabídky pro klienty — Nutworld firemní dárky</p>
+  </div>
+  <div class="header-badge" id="total-badge">0 prezentací</div>
+</div>
+
+<div class="wrap" id="main-wrap"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+//  DATA — přidávej sem nové prezentace
+// ═══════════════════════════════════════════════════════════════════
+const PREZENTACE = [
+  {
+    firma: 'VBH',
+    tag: 'kazetky',
+    title: 'Dárkové kazetky – 4 varianty',
+    desc: 'Mandle solené 50 Kč, Mandle uzené 49 Kč, Kešu solené 52 Kč, Slaný párty mix 52 Kč. Prémiové kraft kazetky s ručně vyrobenými ořechovými lahůdkami.',
+    date: 'červenec 2026',
+    url: 'https://claude.ai/code/artifact/221d4686-2e77-4b87-a96d-e8d05e9290fe'
+  },
+  {
+    firma: 'Altium',
+    tag: 'sety',
+    title: 'Dárkové sety ~400 Kč',
+    desc: 'Prémiové dárkové sady v rozpočtu do 400 Kč/ks. MO ceny orientační. Vhodné pro firemní příležitosti a vánoce.',
+    date: 'červenec 2026',
+    url: 'https://claude.ai/code/artifact/8ac7b3ec-9fbb-47d1-b2b1-82cec5066f00'
+  },
+  {
+    firma: 'Colsys',
+    tag: 'sety',
+    title: 'Dárkové sety ~120 Kč',
+    desc: '6 variant s vlastním brandem, ruční výroba ve spolupráci s chráněnými dílnami. Složení ořechů přizpůsobeno přesně na míru.',
+    date: 'červenec 2026',
+    url: 'https://claude.ai/code/artifact/e3c48e79-e006-4c19-b428-f14916917827'
+  },
+];
+
+// ═══════════════════════════════════════════════════════════════════
+//  RENDER
+// ═══════════════════════════════════════════════════════════════════
+(function () {
+  const wrap = document.getElementById('main-wrap');
+  const badge = document.getElementById('total-badge');
+
+  // Seskupit dle firmy
+  const byFirma = {};
+  PREZENTACE.forEach(p => {
+    if (!byFirma[p.firma]) byFirma[p.firma] = [];
+    byFirma[p.firma].push(p);
+  });
+
+  badge.textContent = PREZENTACE.length + ' prezentac' + (PREZENTACE.length === 1 ? 'e' : 'í');
+
+  if (!PREZENTACE.length) {
+    wrap.innerHTML = '<div class="empty-state"><div style="font-size:40px">📂</div><p>Zatím žádné prezentace. Přidej první klienta do pole PREZENTACE v kódu.</p></div>';
+    return;
+  }
+
+  let html = '';
+
+  Object.keys(byFirma).forEach(firma => {
+    const items = byFirma[firma];
+    html += `<div class="firma-section">
+      <div class="firma-header">
+        <div class="firma-dot"></div>
+        <div class="firma-name">${firma}</div>
+        <div class="firma-meta">${items.length} prezentac${items.length === 1 ? 'e' : 'e'}</div>
+      </div>
+      <div class="prez-grid">`;
+
+    items.forEach(p => {
+      html += `<div class="prez-card">
+        <div class="prez-card-body">
+          <span class="prez-tag tag-${p.tag}">${p.tag}</span>
+          <div class="prez-title">${p.title}</div>
+          <div class="prez-desc">${p.desc}</div>
+        </div>
+        <div class="prez-footer">
+          <span class="prez-date">📅 ${p.date}</span>
+          <a class="prez-open" href="${p.url}" target="_blank">Otevřít →</a>
+        </div>
+      </div>`;
+    });
+
+    html += `</div></div>`;
+  });
+
+  html += `<div class="add-info">
+    <div class="add-info-icon">💡</div>
+    <div class="add-info-text">
+      <strong>Přidat novou prezentaci:</strong> Řekni Claudovi „přidej prezentaci pro [firma]" — doplní záznam do pole <code>PREZENTACE</code> na této stránce a pushne na GitHub.
+    </div>
+  </div>`;
+
+  wrap.innerHTML = html;
+})();
+</script>
+</body>
+</html>
