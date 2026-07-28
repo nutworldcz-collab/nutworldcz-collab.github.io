@@ -358,23 +358,30 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
     </div>
   </div>
 
-  <!-- DOKUMENTY -->
+  <!-- DOKUMENTY & MATERIÁLY -->
   <div>
-    <div class="section-label">📄 Dokumenty &amp; materiály</div>
-    <div id="docs-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px"></div>
-  </div>
+    <div class="section-label">📁 Dokumenty &amp; materiály</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
 
-  <!-- B2B PREZENTACE -->
-  <div>
-    <div class="section-label">🗂 B2B Prezentace pro klienty</div>
-    <a href="/b2b-prezentace.html" style="display:inline-flex;align-items:center;gap:10px;background:white;border-radius:12px;padding:14px 20px;box-shadow:0 1px 5px rgba(0,0,0,.07);text-decoration:none;border-top:3px solid var(--amb);transition:all .15s;color:var(--bd)" onmouseover="this.style.boxShadow='0 4px 14px rgba(0,0,0,.13)';this.style.transform='translateY(-1px)'" onmouseout="this.style.boxShadow='0 1px 5px rgba(0,0,0,.07)';this.style.transform=''">
-      <span style="font-size:26px">🗂</span>
-      <div>
-        <div style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:14px;color:var(--bd)">B2B Prezentace pro klienty</div>
-        <div id="b2b-prez-count" style="font-size:11px;color:#a08060;margin-top:2px">Načítám…</div>
-      </div>
-      <span style="margin-left:auto;font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;background:var(--bd);color:white;padding:6px 14px;border-radius:8px">Otevřít →</span>
-    </a>
+      <a href="/dokumenty.html" style="display:flex;align-items:center;gap:12px;background:white;border-radius:12px;padding:14px 18px;box-shadow:0 1px 5px rgba(0,0,0,.07);text-decoration:none;border-top:3px solid var(--acc);transition:all .15s" onmouseover="this.style.boxShadow='0 4px 14px rgba(0,0,0,.13)';this.style.transform='translateY(-1px)'" onmouseout="this.style.boxShadow='0 1px 5px rgba(0,0,0,.07)';this.style.transform=''">
+        <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--acc),#b01252);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">📤</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:13px;color:var(--bd)">Výstupní materiály</div>
+          <div style="font-size:11px;color:#a08060;margin-top:2px" id="doc-count-vystupni">Nabídky, prezentace, ceníky</div>
+        </div>
+        <span style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:11px;background:var(--bd);color:white;padding:5px 12px;border-radius:8px;flex-shrink:0">→</span>
+      </a>
+
+      <a href="/dokumenty.html#pracovni" style="display:flex;align-items:center;gap:12px;background:white;border-radius:12px;padding:14px 18px;box-shadow:0 1px 5px rgba(0,0,0,.07);text-decoration:none;border-top:3px solid var(--amb);transition:all .15s" onmouseover="this.style.boxShadow='0 4px 14px rgba(0,0,0,.13)';this.style.transform='translateY(-1px)'" onmouseout="this.style.boxShadow='0 1px 5px rgba(0,0,0,.07)';this.style.transform=''">
+        <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--bd),var(--br));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🗂</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:13px;color:var(--bd)">Pracovní materiály</div>
+          <div style="font-size:11px;color:#a08060;margin-top:2px" id="doc-count-pracovni">Strategie, analýzy, návody</div>
+        </div>
+        <span style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:11px;background:var(--bd);color:white;padding:5px 12px;border-radius:8px;flex-shrink:0">→</span>
+      </a>
+
+    </div>
   </div>
 
   <!-- AUTOMATIZACE -->
@@ -699,37 +706,14 @@ function fmtD(iso){if(!iso)return'';const[y,m,dd]=iso.split('-');return`${dd}.${
   el.innerHTML = html || '<div class="email-empty">Žádné úkoly na dnes 🎉</div>';
 })();
 
-// ── DOKUMENTY ──────────────────────────────────────────────────────────────
+// ── DOKUMENTY — počty ──────────────────────────────────────────────────────
 (function(){
-  const DOCS = [
-    {
-      tag:'strategie', title:'Regionální strategie propagace 2026',
-      desc:'Organická viditelnost, Meta + Google kampaně, úpravy webu. Prioritní plán 9 kroků.',
-      date:'červen 2026', url:'https://nutworldcz-collab.github.io/docs/regionalni-strategie-2026.html'
-    },
-  ];
-  const grid = document.getElementById('docs-grid');
-  if(!grid) return;
-  if(!DOCS.length){ grid.innerHTML='<div style="background:white;border-radius:12px;padding:16px;color:#a08060;font-size:13px">Zatím žádné dokumenty.</div>'; return; }
-  grid.innerHTML = DOCS.map(d => `
-    <div class="doc-card">
-      <div class="doc-header">
-        <div class="doc-title">${d.title}</div>
-        <span class="doc-tag ${d.tag}">${d.tag.charAt(0).toUpperCase()+d.tag.slice(1)}</span>
-      </div>
-      <div class="doc-desc">${d.desc}</div>
-      <div class="doc-footer">
-        <span class="doc-date">📅 ${d.date}</span>
-        <a class="doc-open" href="${d.url}" target="_blank">Otevřít →</a>
-      </div>
-    </div>`).join('');
+  const ev = document.getElementById('doc-count-vystupni');
+  const pv = document.getElementById('doc-count-pracovni');
+  if(ev) ev.textContent = '3 dokumenty — nabídky, prezentace';
+  if(pv) pv.textContent = '1 dokument — strategie';
 })();
 
-// ── B2B PREZENTACE — počet ──────────────────────────────────────────────────
-(function(){
-  const el = document.getElementById('b2b-prez-count');
-  if (el) el.textContent = '3 prezentace — VBH, Altium, Colsys';
-})();
 
 // ── SCHŮZKY ──
 (function(){
