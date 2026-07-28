@@ -1,12 +1,24 @@
 {
-  "generated": "2026-07-28T08:30:18",
+  "generated": "2026-07-28T09:54:16",
   "period": "2026-07-21 – 2026-07-27",
   "channels": {
     "Meta CZ": {
-      "error": "400 Client Error: Bad Request for url: https://graph.facebook.com/v21.0/act_1367393200144/insights?fields=spend%2Cimpressions%2Cclicks%2Cactions%2Caction_values&time_range=%7B%22since%22%3A+%222026-07-21%22%2C+%22until%22%3A+%222026-07-27%22%7D&level=account&access_token=EAATZCYSrDrLABSGGFspZBZALnIevz48TsYpPRWOc3XP0YSvaaRRNyN8jwQm9qcMYlGOkaaaJ5WObZBtaIyXfhZAxPf2aLfWmwtpSjKSX5QUJNUlNx5rQmln9XZCIdv62ZCb7R1pZB286IBdYAeQ5LEZAx0adZBTZApP7o2qvyb203VoZC9DSRBQ2oxQD6YsBEQyyzeUs20NBa7o6l5qtTvLnuuu9PjKTuxUbLXcxAjYAsQK2PbWiT6bUDlRpHrgliRH7ltvaiTuoI50fi0nEMbt2r9EQTPwn"
+      "spend": 11796.0,
+      "revenue": 90183.0,
+      "pno": 13.1,
+      "conversions": 60.0,
+      "clicks": 1814,
+      "prev_spend": 11576.0,
+      "prev_pno": 17.1
     },
     "Meta SK": {
-      "error": "400 Client Error: Bad Request for url: https://graph.facebook.com/v21.0/act_1306037980788341/insights?fields=spend%2Cimpressions%2Cclicks%2Cactions%2Caction_values&time_range=%7B%22since%22%3A+%222026-07-21%22%2C+%22until%22%3A+%222026-07-27%22%7D&level=account&access_token=EAATZCYSrDrLABSGGFspZBZALnIevz48TsYpPRWOc3XP0YSvaaRRNyN8jwQm9qcMYlGOkaaaJ5WObZBtaIyXfhZAxPf2aLfWmwtpSjKSX5QUJNUlNx5rQmln9XZCIdv62ZCb7R1pZB286IBdYAeQ5LEZAx0adZBTZApP7o2qvyb203VoZC9DSRBQ2oxQD6YsBEQyyzeUs20NBa7o6l5qtTvLnuuu9PjKTuxUbLXcxAjYAsQK2PbWiT6bUDlRpHrgliRH7ltvaiTuoI50fi0nEMbt2r9EQTPwn"
+      "spend": 201.0,
+      "revenue": 118.0,
+      "pno": 170.9,
+      "conversions": 4.0,
+      "clicks": 750,
+      "prev_spend": 243.0,
+      "prev_pno": 66.7
     },
     "Google CZ": {
       "spend": 5044.0,
@@ -28,10 +40,10 @@
     }
   },
   "anomalies": [
-    "⚠️ Meta CZ: chyba připojení",
-    "⚠️ Meta SK: chyba připojení"
+    "🔴 Meta SK: PNO 170.9% — nad break-even (40%)",
+    "🟡 Meta SK: PNO zhoršilo o 104.2pp vs minulý týden"
   ],
   "priorities": [
-    "Nejlepší kanál: Google SK (PNO 9.2%) — zvýšit budget?"
+    "Zkontrolovat kampaně Meta SK — PNO 170.9%"
   ]
 }
