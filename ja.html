@@ -364,6 +364,12 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
     <div id="docs-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px"></div>
   </div>
 
+  <!-- B2B PREZENTACE -->
+  <div>
+    <div class="section-label">🗂 B2B Prezentace pro klienty</div>
+    <div id="b2b-prez-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px"></div>
+  </div>
+
   <!-- AUTOMATIZACE -->
   <div>
     <div class="section-label">Automatizace (launchd)</div>
@@ -710,6 +716,59 @@ function fmtD(iso){if(!iso)return'';const[y,m,dd]=iso.split('-');return`${dd}.${
         <a class="doc-open" href="${d.url}" target="_blank">Otevřít →</a>
       </div>
     </div>`).join('');
+})();
+
+// ── B2B PREZENTACE ──────────────────────────────────────────────────────────
+(function(){
+  const PREZENTACE = [
+    {
+      firma:'VBH', tag:'kazetky',
+      title:'Dárkové kazetky – 4 varianty',
+      desc:'Mandle solené, Mandle uzené, Kešu solené, Slaný párty mix. MO ceny 49–52 Kč/ks.',
+      date:'červenec 2026',
+      url:'https://claude.ai/code/artifact/221d4686-2e77-4b87-a96d-e8d05e9290fe'
+    },
+    {
+      firma:'Altium', tag:'sety',
+      title:'Dárkové sety ~400 Kč',
+      desc:'Prémiové dárkové sady v rozpočtu do 400 Kč/ks. MO ceny orientační.',
+      date:'červenec 2026',
+      url:'https://claude.ai/code/artifact/8ac7b3ec-9fbb-47d1-b2b1-82cec5066f00'
+    },
+    {
+      firma:'Colsys', tag:'sety',
+      title:'Dárkové sety ~120 Kč',
+      desc:'6 variant s vlastním brandem, ruční výroba, spolupráce s chráněnými dílnami. Složení na míru.',
+      date:'červenec 2026',
+      url:'https://claude.ai/code/artifact/e3c48e79-e006-4c19-b428-f14916917827'
+    },
+  ];
+  const FIRMA_COLORS = {
+    kazetky: {bg:'#fff3d6', color:'#b8860b'},
+    sety:    {bg:'#fde8ef', color:'#c01050'},
+    katalog: {bg:'#f0f7e8', color:'#4a8020'},
+    cenova:  {bg:'#f0eaff', color:'#6030b0'},
+  };
+  const grid = document.getElementById('b2b-prez-grid');
+  if (!grid) return;
+  if (!PREZENTACE.length) {
+    grid.innerHTML = '<div style="background:white;border-radius:12px;padding:16px;color:#a08060;font-size:13px">Zatím žádné prezentace.</div>';
+    return;
+  }
+  grid.innerHTML = PREZENTACE.map(p => {
+    const c = FIRMA_COLORS[p.tag] || FIRMA_COLORS.sety;
+    return `<div class="doc-card">
+      <div class="doc-header">
+        <div class="doc-title">${p.firma}: ${p.title}</div>
+        <span class="doc-tag" style="background:${c.bg};color:${c.color}">${p.tag}</span>
+      </div>
+      <div class="doc-desc">${p.desc}</div>
+      <div class="doc-footer">
+        <span class="doc-date">📅 ${p.date}</span>
+        <a class="doc-open" href="${p.url}" target="_blank">Otevřít →</a>
+      </div>
+    </div>`;
+  }).join('');
 })();
 
 // ── SCHŮZKY ──
