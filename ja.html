@@ -159,6 +159,62 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
 
 <div class="wrap">
 
+  <!-- TRŽBY + POPTÁVKY + AKCE -->
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;align-items:stretch">
+
+    <!-- Dnešní tržby -->
+    <div style="background:white;border-radius:12px;padding:16px 18px;box-shadow:0 1px 6px rgba(0,0,0,.07);border-top:3px solid var(--leaf)">
+      <div style="font-family:'Exo 2',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#6fa044;margin-bottom:10px">🛒 Dnes ze Shoptetu</div>
+      <div id="trzby-dnes" style="font-size:26px;font-weight:800;font-family:'Exo 2',sans-serif;color:var(--bd)">—</div>
+      <div id="trzby-obj" style="font-size:12px;color:#a08060;margin-top:2px">načítám…</div>
+      <div id="trzby-vcera" style="font-size:11px;color:#b0966a;margin-top:8px;padding-top:8px;border-top:1px solid #f1e6da">včera: —</div>
+      <div id="trzby-updated" style="font-size:10px;color:#c8b09a;margin-top:4px"></div>
+    </div>
+
+    <!-- Poptávky -->
+    <div style="background:white;border-radius:12px;padding:16px 18px;box-shadow:0 1px 6px rgba(0,0,0,.07);border-top:3px solid var(--acc)">
+      <div style="font-family:'Exo 2',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--acc);margin-bottom:10px">📬 Poptávky ke zpracování</div>
+      <div id="popt-count" style="font-size:26px;font-weight:800;font-family:'Exo 2',sans-serif;color:var(--bd)">—</div>
+      <div id="popt-sub" style="font-size:12px;color:#a08060;margin-top:2px">načítám…</div>
+      <a href="https://github.com/nutworldcz-collab/nutworldcz-collab.github.io" target="_blank" style="display:inline-block;margin-top:14px;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;color:var(--br);text-decoration:none">→ Zpracovat poptávky</a>
+    </div>
+
+    <!-- Rychlé poznámky -->
+    <div style="background:white;border-radius:12px;padding:16px 18px;box-shadow:0 1px 6px rgba(0,0,0,.07);border-top:3px solid var(--amb);display:flex;flex-direction:column">
+      <div style="font-family:'Exo 2',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#c47d00;margin-bottom:8px">📝 Rychlé poznámky</div>
+      <textarea id="quick-notes" placeholder="Napiš si sem co chceš… ukládá se automaticky." style="flex:1;border:none;outline:none;resize:none;font-family:'Source Sans 3',sans-serif;font-size:13px;color:#2a1a0e;background:transparent;line-height:1.5;min-height:90px"></textarea>
+      <div style="font-size:10px;color:#c8b09a;margin-top:6px">💾 uloženo v prohlížeči</div>
+    </div>
+
+  </div>
+
+  <!-- RYCHLÉ AKCE -->
+  <div>
+    <div class="section-label">⚡ Rychlé akce</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+      <a href="/dokument.html" style="display:flex;flex-direction:column;align-items:center;gap:6px;background:white;border-radius:12px;padding:16px 12px;box-shadow:0 1px 6px rgba(0,0,0,.07);text-decoration:none;transition:all .15s;border-bottom:3px solid var(--acc)" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 14px rgba(0,0,0,.12)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 6px rgba(0,0,0,.07)'">
+        <span style="font-size:24px">📝</span>
+        <span style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;color:var(--bd);text-align:center">Nová nabídka</span>
+        <span style="font-size:10px;color:#a08060;text-align:center">AI generátor dokumentů</span>
+      </a>
+      <a href="/b2b-prezentace.html" style="display:flex;flex-direction:column;align-items:center;gap:6px;background:white;border-radius:12px;padding:16px 12px;box-shadow:0 1px 6px rgba(0,0,0,.07);text-decoration:none;transition:all .15s;border-bottom:3px solid #7c3aed" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 14px rgba(0,0,0,.12)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 6px rgba(0,0,0,.07)'">
+        <span style="font-size:24px">🗂</span>
+        <span style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;color:var(--bd);text-align:center">B2B Prezentace</span>
+        <span style="font-size:10px;color:#a08060;text-align:center">Klientské nabídky</span>
+      </a>
+      <a href="https://www.nutworld.cz/admin" target="_blank" style="display:flex;flex-direction:column;align-items:center;gap:6px;background:white;border-radius:12px;padding:16px 12px;box-shadow:0 1px 6px rgba(0,0,0,.07);text-decoration:none;transition:all .15s;border-bottom:3px solid var(--br)" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 14px rgba(0,0,0,.12)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 6px rgba(0,0,0,.07)'">
+        <span style="font-size:24px">🛒</span>
+        <span style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;color:var(--bd);text-align:center">Shoptet admin</span>
+        <span style="font-size:10px;color:#a08060;text-align:center">Objednávky, produkty</span>
+      </a>
+      <a href="/dokumenty.html" style="display:flex;flex-direction:column;align-items:center;gap:6px;background:white;border-radius:12px;padding:16px 12px;box-shadow:0 1px 6px rgba(0,0,0,.07);text-decoration:none;transition:all .15s;border-bottom:3px solid var(--leaf)" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 14px rgba(0,0,0,.12)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 6px rgba(0,0,0,.07)'">
+        <span style="font-size:24px">📁</span>
+        <span style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;color:var(--bd);text-align:center">Dokumenty</span>
+        <span style="font-size:10px;color:#a08060;text-align:center">Výstupní + pracovní</span>
+      </a>
+    </div>
+  </div>
+
   <!-- TÝM -->
   <div>
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
@@ -528,6 +584,49 @@ document.getElementById('datum').textContent =
 const TODAY = new Date().toISOString().slice(0,10);
 function ld(k,def){try{return JSON.parse(localStorage.getItem(k))??def}catch{return def}}
 function fmtD(iso){if(!iso)return'';const[y,m,dd]=iso.split('-');return`${dd}.${m}.`}
+
+// ── RYCHLÉ POZNÁMKY ──────────────────────────────────────────────────────────
+(function(){
+  const ta = document.getElementById('quick-notes');
+  if (!ta) return;
+  ta.value = localStorage.getItem('nw_quick_notes') || '';
+  ta.addEventListener('input', () => localStorage.setItem('nw_quick_notes', ta.value));
+})();
+
+// ── TRŽBY + POPTÁVKY ─────────────────────────────────────────────────────────
+(async function(){
+  try {
+    const r = await fetch('https://nutworldcz-collab.github.io/shoptet-stats.json?t=' + Date.now());
+    if (!r.ok) throw new Error('no data');
+    const s = await r.json();
+    const t = s.today || {};
+    const y = s.yesterday || {};
+    const p = s.poptavky || {};
+
+    // Tržby
+    const trzby = document.getElementById('trzby-dnes');
+    const obj   = document.getElementById('trzby-obj');
+    const vcera = document.getElementById('trzby-vcera');
+    const upd   = document.getElementById('trzby-updated');
+    if (trzby) trzby.textContent = (t.revenue||0).toLocaleString('cs') + ' Kč';
+    if (obj)   obj.textContent   = (t.count||0) + ' objednávek dnes';
+    if (vcera) vcera.textContent = 'včera: ' + (y.revenue||0).toLocaleString('cs') + ' Kč / ' + (y.count||0) + ' obj';
+    if (upd && s.updated) {
+      const u = new Date(s.updated);
+      upd.textContent = 'aktualizováno ' + String(u.getHours()).padStart(2,'0') + ':' + String(u.getMinutes()).padStart(2,'0');
+    }
+
+    // Poptávky
+    const pc  = document.getElementById('popt-count');
+    const psb = document.getElementById('popt-sub');
+    if (pc)  pc.textContent  = (p.new || 0);
+    if (psb) psb.textContent = 'nové poptávky · celkem ' + (p.total || 0);
+
+  } catch(e) {
+    const el = document.getElementById('trzby-obj');
+    if (el) el.textContent = 'data nedostupná';
+  }
+})();
 
 // ── ADS REPORT ───────────────────────────────────────────────────────────────
 (async function(){
