@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Nutworld — Děkujeme za poptávku!</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{min-height:100%;background:linear-gradient(135deg,#f1e6da 0%,#e8ddd4 100%)}
+body{font-family:Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 16px;color:#2a1a0e}
+
+.card{background:#fff;border-radius:16px;box-shadow:0 4px 32px rgba(92,56,31,.15);max-width:540px;width:100%;overflow:hidden}
+
+.card-head{background:linear-gradient(135deg,#5c381f 0%,#83502e 55%,#a0622a 100%);padding:32px 36px;text-align:center}
+.logo{font-size:13px;letter-spacing:3px;text-transform:uppercase;color:rgba(241,230,218,.7);margin-bottom:16px}
+.logo strong{color:#f7ab31}
+.check{width:64px;height:64px;border-radius:50%;background:rgba(247,171,49,.25);border:3px solid #f7ab31;display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px}
+.check svg{width:30px;height:30px}
+.card-head h1{font-size:22px;color:#fff;font-weight:700;margin-bottom:6px}
+.card-head p{font-size:13px;color:rgba(241,230,218,.75);line-height:1.5}
+
+.card-body{padding:28px 32px}
+
+.label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#83502e;margin-bottom:12px;display:block}
+.summary{border:1.5px solid #e0d4c8;border-radius:10px;overflow:hidden;margin-bottom:24px}
+.summary-row{display:flex;align-items:center;padding:11px 16px;border-bottom:1px solid #ede6dd}
+.summary-row:last-child{border-bottom:none}
+.sr-key{font-size:11px;color:#9a7255;min-width:100px;flex-shrink:0}
+.sr-val{font-size:13px;color:#3a1f08;font-weight:600;word-break:break-word}
+.sr-val.highlight{color:#c41e3a}
+.summary-row.hidden{display:none}
+
+.info-box{background:#fff8f0;border:1.5px solid #f7ab31;border-radius:10px;padding:16px 18px;margin-bottom:20px;display:flex;gap:14px;align-items:flex-start}
+.info-ico{font-size:24px;flex-shrink:0;margin-top:1px}
+.info-box p{font-size:13px;color:#5c381f;line-height:1.55}
+.info-box strong{color:#83502e}
+
+.btn{display:inline-block;padding:12px 28px;border-radius:8px;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer;border:none;text-align:center;transition:opacity .15s}
+.btn-primary{background:linear-gradient(135deg,#7a5200,#b8860b);color:#fff}
+.btn-secondary{background:#f1e6da;color:#5c381f;border:2px solid #c8976a}
+.btn:hover{opacity:.88}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+
+#status{font-size:12px;color:#9a7255;margin-top:16px;text-align:center;min-height:18px}
+#status.err{color:#c41e3a}
+#status.ok{color:#3a7a1b}
+
+.footer{text-align:center;font-size:11px;color:#b09a85;margin-top:24px}
+.footer a{color:#83502e;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="card-head">
+    <div class="logo"><strong>NUTWORLD</strong> · firemní dárky</div>
+    <div class="check">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#f7ab31" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+    <h1>Děkujeme za poptávku!</h1>
+    <p>Poptávka byla přijata.<br>Ozveme se do <strong style="color:#f7ab31">24 hodin</strong> s nabídkou na míru.</p>
+  </div>
+  <div class="card-body">
+    <span class="label">Shrnutí vaší poptávky</span>
+    <div class="summary" id="summary">
+      <div class="summary-row" id="row-name">
+        <span class="sr-key">Jméno / firma</span>
+        <span class="sr-val" id="val-name">—</span>
+      </div>
+      <div class="summary-row" id="row-email">
+        <span class="sr-key">E-mail</span>
+        <span class="sr-val highlight" id="val-email">—</span>
+      </div>
+      <div class="summary-row" id="row-tel">
+        <span class="sr-key">Telefon</span>
+        <span class="sr-val" id="val-tel">—</span>
+      </div>
+      <div class="summary-row" id="row-pril">
+        <span class="sr-key">Příležitost</span>
+        <span class="sr-val" id="val-pril">—</span>
+      </div>
+      <div class="summary-row" id="row-pocet">
+        <span class="sr-key">Počet kusů</span>
+        <span class="sr-val" id="val-pocet">—</span>
+      </div>
+      <div class="summary-row" id="row-termin">
+        <span class="sr-key">Termín</span>
+        <span class="sr-val" id="val-termin">—</span>
+      </div>
+      <div class="summary-row" id="row-budget">
+        <span class="sr-key">Budget / kus</span>
+        <span class="sr-val" id="val-budget">—</span>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <div class="info-ico">🎁</div>
+      <p>Náš specialista na firemní dárky zkontroluje vaši poptávku a připraví <strong>nabídku přímo pro vás</strong> — včetně kalkulace, náhledu obalu a termínu dodání.</p>
+    </div>
+
+    <div class="btns">
+      <a href="https://www.nutworld.cz/firemni-darky-namiru-pro-zamestance-partnery/" class="btn btn-primary">← Zpět na firemní dárky</a>
+      <a href="https://www.nutworld.cz/" class="btn btn-secondary">Přejít do e-shopu</a>
+    </div>
+    <div id="status"></div>
+  </div>
+</div>
+
+<div class="footer">
+  &copy; 2026 <a href="https://www.nutworld.cz">Nutworld.cz</a> · Prémiové ořechy a sušené plody<br>
+  Dotazy: <a href="mailto:info@nutworld.cz">info@nutworld.cz</a>
+</div>
+
+<script>
+const APPS_SCRIPT = "https://script.google.com/macros/s/AKfycbwonbDE6DfEOFOqbY6EhPN2lfx2ue2j37HmeSvHsVx_VQJdR1kE55NDpOGhtOnhwj7-mQ/exec";
+
+(function(){
+  var p = new URLSearchParams(window.location.search);
+
+  function show(id, valId, val){
+    if(val){ document.getElementById(valId).textContent = val; }
+    else { document.getElementById(id).classList.add('hidden'); }
+  }
+
+  show('row-name',   'val-name',   p.get('from_name'));
+  show('row-email',  'val-email',  p.get('email'));
+  show('row-tel',    'val-tel',    p.get('telefon'));
+  show('row-pril',   'val-pril',   p.get('prilezitost'));
+  show('row-pocet',  'val-pocet',  p.get('pocet'));
+  show('row-budget', 'val-budget', p.get('budget'));
+
+  var termin = p.get('termin');
+  if(termin){
+    // format YYYY-MM-DD → DD. MM. YYYY
+    var parts = termin.split('-');
+    if(parts.length === 3){ termin = parts[2]+'. '+parts[1]+'. '+parts[0]; }
+    document.getElementById('val-termin').textContent = termin;
+  } else {
+    document.getElementById('row-termin').classList.add('hidden');
+  }
+
+  // odeslat do Apps Scriptu na pozadí
+  var qs = p.toString();
+  if(qs){
+    fetch(APPS_SCRIPT + '?' + qs, {method:'GET', mode:'no-cors'})
+      .then(function(){ document.getElementById('status').textContent = ''; })
+      .catch(function(){ /* no-cors fetch always resolves, catch safety net */ });
+  }
+})();
+</script>
+</body>
+</html>
