@@ -1,49 +1,49 @@
 {
-  "generated": "2026-07-28T09:54:16",
-  "period": "2026-07-21 – 2026-07-27",
+  "generated": "2026-07-30T08:30:16",
+  "period": "2026-07-23 – 2026-07-29",
   "channels": {
     "Meta CZ": {
-      "spend": 11796.0,
-      "revenue": 90183.0,
-      "pno": 13.1,
-      "conversions": 60.0,
-      "clicks": 1814,
-      "prev_spend": 11576.0,
-      "prev_pno": 17.1
+      "spend": 12603.0,
+      "revenue": 52210.0,
+      "pno": 24.1,
+      "conversions": 52.0,
+      "clicks": 2009,
+      "prev_spend": 11284.0,
+      "prev_pno": 11.0
     },
     "Meta SK": {
-      "spend": 201.0,
-      "revenue": 118.0,
-      "pno": 170.9,
-      "conversions": 4.0,
-      "clicks": 750,
-      "prev_spend": 243.0,
-      "prev_pno": 66.7
+      "spend": 205.0,
+      "revenue": 86.0,
+      "pno": 238.6,
+      "conversions": 3.0,
+      "clicks": 766,
+      "prev_spend": 236.0,
+      "prev_pno": 71.5
     },
     "Google CZ": {
-      "spend": 5044.0,
-      "revenue": 48894.0,
-      "pno": 10.3,
-      "conversions": 47.9,
-      "clicks": 672,
-      "prev_spend": 5428.0,
-      "prev_pno": 11.9
+      "spend": 5106.0,
+      "revenue": 44540.0,
+      "pno": 11.5,
+      "conversions": 45.5,
+      "clicks": 648,
+      "prev_spend": 5371.0,
+      "prev_pno": 10.6
     },
     "Google SK": {
-      "spend": 1909.0,
-      "revenue": 20859.0,
-      "pno": 9.2,
-      "conversions": 9.0,
-      "clicks": 235,
-      "prev_spend": 1871.0,
-      "prev_pno": 25.0
+      "spend": 1895.0,
+      "revenue": 19817.0,
+      "pno": 9.6,
+      "conversions": 11.0,
+      "clicks": 248,
+      "prev_spend": 1924.0,
+      "prev_pno": 32.5
     }
   },
   "anomalies": [
-    "🔴 Meta SK: PNO 170.9% — nad break-even (40%)",
-    "🟡 Meta SK: PNO zhoršilo o 104.2pp vs minulý týden"
+    "🔴 Meta SK: PNO 238.6% — nad break-even (40%)",
+    "🟡 Meta SK: PNO zhoršilo o 167.1pp vs minulý týden"
   ],
   "priorities": [
-    "Zkontrolovat kampaně Meta SK — PNO 170.9%"
+    "Zkontrolovat kampaně Meta SK — PNO 238.6%"
   ]
 }
