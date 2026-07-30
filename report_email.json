@@ -1,8 +1,104 @@
 {
-  "generated": "2026-07-30T09:02:12",
-  "total": 4,
-  "spam_skipped": 0,
+  "generated": "2026-07-30T18:19:23",
+  "total": 11,
+  "spam_skipped": 1,
   "emails": [
+    {
+      "account": "Exchange",
+      "sender": "Smartsupp Newsletter <newsletter@mail.smartsupp.com>",
+      "subject": "Smartsupp MCP je tady 👀 spravujte svůj účet pomocí AI",
+      "date": "čtvrtek 30. července 2026 17:06:45",
+      "unread": true,
+      "preview": "￼ ￼ Zdravíme ze Smartsuppu, představte si začátek svého pracovního dne. Otevřete dashboard",
+      "category": "ostatni",
+      "sender_short": "Smartsupp Newsletter",
+      "sender_email": "newsletter@mail.smartsupp.com",
+      "ai": {
+        "shrn": "Smartsupp newsletter představuje novou funkci MCP pro správu účtu pomocí AI.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Fifties Retro Pub Hronov <noreply-thefifties@adaptee.cloud>",
+      "subject": "Máš už plán na víkend? Máme pro tebe tip",
+      "date": "čtvrtek 30. července 2026 14:25:53",
+      "unread": true,
+      "preview": "",
+      "category": "ostatni",
+      "sender_short": "Fifties Retro Pub Hronov",
+      "sender_email": "noreply-thefifties@adaptee.cloud",
+      "ai": {
+        "shrn": "Marketing email od restaurace Fifties Retro Pub s tipem na víkend.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Everbot <info@everbot.cz>",
+      "subject": "🚀 Novinka v Everbotu: Týmy a jedna společná peněženka",
+      "date": "čtvrtek 30. července 2026 14:03:45",
+      "unread": true,
+      "preview": "￼ ￼ V Everbotu jsme spustili novou funkci Týmy",
+      "category": "ostatni",
+      "sender_short": "Everbot",
+      "sender_email": "info@everbot.cz",
+      "ai": {
+        "shrn": "Everbot oznamuje novou funkci Týmy a společnou peněženku.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Petra Kukačková <info@johnwolf.cz>",
+      "subject": "[John Wolf] Objednávka 2026000009",
+      "date": "čtvrtek 30. července 2026 12:51:34",
+      "unread": true,
+      "preview": "￼ Objednávka na John Wolf Vážený zákazníku, Vaši objednávku jsme v pořádku přijali. Kód objednávky: 2026000009 Datum: 30.7.2026 Obsah objednávky ￼ Minerální náramky s křížem párové Množství: 1 ks Cena za m. j.: 439 Kč Kód: 74 439 Kč Zásilkovna Z point - výdejní místa Výdejní místo: 39498 | Z-BOX",
+      "category": "b2b",
+      "sender_short": "Petra Kukačková",
+      "sender_email": "info@johnwolf.cz",
+      "ai": {
+        "shrn": "Potvrzení objednávky z John Wolf e-shopu na minerální náramky s křížem.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Shoptet Pay <info@shoptetpay.com>",
+      "subject": "Úspěšná platba za objednávku č. 2026000009 v obchodu johnwolf.cz",
+      "date": "čtvrtek 30. července 2026 12:51:09",
+      "unread": true,
+      "preview": "￼ Přijali jsme požadavek na platbu za objednávku 2026000009 z obchodu johnwolf.cz ve výši 498 CZK. Detaily o platbě můžete nalézt v detailu objednávky. Tato zpráva je generována automaticky. Prosíme",
+      "category": "ostatni",
+      "sender_short": "Shoptet Pay",
+      "sender_email": "info@shoptetpay.com",
+      "ai": {
+        "shrn": "Potvrzení úspěšné platby za objednávku 2026000009 od Shoptet Pay.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Legislativa Nutworld <legislativa@nutworld.cz>",
+      "subject": "HACCP",
+      "date": "čtvrtek 30. července 2026 9:23:20",
+      "unread": false,
+      "preview": "",
+      "category": "dodavatel",
+      "sender_short": "Legislativa Nutworld",
+      "sender_email": "legislativa@nutworld.cz",
+      "ai": {
+        "shrn": "Interní email od Legislativy Nutworld týkající se HACCP.",
+        "tyka_se": true,
+        "akce": "Prověřit obsah a případně reagovat na legislativní požadavky HACCP"
+      }
+    },
     {
       "account": "Exchange",
       "sender": "Trello <do-not-reply@trello.com>",
@@ -27,6 +123,22 @@
     },
     {
       "account": "Google",
+      "sender": "Žijte ve své zahradě <info@kurzy.zijtevesvezahrade.cz>",
+      "subject": "Odpočet běží. Nepropásněte slevu 1 800 Kč",
+      "date": "čtvrtek 30. července 2026 10:23:26",
+      "unread": true,
+      "preview": "￼ ￼ Tajná letní sleva končí za pár hodin Možná jste si včera říkali",
+      "category": "ostatni",
+      "sender_short": "Žijte ve své zahradě",
+      "sender_email": "info@kurzy.zijtevesvezahrade.cz",
+      "ai": {
+        "shrn": "Marketing email s nabídkou letní slevy 1 800 Kč, kterou brzy skončí.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
       "sender": "\"ForActiv.cz\" <info@foractiv.cz>",
       "subject": "Puls – Electrolyte Hydration: Doplňte minerály. Ochutnejte svěží energii.",
       "date": "čtvrtek 30. července 2026 9:00:32",
@@ -36,7 +148,7 @@
       "sender_short": "ForActiv.cz",
       "sender_email": "info@foractiv.cz",
       "ai": {
-        "shrn": "Marketing email od ForActiv.cz propagující elektrolytové nápoje Puls. Jedná se o obchodní nabídku bez relevance k Nutworld.cz.",
+        "shrn": "ForActiv.cz propaguje elektrolytové prášky Puls pro hydrataci a minerály.",
         "tyka_se": false,
         "akce": null
       }
@@ -52,7 +164,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "Newsletter ze CrossFit mailingu s obsahem o tréninku a metodologii. Nepředstavuje konkrétní požadavek či rozhodnutí pro Jana.",
+        "shrn": "CrossFit newsletter s týdenní aktualizací a články o tréninku.",
         "tyka_se": false,
         "akce": null
       }
