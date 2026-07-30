@@ -1,8 +1,46 @@
 {
-  "generated": "2026-07-30T07:30:14",
-  "total": 1,
+  "generated": "2026-07-30T09:02:12",
+  "total": 4,
   "spam_skipped": 0,
   "emails": [
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Jana Nývltová vložil/a komentář na kartu obec Pernštejn na nástěnce Firmy dárky + objednávky",
+      "date": "čtvrtek 30. července 2026 8:01:38",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová okomentoval(a) kartu obec Pernštejn na nástěnce Firmy dárky + objednávky @martinwerner63 12/2026 Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 7:56 (30. července 2026)",
+      "date": "čtvrtek 30. července 2026 7:58:46",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Martin Werner vás zmínil(a) na kartě obec Pernštejn na nástěnce Firmy dárky + objednávky @wolf1988 díky",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Google",
+      "sender": "\"ForActiv.cz\" <info@foractiv.cz>",
+      "subject": "Puls – Electrolyte Hydration: Doplňte minerály. Ochutnejte svěží energii.",
+      "date": "čtvrtek 30. července 2026 9:00:32",
+      "unread": true,
+      "preview": "View email in browser ￼ ￼ Doplňte minerály. Ochutnejte svěží energii. Doplňte tekutiny i důležité minerály s elektrolytovými prášky Puls",
+      "category": "ostatni",
+      "sender_short": "ForActiv.cz",
+      "sender_email": "info@foractiv.cz",
+      "ai": {
+        "shrn": "Marketing email od ForActiv.cz propagující elektrolytové nápoje Puls. Jedná se o obchodní nabídku bez relevance k Nutworld.cz.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
     {
       "account": "Google",
       "sender": "\"CrossFit\" <crossfit@mail.crossfit.com>",
@@ -14,7 +52,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "Newsletter o CrossFit tréninku a metodologii. Neobsahuje nabídku spolupráce ani obchodní dotaz.",
+        "shrn": "Newsletter ze CrossFit mailingu s obsahem o tréninku a metodologii. Nepředstavuje konkrétní požadavek či rozhodnutí pro Jana.",
         "tyka_se": false,
         "akce": null
       }
