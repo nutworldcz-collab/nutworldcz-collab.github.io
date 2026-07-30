@@ -106,8 +106,12 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
       <input id="nazev" placeholder="Kešu kari sklenička exclusive 70g" oninput="up()"/>
     </div>
     <div class="field">
+      <label>Odkaz na specifikaci (Trello karta s PDF)</label>
+      <input id="spec_url" placeholder="https://trello.com/c/..." oninput="up()"/>
+    </div>
+    <div class="field">
       <label>Poznámka pro Claudiho</label>
-      <textarea id="poznamka" rows="2" placeholder="Nepovinné — např. odkaz na Trello, speciální požadavek..." oninput="up()"></textarea>
+      <textarea id="poznamka" rows="2" placeholder="Nepovinné — speciální požadavek, upřesnění..." oninput="up()"></textarea>
     </div>
 
     <button class="btn-send" id="btn-send" onclick="odeslat()">📨 Odeslat ke zpracování</button>
@@ -172,6 +176,7 @@ Datum:  ${now()}
 Kód:    ${g('kod')||'—'}
 Název:  ${g('nazev')||'—'}
 Cena:   ${g('cena') ? g('cena')+' Kč/kg' : '(neuvedena)'}
+Spec URL: ${g('spec_url')||'(neuvedena)'}
 Akce:   ${akceLabel[akce]||'—'}
 Typ:    ${typLabel[typ]||'—'}
 
@@ -194,6 +199,7 @@ function up(){
 <span class="el">Kód:   </span><span class="ev">${esc(g('kod')||'—')}</span>
 <span class="el">Název: </span><span class="ev">${esc(g('nazev')||'—')}</span>
 <span class="el">Cena:  </span><span class="ev">${g('cena') ? g('cena')+' Kč/kg' : '(neuvedena)'}</span>
+<span class="el">Spec URL: </span><span class="ev">${esc(g('spec_url')||'(neuvedena)')}</span>
 <span class="el">Akce:  </span><span class="ev">${esc(al)}</span>
 <span class="el">Typ:   </span><span class="ev">${esc(tl)}</span>
 
