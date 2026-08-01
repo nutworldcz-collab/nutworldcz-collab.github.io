@@ -1,347 +1,68 @@
 {
-  "generated": "2026-08-01T15:56:37",
-  "total": 24,
-  "spam_skipped": 3,
+  "generated": "2026-08-01T17:54:19",
+  "total": 5,
+  "spam_skipped": 0,
   "emails": [
     {
       "account": "Exchange",
-      "sender": "\"e.przydacz@diaspolis.pl\" <e.przydacz@diaspolis.pl>",
-      "subject": "New in Our Portfolio – Candied Fruits!",
-      "date": "pátek 31. července 2026 15:35:54",
+      "sender": "\"faktury@rtyne.net\" <faktury@rtyne.net>",
+      "subject": "Faktura za odebrané služby",
+      "date": "sobota 1. srpna 2026 11:03:53",
       "unread": true,
-      "preview": "",
-      "category": "ostatni",
-      "sender_short": "e.przydacz@diaspolis.pl",
-      "sender_email": "e.przydacz@diaspolis.pl",
-      "ai": {
-        "shrn": "Nabídka kandovaného ovoce od polského dodavatele.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Marketing mateco Czechia <marketing@statech.cz>",
-      "subject": "Re: Fwd: Poptávka - firemní dárky na míru",
-      "date": "pátek 31. července 2026 13:25:28",
-      "unread": true,
-      "preview": "Dobrý den",
-      "category": "b2b",
-      "sender_short": "Marketing mateco Czechia",
-      "sender_email": "marketing@statech.cz",
-      "ai": {
-        "shrn": "Odpověď na poptávku firemních dárků od mateco Czechia.",
-        "tyka_se": true,
-        "akce": "Posoudit nabídku a rozhodnout o spolupráci"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 13:19 (31. července 2026)",
-      "date": "pátek 31. července 2026 13:20:35",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Renata Pošepná připojil(a) přílohu IMG_20260731_131819.jpg ke kartě Umakov na nástěnce Firmy dárky + objednávky Odpovědět e-mailem ￼ Renata Pošepná přesunul(a) kartu Česká spořitelna do sloupce Hotovo - čeká na zabalení na nástěnce Firmy dárky + objednávky Odpovědět e-mailem",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Exchange",
-      "sender": "Jiří Hrudka <jiri.hrudka@mekrs.cz>",
-      "subject": "RE: Dovolená 3.8 -9.8.",
-      "date": "pátek 31. července 2026 13:05:11",
-      "unread": true,
-      "preview": "Zdravím všechny",
-      "category": "tym",
-      "sender_short": "Jiří Hrudka",
-      "sender_email": "jiri.hrudka@mekrs.cz",
-      "ai": {
-        "shrn": "Potvrzení dovolené Jiřího Hrudky na 3.8-9.8.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Josef Středa <josef.streda@mekrs.cz>",
-      "subject": "Dovolená 3.8 -9.8.",
-      "date": "pátek 31. července 2026 13:02:31",
-      "unread": true,
-      "preview": "Zdravím všechny",
-      "category": "tym",
-      "sender_short": "Josef Středa",
-      "sender_email": "josef.streda@mekrs.cz",
-      "ai": {
-        "shrn": "Oznámení dovolené Josefa Středy na 3.8-9.8.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "PPL <noreply@ppl.cz>",
-      "subject": "Přehled změn v právních dokumentech PPL.",
-      "date": "pátek 31. července 2026 12:17:14",
-      "unread": true,
-      "preview": "￼ English version below Přehled změn v právních dokumentech PPL Pátek 31. 7. 2026 Aktuální informace ￼ Vážení zákazníci, rádi bychom vás informovali o změnách v Produktových podmínkách",
-      "category": "sluzby",
-      "sender_short": "PPL",
-      "sender_email": "noreply@ppl.cz"
-    },
-    {
-      "account": "Exchange",
-      "sender": "Veronika Válek Víchová <veronika.valek-vichova@olympic-palace.cz>",
-      "subject": "RE: Poptávka",
-      "date": "pátek 31. července 2026 11:18:52",
-      "unread": true,
-      "preview": "Dobrý den, moc děkuji za zprávu. 12.8. i 13.8. jsem vždy v práci 9:00-14:00",
-      "category": "b2b",
-      "sender_short": "Veronika Válek Víchová",
-      "sender_email": "veronika.valek-vichova@olympic-palace.cz",
-      "ai": {
-        "shrn": "Disponibilita Veroniky pro schůzku 12.8 a 13.8 mezi 9:00-14:00.",
-        "tyka_se": true,
-        "akce": "Potvrdit nebo navrhnout setkání s Veronikou"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Balírna přesunul/a kartu objednávka Vilgain z 3.7.2026 do sloupce Hotovo - čeká na zabalení na nástěnce Firmy dárky + objednávky",
-      "date": "pátek 31. července 2026 11:18:01",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Balírna přesunul(a) kartu objednávka Vilgain z 3.7.2026 do sloupce Hotovo - čeká na zabalení na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
-      "category": "b2b",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com",
-      "ai": {
-        "shrn": "Notifikace z Trella - objednávka Vilgain připravena k zabalení.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Na nástěnce Firmy dárky + objednávky máš 3 upozornění od poslední návštěvy 11:10 (31. července 2026)",
-      "date": "pátek 31. července 2026 11:12:14",
-      "unread": true,
-      "preview": "",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Exchange",
-      "sender": "Česká spořitelna <ceskasporitelna@info.csas.cz>",
-      "subject": "Doplňujeme nové funkce a oprávnění do George Business",
-      "date": "pátek 31. července 2026 10:58:35",
-      "unread": true,
-      "preview": "￼ ￼ Zobrazit na webu ￼ ￼ ￼ ￼ ￼ ￼ Vylepšujeme George Business Dobrý den, od 1. září 2026 doplníme do Vaší Smlouvy o elektronickém bankovnictví George Business nové funkce a oprávnění. Ve Vašem bankovnictví tyto nové funkce najdete",
-      "category": "ostatni",
-      "sender_short": "Česká spořitelna",
-      "sender_email": "ceskasporitelna@info.csas.cz",
-      "ai": {
-        "shrn": "Informace o nových funkcích v George Business od České spořitelny.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "MarketingNutWorld <marketing@nutworld.cz>",
-      "subject": "RE: Náhled stránka firemní dárky",
-      "date": "pátek 31. července 2026 10:44:58",
-      "unread": true,
-      "preview": "Dobrý den",
-      "category": "tym",
-      "sender_short": "MarketingNutWorld",
-      "sender_email": "marketing@nutworld.cz",
-      "ai": {
-        "shrn": "Interní email od marketingu Nutworld s náhledem firemních dárků.",
-        "tyka_se": true,
-        "akce": "Zkontrolovat a schválit/upravit náhled stránky"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Renata Pošepná připojil/a přílohu IMG_20260731_093623.jpg ke kartě Umakov na nástěnce Firmy dárky + objednávky",
-      "date": "pátek 31. července 2026 9:38:57",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Renata Pošepná připojil(a) přílohu IMG_20260731_093623.jpg ke kartě Umakov na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Exchange",
-      "sender": "\"Nordiction.cz\" <info@nordiction.cz>",
-      "subject": "Nordiction.cz - Akce na e-liquidy ELFLIQ | Novinky",
-      "date": "pátek 31. července 2026 8:34:49",
-      "unread": true,
-      "preview": "￼ Akce na e-liquidy ELFLIQ pouze do dnešní půlnoci! Poslední červencový den je tady – a venku je pořádné horko! Osvěžte si den s oblíbenými e-liquidy ELFLIQ za akční ceny. Jen pozor – akce platí jen do dnešní půlnoci (31. 7.). Poté se ceny vrací zpět. 🔥 Nenechte si ujít šanci nakoupit výhodně a dopl",
-      "category": "ostatni",
-      "sender_short": "Nordiction.cz",
-      "sender_email": "info@nordiction.cz",
-      "ai": {
-        "shrn": "Propagační nabídka e-liquidů od Nordiction.cz.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Marketa\" <marketa.neubauerova@imi.cz>",
-      "sender": "Objednávka číslo: 2603521",
-      "subject": "pátek 31. července 2026 6:58:39",
-      "date": "true",
-      "unread": false,
-      "preview": "",
-      "category": "ostatni",
-      "sender_short": "Objednávka číslo: 2603521",
-      "sender_email": "Objednávka číslo: 2603521",
-      "ai": {
-        "shrn": "Potvrzovací email objednávky bez obsahu.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Renata Pošepná přesunul/a kartu Česká spořitelna do sloupce Kompletuje se dárek - Dárkovna na nástěnce Firmy dárky + objednávky",
-      "date": "pátek 31. července 2026 5:56:52",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Renata Pošepná přesunul(a) kartu Česká spořitelna do sloupce Kompletuje se dárek - Dárkovna na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Google",
-      "sender": "Temu <temu@eu.temuemail.com>",
-      "subject": "Vaše překvapivá nabídka čeká...",
-      "date": "pátek 31. července 2026 16:32:25",
-      "unread": true,
-      "preview": "Tato nabídka nebude k dispozici dlouho! ￼ U jakýchkoli položek uvedených v tomto e-mailu nebo v rámci této promoakce",
+      "preview": "Vážený pane Vlčku, právě Vám dorazila faktura za poskytované služby. V přiloženém souboru naleznete pravidelné vyúčtování služeb. Dbejte prosím zvýšené pozornosti na správné zadávání čísla účtu a variabilního symbolu. Při špatném zadání nebude platba přiřazena k Vašemu zákaznickému účtu. Veškeré daň",
       "category": "dodavatel",
-      "sender_short": "Temu",
-      "sender_email": "temu@eu.temuemail.com",
+      "sender_short": "faktury@rtyne.net",
+      "sender_email": "faktury@rtyne.net",
       "ai": {
-        "shrn": "Limitovaná nabídka s promocí od Temu.",
+        "shrn": "Faktura za poskytované služby od dodavatele. Upozornění na správné zadávání čísla účtu a variabilního symbolu.",
+        "tyka_se": true,
+        "akce": "Zkontrolovat přiloženou fakturu, ověřit údaje účtu a variabilní symbol, uhradit fakturu."
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Seznam Peněženka <noreply@firma.seznam.cz>",
+      "subject": "Přehled plateb - Seznam.cz",
+      "date": "sobota 1. srpna 2026 10:15:48",
+      "unread": true,
+      "preview": "￼ Hezký den. V příloze najdete přehled plateb a transakcí vašeho účtu HVlcek@seznam.cz za období 1. 7. 2026 - 1. 8. 2026. Zasílání přehledu plateb si můžete kdykoli upravit v Klientské zóně. Váš Seznam.cz V případě dotazů nás neváhejte kontaktovat na čísle +420 234 694 200 nebo e‑mailem: reklama@fir",
+      "category": "ostatni",
+      "sender_short": "Seznam Peněženka",
+      "sender_email": "noreply@firma.seznam.cz",
+      "ai": {
+        "shrn": "Přehled plateb a transakcí účtu Seznam.cz za období července až srpna 2026.",
         "tyka_se": false,
         "akce": null
       }
     },
     {
-      "account": "Google",
-      "sender": "\"Samsung\" <no-reply@m1.email.samsung.com>",
-      "subject": "Pořiď si nové Galaxy Watch Ultra2 | Watch9 🤩⌚",
-      "date": "pátek 31. července 2026 16:04:35",
+      "account": "Exchange",
+      "sender": "MERGADO Billing <billing@mergado.com>",
+      "subject": "Mergado faktura",
+      "date": "sobota 1. srpna 2026 7:46:07",
       "unread": true,
-      "preview": "",
-      "category": "ostatni",
-      "sender_short": "Samsung",
-      "sender_email": "no-reply@m1.email.samsung.com",
+      "preview": "Dobrý den, zasíláme Vám fakturu za využívání Mergado Editoru. Jeho pomocí nastavujete inzerci na srovnávačích zboží či zpracováváte dodavatelské feedy. Fakturu najdete na adrese: https://app.fakturoid.cz/mergado/p/B2QfLapMvw/1202622482 Děkujeme za její včasné uhrazení. Pokud máte otázky související ",
+      "category": "dodavatel",
+      "sender_short": "MERGADO Billing",
+      "sender_email": "billing@mergado.com",
       "ai": {
-        "shrn": "Reklamní email Samsung na nové hodinky.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Google",
-      "sender": "Atomrat <news@e.atomrat.cz>",
-      "subject": "Hedvábně jemné materiály pro letní dny",
-      "date": "pátek 31. července 2026 8:23:46",
-      "unread": true,
-      "preview": "￼ Zobrazit na webu Odhlásit eshop@atomrat.cz ￼ Bundy Kalhoty Vesty Mikiny Trička Sukně Kraťasy Šaty Milé atomové ženy, jemné materiály s hedvábnou úpravou jsou jako stvořené pro horké letní dny. Lehké šaty",
-      "category": "ostatni",
-      "sender_short": "Atomrat",
-      "sender_email": "news@e.atomrat.cz",
-      "ai": {
-        "shrn": "Nabídka letního oblečení z obchodu Atomrat.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Google",
-      "sender": "ABOUT YOU doporučení <recommendations@aboutyou.com>",
-      "subject": "Doporučení na kousky se slevou až do 60 %",
-      "date": "pátek 31. července 2026 8:15:12",
-      "unread": true,
-      "preview": "￼ Oblečení Boty Nové OUTLET ￼ ￼ Ahoj",
-      "category": "ostatni",
-      "sender_short": "ABOUT YOU doporučení",
-      "sender_email": "recommendations@aboutyou.com",
-      "ai": {
-        "shrn": "Doporučení slev na oblečení a boty od ABOUT YOU.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Google",
-      "sender": "Lucie Vlčková <info@fitlines.cz>",
-      "subject": "Proteinová svačina do 5 minut — tenhle recept budeš dělat pořád",
-      "date": "pátek 31. července 2026 8:01:41",
-      "unread": true,
-      "preview": "FITLINES RECEPT Proteinová svačina. 5 minut. Hotovo. Ahoj, nejčastější otázka: „Co jíst po tréninku?\" Tady je má oblíbená odpověď. PROTEINOVÝ BOWL S OVOCEM Na 1 porci · ~25 g bílkovin · do 5 minut • 200 g tvarohu nebo řeckého jogurtu • Hrst lesního ovoce nebo jahod • 1 lžíce mandlového másla • Troch",
-      "category": "ostatni",
-      "sender_short": "Lucie Vlčková",
-      "sender_email": "info@fitlines.cz",
-      "ai": {
-        "shrn": "Duplikát receptáře od Lucie Vlčkové s proteinovou svačinou.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Google",
-      "sender": "Lucie Vlčková <info@fitlines.cz>",
-      "subject": "Proteinová svačina do 5 minut — tenhle recept budeš dělat pořád",
-      "date": "pátek 31. července 2026 8:01:01",
-      "unread": true,
-      "preview": "FITLINES RECEPT Proteinová svačina. 5 minut. Hotovo. Ahoj, nejčastější otázka: „Co jíst po tréninku?\" Tady je má oblíbená odpověď. PROTEINOVÝ BOWL S OVOCEM Na 1 porci · ~25 g bílkovin · do 5 minut • 200 g tvarohu nebo řeckého jogurtu • Hrst lesního ovoce nebo jahod • 1 lžíce mandlového másla • Troch",
-      "category": "ostatni",
-      "sender_short": "Lucie Vlčková",
-      "sender_email": "info@fitlines.cz",
-      "ai": {
-        "shrn": "Duplikát receptáře od Lucie Vlčkové s proteinovou svačinou.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Google",
-      "sender": "\"CrossFit\" <crossfit@mail.crossfit.com>",
-      "subject": "260731 Workout of the Day: A Couplet",
-      "date": "pátek 31. července 2026 2:31:03",
-      "unread": true,
-      "preview": "￼ ￼ ￼ FRIDAY",
-      "category": "ostatni",
-      "sender_short": "CrossFit",
-      "sender_email": "crossfit@mail.crossfit.com",
-      "ai": {
-        "shrn": "Denní trénink od CrossFit - pátek Couplet workout.",
-        "tyka_se": false,
-        "akce": null
+        "shrn": "Faktura od Mergada za využívání služby Mergado Editor pro správu inzercí na srovnávačích.",
+        "tyka_se": true,
+        "akce": "Zkontrolovat fakturu na uvedeném odkazu a uhradit ji včas."
       }
     },
     {
       "account": "Google",
       "sender": "AliExpress.seller <promotion@aliexpress.com>",
-      "subject": "Our daily picks at US $2.00 off",
-      "date": "pátek 31. července 2026 1:34:59",
+      "subject": "Our daily picks at US $1.00 off",
+      "date": "sobota 1. srpna 2026 2:36:23",
       "unread": true,
-      "preview": "Collect coupons inside & shop now ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ Daily specials in our store ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ",
+      "preview": "",
       "category": "ostatni",
       "sender_short": "AliExpress.seller",
       "sender_email": "promotion@aliexpress.com",
       "ai": {
-        "shrn": "Denní nabídka slev na AliExpress - kupóny se slevou $2.",
+        "shrn": "Propagační email od AliExpressu s nabídkou slev.",
         "tyka_se": false,
         "akce": null
       }
@@ -349,15 +70,15 @@
     {
       "account": "Google",
       "sender": "CrossFit <crossfit@mail.crossfit.com>",
-      "subject": "The Professional Coach: Key Takeaways and Workbook from the Owners and Coaches Conference",
-      "date": "pátek 31. července 2026 1:07:33",
+      "subject": "260801 Workout of the Day: Grip",
+      "date": "sobota 1. srpna 2026 2:31:53",
       "unread": true,
-      "preview": "￼ ￼ 9 Coaching Track Takeaways From the CrossFit Owners and Coaches Conference",
+      "preview": "￼ ￼ ￼ SATURDAY",
       "category": "ostatni",
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "Vzdělávací materiál z CrossFit konference o coachingu.",
+        "shrn": "Email s denním tréninkovým programem z CrossFitu.",
         "tyka_se": false,
         "akce": null
       }
