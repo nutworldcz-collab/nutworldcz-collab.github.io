@@ -1,6 +1,39 @@
 {
-  "generated": "2026-08-02T08:09:34",
-  "total": 0,
-  "spam_skipped": 0,
-  "emails": []
+  "generated": "2026-08-02T12:18:47",
+  "total": 2,
+  "spam_skipped": 1,
+  "emails": [
+    {
+      "account": "Exchange",
+      "sender": "Letiště Praha <info@mailer.prg.aero>",
+      "subject": "Novinky letového řádu (OS)",
+      "date": "neděle 2. srpna 2026 9:17:11",
+      "unread": true,
+      "preview": "Zobrazit e-mail na webu ￼ Novinky z letiště ￼ Za atmosférou severní Anglie Láká vás město",
+      "category": "ostatni",
+      "sender_short": "Letiště Praha",
+      "sender_email": "info@mailer.prg.aero",
+      "ai": {
+        "shrn": "Duplikátní zpráva o novelách letového řádu a novinkách z letiště Praha. Email není relevantní pro provoz e-shopu.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Letiště Praha <info@mailer.prg.aero>",
+      "subject": "Novinky letového řádu (OS)",
+      "date": "neděle 2. srpna 2026 9:06:30",
+      "unread": true,
+      "preview": "Zobrazit e-mail na webu ￼ Novinky z letiště ￼ Za atmosférou severní Anglie Láká vás město",
+      "category": "ostatni",
+      "sender_short": "Letiště Praha",
+      "sender_email": "info@mailer.prg.aero",
+      "ai": {
+        "shrn": "Duplikátní zpráva o novelách letového řádu a novinkách z letiště Praha. Email není relevantní pro provoz e-shopu.",
+        "tyka_se": false,
+        "akce": null
+      }
+    }
+  ]
 }
