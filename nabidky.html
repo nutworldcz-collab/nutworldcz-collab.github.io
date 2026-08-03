@@ -872,16 +872,14 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
   const data = collectFormData();
   const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
   const zakazkaUrl = 'https://nutworldcz-collab.github.io/zakazka.html#' + encoded;
+  const editUrl    = 'https://nutworldcz-collab.github.io/nabidky.html#' + editHash;
   window._zakazkaUrl = zakazkaUrl;
 
   const totalBez = produkty.reduce((s,p) => s + p.ks * p.cenaBezDph, 0);
-  const prodList = produkty.map(p => `- ${p.nazev} · ${p.ks} ks · ${fmt(p.cenaBezDph)} Kč`).join('\n');
-  // Trello karta — BEZ CEN (vidí zaměstnanci)
-  // Trello: prodejní cena/ks viditelná, nákupní a celkový součet NE
   const trelloProdList = produkty.map(p =>
     `- ${p.nazev} · ${p.ks} ks · ${fmt(p.cenaBezDph)} Kč/ks`
   ).join('\n');
-  const cardDesc = `## ${firma}\n**Číslo nabídky:** ${cislo}\n**Rep:** ${repName||'-'}\n**Kontakt:** ${kontakt||'-'}${telefon?' · 📞 '+telefon:''}${emailKlient?' · 📧 '+emailKlient:''}\n\n### Produkty\n${trelloProdList}\n\n---\n✅ [Otevřít formulář zakázky po schválení](${zakazkaUrl})`;
+  const cardDesc = `## ${firma}\n**Číslo nabídky:** ${cislo}\n**Rep:** ${repName||'-'}\n**Kontakt:** ${kontakt||'-'}${telefon?' · 📞 '+telefon:''}${emailKlient?' · 📧 '+emailKlient:''}\n\n### Produkty\n${trelloProdList}\n\n---\n✏️ [Upravit nabídku](${editUrl})\n✅ [Otevřít formulář zakázky po schválení](${zakazkaUrl})`;
 
   fetch(`https://api.trello.com/1/cards?key=${NW_KEY}&token=${NW_TOKEN}`, {
     method: 'POST',
