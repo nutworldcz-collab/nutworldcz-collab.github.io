@@ -140,9 +140,15 @@ h1,h2,h3,h4{font-family:'Exo 2',sans-serif}
 
   <!-- Panel: Přehled nabídky (skrytý do načtení) -->
   <div class="panel" id="panel-summary" style="display:none">
-    <div class="panel-head">
-      <h2>📋 Přehled nabídky</h2>
-      <p id="summary-subtitle">Načteno z odkazu</p>
+    <div class="panel-head" style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div>
+        <h2>📋 Přehled nabídky</h2>
+        <p id="summary-subtitle">Načteno z odkazu</p>
+      </div>
+      <a id="edit-nabidka-link" href="nabidky.html" target="_blank"
+         style="background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.35);color:white;font-family:'Exo 2',sans-serif;font-weight:600;font-size:12px;padding:7px 14px;border-radius:20px;text-decoration:none;white-space:nowrap;margin-top:2px">
+        ✏️ Editovat nabídku
+      </a>
     </div>
     <div class="panel-body">
       <div class="summary">
@@ -379,6 +385,7 @@ function parseAndLoad(encoded) {
     document.getElementById('panel-link').style.display = 'none';
     document.getElementById('panel-empty').style.display = 'none';
     document.getElementById('panel-summary').style.display = 'block';
+    document.getElementById('edit-nabidka-link').href = 'nabidky.html#' + encoded;
     document.getElementById('step2').classList.add('done');
     document.getElementById('step2').classList.remove('active');
     document.getElementById('step3').classList.add('active');
