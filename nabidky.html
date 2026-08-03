@@ -362,6 +362,8 @@ function populateForm(data) {
     recalc(id);
   });
   recalcDoprava();
+  _trelloCardId = data._cardId || null;
+  _savedCislo   = data._cislo  || null;
 }
 
 function loadFromHash() {
@@ -375,6 +377,8 @@ function loadFromHash() {
 
 // ── Řádky produktů ──
 let rowCount = 0;
+let _trelloCardId = null;  // ID existující Trello karty (při editaci)
+let _savedCislo   = null;  // Číslo nabídky zachované při editaci
 function addRow() {
   rowCount++;
   const id = rowCount;
@@ -757,7 +761,8 @@ function generateOffer() {
   const poznamka = document.getElementById('poznamka').value.trim();
   const today = new Date();
   const dateStr = today.getDate()+'. '+(today.getMonth()+1)+'. '+today.getFullYear();
-  const cislo = 'NW-'+today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+String(today.getDate()).padStart(2,'0')+'-'+String(Math.floor(Math.random()*900)+100);
+  const cislo = _savedCislo || ('NW-'+today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+String(today.getDate()).padStart(2,'0')+'-'+String(Math.floor(Math.random()*900)+100));
+  const isEdit = !!_trelloCardId;
 
   // Aktualizuj URL hash → odkaz na tuto stránku = přímý odkaz pro editaci
   const editHash = btoa(unescape(encodeURIComponent(JSON.stringify(collectFormData()))));
@@ -881,20 +886,30 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
   ).join('\n');
   const cardDesc = `## ${firma}\n**Číslo nabídky:** ${cislo}\n**Rep:** ${repName||'-'}\n**Kontakt:** ${kontakt||'-'}${telefon?' · 📞 '+telefon:''}${emailKlient?' · 📧 '+emailKlient:''}\n\n### Produkty\n${trelloProdList}\n\n---\n✏️ [Upravit nabídku](${editUrl})\n✅ [Otevřít formulář zakázky po schválení](${zakazkaUrl})`;
 
-  fetch(`https://api.trello.com/1/cards?key=${NW_KEY}&token=${NW_TOKEN}`, {
-    method: 'POST',
+  const trelloApiUrl = isEdit
+    ? `https://api.trello.com/1/cards/${_trelloCardId}?key=${NW_KEY}&token=${NW_TOKEN}`
+    : `https://api.trello.com/1/cards?key=${NW_KEY}&token=${NW_TOKEN}`;
+  const trelloBody = isEdit
+    ? { name: `${firma} — ${cislo}`, desc: cardDesc }
+    : { name: `${firma} — ${cislo}`, desc: cardDesc, idList: NW_LIST_NABIDKY, pos: 'top' };
+
+  fetch(trelloApiUrl, {
+    method: isEdit ? 'PUT' : 'POST',
     headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({
-      name: `${firma} — ${cislo}`,
-      desc: cardDesc,
-      idList: NW_LIST_NABIDKY,
-      pos: 'top'
-    })
+    body: JSON.stringify(trelloBody)
   }).then(r => r.json()).then(card => {
     if (card.id) {
+      _trelloCardId = card.id;
+      _savedCislo = cislo;
+      // Aktualizuj URL hash s card ID a číslem nabídky
+      const editDataFinal = { ...collectFormData(), _cardId: card.id, _cislo: cislo };
+      const editHashFinal = btoa(unescape(encodeURIComponent(JSON.stringify(editDataFinal))));
+      history.replaceState(null, '', '#' + editHashFinal);
+
+      const msg = isEdit ? '✏️ Nabídka aktualizována v Trellu!' : '✅ Karta vytvořena v Trellu!';
       document.getElementById('link-copied').style.display = 'block';
       document.getElementById('link-copied').innerHTML =
-        `✅ Karta vytvořena v Trellu! &nbsp;
+        `${msg} &nbsp;
          <a href="${card.url}" target="_blank" style="color:#5c381f;font-weight:700">Otevřít kartu →</a><br>
          <span style="font-size:11px;color:#888">Finanční přehled odeslán na tvůj email.</span>`;
       document.getElementById('btn-link').style.display = 'none';
@@ -934,7 +949,7 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
     body: JSON.stringify({
       type: 'owner_nabidka',
       to: 'nutworld.cz@gmail.com',
-      subject: `💰 Nabídka ${cislo} — ${firma} — ${fmt(totalBez * 1.12)} Kč`,
+      subject: isEdit ? `✏️ Aktualizace ${cislo} — ${firma} — ${fmt(totalBez * 1.12)} Kč` : `💰 Nabídka ${cislo} — ${firma} — ${fmt(totalBez * 1.12)} Kč`,
       body: ownerBody
     })
   }).catch(() => {});
