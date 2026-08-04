@@ -50,6 +50,13 @@ table.pt input.inp-cena{width:100px;text-align:right}
 .del-btn:hover{color:var(--acc);background:#fff0f5}
 .add-btn{background:var(--kraft);border:1.5px solid #c8976a;color:var(--bd);font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;padding:7px 16px;border-radius:20px;cursor:pointer;margin-top:4px}
 .add-btn:hover{background:#e8d5c0}
+/* ── NASEPTÁVAČ ── */
+.td-kod-wrap{position:relative}
+.suggest-box{position:absolute;top:calc(100% + 2px);left:0;min-width:280px;background:white;border:1.5px solid #c8976a;border-radius:0 0 8px 8px;box-shadow:0 4px 16px rgba(0,0,0,.15);z-index:200;max-height:220px;overflow-y:auto}
+.suggest-item{padding:7px 10px;cursor:pointer;font-size:12px;color:#2a1a0e;border-bottom:1px solid #f0e4d4;line-height:1.4}
+.suggest-item:last-child{border-bottom:none}
+.suggest-item:hover,.suggest-item.active{background:#f1e6da}
+.suggest-kod{font-family:monospace;font-size:11px;color:var(--br);font-weight:700;margin-right:5px;display:inline-block;min-width:36px}
 
 /* ── PRIJEMCI ── */
 .prijemci-list{display:flex;flex-direction:column;gap:8px}
@@ -210,7 +217,7 @@ function addRow() {
   const tr = document.createElement('tr');
   tr.id = 'row-' + id;
   tr.innerHTML = `
-    <td><input class="inp-kod" id="kod-${id}" placeholder="101" title="Kód produktu ze Shoptetu"/></td>
+    <td class="td-kod-wrap"><input class="inp-kod" id="kod-${id}" placeholder="101" autocomplete="off" title="Kód produktu ze Shoptetu" oninput="kodSuggest(${id})" onblur="setTimeout(()=>closeSuggest(${id}),150)"/></td>
     <td><input class="inp-nazev" id="nazev-${id}" placeholder="Název produktu, gramáž…" oninput="recalc(${id})"/></td>
     <td><input class="inp-ks" type="number" id="ks-${id}" value="1" min="1" oninput="recalc(${id})"/></td>
     <td style="white-space:nowrap"><input class="inp-cena" type="number" id="cena-${id}" placeholder="0,00" step="0.01" oninput="recalc(${id})"/> Kč</td>
@@ -232,6 +239,41 @@ function recalc(id) {
   if (!el) return;
   if (!ks || isNaN(cena) || cena <= 0) { el.textContent = '—'; return; }
   el.textContent = num((ks * cena).toFixed(2)) + ' Kč';
+}
+
+// ── Naseptávač kódů ──
+function kodSuggest(id) {
+  const val = (document.getElementById('kod-'+id)?.value || '').trim().toLowerCase();
+  closeSuggest(id);
+  if (val.length < 1) return;
+  const matches = PRODUKTY.filter(p =>
+    p.kod.toLowerCase().startsWith(val) ||
+    p.nazev.toLowerCase().includes(val)
+  ).slice(0, 10);
+  if (!matches.length) return;
+
+  const box = document.createElement('div');
+  box.className = 'suggest-box';
+  box.id = 'suggest-' + id;
+  matches.forEach(p => {
+    const item = document.createElement('div');
+    item.className = 'suggest-item';
+    item.innerHTML = `<span class="suggest-kod">${p.kod}</span>${p.nazev}`;
+    item.onmousedown = (e) => {
+      e.preventDefault();
+      document.getElementById('kod-' + id).value = p.kod;
+      const nazevEl = document.getElementById('nazev-' + id);
+      nazevEl.value = p.nazev;
+      closeSuggest(id);
+      nazevEl.focus();
+      nazevEl.setSelectionRange(nazevEl.value.length, nazevEl.value.length);
+    };
+    box.appendChild(item);
+  });
+  document.getElementById('kod-'+id).closest('td').appendChild(box);
+}
+function closeSuggest(id) {
+  document.getElementById('suggest-'+id)?.remove();
 }
 
 // ── Odkaz zakázky ──
