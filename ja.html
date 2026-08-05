@@ -118,11 +118,17 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
 /* ROZVRH */
 .rz-tab{font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;padding:5px 14px;border-radius:20px;border:2px solid transparent;background:white;color:#a08060;cursor:pointer;transition:all .15s}
 .rz-tab.active{border-color:#83502e;color:#5c381f}
-.rz-block{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #f5ede3}
+.rz-block{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #f5ede3;cursor:pointer;transition:opacity .15s}
 .rz-block:last-child{border-bottom:none}
+.rz-block:hover .rz-chk{border-color:#83502e}
+.rz-block.done{opacity:.4}
+.rz-block.done .rz-label{text-decoration:line-through;color:#a08060}
+.rz-block.done .rz-chk{background:#6fa044;border-color:#6fa044}
+.rz-block.done .rz-chk::after{content:'✓';font-size:9px;color:white;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+.rz-chk{width:16px;height:16px;border-radius:4px;border:1.5px solid #ddd;flex-shrink:0;transition:all .15s;position:relative}
 .rz-time{font-size:11px;color:#b0966a;font-variant-numeric:tabular-nums;width:32px;flex-shrink:0}
 .rz-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.rz-label{font-size:12.5px;color:#2a1a0e}
+.rz-label{font-size:12.5px;color:#2a1a0e;transition:color .15s}
 .rz-li{font-size:12px;color:#6b4c30;padding:4px 0;border-bottom:1px solid #f5ede3}
 .rz-li::before{content:'· ';color:#b0966a}
 
@@ -245,39 +251,46 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
 
       <!-- DEN -->
       <div id="rz-den">
+        <!-- Progress bar -->
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          <div style="flex:1;background:#f1e6da;border-radius:8px;height:7px;overflow:hidden">
+            <div id="rz-bar" style="height:100%;background:linear-gradient(90deg,#da1668,#f7ab31);border-radius:8px;width:0%;transition:width .35s"></div>
+          </div>
+          <span id="rz-count" style="font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;color:#a08060;white-space:nowrap">0 / 17</span>
+        </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
           <!-- Ranní cyklus -->
           <div style="background:white;border-radius:12px;padding:16px;box-shadow:0 1px 5px rgba(0,0,0,.07)">
             <div style="font-family:'Exo 2',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#a08060;margin-bottom:10px">🌅 Ranní cyklus</div>
-            <div class="rz-block"><span class="rz-time">5:00</span><span class="rz-dot" style="background:#f7ab31"></span><span class="rz-label">Pes + ranní dýchání</span></div>
-            <div class="rz-block"><span class="rz-time">5:30</span><span class="rz-dot" style="background:#f7ab31"></span><span class="rz-label">Snídaně</span></div>
-            <div class="rz-block"><span class="rz-time">6:00</span><span class="rz-dot" style="background:#d4880a"></span><span class="rz-label">Trénink</span></div>
-            <div class="rz-block"><span class="rz-time">7:30</span><span class="rz-dot" style="background:#9b6bb5"></span><span class="rz-label">Hygiena — holení, stříhání, krémy</span></div>
+            <div class="rz-block" data-id="ran1" onclick="rzCheck(this)"><span class="rz-chk"></span><span class="rz-time">5:00</span><span class="rz-dot" style="background:#f7ab31"></span><span class="rz-label">Pes + ranní dýchání</span></div>
+            <div class="rz-block" data-id="ran2" onclick="rzCheck(this)"><span class="rz-chk"></span><span class="rz-time">5:30</span><span class="rz-dot" style="background:#f7ab31"></span><span class="rz-label">Snídaně</span></div>
+            <div class="rz-block" data-id="ran3" onclick="rzCheck(this)"><span class="rz-chk"></span><span class="rz-time">6:00</span><span class="rz-dot" style="background:#d4880a"></span><span class="rz-label">Trénink</span></div>
+            <div class="rz-block" data-id="ran4" onclick="rzCheck(this)"><span class="rz-chk"></span><span class="rz-time">7:30</span><span class="rz-dot" style="background:#9b6bb5"></span><span class="rz-label">Hygiena — holení, stříhání, krémy</span></div>
           </div>
           <!-- Pracovní blok -->
           <div style="background:white;border-radius:12px;padding:16px;box-shadow:0 1px 5px rgba(0,0,0,.07)">
             <div style="font-family:'Exo 2',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#a08060;margin-bottom:10px">💼 Práce 8:00–15:30</div>
-            <div class="rz-block"><span class="rz-time">8:00</span><span class="rz-dot" style="background:#3a7bbd"></span><span class="rz-label">Review — objednávky, obrat, ads</span></div>
-            <div class="rz-block"><span class="rz-time">8:30</span><span class="rz-dot" style="background:#83502e"></span><span class="rz-label">Emaily — inbox zero</span></div>
-            <div class="rz-block"><span class="rz-time">9:15</span><span class="rz-dot" style="background:#6fa044"></span><span class="rz-label">Hlavní blok — téma dne</span></div>
-            <div class="rz-block"><span class="rz-time">12:00</span><span class="rz-dot" style="background:#f7ab31"></span><span class="rz-label">Pauza + oběd</span></div>
-            <div class="rz-block"><span class="rz-time">12:30</span><span class="rz-dot" style="background:#6fa044"></span><span class="rz-label">Druhý pracovní blok</span></div>
-            <div class="rz-block"><span class="rz-time">14:00</span><span class="rz-dot" style="background:#da1668"></span><span class="rz-label">Zaměstnanci + provoz</span></div>
-            <div class="rz-block"><span class="rz-time">14:45</span><span class="rz-dot" style="background:#83502e"></span><span class="rz-label">Emaily II. kolo</span></div>
-            <div class="rz-block"><span class="rz-time">15:15</span><span class="rz-dot" style="background:#5c381f"></span><span class="rz-label">Denní uzávěrka + plán na zítra</span></div>
+            <div class="rz-block" data-id="pra1" onclick="rzCheck(this)"><span class="rz-chk"></span><span class="rz-time">8:00</span><span class="rz-dot" style="background:#3a7bbd"></span><span class="rz-label">Review — objednávky, obrat, ads</span></div>
+            <div class="rz-block" data-id="pra2" onclick="rzCheck(this)"><span class="rz-chk"></span><span class="rz-time">8:30</span><span class="rz-dot" style="background:#83502e"></span><span class="rz-label">Emaily — inbox zero</span></div>
+            <div class="rz-block" data-id="pra3" onclick="rzCheck(this)"><span class="rz-chk"></span><span class="rz-time">9:15</span><span class="rz-dot" style="background:#6fa044"></span><span class="rz-label">Hlavní blok — téma dne</span></div>
+            <div class="rz-block" data-id="pra4" onclick="rzCheck(this)"><span class="rz-chk"></span><span class="rz-time">12:00</span><span class="rz-dot" style="background:#f7ab31"></span><span class="rz-label">Pauza + oběd</span></div>
+            <div class="rz-block" data-id="pra5" onclick="rzCheck(this)"><span class="rz-chk"></span><span class="rz-time">12:30</span><span class="rz-dot" style="background:#6fa044"></span><span class="rz-label">Druhý pracovní blok</span></div>
+            <div class="rz-block" data-id="pra6" onclick="rzCheck(this)"><span class="rz-chk"></span><span class="rz-time">14:00</span><span class="rz-dot" style="background:#da1668"></span><span class="rz-label">Zaměstnanci + provoz</span></div>
+            <div class="rz-block" data-id="pra7" onclick="rzCheck(this)"><span class="rz-chk"></span><span class="rz-time">14:45</span><span class="rz-dot" style="background:#83502e"></span><span class="rz-label">Emaily II. kolo</span></div>
+            <div class="rz-block" data-id="pra8" onclick="rzCheck(this)"><span class="rz-chk"></span><span class="rz-time">15:15</span><span class="rz-dot" style="background:#5c381f"></span><span class="rz-label">Denní uzávěrka + plán na zítra</span></div>
           </div>
           <!-- Odpolední cyklus -->
           <div style="background:white;border-radius:12px;padding:16px;box-shadow:0 1px 5px rgba(0,0,0,.07)">
             <div style="font-family:'Exo 2',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#a08060;margin-bottom:10px">🌿 Odpoledne</div>
-            <div class="rz-block"><span class="rz-time">15:30</span><span class="rz-dot" style="background:#4a9a3a"></span><span class="rz-label">Zahrada + aktivní odpočinek</span></div>
-            <div class="rz-block"><span class="rz-time">17:00</span><span class="rz-dot" style="background:#da1668"></span><span class="rz-label">Děti — čas s rodinou</span></div>
-            <div class="rz-block"><span class="rz-time">18:30</span><span class="rz-dot" style="background:#da1668"></span><span class="rz-label">Příprava kluků na spánek</span></div>
+            <div class="rz-block" data-id="odp1" onclick="rzCheck(this)"><span class="rz-chk"></span><span class="rz-time">15:30</span><span class="rz-dot" style="background:#4a9a3a"></span><span class="rz-label">Zahrada + aktivní odpočinek</span></div>
+            <div class="rz-block" data-id="odp2" onclick="rzCheck(this)"><span class="rz-chk"></span><span class="rz-time">17:00</span><span class="rz-dot" style="background:#da1668"></span><span class="rz-label">Děti — čas s rodinou</span></div>
+            <div class="rz-block" data-id="odp3" onclick="rzCheck(this)"><span class="rz-chk"></span><span class="rz-time">18:30</span><span class="rz-dot" style="background:#da1668"></span><span class="rz-label">Příprava kluků na spánek</span></div>
           </div>
           <!-- Večerní cyklus -->
           <div style="background:white;border-radius:12px;padding:16px;box-shadow:0 1px 5px rgba(0,0,0,.07)">
             <div style="font-family:'Exo 2',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#a08060;margin-bottom:10px">🌙 Večer</div>
-            <div class="rz-block"><span class="rz-time">19:45</span><span class="rz-dot" style="background:#5c381f"></span><span class="rz-label">Protažení</span></div>
-            <div class="rz-block"><span class="rz-time">20:05</span><span class="rz-dot" style="background:#5c381f"></span><span class="rz-label">Večerní brainstorming — nápady, zápisky</span></div>
+            <div class="rz-block" data-id="vec1" onclick="rzCheck(this)"><span class="rz-chk"></span><span class="rz-time">19:45</span><span class="rz-dot" style="background:#5c381f"></span><span class="rz-label">Protažení</span></div>
+            <div class="rz-block" data-id="vec2" onclick="rzCheck(this)"><span class="rz-chk"></span><span class="rz-time">20:05</span><span class="rz-dot" style="background:#5c381f"></span><span class="rz-label">Večerní brainstorming — nápady, zápisky</span></div>
           </div>
         </div>
       </div>
@@ -1153,22 +1166,68 @@ function fmtD(iso){if(!iso)return'';const[y,m,dd]=iso.split('-');return`${dd}.${
 })();
 
 // ── ROZVRH ──────────────────────────────────────────────────────────────────
-window.toggleRozvrh = function(){
-  const panel = document.getElementById('rozvrh-panel');
-  const btn = document.getElementById('rozvrh-btn');
-  const chev = document.getElementById('rozvrh-chevron');
-  const open = panel.style.display === 'none';
-  panel.style.display = open ? 'block' : 'none';
-  btn.querySelector('span:first-child').textContent = open ? 'Skrýt' : 'Zobrazit';
-  chev.style.transform = open ? 'rotate(180deg)' : '';
-};
-window.rzTab = function(id, el){
-  ['den','tyden','mesic'].forEach(t => {
-    document.getElementById('rz-'+t).style.display = t === id ? 'block' : 'none';
-  });
-  document.querySelectorAll('.rz-tab').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-};
+(function(){
+  const KEY = 'nw_rozvrh_v1';
+  const TODAY = new Date().toISOString().slice(0,10);
+  const TOTAL = 17;
+
+  function load(){
+    try {
+      const s = JSON.parse(localStorage.getItem(KEY)||'{}');
+      if(s.date !== TODAY) return {}; // auto-reset nový den
+      return s.done || {};
+    } catch { return {}; }
+  }
+  function save(done){
+    localStorage.setItem(KEY, JSON.stringify({date: TODAY, done}));
+  }
+
+  function updateProgress(){
+    const done = load();
+    const n = Object.keys(done).filter(k=>done[k]).length;
+    document.getElementById('rz-bar').style.width = Math.round(n/TOTAL*100)+'%';
+    document.getElementById('rz-count').textContent = n+' / '+TOTAL;
+  }
+
+  function applyState(){
+    const done = load();
+    document.querySelectorAll('.rz-block[data-id]').forEach(el => {
+      el.classList.toggle('done', !!done[el.dataset.id]);
+    });
+    updateProgress();
+  }
+
+  window.rzCheck = function(el){
+    const id = el.dataset.id;
+    const done = load();
+    done[id] = !done[id];
+    save(done);
+    el.classList.toggle('done', !!done[id]);
+    updateProgress();
+  };
+
+  window.toggleRozvrh = function(){
+    const panel = document.getElementById('rozvrh-panel');
+    const btn = document.getElementById('rozvrh-btn');
+    const chev = document.getElementById('rozvrh-chevron');
+    const open = panel.style.display === 'none';
+    panel.style.display = open ? 'block' : 'none';
+    btn.querySelector('span:first-child').textContent = open ? 'Skrýt' : 'Zobrazit';
+    chev.style.transform = open ? 'rotate(180deg)' : '';
+    if(open) applyState();
+  };
+
+  window.rzTab = function(id, el){
+    ['den','tyden','mesic'].forEach(t => {
+      document.getElementById('rz-'+t).style.display = t === id ? 'block' : 'none';
+    });
+    document.querySelectorAll('.rz-tab').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+  };
+
+  // Init progress na stránce (i bez otevření)
+  updateProgress();
+})();
 
 </script>
 </body>
