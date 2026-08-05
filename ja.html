@@ -115,6 +115,17 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
   .quick-grid{grid-template-columns:repeat(4,1fr)}
 }
 
+/* ROZVRH */
+.rz-tab{font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;padding:5px 14px;border-radius:20px;border:2px solid transparent;background:white;color:#a08060;cursor:pointer;transition:all .15s}
+.rz-tab.active{border-color:#83502e;color:#5c381f}
+.rz-block{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #f5ede3}
+.rz-block:last-child{border-bottom:none}
+.rz-time{font-size:11px;color:#b0966a;font-variant-numeric:tabular-nums;width:32px;flex-shrink:0}
+.rz-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.rz-label{font-size:12.5px;color:#2a1a0e}
+.rz-li{font-size:12px;color:#6b4c30;padding:4px 0;border-bottom:1px solid #f5ede3}
+.rz-li::before{content:'· ';color:#b0966a}
+
 /* CHECKLIST */
 .cl-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
 .cl-filters{display:flex;gap:6px;flex-wrap:wrap}
@@ -213,6 +224,163 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
         <span style="font-size:10px;color:#a08060;text-align:center">Výstupní + pracovní</span>
       </a>
     </div>
+  </div>
+
+  <!-- ROZVRH -->
+  <div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div class="section-label" style="margin-bottom:0">🗓 Pracovní rozvrh</div>
+      <button id="rozvrh-btn" onclick="toggleRozvrh()" style="font-family:'Exo 2',sans-serif;font-size:12px;font-weight:700;padding:6px 14px;border-radius:20px;border:none;background:#f1e6da;color:#83502e;cursor:pointer;display:flex;align-items:center;gap:6px;transition:background .15s">
+        <span>Zobrazit</span><span id="rozvrh-chevron" style="display:inline-block;transition:transform .25s">▾</span>
+      </button>
+    </div>
+    <div id="rozvrh-panel" style="display:none">
+
+      <!-- Tab bar -->
+      <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap">
+        <button class="rz-tab active" onclick="rzTab('den',this)">Den</button>
+        <button class="rz-tab" onclick="rzTab('tyden',this)">Týden</button>
+        <button class="rz-tab" onclick="rzTab('mesic',this)">Měsíc</button>
+      </div>
+
+      <!-- DEN -->
+      <div id="rz-den">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <!-- Ranní cyklus -->
+          <div style="background:white;border-radius:12px;padding:16px;box-shadow:0 1px 5px rgba(0,0,0,.07)">
+            <div style="font-family:'Exo 2',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#a08060;margin-bottom:10px">🌅 Ranní cyklus</div>
+            <div class="rz-block"><span class="rz-time">5:00</span><span class="rz-dot" style="background:#f7ab31"></span><span class="rz-label">Pes + ranní dýchání</span></div>
+            <div class="rz-block"><span class="rz-time">5:30</span><span class="rz-dot" style="background:#f7ab31"></span><span class="rz-label">Snídaně</span></div>
+            <div class="rz-block"><span class="rz-time">6:00</span><span class="rz-dot" style="background:#d4880a"></span><span class="rz-label">Trénink</span></div>
+            <div class="rz-block"><span class="rz-time">7:30</span><span class="rz-dot" style="background:#9b6bb5"></span><span class="rz-label">Hygiena — holení, stříhání, krémy</span></div>
+          </div>
+          <!-- Pracovní blok -->
+          <div style="background:white;border-radius:12px;padding:16px;box-shadow:0 1px 5px rgba(0,0,0,.07)">
+            <div style="font-family:'Exo 2',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#a08060;margin-bottom:10px">💼 Práce 8:00–15:30</div>
+            <div class="rz-block"><span class="rz-time">8:00</span><span class="rz-dot" style="background:#3a7bbd"></span><span class="rz-label">Review — objednávky, obrat, ads</span></div>
+            <div class="rz-block"><span class="rz-time">8:30</span><span class="rz-dot" style="background:#83502e"></span><span class="rz-label">Emaily — inbox zero</span></div>
+            <div class="rz-block"><span class="rz-time">9:15</span><span class="rz-dot" style="background:#6fa044"></span><span class="rz-label">Hlavní blok — téma dne</span></div>
+            <div class="rz-block"><span class="rz-time">12:00</span><span class="rz-dot" style="background:#f7ab31"></span><span class="rz-label">Pauza + oběd</span></div>
+            <div class="rz-block"><span class="rz-time">12:30</span><span class="rz-dot" style="background:#6fa044"></span><span class="rz-label">Druhý pracovní blok</span></div>
+            <div class="rz-block"><span class="rz-time">14:00</span><span class="rz-dot" style="background:#da1668"></span><span class="rz-label">Zaměstnanci + provoz</span></div>
+            <div class="rz-block"><span class="rz-time">14:45</span><span class="rz-dot" style="background:#83502e"></span><span class="rz-label">Emaily II. kolo</span></div>
+            <div class="rz-block"><span class="rz-time">15:15</span><span class="rz-dot" style="background:#5c381f"></span><span class="rz-label">Denní uzávěrka + plán na zítra</span></div>
+          </div>
+          <!-- Odpolední cyklus -->
+          <div style="background:white;border-radius:12px;padding:16px;box-shadow:0 1px 5px rgba(0,0,0,.07)">
+            <div style="font-family:'Exo 2',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#a08060;margin-bottom:10px">🌿 Odpoledne</div>
+            <div class="rz-block"><span class="rz-time">15:30</span><span class="rz-dot" style="background:#4a9a3a"></span><span class="rz-label">Zahrada + aktivní odpočinek</span></div>
+            <div class="rz-block"><span class="rz-time">17:00</span><span class="rz-dot" style="background:#da1668"></span><span class="rz-label">Děti — čas s rodinou</span></div>
+            <div class="rz-block"><span class="rz-time">18:30</span><span class="rz-dot" style="background:#da1668"></span><span class="rz-label">Příprava kluků na spánek</span></div>
+          </div>
+          <!-- Večerní cyklus -->
+          <div style="background:white;border-radius:12px;padding:16px;box-shadow:0 1px 5px rgba(0,0,0,.07)">
+            <div style="font-family:'Exo 2',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#a08060;margin-bottom:10px">🌙 Večer</div>
+            <div class="rz-block"><span class="rz-time">19:45</span><span class="rz-dot" style="background:#5c381f"></span><span class="rz-label">Protažení</span></div>
+            <div class="rz-block"><span class="rz-time">20:05</span><span class="rz-dot" style="background:#5c381f"></span><span class="rz-label">Večerní brainstorming — nápady, zápisky</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TÝDEN -->
+      <div id="rz-tyden" style="display:none">
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px">
+          <div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 5px rgba(0,0,0,.07)">
+            <div style="background:#5c381f;padding:9px 12px;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;color:white;letter-spacing:.08em;text-transform:uppercase">Pondělí</div>
+            <div style="padding:12px;font-size:12px;color:#5c381f;font-style:italic;margin-bottom:8px;font-family:'Exo 2',sans-serif;font-weight:700">Nutworld produkt & ops</div>
+            <ul style="list-style:none;padding:0 12px 12px">
+              <li class="rz-li">Sortiment a nové produkty</li>
+              <li class="rz-li">Automatizace a pipeline</li>
+              <li class="rz-li">Dodavatelé a ceníky</li>
+              <li class="rz-li" style="border:none">Shoptet a e-shop</li>
+            </ul>
+          </div>
+          <div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 5px rgba(0,0,0,.07)">
+            <div style="background:#da1668;padding:9px 12px;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;color:white;letter-spacing:.08em;text-transform:uppercase">Úterý</div>
+            <div style="padding:12px;font-size:12px;color:#5c381f;font-style:italic;margin-bottom:8px;font-family:'Exo 2',sans-serif;font-weight:700">Tým & B2B rozvoj</div>
+            <ul style="list-style:none;padding:0 12px 12px">
+              <li class="rz-li">Zaměstnanci a procesy</li>
+              <li class="rz-li">B2B partnerství a obchod</li>
+              <li class="rz-li">Firemní dárky a sezóna</li>
+              <li class="rz-li" style="border:none">Interní komunikace</li>
+            </ul>
+          </div>
+          <div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 5px rgba(0,0,0,.07)">
+            <div style="background:#3a7bbd;padding:9px 12px;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;color:white;letter-spacing:.08em;text-transform:uppercase">Středa</div>
+            <div style="padding:12px;font-size:12px;color:#5c381f;font-style:italic;margin-bottom:8px;font-family:'Exo 2',sans-serif;font-weight:700">John Wolf — celý den</div>
+            <ul style="list-style:none;padding:0 12px 12px">
+              <li class="rz-li">Produkty a sortiment JW</li>
+              <li class="rz-li">Marketing a brand JW</li>
+              <li class="rz-li">Obchod a distribuce JW</li>
+              <li class="rz-li" style="border:none">Strategie a růst JW</li>
+            </ul>
+          </div>
+          <div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 5px rgba(0,0,0,.07)">
+            <div style="background:#6fa044;padding:9px 12px;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;color:white;letter-spacing:.08em;text-transform:uppercase">Čtvrtek</div>
+            <div style="padding:12px;font-size:12px;color:#5c381f;font-style:italic;margin-bottom:8px;font-family:'Exo 2',sans-serif;font-weight:700">Růst & marketing</div>
+            <ul style="list-style:none;padding:0 12px 12px">
+              <li class="rz-li">Kampaně a výkon reklam</li>
+              <li class="rz-li">Analytika a data</li>
+              <li class="rz-li">Content a brand building</li>
+              <li class="rz-li" style="border:none">Brief kreativ na pátek</li>
+            </ul>
+          </div>
+          <div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 5px rgba(0,0,0,.07)">
+            <div style="background:#8b4040;padding:9px 12px;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;color:white;letter-spacing:.08em;text-transform:uppercase">Pátek 🎬</div>
+            <div style="padding:12px;font-size:12px;color:#5c381f;font-style:italic;margin-bottom:8px;font-family:'Exo 2',sans-serif;font-weight:700">Kreativy — tvorba obsahu</div>
+            <ul style="list-style:none;padding:0 12px 12px">
+              <li class="rz-li">Foto a video produkce</li>
+              <li class="rz-li">Reklamní kreativy</li>
+              <li class="rz-li">Social media obsah</li>
+              <li class="rz-li" style="border:none">Review týdne + plán</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- MĚSÍC -->
+      <div id="rz-mesic" style="display:none">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 5px rgba(0,0,0,.07)">
+            <div style="background:#3a7bbd;color:white;padding:10px 14px;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase">📊 Obrat a finance</div>
+            <ul style="list-style:none;padding:10px 14px 12px">
+              <li class="rz-li">Celkový obrat CZ + SK vs. plán</li>
+              <li class="rz-li">AOV a top 10 produktů</li>
+              <li class="rz-li">Marže přehled vs. předchozí měsíc</li>
+              <li class="rz-li" style="border:none">Faktury dodavatelů — kontrola</li>
+            </ul>
+          </div>
+          <div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 5px rgba(0,0,0,.07)">
+            <div style="background:#da1668;color:white;padding:10px 14px;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase">🎯 Kampaně</div>
+            <ul style="list-style:none;padding:10px 14px 12px">
+              <li class="rz-li">Meta Ads — ROAS, PNO, spend</li>
+              <li class="rz-li">Google Ads — CPA, konverze</li>
+              <li class="rz-li">Nejlepší kreativa → škálovat</li>
+              <li class="rz-li" style="border:none">Blog + email kampaně</li>
+            </ul>
+          </div>
+          <div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 5px rgba(0,0,0,.07)">
+            <div style="background:#6fa044;color:white;padding:10px 14px;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase">👥 Tým</div>
+            <ul style="list-style:none;padding:10px 14px 12px">
+              <li class="rz-li">Obchodní zástupci — výsledky</li>
+              <li class="rz-li">B2B pipeline — poptávky vs. uzavřené</li>
+              <li class="rz-li">Produktivita skladu vs. normy</li>
+              <li class="rz-li" style="border:none">Stav skladu — co dochází</li>
+            </ul>
+          </div>
+          <div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 5px rgba(0,0,0,.07)">
+            <div style="background:#f7ab31;color:#3a2800;padding:10px 14px;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase">📦 Produkty & ops</div>
+            <ul style="list-style:none;padding:10px 14px 12px">
+              <li class="rz-li">Nové produkty — dodavatelé</li>
+              <li class="rz-li">K2 ceník — zdražení / zlevnění</li>
+              <li class="rz-li">Dárky — stock a sezóna</li>
+              <li class="rz-li" style="border:none">John Wolf — stav projektu</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /rozvrh-panel -->
   </div>
 
   <!-- TÝM -->
@@ -983,6 +1151,24 @@ function fmtD(iso){if(!iso)return'';const[y,m,dd]=iso.split('-');return`${dd}.${
       <span style="flex:1;color:#2a1a0e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${m.topic||''}</span>
     </div>`).join('')+(allM.length>5?`<div style="font-size:11px;color:#a08060;margin-top:6px">+ ${allM.length-5} dalších</div>`:'');
 })();
+
+// ── ROZVRH ──────────────────────────────────────────────────────────────────
+window.toggleRozvrh = function(){
+  const panel = document.getElementById('rozvrh-panel');
+  const btn = document.getElementById('rozvrh-btn');
+  const chev = document.getElementById('rozvrh-chevron');
+  const open = panel.style.display === 'none';
+  panel.style.display = open ? 'block' : 'none';
+  btn.querySelector('span:first-child').textContent = open ? 'Skrýt' : 'Zobrazit';
+  chev.style.transform = open ? 'rotate(180deg)' : '';
+};
+window.rzTab = function(id, el){
+  ['den','tyden','mesic'].forEach(t => {
+    document.getElementById('rz-'+t).style.display = t === id ? 'block' : 'none';
+  });
+  document.querySelectorAll('.rz-tab').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+};
 
 </script>
 </body>
