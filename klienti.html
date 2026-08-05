@@ -573,6 +573,32 @@ function deleteMeeting(mid){
   sv(MEETK,ms);renderMeetList();render();
 }
 
+// ── SEED DATA ──
+(function initSeed(){
+  const cs = ld(CK, []);
+  if (cs.some(c => c.company === 'SGEF')) return;
+  const cid = 'sgef-' + Date.now().toString(36);
+  cs.push({
+    id: cid, status: 'ok',
+    company: 'SGEF',
+    contact: 'Jana Kubešová',
+    sector: 'Korporáty / B2B dárky',
+    email: 'jana@spotonevents.cz',
+    phone: '+420 725 721 135',
+    web: ''
+  });
+  sv(CK, cs);
+  const ds = ld(DK, {});
+  ds[cid] = [{
+    id: 'doc-' + Date.now().toString(36),
+    title: 'Poptávka — Vánoční dárky 2025',
+    type: 'nabidka',
+    url: 'https://claude.ai/code/artifact/7d128cb0-14fb-4baa-ab56-b2a66480bed8'
+  }];
+  sv(DK, ds);
+})();
+
+
 render();
 </script>
 </body>
