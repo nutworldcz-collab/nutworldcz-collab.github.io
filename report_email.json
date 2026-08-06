@@ -1,15 +1,95 @@
 {
-  "generated": "2026-08-06T07:30:21",
-  "total": 4,
+  "generated": "2026-08-06T12:00:27",
+  "total": 9,
   "spam_skipped": 1,
   "emails": [
     {
       "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Doprava NutWorld tě zmínil/a na kartě ALZA - EDI/2026/25 na nástěnce Firmy dárky + objednávky",
-      "date": "čtvrtek 6. srpna 2026 6:56:32",
+      "sender": "Tomáš Hamerník <hamernik@nutworld.cz>",
+      "subject": "RE: změna receptury - mandle uzené NUTWORLD",
+      "date": "čtvrtek 6. srpna 2026 8:55:51",
       "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Doprava NutWorld vás zmínil(a) na kartě ALZA - EDI/2026/25 na nástěnce Firmy dárky + objednávky @card Dnes odchází vše krom mandle v jah.jog.200g ,na dvou paletach Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a ",
+      "preview": "Dobrý den paní Čábelová, děkuji za informaci a chápu důvody ke změně. Bude to trochu komplikovanější",
+      "category": "tym",
+      "sender_short": "Tomáš Hamerník",
+      "sender_email": "hamernik@nutworld.cz",
+      "ai": {
+        "shrn": "Tomáš Hamerník potvrzuje přijetí informace o změně receptury mandlí uzených a uznává komplikovanost změny.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "rosa.petr@email.cz",
+      "subject": "Upomínka",
+      "date": "čtvrtek 6. srpna 2026 8:44:09",
+      "unread": true,
+      "preview": "Dobrý den, při kontrole našich pohledávek jsem zjistila",
+      "category": "ostatni",
+      "sender_short": "rosa.petr@email.cz",
+      "sender_email": "rosa.petr@email.cz",
+      "ai": {
+        "shrn": "Upomínka týkající se neuhrazené pohledávky od někoho z kontaktů.",
+        "tyka_se": true,
+        "akce": "Ověřit a vyjasnit neuhrazenou pohledávku"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Jiřina Hamerníková vložil/a komentář na kartu 1964/ Mandle TIRAMISU na nástěnce Specifikace ořechy",
+      "date": "čtvrtek 6. srpna 2026 8:43:37",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Jiřina Hamerníková okomentoval(a) kartu 1964/ Mandle TIRAMISU na nástěnce Specifikace ořechy OK Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "dodavatel",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com",
+      "ai": {
+        "shrn": "Notifikace z Trella o komentáři Jiřiny Hamerníkové k produktu Mandle TIRAMISU.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Tomáš Hamerník <hamernik@nutworld.cz>",
+      "subject": "FW: Neuhrazená faktura 2026322",
+      "date": "čtvrtek 6. srpna 2026 8:42:06",
+      "unread": true,
+      "preview": "Ahoj Honzo, posílám jen info",
+      "category": "dodavatel",
+      "sender_short": "Tomáš Hamerník",
+      "sender_email": "hamernik@nutworld.cz",
+      "ai": {
+        "shrn": "Tomáš Hamerník přeposílá informaci o neuhrazené faktuře 2026322.",
+        "tyka_se": true,
+        "akce": "Zkontrolovat a vyřešit neuhrazenou fakturu"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Pavlína Frýbortová <fryb@afproduction.cz>",
+      "subject": "RE: Výjimečné Vánoce pro Váš tým",
+      "date": "čtvrtek 6. srpna 2026 8:39:16",
+      "unread": true,
+      "preview": "Dobrý den",
+      "category": "b2b",
+      "sender_short": "Pavlína Frýbortová",
+      "sender_email": "fryb@afproduction.cz",
+      "ai": {
+        "shrn": "Odpověď na nabídku týkající se vánoční akce pro tým.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Hamerník Tomáš vložil/a komentář na kartu ALZA - EDI/2026/25 na nástěnce Firmy dárky + objednávky",
+      "date": "čtvrtek 6. srpna 2026 8:34:28",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Hamerník Tomáš okomentoval(a) kartu ALZA - EDI/2026/25 na nástěnce Firmy dárky + objednávky Potřeboval bych Alze dát nějaké přibližné info. Kdy bychom mohli poslat mandle v jah. jogurtu? děkuji Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci.",
       "category": "sluzby",
       "sender_short": "Trello",
       "sender_email": "do-not-reply@trello.com"
@@ -17,10 +97,10 @@
     {
       "account": "Exchange",
       "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Na nástěnce Firmy dárky + objednávky máš 3 upozornění od poslední návštěvy 6:51 (6. srpna 2026)",
-      "date": "čtvrtek 6. srpna 2026 6:52:29",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 7:59 (6. srpna 2026)",
+      "date": "čtvrtek 6. srpna 2026 8:02:17",
       "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Doprava NutWorld vás zmínil(a) na kartě Umakov na nástěnce Firmy dárky + objednávky @card Dnes odesláno",
+      "preview": "￼ Zde je nejnovější... ￼ Doprava NutWorld označil(a) kartu GUMEX jako dokončenou Odpovědět e-mailem ￼ Doprava NutWorld přesunul(a) kartu GUMEX do sloupce Firmy 2026 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá",
       "category": "sluzby",
       "sender_short": "Trello",
       "sender_email": "do-not-reply@trello.com"
@@ -30,13 +110,13 @@
       "sender": "Radka Goderová <radka.goderova@mekrs.cz>",
       "subject": "RE: 7/26",
       "date": "čtvrtek 6. srpna 2026 4:36:56",
-      "unread": true,
+      "unread": false,
       "preview": "Dobré ránko",
       "category": "tym",
       "sender_short": "Radka Goderová",
       "sender_email": "radka.goderova@mekrs.cz",
       "ai": {
-        "shrn": "Pozdrav od Radky Goderové z týmu bez konkrétního obsahu.",
+        "shrn": "Krátký pozdrav od Radky Goderové ze týmu.",
         "tyka_se": false,
         "akce": null
       }
@@ -52,7 +132,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "Newsletter o CrossFit Community Cup 2026 z externího zdroje.",
+        "shrn": "Marketingový email od CrossFitu s informacemi o soutěži Community Cup.",
         "tyka_se": false,
         "akce": null
       }
