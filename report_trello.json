@@ -1,77 +1,67 @@
 {
-  "generated": "2026-08-06T04:23:20",
-  "date": "2026-08-05",
-  "total": 22,
+  "generated": "2026-08-07T03:11:01",
+  "date": "2026-08-06",
+  "total": 28,
   "notifications": [
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "ALZA - EDI/2026/26",
-      "card_url": "https://trello.com/c/xSB4FiJu",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Hamerník Tomáš",
-      "comment": "@jananyvltova na této objednávce jsou špatné ceny. Je domluveno s Alzou, že objednávku již měnit nebude, ale na fakturu máme zadat nové ceny:\n\ndoypack BJ-MX-250B02 Ořechy Bery Jones Směs ořechů natura",
-      "time": "2026-08-05T12:12:58.330Z"
-    },
-    {
-      "type": "mentionedOnCard",
-      "label": "Zmíněn/a v komentáři",
-      "card": "Lesák CUP z.s.",
-      "card_url": "https://trello.com/c/bf5j676j",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Martin Werner",
-      "comment": "@wolf1988 Honzo, ty máš nějaký návrh ? Myslel, jsem, že to takhle brali i loni, ale Janča píše, že tam bylo jen naše logo.",
-      "time": "2026-08-05T11:43:39.095Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "Lesák CUP z.s.",
-      "card_url": "https://trello.com/c/bf5j676j",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Martin Werner",
-      "comment": "@jananyvltova tak zkusím pořešit s Honzou",
-      "time": "2026-08-05T11:41:24.495Z"
-    },
-    {
-      "type": "mentionedOnCard",
-      "label": "Zmíněn/a v komentáři",
-      "card": "Krejčíř transport s.r.o",
-      "card_url": "https://trello.com/c/0FQm3dnn",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Martin Werner",
-      "comment": "@wolf1988 tak prosím tě, prý na střed krabičky 🤦‍♂️",
-      "time": "2026-08-05T11:31:59.670Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "Lesák CUP z.s.",
-      "card_url": "https://trello.com/c/bf5j676j",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "@martinwerner63 nikde jsem ten napis nenašla, letos v k2 nemají žádnou objednavku, vloni slo s naším logem",
-      "time": "2026-08-05T11:30:50.535Z"
-    },
     {
       "type": "addedToCard",
       "label": "Přidán/a na kartu",
-      "card": "Lesák CUP z.s.",
-      "card_url": "https://trello.com/c/bf5j676j",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Martin Werner",
+      "card": "Srpen 2026",
+      "card_url": "https://trello.com/c/cfJYoaAJ",
+      "board": "Ceník",
+      "creator": "Jana Nývltová",
       "comment": "",
-      "time": "2026-08-05T10:56:23.192Z"
+      "time": "2026-08-06T12:08:48.222Z"
     },
     {
-      "type": "reactionAdded",
-      "label": "reactionAdded",
-      "card": "Krejčíř transport s.r.o",
-      "card_url": "https://trello.com/c/0FQm3dnn",
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "ALZA - EDI/2026/25",
+      "card_url": "https://trello.com/c/e4nQX1Bv",
       "board": "Firmy dárky + objednávky",
-      "creator": "Martin Werner",
-      "comment": "@martinwerner63 [Krejčíř.pdf](https://trello.com/1/cards/6a59db89c5b190cf2c181aa1/attachments/6a72f637836007f1181d237d/download/Krej%C4%8D%C3%AD%C5%99.pdf \"‌\")",
-      "time": "2026-08-05T10:39:11.555Z"
+      "creator": "Doprava NutWorld",
+      "comment": "",
+      "time": "2026-08-06T12:05:46.302Z"
+    },
+    {
+      "type": "markedCompleteCard",
+      "label": "markedCompleteCard",
+      "card": "ALZA - EDI/2026/25",
+      "card_url": "https://trello.com/c/e4nQX1Bv",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Doprava NutWorld",
+      "comment": "",
+      "time": "2026-08-06T12:05:39.045Z"
+    },
+    {
+      "type": "commentCard",
+      "label": "Nový komentář",
+      "card": "ALZA - EDI/2026/25",
+      "card_url": "https://trello.com/c/e4nQX1Bv",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Doprava NutWorld",
+      "comment": "Zítra odchází i poslední položka ",
+      "time": "2026-08-06T12:05:13.964Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "Karmelitská hotel",
+      "card_url": "https://trello.com/c/c3JNpBXt",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Doprava NutWorld",
+      "comment": "",
+      "time": "2026-08-06T11:21:54.021Z"
+    },
+    {
+      "type": "markedCompleteCard",
+      "label": "markedCompleteCard",
+      "card": "Karmelitská hotel",
+      "card_url": "https://trello.com/c/c3JNpBXt",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Doprava NutWorld",
+      "comment": "",
+      "time": "2026-08-06T11:21:40.783Z"
     },
     {
       "type": "changeCard",
@@ -79,19 +69,129 @@
       "card": "Kooperativa",
       "card_url": "https://trello.com/c/gq97PJSH",
       "board": "Firmy dárky + objednávky",
-      "creator": "Balírna",
+      "creator": "Doprava NutWorld",
       "comment": "",
-      "time": "2026-08-05T09:50:56.482Z"
+      "time": "2026-08-06T11:16:57.096Z"
     },
     {
-      "type": "cardDueSoon",
-      "label": "Karta má brzy termín",
+      "type": "commentCard",
+      "label": "Nový komentář",
+      "card": "Kooperativa",
+      "card_url": "https://trello.com/c/gq97PJSH",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Doprava NutWorld",
+      "comment": "@martinwerner63 odeslano",
+      "time": "2026-08-06T11:16:51.248Z"
+    },
+    {
+      "type": "markedCompleteCard",
+      "label": "markedCompleteCard",
+      "card": "Kooperativa",
+      "card_url": "https://trello.com/c/gq97PJSH",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Doprava NutWorld",
+      "comment": "",
+      "time": "2026-08-06T11:16:38.276Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "ALZA - EDI/2026/26",
+      "card_url": "https://trello.com/c/xSB4FiJu",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Doprava NutWorld",
+      "comment": "",
+      "time": "2026-08-06T10:50:05.806Z"
+    },
+    {
+      "type": "markedCompleteCard",
+      "label": "markedCompleteCard",
+      "card": "ALZA - EDI/2026/26",
+      "card_url": "https://trello.com/c/xSB4FiJu",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Doprava NutWorld",
+      "comment": "",
+      "time": "2026-08-06T10:49:57.744Z"
+    },
+    {
+      "type": "commentCard",
+      "label": "Nový komentář",
+      "card": "ALZA - EDI/2026/26",
+      "card_url": "https://trello.com/c/xSB4FiJu",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Doprava NutWorld",
+      "comment": "@hamerniktomas odchází zítra na jedné mix paletě ",
+      "time": "2026-08-06T10:49:53.372Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
       "card": "Dám si kafe",
       "card_url": "https://trello.com/c/SLaNDIrE",
       "board": "Firmy dárky + objednávky",
-      "creator": "",
+      "creator": "Doprava NutWorld",
       "comment": "",
-      "time": "2026-08-05T07:17:48.131Z"
+      "time": "2026-08-06T09:09:31.767Z"
+    },
+    {
+      "type": "markedCompleteCard",
+      "label": "markedCompleteCard",
+      "card": "Dám si kafe",
+      "card_url": "https://trello.com/c/SLaNDIrE",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Doprava NutWorld",
+      "comment": "",
+      "time": "2026-08-06T09:09:27.438Z"
+    },
+    {
+      "type": "addedToCard",
+      "label": "Přidán/a na kartu",
+      "card": "9921/ Mandle v mléčné čokoládě a malinovém prášku",
+      "card_url": "https://trello.com/c/XDcayGSs",
+      "board": "Specifikace ořechy",
+      "creator": "Jiřina Hamerníková",
+      "comment": "",
+      "time": "2026-08-06T08:43:21.888Z"
+    },
+    {
+      "type": "commentCard",
+      "label": "Nový komentář",
+      "card": "ALZA - EDI/2026/25",
+      "card_url": "https://trello.com/c/e4nQX1Bv",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Jana Nývltová",
+      "comment": "@hamerniktomas celofanek kelimek včera odešel, jak píše Rita a na doypacky čekáme na surovinu, slíbeno 4. Ale neprisla, čekáme, dnes či zítra přijde.. do ted nešlo kvůli teplu odeslat, vše sladké teče",
+      "time": "2026-08-06T07:09:31.961Z"
+    },
+    {
+      "type": "commentCard",
+      "label": "Nový komentář",
+      "card": "1964/ Mandle TIRAMISU",
+      "card_url": "https://trello.com/c/rUWTS2d2",
+      "board": "Specifikace ořechy",
+      "creator": "Jiřina Hamerníková",
+      "comment": "OK",
+      "time": "2026-08-06T06:42:17.740Z"
+    },
+    {
+      "type": "commentCard",
+      "label": "Nový komentář",
+      "card": "ALZA - EDI/2026/25",
+      "card_url": "https://trello.com/c/e4nQX1Bv",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Hamerník Tomáš",
+      "comment": "Potřeboval bych Alze dát nějaké přibližné info. Kdy bychom mohli poslat mandle v jah. jogurtu? děkuji",
+      "time": "2026-08-06T06:32:54.385Z"
+    },
+    {
+      "type": "commentCard",
+      "label": "Nový komentář",
+      "card": "1964/ Mandle TIRAMISU",
+      "card_url": "https://trello.com/c/rUWTS2d2",
+      "board": "Specifikace ořechy",
+      "creator": "Legislativa",
+      "comment": "Ahoj @jirahame , mohla bych poprosit o kontrolu štítků? pokud bude nějaká změna o úpravu a info, aby se upravil mail. Děkuji",
+      "time": "2026-08-06T06:06:17.885Z"
     },
     {
       "type": "commentCard",
@@ -99,129 +199,89 @@
       "card": "Umakov",
       "card_url": "https://trello.com/c/IFyk3Rls",
       "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "@martinwerner63 mam to před sebou na zabalení,ale jsou tam mandle v mléčné čokoládě a skořicí,obávám se   cestování zásilky v tom teple,nevydrželo by to do zítra?",
-      "time": "2026-08-05T07:06:32.015Z"
-    },
-    {
-      "type": "mentionedOnCard",
-      "label": "Zmíněn/a v komentáři",
-      "card": "objednávka Vilgain z 3.7.2026",
-      "card_url": "https://trello.com/c/WmOY8svK",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "@card Odesláno dnes 5.8.  na adresu poslanou panem Hamerniken paletami geis",
-      "time": "2026-08-05T06:34:22.057Z"
-    },
-    {
-      "type": "mentionedOnCard",
-      "label": "Zmíněn/a v komentáři",
-      "card": "Vilgain objednávka",
-      "card_url": "https://trello.com/c/QCbTiyAM",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "@card Odesláno dnes 5.8.na dvou paletach prepravcem Geis(bylo by to na jedné paletě příliš vysoké a těžké,pak se to borti)",
-      "time": "2026-08-05T06:33:18.601Z"
+      "creator": "Martin Werner",
+      "comment": "@gabrielapohlova moc děkuju :-)",
+      "time": "2026-08-06T06:04:09.372Z"
     },
     {
       "type": "changeCard",
       "label": "Změna na kartě",
-      "card": "objednávka Vilgain z 7.7.2026",
-      "card_url": "https://trello.com/c/lpPJuG05",
+      "card": "GUMEX",
+      "card_url": "https://trello.com/c/IIq4Rqdl",
       "board": "Firmy dárky + objednávky",
       "creator": "Doprava NutWorld",
       "comment": "",
-      "time": "2026-08-05T06:32:25.378Z"
+      "time": "2026-08-06T05:59:47.328Z"
     },
     {
       "type": "markedCompleteCard",
       "label": "markedCompleteCard",
-      "card": "objednávka Vilgain z 7.7.2026",
-      "card_url": "https://trello.com/c/lpPJuG05",
+      "card": "GUMEX",
+      "card_url": "https://trello.com/c/IIq4Rqdl",
       "board": "Firmy dárky + objednávky",
       "creator": "Doprava NutWorld",
       "comment": "",
-      "time": "2026-08-05T06:32:18.918Z"
+      "time": "2026-08-06T05:59:41.355Z"
+    },
+    {
+      "type": "addAttachmentToCard",
+      "label": "addAttachmentToCard",
+      "card": "5852/ Mandle s příchutí jogurt a jahoda",
+      "card_url": "https://trello.com/c/qgrCxL6W",
+      "board": "Specifikace ořechy",
+      "creator": "Jiřina Hamerníková",
+      "comment": "",
+      "time": "2026-08-06T05:45:50.609Z"
+    },
+    {
+      "type": "addAttachmentToCard",
+      "label": "addAttachmentToCard",
+      "card": "5852/ Mandle s příchutí jogurt a jahoda",
+      "card_url": "https://trello.com/c/qgrCxL6W",
+      "board": "Specifikace ořechy",
+      "creator": "Jiřina Hamerníková",
+      "comment": "",
+      "time": "2026-08-06T05:45:15.673Z"
     },
     {
       "type": "mentionedOnCard",
       "label": "Zmíněn/a v komentáři",
-      "card": "objednávka Vilgain z 7.7.2026",
-      "card_url": "https://trello.com/c/lpPJuG05",
+      "card": "ALZA - EDI/2026/25",
+      "card_url": "https://trello.com/c/e4nQX1Bv",
       "board": "Firmy dárky + objednávky",
       "creator": "Doprava NutWorld",
-      "comment": "@card odesláno dnes 5.8. paletami prepravcem Geis na adresu zaslanou panem Hamernikem ",
-      "time": "2026-08-05T06:32:13.620Z"
+      "comment": "@card Dnes odchází vše krom mandle v jah.jog.200g ,na dvou paletach",
+      "time": "2026-08-06T04:54:42.056Z"
     },
     {
       "type": "changeCard",
       "label": "Změna na kartě",
-      "card": "Vilgain objednávka",
-      "card_url": "https://trello.com/c/QCbTiyAM",
+      "card": "Umakov",
+      "card_url": "https://trello.com/c/IFyk3Rls",
       "board": "Firmy dárky + objednávky",
       "creator": "Doprava NutWorld",
       "comment": "",
-      "time": "2026-08-05T06:30:39.666Z"
+      "time": "2026-08-06T04:51:28.235Z"
     },
     {
       "type": "markedCompleteCard",
       "label": "markedCompleteCard",
-      "card": "Vilgain objednávka",
-      "card_url": "https://trello.com/c/QCbTiyAM",
+      "card": "Umakov",
+      "card_url": "https://trello.com/c/IFyk3Rls",
       "board": "Firmy dárky + objednávky",
       "creator": "Doprava NutWorld",
       "comment": "",
-      "time": "2026-08-05T06:30:33.058Z"
+      "time": "2026-08-06T04:51:22.280Z"
     },
     {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "Vilgain objednávka",
-      "card_url": "https://trello.com/c/QCbTiyAM",
+      "type": "mentionedOnCard",
+      "label": "Zmíněn/a v komentáři",
+      "card": "Umakov",
+      "card_url": "https://trello.com/c/IFyk3Rls",
       "board": "Firmy dárky + objednávky",
       "creator": "Doprava NutWorld",
-      "comment": "Odesláno dnes 5.8.na dvou paletach prepravcem Geis(bylo by to na jedné paletě příliš vysoké a těžké,pak se to borti)",
-      "time": "2026-08-05T06:29:47.127Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "objednávka Vilgain z 3.7.2026",
-      "card_url": "https://trello.com/c/WmOY8svK",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "",
-      "time": "2026-08-05T06:27:28.741Z"
-    },
-    {
-      "type": "markedCompleteCard",
-      "label": "markedCompleteCard",
-      "card": "objednávka Vilgain z 3.7.2026",
-      "card_url": "https://trello.com/c/WmOY8svK",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "",
-      "time": "2026-08-05T06:27:16.549Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "objednávka Vilgain z 3.7.2026",
-      "card_url": "https://trello.com/c/WmOY8svK",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "Odesláno dnes 5.8.  na adresu poslanou panem Hamerniken paletami geis",
-      "time": "2026-08-05T06:27:12.926Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "Dám si kafe",
-      "card_url": "https://trello.com/c/SLaNDIrE",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Balírna",
-      "comment": "",
-      "time": "2026-08-05T05:33:33.731Z"
+      "comment": "@card Dnes odesláno, dva baliky",
+      "time": "2026-08-06T04:51:17.529Z"
     }
   ]
 }
