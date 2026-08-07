@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Změny produktů — Nutworld</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;min-height:100vh;padding:0 16px 48px;color:#3d2b1a}
+
+.topbar{display:flex;align-items:center;gap:14px;max-width:880px;margin:0 auto;padding:20px 0 16px}
+.back{text-decoration:none;color:#83502e;font-size:13px;font-weight:600;padding:6px 12px;border:1.5px solid #d4c0a8;border-radius:8px;background:white;transition:background .15s}
+.back:hover{background:#f1e6da}
+.page-title{font-family:'Exo 2',sans-serif;font-size:22px;font-weight:800;color:#5c381f;flex:1}
+.btn-add{background:linear-gradient(135deg,#5c381f,#83502e);color:white;border:none;border-radius:10px;padding:10px 22px;font-family:'Exo 2',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:opacity .15s;white-space:nowrap}
+.btn-add:hover{opacity:.85}
+
+.stats{display:flex;gap:10px;max-width:880px;margin:0 auto 24px;flex-wrap:wrap}
+.stat{background:white;border-radius:10px;padding:12px 18px;border:2px solid #d4c0a8;display:flex;align-items:center;gap:10px;font-size:13px;color:#5c381f}
+.stat .num{font-family:'Exo 2',sans-serif;font-size:24px;font-weight:800;line-height:1}
+.stat.danger .num{color:#c0392b}
+.stat.ok .num{color:#27ae60}
+
+.section-label{font-family:'Exo 2',sans-serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:#a07850;margin:0 auto 10px;max-width:880px;padding-left:2px}
+
+.changes-list{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+
+.card{background:white;border-radius:14px;padding:20px 22px;border:2px solid #d4c0a8;transition:box-shadow .15s}
+.card.critical{border-color:#e74c3c;background:#fffafa}
+.card.resolved-card{opacity:.6;filter:grayscale(.3)}
+
+.card-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px}
+.badge{flex-shrink:0;padding:4px 11px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;margin-top:2px}
+.badge-dodavatel{background:#fff3cd;color:#8a6200}
+.badge-slozeni{background:#fde8e8;color:#9b1c1c}
+.badge-alergeny{background:#fde8e8;color:#9b1c1c}
+.badge-gramaz{background:#e8f0fd;color:#1e40af}
+.badge-cena{background:#e8fde8;color:#166534}
+.badge-certifikat{background:#f0e8fd;color:#6b21a8}
+.badge-jine{background:#f1e6da;color:#83502e}
+
+.card-main{flex:1;min-width:0}
+.card-product{font-family:'Exo 2',sans-serif;font-size:16px;font-weight:700;color:#5c381f;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.card-kod{color:#83502e;font-size:13px;font-weight:600;background:#f1e6da;padding:2px 8px;border-radius:6px}
+.resolved-badge{display:inline-flex;align-items:center;gap:4px;background:#dcfce7;color:#166534;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px}
+.critical-badge{display:inline-flex;align-items:center;gap:4px;background:#fee2e2;color:#9b1c1c;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px}
+.card-desc{font-size:13px;color:#6b4a2a;margin-top:5px;line-height:1.55;white-space:pre-line}
+.card-date{font-size:11px;color:#a07850;margin-top:5px}
+
+.card-del{background:none;border:1.5px solid #e0cdb8;border-radius:8px;padding:6px 10px;font-size:14px;cursor:pointer;color:#c0392b;transition:background .15s;flex-shrink:0;line-height:1}
+.card-del:hover{background:#fde8e8}
+
+.checklist{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding-top:14px;border-top:1.5px solid #f0e6da}
+
+.chk{display:flex;align-items:center;gap:6px;cursor:pointer;padding:7px 13px;border-radius:9px;background:#f8f3ee;border:1.5px solid #e0cdb8;transition:background .15s,border-color .15s;user-select:none}
+.chk:hover{background:#f1e6da;border-color:#c4a882}
+.chk.done{background:#dcfce7;border-color:#86efac}
+.chk input[type=checkbox]{width:15px;height:15px;accent-color:#16a34a;cursor:pointer;flex-shrink:0}
+.chk-label{font-size:13px;font-weight:600;color:#5c381f}
+.chk.done .chk-label{color:#166534;text-decoration:line-through}
+
+.progress{display:flex;align-items:center;gap:10px;margin-top:12px}
+.progress-bar{flex:1;height:5px;background:#f0e6da;border-radius:10px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#f7ab31,#6fa044);border-radius:10px;transition:width .35s}
+.progress-text{font-size:12px;color:#a07850;min-width:36px;text-align:right;font-weight:600}
+
+.notes-area{width:100%;border:1.5px solid #e0cdb8;border-radius:8px;padding:8px 12px;font-family:'Source Sans 3',sans-serif;font-size:12px;color:#5c381f;background:#fdf9f5;resize:vertical;min-height:36px;margin-top:12px}
+.notes-area:focus{outline:none;border-color:#83502e}
+.notes-area::placeholder{color:#c4a882}
+
+.resolved-toggle-wrap{max-width:880px;margin:20px auto 0}
+.resolved-toggle{width:100%;background:white;border:2px solid #d4c0a8;border-radius:12px;padding:14px 18px;cursor:pointer;font-family:'Exo 2',sans-serif;font-size:14px;font-weight:700;color:#83502e;display:flex;align-items:center;justify-content:space-between;transition:background .15s}
+.resolved-toggle:hover{background:#f8f3ee}
+.resolved-list{max-width:880px;margin:10px auto 0;display:flex;flex-direction:column;gap:10px}
+
+.empty{text-align:center;padding:56px 20px;color:#a07850;max-width:880px;margin:0 auto}
+.empty-icon{font-size:52px;margin-bottom:14px}
+.empty-title{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:800;color:#83502e;margin-bottom:8px}
+.empty-sub{font-size:14px;line-height:1.6}
+
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;align-items:center;justify-content:center;padding:16px}
+.overlay.open{display:flex}
+.modal{background:white;border-radius:16px;padding:28px;width:100%;max-width:490px;max-height:90vh;overflow-y:auto}
+.modal-title{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:800;color:#5c381f;margin-bottom:22px}
+.fg{margin-bottom:14px}
+.fl{display:block;font-size:11px;font-weight:700;color:#83502e;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
+.fi,.fs,.ft{width:100%;border:2px solid #d4c0a8;border-radius:8px;padding:10px 12px;font-family:'Source Sans 3',sans-serif;font-size:14px;color:#3d2b1a;background:white}
+.fi:focus,.fs:focus,.ft:focus{outline:none;border-color:#83502e}
+.ft{min-height:72px;resize:vertical}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fcheck{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;margin-top:6px}
+.fcheck input{width:16px;height:16px;accent-color:#83502e;cursor:pointer}
+.modal-btns{display:flex;gap:10px;margin-top:22px}
+.btn-ok{flex:1;background:linear-gradient(135deg,#5c381f,#83502e);color:white;border:none;border-radius:10px;padding:12px;font-family:'Exo 2',sans-serif;font-weight:700;font-size:15px;cursor:pointer}
+.btn-ok:hover{opacity:.88}
+.btn-cancel{background:none;border:2px solid #d4c0a8;border-radius:10px;padding:12px 18px;font-family:'Exo 2',sans-serif;font-weight:700;font-size:15px;color:#83502e;cursor:pointer}
+.btn-cancel:hover{background:#f8f3ee}
+.warn{font-size:12px;color:#9b1c1c;background:#fee2e2;border-radius:8px;padding:8px 12px;margin-top:10px;display:none}
+.warn.show{display:block}
+
+.footer{text-align:center;font-size:11px;color:#b09070;margin-top:36px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="/" class="back">← Zpět</a>
+  <div class="page-title">🔄 Změny produktů</div>
+  <button class="btn-add" onclick="openModal()">+ Nová změna</button>
+</div>
+
+<div class="stats" id="stats"></div>
+
+<div class="section-label" id="pending-label">Čekají na dokončení</div>
+<div class="changes-list" id="pending-list"></div>
+
+<div class="resolved-toggle-wrap" id="resolved-wrap" style="display:none">
+  <button class="resolved-toggle" onclick="toggleResolved()">
+    <span id="resolved-lbl">Vyřešené změny (0)</span>
+    <span id="resolved-arrow">▼</span>
+  </button>
+  <div class="resolved-list" id="resolved-list" style="display:none"></div>
+</div>
+
+<!-- Modal -->
+<div class="overlay" id="overlay" onclick="overlayClick(event)">
+  <div class="modal">
+    <div class="modal-title">Nová změna produktu</div>
+    <div class="frow">
+      <div class="fg">
+        <label class="fl">Kód produktu</label>
+        <input type="text" class="fi" id="f-kod" placeholder="218"/>
+      </div>
+      <div class="fg">
+        <label class="fl">Název produktu</label>
+        <input type="text" class="fi" id="f-nazev" placeholder="Meruňky"/>
+      </div>
+    </div>
+    <div class="fg">
+      <label class="fl">Typ změny</label>
+      <select class="fs" id="f-typ" onchange="onTypChange()">
+        <option value="dodavatel">Dodavatel</option>
+        <option value="slozeni">Složení</option>
+        <option value="alergeny">Alergeny ⚠️</option>
+        <option value="gramaz">Gramáž</option>
+        <option value="cena">NC cena</option>
+        <option value="certifikat">Certifikát / původ</option>
+        <option value="jine">Jiné</option>
+      </select>
+      <div class="warn" id="alg-warn">⚠️ Změna alergenů je kritická — musí se okamžitě opravit etiketa i weby!</div>
+    </div>
+    <div class="fg">
+      <label class="fl">Popis změny</label>
+      <textarea class="ft" id="f-popis" placeholder="K-servis → Ochutnej&#10;nebo: přidán nový alergen SEZAM"></textarea>
+    </div>
+    <div class="fg">
+      <label class="fl">Navíc zkontrolovat</label>
+      <label class="fcheck"><input type="checkbox" id="f-darky"/> 🎁 Produkt je v dárcích</label>
+      <label class="fcheck"><input type="checkbox" id="f-canva"/> 🖼️ Canva štítek manuálně</label>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Zrušit</button>
+      <button class="btn-ok" onclick="addChange()">Přidat</button>
+    </div>
+  </div>
+</div>
+
+<div class="footer">nutworldcz-collab.github.io · Nutworld s.r.o.</div>
+
+<script>
+const KEY = 'nw_zmeny_v3';
+
+const CHECKS_BASE = [
+  {id:'web_cz',  label:'Web CZ',       emoji:'🇨🇿'},
+  {id:'web_sk',  label:'Web SK',       emoji:'🇸🇰'},
+  {id:'etiketa', label:'Etiketa',      emoji:'🏷️'},
+  {id:'trello',  label:'Trello spec',  emoji:'📋'},
+];
+const CHECKS_OPT = [
+  {id:'darky', label:'Dárky',         emoji:'🎁'},
+  {id:'canva', label:'Canva štítek',  emoji:'🖼️'},
+];
+
+const TYPE_LABELS = {
+  dodavatel:'Dodavatel', slozeni:'Složení', alergeny:'⚠️ Alergeny',
+  gramaz:'Gramáž', cena:'NC cena', certifikat:'Certifikát', jine:'Jiné',
+};
+
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch{return []}}
+function save(d){localStorage.setItem(KEY,JSON.stringify(d))}
+
+function progress(checks){
+  const keys=Object.keys(checks);
+  return {done:keys.filter(k=>checks[k]===true).length, total:keys.length};
+}
+function isDone(checks){const p=progress(checks);return p.total>0&&p.done===p.total}
+
+function fmtDate(iso){
+  return new Date(iso).toLocaleDateString('cs-CZ',{day:'numeric',month:'long',year:'numeric'});
+}
+
+function renderCard(ch){
+  const checks=[...CHECKS_BASE,...CHECKS_OPT.filter(c=>c.id in ch.checks)];
+  const p=progress(ch.checks);
+  const pct=p.total?Math.round(p.done/p.total*100):0;
+  const done=isDone(ch.checks);
+  const isCrit=ch.typ==='alergeny'||ch.typ==='slozeni';
+
+  const chkHtml=checks.map(c=>{
+    const val=ch.checks[c.id];
+    return `<label class="chk${val?' done':''}" onclick="return false">
+      <input type="checkbox" ${val?'checked':''} onchange="toggle('${ch.id}','${c.id}',this.checked)"/>
+      <span class="chk-label">${c.emoji} ${c.label}</span>
+    </label>`;
+  }).join('');
+
+  const badges=done
+    ?`<span class="resolved-badge">✅ Hotovo</span>`
+    :(isCrit?`<span class="critical-badge">⚠️ Kritické</span>`:'');
+
+  return `<div class="card${isCrit&&!done?' critical':''}${done?' resolved-card':''}" id="c-${ch.id}">
+    <div class="card-top">
+      <span class="badge badge-${ch.typ}">${TYPE_LABELS[ch.typ]||ch.typ}</span>
+      <div class="card-main">
+        <div class="card-product">
+          <span class="card-kod">${escHtml(ch.kod)}</span>
+          ${escHtml(ch.nazev)}
+          ${badges}
+        </div>
+        <div class="card-desc">${escHtml(ch.popis)}</div>
+        <div class="card-date">📅 ${fmtDate(ch.date)}</div>
+      </div>
+      <button class="card-del" onclick="del('${ch.id}')" title="Smazat">🗑</button>
+    </div>
+    <div class="checklist">${chkHtml}</div>
+    <div class="progress">
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+      <div class="progress-text">${p.done}/${p.total}</div>
+    </div>
+    <textarea class="notes-area" placeholder="Poznámky..." oninput="note('${ch.id}',this.value)">${escHtml(ch.notes||'')}</textarea>
+  </div>`;
+}
+
+function escHtml(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function render(){
+  const data=load();
+  const pending=data.filter(ch=>!isDone(ch.checks));
+  const resolved=data.filter(ch=>isDone(ch.checks));
+
+  document.getElementById('stats').innerHTML=`
+    <div class="stat danger"><div class="num">${pending.length}</div><div>čeká na dokončení</div></div>
+    <div class="stat ok"><div class="num">${resolved.length}</div><div>vyřešeno</div></div>
+    <div class="stat"><div class="num">${data.length}</div><div>celkem změn</div></div>`;
+
+  const pl=document.getElementById('pending-list');
+  if(pending.length===0){
+    pl.innerHTML=`<div class="empty">
+      <div class="empty-icon">✅</div>
+      <div class="empty-title">Žádné čekající změny</div>
+      <div class="empty-sub">Všechno je dořešeno nebo zatím žádnou změnu nehlídáš.<br>Klikni na <strong>+ Nová změna</strong> a zaznamenej první.</div>
+    </div>`;
+  } else {
+    pl.innerHTML=pending.map(renderCard).join('');
+  }
+
+  const rw=document.getElementById('resolved-wrap');
+  if(resolved.length>0){
+    rw.style.display='';
+    document.getElementById('resolved-lbl').textContent=`Vyřešené změny (${resolved.length})`;
+    document.getElementById('resolved-list').innerHTML=resolved.map(renderCard).join('');
+  } else {
+    rw.style.display='none';
+  }
+}
+
+function toggle(id,checkId,val){
+  const data=load();
+  const ch=data.find(c=>c.id===id);
+  if(!ch)return;
+  ch.checks[checkId]=val;
+  if(isDone(ch.checks))ch.resolvedDate=new Date().toISOString();
+  else ch.resolvedDate=null;
+  save(data);render();
+}
+
+function note(id,val){
+  const data=load();
+  const ch=data.find(c=>c.id===id);
+  if(ch){ch.notes=val;save(data);}
+}
+
+function del(id){
+  if(!confirm('Smazat tuto změnu?'))return;
+  save(load().filter(c=>c.id!==id));render();
+}
+
+let resolvedOpen=false;
+function toggleResolved(){
+  resolvedOpen=!resolvedOpen;
+  document.getElementById('resolved-list').style.display=resolvedOpen?'':'none';
+  document.getElementById('resolved-arrow').textContent=resolvedOpen?'▲':'▼';
+}
+
+function openModal(){document.getElementById('overlay').classList.add('open');document.getElementById('f-kod').focus();}
+function closeModal(){
+  document.getElementById('overlay').classList.remove('open');
+  ['f-kod','f-nazev','f-popis'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-typ').value='dodavatel';
+  document.getElementById('f-darky').checked=false;
+  document.getElementById('f-canva').checked=false;
+  document.getElementById('alg-warn').classList.remove('show');
+}
+function overlayClick(e){if(e.target===document.getElementById('overlay'))closeModal();}
+function onTypChange(){
+  const t=document.getElementById('f-typ').value;
+  document.getElementById('alg-warn').classList.toggle('show',t==='alergeny');
+}
+
+function addChange(){
+  const kod=document.getElementById('f-kod').value.trim();
+  const nazev=document.getElementById('f-nazev').value.trim();
+  const typ=document.getElementById('f-typ').value;
+  const popis=document.getElementById('f-popis').value.trim();
+  const hasDarky=document.getElementById('f-darky').checked;
+  const hasCanva=document.getElementById('f-canva').checked;
+  if(!kod||!nazev||!popis){alert('Vyplň kód, název a popis.');return;}
+
+  const checks={web_cz:false,web_sk:false,etiketa:false,trello:false};
+  if(hasDarky)checks.darky=false;
+  if(hasCanva)checks.canva=false;
+
+  const data=load();
+  data.unshift({id:Date.now().toString(),date:new Date().toISOString(),kod,nazev,typ,popis,checks,notes:'',resolvedDate:null});
+  save(data);closeModal();render();
+}
+
+// First-run: seed example if empty
+if(load().length===0){
+  save([{
+    id:'seed1',
+    date:'2026-08-07T08:00:00.000Z',
+    kod:'218',nazev:'Meruňky',typ:'dodavatel',
+    popis:'Změna dodavatele z K-servis na Ochutnej',
+    checks:{web_cz:false,web_sk:false,etiketa:false,trello:false},
+    notes:'',resolvedDate:null
+  }]);
+}
+
+render();
+</script>
+</body>
+</html>
