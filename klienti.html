@@ -576,6 +576,30 @@ function deleteMeeting(mid){
 // ── SEED DATA ──
 (function initSeed(){
   const cs = ld(CK, []);
+
+  // Olympic Palace
+  if (!cs.some(c => c.company === 'Luxury Spa Hotel OLYMPIC PALACE')) {
+    const cid = 'olympicpalace-' + Date.now().toString(36);
+    cs.push({
+      id: cid, status: 'ok',
+      company: 'Luxury Spa Hotel OLYMPIC PALACE',
+      contact: 'Veronika Válek Víchová',
+      sector: 'Hotel 5★ / Spa / Minibar servis',
+      email: '',
+      phone: '',
+      web: 'https://www.olympicpalace.cz'
+    });
+    sv(CK, cs);
+    const ds = ld(DK, {});
+    ds[cid] = [{
+      id: 'doc-op-' + Date.now().toString(36),
+      title: 'Nabídka minibar + velká balení 2026',
+      type: 'nabidka',
+      url: 'https://claude.ai/code/artifact/ac8cec32-a0db-4e9a-8827-5837623b46e3'
+    }];
+    sv(DK, ds);
+  }
+
   if (cs.some(c => c.company === 'SGEF')) return;
   const cid = 'sgef-' + Date.now().toString(36);
   cs.push({
