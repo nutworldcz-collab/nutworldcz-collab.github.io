@@ -212,7 +212,7 @@ function renderCard(ch){
 
   const chkHtml=checks.map(c=>{
     const val=ch.checks[c.id];
-    return `<label class="chk${val?' done':''}" onclick="return false">
+    return `<label class="chk${val?' done':''}">
       <input type="checkbox" ${val?'checked':''} onchange="toggle('${ch.id}','${c.id}',this.checked)"/>
       <span class="chk-label">${c.emoji} ${c.label}</span>
     </label>`;
