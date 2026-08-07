@@ -171,6 +171,8 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;min-height:
 
 <script>
 const KEY = 'nw_zmeny_v3';
+// Po nasazení Apps Scriptu sem vlož URL:
+const NOTIFY_URL = 'VLOZ_APPS_SCRIPT_URL';
 
 const CHECKS_BASE = [
   {id:'web_cz',  label:'Web CZ',       emoji:'🇨🇿'},
@@ -337,6 +339,17 @@ function addChange(){
   const data=load();
   data.unshift({id:Date.now().toString(),date:new Date().toISOString(),kod,nazev,typ,popis,checks,notes:'',resolvedDate:null});
   save(data);closeModal();render();
+
+  // Email notifikace
+  if(NOTIFY_URL&&NOTIFY_URL!=='VLOZ_APPS_SCRIPT_URL'){
+    const url=new URL(NOTIFY_URL);
+    url.searchParams.set('action','zmena');
+    url.searchParams.set('kod',kod);
+    url.searchParams.set('nazev',nazev);
+    url.searchParams.set('typ',typ);
+    url.searchParams.set('popis',popis);
+    fetch(url.toString(),{mode:'no-cors'}).catch(()=>{});
+  }
 }
 
 // First-run: seed example if empty
