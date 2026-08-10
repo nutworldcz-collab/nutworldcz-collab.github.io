@@ -388,10 +388,10 @@ function addRow() {
     <td><div class="ac-wrap"><input class="inp-kod" id="kod-${id}" placeholder="101" autocomplete="off"/><div class="ac-drop" id="acd-kod-${id}"></div></div></td>
     <td><div class="ac-wrap"><input class="inp-nazev" id="nazev-${id}" placeholder="Název produktu, gramáž…" autocomplete="off" oninput="recalc(${id})"/><div class="ac-drop" id="acd-nazev-${id}"></div></div></td>
     <td><input class="inp-ks" type="number" id="ks-${id}" value="1" min="1" oninput="recalc(${id})"/></td>
-    <td style="white-space:nowrap"><input class="inp-cena" type="number" id="cena-${id}" placeholder="0,00" step="0.01" oninput="recalc(${id})"/> <span class="cur-sym">Kč</span></td>
+    <td style="white-space:nowrap"><input class="inp-cena" type="number" id="cena-${id}" placeholder="0,00" step="0.01" oninput="recalc(${id})"/> <span class="cur-sym">${curSym}</span></td>
     <td style="white-space:nowrap">
       <input class="inp-cena" type="number" id="nakup-${id}" placeholder="⚠ povinné" step="0.01" oninput="recalc(${id})"
-             style="background:#fff8e1;border-color:#f7ab31;"/> <span class="cur-sym">Kč</span>
+             style="background:#fff8e1;border-color:#f7ab31;"/> <span class="cur-sym">${curSym}</span>
     </td>
     <td class="td-total" id="total-${id}">—</td>
     <td style="white-space:nowrap">
@@ -691,8 +691,8 @@ async function createLink() {
   // Vytvoř kartu v Trellu — seznam Nabídky
   const cislo = window._offerCislo || ('NW-' + new Date().toISOString().slice(0,10));
   const totalBez = data.produkty.reduce((s,p) => s + p.ks * p.cena, 0);
-  const prodList = data.produkty.map(p => `- ${p.nazev} · ${p.ks} ks · ${p.cena.toFixed(2)} Kč`).join('\n');
-  const desc = `## ${data.firma}\n**Číslo:** ${cislo}\n**Rep:** ${data.repName||'-'}\n\n### Produkty\n${prodList.replace(/ · [\d, .]+ Kč/g,'')}\n\n---\n[➡️ Otevřít formulář zakázky](${url})`;
+  const prodList = data.produkty.map(p => `- ${p.nazev} · ${p.ks} ks · ${p.cena.toFixed(2)} ${curSym}`).join('\n');
+  const desc = `## ${data.firma}\n**Číslo:** ${cislo}\n**Rep:** ${data.repName||'-'}\n\n### Produkty\n${prodList.replace(/ · [\d, .]+ [^\s]+$/gm,'')}\n\n---\n[➡️ Otevřít formulář zakázky](${url})`;
 
   try {
     await fetch(`https://api.trello.com/1/cards?key=${NW_KEY}&token=${NW_TOKEN}`, {
@@ -741,7 +741,7 @@ function generateOffer() {
   }
   const podCenou = produkty.filter(p => p.nakupCena && p.cenaBezDph < p.nakupCena);
   if (podCenou.length) {
-    const ok = confirm('🔴 POZOR — prodáváš pod nákupní cenou:\n' + podCenou.map(p => `• ${p.nazev}: prodej ${fmt(p.cenaBezDph)} < nákup ${fmt(p.nakupCena)} Kč`).join('\n') + '\n\nChceš přesto pokračovat?');
+    const ok = confirm('🔴 POZOR — prodáváš pod nákupní cenou:\n' + podCenou.map(p => `• ${p.nazev}: prodej ${fmt(p.cenaBezDph)} < nákup ${fmt(p.nakupCena)} ${curSym}`).join('\n') + '\n\nChceš přesto pokračovat?');
     if (!ok) return;
   }
   const doprava    = parseFloat(document.getElementById('doprava')?.value) || 0;
@@ -882,7 +882,7 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
 
   const totalBez = produkty.reduce((s,p) => s + p.ks * p.cenaBezDph, 0);
   const trelloProdList = produkty.map(p =>
-    `- ${p.nazev} · ${p.ks} ks · ${fmt(p.cenaBezDph)} Kč/ks`
+    `- ${p.nazev} · ${p.ks} ks · ${fmt(p.cenaBezDph)} ${curSym}/ks`
   ).join('\n');
   const cardDesc = `## ${firma}\n**Číslo nabídky:** ${cislo}\n**Rep:** ${repName||'-'}\n**Kontakt:** ${kontakt||'-'}${telefon?' · 📞 '+telefon:''}${emailKlient?' · 📧 '+emailKlient:''}\n\n### Produkty\n${trelloProdList}\n\n---\n✏️ [Upravit nabídku](${editUrl})\n✅ [Otevřít formulář zakázky po schválení](${zakazkaUrl})`;
 
@@ -925,9 +925,9 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
     const nakupKs = p.nakupCena || null;
     const ziskKs  = nakupKs !== null ? (p.cenaBezDph - nakupKs) * p.ks : null;
     if (nakupKs !== null) totalNakup += nakupKs * p.ks;
-    return `${p.nazev} · ${p.ks} ks · prodej ${fmt(p.cenaBezDph)} Kč/ks` +
-      (nakupKs !== null ? ` · nákup ${fmt(nakupKs)} Kč/ks · zisk ${ziskKs>=0?'+':''}${fmt(ziskKs)} Kč` : '') +
-      ` = ${fmt(p.celkem)} Kč`;
+    return `${p.nazev} · ${p.ks} ks · prodej ${fmt(p.cenaBezDph)} ${curSym}/ks` +
+      (nakupKs !== null ? ` · nákup ${fmt(nakupKs)} ${curSym}/ks · zisk ${ziskKs>=0?'+':''}${fmt(ziskKs)} ${curSym}` : '') +
+      ` = ${fmt(p.celkem)} ${curSym}`;
   }).join('\n');
   const celkovyZisk = totalNakup > 0 ? totalBez - totalNakup : null;
   const ownerBody =
@@ -936,11 +936,11 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
     `Rep: ${repName||'-'}\n` +
     `Kontakt: ${kontakt||'-'}${telefon?' · '+telefon:''}${emailKlient?' · '+emailKlient:''}\n\n` +
     `PRODUKTY:\n${ownerProdList}\n\n` +
-    (doprava > 0 ? `Doprava: ${fmt(doprava)} Kč\n` : '') +
+    (doprava > 0 ? `Doprava: ${fmt(doprava)} ${curSym}\n` : '') +
     `Mezisoučet bez ${dphLbl.split(' ')[0]}: ${fmt(totalBez)} ${curSym}\n` +
     `${dphLbl}: ${fmt(totalBez * dphRate)} ${curSym}\n` +
     `CELKEM S DPH: ${fmt(totalBez * (1 + dphRate))} ${curSym}\n` +
-    (celkovyZisk !== null ? `\n💰 CELKOVÝ ZISK (bez DPH): ${celkovyZisk >= 0 ? '+' : ''}${fmt(celkovyZisk)} Kč\n` : '') +
+    (celkovyZisk !== null ? `\n💰 CELKOVÝ ZISK (bez DPH): ${celkovyZisk >= 0 ? '+' : ''}${fmt(celkovyZisk)} ${curSym}\n` : '') +
     `\nZakázka: ${zakazkaUrl}`;
 
   fetch('https://script.google.com/macros/s/AKfycbwonbDE6DfEOFOqbY6EhPN2lfx2ue2j37HmeSvHsVx_VQJdR1kE55NDpOGhtOnhwj7-mQ/exec', {
@@ -949,7 +949,7 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
     body: JSON.stringify({
       type: 'owner_nabidka',
       to: 'nutworld.cz@gmail.com',
-      subject: isEdit ? `✏️ Aktualizace ${cislo} — ${firma} — ${fmt(totalBez * 1.12)} Kč` : `💰 Nabídka ${cislo} — ${firma} — ${fmt(totalBez * 1.12)} Kč`,
+      subject: isEdit ? `✏️ Aktualizace ${cislo} — ${firma} — ${fmt(totalBez * (1 + dphRate))} ${curSym}` : `💰 Nabídka ${cislo} — ${firma} — ${fmt(totalBez * (1 + dphRate))} ${curSym}`,
       body: ownerBody
     })
   }).catch(() => {});
