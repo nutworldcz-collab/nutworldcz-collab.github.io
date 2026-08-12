@@ -631,6 +631,19 @@ function getSlozeniText(cid) {
   }).filter(Boolean).join(', ');
 }
 
+function getSlozeniRows(cid) {
+  const rows = document.getElementById('slozeni-rows-'+cid);
+  if (!rows) return [];
+  return Array.from(rows.querySelectorAll('.slozeni-row')).map(row => {
+    const kod   = row.querySelector('.slozeni-kod-inp')?.value.trim() || '';
+    const nazev = row.querySelector('.slozeni-nazev')?.value.trim() || '';
+    const gram  = row.querySelector('.slozeni-gram')?.value.trim() || '';
+    const obal  = row.querySelector('.slozeni-obal')?.value.trim() || '';
+    if (!kod && !nazev) return null;
+    return { kod, nazev, gram, obal };
+  }).filter(Boolean);
+}
+
 // ── Odkaz zakázky ──
 function collectFormData() {
   const rows = document.querySelectorAll('#prod-tbody tr');
@@ -643,8 +656,9 @@ function collectFormData() {
     const cena   = parseFloat(document.getElementById('cena-'+id)?.value);
     const nakup  = parseFloat(document.getElementById('nakup-'+id)?.value) || null;
     const popis  = getSlozeniText(id);
+    const slozeni = getSlozeniRows(id);
     if (!nazev || isNaN(cena) || cena <= 0) return;
-    produkty.push({ kod, nazev, ks, cena, nakup, popis });
+    produkty.push({ kod, nazev, ks, cena, nakup, popis, slozeni });
   });
   return {
     trh:         document.getElementById('trh').value,

@@ -442,6 +442,15 @@ function renderSummary(d) {
     vtbody.appendChild(tr);
   });
   recalcMarze();
+
+  // Auto-otevři sekci dílčích produktů pro každý produkt
+  setTimeout(() => {
+    d.produkty.forEach((p, i) => {
+      if (!document.getElementById('popis-row-sp-'+i)) {
+        togglePopisProd(i, (p.slozeni && p.slozeni.length) ? p.slozeni : null);
+      }
+    });
+  }, 0);
 }
 
 function recalcMarze() {
@@ -467,7 +476,7 @@ function recalcMarze() {
   }
 }
 
-function togglePopisProd(i) {
+function togglePopisProd(i, prefillRows) {
   const existingRow = document.getElementById('popis-row-sp-'+i);
   if (existingRow) { existingRow.remove(); return; }
   const mainRow = document.getElementById('srow-'+i);
@@ -477,32 +486,50 @@ function togglePopisProd(i) {
   tr.className = 'popis-row-sp';
   tr.innerHTML = `<td colspan="${cols}">
     <div class="slozeni-wrap">
+      <div style="font-size:10px;color:#83502e;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">
+        Dílčí produkty <span style="color:#da1668;font-size:9px">(kód * a gramáž * povinné)</span>
+      </div>
       <div class="slozeni-rows" id="slozeni-rows-sp-${i}"></div>
-      <button class="slozeni-add-btn" type="button" onclick="addSlozeniRow('sp-${i}')">+ Přidat produkt do složení</button>
+      <button class="slozeni-add-btn" type="button" onclick="addSlozeniRow('sp-${i}')">+ Přidat produkt</button>
     </div>
   </td>`;
   mainRow.after(tr);
-  addSlozeniRow('sp-'+i);
+  if (prefillRows && prefillRows.length) {
+    prefillRows.forEach(row => addSlozeniRow('sp-'+i, row));
+  } else {
+    addSlozeniRow('sp-'+i);
+  }
 }
 
-function addSlozeniRow(cid) {
+function addSlozeniRow(cid, prefill) {
   const rows = document.getElementById('slozeni-rows-'+cid);
   const idx = rows.children.length;
   const div = document.createElement('div');
   div.className = 'slozeni-row';
   div.innerHTML = `
     <div class="slozeni-search-wrap">
-      <input class="slozeni-kod-inp" id="slozeni-s-${cid}-${idx}" placeholder="Kód nebo název…" autocomplete="off"/>
+      <input class="slozeni-kod-inp" id="slozeni-s-${cid}-${idx}" placeholder="Kód *" autocomplete="off" title="Povinné pole"/>
       <div class="slozeni-ac-drop" id="slozeni-d-${cid}-${idx}"></div>
     </div>
     <input class="slozeni-nazev" id="slozeni-n-${cid}-${idx}" readonly placeholder="Název produktu"/>
-    <input class="slozeni-gram" id="slozeni-g-${cid}-${idx}" placeholder="Gramáž"/>
-    <input class="slozeni-obal" id="slozeni-o-${cid}-${idx}" placeholder="Obal / balení (sáček, sklo…)"/>
+    <input class="slozeni-gram" id="slozeni-g-${cid}-${idx}" placeholder="Gramáž *" title="Povinné pole"/>
+    <input class="slozeni-obal" id="slozeni-o-${cid}-${idx}" placeholder="Obal / balení"/>
     <button class="slozeni-rm" type="button" title="Odebrat" onclick="this.closest('.slozeni-row').remove()">✕</button>
   `;
   rows.appendChild(div);
   buildSlozeniAC(cid, idx);
-  document.getElementById('slozeni-s-'+cid+'-'+idx).focus();
+  if (prefill) {
+    const si = document.getElementById('slozeni-s-'+cid+'-'+idx);
+    const ni = document.getElementById('slozeni-n-'+cid+'-'+idx);
+    const gi = document.getElementById('slozeni-g-'+cid+'-'+idx);
+    const oi = document.getElementById('slozeni-o-'+cid+'-'+idx);
+    if (si) si.value = prefill.kod || '';
+    if (ni) ni.value = prefill.nazev || '';
+    if (gi) gi.value = prefill.gram || '';
+    if (oi) oi.value = prefill.obal || '';
+  } else {
+    document.getElementById('slozeni-s-'+cid+'-'+idx).focus();
+  }
 }
 
 function buildSlozeniAC(cid, idx) {
@@ -621,6 +648,28 @@ async function createTrelloCard() {
 
   if (!termin)   { alert('Vyplňte termín dodání.'); return; }
   if (!obchodak) { alert('Vyplňte obchodního zástupce.'); return; }
+
+  // Validace dílčích produktů — kód a gramáž jsou povinné u vyplněných řádků
+  let compositionErr = false;
+  offerData.produkty.forEach((p, idx) => {
+    const rowsEl = document.getElementById('slozeni-rows-sp-'+idx);
+    if (!rowsEl) return;
+    rowsEl.querySelectorAll('.slozeni-row').forEach(row => {
+      const kod  = row.querySelector('.slozeni-kod-inp')?.value.trim() || '';
+      const nazev = row.querySelector('.slozeni-nazev')?.value.trim() || '';
+      const gram = row.querySelector('.slozeni-gram')?.value.trim() || '';
+      const hasAny = kod || nazev || gram;
+      if (hasAny && (!kod || !gram)) {
+        compositionErr = true;
+        row.querySelector('.slozeni-kod-inp').style.borderColor = kod ? '' : '#da1668';
+        row.querySelector('.slozeni-gram').style.borderColor    = gram ? '' : '#da1668';
+      }
+    });
+  });
+  if (compositionErr) {
+    alert('U dílčích produktů vyplňte kód i gramáž (nebo celý řádek odeberte tlačítkem ✕).');
+    return;
+  }
 
   setLoading(true, 'Vytváří se karta…');
 
