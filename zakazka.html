@@ -697,7 +697,7 @@ async function createTrelloCard() {
   const desc = `## 🏢 Zákazník
 **Firma:** ${d.firma}
 **IČO:** ${d.ico||'-'} | **DIČ:** ${d.dic||'-'}
-**Kontakt:** ${d.kontakt||'-'} · ${d.emailKlient||'-'}
+**Kontakt:** ${d.kontakt||'-'} · 📧 ${d.emailKlient||'-'}${d.telefon ? ' · 📞 '+d.telefon : ''}
 **Fakt. adresa:** ${d.adresa||'-'}
 **Dor. adresa:** ${adresaDor||d.adresa||'-'}
 
