@@ -10,7 +10,6 @@
 :root{--bd:#5c381f;--br:#83502e;--kraft:#f1e6da;--acc:#da1668;--leaf:#6fa044;--amb:#f7ab31;--amb-soft:#fff8e1}
 body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;font-size:14px;min-height:100vh}
 
-/* Topbar */
 .topbar{background:var(--bd);padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .topbar-title{font-family:'Exo 2',sans-serif;font-size:17px;font-weight:800;color:white}
 .topbar a{color:rgba(255,255,255,.6);font-size:12px;text-decoration:none}
@@ -29,89 +28,63 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .search-wrap input:focus{outline:none;border-color:var(--br)}
 .search-wrap::before{content:'🔍';position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:13px}
 
-/* View toggle */
-.view-toggle{display:flex;gap:0;border:1.5px solid #d4c0a8;border-radius:8px;overflow:hidden}
-.view-btn{background:#faf7f3;border:none;padding:7px 16px;font-size:12px;font-family:'Exo 2',sans-serif;font-weight:700;color:#888;cursor:pointer;transition:all .15s}
-.view-btn.active{background:var(--bd);color:white}
-.view-btn:hover:not(.active){background:var(--kraft);color:var(--bd)}
-
-/* List filter pills */
-.list-filters{display:flex;gap:5px;flex-wrap:wrap;width:100%;padding-top:6px;border-top:1px solid #ede0d4;margin-top:6px}
+.list-filters{display:flex;gap:5px;flex-wrap:wrap;width:100%;padding-top:8px;border-top:1px solid #ede0d4;margin-top:8px}
 .lpill{padding:4px 12px;border-radius:20px;border:1.5px solid #d4c0a8;background:white;font-size:11px;font-weight:700;cursor:pointer;color:#888;font-family:inherit;transition:all .15s}
 .lpill.on{background:var(--bd);border-color:var(--bd);color:white}
 .lpill:hover:not(.on){background:var(--kraft);color:var(--bd)}
-.lpill-all{border-color:var(--amb)!important}
 .lpill-all.on{background:var(--amb)!important;border-color:var(--amb)!important;color:var(--bd)!important}
 
-/* Summary strip */
+/* Summary */
 .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
 @media(max-width:700px){.summary{grid-template-columns:1fr 1fr}}
 .sum-box{background:white;border-radius:10px;padding:10px 14px;text-align:center;box-shadow:0 1px 6px rgba(0,0,0,.07)}
 .sum-val{font-family:'Exo 2',sans-serif;font-size:22px;font-weight:800;color:var(--bd)}
 .sum-lbl{font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
-.sum-box.highlight .sum-val{color:var(--leaf)}
+.sum-box.green .sum-val{color:var(--leaf)}
 
-/* ──── FIRMY VIEW ──── */
-.firmy-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
-.firma-card{background:white;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);overflow:hidden}
-.firma-header{padding:14px 16px 10px;border-bottom:1px solid #ede0d4}
-.firma-name{font-family:'Exo 2',sans-serif;font-weight:800;font-size:15px;color:var(--bd);display:flex;justify-content:space-between;align-items:baseline;gap:8px}
-.firma-meta{font-size:11px;color:#999;margin-top:3px}
-.firma-meta strong{color:#666}
-.progress-bar{height:6px;background:#ede0d4;border-radius:3px;margin-top:8px;overflow:hidden}
-.progress-fill{height:100%;background:var(--leaf);border-radius:3px;transition:width .3s}
-.progress-fill.done{background:var(--leaf)}
-.progress-fill.partial{background:var(--amb)}
-.progress-text{font-size:10px;color:#999;margin-top:3px;text-align:right}
-
-.prod-block{border-bottom:1px solid #f0e8e0}
-.prod-block:last-child{border-bottom:none}
-.prod-title{padding:9px 16px;cursor:pointer;display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--br);user-select:none}
-.prod-title:hover{background:#faf7f3}
-.prod-title .toggle-icon{font-size:10px;color:#ccc;flex-shrink:0;transition:transform .15s}
-.prod-title.open .toggle-icon{transform:rotate(90deg)}
-.prod-ks{margin-left:auto;font-size:11px;color:#bbb;font-weight:400}
-.prod-sluzba{font-size:10px;background:#fff5f7;color:var(--acc);border-radius:4px;padding:1px 5px;margin-left:4px}
-
-.comp-list{display:none;padding:4px 0 8px}
-.comp-list.open{display:block}
-.comp-row{display:flex;align-items:center;gap:10px;padding:5px 16px 5px 28px;cursor:pointer;transition:background .1s}
-.comp-row:hover{background:#faf7f3}
-.comp-check{width:18px;height:18px;border:2px solid #d4c0a8;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;background:white}
-.comp-row.checked .comp-check{background:var(--leaf);border-color:var(--leaf);color:white}
-.comp-row.checked .comp-check::after{content:'✓';font-size:11px;font-weight:800}
-.comp-row.checked .comp-name{text-decoration:line-through;color:#bbb}
-.comp-name{font-size:12px;color:#333;flex:1}
-.comp-gram{font-size:11px;color:#999;background:#f5f0ea;border-radius:4px;padding:1px 6px;white-space:nowrap}
-.comp-kod{font-size:10px;color:#c8a87a;font-family:monospace;white-space:nowrap}
-.no-comp{padding:8px 28px;font-size:11px;color:#bbb;font-style:italic}
-
-/* ──── VÝROBA VIEW ──── */
+/* Grid výroby */
 .vyroba-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
-.ing-card{background:white;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);overflow:hidden}
-.ing-header{padding:12px 16px;background:var(--amb-soft);border-bottom:2px solid var(--amb);display:flex;align-items:center;gap:10px}
-.ing-name{font-family:'Exo 2',sans-serif;font-weight:800;font-size:13px;color:var(--bd);flex:1}
-.ing-gram{font-size:11px;background:var(--amb);color:var(--bd);border-radius:4px;padding:2px 7px;font-weight:700;white-space:nowrap}
-.ing-kod{font-size:10px;color:#b8860b;font-family:monospace;white-space:nowrap}
-.ing-total{font-size:11px;color:#888;padding:6px 16px;border-bottom:1px solid #f0e8e0;font-style:italic}
 
-.ing-rows{padding:6px 0 4px}
-.ing-row{display:flex;align-items:center;gap:10px;padding:5px 14px;cursor:pointer;transition:background .1s}
+/* Karta ingredience */
+.ing-card{background:white;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);overflow:hidden;transition:box-shadow .15s}
+.ing-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.12)}
+.ing-card.all-done .ing-header{background:#e8f5e9;border-color:var(--leaf)}
+.ing-card.all-done .ing-gram{background:var(--leaf);color:white}
+
+.ing-header{padding:12px 15px;background:var(--amb-soft);border-bottom:2px solid var(--amb);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ing-name{font-family:'Exo 2',sans-serif;font-weight:800;font-size:14px;color:var(--bd);flex:1}
+.ing-gram{font-size:11px;background:var(--amb);color:var(--bd);border-radius:4px;padding:2px 8px;font-weight:700;white-space:nowrap}
+.ing-kod{font-size:10px;color:#b8860b;font-family:monospace}
+
+.ing-stats{font-size:11px;color:#999;padding:6px 15px;border-bottom:1px solid #f0e8e0;display:flex;justify-content:space-between;align-items:center}
+.ing-stats-done{color:var(--leaf);font-weight:700}
+
+.ing-rows{padding:4px 0}
+
+/* Řádek firmy */
+.ing-row{display:flex;align-items:flex-start;gap:10px;padding:8px 14px;cursor:pointer;transition:background .1s;border-bottom:1px solid #f8f3ee}
+.ing-row:last-child{border-bottom:none}
 .ing-row:hover{background:#faf7f3}
-.ing-firma{flex:1;font-size:12px;color:#333}
-.ing-ks{font-size:11px;color:#999;white-space:nowrap;padding-right:4px}
-.ing-check{width:18px;height:18px;border:2px solid #d4c0a8;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;background:white}
-.ing-row.checked .ing-check{background:var(--leaf);border-color:var(--leaf)}
-.ing-row.checked .ing-check::after{content:'✓';font-size:11px;font-weight:800;color:white}
-.ing-row.checked .ing-firma{text-decoration:line-through;color:#bbb}
+.ing-row.checked{background:#f4fbf4}
+.ing-row.checked .ing-firma{color:#bbb}
+.ing-row.checked .ing-darku{color:#ccc}
 
-/* Prázdný stav, loading */
+.ing-check{width:20px;height:20px;border:2px solid #d4c0a8;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;background:white;margin-top:1px}
+.ing-row.checked .ing-check{background:var(--leaf);border-color:var(--leaf)}
+.ing-row.checked .ing-check::after{content:'✓';font-size:12px;font-weight:800;color:white}
+
+.ing-info{flex:1;min-width:0}
+.ing-firma{font-size:13px;font-weight:600;color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ing-row.checked .ing-firma{text-decoration:line-through}
+.ing-darku{font-size:11px;color:#999;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ing-ks{font-size:12px;color:#aaa;white-space:nowrap;flex-shrink:0;align-self:flex-start;margin-top:3px}
+
+/* Loading / prázdný stav */
 .state-box{background:white;border-radius:12px;padding:48px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07)}
-.state-box .icon{font-size:40px;margin-bottom:12px}
-.state-box p{color:#888;font-size:14px}
-.spinner{display:inline-block;width:36px;height:36px;border:3px solid var(--kraft);border-top-color:var(--br);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:12px}
+.state-box p{color:#888;font-size:14px;margin-top:10px}
+.spinner{display:inline-block;width:36px;height:36px;border:3px solid var(--kraft);border-top-color:var(--br);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.empty-state{text-align:center;padding:40px;color:#bbb;font-size:14px;grid-column:1/-1}
+.empty-state{background:white;border-radius:12px;padding:40px;text-align:center;color:#bbb;font-size:14px;box-shadow:0 2px 8px rgba(0,0,0,.07)}
 </style>
 </head>
 <body>
@@ -122,37 +95,28 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
   <a href="/zakazy.html">🃏 Zakázky</a>
   <div class="topbar-right">
     <span class="refresh-info" id="refresh-info">načítám…</span>
-    <button class="btn-refresh" onclick="loadData()">↻ Obnovit</button>
+    <button class="btn-refresh" onclick="loadData(true)">↻ Obnovit</button>
   </div>
 </div>
 
 <div class="container">
 
-  <!-- Toolbar -->
   <div class="toolbar">
     <div class="search-wrap">
-      <input type="text" id="search" placeholder="Hledat firmu nebo produkt…" oninput="render()"/>
-    </div>
-    <div class="view-toggle">
-      <button id="btn-firmy" class="view-btn active" onclick="setView('firmy')">🏢 Firmy</button>
-      <button id="btn-vyroba" class="view-btn" onclick="setView('vyroba')">🔧 Výroba</button>
+      <input type="text" id="search" placeholder="Hledat produkt, firmu nebo kód…" oninput="render()"/>
     </div>
     <div class="list-filters" id="list-filters"></div>
   </div>
 
-  <!-- Summary -->
   <div class="summary" id="summary" style="display:none">
     <div class="sum-box"><div class="sum-val" id="s-firmy">—</div><div class="sum-lbl">Firem</div></div>
-    <div class="sum-box"><div class="sum-val" id="s-ks">—</div><div class="sum-lbl">Kusů celkem</div></div>
-    <div class="sum-box highlight"><div class="sum-val" id="s-done">—</div><div class="sum-lbl">Složek hotovo</div></div>
-    <div class="sum-box"><div class="sum-val" id="s-ing">—</div><div class="sum-lbl">Různých prod.</div></div>
+    <div class="sum-box"><div class="sum-val" id="s-ing">—</div><div class="sum-lbl">Produktů k výrobě</div></div>
+    <div class="sum-box green"><div class="sum-val" id="s-done">—</div><div class="sum-lbl">Hotovo</div></div>
+    <div class="sum-box"><div class="sum-val" id="s-zbyvá">—</div><div class="sum-lbl">Zbývá</div></div>
   </div>
 
   <div id="main-content">
-    <div class="state-box">
-      <div class="spinner"></div>
-      <p>Načítám zakázky z Trella…</p>
-    </div>
+    <div class="state-box"><div class="spinner"></div><p>Načítám zakázky z Trella…</p></div>
   </div>
 
 </div>
@@ -163,434 +127,214 @@ const TOKEN = atob('QVRUQTdiMWI4YTFjZWRjMTIyODI3ZmRiMmY4MGRjMjRiNThkMTA4NTVkOTY3
 const BOARD = '637f702c5e323c01d42feeac';
 const CACHE_KEY = 'nw_vyroba_cache';
 const PROG_KEY  = 'nw_vyroba_progress';
+const EXCLUDE   = ['archiv','storno','hotov','dokončen','faktura'];
 
-// Lists to EXCLUDE from production plan (archived / cancelled)
-const EXCLUDE_KEYWORDS = ['archiv', 'storno', 'hotov', 'dokončen', 'faktura'];
-
-let allLists   = [];
-let allCards   = [];
+let allLists    = [];
+let allCards    = [];
 let parsedCards = [];
-let activeView = 'firmy';
-let activeLists = new Set(['ALL']);  // 'ALL' means show everything not excluded
-let progress   = {};
-let openProds  = new Set();  // track which prod-blocks are expanded
+let activeLists = new Set(['ALL']);
+let progress    = {};
 
-function saveProgress() {
-  try { localStorage.setItem(PROG_KEY, JSON.stringify(progress)); } catch(e) {}
-}
-function loadProgress() {
-  try { progress = JSON.parse(localStorage.getItem(PROG_KEY) || '{}'); } catch(e) { progress = {}; }
-}
-function pKey(cardId, prodIdx, compIdx) {
-  return `${cardId}_p${prodIdx}_c${compIdx}`;
-}
-function isChecked(cardId, prodIdx, compIdx) {
-  return !!progress[pKey(cardId, prodIdx, compIdx)];
-}
-function toggleCheck(cardId, prodIdx, compIdx) {
-  const k = pKey(cardId, prodIdx, compIdx);
-  progress[k] = !progress[k];
-  saveProgress();
-  render();
-}
+/* ── Progress ── */
+function saveProg() { try { localStorage.setItem(PROG_KEY, JSON.stringify(progress)); } catch(e){} }
+function loadProg() { try { progress = JSON.parse(localStorage.getItem(PROG_KEY)||'{}'); } catch(e){ progress={}; } }
+function pKey(cardId, pi, ci) { return `${cardId}_p${pi}_c${ci}`; }
+function isDone(cardId, pi, ci) { return !!progress[pKey(cardId,pi,ci)]; }
+function toggle(cardId, pi, ci) { const k=pKey(cardId,pi,ci); progress[k]=!progress[k]; saveProg(); render(); }
 
-// ─── API ───────────────────────────────────────────────
-function api(path, params = {}) {
-  const qs = new URLSearchParams({ key: KEY, token: TOKEN, ...params }).toString();
-  return fetch(`https://api.trello.com/1${path}?${qs}`).then(r => r.json());
+/* ── API ── */
+function api(path, params={}) {
+  return fetch(`https://api.trello.com/1${path}?`+new URLSearchParams({key:KEY,token:TOKEN,...params})).then(r=>r.json());
 }
+function saveCache(lists,cards){ try{localStorage.setItem(CACHE_KEY,JSON.stringify({lists,cards,ts:Date.now()}));}catch(e){} }
+function loadCache(){ try{return JSON.parse(localStorage.getItem(CACHE_KEY));}catch(e){return null;} }
 
-function saveCache(lists, cards) {
-  try { localStorage.setItem(CACHE_KEY, JSON.stringify({ lists, cards, ts: Date.now() })); } catch(e) {}
-}
-function loadCache() {
-  try { return JSON.parse(localStorage.getItem(CACHE_KEY)); } catch(e) { return null; }
-}
-
-async function loadData(force = false) {
-  document.getElementById('refresh-info').textContent = 'načítám…';
-  document.getElementById('main-content').innerHTML = '<div class="state-box"><div class="spinner"></div><p>Načítám zakázky z Trella…</p></div>';
-
-  const cache = loadCache();
-  const AGE_MIN = 5;
-  if (!force && cache && (Date.now() - cache.ts) < AGE_MIN * 60000) {
-    allLists = cache.lists;
-    allCards  = cache.cards;
-    const age = Math.round((Date.now() - cache.ts) / 60000);
-    document.getElementById('refresh-info').textContent = `cache ${age} min`;
-    processData();
-    return;
+async function loadData(force=false) {
+  document.getElementById('refresh-info').textContent='načítám…';
+  document.getElementById('main-content').innerHTML='<div class="state-box"><div class="spinner"></div><p>Načítám zakázky z Trella…</p></div>';
+  const cache=loadCache();
+  if(!force && cache && (Date.now()-cache.ts)<5*60000){
+    allLists=cache.lists; allCards=cache.cards;
+    document.getElementById('refresh-info').textContent=`cache ${Math.round((Date.now()-cache.ts)/60000)} min`;
+    process(); return;
   }
-
   try {
-    const [lists, cards] = await Promise.all([
+    const [lists,cards]=await Promise.all([
       api(`/boards/${BOARD}/lists`),
-      api(`/boards/${BOARD}/cards`, { fields: 'name,desc,idList,due,dateLastActivity,url' })
+      api(`/boards/${BOARD}/cards`,{fields:'name,desc,idList,due,url'})
     ]);
-    allLists = lists.filter(l => !l.closed);
-    allCards  = cards;
-    saveCache(allLists, allCards);
-    const now = new Date();
-    document.getElementById('refresh-info').textContent = `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
-    processData();
+    allLists=lists.filter(l=>!l.closed);
+    allCards=cards;
+    saveCache(allLists,allCards);
+    const n=new Date();
+    document.getElementById('refresh-info').textContent=`${n.getHours()}:${String(n.getMinutes()).padStart(2,'0')}`;
+    process();
   } catch(e) {
-    document.getElementById('main-content').innerHTML = `<div class="state-box"><div class="icon">⚠️</div><p>Chyba načítání: ${e.message}</p></div>`;
+    document.getElementById('main-content').innerHTML=`<div class="state-box"><p>⚠️ Chyba: ${e.message}</p></div>`;
   }
 }
 
-// ─── PARSE ─────────────────────────────────────────────
-function excludedList(name) {
-  const n = name.toLowerCase();
-  return EXCLUDE_KEYWORDS.some(k => n.includes(k));
-}
+/* ── Parse ── */
+function excl(name){ return EXCLUDE.some(k=>name.toLowerCase().includes(k)); }
 
-function parseSlozeniItem(s) {
-  const kodMatch = s.match(/\(kód\s+(\S+)\)\s*$/);
-  const kod = kodMatch ? kodMatch[1] : '';
-  const rest = (kodMatch ? s.slice(0, kodMatch.index) : s).trim();
-  const tokens = rest.split(/\s+/);
-  let gramIdx = -1;
-  for (let i = 1; i < tokens.length; i++) {
-    if (/^\d+(?:[.,]\d+)?(?:g|kg|ml|G|l)?$/.test(tokens[i])) { gramIdx = i; break; }
+function parseComp(s) {
+  const km=s.match(/\(kód\s+(\S+)\)\s*$/);
+  const kod=km?km[1]:'';
+  const rest=(km?s.slice(0,km.index):s).trim();
+  const toks=rest.split(/\s+/);
+  let gi=-1;
+  for(let i=1;i<toks.length;i++){
+    if(/^\d+(?:[.,]\d+)?(?:g|kg|ml)?$/i.test(toks[i])){ gi=i; break; }
   }
-  if (gramIdx === -1) return { nazev: rest, gram: '', obal: '', kod };
-  return {
-    nazev: tokens.slice(0, gramIdx).join(' '),
-    gram:  tokens[gramIdx],
-    obal:  tokens.slice(gramIdx + 1).join(' '),
-    kod
-  };
+  if(gi===-1) return {nazev:rest,gram:'',obal:'',kod};
+  return {nazev:toks.slice(0,gi).join(' '),gram:toks[gi],obal:toks.slice(gi+1).join(' '),kod};
 }
 
-function parseCardDesc(card) {
-  const { id, name, desc = '', idList, due, url } = card;
-  const nameParts = name.split(' — ');
-  const firma = nameParts[0] || name;
-
-  const terminMatch = desc.match(/\*\*Termín:\*\*\s*(\d{2}\.\d{2}\.\d{4})/);
-  const termin = terminMatch ? terminMatch[1] : (nameParts[2] || '');
-
-  const produkty = [];
-  const prodSect = desc.match(/##\s*🛒 Produkty\n\n([\s\S]*?)(?:\n##\s|$)/);
-  if (prodSect) {
-    const lines = prodSect[1].split('\n');
-    let cur = null;
-    for (const line of lines) {
-      const hm = line.match(/^\*\*(.+?)\*\*(\s*\*\(služba\)\*)?\s*$/);
-      if (hm) {
-        if (cur) produkty.push(cur);
-        cur = { nazev: hm[1].trim(), isSluzba: !!hm[2], ks: 0, slozeni: [] };
-        continue;
-      }
-      if (!cur) continue;
-      const km = line.match(/^[-\s]*(\d+)\s*ks/);
-      if (km) cur.ks = parseInt(km[1]);
-      const sm = line.match(/📦\s+(.+)/);
-      if (sm) {
-        cur.slozeni = sm[1].split(', ').map(parseSlozeniItem).filter(x => x.nazev || x.kod);
-      }
+function parseCard(card) {
+  const {id,name,desc='',idList,url}=card;
+  const firma=name.split(' — ')[0]||name;
+  const tm=desc.match(/\*\*Termín:\*\*\s*(\d{2}\.\d{2}\.\d{4})/);
+  const termin=tm?tm[1]:'';
+  const produkty=[];
+  const sect=desc.match(/##\s*🛒 Produkty\n\n([\s\S]*?)(?:\n##\s|$)/);
+  if(sect){
+    let cur=null;
+    for(const line of sect[1].split('\n')){
+      const hm=line.match(/^\*\*(.+?)\*\*(\s*\*\(služba\)\*)?\s*$/);
+      if(hm){ if(cur)produkty.push(cur); cur={nazev:hm[1].trim(),isSluzba:!!hm[2],ks:0,slozeni:[]}; continue; }
+      if(!cur) continue;
+      const km=line.match(/[-\s]*(\d+)\s*ks/); if(km) cur.ks=parseInt(km[1]);
+      const sm=line.match(/📦\s+(.+)/);
+      if(sm) cur.slozeni=sm[1].split(', ').map(parseComp).filter(x=>x.nazev||x.kod);
     }
-    if (cur) produkty.push(cur);
+    if(cur) produkty.push(cur);
   }
-
-  return { id, firma, termin, idList, produkty, url };
+  return {id,firma,termin,idList,produkty,url};
 }
 
-function processData() {
-  // Build list of non-excluded lists
-  const visibleLists = allLists.filter(l => !excludedList(l.name));
-  const visibleIds   = new Set(visibleLists.map(l => l.id));
-
-  parsedCards = allCards
-    .filter(c => visibleIds.has(c.idList))
-    .map(parseCardDesc)
-    .filter(c => c.produkty.length > 0 || true); // show all, even without sub-products
-
-  buildListFilters(visibleLists);
-  loadProgress();
+function process(){
+  const vis=new Set(allLists.filter(l=>!excl(l.name)).map(l=>l.id));
+  parsedCards=allCards.filter(c=>vis.has(c.idList)).map(parseCard);
+  buildFilters([...allLists].filter(l=>vis.has(l.id)));
+  loadProg();
   render();
 }
 
-function buildListFilters(lists) {
-  const container = document.getElementById('list-filters');
-  container.innerHTML = '';
-
-  const allBtn = document.createElement('button');
-  allBtn.className = 'lpill lpill-all' + (activeLists.has('ALL') ? ' on' : '');
-  allBtn.textContent = 'Vše';
-  allBtn.onclick = () => { activeLists = new Set(['ALL']); buildListFilters(lists); render(); };
-  container.appendChild(allBtn);
-
-  lists.forEach(l => {
-    const btn = document.createElement('button');
-    btn.className = 'lpill' + (activeLists.has(l.id) ? ' on' : '');
-    const cnt = allCards.filter(c => c.idList === l.id).length;
-    btn.textContent = `${l.name} (${cnt})`;
-    btn.onclick = () => {
+/* ── List filter pills ── */
+function buildFilters(lists){
+  const c=document.getElementById('list-filters');
+  c.innerHTML='';
+  const a=document.createElement('button');
+  a.className='lpill lpill-all'+(activeLists.has('ALL')?' on':'');
+  a.textContent='Vše';
+  a.onclick=()=>{ activeLists=new Set(['ALL']); buildFilters(lists); render(); };
+  c.appendChild(a);
+  lists.forEach(l=>{
+    const cnt=allCards.filter(x=>x.idList===l.id).length;
+    const b=document.createElement('button');
+    b.className='lpill'+(activeLists.has(l.id)?' on':'');
+    b.textContent=`${l.name} (${cnt})`;
+    b.onclick=()=>{
       activeLists.delete('ALL');
-      if (activeLists.has(l.id)) activeLists.delete(l.id);
-      else activeLists.add(l.id);
-      if (activeLists.size === 0) activeLists.add('ALL');
-      buildListFilters(lists);
-      render();
+      activeLists.has(l.id)?activeLists.delete(l.id):activeLists.add(l.id);
+      if(!activeLists.size) activeLists.add('ALL');
+      buildFilters(lists); render();
     };
-    container.appendChild(btn);
+    c.appendChild(b);
   });
 }
 
-// ─── RENDER ────────────────────────────────────────────
-function setView(v) {
-  activeView = v;
-  document.getElementById('btn-firmy').classList.toggle('active', v === 'firmy');
-  document.getElementById('btn-vyroba').classList.toggle('active', v === 'vyroba');
-  render();
-}
-
-function visibleCards() {
-  const q = document.getElementById('search').value.toLowerCase().trim();
-  return parsedCards.filter(c => {
-    if (!activeLists.has('ALL') && !activeLists.has(c.idList)) return false;
-    if (!q) return true;
-    if (c.firma.toLowerCase().includes(q)) return true;
-    return c.produkty.some(p =>
-      p.nazev.toLowerCase().includes(q) ||
-      p.slozeni.some(s =>
-        s.nazev.toLowerCase().includes(q) ||
-        s.kod.toLowerCase().includes(q)
-      )
+/* ── Render ── */
+function visible(){
+  const q=document.getElementById('search').value.toLowerCase().trim();
+  return parsedCards.filter(c=>{
+    if(!activeLists.has('ALL')&&!activeLists.has(c.idList)) return false;
+    if(!q) return true;
+    if(c.firma.toLowerCase().includes(q)) return true;
+    return c.produkty.some(p=>
+      p.nazev.toLowerCase().includes(q)||
+      p.slozeni.some(s=>s.nazev.toLowerCase().includes(q)||s.kod.toLowerCase().includes(q))
     );
   });
 }
 
-function render() {
-  const cards = visibleCards();
-  updateSummary(cards);
-  if (activeView === 'firmy') renderFirmy(cards);
-  else renderVyroba(cards);
-}
+function render(){
+  const cards=visible();
 
-function updateSummary(cards) {
-  const el = document.getElementById('summary');
-  el.style.display = 'grid';
-
-  let totalKs = 0, totalDone = 0, totalComp = 0;
-  const ingNames = new Set();
-  cards.forEach(c => {
-    c.produkty.filter(p => !p.isSluzba).forEach(p => {
-      totalKs += p.ks;
-      p.slozeni.forEach((s, ci) => {
-        const key = `${s.nazev}__${s.gram}`.toLowerCase();
-        ingNames.add(key);
-        totalComp++;
-        c.produkty.forEach((_, pi) => {
-          p.slozeni.forEach((_, cii) => {});
-        });
-      });
-    });
-  });
-  // count all checkboxes
-  let doneCount = 0, totalCheckboxes = 0;
-  cards.forEach(c => {
-    c.produkty.forEach((p, pi) => {
-      p.slozeni.forEach((_, ci) => {
-        totalCheckboxes++;
-        if (isChecked(c.id, pi, ci)) doneCount++;
+  // Build ingredient map
+  // Key: normalized name+gram (or kod)
+  // Value: {displayNazev, gram, kod, usages:[{cardId,firma,prodNazev,prodIdx,compIdx,ks}]}
+  const ingMap=new Map();
+  cards.forEach(card=>{
+    card.produkty.forEach((prod,pi)=>{
+      if(prod.isSluzba) return;
+      prod.slozeni.forEach((s,ci)=>{
+        const key=(s.kod?'k_'+s.kod:'')+'|'+s.nazev.toLowerCase().trim()+'|'+s.gram.toLowerCase();
+        if(!ingMap.has(key)) ingMap.set(key,{displayNazev:s.nazev||(s.kod?'kód '+s.kod:'—'),gram:s.gram,kod:s.kod,usages:[]});
+        ingMap.get(key).usages.push({cardId:card.id,firma:card.firma,prodNazev:prod.nazev,prodKs:prod.ks,pi,ci});
       });
     });
   });
 
-  document.getElementById('s-firmy').textContent = cards.length;
-  document.getElementById('s-ks').textContent    = totalKs;
-  document.getElementById('s-done').textContent  = totalCheckboxes ? `${doneCount}/${totalCheckboxes}` : '—';
-  document.getElementById('s-ing').textContent   = ingNames.size || '—';
-}
+  // Summary
+  const el=document.getElementById('summary');
+  el.style.display='grid';
+  const firmy=new Set(cards.map(c=>c.id));
+  let totalRows=0,doneRows=0;
+  ingMap.forEach(ing=>{ ing.usages.forEach(u=>{ totalRows++; if(isDone(u.cardId,u.pi,u.ci)) doneRows++; }); });
+  document.getElementById('s-firmy').textContent=firmy.size;
+  document.getElementById('s-ing').textContent=ingMap.size||'—';
+  document.getElementById('s-done').textContent=totalRows?`${doneRows}/${totalRows}`:'—';
+  document.getElementById('s-zbývá').textContent=totalRows-doneRows||'—';
 
-// ─── FIRMY VIEW ────────────────────────────────────────
-function renderFirmy(cards) {
-  const mc = document.getElementById('main-content');
-  if (!cards.length) {
-    mc.innerHTML = '<div class="empty-state firmy-grid">Žádné zakázky s výrobními daty.</div>';
+  const mc=document.getElementById('main-content');
+  if(!ingMap.size){
+    mc.innerHTML='<div class="empty-state">Žádné dílčí produkty k zobrazení.<br>Doplňte složení v zakázkách.</div>';
     return;
   }
 
-  const grid = document.createElement('div');
-  grid.className = 'firmy-grid';
+  // Sort by name
+  const sorted=[...ingMap.entries()].sort((a,b)=>a[1].displayNazev.localeCompare(b[1].displayNazev,'cs'));
 
-  cards.forEach(card => {
-    grid.appendChild(buildFirmaCard(card));
-  });
+  const grid=document.createElement('div');
+  grid.className='vyroba-grid';
 
-  mc.innerHTML = '';
-  mc.appendChild(grid);
-}
+  sorted.forEach(([,ing])=>{
+    const totalU=ing.usages.length;
+    const doneU=ing.usages.filter(u=>isDone(u.cardId,u.pi,u.ci)).length;
+    const allDone=doneU===totalU&&totalU>0;
 
-function buildFirmaCard(card) {
-  const { id, firma, termin, produkty, url } = card;
+    const card=document.createElement('div');
+    card.className='ing-card'+(allDone?' all-done':'');
 
-  let totalComp = 0, doneComp = 0;
-  produkty.forEach((p, pi) => {
-    p.slozeni.forEach((_, ci) => {
-      totalComp++;
-      if (isChecked(id, pi, ci)) doneComp++;
-    });
-  });
-  const pct = totalComp ? Math.round(doneComp / totalComp * 100) : 0;
-
-  const ks = produkty.filter(p => !p.isSluzba).reduce((s, p) => s + p.ks, 0);
-
-  const el = document.createElement('div');
-  el.className = 'firma-card';
-
-  const fillClass = pct === 100 ? 'done' : pct > 0 ? 'partial' : '';
-
-  el.innerHTML = `
-    <div class="firma-header">
-      <div class="firma-name">
-        <span>${firma}</span>
-        ${url ? `<a href="${url}" target="_blank" style="font-size:11px;font-weight:400;color:var(--br);text-decoration:none" title="Otevřít v Trellu">🃏</a>` : ''}
-      </div>
-      <div class="firma-meta">
-        ${termin ? `<strong>Termín:</strong> ${termin} &nbsp;` : ''}
-        <strong>Kusů:</strong> ${ks} ks
-      </div>
-      ${totalComp ? `
-        <div class="progress-bar"><div class="progress-fill ${fillClass}" style="width:${pct}%"></div></div>
-        <div class="progress-text">${doneComp} / ${totalComp} složek hotovo</div>
-      ` : ''}
-    </div>
-  `;
-
-  // Product blocks
-  produkty.forEach((prod, pi) => {
-    const blockKey = `${id}_p${pi}`;
-    const isOpen = openProds.has(blockKey) || prod.slozeni.length > 0;
-    if (isOpen) openProds.add(blockKey);
-
-    const block = document.createElement('div');
-    block.className = 'prod-block';
-
-    const titleEl = document.createElement('div');
-    titleEl.className = 'prod-title' + (isOpen ? ' open' : '');
-    titleEl.innerHTML = `
-      <span class="toggle-icon">▶</span>
-      <span>${prod.nazev}</span>
-      ${prod.isSluzba ? '<span class="prod-sluzba">služba</span>' : ''}
-      <span class="prod-ks">${prod.ks} ks</span>
-    `;
-    titleEl.onclick = () => {
-      const wasOpen = openProds.has(blockKey);
-      if (wasOpen) openProds.delete(blockKey); else openProds.add(blockKey);
-      titleEl.classList.toggle('open', !wasOpen);
-      compList.classList.toggle('open', !wasOpen);
-    };
-
-    const compList = document.createElement('div');
-    compList.className = 'comp-list' + (isOpen ? ' open' : '');
-
-    if (prod.slozeni.length === 0) {
-      compList.innerHTML = '<div class="no-comp">Bez dílčích produktů</div>';
-    } else {
-      prod.slozeni.forEach((s, ci) => {
-        const checked = isChecked(id, pi, ci);
-        const row = document.createElement('div');
-        row.className = 'comp-row' + (checked ? ' checked' : '');
-        row.innerHTML = `
-          <div class="comp-check"></div>
-          <span class="comp-name">${s.nazev || '—'}</span>
-          ${s.gram ? `<span class="comp-gram">${s.gram}</span>` : ''}
-          ${s.kod  ? `<span class="comp-kod">kód ${s.kod}</span>` : ''}
-        `;
-        row.onclick = () => toggleCheck(id, pi, ci);
-        compList.appendChild(row);
-      });
-    }
-
-    block.appendChild(titleEl);
-    block.appendChild(compList);
-    el.appendChild(block);
-  });
-
-  return el;
-}
-
-// ─── VÝROBA VIEW ───────────────────────────────────────
-function renderVyroba(cards) {
-  const mc = document.getElementById('main-content');
-
-  // Aggregate by ingredient
-  // Key: normalized(nazev + gram) or kod
-  // Value: { displayNazev, gram, kod, usages: [{cardId, firma, prodNazev, prodIdx, compIdx, ks}] }
-  const ingMap = new Map();
-
-  cards.forEach(card => {
-    card.produkty.forEach((prod, pi) => {
-      if (prod.isSluzba) return;
-      prod.slozeni.forEach((s, ci) => {
-        const rawKey = (s.kod ? 'k_'+s.kod : '') + '|' + s.nazev.toLowerCase().trim() + '|' + s.gram.toLowerCase();
-        const key = rawKey || `_${pi}_${ci}`;
-
-        if (!ingMap.has(key)) {
-          ingMap.set(key, {
-            displayNazev: s.nazev || (s.kod ? 'kód '+s.kod : '—'),
-            gram: s.gram,
-            kod:  s.kod,
-            obal: s.obal,
-            usages: []
-          });
-        }
-        ingMap.get(key).usages.push({
-          cardId: card.id,
-          firma:  card.firma,
-          prodNazev: prod.nazev,
-          prodKs: prod.ks,
-          prodIdx: pi,
-          compIdx: ci
-        });
-      });
-    });
-  });
-
-  if (ingMap.size === 0) {
-    mc.innerHTML = '<div class="empty-state">Žádné dílčí produkty k zobrazení.<br>Přidejte složení produktů v zakázkách.</div>';
-    return;
-  }
-
-  // Sort by ingredient name
-  const sorted = [...ingMap.entries()].sort((a, b) => a[1].displayNazev.localeCompare(b[1].displayNazev, 'cs'));
-
-  const grid = document.createElement('div');
-  grid.className = 'vyroba-grid';
-
-  sorted.forEach(([key, ing]) => {
-    const totalUsages = ing.usages.length;
-    const doneUsages  = ing.usages.filter(u => isChecked(u.cardId, u.prodIdx, u.compIdx)).length;
-
-    const card = document.createElement('div');
-    card.className = 'ing-card';
-
-    const headerDone = doneUsages === totalUsages && totalUsages > 0;
-    card.innerHTML = `
-      <div class="ing-header" style="${headerDone ? 'background:#e8f5e9;border-color:var(--leaf)' : ''}">
+    card.innerHTML=`
+      <div class="ing-header">
         <span class="ing-name">${ing.displayNazev}</span>
-        ${ing.gram ? `<span class="ing-gram" style="${headerDone ? 'background:var(--leaf);color:white' : ''}">${ing.gram}</span>` : ''}
-        ${ing.kod  ? `<span class="ing-kod">kód ${ing.kod}</span>` : ''}
+        ${ing.gram?`<span class="ing-gram">${ing.gram}</span>`:''}
+        ${ing.kod?`<span class="ing-kod">kód ${ing.kod}</span>`:''}
       </div>
-      <div class="ing-total">${totalUsages} firma${totalUsages > 4 ? '' : totalUsages > 1 ? 'y' : ''} · ${doneUsages}/${totalUsages} hotovo</div>
+      <div class="ing-stats">
+        <span>${totalU} firma${totalU===1?'':'y/firem'}</span>
+        <span class="ing-stats-done">${doneU}/${totalU} hotovo</span>
+      </div>
     `;
 
-    const rows = document.createElement('div');
-    rows.className = 'ing-rows';
+    const rows=document.createElement('div');
+    rows.className='ing-rows';
 
-    ing.usages.forEach(u => {
-      const checked = isChecked(u.cardId, u.prodIdx, u.compIdx);
-      const row = document.createElement('div');
-      row.className = 'ing-row' + (checked ? ' checked' : '');
-      row.innerHTML = `
+    ing.usages.forEach(u=>{
+      const done=isDone(u.cardId,u.pi,u.ci);
+      const row=document.createElement('div');
+      row.className='ing-row'+(done?' checked':'');
+      row.innerHTML=`
         <div class="ing-check"></div>
-        <span class="ing-firma">${u.firma}</span>
+        <div class="ing-info">
+          <div class="ing-firma">${u.firma}</div>
+          <div class="ing-darku">📦 ${u.prodNazev}</div>
+        </div>
         <span class="ing-ks">× ${u.prodKs} ks</span>
       `;
-      row.onclick = () => toggleCheck(u.cardId, u.prodIdx, u.compIdx);
+      row.onclick=()=>toggle(u.cardId,u.pi,u.ci);
       rows.appendChild(row);
     });
 
@@ -598,12 +342,11 @@ function renderVyroba(cards) {
     grid.appendChild(card);
   });
 
-  mc.innerHTML = '';
+  mc.innerHTML='';
   mc.appendChild(grid);
 }
 
-// ─── INIT ──────────────────────────────────────────────
-loadProgress();
+loadProg();
 loadData();
 </script>
 </body>
