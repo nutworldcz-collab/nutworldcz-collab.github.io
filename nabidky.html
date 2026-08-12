@@ -86,6 +86,9 @@ table.pt input.inp-cena{width:100px;text-align:right}
 .popis-row td{padding:0 6px 6px!important;border-bottom:1px solid #ede0d4}
 .popis-btn{background:none;border:none;cursor:pointer;font-size:14px;padding:2px 5px;color:#ccc;line-height:1}
 .popis-btn:hover{color:#83502e}
+.sluzba-btn{background:none;border:1.5px solid #ddd;border-radius:4px;cursor:pointer;font-size:10px;font-family:'Exo 2',sans-serif;font-weight:700;padding:2px 5px;color:#bbb;line-height:1.4;letter-spacing:.5px}
+.sluzba-btn:hover{border-color:#c8976a;color:#83502e}
+.sluzba-btn.active{background:#fff5f7;border-color:#da1668;color:#da1668}
 .slozeni-wrap{padding:8px 10px 10px;background:#faf7f3;border-top:1px solid #ede0d4}
 .slozeni-rows{display:flex;flex-direction:column;gap:5px;margin-bottom:7px}
 .slozeni-row{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
@@ -396,6 +399,7 @@ function addRow() {
     <td class="td-total" id="total-${id}">—</td>
     <td style="white-space:nowrap">
       <button class="popis-btn" title="Popis / složení dárku" onclick="togglePopis(${id})">📦</button>
+      <button class="sluzba-btn" id="sluzba-${id}" title="Služba / grafika / tisk — nezahrnout do počtu ks" onclick="toggleSluzba(${id})">SLU</button>
       <button class="del-btn" onclick="delRow(${id})">×</button>
     </td>`;
   document.getElementById('prod-tbody').appendChild(tr);
@@ -403,6 +407,13 @@ function addRow() {
   document.getElementById('nazev-'+id).focus();
 }
 function delRow(id) { document.getElementById('row-'+id)?.remove(); }
+function toggleSluzba(id) {
+  const btn = document.getElementById('sluzba-'+id);
+  const tr  = document.getElementById('row-'+id);
+  const isOn = btn.classList.toggle('active');
+  tr.dataset.sluzba = isOn ? '1' : '';
+  btn.title = isOn ? 'Označeno jako služba (klikni pro zrušení)' : 'Služba / grafika / tisk — nezahrnout do počtu ks';
+}
 function recalcDoprava() {
   const d = parseFloat(document.getElementById('doprava')?.value) || 0;
   const el = document.getElementById('doprava-total');
@@ -657,8 +668,9 @@ function collectFormData() {
     const nakup  = parseFloat(document.getElementById('nakup-'+id)?.value) || null;
     const popis  = getSlozeniText(id);
     const slozeni = getSlozeniRows(id);
+    const sluzba = !!document.getElementById('row-'+id)?.dataset.sluzba;
     if (!nazev || isNaN(cena) || cena <= 0) return;
-    produkty.push({ kod, nazev, ks, cena, nakup, popis, slozeni });
+    produkty.push({ kod, nazev, ks, cena, nakup, popis, slozeni, sluzba });
   });
   return {
     trh:         document.getElementById('trh').value,

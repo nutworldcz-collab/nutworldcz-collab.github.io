@@ -686,7 +686,8 @@ async function createTrelloCard() {
   const prodDesc = d.produkty.map((p, idx) => {
     const c = p.ks * p.cena; totalBez += c;
     const slozeni = getSlozeniText('sp-'+idx);
-    return `**${p.nazev}**\n- ${p.ks} ks | prod. ${p.cena.toFixed(2)} Kč | celkem ${num(c.toFixed(0))} Kč` +
+    const sluLabel = p.sluzba ? ' *(služba)*' : '';
+    return `**${p.nazev}**${sluLabel}\n- ${p.ks} ks | prod. ${p.cena.toFixed(2)} Kč | celkem ${num(c.toFixed(0))} Kč` +
       (slozeni ? `\n  📦 ${slozeni}` : '');
   }).join('\n\n');
 
@@ -732,7 +733,7 @@ ${d.poznamka ? `\n*Poznámka z nabídky: ${d.poznamka}*` : ''}`;
   const due = termin ? new Date(termin + 'T10:00:00.000Z').toISOString() : null;
 
   // Název karty
-  const pocetKs = d.produkty.reduce((s,p) => s + p.ks, 0);
+  const pocetKs = d.produkty.filter(p => !p.sluzba).reduce((s,p) => s + p.ks, 0);
   const cardName = `${d.firma} — ${pocetKs} ks — ${fmt(termin)}`;
 
   try {
