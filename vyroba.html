@@ -27,7 +27,10 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .search-wrap input{width:100%;border:1.5px solid #d4c0a8;border-radius:8px;padding:7px 10px 7px 32px;font-size:13px;font-family:inherit;background:#faf7f3}
 .search-wrap input:focus{outline:none;border-color:var(--br)}
 .search-wrap::before{content:'🔍';position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:13px}
-
+.view-toggle{display:flex;border:1.5px solid #d4c0a8;border-radius:8px;overflow:hidden;flex-shrink:0}
+.view-btn{background:#faf7f3;border:none;padding:7px 18px;font-size:12px;font-family:'Exo 2',sans-serif;font-weight:700;color:#888;cursor:pointer;transition:all .15s}
+.view-btn.active{background:var(--bd);color:white}
+.view-btn:hover:not(.active){background:var(--kraft);color:var(--bd)}
 .list-filters{display:flex;gap:5px;flex-wrap:wrap;width:100%;padding-top:8px;border-top:1px solid #ede0d4;margin-top:8px}
 .lpill{padding:4px 12px;border-radius:20px;border:1.5px solid #d4c0a8;background:white;font-size:11px;font-weight:700;cursor:pointer;color:#888;font-family:inherit;transition:all .15s}
 .lpill.on{background:var(--bd);border-color:var(--bd);color:white}
@@ -42,46 +45,98 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .sum-lbl{font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
 .sum-box.green .sum-val{color:var(--leaf)}
 
-/* Grid výroby */
-.vyroba-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+/* ═══ FIRMY VIEW ═══ */
+.firmy-list{display:flex;flex-direction:column;gap:16px}
 
-/* Karta ingredience */
-.ing-card{background:white;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);overflow:hidden;transition:box-shadow .15s}
-.ing-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.12)}
-.ing-card.all-done .ing-header{background:#e8f5e9;border-color:var(--leaf)}
-.ing-card.all-done .ing-gram{background:var(--leaf);color:white}
+.firma-card{background:white;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);overflow:hidden}
+.firma-card.all-done{border-left:4px solid var(--leaf)}
 
-.ing-header{padding:12px 15px;background:var(--amb-soft);border-bottom:2px solid var(--amb);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.ing-name{font-family:'Exo 2',sans-serif;font-weight:800;font-size:14px;color:var(--bd);flex:1}
-.ing-gram{font-size:11px;background:var(--amb);color:var(--bd);border-radius:4px;padding:2px 8px;font-weight:700;white-space:nowrap}
-.ing-kod{font-size:10px;color:#b8860b;font-family:monospace}
+.firma-hdr{padding:14px 18px 12px;border-bottom:2px solid var(--kraft);display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.firma-name{font-family:'Exo 2',sans-serif;font-weight:800;font-size:16px;color:var(--bd)}
+.firma-meta{font-size:11px;color:#999;margin-top:3px}
+.firma-meta strong{color:#666}
+.firma-hdr-right{text-align:right;flex-shrink:0}
+.firma-total-kg{font-family:'Exo 2',sans-serif;font-size:20px;font-weight:800;color:var(--br)}
+.firma-total-lbl{font-size:10px;color:#bbb;text-transform:uppercase;letter-spacing:.5px}
+.firma-progress{display:flex;align-items:center;gap:8px;margin-top:6px}
+.prog-bar{flex:1;height:5px;background:#ede0d4;border-radius:3px;overflow:hidden;min-width:80px}
+.prog-fill{height:100%;border-radius:3px;transition:width .3s;background:var(--amb)}
+.prog-fill.full{background:var(--leaf)}
+.prog-txt{font-size:10px;color:#bbb;white-space:nowrap}
 
-.ing-stats{font-size:11px;color:#999;padding:6px 15px;border-bottom:1px solid #f0e8e0;display:flex;justify-content:space-between;align-items:center}
-.ing-stats-done{color:var(--leaf);font-weight:700}
+/* Dárek blok uvnitř firma-card */
+.darky-list{padding:0 18px 14px}
+
+.darek-block{margin-top:12px;border:1.5px solid #ede0d4;border-radius:10px;overflow:hidden}
+.darek-hdr{padding:9px 14px;background:#faf7f3;border-bottom:1px solid #ede0d4;display:flex;align-items:center;gap:10px}
+.darek-icon{font-size:14px}
+.darek-name{font-family:'Exo 2',sans-serif;font-weight:700;font-size:13px;color:var(--br);flex:1}
+.darek-ks{font-size:11px;color:#bbb;white-space:nowrap}
+.darek-kg{font-size:12px;font-weight:700;color:var(--br);white-space:nowrap;padding-left:10px;border-left:1px solid #e8ddd4;margin-left:6px}
+
+/* Složka řádek */
+.comp-row{display:flex;align-items:center;gap:10px;padding:8px 14px;cursor:pointer;transition:background .1s;border-bottom:1px solid #f5f0ea}
+.comp-row:last-child{border-bottom:none}
+.comp-row:hover{background:#faf7f3}
+.comp-row.done{background:#f4fbf4}
+.comp-check{width:20px;height:20px;border:2px solid #d4c0a8;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:white;transition:all .15s}
+.comp-row.done .comp-check{background:var(--leaf);border-color:var(--leaf)}
+.comp-row.done .comp-check::after{content:'✓';font-size:12px;font-weight:800;color:white}
+.comp-info{flex:1;min-width:0}
+.comp-name{font-size:13px;color:#333}
+.comp-row.done .comp-name{text-decoration:line-through;color:#bbb}
+.comp-gram{font-size:11px;color:#999;margin-top:1px}
+.comp-kg{font-size:12px;font-weight:700;color:var(--br);white-space:nowrap;min-width:60px;text-align:right}
+.comp-row.done .comp-kg{color:#ccc}
+.comp-kod{font-size:10px;color:#c8a87a;font-family:monospace;white-space:nowrap;margin-left:6px}
+.no-comp{padding:10px 14px;font-size:12px;color:#bbb;font-style:italic}
+
+/* Součet pod dárkem */
+.darek-footer{padding:6px 14px;background:var(--amb-soft);border-top:1px solid #ede0d4;display:flex;justify-content:space-between;align-items:center}
+.darek-footer-lbl{font-size:11px;color:#b8860b}
+.darek-footer-val{font-size:12px;font-weight:700;color:var(--bd)}
+
+/* Servisní produkt (grafika, tisk…) */
+.sluzba-row{padding:7px 14px;font-size:12px;color:#bbb;display:flex;align-items:center;gap:8px;border-bottom:1px solid #f5f0ea;font-style:italic}
+.sluzba-row:last-child{border-bottom:none}
+
+/* ═══ VÝROBA VIEW ═══ */
+.vyroba-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
+
+.ing-card{background:white;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);overflow:hidden}
+.ing-card.all-done .ing-hdr{background:#e8f5e9;border-color:var(--leaf)}
+.ing-card.all-done .ing-gram-badge{background:var(--leaf);color:white}
+
+.ing-hdr{padding:12px 16px;background:var(--amb-soft);border-bottom:2px solid var(--amb);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ing-hdr-name{font-family:'Exo 2',sans-serif;font-weight:800;font-size:14px;color:var(--bd);flex:1}
+.ing-gram-badge{font-size:11px;background:var(--amb);color:var(--bd);border-radius:4px;padding:2px 8px;font-weight:700;white-space:nowrap}
+.ing-kod-badge{font-size:10px;color:#b8860b;font-family:monospace}
+
+.ing-total-row{padding:7px 16px;border-bottom:1px solid #f0e8e0;display:flex;justify-content:space-between;align-items:center}
+.ing-total-firmy{font-size:11px;color:#999}
+.ing-total-kg{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:800;color:var(--br)}
+.ing-total-kg span{font-size:11px;font-weight:400;color:#bbb;margin-left:2px}
 
 .ing-rows{padding:4px 0}
-
-/* Řádek firmy */
-.ing-row{display:flex;align-items:flex-start;gap:10px;padding:8px 14px;cursor:pointer;transition:background .1s;border-bottom:1px solid #f8f3ee}
+.ing-row{display:flex;align-items:center;gap:10px;padding:7px 14px;cursor:pointer;border-bottom:1px solid #f8f3ee;transition:background .1s}
 .ing-row:last-child{border-bottom:none}
 .ing-row:hover{background:#faf7f3}
-.ing-row.checked{background:#f4fbf4}
-.ing-row.checked .ing-firma{color:#bbb}
-.ing-row.checked .ing-darku{color:#ccc}
+.ing-row.done{background:#f4fbf4}
+.ing-row.done .ing-firma-name{text-decoration:line-through;color:#bbb}
+.ing-row.done .ing-row-kg{color:#ccc}
+.ing-check2{width:20px;height:20px;border:2px solid #d4c0a8;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:white;transition:all .15s}
+.ing-row.done .ing-check2{background:var(--leaf);border-color:var(--leaf)}
+.ing-row.done .ing-check2::after{content:'✓';font-size:12px;font-weight:800;color:white}
+.ing-row-info{flex:1;min-width:0}
+.ing-firma-name{font-size:13px;font-weight:600;color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ing-darek-sub{font-size:11px;color:#aaa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+.ing-row-right{text-align:right;flex-shrink:0}
+.ing-row-ks{font-size:11px;color:#bbb}
+.ing-row-kg{font-size:13px;font-weight:700;color:var(--br)}
 
-.ing-check{width:20px;height:20px;border:2px solid #d4c0a8;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;background:white;margin-top:1px}
-.ing-row.checked .ing-check{background:var(--leaf);border-color:var(--leaf)}
-.ing-row.checked .ing-check::after{content:'✓';font-size:12px;font-weight:800;color:white}
-
-.ing-info{flex:1;min-width:0}
-.ing-firma{font-size:13px;font-weight:600;color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ing-row.checked .ing-firma{text-decoration:line-through}
-.ing-darku{font-size:11px;color:#999;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ing-ks{font-size:12px;color:#aaa;white-space:nowrap;flex-shrink:0;align-self:flex-start;margin-top:3px}
-
-/* Loading / prázdný stav */
+/* Loading / empty */
 .state-box{background:white;border-radius:12px;padding:48px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07)}
-.state-box p{color:#888;font-size:14px;margin-top:10px}
+.state-box p{color:#888;font-size:14px;margin-top:12px}
 .spinner{display:inline-block;width:36px;height:36px;border:3px solid var(--kraft);border-top-color:var(--br);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .empty-state{background:white;border-radius:12px;padding:40px;text-align:center;color:#bbb;font-size:14px;box-shadow:0 2px 8px rgba(0,0,0,.07)}
@@ -103,16 +158,20 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 
   <div class="toolbar">
     <div class="search-wrap">
-      <input type="text" id="search" placeholder="Hledat produkt, firmu nebo kód…" oninput="render()"/>
+      <input type="text" id="search" placeholder="Hledat firmu nebo produkt…" oninput="render()"/>
+    </div>
+    <div class="view-toggle">
+      <button id="btn-firmy"  class="view-btn active" onclick="setView('firmy')">🏢 Firmy</button>
+      <button id="btn-vyroba" class="view-btn"        onclick="setView('vyroba')">🔧 Výroba</button>
     </div>
     <div class="list-filters" id="list-filters"></div>
   </div>
 
   <div class="summary" id="summary" style="display:none">
     <div class="sum-box"><div class="sum-val" id="s-firmy">—</div><div class="sum-lbl">Firem</div></div>
-    <div class="sum-box"><div class="sum-val" id="s-ing">—</div><div class="sum-lbl">Produktů k výrobě</div></div>
+    <div class="sum-box"><div class="sum-val" id="s-ks">—</div><div class="sum-lbl">Kusů celkem</div></div>
+    <div class="sum-box"><div class="sum-val" id="s-kg">—</div><div class="sum-lbl">kg celkem</div></div>
     <div class="sum-box green"><div class="sum-val" id="s-done">—</div><div class="sum-lbl">Hotovo</div></div>
-    <div class="sum-box"><div class="sum-val" id="s-zbyvá">—</div><div class="sum-lbl">Zbývá</div></div>
   </div>
 
   <div id="main-content">
@@ -127,33 +186,47 @@ const TOKEN = atob('QVRUQTdiMWI4YTFjZWRjMTIyODI3ZmRiMmY4MGRjMjRiNThkMTA4NTVkOTY3
 const BOARD = '637f702c5e323c01d42feeac';
 const CACHE_KEY = 'nw_vyroba_cache';
 const PROG_KEY  = 'nw_vyroba_progress';
-const EXCLUDE   = ['archiv','storno','hotov','dokončen','faktura'];
+const EXCL = ['archiv','storno','hotov','dokončen','faktura'];
 
-let allLists    = [];
-let allCards    = [];
-let parsedCards = [];
+let allLists = [], allCards = [], parsedCards = [];
 let activeLists = new Set(['ALL']);
+let activeView  = 'firmy';
 let progress    = {};
 
 /* ── Progress ── */
 function saveProg() { try { localStorage.setItem(PROG_KEY, JSON.stringify(progress)); } catch(e){} }
 function loadProg() { try { progress = JSON.parse(localStorage.getItem(PROG_KEY)||'{}'); } catch(e){ progress={}; } }
-function pKey(cardId, pi, ci) { return `${cardId}_p${pi}_c${ci}`; }
-function isDone(cardId, pi, ci) { return !!progress[pKey(cardId,pi,ci)]; }
-function toggle(cardId, pi, ci) { const k=pKey(cardId,pi,ci); progress[k]=!progress[k]; saveProg(); render(); }
+function pKey(cardId,pi,ci) { return `${cardId}_p${pi}_c${ci}`; }
+function isDone(cardId,pi,ci) { return !!progress[pKey(cardId,pi,ci)]; }
+function toggle(cardId,pi,ci) { const k=pKey(cardId,pi,ci); progress[k]=!progress[k]; saveProg(); render(); }
 
-/* ── API ── */
-function api(path, params={}) {
-  return fetch(`https://api.trello.com/1${path}?`+new URLSearchParams({key:KEY,token:TOKEN,...params})).then(r=>r.json());
+/* ── Gramáž → kg ── */
+function gramToKg(gram) {
+  if (!gram) return 0;
+  const kg = gram.match(/(\d+(?:[.,]\d+)?)\s*kg/i);
+  if (kg) return parseFloat(kg[1].replace(',','.'));
+  const g = gram.match(/(\d+(?:[.,]\d+)?)/);
+  if (g) return parseFloat(g[1].replace(',','.')) / 1000;
+  return 0;
 }
-function saveCache(lists,cards){ try{localStorage.setItem(CACHE_KEY,JSON.stringify({lists,cards,ts:Date.now()}));}catch(e){} }
+function fmtKg(kg) {
+  if (kg === 0) return '—';
+  return kg >= 1 ? `${(Math.round(kg*10)/10).toFixed(1).replace('.',',')} kg`
+                 : `${Math.round(kg*1000)} g`;
+}
+
+/* ── API / cache ── */
+function api(path, p={}) {
+  return fetch(`https://api.trello.com/1${path}?`+new URLSearchParams({key:KEY,token:TOKEN,...p})).then(r=>r.json());
+}
+function saveCache(l,c){ try{localStorage.setItem(CACHE_KEY,JSON.stringify({lists:l,cards:c,ts:Date.now()}));}catch(e){} }
 function loadCache(){ try{return JSON.parse(localStorage.getItem(CACHE_KEY));}catch(e){return null;} }
 
 async function loadData(force=false) {
   document.getElementById('refresh-info').textContent='načítám…';
   document.getElementById('main-content').innerHTML='<div class="state-box"><div class="spinner"></div><p>Načítám zakázky z Trella…</p></div>';
   const cache=loadCache();
-  if(!force && cache && (Date.now()-cache.ts)<5*60000){
+  if(!force&&cache&&(Date.now()-cache.ts)<5*60000){
     allLists=cache.lists; allCards=cache.cards;
     document.getElementById('refresh-info').textContent=`cache ${Math.round((Date.now()-cache.ts)/60000)} min`;
     process(); return;
@@ -175,7 +248,7 @@ async function loadData(force=false) {
 }
 
 /* ── Parse ── */
-function excl(name){ return EXCLUDE.some(k=>name.toLowerCase().includes(k)); }
+function isExcl(name){ return EXCL.some(k=>name.toLowerCase().includes(k)); }
 
 function parseComp(s) {
   const km=s.match(/\(kód\s+(\S+)\)\s*$/);
@@ -190,7 +263,7 @@ function parseComp(s) {
   return {nazev:toks.slice(0,gi).join(' '),gram:toks[gi],obal:toks.slice(gi+1).join(' '),kod};
 }
 
-function parseCard(card) {
+function parseCard(card){
   const {id,name,desc='',idList,url}=card;
   const firma=name.split(' — ')[0]||name;
   const tm=desc.match(/\*\*Termín:\*\*\s*(\d{2}\.\d{2}\.\d{4})/);
@@ -213,38 +286,41 @@ function parseCard(card) {
 }
 
 function process(){
-  const vis=new Set(allLists.filter(l=>!excl(l.name)).map(l=>l.id));
+  const vis=new Set(allLists.filter(l=>!isExcl(l.name)).map(l=>l.id));
   parsedCards=allCards.filter(c=>vis.has(c.idList)).map(parseCard);
   buildFilters([...allLists].filter(l=>vis.has(l.id)));
   loadProg();
   render();
 }
 
-/* ── List filter pills ── */
+/* ── List pills ── */
 function buildFilters(lists){
   const c=document.getElementById('list-filters');
   c.innerHTML='';
-  const a=document.createElement('button');
-  a.className='lpill lpill-all'+(activeLists.has('ALL')?' on':'');
-  a.textContent='Vše';
-  a.onclick=()=>{ activeLists=new Set(['ALL']); buildFilters(lists); render(); };
+  const a=mkPill('Vše','lpill lpill-all'+(activeLists.has('ALL')?' on':''),()=>{activeLists=new Set(['ALL']);buildFilters(lists);render();});
   c.appendChild(a);
   lists.forEach(l=>{
     const cnt=allCards.filter(x=>x.idList===l.id).length;
-    const b=document.createElement('button');
-    b.className='lpill'+(activeLists.has(l.id)?' on':'');
-    b.textContent=`${l.name} (${cnt})`;
-    b.onclick=()=>{
+    const b=mkPill(`${l.name} (${cnt})`,'lpill'+(activeLists.has(l.id)?' on':''),()=>{
       activeLists.delete('ALL');
       activeLists.has(l.id)?activeLists.delete(l.id):activeLists.add(l.id);
       if(!activeLists.size) activeLists.add('ALL');
       buildFilters(lists); render();
-    };
+    });
     c.appendChild(b);
   });
 }
+function mkPill(txt,cls,fn){ const b=document.createElement('button'); b.className=cls; b.textContent=txt; b.onclick=fn; return b; }
 
-/* ── Render ── */
+/* ── View toggle ── */
+function setView(v){
+  activeView=v;
+  document.getElementById('btn-firmy').classList.toggle('active',v==='firmy');
+  document.getElementById('btn-vyroba').classList.toggle('active',v==='vyroba');
+  render();
+}
+
+/* ── Visible cards ── */
 function visible(){
   const q=document.getElementById('search').value.toLowerCase().trim();
   return parsedCards.filter(c=>{
@@ -258,13 +334,143 @@ function visible(){
   });
 }
 
+/* ── Render ── */
 function render(){
   const cards=visible();
+  updateSummary(cards);
+  if(activeView==='firmy') renderFirmy(cards);
+  else renderVyroba(cards);
+}
 
-  // Build ingredient map
-  // Key: normalized name+gram (or kod)
-  // Value: {displayNazev, gram, kod, usages:[{cardId,firma,prodNazev,prodIdx,compIdx,ks}]}
+function updateSummary(cards){
+  document.getElementById('summary').style.display='grid';
+  let totalKs=0, totalKg=0, doneCount=0, totalCount=0;
+  cards.forEach(c=>c.produkty.forEach((p,pi)=>{
+    if(!p.isSluzba) totalKs+=p.ks;
+    p.slozeni.forEach((s,ci)=>{
+      totalCount++;
+      totalKg+=gramToKg(s.gram)*p.ks;
+      if(isDone(c.id,pi,ci)) doneCount++;
+    });
+  }));
+  document.getElementById('s-firmy').textContent=cards.length;
+  document.getElementById('s-ks').textContent=totalKs||'—';
+  document.getElementById('s-kg').textContent=totalKg?fmtKg(totalKg):'—';
+  document.getElementById('s-done').textContent=totalCount?`${doneCount}/${totalCount}`:'—';
+}
+
+/* ═══ FIRMY VIEW ═══ */
+function renderFirmy(cards){
+  const mc=document.getElementById('main-content');
+  if(!cards.length){mc.innerHTML='<div class="empty-state">Žádné zakázky k zobrazení.</div>';return;}
+  const list=document.createElement('div');
+  list.className='firmy-list';
+  cards.forEach(card=>list.appendChild(buildFirmaCard(card)));
+  mc.innerHTML=''; mc.appendChild(list);
+}
+
+function buildFirmaCard(card){
+  const {id,firma,termin,produkty,url}=card;
+
+  // Celkové kg firmy + počet složek
+  let totalKg=0, doneC=0, totalC=0;
+  produkty.forEach((p,pi)=>{
+    if(p.isSluzba) return;
+    p.slozeni.forEach((s,ci)=>{ totalC++; totalKg+=gramToKg(s.gram)*p.ks; if(isDone(id,pi,ci)) doneC++; });
+  });
+  const pct=totalC?Math.round(doneC/totalC*100):0;
+  const allDone=totalC>0&&doneC===totalC;
+  const totalKs=produkty.filter(p=>!p.isSluzba).reduce((s,p)=>s+p.ks,0);
+
+  const el=document.createElement('div');
+  el.className='firma-card'+(allDone?' all-done':'');
+
+  // Header
+  const hdr=document.createElement('div');
+  hdr.className='firma-hdr';
+  hdr.innerHTML=`
+    <div>
+      <div class="firma-name">${firma}${url?` <a href="${url}" target="_blank" style="font-size:11px;font-weight:400;color:var(--br);text-decoration:none;margin-left:6px" title="Trello">🃏</a>`:''}</div>
+      <div class="firma-meta">
+        ${termin?`<strong>Termín:</strong> ${termin}&ensp;`:''}
+        <strong>Objednávka:</strong> ${totalKs} ks
+      </div>
+      ${totalC?`
+      <div class="firma-progress" style="margin-top:8px">
+        <div class="prog-bar"><div class="prog-fill${pct===100?' full':''}" style="width:${pct}%"></div></div>
+        <span class="prog-txt">${doneC}/${totalC}</span>
+      </div>`:''}
+    </div>
+    ${totalKg?`
+    <div class="firma-hdr-right">
+      <div class="firma-total-kg">${fmtKg(totalKg)}</div>
+      <div class="firma-total-lbl">celkem surovin</div>
+    </div>`:''}
+  `;
+  el.appendChild(hdr);
+
+  // Dárkové produkty
+  const darkyWrap=document.createElement('div');
+  darkyWrap.className='darky-list';
+
+  produkty.forEach((prod,pi)=>{
+    const block=document.createElement('div');
+    block.className='darek-block';
+
+    // Kg pro tento dárek
+    const darekKg=prod.slozeni.reduce((s,c)=>s+gramToKg(c.gram)*prod.ks,0);
+
+    block.innerHTML=`
+      <div class="darek-hdr">
+        <span class="darek-icon">${prod.isSluzba?'⚙️':'📦'}</span>
+        <span class="darek-name">${prod.nazev}</span>
+        <span class="darek-ks">${prod.ks} ks</span>
+        ${darekKg?`<span class="darek-kg">${fmtKg(darekKg)}</span>`:''}
+      </div>
+    `;
+
+    if(prod.isSluzba){
+      block.innerHTML+=`<div class="sluzba-row">⚙️ Služba / grafika / tisk</div>`;
+    } else if(prod.slozeni.length===0){
+      block.innerHTML+=`<div class="no-comp">Bez dílčích produktů — vyplňte složení v zakázce</div>`;
+    } else {
+      prod.slozeni.forEach((s,ci)=>{
+        const done=isDone(id,pi,ci);
+        const compKg=gramToKg(s.gram)*prod.ks;
+        const row=document.createElement('div');
+        row.className='comp-row'+(done?' done':'');
+        row.innerHTML=`
+          <div class="comp-check"></div>
+          <div class="comp-info">
+            <div class="comp-name">${s.nazev||'—'}${s.kod?`<span class="comp-kod">kód ${s.kod}</span>`:''}</div>
+            ${s.gram?`<div class="comp-gram">${s.gram} × ${prod.ks} ks</div>`:''}
+          </div>
+          <div class="comp-kg">${compKg?fmtKg(compKg):'—'}</div>
+        `;
+        row.onclick=()=>toggle(id,pi,ci);
+        block.appendChild(row);
+      });
+
+      if(darekKg){
+        const foot=document.createElement('div');
+        foot.className='darek-footer';
+        foot.innerHTML=`<span class="darek-footer-lbl">Celkem pro tento dárek</span><span class="darek-footer-val">${fmtKg(darekKg)}</span>`;
+        block.appendChild(foot);
+      }
+    }
+
+    darkyWrap.appendChild(block);
+  });
+
+  el.appendChild(darkyWrap);
+  return el;
+}
+
+/* ═══ VÝROBA VIEW ═══ */
+function renderVyroba(cards){
+  const mc=document.getElementById('main-content');
   const ingMap=new Map();
+
   cards.forEach(card=>{
     card.produkty.forEach((prod,pi)=>{
       if(prod.isSluzba) return;
@@ -276,74 +482,58 @@ function render(){
     });
   });
 
-  // Summary
-  const el=document.getElementById('summary');
-  el.style.display='grid';
-  const firmy=new Set(cards.map(c=>c.id));
-  let totalRows=0,doneRows=0;
-  ingMap.forEach(ing=>{ ing.usages.forEach(u=>{ totalRows++; if(isDone(u.cardId,u.pi,u.ci)) doneRows++; }); });
-  document.getElementById('s-firmy').textContent=firmy.size;
-  document.getElementById('s-ing').textContent=ingMap.size||'—';
-  document.getElementById('s-done').textContent=totalRows?`${doneRows}/${totalRows}`:'—';
-  document.getElementById('s-zbývá').textContent=totalRows-doneRows||'—';
+  if(!ingMap.size){mc.innerHTML='<div class="empty-state">Žádné dílčí produkty.<br>Doplňte složení v zakázkách.</div>';return;}
 
-  const mc=document.getElementById('main-content');
-  if(!ingMap.size){
-    mc.innerHTML='<div class="empty-state">Žádné dílčí produkty k zobrazení.<br>Doplňte složení v zakázkách.</div>';
-    return;
-  }
-
-  // Sort by name
   const sorted=[...ingMap.entries()].sort((a,b)=>a[1].displayNazev.localeCompare(b[1].displayNazev,'cs'));
-
   const grid=document.createElement('div');
   grid.className='vyroba-grid';
 
   sorted.forEach(([,ing])=>{
     const totalU=ing.usages.length;
     const doneU=ing.usages.filter(u=>isDone(u.cardId,u.pi,u.ci)).length;
+    const totalKg=ing.usages.reduce((s,u)=>s+gramToKg(ing.gram)*u.prodKs,0);
     const allDone=doneU===totalU&&totalU>0;
 
     const card=document.createElement('div');
     card.className='ing-card'+(allDone?' all-done':'');
-
     card.innerHTML=`
-      <div class="ing-header">
-        <span class="ing-name">${ing.displayNazev}</span>
-        ${ing.gram?`<span class="ing-gram">${ing.gram}</span>`:''}
-        ${ing.kod?`<span class="ing-kod">kód ${ing.kod}</span>`:''}
+      <div class="ing-hdr">
+        <span class="ing-hdr-name">${ing.displayNazev}</span>
+        ${ing.gram?`<span class="ing-gram-badge">${ing.gram}</span>`:''}
+        ${ing.kod?`<span class="ing-kod-badge">kód ${ing.kod}</span>`:''}
       </div>
-      <div class="ing-stats">
-        <span>${totalU} firma${totalU===1?'':'y/firem'}</span>
-        <span class="ing-stats-done">${doneU}/${totalU} hotovo</span>
+      <div class="ing-total-row">
+        <span class="ing-total-firmy">${totalU} firma${totalU===1?'':'y/firem'} · ${doneU}/${totalU} hotovo</span>
+        <span class="ing-total-kg">${fmtKg(totalKg)}<span>celkem</span></span>
       </div>
     `;
 
     const rows=document.createElement('div');
     rows.className='ing-rows';
-
     ing.usages.forEach(u=>{
       const done=isDone(u.cardId,u.pi,u.ci);
+      const uKg=gramToKg(ing.gram)*u.prodKs;
       const row=document.createElement('div');
-      row.className='ing-row'+(done?' checked':'');
+      row.className='ing-row'+(done?' done':'');
       row.innerHTML=`
-        <div class="ing-check"></div>
-        <div class="ing-info">
-          <div class="ing-firma">${u.firma}</div>
-          <div class="ing-darku">📦 ${u.prodNazev}</div>
+        <div class="ing-check2"></div>
+        <div class="ing-row-info">
+          <div class="ing-firma-name">${u.firma}</div>
+          <div class="ing-darek-sub">📦 ${u.prodNazev} · ${u.prodKs} ks</div>
         </div>
-        <span class="ing-ks">× ${u.prodKs} ks</span>
+        <div class="ing-row-right">
+          <div class="ing-row-kg">${fmtKg(uKg)}</div>
+          <div class="ing-row-ks">${u.prodKs} ks</div>
+        </div>
       `;
       row.onclick=()=>toggle(u.cardId,u.pi,u.ci);
       rows.appendChild(row);
     });
-
     card.appendChild(rows);
     grid.appendChild(card);
   });
 
-  mc.innerHTML='';
-  mc.appendChild(grid);
+  mc.innerHTML=''; mc.appendChild(grid);
 }
 
 loadProg();
