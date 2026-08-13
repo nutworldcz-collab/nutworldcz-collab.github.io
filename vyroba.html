@@ -160,6 +160,16 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .pfoot-lbl{font-size:11px;color:#b8860b}
 .pfoot-kg{font-size:12px;font-weight:700;color:var(--bd)}
 
+/* Poznámka inline ve Výrobě */
+.fnota-btn{background:none;border:none;cursor:pointer;font-size:13px;padding:0 2px;line-height:1;color:#ddd;flex-shrink:0;transition:color .15s}
+.fnota-btn:hover{color:var(--amb)}
+.fnota-btn.has-nota{color:var(--amb)}
+.fnota-wrap{display:none;padding:6px 14px 8px 44px;border-bottom:1px solid #f0e8e0;background:#fffdf8}
+.fnota-wrap.open{display:block}
+.fnota-ta{width:100%;border:1.5px solid #e0cfa8;border-radius:7px;padding:6px 10px;font-family:inherit;font-size:12px;color:var(--text);background:#fff;resize:vertical;min-height:50px;line-height:1.5}
+.fnota-ta:focus{outline:none;border-color:var(--br)}
+.fnota-hint{font-size:10px;color:#ccc;text-align:right;margin-top:2px}
+
 /* Loading / empty */
 .state-box{background:white;border-radius:12px;padding:48px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07)}
 .state-box p{color:#888;font-size:14px;margin-top:12px}
@@ -236,6 +246,11 @@ function toggleNota(cardId) {
   const open = body.classList.toggle('open');
   tog.classList.toggle('open', open);
   if (open) document.getElementById('nota-ta-'+cardId).focus();
+}
+function toggleFNota(nid, cardId) {
+  const wrap = document.getElementById('fnota-wrap-'+nid);
+  const open = wrap.classList.toggle('open');
+  if (open) document.getElementById('fnota-ta-'+nid).focus();
 }
 function pKey(cardId,pi,ci) { return `${cardId}_p${pi}_c${ci}`; }
 function isDone(cardId,pi,ci) { return !!progress[pKey(cardId,pi,ci)]; }
@@ -638,6 +653,9 @@ function renderVyroba(cards){
         const done=isDone(u.cardId,u.pi,u.ci);
         const uKg=gramToKg(pack.gram)*u.ks;
         const tb=terminBadge(u.termin);
+        const nota=getNote(u.cardId);
+        const nid=`vn-${u.cardId}`;
+
         const frow=document.createElement('div');
         frow.className='frow'+(done?' done':'');
         frow.innerHTML=`
@@ -648,9 +666,30 @@ function renderVyroba(cards){
           </div>
           <div class="fks">${u.ks} ks</div>
           <div class="fkg">${fmtKg(uKg)}</div>
+          <button class="fnota-btn${nota?' has-nota':''}" id="fnota-btn-${nid}" title="Poznámka k firmě" onclick="event.stopPropagation();toggleFNota('${nid}','${u.cardId}')">📝</button>
         `;
         frow.onclick=()=>toggle(u.cardId,u.pi,u.ci);
         sect.appendChild(frow);
+
+        // Poznámka pod řádkem
+        const nwrap=document.createElement('div');
+        nwrap.className='fnota-wrap';
+        nwrap.id='fnota-wrap-'+nid;
+        nwrap.innerHTML=`
+          <textarea class="fnota-ta" id="fnota-ta-${nid}" placeholder="Poznámka k ${u.firma}…">${nota}</textarea>
+          <div class="fnota-hint">Ukládá se automaticky · sdílí se s pohledem Firmy</div>
+        `;
+        sect.appendChild(nwrap);
+
+        setTimeout(()=>{
+          const ta=document.getElementById('fnota-ta-'+nid);
+          if(!ta) return;
+          ta.addEventListener('input',()=>{
+            setNote(u.cardId,ta.value);
+            // Sync tlačítko ikonky
+            document.querySelectorAll(`[id^="fnota-btn-"][id$="-${u.cardId}"]`).forEach(b=>b.classList.toggle('has-nota',!!ta.value.trim()));
+          });
+        },0);
       });
 
       // Patička
