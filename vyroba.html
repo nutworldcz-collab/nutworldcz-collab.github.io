@@ -100,6 +100,19 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .sluzba-row{padding:7px 14px;font-size:12px;color:#bbb;display:flex;align-items:center;gap:8px;border-bottom:1px solid #f5f0ea;font-style:italic}
 .sluzba-row:last-child{border-bottom:none}
 
+/* Poznámky per firma */
+.nota-bar{padding:8px 18px;border-top:1px solid var(--kraft);display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;transition:background .1s}
+.nota-bar:hover{background:#faf7f3}
+.nota-bar-lbl{font-size:11px;color:#aaa;flex:1}
+.nota-bar-lbl.has-text{color:var(--br);font-weight:600}
+.nota-toggle{font-size:11px;color:#ccc;transition:transform .2s}
+.nota-toggle.open{transform:rotate(180deg)}
+.nota-body{display:none;padding:10px 18px 14px;border-top:1px solid #f5f0ea}
+.nota-body.open{display:block}
+.nota-ta{width:100%;border:1.5px solid #d4c0a8;border-radius:8px;padding:8px 11px;font-family:inherit;font-size:13px;color:var(--text);background:#fdf9f6;resize:vertical;min-height:64px;line-height:1.5}
+.nota-ta:focus{outline:none;border-color:var(--br)}
+.nota-hint{font-size:10px;color:#ccc;margin-top:4px;text-align:right}
+
 /* ═══ VÝROBA VIEW ═══ */
 .vyroba-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
 
@@ -199,6 +212,7 @@ const TOKEN = atob('QVRUQTdiMWI4YTFjZWRjMTIyODI3ZmRiMmY4MGRjMjRiNThkMTA4NTVkOTY3
 const BOARD = '637f702c5e323c01d42feeac';
 const CACHE_KEY = 'nw_vyroba_cache';
 const PROG_KEY  = 'nw_vyroba_progress';
+const NOTA_KEY  = 'nw_vyroba_notes';
 const EXCL = ['archiv','storno','hotov','dokončen','faktura'];
 
 let allLists = [], allCards = [], parsedCards = [];
@@ -209,6 +223,20 @@ let progress    = {};
 /* ── Progress ── */
 function saveProg() { try { localStorage.setItem(PROG_KEY, JSON.stringify(progress)); } catch(e){} }
 function loadProg() { try { progress = JSON.parse(localStorage.getItem(PROG_KEY)||'{}'); } catch(e){ progress={}; } }
+
+/* ── Poznámky ── */
+let notes = {};
+function saveNotes() { try { localStorage.setItem(NOTA_KEY, JSON.stringify(notes)); } catch(e){} }
+function loadNotes() { try { notes = JSON.parse(localStorage.getItem(NOTA_KEY)||'{}'); } catch(e){ notes={}; } }
+function getNote(cardId) { return notes[cardId]||''; }
+function setNote(cardId, val) { notes[cardId] = val; saveNotes(); }
+function toggleNota(cardId) {
+  const body = document.getElementById('nota-body-'+cardId);
+  const tog  = document.getElementById('nota-tog-'+cardId);
+  const open = body.classList.toggle('open');
+  tog.classList.toggle('open', open);
+  if (open) document.getElementById('nota-ta-'+cardId).focus();
+}
 function pKey(cardId,pi,ci) { return `${cardId}_p${pi}_c${ci}`; }
 function isDone(cardId,pi,ci) { return !!progress[pKey(cardId,pi,ci)]; }
 function toggle(cardId,pi,ci) { const k=pKey(cardId,pi,ci); progress[k]=!progress[k]; saveProg(); render(); }
@@ -476,6 +504,42 @@ function buildFirmaCard(card){
   });
 
   el.appendChild(darkyWrap);
+
+  // Poznámky
+  const nota = getNote(id);
+  const notaBar = document.createElement('div');
+  notaBar.className = 'nota-bar';
+  notaBar.onclick = () => toggleNota(id);
+  notaBar.innerHTML = `
+    <span class="nota-bar-lbl${nota?' has-text':''}" id="nota-lbl-${id}">${nota?'📝 '+nota.split('\n')[0].slice(0,50)+(nota.length>50?'…':''):'📝 Přidat poznámku…'}</span>
+    <span class="nota-toggle" id="nota-tog-${id}">▾</span>
+  `;
+  el.appendChild(notaBar);
+
+  const notaBody = document.createElement('div');
+  notaBody.className = 'nota-body';
+  notaBody.id = 'nota-body-'+id;
+  notaBody.innerHTML = `
+    <textarea class="nota-ta" id="nota-ta-${id}" placeholder="Poznámky k zakázce — priorita, speciální instrukce, kontakt…">${nota}</textarea>
+    <div class="nota-hint">Ukládá se automaticky</div>
+  `;
+  el.appendChild(notaBody);
+
+  // Auto-save při psaní
+  setTimeout(() => {
+    const ta = document.getElementById('nota-ta-'+id);
+    if (!ta) return;
+    ta.addEventListener('input', () => {
+      setNote(id, ta.value);
+      const lbl = document.getElementById('nota-lbl-'+id);
+      if (lbl) {
+        const v = ta.value.trim();
+        lbl.className = 'nota-bar-lbl'+(v?' has-text':'');
+        lbl.textContent = v ? '📝 '+v.split('\n')[0].slice(0,50)+(v.length>50?'…':'') : '📝 Přidat poznámku…';
+      }
+    });
+  }, 0);
+
   return el;
 }
 
@@ -605,6 +669,7 @@ function renderVyroba(cards){
 }
 
 loadProg();
+loadNotes();
 loadData();
 </script>
 </body>
