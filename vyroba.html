@@ -103,36 +103,41 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 /* ═══ VÝROBA VIEW ═══ */
 .vyroba-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
 
-.ing-card{background:white;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);overflow:hidden}
-.ing-card.all-done .ing-hdr{background:#e8f5e9;border-color:var(--leaf)}
-.ing-card.all-done .ing-gram-badge{background:var(--leaf);color:white}
+/* Karta suroviny */
+.icard{background:white;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);overflow:hidden}
+.icard.all-done .ihdr{background:#e8f5e9;border-color:var(--leaf)}
 
-.ing-hdr{padding:12px 16px;background:var(--amb-soft);border-bottom:2px solid var(--amb);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.ing-hdr-name{font-family:'Exo 2',sans-serif;font-weight:800;font-size:14px;color:var(--bd);flex:1}
-.ing-gram-badge{font-size:11px;background:var(--amb);color:var(--bd);border-radius:4px;padding:2px 8px;font-weight:700;white-space:nowrap}
-.ing-kod-badge{font-size:10px;color:#b8860b;font-family:monospace}
+.ihdr{padding:12px 16px;background:var(--amb-soft);border-bottom:2px solid var(--amb);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.iname{font-family:'Exo 2',sans-serif;font-weight:800;font-size:14px;color:var(--bd);flex:1}
+.itotal-kg{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:800;color:var(--br);white-space:nowrap}
 
-.ing-total-row{padding:7px 16px;border-bottom:1px solid #f0e8e0;display:flex;justify-content:space-between;align-items:center}
-.ing-total-firmy{font-size:11px;color:#999}
-.ing-total-kg{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:800;color:var(--br)}
-.ing-total-kg span{font-size:11px;font-weight:400;color:#bbb;margin-left:2px}
+/* Pack sekce (gramáž + dárek) */
+.pack-section{border-bottom:1px solid #f0e8e0}
+.pack-section:last-child{border-bottom:none}
 
-.ing-rows{padding:4px 0}
-.ing-row{display:flex;align-items:center;gap:10px;padding:7px 14px;cursor:pointer;border-bottom:1px solid #f8f3ee;transition:background .1s}
-.ing-row:last-child{border-bottom:none}
-.ing-row:hover{background:#faf7f3}
-.ing-row.done{background:#f4fbf4}
-.ing-row.done .ing-firma-name{text-decoration:line-through;color:#bbb}
-.ing-row.done .ing-row-kg{color:#ccc}
-.ing-check2{width:20px;height:20px;border:2px solid #d4c0a8;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:white;transition:all .15s}
-.ing-row.done .ing-check2{background:var(--leaf);border-color:var(--leaf)}
-.ing-row.done .ing-check2::after{content:'✓';font-size:12px;font-weight:800;color:white}
-.ing-row-info{flex:1;min-width:0}
-.ing-firma-name{font-size:13px;font-weight:600;color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ing-darek-sub{font-size:11px;color:#aaa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
-.ing-row-right{text-align:right;flex-shrink:0}
-.ing-row-ks{font-size:11px;color:#bbb}
-.ing-row-kg{font-size:13px;font-weight:700;color:var(--br)}
+.pack-hdr{padding:7px 14px;background:#faf7f3;border-bottom:1px solid #ede0d4;display:flex;align-items:center;gap:8px}
+.pack-gram{font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;color:var(--bd);background:var(--amb);padding:2px 8px;border-radius:4px;white-space:nowrap}
+.pack-darek{font-size:12px;color:#666;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pack-total{font-size:11px;color:#bbb;white-space:nowrap}
+
+/* Řádek firmy */
+.frow{display:flex;align-items:center;gap:10px;padding:7px 14px;cursor:pointer;border-bottom:1px solid #f8f3ee;transition:background .1s}
+.frow:hover{background:#faf7f3}
+.frow.done{background:#f4fbf4}
+.frow.done .ffirma{text-decoration:line-through;color:#bbb}
+.frow.done .fkg{color:#ccc}
+
+.fcheck{width:20px;height:20px;border:2px solid #d4c0a8;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:white;transition:all .15s}
+.frow.done .fcheck{background:var(--leaf);border-color:var(--leaf)}
+.frow.done .fcheck::after{content:'✓';font-size:12px;font-weight:800;color:white}
+.ffirma{font-size:13px;font-weight:600;color:#333;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fks{font-size:11px;color:#bbb;white-space:nowrap}
+.fkg{font-size:13px;font-weight:700;color:var(--br);white-space:nowrap;min-width:55px;text-align:right}
+
+/* Patička pack-sekce */
+.pack-foot{padding:5px 14px;background:var(--amb-soft);border-top:1px solid #ede0d4;display:flex;justify-content:space-between;align-items:center}
+.pfoot-lbl{font-size:11px;color:#b8860b}
+.pfoot-kg{font-size:12px;font-weight:700;color:var(--bd)}
 
 /* Loading / empty */
 .state-box{background:white;border-radius:12px;padding:48px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07)}
@@ -469,67 +474,99 @@ function buildFirmaCard(card){
 /* ═══ VÝROBA VIEW ═══ */
 function renderVyroba(cards){
   const mc=document.getElementById('main-content');
-  const ingMap=new Map();
 
+  // ingMap: ingKey → { nazev, kod, byPack: Map(packKey → {gram, darek, kod, usages[]}) }
+  const ingMap=new Map();
   cards.forEach(card=>{
     card.produkty.forEach((prod,pi)=>{
       if(prod.isSluzba) return;
       prod.slozeni.forEach((s,ci)=>{
-        const key=(s.kod?'k_'+s.kod:'')+'|'+s.nazev.toLowerCase().trim()+'|'+s.gram.toLowerCase();
-        if(!ingMap.has(key)) ingMap.set(key,{displayNazev:s.nazev||(s.kod?'kód '+s.kod:'—'),gram:s.gram,kod:s.kod,usages:[]});
-        ingMap.get(key).usages.push({cardId:card.id,firma:card.firma,prodNazev:prod.nazev,prodKs:prod.ks,pi,ci});
+        const ingKey=s.nazev.trim().toLowerCase()+'|'+(s.kod||'');
+        if(!ingMap.has(ingKey)) ingMap.set(ingKey,{nazev:s.nazev||(s.kod?'kód '+s.kod:'—'),kod:s.kod,byPack:new Map()});
+        const ing=ingMap.get(ingKey);
+        const packKey=s.gram+'__'+prod.nazev;
+        if(!ing.byPack.has(packKey)) ing.byPack.set(packKey,{gram:s.gram,darek:prod.nazev,usages:[]});
+        ing.byPack.get(packKey).usages.push({cardId:card.id,firma:card.firma,ks:prod.ks,pi,ci});
       });
     });
   });
 
   if(!ingMap.size){mc.innerHTML='<div class="empty-state">Žádné dílčí produkty.<br>Doplňte složení v zakázkách.</div>';return;}
 
-  const sorted=[...ingMap.entries()].sort((a,b)=>a[1].displayNazev.localeCompare(b[1].displayNazev,'cs'));
+  const sorted=[...ingMap.entries()].sort((a,b)=>a[1].nazev.localeCompare(b[1].nazev,'cs'));
   const grid=document.createElement('div');
   grid.className='vyroba-grid';
 
   sorted.forEach(([,ing])=>{
-    const totalU=ing.usages.length;
-    const doneU=ing.usages.filter(u=>isDone(u.cardId,u.pi,u.ci)).length;
-    const totalKg=ing.usages.reduce((s,u)=>s+gramToKg(ing.gram)*u.prodKs,0);
-    const allDone=doneU===totalU&&totalU>0;
+    // Celkové kg + stav pro celou surovinu
+    let totalKg=0, doneC=0, totalC=0;
+    ing.byPack.forEach(pack=>{
+      pack.usages.forEach(u=>{
+        totalC++;
+        totalKg+=gramToKg(pack.gram)*u.ks;
+        if(isDone(u.cardId,u.pi,u.ci)) doneC++;
+      });
+    });
+    const allDone=totalC>0&&doneC===totalC;
 
     const card=document.createElement('div');
-    card.className='ing-card'+(allDone?' all-done':'');
-    card.innerHTML=`
-      <div class="ing-hdr">
-        <span class="ing-hdr-name">${ing.displayNazev}</span>
-        ${ing.gram?`<span class="ing-gram-badge">${ing.gram}</span>`:''}
-        ${ing.kod?`<span class="ing-kod-badge">kód ${ing.kod}</span>`:''}
-      </div>
-      <div class="ing-total-row">
-        <span class="ing-total-firmy">${totalU} firma${totalU===1?'':'y/firem'} · ${doneU}/${totalU} hotovo</span>
-        <span class="ing-total-kg">${fmtKg(totalKg)}<span>celkem</span></span>
-      </div>
-    `;
+    card.className='icard'+(allDone?' all-done':'');
 
-    const rows=document.createElement('div');
-    rows.className='ing-rows';
-    ing.usages.forEach(u=>{
-      const done=isDone(u.cardId,u.pi,u.ci);
-      const uKg=gramToKg(ing.gram)*u.prodKs;
-      const row=document.createElement('div');
-      row.className='ing-row'+(done?' done':'');
-      row.innerHTML=`
-        <div class="ing-check2"></div>
-        <div class="ing-row-info">
-          <div class="ing-firma-name">${u.firma}</div>
-          <div class="ing-darek-sub">📦 ${u.prodNazev} · ${u.prodKs} ks</div>
-        </div>
-        <div class="ing-row-right">
-          <div class="ing-row-kg">${fmtKg(uKg)}</div>
-          <div class="ing-row-ks">${u.prodKs} ks</div>
-        </div>
-      `;
-      row.onclick=()=>toggle(u.cardId,u.pi,u.ci);
-      rows.appendChild(row);
+    // Header
+    const hdr=document.createElement('div');
+    hdr.className='ihdr';
+    hdr.innerHTML=`
+      <div class="iname">${ing.nazev}${ing.kod?`<span style="font-size:10px;color:#b8860b;font-family:monospace;font-weight:400;margin-left:8px">kód ${ing.kod}</span>`:''}</div>
+      <div class="itotal-kg">${fmtKg(totalKg)}</div>
+    `;
+    card.appendChild(hdr);
+
+    // Pack sekce seřazeny podle gramáže
+    const sortedPacks=[...ing.byPack.entries()].sort((a,b)=>{
+      const d=gramToKg(a[1].gram)-gramToKg(b[1].gram);
+      return d||a[1].darek.localeCompare(b[1].darek,'cs');
     });
-    card.appendChild(rows);
+
+    sortedPacks.forEach(([,pack])=>{
+      const packKg=pack.usages.reduce((s,u)=>s+gramToKg(pack.gram)*u.ks,0);
+      const packDone=pack.usages.filter(u=>isDone(u.cardId,u.pi,u.ci)).length;
+
+      const sect=document.createElement('div');
+      sect.className='pack-section';
+
+      const phdr=document.createElement('div');
+      phdr.className='pack-hdr';
+      phdr.innerHTML=`
+        <span class="pack-gram">${pack.gram||'?'}</span>
+        <span class="pack-darek">📦 ${pack.darek}</span>
+        <span class="pack-total">${packDone}/${pack.usages.length}</span>
+      `;
+      sect.appendChild(phdr);
+
+      pack.usages.forEach(u=>{
+        const done=isDone(u.cardId,u.pi,u.ci);
+        const uKg=gramToKg(pack.gram)*u.ks;
+        const frow=document.createElement('div');
+        frow.className='frow'+(done?' done':'');
+        frow.innerHTML=`
+          <div class="fcheck"></div>
+          <div class="ffirma">${u.firma}</div>
+          <div class="fks">${u.ks} ks</div>
+          <div class="fkg">${fmtKg(uKg)}</div>
+        `;
+        frow.onclick=()=>toggle(u.cardId,u.pi,u.ci);
+        sect.appendChild(frow);
+      });
+
+      // Patička
+      const foot=document.createElement('div');
+      foot.className='pack-foot';
+      foot.innerHTML=`<span class="pfoot-lbl">Celkem ${pack.gram||''}</span><span class="pfoot-kg">${fmtKg(packKg)}</span>`;
+      sect.appendChild(foot);
+
+      card.appendChild(sect);
+    });
+
     grid.appendChild(card);
   });
 
