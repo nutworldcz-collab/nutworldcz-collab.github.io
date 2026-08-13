@@ -1,8 +1,62 @@
 {
-  "generated": "2026-08-13T12:00:20",
-  "total": 2,
-  "spam_skipped": 1,
+  "generated": "2026-08-13T17:00:33",
+  "total": 6,
+  "spam_skipped": 3,
   "emails": [
+    {
+      "account": "Exchange",
+      "sender": "Lenka Šafaříková <lenka.safarikova@altium.net>",
+      "subject": "RE: Re: [EXTERNAL] Poptávka Vánoce 2026",
+      "date": "čtvrtek 13. srpna 2026 12:13:02",
+      "unread": true,
+      "preview": "Dobrý den přeji. Koumeme tady s kolegyní balíčky. A mám na Vás prosbu o obměnu – potřebovali bychom se dostat na 260 Kč bez DPH za sadu (ideálně třeba takováto: https://www.nutworld.cz/darkove-krabice-orechy-ovoce/darkova-krabicka-4x80g-mix-k-narozeninam-s-pruhlednym-vickem/)",
+      "category": "b2b",
+      "sender_short": "Lenka Šafaříková",
+      "sender_email": "lenka.safarikova@altium.net",
+      "ai": {
+        "shrn": "B2B poptávka na vánoční balíčky s požadavkem snížit cenu na 260 Kč bez DPH za sadu.",
+        "tyka_se": true,
+        "akce": "Zvážit cenovou nabídku a odpovědět Lence Šafaříkové s možnostmi pro zlevnění produktu"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Renata Pošepná přesunul/a kartu Czech inn do sloupce Připravují se komponenty - Balírna na nástěnce Firmy dárky + objednávky",
+      "date": "čtvrtek 13. srpna 2026 11:24:12",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Renata Pošepná přesunul(a) kartu Czech inn do sloupce Připravují se komponenty - Balírna na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 10:45 (13. srpna 2026)",
+      "date": "čtvrtek 13. srpna 2026 10:47:02",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová vás přidal(a) na kartu Dačický s.r.o. na nástěnce Firmy dárky + objednávky Odpovědět e-mailem ￼ Martin Werner okomentoval(a) kartu Dačický s.r.o. na nástěnce Firmy dárky + objednávky @jananyvltova kdo nám to dodává",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Hauerland LTD - Reklamné predmety & textil <info@hauerland.sk>",
+      "subject": "Pozvánka: Exkluzívna prezentácia vianočných noviniek a inšpirácií",
+      "date": "čtvrtek 13. srpna 2026 9:15:05",
+      "unread": true,
+      "preview": "￼ ￼ Rezervovať si termín Prosíme vás o vytvorenie rezervácie prostredníctvom rezervačného systému. Je potrebné zarezervovať si presný dátum a čas",
+      "category": "ostatni",
+      "sender_short": "Hauerland LTD - Reklamné predmety & textil",
+      "sender_email": "info@hauerland.sk",
+      "ai": {
+        "shrn": "Pozvánka na exkluzívní prezentaci vánočních noviniek od slovenské firmy Hauerland LTD.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
     {
       "account": "Google",
       "sender": "Apple <News@InsideApple.Apple.com>",
@@ -14,7 +68,7 @@
       "sender_short": "Apple",
       "sender_email": "News@InsideApple.Apple.com",
       "ai": {
-        "shrn": "Apple propaguje slevy na MacBook a iPad pro studenty se školskou slevou a dárkovými kartami.",
+        "shrn": "Marketingový email od Apple s nabídkou slev na nákup zařízení pro studenty.",
         "tyka_se": false,
         "akce": null
       }
@@ -30,7 +84,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "CrossFit zasílá týdenní zpravodaj se sérií o příbězích a komunitě.",
+        "shrn": "Newsletter od CrossFit s obsahem o cestě člena komunity a týdenními updaty.",
         "tyka_se": false,
         "akce": null
       }
