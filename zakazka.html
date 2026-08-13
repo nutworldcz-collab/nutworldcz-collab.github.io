@@ -419,10 +419,17 @@ function renderSummary(d) {
     const tr = document.createElement('tr');
     tr.id = 'srow-' + i;
     const kodSpan = p.kod ? `<span style="font-size:10px;color:#aaa;font-family:monospace;margin-right:5px">${p.kod}</span>` : '';
-    tr.innerHTML = `<td>${kodSpan}${p.nazev}</td><td style="text-align:right">${p.ks} ks</td>
+    const sluBadge = p.sluzba
+      ? `<span style="font-size:10px;background:#e3f2fd;color:#1565c0;border-radius:4px;padding:1px 6px;margin-right:5px;font-weight:700">⚙️ Služba</span>`
+      : '';
+    const sluKs = p.sluzba
+      ? `<span style="font-size:10px;color:#aaa;font-style:italic">${p.ks} ks</span>`
+      : `${p.ks} ks`;
+    tr.innerHTML = `<td>${kodSpan}${sluBadge}${p.nazev}</td>
+      <td style="text-align:right">${sluKs}</td>
       <td style="text-align:right">${p.cena.toFixed(2).replace('.',',')} Kč</td>
       <td style="text-align:right"><strong>${num(celkem.toFixed(2))} Kč</strong></td>
-      <td><button class="popis-btn-sp" title="Složení dárku" onclick="togglePopisProd(${i})">📦</button></td>`;
+      <td>${p.sluzba ? '' : `<button class="popis-btn-sp" title="Složení dárku" onclick="togglePopisProd(${i})">📦</button>`}</td>`;
     tbody.appendChild(tr);
   });
   document.getElementById('s-total').textContent = num((totalBez * 1.12).toFixed(2)) + ' Kč';
@@ -443,9 +450,10 @@ function renderSummary(d) {
   });
   recalcMarze();
 
-  // Auto-otevři sekci dílčích produktů pro každý produkt
+  // Auto-otevři sekci dílčích produktů — jen pro produkty, ne pro služby
   setTimeout(() => {
     d.produkty.forEach((p, i) => {
+      if (p.sluzba) return;
       if (!document.getElementById('popis-row-sp-'+i)) {
         togglePopisProd(i, (p.slozeni && p.slozeni.length) ? p.slozeni : null);
       }
@@ -477,6 +485,7 @@ function recalcMarze() {
 }
 
 function togglePopisProd(i, prefillRows) {
+  if (offerData && offerData.produkty[i]?.sluzba) return;
   const existingRow = document.getElementById('popis-row-sp-'+i);
   if (existingRow) { existingRow.remove(); return; }
   const mainRow = document.getElementById('srow-'+i);
