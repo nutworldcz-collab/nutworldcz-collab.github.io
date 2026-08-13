@@ -130,9 +130,17 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .fcheck{width:20px;height:20px;border:2px solid #d4c0a8;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:white;transition:all .15s}
 .frow.done .fcheck{background:var(--leaf);border-color:var(--leaf)}
 .frow.done .fcheck::after{content:'✓';font-size:12px;font-weight:800;color:white}
-.ffirma{font-size:13px;font-weight:600;color:#333;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ffirma-wrap{flex:1;min-width:0}
+.ffirma{font-size:13px;font-weight:600;color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.frow.done .ffirma{text-decoration:line-through;color:#bbb}
+.ftermin{display:inline-block;font-size:10px;font-weight:700;border-radius:4px;padding:1px 6px;margin-top:2px;white-space:nowrap}
+.ftermin.ok{background:#f1e6da;color:#83502e}
+.ftermin.soon{background:#fff3cd;color:#856404}
+.ftermin.late{background:#fde8ec;color:#c0392b}
+.frow.done .ftermin{opacity:.4}
 .fks{font-size:11px;color:#bbb;white-space:nowrap}
 .fkg{font-size:13px;font-weight:700;color:var(--br);white-space:nowrap;min-width:55px;text-align:right}
+.frow.done .fkg{color:#ccc}
 
 /* Patička pack-sekce */
 .pack-foot{padding:5px 14px;background:var(--amb-soft);border-top:1px solid #ede0d4;display:flex;justify-content:space-between;align-items:center}
@@ -471,6 +479,23 @@ function buildFirmaCard(card){
   return el;
 }
 
+/* ── Termín helpers ── */
+function terminToMs(t){
+  if(!t) return Infinity;
+  const [d,m,y]=t.split('.').map(Number);
+  return new Date(y,m-1,d).getTime();
+}
+function terminSort(a,b){ return terminToMs(a)-terminToMs(b); }
+function terminBadge(t){
+  if(!t) return '';
+  const ms=terminToMs(t);
+  const now=Date.now();
+  const days=Math.ceil((ms-now)/86400000);
+  const cls=days<0?'late':days<=7?'soon':'ok';
+  const lbl=days<0?`⚠️ ${t}`:`📅 ${t}`;
+  return `<span class="ftermin ${cls}">${lbl}</span>`;
+}
+
 /* ═══ VÝROBA VIEW ═══ */
 function renderVyroba(cards){
   const mc=document.getElementById('main-content');
@@ -486,7 +511,7 @@ function renderVyroba(cards){
         const ing=ingMap.get(ingKey);
         const packKey=s.gram+'__'+prod.nazev;
         if(!ing.byPack.has(packKey)) ing.byPack.set(packKey,{gram:s.gram,darek:prod.nazev,usages:[]});
-        ing.byPack.get(packKey).usages.push({cardId:card.id,firma:card.firma,ks:prod.ks,pi,ci});
+        ing.byPack.get(packKey).usages.push({cardId:card.id,firma:card.firma,ks:prod.ks,pi,ci,termin:card.termin});
       });
     });
   });
@@ -543,14 +568,20 @@ function renderVyroba(cards){
       `;
       sect.appendChild(phdr);
 
+      // Seřadit firmy podle termínu (nejdřívější nahoře)
+      pack.usages.sort((a,b)=>terminSort(a.termin,b.termin));
       pack.usages.forEach(u=>{
         const done=isDone(u.cardId,u.pi,u.ci);
         const uKg=gramToKg(pack.gram)*u.ks;
+        const tb=terminBadge(u.termin);
         const frow=document.createElement('div');
         frow.className='frow'+(done?' done':'');
         frow.innerHTML=`
           <div class="fcheck"></div>
-          <div class="ffirma">${u.firma}</div>
+          <div class="ffirma-wrap">
+            <span class="ffirma">${u.firma}</span>
+            ${tb}
+          </div>
           <div class="fks">${u.ks} ks</div>
           <div class="fkg">${fmtKg(uKg)}</div>
         `;
