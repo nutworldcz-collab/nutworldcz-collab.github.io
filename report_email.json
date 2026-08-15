@@ -1,8 +1,24 @@
 {
-  "generated": "2026-08-15T12:00:22",
-  "total": 4,
+  "generated": "2026-08-15T17:00:29",
+  "total": 5,
   "spam_skipped": 0,
   "emails": [
+    {
+      "account": "Exchange",
+      "sender": "WEDOS OnLine <online@wedos.online>",
+      "subject": "Oznámení z monitoringu (2)",
+      "date": "sobota 15. srpna 2026 9:21:15",
+      "unread": true,
+      "preview": "Zasíláme Vám denní přehled oznámení z monitoringu vašich domén (služba WEDOS EWM) ---[ 2026-08-14 14:11:17 ] nedostupné: nutworld.pl HTTP Název: nutworld.pl HTTP Cíl: http://www.nutworld.pl/ Stav: nedostupné Detail: Could not resolve www.nutworld.pl Počet chyb: 1 Problém od: 2026-08-14 14:11:17 CEST",
+      "category": "ostatni",
+      "sender_short": "WEDOS OnLine",
+      "sender_email": "online@wedos.online",
+      "ai": {
+        "shrn": "Doména nutworld.pl je nedostupná, DNS server nemůže vyřešit www.nutworld.pl. Monitoring zjistil problém 14.8. v 14:11.",
+        "tyka_se": true,
+        "akce": "Zkontrolovat DNS nastavení domény nutworld.pl a obnovit připojení k webu"
+      }
+    },
     {
       "account": "Exchange",
       "sender": "claudie.nutworld.cz@gmail.com",
@@ -14,9 +30,9 @@
       "sender_short": "claudie.nutworld.cz@gmail.com",
       "sender_email": "claudie.nutworld.cz@gmail.com",
       "ai": {
-        "shrn": "Denní report o stavu automatizací Nutworld vyžadující kontrolu. Jan by měl zkontrolovat, zda automatizace fungují správně.",
+        "shrn": "Denní zdravotní report upozorňuje, že je třeba zkontrolovat automatizace v systému Nutworld.",
         "tyka_se": true,
-        "akce": "Zkontrolovat stav automatizací a vyřešit případné problémy"
+        "akce": "Otevřít automatizace a ověřit jejich stav, případně opravit chyby"
       }
     },
     {
@@ -30,7 +46,7 @@
       "sender_short": "Nutworld B2B Test",
       "sender_email": "claudie.nutworld.cz@gmail.com",
       "ai": {
-        "shrn": "Automatický denní test B2B systému potvrzující správnou funkčnost formuláře. Test proběhl bez problémů.",
+        "shrn": "Automatický test B2B formuláře proběhl úspěšně bez chyb.",
         "tyka_se": false,
         "akce": null
       }
@@ -46,7 +62,7 @@
       "sender_short": "claudie.nutworld.cz@gmail.com",
       "sender_email": "claudie.nutworld.cz@gmail.com",
       "ai": {
-        "shrn": "Denní report potvrzující opravu jedné automatizace a ostatní systémy v pořádku. Předchozí problém byl vyřešen.",
+        "shrn": "Denní report potvrzuje, že byla 1 automatizace opravena, ostatní systémy fungují správně.",
         "tyka_se": false,
         "akce": null
       }
@@ -62,7 +78,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "Fitness zpráva o denním cvičebním programu z externího CrossFit serveru. Není relevantní pro Nutworld.",
+        "shrn": "Email s workout plánem z CrossFit komunity.",
         "tyka_se": false,
         "akce": null
       }
