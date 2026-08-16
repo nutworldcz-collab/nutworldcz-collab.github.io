@@ -1,6 +1,109 @@
 {
-  "generated": "2026-08-16T14:56:32",
-  "total": 0,
-  "spam_skipped": 0,
-  "emails": []
+  "generated": "2026-08-16T17:00:23",
+  "total": 7,
+  "spam_skipped": 1,
+  "emails": [
+    {
+      "account": "Exchange",
+      "sender": "Markéta Costachova <marketa.costachova@nutworld.cz>",
+      "subject": "RE: Dopyt – balenie orechov s vlastným brandingom",
+      "date": "neděle 16. srpna 2026 14:30:22",
+      "unread": true,
+      "preview": "Ahoj, v pohodě",
+      "category": "tym",
+      "sender_short": "Markéta Costachova",
+      "sender_email": "marketa.costachova@nutworld.cz",
+      "ai": {
+        "shrn": "Markéta potvrzuje, že je vše v pořádku ohledně dopytu na balení orechů s vlastním brandingem.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "OREA na Firmy dárky + objednávky má termín za 2 dny",
+      "date": "neděle 16. srpna 2026 12:54:26",
+      "unread": true,
+      "preview": "￼ Termín je brzy... OREA na nástěnce Firmy dárky + objednávky s termínem má termín za 2 dny Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "ALZA - EDI/2026/27 na Firmy dárky + objednávky má termín za 2 dny",
+      "date": "neděle 16. srpna 2026 10:13:12",
+      "unread": true,
+      "preview": "￼ Termín je brzy... ALZA - EDI/2026/27 na nástěnce Firmy dárky + objednávky s termínem má termín za 2 dny Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "WEDOS <hosting@wedos.com>",
+      "subject": "Výzva k platbě [3126354411]",
+      "date": "neděle 16. srpna 2026 6:21:12",
+      "unread": true,
+      "preview": "Vážený zákazníku, zasíláme Vám instrukce k zaplacení zálohy pro úhradu služeb u společnosti WEDOS",
+      "category": "ostatni",
+      "sender_short": "WEDOS",
+      "sender_email": "hosting@wedos.com",
+      "ai": {
+        "shrn": "WEDOS zasílá výzvu k platbě zálohy za hostingové služby.",
+        "tyka_se": true,
+        "akce": "Ověřit fakturu a zaplatit zálohu u WEDOS"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "caslavskasportovni@seznam.cz",
+      "subject": "Re: 3. ročník Kačina Run",
+      "date": "neděle 16. srpna 2026 0:27:13",
+      "unread": true,
+      "preview": "Dobrý den, dobře",
+      "category": "ostatni",
+      "sender_short": "caslavskasportovni@seznam.cz",
+      "sender_email": "caslavskasportovni@seznam.cz",
+      "ai": {
+        "shrn": "Potvrzení od pořadatele akce Kačina Run 3. ročníku s kladnou odpovědí.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "Temu <temu@eu.temuemail.com>",
+      "subject": "Poslali jsme vám nabídku.",
+      "date": "neděle 16. srpna 2026 13:32:59",
+      "unread": true,
+      "preview": "Otevřete ji přímo zde. ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ Najdete nás na ￼ ￼ ￼ POZNÁMKA: Toto je automaticky generovaný e-mail",
+      "category": "ostatni",
+      "sender_short": "Temu",
+      "sender_email": "temu@eu.temuemail.com",
+      "ai": {
+        "shrn": "Automatická nabídka od Temu s podezřením na spam nebo nevyžádanou komunikaci.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "Temu <temu@eu.temuemail.com>",
+      "subject": "Dostáváš: 457 Kč nabídku",
+      "date": "neděle 16. srpna 2026 11:32:47",
+      "unread": true,
+      "preview": "Tvá podpora se vyplatila! Prosím přijmi ji",
+      "category": "ostatni",
+      "sender_short": "Temu",
+      "sender_email": "temu@eu.temuemail.com",
+      "ai": {
+        "shrn": "Temu nabízí výhru či bonus ve výši 457 Kč, což vypadá jako spam nebo phishing.",
+        "tyka_se": false,
+        "akce": null
+      }
+    }
+  ]
 }
