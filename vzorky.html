@@ -366,6 +366,10 @@ function openAdd(id) {
         <input id="fl" type="url" placeholder="https://..." value="${vz?esc(vz.design_link):''}"></div>
     </div>
     <div class="frow">
+      <div class="fg full"><label>Trello karta</label>
+        <input id="ftr" type="url" placeholder="https://trello.com/c/..." value="${vz?esc(vz.trello_link||''):''}"></div>
+    </div>
+    <div class="frow">
       <div class="fg full"><label>Poznámka pro výrobu</label>
         <textarea id="fz" placeholder="Specifické požadavky, barvy, materiály, typ tisku...">${vz?esc(vz.poznamka):''}</textarea></div>
     </div>
@@ -396,6 +400,7 @@ function save() {
     motiv: document.getElementById('fm').value.trim(),
     deadline: document.getElementById('fd').value,
     design_link: document.getElementById('fl').value.trim(),
+    trello_link: document.getElementById('ftr').value.trim(),
     poznamka: document.getElementById('fz').value.trim(),
     zadal: document.getElementById('fz2').value.trim(),
     zdroj: document.getElementById('fs').value,
@@ -492,6 +497,7 @@ function openDet(id) {
             <div class="df-v">${fmtDl(vz.deadline)}</div>
           </div>
           ${vz.design_link ? `<div class="df full"><div class="df-l">Design</div><div class="df-v"><a href="${esc(vz.design_link)}" target="_blank" style="color:var(--primary-h)">${esc(vz.design_link)}</a></div></div>` : ''}
+          ${vz.trello_link ? `<div class="df full"><div class="df-l">Trello</div><div class="df-v"><a href="${esc(vz.trello_link)}" target="_blank" style="color:#0079bf;font-weight:700">🃏 Otevřít kartu v Trello →</a></div></div>` : ''}
         </div>
       </div>
       ${vz.poznamka ? `<div><div class="dsec-label">Poznámka pro výrobu</div><div class="nota">${esc(vz.poznamka)}</div></div>` : ''}
