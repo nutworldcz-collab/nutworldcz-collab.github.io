@@ -332,18 +332,16 @@ const APPS_SCRIPT = "https://script.google.com/macros/s/AKfycbwonbDE6DfEOFOqbY6E
   }
 
   // call Apps Script in background
-  // ts musí být přítomen a odkazovat na čas načtení Shoptet formuláře
-  var ts = parseInt(p.get('ts') || '0', 10);
-  var now = Date.now();
-  var age = now - ts;
-  var tokenOk = ts > 0 && age >= 3000 && age <= 86400000;
-
+  // Přidáme ts = teď pokud chybí (Shoptet ho neposílá vždy)
   var qs = p.toString();
-  if (qs && tokenOk) {
+  if (!p.get('ts')) {
+    qs = qs ? qs + '&ts=' + Date.now() : 'ts=' + Date.now();
+  }
+  // Spustit pokud jsou nějaká data (email nebo jméno) — spam ochrana je na Apps Script straně
+  var hasData = p.get('email') || p.get('from_name') || p.get('pocet') || p.get('prilezitost');
+  if (qs && hasData) {
     fetch(APPS_SCRIPT + '?' + qs, {method:'GET', mode:'no-cors'}).catch(function(){});
   }
-  // Pokud token chybí nebo je neplatný, formulář se zobrazí normálně,
-  // ale email se neodešle — tiché odmítnutí bez varování uživateli.
 })();
 </script>
 </body>
