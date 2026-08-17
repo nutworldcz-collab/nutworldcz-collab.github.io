@@ -611,6 +611,11 @@ document.getElementById('addBk').addEventListener('click', e => { if (e.target =
 document.getElementById('detBk').addEventListener('click', e => { if (e.target === e.currentTarget) closeDet(); });
 
 render();
+if (location.hash) {
+  const id = location.hash.slice(1);
+  const vz = load().find(v => v.id === id);
+  if (vz) setTimeout(() => openDet(id), 100);
+}
 </script>
 
 </body>
