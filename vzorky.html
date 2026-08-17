@@ -180,7 +180,8 @@ select option { background: var(--surface); }
   <div class="hdr-sep"></div>
   <span class="hdr-title">Vzorky</span>
   <div class="hdr-space"></div>
-  <a href="https://trello.com/b/A2dMKGdY/vzorky-sacky-celofany-firmy" target="_blank" style="color:rgba(255,255,255,.75);font-size:12px;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:5px;padding:6px 10px;border-radius:7px;background:rgba(255,255,255,.1)">🃏 Trello nástěnka</a>
+  <a href="/vyroba.html" style="color:rgba(255,255,255,.75);font-size:12px;font-weight:600;text-decoration:none;padding:6px 10px;border-radius:7px;background:rgba(255,255,255,.1);white-space:nowrap">🏭 Výroba</a>
+  <a href="https://trello.com/b/A2dMKGdY/vzorky-sacky-celofany-firmy" target="_blank" style="color:rgba(255,255,255,.75);font-size:12px;font-weight:600;text-decoration:none;padding:6px 10px;border-radius:7px;background:rgba(255,255,255,.1);white-space:nowrap">🃏 Trello</a>
   <button class="btn-add" onclick="openAdd()">+ Nový vzorek</button>
 </div>
 
@@ -345,6 +346,12 @@ function openAdd(id) {
         <input id="fk" placeholder="Název firmy nebo osoby" value="${vz?esc(vz.klient):''}"></div>
     </div>
     <div class="frow">
+      <div class="fg"><label>Email *</label>
+        <input id="fem" type="email" placeholder="kontakt@firma.cz" value="${vz?esc(vz.email||''):''}"></div>
+      <div class="fg"><label>Telefon *</label>
+        <input id="ftel" type="tel" placeholder="+420 777 123 456" value="${vz?esc(vz.telefon||''):''}"></div>
+    </div>
+    <div class="frow">
       <div class="fg full"><label>Produkt / surovina *</label>
         <input id="fp" placeholder="Např. Mandle pražené solené" value="${vz?esc(vz.produkt):''}"></div>
     </div>
@@ -387,12 +394,15 @@ function closeAdd() { document.getElementById('addBk').classList.add('hidden'); 
 function save() {
   const klient = document.getElementById('fk').value.trim();
   const produkt = document.getElementById('fp').value.trim();
+  const email = document.getElementById('fem').value.trim();
+  const telefon = document.getElementById('ftel').value.trim();
   if (!klient || !produkt) { toast('Vyplňte klienta a produkt.'); return; }
+  if (!email || !telefon) { toast('Email a telefon jsou povinné.'); return; }
 
   const d = load();
   const now = new Date().toISOString();
   const obj = {
-    klient, produkt,
+    klient, produkt, email, telefon,
     obal: document.getElementById('fo').value.trim(),
     gramaz: document.getElementById('fg').value.trim(),
     pocet: parseInt(document.getElementById('fn').value)||1,
@@ -495,6 +505,8 @@ function openDet(id) {
             <div class="df-l">Deadline</div>
             <div class="df-v">${fmtDl(vz.deadline)}</div>
           </div>
+          ${vz.email ? `<div class="df"><div class="df-l">Email</div><div class="df-v"><a href="mailto:${esc(vz.email)}" style="color:var(--primary-h)">${esc(vz.email)}</a></div></div>` : ''}
+          ${vz.telefon ? `<div class="df"><div class="df-l">Telefon</div><div class="df-v"><a href="tel:${esc(vz.telefon)}" style="color:var(--primary-h)">${esc(vz.telefon)}</a></div></div>` : ''}
           ${vz.adresa ? `<div class="df full"><div class="df-l">Adresa</div><div class="df-v" style="white-space:pre-line">${esc(vz.adresa)}</div></div>` : ''}
           ${vz.design_link ? `<div class="df full"><div class="df-l">Design</div><div class="df-v"><a href="${esc(vz.design_link)}" target="_blank" style="color:var(--primary-h)">${esc(vz.design_link)}</a></div></div>` : ''}
         </div>
