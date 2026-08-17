@@ -217,11 +217,6 @@ select option { background: var(--surface); }
 <script>
 const SK = 'nw_vzorky_v1';
 
-const SEED = [
-  { id:'VZ-2608-001', klient:'Poprokan s.r.o.', produkt:'Mandle pražené solené', obal:'Eko kelímek', gramaz:'100g', pocet:3, motiv:'Firemní vánoce 2026', deadline:'2026-09-20', design_link:'', poznamka:'Bílý potisk, logo klienta na přední straně. Stužka zlatá.', zadal:'Jan Vlček', zdroj:'obchod', status:'schvaleno', created:'2026-08-10T09:00:00' },
-  { id:'VZ-2608-002', klient:'Hotel Thermal Karlovy Vary', produkt:'Pistácie pražené solené', obal:'Sklenička EXCLUSIVE', gramaz:'70g', pocet:5, motiv:'Minibar premium', deadline:'2026-08-28', design_link:'', poznamka:'Etiketa CZ + EN. Minimalistický design, zlatá barva. Zaslat ukázku před tiskem.', zadal:'Jan Vlček', zdroj:'obchod', status:'vyroba', created:'2026-08-14T11:30:00' },
-  { id:'VZ-2608-003', klient:'Tesla Manufacturing CZ', produkt:'Lesklý mandlový mix', obal:'Eko kelímek', gramaz:'100g', pocet:10, motiv:'Teambuilding / motivační dárek', deadline:'2026-09-10', design_link:'', poznamka:'Klient dodá logo ve vektorovém formátu. Barvy: modrá #002060 + stříbrná.', zadal:'Výroba (návrh)', zdroj:'vyroba', status:'zadano', created:'2026-08-17T08:00:00' },
-];
 
 const SC = {
   zadano:   { label:'Zadáno',    cls:'s-zadano' },
@@ -238,8 +233,7 @@ let editId = null;
 
 function load() {
   try { const r = localStorage.getItem(SK); if (r) return JSON.parse(r); } catch(e) {}
-  localStorage.setItem(SK, JSON.stringify(SEED));
-  return JSON.parse(JSON.stringify(SEED));
+  return [];
 }
 function store(d) { localStorage.setItem(SK, JSON.stringify(d)); }
 
