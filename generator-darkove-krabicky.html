@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Nutworld — Dárková krabička 2×50g</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--br:#83502e;--bd:#5c381f;--kraft:#f1e6da;--acc:#da1668;--amb:#f7ab31;--leaf:#6fa044;--white:#fff}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;font-size:14px}
+h1,h2,h3{font-family:'Exo 2',sans-serif}
+
+.shell{max-width:1100px;margin:0 auto;padding:24px 16px;display:grid;grid-template-columns:1fr 360px;gap:20px;align-items:start}
+@media(max-width:900px){.shell{grid-template-columns:1fr}}
+
+.panel{background:var(--white);border-radius:14px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,.1)}
+.panel-head{background:linear-gradient(135deg,var(--bd),var(--br));padding:16px 22px;color:white}
+.panel-head h2{font-size:16px;font-weight:700;letter-spacing:.5px}
+.panel-head p{font-size:12px;opacity:.7;margin-top:2px}
+.panel-body{padding:18px 22px}
+
+.field{margin-bottom:14px}
+.field label{display:block;font-size:11px;font-weight:700;color:var(--br);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.field input,.field select,.field textarea{width:100%;border:1.5px solid #d4c0a8;border-radius:8px;padding:9px 12px;font-family:inherit;font-size:13px;color:#2a1a0e;background:#fdf9f6;transition:border-color .15s}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--br)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+.sec{font-family:'Exo 2',sans-serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--br);margin:20px 0 10px;padding-bottom:5px;border-bottom:1.5px solid var(--kraft)}
+.sec:first-child{margin-top:0}
+
+/* Product dropdown */
+.prod-wrap{position:relative}
+.prod-inp{width:100%;border:1.5px solid #d4c0a8;border-radius:8px;padding:9px 12px;font-family:inherit;font-size:13px;color:#2a1a0e;background:#fdf9f6;transition:border-color .15s}
+.prod-inp:focus{outline:none;border-color:var(--br)}
+.prod-drop{position:absolute;top:calc(100% + 2px);left:0;right:0;background:#fff;border:1.5px solid #c8976a;border-radius:0 0 10px 10px;z-index:300;max-height:250px;overflow-y:auto;box-shadow:0 6px 20px rgba(0,0,0,.12);display:none}
+.prod-drop.open{display:block}
+.prod-item{padding:9px 14px;cursor:pointer;font-size:13px;border-bottom:1px solid #f1e6da}
+.prod-item:last-child{border-bottom:none}
+.prod-item:hover,.prod-item.sel{background:#fdf8f4}
+.prod-item strong{color:var(--br)}
+.prod-chosen{display:none;align-items:center;gap:8px;margin-top:6px;padding:8px 12px;background:var(--kraft);border:1.5px solid #c8976a;border-radius:8px;font-size:13px;font-weight:600;color:var(--bd)}
+.prod-chosen .clr{margin-left:auto;background:none;border:none;color:#aaa;cursor:pointer;font-size:16px;line-height:1;padding:0 3px}
+.prod-chosen .clr:hover{color:var(--acc)}
+
+/* Radio pills */
+.radio-group{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.radio-opt{display:flex;align-items:center;gap:6px;padding:7px 14px;border:1.5px solid #d4c0a8;border-radius:20px;cursor:pointer;font-size:12.5px;font-weight:600;color:#5a3a22;background:#fdf9f6;transition:all .15s;user-select:none}
+.radio-opt:has(input:checked){background:var(--kraft);border-color:var(--br);color:var(--bd)}
+.radio-opt input[type=radio]{display:none}
+
+/* Buttons */
+.btn-gen{display:block;width:100%;background:linear-gradient(135deg,#7a5200,var(--amb));color:white;border:none;font-family:'Exo 2',sans-serif;font-weight:800;font-size:16px;padding:14px;border-radius:10px;cursor:pointer;margin-top:20px;letter-spacing:.5px;transition:opacity .15s}
+.btn-gen:hover{opacity:.9}
+.btn-gen:disabled{opacity:.5;cursor:not-allowed}
+
+/* Loading */
+.loading-dots{display:inline-flex;gap:5px;vertical-align:middle}
+.loading-dots span{width:7px;height:7px;border-radius:50%;background:var(--br);animation:dp 1.2s ease-in-out infinite}
+.loading-dots span:nth-child(2){animation-delay:.2s}
+.loading-dots span:nth-child(3){animation-delay:.4s}
+@keyframes dp{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+
+/* Summary */
+#preview-wrap{position:sticky;top:24px}
+.s-badge{display:inline-block;background:var(--kraft);border:1.5px solid #c8976a;border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--br);margin-bottom:14px}
+.s-prod{display:flex;align-items:center;gap:10px;padding:9px 13px;border:1.5px solid #d4c0a8;border-radius:10px;margin-bottom:7px;font-size:13px;background:#fdf9f6}
+.s-num{width:22px;height:22px;border-radius:50%;background:var(--bd);color:var(--amb);font-family:'Exo 2',sans-serif;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.s-row{display:flex;justify-content:space-between;align-items:flex-start;padding:7px 0;border-bottom:1px solid #f1e6da;font-size:12.5px;gap:10px}
+.s-row:last-child{border-bottom:none}
+.s-label{color:#999;flex-shrink:0}
+.s-val{font-weight:600;color:var(--bd);text-align:right}
+.s-hr{height:1px;background:#f1e6da;margin:12px 0}
+.vzkaz-box{margin-top:12px;padding:12px;background:#fdf8f4;border:1.5px solid #d4c0a8;border-radius:10px;font-size:12px;color:#5a3a22;font-style:italic;line-height:1.5}
+</style>
+</head>
+<body>
+
+<div style="background:var(--bd);padding:12px 24px;display:flex;align-items:center;gap:14px">
+  <span style="font-family:'Exo 2',sans-serif;font-size:20px;font-weight:900;color:white;letter-spacing:1px">🐿 NUT<span style="color:var(--amb)">WORLD</span></span>
+  <span style="color:var(--amb);font-family:'Exo 2',sans-serif;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;opacity:.9">Dárková krabička 2×50g</span>
+</div>
+
+<div class="shell">
+
+<!-- ─── FORMULÁŘ ─── -->
+<div class="panel">
+  <div class="panel-head">
+    <h2>🎁 Konfigurace krabičky</h2>
+    <p>Obsah · Zakázka · Personalizace</p>
+  </div>
+  <div class="panel-body">
+
+    <div class="sec">Obsah krabičky</div>
+    <div class="row2">
+      <div class="field">
+        <label>Produkt 1 *</label>
+        <div class="prod-wrap">
+          <input class="prod-inp" id="p1-inp" placeholder="Hledat produkt…" autocomplete="off"
+            oninput="filterP(1)" onfocus="filterP(1)" onkeydown="keyP(event,1)"/>
+          <div class="prod-drop" id="p1-drop"></div>
+        </div>
+        <div class="prod-chosen" id="p1-chosen">
+          <span id="p1-name"></span>
+          <button class="clr" onclick="clearP(1)" title="Zrušit">✕</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Produkt 2 *</label>
+        <div class="prod-wrap">
+          <input class="prod-inp" id="p2-inp" placeholder="Hledat produkt…" autocomplete="off"
+            oninput="filterP(2)" onfocus="filterP(2)" onkeydown="keyP(event,2)"/>
+          <div class="prod-drop" id="p2-drop"></div>
+        </div>
+        <div class="prod-chosen" id="p2-chosen">
+          <span id="p2-name"></span>
+          <button class="clr" onclick="clearP(2)" title="Zrušit">✕</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">Zakázka</div>
+    <div class="field"><label>Zákazník / firma</label><input id="firma" placeholder="Firma s.r.o." oninput="upd()"/></div>
+    <div class="row2">
+      <div class="field"><label>Kontaktní osoba</label><input id="kontakt" placeholder="Jméno Příjmení" oninput="upd()"/></div>
+      <div class="field"><label>Email</label><input id="email" type="email" placeholder="info@firma.cz" oninput="upd()"/></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Počet kusů *</label><input id="pocet" type="number" min="1" placeholder="100" oninput="upd()"/></div>
+      <div class="field"><label>Termín dodání *</label><input id="termin" type="date" oninput="upd()"/></div>
+    </div>
+
+    <div class="sec">Personalizace</div>
+
+    <div class="field">
+      <label>Vazba</label>
+      <div class="radio-group">
+        <label class="radio-opt"><input type="radio" name="vazba" value="juta" checked onchange="onVazba()"> 🌿 Jutová stuha</label>
+        <label class="radio-opt"><input type="radio" name="vazba" value="saten" onchange="onVazba()"> 🎀 Saténová stuha</label>
+      </div>
+    </div>
+    <div id="barva-wrap" style="display:none" class="field">
+      <label>Barva saténové stuhy</label>
+      <input id="barva" placeholder="Zadej barvu stuhy…" oninput="upd()"/>
+    </div>
+
+    <div class="field">
+      <label>Gravír</label>
+      <div class="radio-group">
+        <label class="radio-opt"><input type="radio" name="gravir" value="ne" checked onchange="onGravir()"> — Bez gravíru</label>
+        <label class="radio-opt"><input type="radio" name="gravir" value="text" onchange="onGravir()"> ✏️ Text</label>
+        <label class="radio-opt"><input type="radio" name="gravir" value="obrazek" onchange="onGravir()"> 🖼 Obrázek</label>
+      </div>
+    </div>
+    <div id="gravir-text-wrap" style="display:none" class="field">
+      <label>Text gravíru</label>
+      <input id="gravir-text" placeholder="Text který bude vygravírován…" maxlength="80" oninput="upd()"/>
+    </div>
+    <div id="gravir-obr-wrap" style="display:none" class="field">
+      <label>Obrázek gravíru</label>
+      <input id="gravir-obr" placeholder="Název / popis obrázku (obrázky budou doplněny)…" oninput="upd()"/>
+    </div>
+
+    <div class="field">
+      <label>Vzkaz na komplimentu</label>
+      <textarea id="vzkaz" rows="3" placeholder="Přejeme vám příjemné svátky a těšíme se na další spolupráci…" oninput="upd()"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Interní poznámka</label>
+      <textarea id="poznamka" rows="2" placeholder="Poznámka pro tým (nezobrazí se zákazníkovi)…" oninput="upd()"></textarea>
+    </div>
+
+    <button class="btn-gen" id="btn-sub" onclick="submit()">🎁 Vytvořit zakázku v Trellu</button>
+
+    <div id="loading-box" style="display:none;text-align:center;padding:18px 0">
+      <div class="loading-dots"><span></span><span></span><span></span></div>
+      <div id="loading-txt" style="margin-top:8px;font-size:13px;color:#888">Vytváří se zakázka…</div>
+    </div>
+
+    <div id="ok-box" style="display:none;background:#f0fff4;border:1.5px solid var(--leaf);border-radius:12px;padding:16px 20px;margin-top:14px">
+      <div style="font-family:'Exo 2',sans-serif;font-size:14px;font-weight:700;color:#2e7d32;margin-bottom:6px">✅ Zakázka vytvořena!</div>
+      <div style="font-size:13px;color:#2d5a1b">Karta je v Trellu a emailové potvrzení bylo odesláno.</div>
+      <a id="trello-link" href="#" target="_blank"
+        style="display:inline-block;margin-top:12px;background:#2e7d32;color:white;font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;padding:7px 18px;border-radius:20px;text-decoration:none">
+        Otevřít kartu v Trellu →
+      </a>
+    </div>
+
+    <div id="err-box" style="display:none;background:#fdecea;border:1.5px solid #e57373;border-radius:10px;padding:14px 18px;margin-top:14px;font-size:13px;color:#c62828"></div>
+
+  </div>
+</div>
+
+<!-- ─── LIVE NÁHLED ─── -->
+<div id="preview-wrap" class="panel">
+  <div class="panel-head">
+    <h2>Náhled zakázky</h2>
+    <p>Aktualizuje se průběžně</p>
+  </div>
+  <div id="preview-body" style="padding:18px 20px">
+    <div style="text-align:center;padding:40px 16px;color:#ccc">
+      <div style="font-size:52px">🎁</div>
+      <div style="margin-top:10px;font-size:13px">Vyplň formulář vlevo…</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /.shell -->
+
+<script>
+const PRODUKTY = [
+  'Mandle v jahodovém jogurtu',
+  'Mandle v barevné čokoládě',
+  'Mandle v jogurtu',
+  'Mandle ve slaném karamelu',
+  'Mandle v bílé čokoládě',
+  'Mandle tiramisu',
+  'Mandle v mléčné čokoládě',
+  'Mandle v hořké čokoládě',
+  'Mandle tříbarevné',
+  'Mandle exclusive v čokoládě',
+  'Mandle solené',
+  'Mandle uzené',
+  'Mandle natural',
+  'Kešu solené',
+  'Kešu česnek a rozmarýn',
+  'Kešu natural',
+  'Kešu tiramisu',
+  'Kešu tříbarevné',
+  'Kešu v bílé čokoládě',
+  'Kešu v mléčné čokoládě',
+  'Kešu v hořké čokoládě',
+  'Kešu uzené',
+  'Arašídy solené',
+  'Arašídy v karamelu se sezamem',
+  'Arašídy v karamelu s vanilkovým aroma',
+  'Arašídy v cukru a medu',
+  'Arašídy v chili těstíčku',
+  'Arašídy v barevné čokoládě',
+  'Meruňky v jahodovém jogurtu',
+  'Meruňky v jogurtu',
+  'Ananas v jogurtu',
+  'Lískové ořechy v jogurtu',
+  'Lískové ořechy tříbarevné',
+  'Lískové ořechy v čokoládě',
+  'Lískové ořechy v tiramisu',
+  'Kokosové kousky v banánové polevě',
+  'Kukuřice BBQ',
+  'Kukuřice med a hořčice',
+];
+
+const NW_KEY   = atob('MDM2M2ViYjE0OWRmMDRkMTI4NTY3MmEzMDgwMTYwYTI=');
+const NW_TOKEN = atob('QVRUQTdiMWI4YTFjZWRjMTIyODI3ZmRiMmY4MGRjMjRiNThkMTA4NTVkOTY3ZTAwNDViNWU0ZDdkNmZkMzQwYzJmZWFDNEYxMTFGRQ==');
+const T_LIST   = '6a1d1f2f0dd6bfcd79326c55'; // Nové zakázky
+const ALWAYS_ASSIGN = ['5e6e8c20fea3432b37052e12']; // Jan Vlček
+
+// ── Product autocomplete ──
+let sel = [null, null];
+let hits = [[], []];
+let kidx = [-1, -1];
+
+function filterP(n) {
+  const i = n - 1;
+  const inp  = document.getElementById('p'+n+'-inp');
+  const drop = document.getElementById('p'+n+'-drop');
+  const q = (inp.value || '').trim().toLowerCase();
+  hits[i] = q ? PRODUKTY.filter(p => p.toLowerCase().includes(q)) : PRODUKTY;
+  kidx[i] = -1;
+  if (!hits[i].length) { drop.classList.remove('open'); return; }
+  drop.innerHTML = hits[i].map((p, j) => {
+    const hl = q ? p.replace(new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi'), '<strong>$1</strong>') : p;
+    return `<div class="prod-item" data-j="${j}" onmousedown="pickP(event,${n},${j})">${hl}</div>`;
+  }).join('');
+  drop.classList.add('open');
+}
+
+function pickP(e, n, j) {
+  e.preventDefault();
+  const i = n - 1;
+  sel[i] = hits[i][j];
+  const inp  = document.getElementById('p'+n+'-inp');
+  const drop = document.getElementById('p'+n+'-drop');
+  const ch   = document.getElementById('p'+n+'-chosen');
+  document.getElementById('p'+n+'-name').textContent = sel[i];
+  inp.value = ''; inp.placeholder = 'Změnit produkt…';
+  drop.classList.remove('open');
+  ch.style.display = 'flex';
+  upd();
+}
+
+function clearP(n) {
+  sel[n-1] = null;
+  const inp = document.getElementById('p'+n+'-inp');
+  inp.value = ''; inp.placeholder = 'Hledat produkt…';
+  document.getElementById('p'+n+'-chosen').style.display = 'none';
+  upd();
+}
+
+function keyP(e, n) {
+  const i = n - 1;
+  const drop = document.getElementById('p'+n+'-drop');
+  if (!drop.classList.contains('open')) return;
+  const items = drop.querySelectorAll('.prod-item');
+  if (e.key === 'ArrowDown') { e.preventDefault(); kidx[i] = Math.min(kidx[i]+1, items.length-1); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); kidx[i] = Math.max(kidx[i]-1, 0); }
+  else if ((e.key === 'Enter' || e.key === 'Tab') && kidx[i] >= 0) { e.preventDefault(); pickP({preventDefault:()=>{}}, n, kidx[i]); return; }
+  else if (e.key === 'Escape') { drop.classList.remove('open'); return; }
+  items.forEach((el, k) => el.classList.toggle('sel', k === kidx[i]));
+}
+
+document.addEventListener('click', e => {
+  [1, 2].forEach(n => {
+    if (!e.target.closest('#p'+n+'-inp') && !e.target.closest('#p'+n+'-drop'))
+      document.getElementById('p'+n+'-drop').classList.remove('open');
+  });
+});
+
+// ── Personalizace toggles ──
+function onVazba() {
+  const v = document.querySelector('input[name="vazba"]:checked').value;
+  document.getElementById('barva-wrap').style.display = v === 'saten' ? 'block' : 'none';
+  upd();
+}
+function onGravir() {
+  const g = document.querySelector('input[name="gravir"]:checked').value;
+  document.getElementById('gravir-text-wrap').style.display = g === 'text'    ? 'block' : 'none';
+  document.getElementById('gravir-obr-wrap').style.display  = g === 'obrazek' ? 'block' : 'none';
+  upd();
+}
+
+// ── Collect data ──
+function getData() {
+  const vazba  = document.querySelector('input[name="vazba"]:checked').value;
+  const gravir = document.querySelector('input[name="gravir"]:checked').value;
+  return {
+    prod1: sel[0], prod2: sel[1],
+    firma:   document.getElementById('firma').value.trim(),
+    kontakt: document.getElementById('kontakt').value.trim(),
+    email:   document.getElementById('email').value.trim(),
+    pocet:   parseInt(document.getElementById('pocet').value) || 0,
+    termin:  document.getElementById('termin').value,
+    vazba,
+    barva:  vazba === 'saten' ? document.getElementById('barva').value.trim() : '',
+    gravir,
+    gravirText: gravir === 'text'    ? document.getElementById('gravir-text').value.trim() : '',
+    gravirObr:  gravir === 'obrazek' ? document.getElementById('gravir-obr').value.trim()  : '',
+    vzkaz:   document.getElementById('vzkaz').value.trim(),
+    poznamka:document.getElementById('poznamka').value.trim(),
+  };
+}
+
+function fmtDate(iso) {
+  if (!iso) return '—';
+  const [y,m,d] = iso.split('-');
+  return d + '. ' + m + '. ' + y;
+}
+
+function vazbaStr(d) {
+  return d.vazba === 'juta' ? '🌿 Jutová stuha' : ('🎀 Saténová stuha' + (d.barva ? ' — ' + d.barva : ''));
+}
+function gravirStr(d) {
+  if (d.gravir === 'text')    return '✏️ Text: "' + (d.gravirText || '…') + '"';
+  if (d.gravir === 'obrazek') return '🖼 Obrázek: ' + (d.gravirObr || '…');
+  return '— Bez gravíru';
+}
+
+// ── Live preview ──
+function upd() {
+  const d = getData();
+  const el = document.getElementById('preview-body');
+  const empty = !d.prod1 && !d.prod2 && !d.firma && !d.pocet;
+  if (empty) {
+    el.innerHTML = '<div style="text-align:center;padding:40px 16px;color:#ccc"><div style="font-size:52px">🎁</div><div style="margin-top:10px;font-size:13px">Vyplň formulář vlevo…</div></div>';
+    return;
+  }
+  el.innerHTML = `<div style="padding:2px 2px">
+    <div class="s-badge">Dárková krabička 2×50g</div>
+    <div class="s-prod"><div class="s-num">1</div><span>${d.prod1 || '<span style="color:#ccc">—</span>'}</span></div>
+    <div class="s-prod"><div class="s-num">2</div><span>${d.prod2 || '<span style="color:#ccc">—</span>'}</span></div>
+    <div class="s-hr"></div>
+    <div class="s-row"><span class="s-label">Zákazník</span><span class="s-val">${d.firma || '—'}</span></div>
+    ${d.kontakt ? `<div class="s-row"><span class="s-label">Kontakt</span><span class="s-val">${d.kontakt}</span></div>` : ''}
+    <div class="s-row"><span class="s-label">Počet kusů</span><span class="s-val">${d.pocet ? d.pocet + ' ks' : '—'}</span></div>
+    <div class="s-row"><span class="s-label">Termín</span><span class="s-val">${fmtDate(d.termin)}</span></div>
+    <div class="s-hr"></div>
+    <div class="s-row"><span class="s-label">Vazba</span><span class="s-val">${vazbaStr(d)}</span></div>
+    <div class="s-row"><span class="s-label">Gravír</span><span class="s-val">${gravirStr(d)}</span></div>
+    ${d.vzkaz ? `<div class="vzkaz-box">💌 &ldquo;${d.vzkaz}&rdquo;</div>` : ''}
+  </div>`;
+}
+
+// ── Submit ──
+async function submit() {
+  const d = getData();
+  hideMsg();
+  if (!d.prod1) { showErr('Vyberte Produkt 1.'); return; }
+  if (!d.prod2) { showErr('Vyberte Produkt 2.'); return; }
+  if (!d.pocet) { showErr('Zadejte počet kusů.'); return; }
+  if (!d.termin){ showErr('Zadejte termín dodání.'); return; }
+
+  setLoad(true, 'Vytváří se karta v Trellu…');
+
+  const cardName = `${d.firma || 'Zákazník'} — ${d.pocet} ks — Krabička 2×50g — ${fmtDate(d.termin)}`;
+  const desc = `## 🎁 Dárková krabička 2×50g
+
+**Zákazník:** ${d.firma || '—'}
+**Kontakt:** ${d.kontakt || '—'}${d.email ? ' · ' + d.email : ''}
+
+## 📦 Obsah krabičky
+- **Produkt 1 (50 g):** ${d.prod1}
+- **Produkt 2 (50 g):** ${d.prod2}
+
+## 📋 Zakázka
+**Počet kusů:** ${d.pocet} ks
+**Termín dodání:** ${fmtDate(d.termin)}
+
+## 🎀 Personalizace
+**Vazba:** ${vazbaStr(d).replace(/[🌿🎀]/g, '')}
+**Gravír:** ${gravirStr(d).replace(/[✏️🖼]/g, '')}
+${d.vzkaz ? `**Vzkaz na komplimentu:**\n"${d.vzkaz}"` : ''}
+
+## 🔒 Interní
+${d.poznamka || '—'}`;
+
+  const due = d.termin ? new Date(d.termin + 'T10:00:00.000Z').toISOString() : null;
+
+  try {
+    const res = await fetch(`https://api.trello.com/1/cards?key=${NW_KEY}&token=${NW_TOKEN}`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        name: cardName, desc, idList: T_LIST, pos: 'top',
+        idMembers: ALWAYS_ASSIGN,
+        ...(due ? { due } : {})
+      })
+    });
+    const card = await res.json();
+    if (!card.id) throw new Error(card.message || JSON.stringify(card));
+
+    // Checklist
+    setLoad(true, 'Přidává se checklist…');
+    const cl = await fetch(`https://api.trello.com/1/checklists?key=${NW_KEY}&token=${NW_TOKEN}`, {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ idCard: card.id, name: 'Postup zakázky' })
+    }).then(r => r.json());
+    if (cl.id) {
+      const kroky = [
+        'Kontakt potvrzen a objednávka odsouhlasena',
+        'Platba přijata',
+        'Produkty vybrány a připraveny',
+        'Krabičky a obalový materiál připraven',
+        d.vazba === 'saten' ? `Saténová stuha připravena (${d.barva || 'barva TBD'})` : 'Jutová stuha připravena',
+        ...(d.gravir !== 'ne' ? [`Gravír připraven: ${d.gravir === 'text' ? d.gravirText : d.gravirObr}`] : []),
+        ...(d.vzkaz ? ['Kompliment karty připraveny'] : []),
+        'Kompletace a balení krabičky',
+        'Kontrola kvality',
+        'Expedice / předání zákazníkovi',
+        'Faktura odeslána',
+      ];
+      for (const k of kroky) {
+        await fetch(`https://api.trello.com/1/checklists/${cl.id}/checkItems?key=${NW_KEY}&token=${NW_TOKEN}`, {
+          method: 'POST', headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ name: k })
+        });
+      }
+    }
+
+    setLoad(false);
+    document.getElementById('ok-box').style.display = 'block';
+    document.getElementById('trello-link').href = card.url;
+    document.getElementById('btn-sub').disabled = true;
+
+    // Owner email
+    const body = `🎁 NOVÁ ZAKÁZKA — Dárková krabička 2×50g\n\nZákazník: ${d.firma || '—'}\nKontakt: ${d.kontakt || '—'}${d.email ? ' · ' + d.email : ''}\n\nProdukt 1 (50g): ${d.prod1}\nProdukt 2 (50g): ${d.prod2}\n\nPočet kusů: ${d.pocet}\nTermín: ${fmtDate(d.termin)}\n\nVazba: ${vazbaStr(d)}\nGravír: ${gravirStr(d)}\n${d.vzkaz ? 'Vzkaz na komplimentu: ' + d.vzkaz + '\n' : ''}${d.poznamka ? 'Interní poznámka: ' + d.poznamka + '\n' : ''}\nTrello: ${card.url}`;
+    fetch('https://script.google.com/macros/s/AKfycbwonbDE6DfEOFOqbY6EhPN2lfx2ue2j37HmeSvHsVx_VQJdR1kE55NDpOGhtOnhwj7-mQ/exec', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        to: 'nutworld.cz@gmail.com',
+        subject: `🎁 Krabička 2×50g — ${d.firma || 'zákazník'} — ${d.pocet} ks — ${fmtDate(d.termin)}`,
+        body
+      })
+    }).catch(() => {});
+
+  } catch(e) {
+    setLoad(false);
+    showErr('❌ Chyba: ' + e.message);
+  }
+}
+
+function setLoad(on, txt) {
+  document.getElementById('loading-box').style.display = on ? 'block' : 'none';
+  document.getElementById('btn-sub').style.display = on ? 'none' : 'block';
+  if (txt) document.getElementById('loading-txt').textContent = txt;
+}
+function hideMsg() {
+  document.getElementById('err-box').style.display = 'none';
+  document.getElementById('ok-box').style.display  = 'none';
+}
+function showErr(msg) {
+  const el = document.getElementById('err-box');
+  el.textContent = msg; el.style.display = 'block';
+  setLoad(false);
+}
+</script>
+</body>
+</html>
