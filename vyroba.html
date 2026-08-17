@@ -176,6 +176,48 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .spinner{display:inline-block;width:36px;height:36px;border:3px solid var(--kraft);border-top-color:var(--br);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .empty-state{background:white;border-radius:12px;padding:40px;text-align:center;color:#bbb;font-size:14px;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+
+/* ═══ VZORKY VIEW ═══ */
+.vzorky-list{display:flex;flex-direction:column;gap:12px}
+.vz-header-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.vz-header-title{font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700;color:var(--bd)}
+.vz-header-link{font-size:12px;color:var(--br);text-decoration:none;font-weight:600}
+.vz-header-link:hover{text-decoration:underline}
+
+.vz-card{background:white;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);overflow:hidden;border-left:4px solid #ddd}
+.vz-card.status-zadano{border-left-color:#c8c8c8}
+.vz-card.status-vyroba{border-left-color:var(--amb)}
+.vz-card.status-odeslano{border-left-color:#60a5fa;opacity:.8}
+
+.vz-hdr{padding:12px 16px;background:var(--kraft);border-bottom:1.5px solid #e0d4c4;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.vz-hdr-left{flex:1;min-width:0}
+.vz-id{font-family:monospace;font-size:10px;color:#b8a090;letter-spacing:.3px}
+.vz-klient{font-family:'Exo 2',sans-serif;font-weight:800;font-size:15px;color:var(--bd);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vz-produkt{font-size:12px;color:#888;margin-top:2px}
+.vz-sbadge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;flex-shrink:0;margin-top:2px}
+.vz-s-zadano{background:#eef0f3;color:#4a5568}
+.vz-s-vyroba{background:var(--amb-soft);color:#92600a}
+.vz-s-odeslano{background:#dbeafe;color:#1a5fa0}
+
+.vz-body{padding:12px 16px;display:flex;flex-direction:column;gap:9px}
+.vz-tags{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.vz-tag{background:var(--kraft);border-radius:6px;padding:3px 9px;font-size:12px;color:#666}
+.vz-nota{background:#fffdf8;border-radius:8px;padding:9px 12px;font-size:12px;color:#555;border-left:3px solid var(--amb);line-height:1.5}
+.vz-actions{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:2px}
+.vz-btn{border:none;border-radius:7px;padding:7px 13px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:filter .15s}
+.vz-btn:hover{filter:brightness(1.06)}
+.vz-btn-v{background:var(--amb-soft);color:#92600a}
+.vz-btn-o{background:#dbeafe;color:#1a5fa0}
+.vz-btn-z{background:#fce7f0;color:#b0144a}
+.vz-link{font-size:11px;color:var(--br);text-decoration:none;margin-left:auto;font-weight:600}
+.vz-link:hover{text-decoration:underline}
+
+.vz-empty{background:white;border-radius:12px;padding:48px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+.vz-empty-icon{font-size:36px;margin-bottom:12px}
+.vz-empty-title{font-size:15px;font-weight:700;color:#555;margin-bottom:6px}
+.vz-empty-sub{font-size:13px;color:#bbb}
+.vz-empty a{color:var(--br);text-decoration:none;font-weight:700}
+.vz-empty a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
@@ -199,6 +241,7 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
     <div class="view-toggle">
       <button id="btn-firmy"  class="view-btn active" onclick="setView('firmy')">🏢 Firmy</button>
       <button id="btn-vyroba" class="view-btn"        onclick="setView('vyroba')">🔧 Výroba</button>
+      <button id="btn-vzorky" class="view-btn"        onclick="setView('vzorky')">🧪 Vzorky</button>
     </div>
     <div class="list-filters" id="list-filters"></div>
   </div>
@@ -373,6 +416,10 @@ function setView(v){
   activeView=v;
   document.getElementById('btn-firmy').classList.toggle('active',v==='firmy');
   document.getElementById('btn-vyroba').classList.toggle('active',v==='vyroba');
+  document.getElementById('btn-vzorky').classList.toggle('active',v==='vzorky');
+  const isVz=v==='vzorky';
+  document.getElementById('list-filters').style.display=isVz?'none':'';
+  document.getElementById('search').closest('.search-wrap').style.display=isVz?'none':'';
   render();
 }
 
@@ -392,6 +439,7 @@ function visible(){
 
 /* ── Render ── */
 function render(){
+  if(activeView==='vzorky'){ renderVzorky(); return; }
   const cards=visible();
   updateSummary(cards);
   if(activeView==='firmy') renderFirmy(cards);
@@ -705,6 +753,111 @@ function renderVyroba(cards){
   });
 
   mc.innerHTML=''; mc.appendChild(grid);
+}
+
+/* ═══ VZORKY VIEW ═══ */
+const VZ_KEY = 'nw_vzorky_v1';
+const VZ_SC = {
+  zadano:   { label: 'Zadáno',    cls: 'vz-s-zadano' },
+  vyroba:   { label: 'Ve výrobě', cls: 'vz-s-vyroba' },
+  odeslano: { label: 'Odesláno',  cls: 'vz-s-odeslano' },
+};
+
+function loadVzorky(){ try{ return JSON.parse(localStorage.getItem(VZ_KEY)||'[]'); }catch(e){ return []; } }
+function saveVzorky(d){ try{ localStorage.setItem(VZ_KEY,JSON.stringify(d)); }catch(e){} }
+
+function vzChStatus(id, status){
+  const d=loadVzorky();
+  const i=d.findIndex(s=>s.id===id);
+  if(i>=0){ d[i].status=status; d[i].updated=new Date().toISOString(); saveVzorky(d); }
+  renderVzorky();
+}
+
+function vzEsc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function vzFmtDl(iso){
+  if(!iso) return '';
+  const now=new Date(); now.setHours(0,0,0,0);
+  const dl=new Date(iso); dl.setHours(0,0,0,0);
+  const days=Math.round((dl-now)/86400000);
+  const parts=iso.split('T')[0].split('-');
+  const fmt=`${parts[2]}.${parts[1]}.${parts[0]}`;
+  const cls=days<0?'late':days<=5?'soon':'ok';
+  const pre=days<0?'⚠️':'📅';
+  return `<span class="ftermin ${cls}">${pre} ${fmt}</span>`;
+}
+
+function renderVzorky(){
+  const mc=document.getElementById('main-content');
+  document.getElementById('summary').style.display='none';
+
+  const all=loadVzorky();
+  const active=all.filter(s=>['zadano','vyroba','odeslano'].includes(s.status));
+
+  if(!active.length){
+    mc.innerHTML=`<div class="vz-empty"><div class="vz-empty-icon">🧪</div><div class="vz-empty-title">Žádné aktivní vzorky</div><div class="vz-empty-sub">Vzorky zadávejte přes <a href="/vzorky.html">vzorky.html</a></div></div>`;
+    return;
+  }
+
+  const ORDER=['zadano','vyroba','odeslano'];
+  active.sort((a,b)=>{
+    const oi=ORDER.indexOf(a.status)-ORDER.indexOf(b.status);
+    if(oi!==0) return oi;
+    return (a.deadline||'9')<(b.deadline||'9')?-1:1;
+  });
+
+  const wrap=document.createElement('div');
+  wrap.className='vzorky-list';
+
+  const hb=document.createElement('div');
+  hb.className='vz-header-bar';
+  hb.innerHTML=`<div class="vz-header-title">🧪 Aktivní vzorky (${active.length})</div><a href="/vzorky.html" class="vz-header-link">Správa vzorků →</a>`;
+  wrap.appendChild(hb);
+
+  active.forEach(vz=>{
+    const sc=VZ_SC[vz.status]||VZ_SC.zadano;
+    const card=document.createElement('div');
+    card.className=`vz-card status-${vz.status}`;
+
+    const acts=[];
+    if(vz.status==='zadano'){
+      acts.push(`<button class="vz-btn vz-btn-v" onclick="vzChStatus('${vzEsc(vz.id)}','vyroba')">→ Zahájit výrobu</button>`);
+      acts.push(`<button class="vz-btn vz-btn-z" onclick="vzChStatus('${vzEsc(vz.id)}','zamitnuto')">✗ Zamítnout</button>`);
+    }
+    if(vz.status==='vyroba'){
+      acts.push(`<button class="vz-btn vz-btn-o" onclick="vzChStatus('${vzEsc(vz.id)}','odeslano')">→ Odesláno klientovi</button>`);
+      acts.push(`<button class="vz-btn vz-btn-z" onclick="vzChStatus('${vzEsc(vz.id)}','zamitnuto')">✗ Zamítnout</button>`);
+    }
+    acts.push(`<a href="/vzorky.html" class="vz-link">Detail →</a>`);
+
+    const tags=[
+      `<span class="vz-tag">📦 ${vzEsc(vz.obal)}</span>`,
+      vz.gramaz?`<span class="vz-tag">⚖️ ${vzEsc(vz.gramaz)}</span>`:'',
+      `<span class="vz-tag">× ${parseInt(vz.pocet)||'?'} ks</span>`,
+      vz.motiv?`<span class="vz-tag">🎨 ${vzEsc(vz.motiv)}</span>`:'',
+      vz.deadline?vzFmtDl(vz.deadline):'',
+    ].filter(Boolean).join('');
+
+    card.innerHTML=`
+      <div class="vz-hdr">
+        <div class="vz-hdr-left">
+          <div class="vz-id">${vzEsc(vz.id)}</div>
+          <div class="vz-klient">${vzEsc(vz.klient)}</div>
+          <div class="vz-produkt">${vzEsc(vz.produkt)}</div>
+        </div>
+        <span class="vz-sbadge ${sc.cls}">${sc.label}</span>
+      </div>
+      <div class="vz-body">
+        <div class="vz-tags">${tags}</div>
+        ${vz.poznamka?`<div class="vz-nota">${vzEsc(vz.poznamka)}</div>`:''}
+        <div class="vz-actions">${acts.join('')}</div>
+      </div>
+    `;
+    wrap.appendChild(card);
+  });
+
+  mc.innerHTML='';
+  mc.appendChild(wrap);
 }
 
 loadProg();
