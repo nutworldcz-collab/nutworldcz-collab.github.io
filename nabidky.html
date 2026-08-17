@@ -1002,7 +1002,9 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
 
   // Automaticky vytvoř Trello kartu + vygeneruj link
   const data = collectFormData();
-  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+  // Pokud má nabídka již Trello kartu, předej _cardId do zakázky → zakazka.html přesune místo nové karty
+  const zakazkaData = _trelloCardId ? { ...data, _cardId: _trelloCardId, _cislo: _savedCislo || cislo } : data;
+  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(zakazkaData))));
   const zakazkaUrl = 'https://nutworldcz-collab.github.io/zakazka.html#' + encoded;
   const editUrl    = 'https://nutworldcz-collab.github.io/nabidky.html#' + editHash;
   window._zakazkaUrl = zakazkaUrl;
@@ -1032,6 +1034,9 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
       const editDataFinal = { ...collectFormData(), _cardId: card.id, _cislo: cislo };
       const editHashFinal = btoa(unescape(encodeURIComponent(JSON.stringify(editDataFinal))));
       history.replaceState(null, '', '#' + editHashFinal);
+      // Aktualizuj zakazka URL tak, aby obsahoval _cardId (pro přesun karty při konverzi)
+      const zakazkaDataFinal = { ...collectFormData(), _cardId: card.id, _cislo: cislo };
+      window._zakazkaUrl = 'https://nutworldcz-collab.github.io/zakazka.html#' + btoa(unescape(encodeURIComponent(JSON.stringify(zakazkaDataFinal))));
 
       const msg = isEdit ? '✏️ Nabídka aktualizována v Trellu!' : '✅ Karta vytvořena v Trellu!';
       document.getElementById('link-copied').style.display = 'block';
