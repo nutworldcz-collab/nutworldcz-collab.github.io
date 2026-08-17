@@ -1039,12 +1039,14 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
       const zakazkaUrlFinal = 'https://nutworldcz-collab.github.io/zakazka.html#' + btoa(unescape(encodeURIComponent(JSON.stringify(zakazkaDataFinal))));
       const editUrlFinal = 'https://nutworldcz-collab.github.io/nabidky.html#' + editHashFinal;
       window._zakazkaUrl = zakazkaUrlFinal;
-      // Aktualizuj popis Trello karty — zakazka a edit linky teď obsahují _cardId
-      const updatedDesc = cardDesc.replace(zakazkaUrl, zakazkaUrlFinal).replace(editUrl, editUrlFinal);
-      fetch(`https://api.trello.com/1/cards/${card.id}?key=${NW_KEY}&token=${NW_TOKEN}`, {
-        method: 'PUT', headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ desc: updatedDesc })
-      }).catch(() => {});
+      // Při prvním vytvoření (ne editaci) aktualizuj popis karty — zakazka a edit linky teď obsahují _cardId
+      if (!isEdit) {
+        const updatedDesc = cardDesc.replace(zakazkaUrl, zakazkaUrlFinal).replace(editUrl, editUrlFinal);
+        fetch(`https://api.trello.com/1/cards/${card.id}?key=${NW_KEY}&token=${NW_TOKEN}`, {
+          method: 'PUT', headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ desc: updatedDesc })
+        }).catch(() => {});
+      }
 
       const msg = isEdit ? '✏️ Nabídka aktualizována v Trellu!' : '✅ Karta vytvořena v Trellu!';
       document.getElementById('link-copied').style.display = 'block';
