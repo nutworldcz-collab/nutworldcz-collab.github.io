@@ -226,7 +226,6 @@ const SC = {
   zamitnuto:{ label:'Zamítnuto', cls:'s-zamitnuto' },
 };
 
-const OBALY = ['Eko kelímek','Sáček s knírem','Sáček s kolíčkem','Dárková kazetka','Dárková krabička','Celofánek s mašličkou','Vánoční sáček SOB','Ořechový kornout','Sklenička DELUXE','Sklenička EXCLUSIVE','Dárková krabice s kelímky','Dárková krabička 3x EKO kelímek','Dárková krabice výseková L','Dárková krabice výseková XL','Vlastní'];
 
 let filter = 'all';
 let editId = null;
@@ -339,7 +338,6 @@ function openAdd(id) {
   document.getElementById('addTitle').textContent = id ? 'Upravit vzorek' : 'Nový vzorek';
   document.getElementById('addBk').classList.remove('hidden');
 
-  const oOpts = OBALY.map(o => `<option ${vz&&vz.obal===o?'selected':''}>${esc(o)}</option>`).join('');
   document.getElementById('addForm').innerHTML = `
     <div class="frow">
       <div class="fg full"><label>Klient *</label>
@@ -350,7 +348,7 @@ function openAdd(id) {
         <input id="fp" placeholder="Např. Mandle pražené solené" value="${vz?esc(vz.produkt):''}"></div>
     </div>
     <div class="frow">
-      <div class="fg"><label>Typ obalu *</label><select id="fo">${oOpts}</select></div>
+      <div class="fg"><label>Obal / forma</label><input id="fo" placeholder="Např. Eko kelímek 100g, vlastní krabička…" value="${vz?esc(vz.obal):''}"></div>
       <div class="fg"><label>Gramáž</label><input id="fg" placeholder="Např. 100g" value="${vz?esc(vz.gramaz):''}"></div>
     </div>
     <div class="frow">
@@ -362,12 +360,12 @@ function openAdd(id) {
         <input id="fm" placeholder="Např. Firemní vánoce 2026" value="${vz?esc(vz.motiv):''}"></div>
     </div>
     <div class="frow">
-      <div class="fg full"><label>Link na design</label>
-        <input id="fl" type="url" placeholder="https://..." value="${vz?esc(vz.design_link):''}"></div>
+      <div class="fg full"><label>Adresa doručení</label>
+        <textarea id="fad" placeholder="Jméno, firma&#10;Ulice č.p.&#10;PSČ Město" style="min-height:70px">${vz?esc(vz.adresa||''):''}</textarea></div>
     </div>
     <div class="frow">
-      <div class="fg full"><label>Trello karta</label>
-        <input id="ftr" type="url" placeholder="https://trello.com/c/..." value="${vz?esc(vz.trello_link||''):''}"></div>
+      <div class="fg full"><label>Link na design</label>
+        <input id="fl" type="url" placeholder="https://..." value="${vz?esc(vz.design_link):''}"></div>
     </div>
     <div class="frow">
       <div class="fg full"><label>Poznámka pro výrobu</label>
@@ -394,13 +392,13 @@ function save() {
   const now = new Date().toISOString();
   const obj = {
     klient, produkt,
-    obal: document.getElementById('fo').value,
+    obal: document.getElementById('fo').value.trim(),
     gramaz: document.getElementById('fg').value.trim(),
     pocet: parseInt(document.getElementById('fn').value)||1,
     motiv: document.getElementById('fm').value.trim(),
     deadline: document.getElementById('fd').value,
+    adresa: document.getElementById('fad').value.trim(),
     design_link: document.getElementById('fl').value.trim(),
-    trello_link: document.getElementById('ftr').value.trim(),
     poznamka: document.getElementById('fz').value.trim(),
     zadal: document.getElementById('fz2').value.trim(),
     zdroj: document.getElementById('fs').value,
@@ -496,8 +494,8 @@ function openDet(id) {
             <div class="df-l">Deadline</div>
             <div class="df-v">${fmtDl(vz.deadline)}</div>
           </div>
+          ${vz.adresa ? `<div class="df full"><div class="df-l">Adresa</div><div class="df-v" style="white-space:pre-line">${esc(vz.adresa)}</div></div>` : ''}
           ${vz.design_link ? `<div class="df full"><div class="df-l">Design</div><div class="df-v"><a href="${esc(vz.design_link)}" target="_blank" style="color:var(--primary-h)">${esc(vz.design_link)}</a></div></div>` : ''}
-          ${vz.trello_link ? `<div class="df full"><div class="df-l">Trello</div><div class="df-v"><a href="${esc(vz.trello_link)}" target="_blank" style="color:#0079bf;font-weight:700">🃏 Otevřít kartu v Trello →</a></div></div>` : ''}
         </div>
       </div>
       ${vz.poznamka ? `<div><div class="dsec-label">Poznámka pro výrobu</div><div class="nota">${esc(vz.poznamka)}</div></div>` : ''}
