@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Nutworld — Ďakujeme za dopyt!</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --br:#83502e;--bd:#5c381f;--kraft:#f1e6da;--acc:#da1668;
+  --amb:#f7ab31;--amb2:#c9982e;--white:#fff;
+  --text:#2a1a0e;--muted:#9a7255;--light:#ede4d8;
+}
+
+html{min-height:100%}
+body{
+  font-family:Arial,sans-serif;
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:32px 16px;
+  color:var(--text);
+  background:radial-gradient(ellipse at 60% 0%,#d4c4b0 0%,#e8ddd4 55%,#dfd5ca 100%);
+  overflow-x:hidden;
+}
+
+#particles{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.particle{
+  position:absolute;border-radius:50%;opacity:0;
+  animation:float-up var(--dur,4s) var(--delay,0s) ease-out forwards;
+}
+@keyframes float-up{
+  0%{transform:translateY(100vh) rotate(0deg);opacity:0}
+  10%{opacity:.7}
+  90%{opacity:.3}
+  100%{transform:translateY(-20vh) rotate(360deg);opacity:0}
+}
+
+.card{
+  background:var(--white);
+  border-radius:20px;
+  box-shadow:0 8px 60px rgba(92,56,31,.18),0 2px 12px rgba(92,56,31,.08);
+  max-width:520px;width:100%;
+  overflow:hidden;
+  position:relative;z-index:1;
+  opacity:0;transform:translateY(32px);
+  animation:card-in .7s .1s cubic-bezier(.22,1,.36,1) forwards;
+}
+@keyframes card-in{
+  to{opacity:1;transform:none}
+}
+
+.card-head{
+  background:linear-gradient(135deg,var(--bd) 0%,var(--br) 50%,#a0622a 100%);
+  padding:36px 36px 32px;
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+.card-head::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.08) 50%,transparent 70%);
+  animation:shimmer 3s 1s infinite;
+}
+@keyframes shimmer{
+  0%{transform:translateX(-100%)}
+  100%{transform:translateX(200%)}
+}
+
+.logo{
+  font-size:11px;letter-spacing:4px;text-transform:uppercase;
+  color:rgba(241,230,218,.55);margin-bottom:20px;font-weight:700;
+}
+.logo strong{color:var(--amb);letter-spacing:5px}
+
+.check-wrap{
+  width:72px;height:72px;margin:0 auto 18px;
+  position:relative;
+  animation:check-pop .5s .6s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes check-pop{
+  0%{transform:scale(0);opacity:0}
+  100%{transform:scale(1);opacity:1}
+}
+.check-bg{
+  width:100%;height:100%;border-radius:50%;
+  background:rgba(247,171,49,.18);
+  border:2px solid rgba(247,171,49,.4);
+  animation:pulse-ring 2.5s 1.2s ease-out infinite;
+}
+@keyframes pulse-ring{
+  0%{box-shadow:0 0 0 0 rgba(247,171,49,.45)}
+  70%{box-shadow:0 0 0 14px rgba(247,171,49,0)}
+  100%{box-shadow:0 0 0 0 rgba(247,171,49,0)}
+}
+.check-svg{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+}
+.check-svg svg{width:32px;height:32px}
+.check-path{
+  stroke-dasharray:40;stroke-dashoffset:40;
+  animation:draw-check .5s .8s cubic-bezier(.65,0,.35,1) forwards;
+}
+@keyframes draw-check{
+  to{stroke-dashoffset:0}
+}
+
+.card-head h1{
+  font-size:22px;color:#fff;font-weight:800;margin-bottom:8px;
+  letter-spacing:.3px;
+  animation:fade-up .5s .9s both;
+}
+.card-head p{
+  font-size:13px;color:rgba(241,230,218,.72);line-height:1.55;
+  animation:fade-up .5s 1s both;
+}
+.card-head p strong{color:var(--amb)}
+
+@keyframes fade-up{
+  0%{opacity:0;transform:translateY(8px)}
+  100%{opacity:1;transform:none}
+}
+
+.amber-bar{
+  height:3px;
+  background:linear-gradient(90deg,var(--bd),var(--amb),var(--amb2),var(--bd));
+  background-size:200% 100%;
+  animation:bar-slide 3s linear infinite;
+}
+@keyframes bar-slide{
+  0%{background-position:0% 0%}
+  100%{background-position:200% 0%}
+}
+
+.card-body{padding:28px 32px 32px}
+
+.section-label{
+  font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted);margin-bottom:14px;display:block;
+}
+
+.summary{
+  border:1.5px solid var(--light);border-radius:12px;
+  overflow:hidden;margin-bottom:24px;
+}
+.sr{
+  display:flex;align-items:center;padding:11px 16px;
+  border-bottom:1px solid #ede6dd;
+  opacity:0;transform:translateX(-12px);
+  animation:row-in .4s forwards;
+}
+.sr:last-child{border-bottom:none}
+.sr:nth-child(1){animation-delay:.15s}
+.sr:nth-child(2){animation-delay:.22s}
+.sr:nth-child(3){animation-delay:.29s}
+.sr:nth-child(4){animation-delay:.36s}
+.sr:nth-child(5){animation-delay:.43s}
+.sr:nth-child(6){animation-delay:.50s}
+.sr:nth-child(7){animation-delay:.57s}
+@keyframes row-in{
+  to{opacity:1;transform:none}
+}
+.sr.hidden{display:none}
+.sr-k{font-size:11px;color:var(--muted);min-width:96px;flex-shrink:0}
+.sr-v{font-size:13px;color:var(--text);font-weight:600;word-break:break-word}
+.sr-v.hi{color:#c41e3a}
+
+.info-box{
+  background:linear-gradient(135deg,#fff8ee,#fff4e6);
+  border:1.5px solid rgba(247,171,49,.45);
+  border-radius:12px;padding:16px 18px;
+  margin-bottom:22px;display:flex;gap:14px;align-items:flex-start;
+  animation:fade-up .5s 1.1s both;
+}
+.info-ico{font-size:26px;flex-shrink:0;margin-top:1px;animation:float 3s 1.5s ease-in-out infinite}
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-4px)}
+}
+.info-box p{font-size:13px;color:var(--bd);line-height:1.6}
+.info-box strong{color:var(--br)}
+
+.btns{display:flex;gap:10px;flex-wrap:wrap;animation:fade-up .5s 1.2s both}
+.btn{
+  display:inline-block;padding:12px 22px;border-radius:10px;
+  font-size:13px;font-weight:700;text-decoration:none;
+  cursor:pointer;border:none;text-align:center;
+  transition:transform .15s, box-shadow .15s, opacity .15s;
+  position:relative;overflow:hidden;
+}
+.btn::after{
+  content:'';position:absolute;inset:0;
+  background:rgba(255,255,255,0);transition:background .15s;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.15)}
+.btn:active{transform:none}
+.btn-p{
+  background:linear-gradient(135deg,#7a5200,var(--amb2));color:#fff;
+  box-shadow:0 3px 14px rgba(180,130,20,.3);
+}
+.btn-s{
+  background:var(--kraft);color:var(--bd);
+  border:2px solid #c8976a;
+}
+
+#status{
+  font-size:11px;color:var(--muted);margin-top:14px;
+  text-align:center;min-height:16px;
+  animation:fade-up .4s 1.3s both;
+}
+
+.footer{
+  text-align:center;font-size:11px;color:#b09a85;margin-top:22px;
+  position:relative;z-index:1;
+  animation:fade-up .5s 1.4s both;
+}
+.footer a{color:var(--br);text-decoration:none}
+.footer a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+
+<div id="particles"></div>
+
+<div class="card">
+  <div class="card-head">
+    <div class="logo"><strong>NUTWORLD</strong> &nbsp;·&nbsp; firemné darčeky</div>
+    <div class="check-wrap">
+      <div class="check-bg"></div>
+      <div class="check-svg">
+        <svg viewBox="0 0 24 24" fill="none">
+          <polyline class="check-path" points="20 6 9 17 4 12"
+            stroke="#f7ab31" stroke-width="2.8"
+            stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+    <h1>Ďakujeme za dopyt!</h1>
+    <p>Dopyt prijatý — ozveme sa do <strong>24 hodín</strong> s ponukou na mieru.</p>
+  </div>
+
+  <div class="amber-bar"></div>
+
+  <div class="card-body">
+    <span class="section-label">Zhrnutie vášho dopytu</span>
+    <div class="summary" id="summary">
+      <div class="sr" id="row-name"><span class="sr-k">Firma / meno</span><span class="sr-v" id="val-name">—</span></div>
+      <div class="sr" id="row-email"><span class="sr-k">E-mail</span><span class="sr-v hi" id="val-email">—</span></div>
+      <div class="sr" id="row-tel"><span class="sr-k">Telefón</span><span class="sr-v" id="val-tel">—</span></div>
+      <div class="sr" id="row-pril"><span class="sr-k">Príležitosť</span><span class="sr-v" id="val-pril">—</span></div>
+      <div class="sr" id="row-pocet"><span class="sr-k">Počet kusov</span><span class="sr-v" id="val-pocet">—</span></div>
+      <div class="sr" id="row-termin"><span class="sr-k">Termín</span><span class="sr-v" id="val-termin">—</span></div>
+      <div class="sr" id="row-budget"><span class="sr-k">Budget / ks</span><span class="sr-v" id="val-budget">—</span></div>
+    </div>
+
+    <div class="info-box">
+      <div class="info-ico">🎁</div>
+      <p>Náš špecialista skontroluje váš dopyt a pripraví <strong>ponuku priamo pre vás</strong> — s kalkuláciou, náhľadom obalu a termínom dodania.</p>
+    </div>
+
+    <div class="btns">
+      <a href="https://www.nutworld.sk/firemne-darcheky/" class="btn btn-p">← Späť na firemné darčeky</a>
+      <a href="https://www.nutworld.sk/" class="btn btn-s">Prejsť do e-shopu</a>
+    </div>
+    <div id="status"></div>
+  </div>
+</div>
+
+<div class="footer">
+  &copy; 2026 <a href="https://www.nutworld.sk">Nutworld.sk</a> &nbsp;·&nbsp; Prémiové orechy a sušené plody<br>
+  Otázky: <a href="mailto:info@nutworld.cz">info@nutworld.cz</a>
+</div>
+
+<script>
+const APPS_SCRIPT = "https://script.google.com/macros/s/AKfycbwonbDE6DfEOFOqbY6EhPN2lfx2ue2j37HmeSvHsVx_VQJdR1kE55NDpOGhtOnhwj7-mQ/exec";
+
+(function(){
+  var colors = ['#f7ab31','#c9982e','#e0d0b8','#d4b896','#a07828'];
+  var sizes  = [4,5,6,8,10,7,5];
+  var count  = 28;
+  var wrap   = document.getElementById('particles');
+  for(var i=0;i<count;i++){
+    var el = document.createElement('div');
+    el.className = 'particle';
+    var s = sizes[i % sizes.length];
+    el.style.cssText = [
+      'width:'+s+'px','height:'+s+'px',
+      'background:'+colors[i % colors.length],
+      'left:'+(Math.floor(i*100/count) + Math.random()*8 - 4)+'%',
+      '--dur:'+(3+i*0.25)+'s',
+      '--delay:'+(0.3 + i*0.12)+'s',
+      'border-radius:'+(i%3===0?'3px':'50%'),
+      'opacity:0'
+    ].join(';');
+    wrap.appendChild(el);
+  }
+})();
+
+(function(){
+  var p = new URLSearchParams(window.location.search);
+
+  function show(id, valId, val){
+    if(val){ document.getElementById(valId).textContent = val; }
+    else { document.getElementById(id).classList.add('hidden'); }
+  }
+
+  show('row-name',   'val-name',   p.get('from_name'));
+  show('row-email',  'val-email',  p.get('email'));
+  show('row-tel',    'val-tel',    p.get('telefon'));
+  show('row-pril',   'val-pril',   p.get('prilezitost'));
+  show('row-pocet',  'val-pocet',  p.get('pocet'));
+  show('row-budget', 'val-budget', p.get('budget'));
+
+  var termin = p.get('termin');
+  if(termin){
+    var parts = termin.split('-');
+    if(parts.length===3){ termin = parts[2]+'. '+parts[1]+'. '+parts[0]; }
+    document.getElementById('val-termin').textContent = termin;
+  } else {
+    document.getElementById('row-termin').classList.add('hidden');
+  }
+
+  var qs = p.toString();
+  if (!p.get('ts')) {
+    qs = qs ? qs + '&ts=' + Date.now() : 'ts=' + Date.now();
+  }
+  // Označ SK variantu pre Apps Script
+  if (!p.get('subject')) {
+    qs += '&subject=' + encodeURIComponent('[B2B DOPYT SK] Nový dopyt');
+  }
+
+  var hasData = p.get('email') || p.get('from_name') || p.get('pocet') || p.get('prilezitost');
+  if (qs && hasData) {
+    fetch(APPS_SCRIPT + '?' + qs, {method:'GET', mode:'no-cors'}).catch(function(){});
+  }
+})();
+</script>
+</body>
+</html>
