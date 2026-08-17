@@ -1,6 +1,464 @@
 {
-  "generated": "2026-08-17T08:20:36",
-  "total": 0,
-  "spam_skipped": 0,
-  "emails": []
+  "generated": "2026-08-17T17:01:15",
+  "total": 32,
+  "spam_skipped": 4,
+  "emails": [
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Renata Pošepná vložil/a komentář na kartu ARBOEKO objednávka na nástěnce Firmy dárky + objednávky",
+      "date": "pondělí 17. srpna 2026 15:21:16",
+      "unread": false,
+      "preview": "￼ Zde je nejnovější... ￼ Renata Pošepná okomentoval(a) kartu ARBOEKO objednávka na nástěnce Firmy dárky + objednávky @jananyvltova jo",
+      "category": "b2b",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com",
+      "ai": {
+        "shrn": "Renata Pošepná okomentovala kartu ARBOEKO objednávky v Trellu týkající se B2B dárků.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Doprava NutWorld vložil/a komentář na kartu ALZA - EDI/2026/28 na nástěnce Firmy dárky + objednávky",
+      "date": "pondělí 17. srpna 2026 13:53:59",
+      "unread": false,
+      "preview": "￼ Zde je nejnovější... ￼ Doprava NutWorld okomentoval(a) kartu ALZA - EDI/2026/28 na nástěnce Firmy dárky + objednávky @hamerniktomas zítra od nás vše odchází na europaletě do chráněné dílny Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení ",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Martin Werner tě přidal/a ke kartě Vzorky Proreco na nástěnce Firmy dárky + objednávky",
+      "date": "pondělí 17. srpna 2026 13:40:24",
+      "unread": false,
+      "preview": "￼ Zde je nejnovější... ￼ Martin Werner vás přidal(a) na kartu Vzorky Proreco na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "MarketingNutWorld <marketing@nutworld.cz>",
+      "subject": "Reporty",
+      "date": "pondělí 17. srpna 2026 13:11:35",
+      "unread": true,
+      "preview": "Dobrý den",
+      "category": "tym",
+      "sender_short": "MarketingNutWorld",
+      "sender_email": "marketing@nutworld.cz",
+      "ai": {
+        "shrn": "Email od interního týmu s oznámením o reportech bez konkrétního obsahu.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "\"rosa.petr@email.cz\" <rosa.petr@email.cz>",
+      "subject": "Re: Upomínka",
+      "date": "pondělí 17. srpna 2026 13:00:49",
+      "unread": false,
+      "preview": "Děkuji. Rosová ---------- Původní e‑mail ---------- Od: Jan Vlček <jan.vlcek@nutworld.cz> Komu: rosa.petr@email.cz <rosa.petr@email.cz> Datum: 17. 8. 2026 9:19:37 Předmět: Re: Upomínka Dobrý den, moc se omlouvám za prodlevu. První faktura tam asi propadla",
+      "category": "ostatni",
+      "sender_short": "rosa.petr@email.cz",
+      "sender_email": "rosa.petr@email.cz",
+      "ai": {
+        "shrn": "Rosa Petrová potvrzuje přijetí Janovy odpovědi na upomínku ohledně faktury.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Jan Vlček <claudie.nutworld.cz@gmail.com>",
+      "subject": "[B2B DOPYT SK] Nová požiadavka",
+      "date": "pondělí 17. srpna 2026 12:55:59",
+      "unread": false,
+      "preview": "Firma / jméno: Jan Vlček E-mail: jan.vlcek@nutworld.cz Telefon: +420776138371 Příležitost: test nový Termín: 111111-11-11 Počet kusů: 15–49 ks Budget / kus: 200 Personalizace: Ne Produkt: nemám",
+      "category": "b2b",
+      "sender_short": "Jan Vlček",
+      "sender_email": "claudie.nutworld.cz@gmail.com",
+      "ai": {
+        "shrn": "Formulář B2B dotazu s testovací poptávkou na 15–49 ks s rozpočtem 200 Kč/ks bez specifikace produktu.",
+        "tyka_se": true,
+        "akce": "Ověřit, zda je to spam či legitimní dotaz; případně odpovědět nebo ignorovat"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "MGDESIGN | Martin Gažovčiak <info@mgdesign.cz>",
+      "subject": "Re: úprava štítku",
+      "date": "pondělí 17. srpna 2026 12:45:43",
+      "unread": false,
+      "preview": "Čauees :-) posílám…. Martin Gažovčiak +420 737 282 289 info@mgdesign.cz www.mgdesign.cz IČO: 05024668 DIČ: CZ8903213484 ￼ 17. 8. 2026 v 12:39",
+      "category": "ostatni",
+      "sender_short": "MGDESIGN | Martin Gažovčiak",
+      "sender_email": "info@mgdesign.cz",
+      "ai": {
+        "shrn": "Martin Gažovčiak z MGDESIGN potvrzuje zaslání úpravy štítku.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 12:29 (17. srpna 2026)",
+      "date": "pondělí 17. srpna 2026 12:31:02",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová přesunul(a) kartu iMI objednávka do sloupce Je zadáno v k2 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem ￼ Jana Nývltová změnil(a) termín splnění na kartě iMI objednávka na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše ne",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 12:27 (17. srpna 2026)",
+      "date": "pondělí 17. srpna 2026 12:28:55",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Hamerník Tomáš okomentoval(a) kartu IMI - 2603779 na nástěnce Firmy dárky + objednávky @jananyvltova zadal jsem objednávku i s daty do složky firmy informace. Tak aby se to nezdvojilo. Jde jen o 1 objednávku. Prosím o barevné vytvoření přední etikety dle podkladů. Děkuji Tom",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 12:23 (17. srpna 2026)",
+      "date": "pondělí 17. srpna 2026 12:24:58",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Hamerník Tomáš vás přidal(a) na kartu iMI objednávka na nástěnce Firmy dárky + objednávky Odpovědět e-mailem ￼ Hamerník Tomáš přidal(a) termín splnění na kartu iMI objednávka na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro t",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Lenka Šafaříková <lenka.safarikova@altium.net>",
+      "subject": "RE: Re: [EXTERNAL] Poptávka Vánoce 2026",
+      "date": "pondělí 17. srpna 2026 12:21:27",
+      "unread": false,
+      "preview": "Skvělé",
+      "category": "b2b",
+      "sender_short": "Lenka Šafaříková",
+      "sender_email": "lenka.safarikova@altium.net",
+      "ai": {
+        "shrn": "Lenka Šafaříková schvaluje vánoční stromek s logem jako součást kampáně 2026.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Tomáš Hamerník <tomas.hamernik@nutworld.cz>",
+      "subject": "iMi žádost o přední etiketu    FW: Objednávka číslo: 2603779",
+      "date": "pondělí 17. srpna 2026 12:07:40",
+      "unread": false,
+      "preview": "Ahoj Honzo, objednávku zadám do Trella. Rád bych Tě požádal",
+      "category": "b2b",
+      "sender_short": "Tomáš Hamerník",
+      "sender_email": "tomas.hamernik@nutworld.cz",
+      "ai": {
+        "shrn": "Tomáš Hamerník žádá o přední etiketu pro objednávku a slibuje zadání do Trella.",
+        "tyka_se": true,
+        "akce": "Poskytnout přední etiketu pro objednávku 2603779"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Jana Nývltová tě zmínil/a na kartě Poprokan s.r.o. — 600 ks — 15.09.2026 na nástěnce Firmy dárky + objednávky",
+      "date": "pondělí 17. srpna 2026 11:35:49",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová vás zmínil(a) na kartě Poprokan s.r.o. — 600 ks — 15.09.2026 na nástěnce Firmy dárky + objednávky @board tisk objednan Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Marketa\" <marketa.neubauerova@imi.cz>",
+      "sender": "Objednávka číslo: 2603779",
+      "subject": "pondělí 17. srpna 2026 11:31:48",
+      "date": "true",
+      "unread": false,
+      "preview": "",
+      "category": "ostatni",
+      "sender_short": "Objednávka číslo: 2603779",
+      "sender_email": "Objednávka číslo: 2603779",
+      "ai": {
+        "shrn": "Potvrzovací email objednávky bez obsahu.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Zásilkovna s.r.o. <fakturace@zasilkovna.cz>",
+      "subject": "Faktura za služby a přehled vybraných dobírek",
+      "date": "pondělí 17. srpna 2026 11:18:56",
+      "unread": true,
+      "preview": "￼ Dobrý den",
+      "category": "dodavatel",
+      "sender_short": "Zásilkovna s.r.o.",
+      "sender_email": "fakturace@zasilkovna.cz",
+      "ai": {
+        "shrn": "Zásilkovna zasílá fakturu za služby a přehled dobírek.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Lenka Šafaříková <lenka.safarikova@altium.net>",
+      "subject": "RE: Re: [EXTERNAL] Poptávka Vánoce 2026",
+      "date": "pondělí 17. srpna 2026 10:40:36",
+      "unread": false,
+      "preview": "Dobrý den přeji. Stromeček je moc fajn a k tomu logo a bude to myslím zcela postačující a naprosto krásné 😊. Teď už jen dovymyslíme",
+      "category": "b2b",
+      "sender_short": "Lenka Šafaříková",
+      "sender_email": "lenka.safarikova@altium.net",
+      "ai": {
+        "shrn": "Lenka Šafaříková schvaluje vánoční stromek s logem jako součást kampáně 2026.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Markéta Costachova <marketa.costachova@nutworld.cz>",
+      "subject": "RE: Zadávání zakázek - nový systém",
+      "date": "pondělí 17. srpna 2026 10:22:14",
+      "unread": false,
+      "preview": "Ahojte, to vypadá dobře",
+      "category": "tym",
+      "sender_short": "Markéta Costachova",
+      "sender_email": "marketa.costachova@nutworld.cz",
+      "ai": {
+        "shrn": "Markéta Costachova ze týmu potvrzuje, že nový systém zadávání zakázek vypadá dobře.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "EUROPAPIER - BOHEMIA <info.news@europapier.cz>",
+      "subject": "Konec prázdnin se blíží – polorukávy pod 1 000 Kč",
+      "date": "pondělí 17. srpna 2026 10:10:51",
+      "unread": true,
+      "preview": "Pokud se vám email nezobrazuje dobře",
+      "category": "ostatni",
+      "sender_short": "EUROPAPIER - BOHEMIA",
+      "sender_email": "info.news@europapier.cz",
+      "ai": {
+        "shrn": "Europapier propaguje polorukávy pod 1 000 Kč s nabídkou na konec prázdnin.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 9:59 (17. srpna 2026)",
+      "date": "pondělí 17. srpna 2026 10:00:42",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová přesunul(a) kartu emedis do sloupce Je zadáno v k2 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem ￼ Jana Nývltová přesunul(a) kartu Poprokan s.r.o. — 600 ks — 15.09.2026 do sloupce Firma + informace na nástěnce Firmy dárky + objednávky Odpovědět e-mail",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "InfoNutWorld <info@nutworld.cz>",
+      "subject": "Fw: Hotel Marriott - HSK tyden pro zamestnance 2026",
+      "date": "pondělí 17. srpna 2026 9:52:54",
+      "unread": false,
+      "preview": "Zasláno z Outlooku pro Android From: Frunza",
+      "category": "tym",
+      "sender_short": "InfoNutWorld",
+      "sender_email": "info@nutworld.cz",
+      "ai": {
+        "shrn": "Informace o akci Hotel Marriott – HSK týden pro zaměstnance 2026.",
+        "tyka_se": true,
+        "akce": "Zkontrolovat relevantnost akce a rozhodnout o účasti"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Claudia Fiori s.r.o <vyroba@claudiafiori.cz>",
+      "subject": "Re: grafika",
+      "date": "pondělí 17. srpna 2026 9:29:52",
+      "unread": false,
+      "preview": "Dobrý den pane Vlčku , Během dneška",
+      "category": "ostatni",
+      "sender_short": "Claudia Fiori s.r.o",
+      "sender_email": "vyroba@claudiafiori.cz",
+      "ai": {
+        "shrn": "Claudia Fiori s.r.o. potvrzuje, že během dne zašle něco týkajícího se grafiky.",
+        "tyka_se": true,
+        "akce": "Čekat na zaslání grafiky od Claudia Fiori"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Markéta z ALORI <marketa@novinky.alori.cz>",
+      "subject": "Letní rýma? Za to může klíma",
+      "date": "pondělí 17. srpna 2026 9:21:26",
+      "unread": true,
+      "preview": "￼ Doprava zdarmanad 1 500 Kč ￼ Tipy a triky od Markéty DÍL 06 KLIMATIZACE Rýmečka z klimatizace. Jak ochránit sebe i děti? Venku třicet pět",
+      "category": "ostatni",
+      "sender_short": "Markéta z ALORI",
+      "sender_email": "marketa@novinky.alori.cz",
+      "ai": {
+        "shrn": "Marketing email od Alori s tipy na klimatizaci a dopravou zdarma nad 1 500 Kč.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Balírna přesunul/a kartu MARRIOTT do sloupce Připravují se komponenty - Balírna na nástěnce Firmy dárky + objednávky",
+      "date": "pondělí 17. srpna 2026 8:34:04",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Balírna přesunul(a) kartu MARRIOTT do sloupce Připravují se komponenty - Balírna na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Jana Nývltová přesunul/a kartu MARRIOTT do sloupce Je zadáno v k2 na nástěnce Firmy dárky + objednávky",
+      "date": "pondělí 17. srpna 2026 8:23:29",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová přesunul(a) kartu MARRIOTT do sloupce Je zadáno v k2 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 8:16 (17. srpna 2026)",
+      "date": "pondělí 17. srpna 2026 8:17:18",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová vás přidal(a) na kartu MARRIOTT na nástěnce Firmy dárky + objednávky Odpovědět e-mailem ￼ Jana Nývltová přidal(a) termín splnění na kartu MARRIOTT na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupr",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Renata Pošepná přesunul/a kartu OREA do sloupce Kompletuje se dárek - Dárkovna na nástěnce Firmy dárky + objednávky",
+      "date": "pondělí 17. srpna 2026 8:06:02",
+      "unread": false,
+      "preview": "￼ Zde je nejnovější... ￼ Renata Pošepná přesunul(a) kartu OREA do sloupce Kompletuje se dárek - Dárkovna na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Radka Goderová <radka.goderova@mekrs.cz>",
+      "subject": "RE: info objednávka 2025003123 / reklamácia",
+      "date": "pondělí 17. srpna 2026 4:42:24",
+      "unread": false,
+      "preview": "Ahojky Jani",
+      "category": "b2b",
+      "sender_short": "Radka Goderová",
+      "sender_email": "radka.goderova@mekrs.cz",
+      "ai": {
+        "shrn": "Radka Goderová reaguje na dotaz ohledně objednávky a reklamace.",
+        "tyka_se": true,
+        "akce": "Přečíst si obsah emailu a odpovědět na dotaz ohledně objednávky 2025003123"
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "Temu <temu@eu.temuemail.com>",
+      "subject": "Vaše překvapivá nabídka čeká...",
+      "date": "pondělí 17. srpna 2026 13:31:53",
+      "unread": false,
+      "preview": "Tato nabídka nebude k dispozici dlouho! ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ Najdete nás na ￼ ￼ ￼ POZNÁMKA: Toto je automaticky generovaný e-mail",
+      "category": "dodavatel",
+      "sender_short": "Temu",
+      "sender_email": "temu@eu.temuemail.com",
+      "ai": {
+        "shrn": "Temu zasílá limitovanou marketingovou nabídku bez konkrétního obsahu.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "\"SEVT.cz\" <marketing@mailing.sevt.cz>",
+      "subject": "🎒 Vše pro školáky v jednom balíčku",
+      "date": "pondělí 17. srpna 2026 12:32:23",
+      "unread": true,
+      "preview": "Nezobrazuje se Vám e-mail správně? Přejděte na webovou verzi. ￼ Vše do školy a kanceláře na jednom místě ￼ Školní potřeby Výtvarné potřeby Kancelářské potřeby Hry a hračky Knihkupectví Balíčky školních potřeb pro děti předškolního věku ￼ SEVT Balíček pro předškoláky - Radka Obsahuje oblíb",
+      "category": "ostatni",
+      "sender_short": "SEVT.cz",
+      "sender_email": "marketing@mailing.sevt.cz",
+      "ai": {
+        "shrn": "SEVT propaguje školní potřeby v jednom balíčku.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "\"AliExpress.seller\" <promotion@aliexpress.com>",
+      "subject": "🤑 Special CODE for you",
+      "date": "pondělí 17. srpna 2026 12:03:54",
+      "unread": true,
+      "preview": "‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ￼ Dear - user name US $1.00 US $1.00 When value up to US $6.00 Use code: XYZ48P6JPGRB 2025-09-11 00:00:00 - 20",
+      "category": "ostatni",
+      "sender_short": "AliExpress.seller",
+      "sender_email": "promotion@aliexpress.com",
+      "ai": {
+        "shrn": "AliExpress posílá speciální kód pro slevu do 6 USD.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "Apple <no_reply@email.apple.com>",
+      "subject": "Vaše faktura od společnosti Apple",
+      "date": "pondělí 17. srpna 2026 8:00:57",
+      "unread": true,
+      "preview": "￼ Faktura 16. srpna 2026 Pořadí:1-14265057850 ID objednávky:MX5XVJBNQX Dokument:726177338578 Účet Apple:vyziva.trenink@gmail.com ￼ CapCut: Photo & Video Editor Monthly Subscription (Měsíční) Obnoví se 17. září 2026 699,00 Kč Včetně DPH v sazbě 21 %121,31 Kč Fakturace a platba Jan Vlček Bratří Čapků ",
+      "category": "dodavatel",
+      "sender_short": "Apple",
+      "sender_email": "no_reply@email.apple.com",
+      "ai": {
+        "shrn": "Apple zasílá fakturu za měsíční předplatné CapCut aplikace.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "CrossFit <crossfit@mail.crossfit.com>",
+      "subject": "260817 Workout of the Day: Pulling",
+      "date": "pondělí 17. srpna 2026 2:32:04",
+      "unread": true,
+      "preview": "￼ ￼ ￼ MONDAY",
+      "category": "ostatni",
+      "sender_short": "CrossFit",
+      "sender_email": "crossfit@mail.crossfit.com",
+      "ai": {
+        "shrn": "CrossFit zasílá workout of the day pro pondělí.",
+        "tyka_se": false,
+        "akce": null
+      }
+    }
+  ]
 }
