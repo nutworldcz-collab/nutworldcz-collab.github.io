@@ -231,6 +231,18 @@ const OBALY = ['Eko kelímek','Sáček s knírem','Sáček s kolíčkem','Dárko
 let filter = 'all';
 let editId = null;
 
+const SEED_IDS = ['VZ-2608-001','VZ-2608-002','VZ-2608-003'];
+function cleanSeed() {
+  try {
+    const r = localStorage.getItem(SK);
+    if (!r) return;
+    const d = JSON.parse(r);
+    const clean = d.filter(v => !SEED_IDS.includes(v.id));
+    if (clean.length !== d.length) localStorage.setItem(SK, JSON.stringify(clean));
+  } catch(e) {}
+}
+cleanSeed();
+
 function load() {
   try { const r = localStorage.getItem(SK); if (r) return JSON.parse(r); } catch(e) {}
   return [];
