@@ -19,111 +19,141 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
 .ph h2{font-size:16px;font-weight:700;letter-spacing:.5px}
 .ph p{font-size:12px;opacity:.7;margin-top:2px}
 .pb{padding:18px 22px}
-
 .field{margin-bottom:14px}
-.field label,.flabel{display:block;font-size:11px;font-weight:700;color:var(--br);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.field label{display:block;font-size:11px;font-weight:700;color:var(--br);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
 .field input,.field textarea{width:100%;border:1.5px solid #d4c0a8;border-radius:8px;padding:9px 12px;font-family:inherit;font-size:13px;color:#2a1a0e;background:#fdf9f6;transition:border-color .15s}
 .field input:focus,.field textarea:focus{outline:none;border-color:var(--br)}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 .sec{font-family:'Exo 2',sans-serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--br);margin:22px 0 10px;padding-bottom:5px;border-bottom:1.5px solid var(--kraft)}
+.sec:first-of-type{margin-top:0}
 
-/* ── SLOT DISPLAY ── */
-.slots{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.slot-box{border:2px dashed #d4c0a8;border-radius:10px;padding:10px 12px;cursor:pointer;background:#fdf9f6;transition:all .15s;min-height:62px;display:flex;flex-direction:column;justify-content:center}
-.slot-box.filled{border-style:solid;border-color:#c8976a;background:var(--kraft)}
-.slot-box.active-slot{border-color:var(--br)!important;border-style:solid!important;box-shadow:0 0 0 2px rgba(131,80,46,.15)}
-.slot-header{display:flex;align-items:center;gap:6px;margin-bottom:4px}
-.slot-num{width:18px;height:18px;border-radius:50%;background:#d4c0a8;color:#fff;font-family:'Exo 2',sans-serif;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s}
-.slot-box.filled .slot-num{background:var(--bd)}
-.slot-box.active-slot .slot-num{background:var(--br)}
-.slot-label{font-size:10px;font-weight:700;color:var(--br);text-transform:uppercase;letter-spacing:1px}
-.slot-val{font-size:12.5px;font-weight:600;color:var(--bd);line-height:1.3}
-.slot-empty{font-size:12px;color:#bbb;font-style:italic}
-.slot-clr{margin-left:auto;background:none;border:none;color:#bbb;cursor:pointer;font-size:15px;padding:0 2px;flex-shrink:0;line-height:1}
-.slot-clr:hover{color:var(--acc)}
+/* ═══ VISUAL BOX SELECTOR ═══ */
+.box-wrapper{
+  display:flex;flex-direction:column;align-items:center;
+  background:linear-gradient(145deg,#e0d0b8,#cbb896);
+  border-radius:14px;padding:22px 28px 18px;position:relative;overflow:hidden;
+}
+.box-wrapper::before{content:'';position:absolute;top:-20px;right:-20px;width:100px;height:100px;border-radius:50%;background:rgba(247,171,49,.18)}
+.box-label{font-family:'Exo 2',sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(92,56,31,.55);margin-bottom:14px}
+.box-visual{
+  display:flex;gap:12px;
+  background:linear-gradient(135deg,var(--bd) 0%,#6b3d18 50%,#4a2a0f 100%);
+  border-radius:12px;padding:18px 22px;
+  box-shadow:0 6px 28px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.08);
+  position:relative;min-width:280px;
+}
+.box-visual::after{content:'✦';position:absolute;top:8px;left:50%;transform:translateX(-50%);font-size:8px;color:rgba(247,171,49,.35)}
+.slot-vis{
+  flex:1;min-width:110px;
+  background:rgba(255,255,255,.06);border:2px dashed rgba(247,171,49,.3);border-radius:9px;
+  padding:14px 10px;cursor:pointer;transition:all .18s;
+  display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;
+}
+.slot-vis:hover{background:rgba(255,255,255,.12);border-color:rgba(247,171,49,.6)}
+.slot-vis.filled{border-style:solid;border-color:rgba(247,171,49,.55);background:rgba(255,255,255,.1)}
+.sv-num{width:20px;height:20px;border-radius:50%;background:rgba(247,171,49,.2);border:1.5px solid rgba(247,171,49,.4);color:var(--amb);font-family:'Exo 2',sans-serif;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.slot-vis.filled .sv-num{background:rgba(247,171,49,.35);border-color:var(--amb)}
+.sv-plus{font-size:22px;color:rgba(247,171,49,.4);line-height:1;margin:2px 0}
+.slot-vis.filled .sv-plus{display:none}
+.sv-hint{font-size:10px;color:rgba(247,171,49,.45);text-align:center;line-height:1.3}
+.slot-vis.filled .sv-hint{display:none}
+.sv-emoji{font-size:26px;line-height:1;display:none;margin:2px 0}
+.slot-vis.filled .sv-emoji{display:block}
+.sv-name{font-size:10px;font-weight:700;color:rgba(255,255,255,.85);text-align:center;line-height:1.3;display:none}
+.slot-vis.filled .sv-name{display:block}
+.sv-g{font-size:9px;color:rgba(247,171,49,.6);font-family:'Exo 2',sans-serif;letter-spacing:1px}
+.sv-clr{position:absolute;top:4px;right:5px;background:none;border:none;color:rgba(255,255,255,.3);cursor:pointer;font-size:13px;padding:0;line-height:1;display:none}
+.slot-vis.filled .sv-clr{display:block}
+.sv-clr:hover{color:rgba(255,100,100,.8)}
 
-/* ── CATEGORY TABS ── */
-.cat-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-.cat-tab{padding:5px 12px;border:1.5px solid #d4c0a8;border-radius:20px;background:#fdf9f6;color:#888;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
+/* ═══ PRODUCT PICKER MODAL ═══ */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(3px)}
+.modal-bg.open{display:flex}
+.modal-sheet{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:660px;max-height:82vh;display:flex;flex-direction:column;box-shadow:0 -8px 48px rgba(0,0,0,.22);animation:sheet-up .25s cubic-bezier(.34,1,.64,1)}
+@keyframes sheet-up{from{transform:translateY(60px);opacity:0}to{transform:none;opacity:1}}
+.mh{padding:16px 20px 12px;border-bottom:1.5px solid var(--kraft);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.mh-title{font-family:'Exo 2',sans-serif;font-weight:700;color:var(--bd);font-size:15px}
+.mh-sub{font-size:11px;color:#bbb;margin-top:1px}
+.mh-close{background:none;border:none;font-size:22px;color:#bbb;cursor:pointer;padding:0 4px;line-height:1}
+.mh-close:hover{color:var(--br)}
+.cat-tabs{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;padding:10px 16px 8px;flex-shrink:0;scrollbar-width:none}
+.cat-tabs::-webkit-scrollbar{display:none}
+.cat-tab{padding:5px 12px;border:1.5px solid #d4c0a8;border-radius:20px;background:#fdf9f6;color:#888;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0}
 .cat-tab.active{background:var(--bd);border-color:var(--bd);color:var(--amb)}
 .cat-tab:hover:not(.active){border-color:#c8976a;color:var(--bd)}
-
-/* ── PRODUCT GRID ── */
-.prod-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;max-height:340px;overflow-y:auto;padding:2px}
-@media(max-width:640px){.prod-grid{grid-template-columns:repeat(4,1fr)}}
-.pcard{border:2px solid #d4c0a8;border-radius:10px;background:#fdf9f6;cursor:pointer;padding:8px 4px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;transition:all .15s;text-align:center;position:relative;user-select:none}
-.pcard:hover{border-color:#c8976a;background:var(--kraft)}
-.pcard.sel-1{border-color:var(--br);background:var(--kraft)}
-.pcard.sel-2{border-color:var(--acc);background:#fef5f9}
-.pcard .pe{font-size:22px;line-height:1}
-.pcard .pn{font-size:9.5px;font-weight:600;color:var(--bd);line-height:1.3;word-break:break-word}
-.pcard.sel-1 .pn,.pcard.sel-2 .pn{color:var(--bd)}
-.pcard .pbadge{position:absolute;top:3px;right:4px;width:14px;height:14px;border-radius:50%;font-family:'Exo 2',sans-serif;font-size:8px;font-weight:800;display:none;align-items:center;justify-content:center}
-.pcard.sel-1 .pbadge{display:flex;background:var(--bd);color:var(--amb)}
-.pcard.sel-2 .pbadge{display:flex;background:var(--acc);color:#fff}
+.prod-scroll{overflow-y:auto;padding:6px 14px 20px;flex:1}
+.prod-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+@media(max-width:460px){.prod-grid{grid-template-columns:repeat(4,1fr)}}
+.pcard{border:2px solid #d4c0a8;border-radius:10px;background:#fdf9f6;cursor:pointer;padding:10px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .15s;text-align:center}
+.pcard:hover{border-color:#c8976a;background:var(--kraft);transform:translateY(-1px)}
 .pcard.hidden{display:none}
+.pcard .pe{font-size:24px;line-height:1}
+.pcard .pn{font-size:9.5px;font-weight:600;color:var(--bd);line-height:1.3}
+.pcard.other-card{border-style:dashed;border-color:var(--acc);background:#fff5f8}
+.pcard.other-card:hover{background:#fde8f0;border-color:var(--acc)}
+.pcard.other-card .pn{color:var(--acc)}
 
-/* ── GRAVÍR GRID ── */
-.gravir-top{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
-.grav-pill{padding:7px 15px;border:1.5px solid #d4c0a8;border-radius:20px;background:#fdf9f6;color:#5a3a22;font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:all .15s}
-.grav-pill.active{background:var(--kraft);border-color:var(--br);color:var(--bd)}
-.gravir-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
-@media(max-width:640px){.gravir-grid{grid-template-columns:repeat(3,1fr)}}
+/* ═══ GRAVÍR ═══ */
+.gravir-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:10px}
+@media(max-width:560px){.gravir-grid{grid-template-columns:repeat(4,1fr)}}
 .gcard{position:relative;aspect-ratio:1;border:2px solid #d4c0a8;border-radius:10px;background:#fdf9f6;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:all .15s;padding:6px 4px}
 .gcard:hover{border-color:#c8976a;background:var(--kraft)}
 .gcard.active{border-color:var(--br);background:var(--kraft);box-shadow:0 0 0 2px rgba(131,80,46,.2)}
 .gcard .ge{font-size:24px;line-height:1}
-.gcard .gn{font-size:10px;font-weight:600;color:var(--bd);text-align:center;line-height:1.2}
+.gcard .gn{font-size:9.5px;font-weight:600;color:var(--bd);text-align:center;line-height:1.2}
 .gcard .gl{position:absolute;top:4px;left:5px;font-family:'Exo 2',sans-serif;font-size:9px;font-weight:800;color:var(--amb);background:var(--bd);width:15px;height:15px;border-radius:3px;display:flex;align-items:center;justify-content:center}
+.gravir-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.gravir-clr{font-size:11px;color:#bbb;cursor:pointer;background:none;border:none;font-family:inherit;padding:0}
+.gravir-clr:hover{color:var(--acc)}
 
-/* ── RADIO PILLS ── */
-.radio-group{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
-.radio-opt{display:flex;align-items:center;gap:6px;padding:7px 14px;border:1.5px solid #d4c0a8;border-radius:20px;cursor:pointer;font-size:12.5px;font-weight:600;color:#5a3a22;background:#fdf9f6;transition:all .15s;user-select:none}
-.radio-opt:has(input:checked){background:var(--kraft);border-color:var(--br);color:var(--bd)}
-.radio-opt input[type=radio]{display:none}
-
-/* ── COLOR SWATCHES ── */
+/* ═══ COLORS ═══ */
 .color-grid{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
 .citem{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer}
 .ccirc{width:34px;height:34px;border-radius:50%;border:3px solid transparent;transition:transform .12s,box-shadow .12s}
 .citem.active .ccirc{transform:scale(1.15);box-shadow:0 0 0 2px #fff,0 0 0 4px var(--br)}
 .clbl{font-size:9px;color:#aaa;text-align:center;max-width:42px;line-height:1.2;transition:color .12s}
 .citem.active .clbl{color:var(--bd);font-weight:700}
+.juta-locked{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f6f1ec;border:1.5px solid #d4c0a8;border-radius:8px;font-size:13px;color:#9a7255}
 
-/* ── FILE UPLOAD ── */
+/* ═══ RADIO PILLS ═══ */
+.radio-group{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.radio-opt{display:flex;align-items:center;gap:6px;padding:7px 14px;border:1.5px solid #d4c0a8;border-radius:20px;cursor:pointer;font-size:12.5px;font-weight:600;color:#5a3a22;background:#fdf9f6;transition:all .15s;user-select:none}
+.radio-opt:has(input:checked){background:var(--kraft);border-color:var(--br);color:var(--bd)}
+.radio-opt input[type=radio]{display:none}
+
+/* misc */
 .file-zone{border:2px dashed #d4c0a8;border-radius:10px;padding:14px;cursor:pointer;text-align:center;background:#fdfaf8;transition:all .15s}
 .file-zone:hover{border-color:#c8976a;background:var(--kraft)}
 .file-zone.has-file{border-style:solid;border-color:#c8976a;background:var(--kraft)}
 .fzico{font-size:22px;margin-bottom:4px}
 .fztxt{font-size:12.5px;color:#aaa}
 .file-zone.has-file .fztxt{color:var(--bd);font-weight:600}
-
-/* ── BUTTONS ── */
+.info-box{background:#fff8ee;border:1.5px solid rgba(247,171,49,.4);border-radius:10px;padding:11px 14px;font-size:12.5px;color:#6b4c1e;line-height:1.55;margin-bottom:14px}
+.info-box strong{color:var(--br)}
 .btn-gen{display:block;width:100%;background:linear-gradient(135deg,#7a5200,var(--amb));color:#fff;border:none;font-family:'Exo 2',sans-serif;font-weight:800;font-size:16px;padding:14px;border-radius:10px;cursor:pointer;margin-top:20px;letter-spacing:.5px;transition:opacity .15s}
 .btn-gen:hover{opacity:.9}
 .btn-gen:disabled{opacity:.5;cursor:not-allowed}
-
-/* ── LOADING / STATUS ── */
 .ldots{display:inline-flex;gap:5px;vertical-align:middle}
 .ldots span{width:7px;height:7px;border-radius:50%;background:var(--br);animation:dp 1.2s ease-in-out infinite}
 .ldots span:nth-child(2){animation-delay:.2s}
 .ldots span:nth-child(3){animation-delay:.4s}
 @keyframes dp{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
 .ok-box{background:#f0fff4;border:1.5px solid var(--leaf);border-radius:12px;padding:16px 20px;margin-top:14px;display:none}
-.ok-box h3{font-family:'Exo 2',sans-serif;font-size:14px;font-weight:700;color:#2e7d32;margin-bottom:6px}
+.ok-box h3{font-family:'Exo 2',sans-serif;font-size:15px;font-weight:700;color:#2e7d32;margin-bottom:8px}
 .err-box{background:#fdecea;border:1.5px solid #e57373;border-radius:10px;padding:14px 18px;margin-top:14px;font-size:13px;color:#c62828;display:none}
 
-/* ── PREVIEW PANEL ── */
+/* ═══ PREVIEW ═══ */
 #prev-wrap{position:sticky;top:24px}
 .pv-vis{padding:16px;background:linear-gradient(145deg,#e8d5b8,#d4b896);position:relative;overflow:hidden}
 .pv-vis::after{content:'';position:absolute;top:-18px;right:-18px;width:72px;height:72px;border-radius:50%;background:rgba(247,171,49,.18)}
 .pv-tag{font-family:'Exo 2',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(92,56,31,.5);margin-bottom:8px}
-.pv-row{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.55);border-radius:7px;padding:6px 10px;font-size:12px;font-weight:600;color:var(--bd);margin-bottom:5px}
-.pv-num{width:16px;height:16px;border-radius:50%;background:var(--bd);color:var(--amb);font-family:'Exo 2',sans-serif;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.pv-grav{position:absolute;top:12px;right:12px;background:var(--bd);color:var(--amb);width:32px;height:32px;border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.25)}
-.pv-grav .gg{font-size:13px;line-height:1}
-.pv-grav .glt{font-family:'Exo 2',sans-serif;font-size:8px;font-weight:800;line-height:1}
+.pv-mini-box{display:flex;gap:8px;background:linear-gradient(135deg,var(--bd),#4a2a0f);border-radius:8px;padding:10px 14px}
+.pv-slot{flex:1;border:1px solid rgba(247,171,49,.35);border-radius:6px;padding:8px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;min-height:64px;justify-content:center}
+.pv-slot-e{font-size:20px}
+.pv-slot-n{font-size:9px;font-weight:600;color:rgba(255,255,255,.75);text-align:center;line-height:1.3}
+.pv-slot-g{font-size:9px;color:rgba(247,171,49,.5);font-family:'Exo 2',sans-serif}
+.pv-slot-empty{font-size:9px;color:rgba(247,171,49,.3);font-style:italic}
 .pv-stuha{margin-top:10px;height:4px;border-radius:2px;transition:background .3s}
 .pv-body{padding:14px 18px}
 .pv-dr{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--kraft);font-size:12.5px;gap:10px}
@@ -131,7 +161,8 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
 .pv-dl{color:#bbb;flex-shrink:0;font-size:12px}
 .pv-dv{font-weight:600;color:var(--bd);text-align:right}
 .pv-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:3px;vertical-align:middle;border:1px solid rgba(0,0,0,.1)}
-.pv-kompl{display:inline-flex;align-items:center;gap:3px;background:#fef0f5;border:1px solid #f8bbd9;border-radius:20px;padding:1px 7px;font-size:11px;color:#c41e3a;font-weight:600}
+.pv-chip{display:inline-flex;align-items:center;gap:3px;background:#fef0f5;border:1px solid #f8bbd9;border-radius:20px;padding:1px 7px;font-size:11px;color:#c41e3a;font-weight:600}
+.pv-tchip{background:#fff8ee;border:1px solid rgba(247,171,49,.5);color:var(--br)}
 .pv-vzkaz{margin:0 18px 14px;padding:10px 12px;background:#fdf8f4;border-left:3px solid var(--kraft);font-size:12px;color:#5a3a22;font-style:italic;line-height:1.5;border-radius:0 8px 8px 0}
 .pv-empty{text-align:center;padding:44px 16px;color:#ccc}
 </style>
@@ -147,88 +178,97 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
 
 <!-- ══ FORMULÁŘ ══ -->
 <div class="panel">
-  <div class="ph"><h2>🎁 Konfigurace krabičky</h2><p>Obsah · Zakázka · Personalizace</p></div>
+  <div class="ph">
+    <h2>🎁 Sestavte si dárkovou krabičku</h2>
+    <p>Obsah · Personalizace · Váš kontakt</p>
+  </div>
   <div class="pb">
 
-    <!-- OBSAH -->
-    <div class="sec">Obsah krabičky</div>
+    <div class="sec">Co bude v krabičce</div>
+    <div class="info-box">Klikněte na každý slot a vyberte, co bude uvnitř. Každý sáček obsahuje <strong>50 g</strong>.</div>
 
-    <!-- Slot display -->
-    <div class="slots" id="slots">
-      <div class="slot-box active-slot" id="slot-1" onclick="setActiveSlot(1)">
-        <div class="slot-header">
-          <div class="slot-num">1</div>
-          <div class="slot-label">Produkt 1</div>
-          <button class="slot-clr" id="sc1" onclick="clearSlot(1,event)" style="display:none">✕</button>
+    <!-- VISUAL BOX -->
+    <div class="box-wrapper">
+      <div class="box-label">Dárková krabička 2×50g — Výběr obsahu</div>
+      <div class="box-visual">
+        <div class="slot-vis" id="slotVis-1" onclick="openPicker(1)">
+          <div class="sv-num">1</div>
+          <div class="sv-plus">+</div>
+          <div class="sv-hint">klikněte<br>pro výběr</div>
+          <div class="sv-emoji" id="sEmoji1"></div>
+          <div class="sv-name" id="sName1"></div>
+          <div class="sv-g">50 g</div>
+          <button class="sv-clr" id="sClr1" onclick="clearSlotV(1,event)">✕</button>
         </div>
-        <div class="slot-empty" id="sv1">— klikni produkt níže</div>
-      </div>
-      <div class="slot-box" id="slot-2" onclick="setActiveSlot(2)">
-        <div class="slot-header">
-          <div class="slot-num">2</div>
-          <div class="slot-label">Produkt 2</div>
-          <button class="slot-clr" id="sc2" onclick="clearSlot(2,event)" style="display:none">✕</button>
+        <div class="slot-vis" id="slotVis-2" onclick="openPicker(2)">
+          <div class="sv-num">2</div>
+          <div class="sv-plus">+</div>
+          <div class="sv-hint">klikněte<br>pro výběr</div>
+          <div class="sv-emoji" id="sEmoji2"></div>
+          <div class="sv-name" id="sName2"></div>
+          <div class="sv-g">50 g</div>
+          <button class="sv-clr" id="sClr2" onclick="clearSlotV(2,event)">✕</button>
         </div>
-        <div class="slot-empty" id="sv2">— klikni produkt níže</div>
       </div>
     </div>
 
-    <!-- Category tabs -->
-    <div class="cat-tabs">
-      <button class="cat-tab active" onclick="setCat('all',this)">Vše</button>
-      <button class="cat-tab" onclick="setCat('mandle',this)">🌰 Mandle</button>
-      <button class="cat-tab" onclick="setCat('kesu',this)">🫘 Kešu</button>
-      <button class="cat-tab" onclick="setCat('arasidy',this)">🥜 Arašídy</button>
-      <button class="cat-tab" onclick="setCat('ostatni',this)">🍬 Ostatní</button>
+    <div id="jine-1-wrap" style="display:none;margin-top:10px" class="field">
+      <label>Upřesnění — Slot 1</label>
+      <input id="jine1" placeholder="Popište přesně, co chcete (ozveme se)" oninput="upd()"/>
     </div>
-
-    <!-- Product grid -->
-    <div class="prod-grid" id="prod-grid"></div>
-
-    <!-- ZAKÁZKA -->
-    <div class="sec">Zakázka</div>
-    <div class="field"><label>Zákazník / firma</label><input id="firma" placeholder="Firma s.r.o." oninput="upd()"/></div>
-    <div class="row2">
-      <div class="field"><label>Kontaktní osoba</label><input id="kontakt" placeholder="Jméno Příjmení" oninput="upd()"/></div>
-      <div class="field"><label>Email</label><input id="email" type="email" placeholder="info@firma.cz" oninput="upd()"/></div>
-    </div>
-    <div class="row2">
-      <div class="field"><label>Počet kusů *</label><input id="pocet" type="number" min="1" placeholder="100" oninput="upd()"/></div>
-      <div class="field"><label>Termín dodání *</label><input id="termin" type="date" oninput="upd()"/></div>
+    <div id="jine-2-wrap" style="display:none;margin-top:10px" class="field">
+      <label>Upřesnění — Slot 2</label>
+      <input id="jine2" placeholder="Popište přesně, co chcete (ozveme se)" oninput="upd()"/>
     </div>
 
     <!-- PERSONALIZACE -->
-    <div class="sec">Personalizace</div>
+    <div class="sec">Personalizace krabičky</div>
 
     <div class="field">
-      <label>Vazba</label>
+      <label>Typ stuhy</label>
       <div class="radio-group">
-        <label class="radio-opt"><input type="radio" name="vazba" value="juta" checked onchange="upd()"> 🌿 Jutová stuha</label>
-        <label class="radio-opt"><input type="radio" name="vazba" value="saten" onchange="upd()"> 🎀 Saténová stuha</label>
+        <label class="radio-opt"><input type="radio" name="vazba" value="juta" checked onchange="onVazba()"> 🌿 Jutová stuha</label>
+        <label class="radio-opt"><input type="radio" name="vazba" value="saten" onchange="onVazba()"> 🎀 Saténová stuha</label>
       </div>
     </div>
-
     <div class="field">
       <label>Barva stuhy</label>
-      <div class="color-grid" id="color-grid"></div>
-      <div id="chint" style="font-size:11px;color:#ccc;margin-top:5px">— nevybráno</div>
+      <div id="juta-info" class="juta-locked">🌿 Jutová stuha je přírodní barvy — bez dalšího výběru</div>
+      <div id="saten-colors" style="display:none">
+        <div class="color-grid" id="color-grid"></div>
+        <div id="chint" style="font-size:11px;color:#ccc;margin-top:5px">— nevybráno</div>
+      </div>
     </div>
 
-    <div class="field" style="margin-bottom:6px">
-      <label>Gravír</label>
-      <div class="gravir-top">
-        <button class="grav-pill active" id="gp-ne" onclick="setGravir('ne')">— Bez gravíru</button>
-        <button class="grav-pill" id="gp-text" onclick="setGravir('text')">✏️ Vlastní text</button>
-      </div>
-      <div id="gtxtwrap" style="display:none;margin-bottom:10px">
-        <input id="gravir-text" placeholder="Text gravíru (max 60 znaků)…" maxlength="60" oninput="upd()"/>
+    <div class="field">
+      <div class="gravir-header">
+        <label style="margin-bottom:0">Gravír (volitelné)</label>
+        <button class="gravir-clr" onclick="clearGravir()">✕ Smazat gravír</button>
       </div>
       <div class="gravir-grid" id="gravir-grid"></div>
+      <div class="field" style="margin-bottom:0;margin-top:8px">
+        <label>Text gravíru</label>
+        <input id="gravir-text" placeholder="Zadejte text k vygravírování (nepovinné)…" maxlength="60" oninput="upd()"/>
+        <div style="font-size:11px;color:#bbb;margin-top:3px">Motiv a text lze kombinovat zároveň</div>
+      </div>
     </div>
 
-    <!-- KOMPLIMENTKA -->
-    <div class="sec">Komplimentka</div>
     <div class="field">
+      <label>Tisk na krabičce (volitelné)</label>
+      <div class="radio-group">
+        <label class="radio-opt"><input type="radio" name="tisk" value="ne" checked onchange="onTisk()"> — Bez tisku</label>
+        <label class="radio-opt"><input type="radio" name="tisk" value="logo" onchange="onTisk()"> 🏷 Logo</label>
+        <label class="radio-opt"><input type="radio" name="tisk" value="full" onchange="onTisk()"> 🎨 Celý přední potisk</label>
+        <label class="radio-opt"><input type="radio" name="tisk" value="kom" onchange="onTisk()"> ✨ Kombinace</label>
+      </div>
+    </div>
+    <div id="tisk-wrap" style="display:none" class="field">
+      <label>Specifikace tisku</label>
+      <textarea id="tisk-text" rows="2" placeholder="Popište váš požadavek: barvy, text, umístění, podklady…" oninput="upd()"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Přání / komplimentka</label>
       <div class="radio-group">
         <label class="radio-opt"><input type="radio" name="kompl" value="ne" checked onchange="onKompl()"> — Bez komplimentky</label>
         <label class="radio-opt"><input type="radio" name="kompl" value="ano" onchange="onKompl()"> 💌 Přiložit komplimentku</label>
@@ -240,7 +280,7 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
         <textarea id="kompl-text" rows="3" placeholder="Přejeme vám příjemné svátky…" oninput="upd()"></textarea>
       </div>
       <div class="field">
-        <label>Přiložit soubor (logo, PDF, grafika…)</label>
+        <label>Přiložit soubor (logo, grafika, PDF…)</label>
         <div class="file-zone" id="file-zone" onclick="document.getElementById('kfile').click()">
           <input type="file" id="kfile" style="display:none" onchange="onFile(this)"/>
           <div class="fzico">📎</div>
@@ -249,345 +289,348 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
       </div>
     </div>
 
-    <!-- INTERNÍ -->
-    <div class="sec">Interní</div>
-    <div class="field"><label>Poznámka pro tým</label><textarea id="poznamka" rows="2" placeholder="Interní poznámka…" oninput="upd()"></textarea></div>
+    <!-- KONTAKT -->
+    <div class="sec">Váš kontakt a objednávka</div>
+    <div class="field"><label>Firma / organizace</label><input id="firma" placeholder="Vaše firma s.r.o." oninput="upd()"/></div>
+    <div class="row2">
+      <div class="field"><label>Vaše jméno</label><input id="kontakt" placeholder="Jméno Příjmení" oninput="upd()"/></div>
+      <div class="field"><label>Email</label><input id="email" type="email" placeholder="vas@email.cz" oninput="upd()"/></div>
+    </div>
+    <div class="row3">
+      <div class="field"><label>Počet kusů</label><input id="pocet" type="number" min="1" placeholder="100" oninput="upd()"/></div>
+      <div class="field"><label>Termín dodání</label><input id="termin" type="date" oninput="upd()"/></div>
+      <div class="field"><label>Telefon</label><input id="telefon" type="tel" placeholder="+420 …" oninput="upd()"/></div>
+    </div>
+    <div class="field">
+      <label>Vaše přání nebo doplňující informace</label>
+      <textarea id="poznamka" rows="3" placeholder="Napište nám cokoliv dalšího…" oninput="upd()"></textarea>
+    </div>
 
-    <button class="btn-gen" id="btn-sub" onclick="doSubmit()">🎁 Vytvořit zakázku v Trellu</button>
-
+    <button class="btn-gen" id="btn-sub" onclick="doSubmit()">📤 Odeslat konfiguraci</button>
     <div id="lbox" style="display:none;text-align:center;padding:18px 0">
       <div class="ldots"><span></span><span></span><span></span></div>
       <div id="ltxt" style="margin-top:8px;font-size:13px;color:#888"></div>
     </div>
     <div class="ok-box" id="ok-box">
-      <h3>✅ Zakázka vytvořena!</h3>
-      <p style="font-size:13px;color:#2d5a1b">Karta je připravena v Trellu a potvrzení bylo odesláno emailem.</p>
-      <a id="tlink" href="#" target="_blank" style="display:inline-block;margin-top:12px;background:#2e7d32;color:#fff;font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;padding:7px 18px;border-radius:20px;text-decoration:none">Otevřít v Trellu →</a>
+      <h3>✅ Konfigurace odeslána!</h3>
+      <p style="font-size:13px;color:#2d5a1b;line-height:1.6">Vaše krabička je nakonfigurována a my jsme ji dostali. Brzy se vám ozveme s potvrzením a nabídkou. Děkujeme! 🐿</p>
     </div>
     <div class="err-box" id="err-box"></div>
-
   </div>
 </div>
 
 <!-- ══ LIVE NÁHLED ══ -->
 <div id="prev-wrap" class="panel">
-  <div class="ph"><h2>Náhled zakázky</h2><p>Aktualizuje se průběžně</p></div>
+  <div class="ph"><h2>Náhled konfigurace</h2><p>Aktualizuje se průběžně</p></div>
   <div id="prev-content">
-    <div class="pv-empty"><div style="font-size:52px">🎁</div><div style="margin-top:10px;font-size:13px">Vyplň formulář vlevo…</div></div>
+    <div class="pv-empty"><div style="font-size:52px">🎁</div><div style="margin-top:10px;font-size:13px">Vyberte obsah krabičky…</div></div>
   </div>
 </div>
 
-</div><!-- /.shell -->
+</div>
+
+<!-- ══ PICKER MODAL ══ -->
+<div class="modal-bg" id="modal-bg" onclick="closePicker(event)">
+  <div class="modal-sheet">
+    <div class="mh">
+      <div>
+        <div class="mh-title" id="mh-title">Vyberte produkt — Slot 1</div>
+        <div class="mh-sub">Klikněte na produkt nebo zvolte „Jiné"</div>
+      </div>
+      <button class="mh-close" onclick="closePickerForce()">✕</button>
+    </div>
+    <div class="cat-tabs" id="m-cat-tabs">
+      <button class="cat-tab active" onclick="setCat('all',this)">Vše</button>
+      <button class="cat-tab" onclick="setCat('mandle',this)">🌰 Mandle</button>
+      <button class="cat-tab" onclick="setCat('kesu',this)">🫘 Kešu</button>
+      <button class="cat-tab" onclick="setCat('arasidy',this)">🥜 Arašídy</button>
+      <button class="cat-tab" onclick="setCat('ostatni',this)">🍬 Ostatní</button>
+    </div>
+    <div class="prod-scroll">
+      <div class="prod-grid" id="prod-grid"></div>
+    </div>
+  </div>
+</div>
 
 <script>
-/* ══ DATA ══ */
-const PROD_DATA = [
-  // MANDLE
-  {full:'Mandle v jahodovém jogurtu',   cat:'mandle', emoji:'🍓', disp:'v jah. jogurtu'},
-  {full:'Mandle v barevné čokoládě',    cat:'mandle', emoji:'🌈', disp:'barevná čok.'},
-  {full:'Mandle v jogurtu',             cat:'mandle', emoji:'🍦', disp:'v jogurtu'},
-  {full:'Mandle ve slaném karamelu',    cat:'mandle', emoji:'🧂', disp:'slaný kar.'},
-  {full:'Mandle v bílé čokoládě',       cat:'mandle', emoji:'🤍', disp:'bílá čok.'},
-  {full:'Mandle tiramisu',              cat:'mandle', emoji:'☕', disp:'tiramisu'},
-  {full:'Mandle v mléčné čokoládě',     cat:'mandle', emoji:'🍫', disp:'mléčná čok.'},
-  {full:'Mandle v hořké čokoládě',      cat:'mandle', emoji:'⬛', disp:'hořká čok.'},
-  {full:'Mandle tříbarevné',            cat:'mandle', emoji:'🌈', disp:'tříbarevné'},
-  {full:'Mandle exclusive v čokoládě',  cat:'mandle', emoji:'💎', disp:'exclusive'},
-  {full:'Mandle solené',                cat:'mandle', emoji:'🧂', disp:'solené'},
-  {full:'Mandle uzené',                 cat:'mandle', emoji:'💨', disp:'uzené'},
-  {full:'Mandle natural',               cat:'mandle', emoji:'🌰', disp:'natural'},
-  // KEŠU
-  {full:'Kešu solené',                  cat:'kesu',   emoji:'🧂', disp:'solené'},
-  {full:'Kešu česnek a rozmarýn',       cat:'kesu',   emoji:'🧄', disp:'česnek'},
-  {full:'Kešu natural',                 cat:'kesu',   emoji:'🌿', disp:'natural'},
-  {full:'Kešu tiramisu',                cat:'kesu',   emoji:'☕', disp:'tiramisu'},
-  {full:'Kešu tříbarevné',              cat:'kesu',   emoji:'🌈', disp:'tříbarevné'},
-  {full:'Kešu v bílé čokoládě',         cat:'kesu',   emoji:'🤍', disp:'bílá čok.'},
-  {full:'Kešu v mléčné čokoládě',       cat:'kesu',   emoji:'🍫', disp:'mléčná čok.'},
-  {full:'Kešu v hořké čokoládě',        cat:'kesu',   emoji:'⬛', disp:'hořká čok.'},
-  {full:'Kešu uzené',                   cat:'kesu',   emoji:'💨', disp:'uzené'},
-  // ARAŠÍDY
-  {full:'Arašídy solené',               cat:'arasidy',emoji:'🧂', disp:'solené'},
-  {full:'Arašídy v karamelu se sezamem',cat:'arasidy',emoji:'🌾', disp:'se sezamem'},
-  {full:'Arašídy v karamelu s vanilkovým aroma',cat:'arasidy',emoji:'🍦',disp:'vanilkový kar.'},
-  {full:'Arašídy v cukru a medu',       cat:'arasidy',emoji:'🍯', disp:'cukr + med'},
-  {full:'Arašídy v chili těstíčku',     cat:'arasidy',emoji:'🌶️',disp:'chili'},
-  {full:'Arašídy v barevné čokoládě',   cat:'arasidy',emoji:'🌈', disp:'barevná čok.'},
-  // OSTATNÍ
-  {full:'Meruňky v jahodovém jogurtu',  cat:'ostatni',emoji:'🍓', disp:'Meruňky\njah. jogurt'},
-  {full:'Meruňky v jogurtu',            cat:'ostatni',emoji:'🍑', disp:'Meruňky\nv jogurtu'},
-  {full:'Ananas v jogurtu',             cat:'ostatni',emoji:'🍍', disp:'Ananas\nv jogurtu'},
-  {full:'Lískové ořechy v jogurtu',     cat:'ostatni',emoji:'🍦', disp:'Lísk.oř.\nv jogurtu'},
-  {full:'Lískové ořechy tříbarevné',    cat:'ostatni',emoji:'🌈', disp:'Lísk.oř.\ntříbarevné'},
-  {full:'Lískové ořechy v čokoládě',    cat:'ostatni',emoji:'🍫', disp:'Lísk.oř.\nv čokoládě'},
-  {full:'Lískové ořechy v tiramisu',    cat:'ostatni',emoji:'☕', disp:'Lísk.oř.\ntiramisu'},
-  {full:'Kokosové kousky v banánové polevě',cat:'ostatni',emoji:'🥥',disp:'Kokos\nv banánové'},
-  {full:'Kukuřice BBQ',                 cat:'ostatni',emoji:'🔥', disp:'Kukuřice\nBBQ'},
-  {full:'Kukuřice med a hořčice',       cat:'ostatni',emoji:'🍯', disp:'Kukuřice\nmed+hořč.'},
+const PROD_DATA=[
+  {full:'Mandle v jahodovém jogurtu',   cat:'mandle',emoji:'🍓',short:'Mandle\njah. jogurt'},
+  {full:'Mandle v barevné čokoládě',    cat:'mandle',emoji:'🌈',short:'Mandle\nbarev. čok.'},
+  {full:'Mandle v jogurtu',             cat:'mandle',emoji:'🍦',short:'Mandle\nv jogurtu'},
+  {full:'Mandle ve slaném karamelu',    cat:'mandle',emoji:'🧂',short:'Mandle\nslaný kar.'},
+  {full:'Mandle v bílé čokoládě',       cat:'mandle',emoji:'🤍',short:'Mandle\nbílá čok.'},
+  {full:'Mandle tiramisu',              cat:'mandle',emoji:'☕',short:'Mandle\ntiramisu'},
+  {full:'Mandle v mléčné čokoládě',     cat:'mandle',emoji:'🍫',short:'Mandle\nmléčná čok.'},
+  {full:'Mandle v hořké čokoládě',      cat:'mandle',emoji:'⬛',short:'Mandle\nhořká čok.'},
+  {full:'Mandle tříbarevné',            cat:'mandle',emoji:'🌈',short:'Mandle\ntříbarevné'},
+  {full:'Mandle exclusive v čokoládě',  cat:'mandle',emoji:'💎',short:'Mandle\nexclusive'},
+  {full:'Mandle solené',                cat:'mandle',emoji:'🧂',short:'Mandle\nsolené'},
+  {full:'Mandle uzené',                 cat:'mandle',emoji:'💨',short:'Mandle\nuzené'},
+  {full:'Mandle natural',               cat:'mandle',emoji:'🌰',short:'Mandle\nnatural'},
+  {full:'Kešu solené',                  cat:'kesu',  emoji:'🧂',short:'Kešu\nsolené'},
+  {full:'Kešu česnek a rozmarýn',       cat:'kesu',  emoji:'🧄',short:'Kešu\nčesnek'},
+  {full:'Kešu natural',                 cat:'kesu',  emoji:'🌿',short:'Kešu\nnatural'},
+  {full:'Kešu tiramisu',                cat:'kesu',  emoji:'☕',short:'Kešu\ntiramisu'},
+  {full:'Kešu tříbarevné',              cat:'kesu',  emoji:'🌈',short:'Kešu\ntříbarevné'},
+  {full:'Kešu v bílé čokoládě',         cat:'kesu',  emoji:'🤍',short:'Kešu\nbílá čok.'},
+  {full:'Kešu v mléčné čokoládě',       cat:'kesu',  emoji:'🍫',short:'Kešu\nmléčná čok.'},
+  {full:'Kešu v hořké čokoládě',        cat:'kesu',  emoji:'⬛',short:'Kešu\nhořká čok.'},
+  {full:'Kešu uzené',                   cat:'kesu',  emoji:'💨',short:'Kešu\nuzené'},
+  {full:'Arašídy solené',               cat:'arasidy',emoji:'🧂',short:'Arašídy\nsolené'},
+  {full:'Arašídy v karamelu se sezamem',cat:'arasidy',emoji:'🌾',short:'Arašídy\nse sezamem'},
+  {full:'Arašídy vanilkový karamel',    cat:'arasidy',emoji:'🍦',short:'Arašídy\nvanilkový'},
+  {full:'Arašídy v cukru a medu',       cat:'arasidy',emoji:'🍯',short:'Arašídy\ncukr+med'},
+  {full:'Arašídy v chili těstíčku',     cat:'arasidy',emoji:'🌶️',short:'Arašídy\nchili'},
+  {full:'Arašídy v barevné čokoládě',   cat:'arasidy',emoji:'🌈',short:'Arašídy\nbarev. čok.'},
+  {full:'Meruňky v jahodovém jogurtu',  cat:'ostatni',emoji:'🍓',short:'Meruňky\njah. jogurt'},
+  {full:'Meruňky v jogurtu',            cat:'ostatni',emoji:'🍑',short:'Meruňky\nv jogurtu'},
+  {full:'Ananas v jogurtu',             cat:'ostatni',emoji:'🍍',short:'Ananas\nv jogurtu'},
+  {full:'Lískové ořechy v jogurtu',     cat:'ostatni',emoji:'🍦',short:'Lísk.oř.\nv jogurtu'},
+  {full:'Lískové ořechy tříbarevné',    cat:'ostatni',emoji:'🌈',short:'Lísk.oř.\ntříbarevné'},
+  {full:'Lískové ořechy v čokoládě',    cat:'ostatni',emoji:'🍫',short:'Lísk.oř.\nv čokoládě'},
+  {full:'Lískové ořechy v tiramisu',    cat:'ostatni',emoji:'☕',short:'Lísk.oř.\ntiramisu'},
+  {full:'Kokosové kousky v banánové polevě',cat:'ostatni',emoji:'🥥',short:'Kokos\nbanánová'},
+  {full:'Kukuřice BBQ',                 cat:'ostatni',emoji:'🔥',short:'Kukuřice\nBBQ'},
+  {full:'Kukuřice med a hořčice',       cat:'ostatni',emoji:'🍯',short:'Kukuřice\nmed+hořč.'},
 ];
-
-const CAT_LABELS = {mandle:'Mandle',kesu:'Kešu',arasidy:'Arašídy',ostatni:'Ostatní'};
-
-const GRAVIR_MOTIFS = [
-  {id:'stromecek',label:'Stromeček',  emoji:'🎄',lt:'A'},
-  {id:'vlocka',   label:'Vločka',     emoji:'❄️',lt:'B'},
-  {id:'veverka',  label:'Veverka',    emoji:'🐿',lt:'C'},
-  {id:'zajicek',  label:'Zajíček',    emoji:'🐰',lt:'D'},
-  {id:'kometa',   label:'Kometa',     emoji:'☄️',lt:'E'},
-  {id:'hvezda',   label:'Hvězda',     emoji:'⭐',lt:'F'},
-  {id:'srdce',    label:'Srdce',      emoji:'❤️',lt:'G'},
-  {id:'vel-zaj',  label:'Vel. zaj.',  emoji:'🐇',lt:'H'},
-  {id:'labut',    label:'Labuť',      emoji:'🦢',lt:'I'},
-  {id:'kvet',     label:'Květ',       emoji:'🌸',lt:'J'},
+const GRAVIR_MOTIFS=[
+  {id:'stromecek',label:'Stromeček',emoji:'🎄',lt:'A'},
+  {id:'vlocka',   label:'Vločka',   emoji:'❄️',lt:'B'},
+  {id:'veverka',  label:'Veverka',  emoji:'🐿',lt:'C'},
+  {id:'zajicek',  label:'Zajíček',  emoji:'🐰',lt:'D'},
+  {id:'kometa',   label:'Kometa',   emoji:'☄️',lt:'E'},
+  {id:'hvezda',   label:'Hvězda',   emoji:'⭐',lt:'F'},
+  {id:'srdce',    label:'Srdce',    emoji:'❤️',lt:'G'},
+  {id:'vel-zaj',  label:'Vel. zaj.',emoji:'🐇',lt:'H'},
+  {id:'labut',    label:'Labuť',    emoji:'🦢',lt:'I'},
+  {id:'kvet',     label:'Květ',     emoji:'🌸',lt:'J'},
 ];
-
-const STUHA_COLORS = [
-  {id:'cervena', label:'Červená',       hex:'#c0392b'},
-  {id:'zlata',   label:'Zlatá',         hex:'#c8a217'},
-  {id:'smetanova',label:'Smetanová',    hex:'#f5f0e8',border:'#c4a88c'},
-  {id:'fialova', label:'Fialová',       hex:'#8e44ad'},
-  {id:'ruzova',  label:'Růžová',        hex:'#e91e8c'},
-  {id:'modra',   label:'Tmavě modrá',  hex:'#1a3a6b'},
-  {id:'zelena',  label:'Světle zelená',hex:'#5ba85b'},
-  {id:'zluta',   label:'Svítivě žlutá',hex:'#f1c40f'},
-  {id:'oranzova',label:'Svítivě oranž.',hex:'#e67e22'},
+const STUHA_COLORS=[
+  {id:'cervena',  label:'Červená',       hex:'#c0392b'},
+  {id:'zlata',    label:'Zlatá',         hex:'#c8a217'},
+  {id:'smetanova',label:'Smetanová',     hex:'#f5f0e8',border:'#c4a88c'},
+  {id:'fialova',  label:'Fialová',       hex:'#8e44ad'},
+  {id:'ruzova',   label:'Růžová',        hex:'#e91e8c'},
+  {id:'modra',    label:'Tmavě modrá',  hex:'#1a3a6b'},
+  {id:'zelena',   label:'Světle zelená', hex:'#5ba85b'},
+  {id:'zluta',    label:'Svítivě žlutá', hex:'#f1c40f'},
+  {id:'oranzova', label:'Svítivě oranž.',hex:'#e67e22'},
 ];
-
 const NW_KEY   = atob('MDM2M2ViYjE0OWRmMDRkMTI4NTY3MmEzMDgwMTYwYTI=');
 const NW_TOKEN = atob('QVRUQTdiMWI4YTFjZWRjMTIyODI3ZmRiMmY4MGRjMjRiNThkMTA4NTVkOTY3ZTAwNDViNWU0ZDdkNmZkMzQwYzJmZWFDNEYxMTFGRQ==');
 const T_LIST   = '6a1d1f2f0dd6bfcd79326c55';
 const ALWAYS_ASSIGN = ['5e6e8c20fea3432b37052e12'];
 
-/* ── STATE ── */
-let sel=[null,null], activeSlot=1;
-let selectedGravir='ne', selectedColor=null, attachedFile=null;
+let sel=[null,null], selEmoji=[null,null];
+let currentPickerSlot=1;
+let selectedMotif=null, selectedColor=null, attachedFile=null;
 
-/* ── INIT ── */
 (function(){
-  // Product grid
-  const pg = document.getElementById('prod-grid');
-  PROD_DATA.forEach((p,i) => {
-    const d = document.createElement('div');
-    d.className = 'pcard';
-    d.id = 'pc'+i;
-    d.dataset.cat = p.cat;
-    d.onclick = () => pickProd(i);
-    // Display name: for non-ostatni, strip category name from start
-    const parts = p.full.split(' ');
-    const catWord = parts[0]; // e.g. "Mandle"
-    const rest = parts.slice(1).join(' ');
-    const line1 = catWord;
-    const line2 = rest || '';
-    d.innerHTML = `<div class="pbadge"></div><div class="pe">${p.emoji}</div><div class="pn">${line1}<br><span style="opacity:.7">${line2}</span></div>`;
+  const pg=document.getElementById('prod-grid');
+  PROD_DATA.forEach((p,i)=>{
+    const d=document.createElement('div');
+    d.className='pcard'; d.dataset.cat=p.cat;
+    d.onclick=()=>pickProd(i);
+    d.innerHTML=`<div class="pe">${p.emoji}</div><div class="pn">${p.short}</div>`;
     pg.appendChild(d);
   });
+  const jd=document.createElement('div');
+  jd.className='pcard other-card'; jd.dataset.cat='all';
+  jd.onclick=()=>pickJine();
+  jd.innerHTML=`<div class="pe">✏️</div><div class="pn">Jiné…\n(doptat se)</div>`;
+  pg.appendChild(jd);
 
-  // Color swatches
-  const cg = document.getElementById('color-grid');
-  STUHA_COLORS.forEach(c => {
-    const d = document.createElement('div');
-    d.className='citem'; d.id='ci-'+c.id; d.title=c.label;
+  const cg=document.getElementById('color-grid');
+  STUHA_COLORS.forEach(c=>{
+    const d=document.createElement('div');
+    d.className='citem'; d.id='ci-'+c.id;
     d.onclick=()=>selectColor(c.id);
     d.innerHTML=`<div class="ccirc" style="background:${c.hex};border-color:${c.border||c.hex}"></div><div class="clbl">${c.label}</div>`;
     cg.appendChild(d);
   });
-
-  // Gravír grid
-  const gg = document.getElementById('gravir-grid');
-  GRAVIR_MOTIFS.forEach(m => {
-    const d = document.createElement('div');
+  const gg=document.getElementById('gravir-grid');
+  GRAVIR_MOTIFS.forEach(m=>{
+    const d=document.createElement('div');
     d.className='gcard'; d.id='gc-'+m.id;
-    d.onclick=()=>setGravir(m.id);
+    d.onclick=()=>toggleMotif(m.id);
     d.innerHTML=`<div class="gl">${m.lt}</div><div class="ge">${m.emoji}</div><div class="gn">${m.label}</div>`;
     gg.appendChild(d);
   });
 })();
 
-/* ── PRODUCT SELECTION ── */
-let currentCat = 'all';
-
-function setCat(cat, btn) {
-  currentCat = cat;
-  document.querySelectorAll('.cat-tab').forEach(b=>b.classList.remove('active'));
+function openPicker(n){
+  currentPickerSlot=n;
+  document.getElementById('mh-title').textContent=`Vyberte produkt — Slot ${n}`;
+  document.getElementById('modal-bg').classList.add('open');
+  document.querySelectorAll('#m-cat-tabs .cat-tab').forEach((b,i)=>b.classList.toggle('active',i===0));
+  document.querySelectorAll('.pcard').forEach(c=>c.classList.remove('hidden'));
+}
+function closePicker(e){if(e.target===document.getElementById('modal-bg'))closePickerForce();}
+function closePickerForce(){document.getElementById('modal-bg').classList.remove('open');}
+function setCat(cat,btn){
+  document.querySelectorAll('#m-cat-tabs .cat-tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  document.querySelectorAll('.pcard').forEach(c=>{
-    c.classList.toggle('hidden', cat!=='all' && c.dataset.cat!==cat);
-  });
+  document.querySelectorAll('#prod-grid .pcard:not(.other-card)').forEach(c=>c.classList.toggle('hidden',cat!=='all'&&c.dataset.cat!==cat));
+  document.querySelector('.other-card').classList.remove('hidden');
 }
-
-function setActiveSlot(n) {
-  activeSlot = n;
-  document.getElementById('slot-1').classList.toggle('active-slot', n===1);
-  document.getElementById('slot-2').classList.toggle('active-slot', n===2);
+function pickProd(i){
+  const p=PROD_DATA[i];
+  sel[currentPickerSlot-1]=p.full; selEmoji[currentPickerSlot-1]=p.emoji;
+  renderSlotVisual(currentPickerSlot);
+  document.getElementById('jine-'+currentPickerSlot+'-wrap').style.display='none';
+  closePickerForce(); upd();
 }
-
-function pickProd(i) {
-  const p = PROD_DATA[i];
-  sel[activeSlot-1] = p.full;
-  renderSlots();
-  renderPcards();
-  // Auto-advance to next empty slot
-  if (activeSlot===1 && !sel[1]) setActiveSlot(2);
-  else if (activeSlot===2 && !sel[0]) setActiveSlot(1);
-  upd();
+function pickJine(){
+  sel[currentPickerSlot-1]='__jine__'; selEmoji[currentPickerSlot-1]='✏️';
+  renderSlotVisual(currentPickerSlot);
+  document.getElementById('jine-'+currentPickerSlot+'-wrap').style.display='block';
+  closePickerForce(); upd();
 }
-
-function clearSlot(n, e) {
+function clearSlotV(n,e){
   e.stopPropagation();
-  sel[n-1] = null;
-  renderSlots();
-  renderPcards();
-  setActiveSlot(n);
+  sel[n-1]=null; selEmoji[n-1]=null;
+  document.getElementById('jine-'+n+'-wrap').style.display='none';
+  renderSlotVisual(n); upd();
+}
+function renderSlotVisual(n){
+  const box=document.getElementById('slotVis-'+n);
+  const emEl=document.getElementById('sEmoji'+n);
+  const nmEl=document.getElementById('sName'+n);
+  const v=sel[n-1];
+  if(v){
+    box.classList.add('filled');
+    emEl.textContent=selEmoji[n-1]||'✏️';
+    const p=PROD_DATA.find(x=>x.full===v);
+    nmEl.textContent=v==='__jine__'?'Jiné\n(upřesnit)':(p?p.short:v.substring(0,20));
+  }else{
+    box.classList.remove('filled');
+    emEl.textContent=''; nmEl.textContent='';
+  }
+}
+
+function onVazba(){
+  const isJuta=document.querySelector('input[name="vazba"]:checked').value==='juta';
+  document.getElementById('juta-info').style.display=isJuta?'flex':'none';
+  document.getElementById('saten-colors').style.display=isJuta?'none':'block';
+  if(isJuta){selectedColor=null;STUHA_COLORS.forEach(c=>document.getElementById('ci-'+c.id).classList.remove('active'));}
   upd();
 }
-
-function renderSlots() {
-  [1,2].forEach(n => {
-    const box = document.getElementById('slot-'+n);
-    const val = document.getElementById('sv'+n);
-    const clr = document.getElementById('sc'+n);
-    const num = box.querySelector('.slot-num');
-    if (sel[n-1]) {
-      box.classList.add('filled');
-      val.className = 'slot-val';
-      val.textContent = sel[n-1];
-      clr.style.display = 'block';
-      num.style.background = 'var(--bd)';
-    } else {
-      box.classList.remove('filled');
-      val.className = 'slot-empty';
-      val.textContent = '— klikni produkt níže';
-      clr.style.display = 'none';
-      num.style.background = '';
-    }
-  });
-}
-
-function renderPcards() {
-  PROD_DATA.forEach((p,i) => {
-    const card = document.getElementById('pc'+i);
-    const badge = card.querySelector('.pbadge');
-    card.classList.remove('sel-1','sel-2');
-    badge.textContent = '';
-    if (sel[0]===p.full) { card.classList.add('sel-1'); badge.textContent='1'; }
-    else if (sel[1]===p.full) { card.classList.add('sel-2'); badge.textContent='2'; }
-  });
-}
-
-/* ── GRAVÍR ── */
-function setGravir(id) {
-  selectedGravir = id;
-  document.getElementById('gp-ne').classList.toggle('active', id==='ne');
-  document.getElementById('gp-text').classList.toggle('active', id==='text');
-  GRAVIR_MOTIFS.forEach(m => document.getElementById('gc-'+m.id).classList.toggle('active', m.id===id));
-  document.getElementById('gtxtwrap').style.display = id==='text' ? 'block' : 'none';
+function selectColor(id){
+  selectedColor=selectedColor===id?null:id;
+  STUHA_COLORS.forEach(c=>document.getElementById('ci-'+c.id).classList.toggle('active',c.id===selectedColor));
+  document.getElementById('chint').style.display=selectedColor?'none':'block';
   upd();
 }
-
-/* ── COLOR ── */
-function selectColor(id) {
-  selectedColor = selectedColor===id ? null : id;
-  STUHA_COLORS.forEach(c => document.getElementById('ci-'+c.id).classList.toggle('active', c.id===selectedColor));
-  document.getElementById('chint').style.display = selectedColor ? 'none' : 'block';
+function toggleMotif(id){
+  selectedMotif=selectedMotif===id?null:id;
+  GRAVIR_MOTIFS.forEach(m=>document.getElementById('gc-'+m.id).classList.toggle('active',m.id===selectedMotif));
   upd();
 }
-
-/* ── KOMPLIMENTKA ── */
-function onKompl() {
-  document.getElementById('kompl-wrap').style.display =
-    document.querySelector('input[name="kompl"]:checked').value==='ano' ? 'block' : 'none';
+function clearGravir(){
+  selectedMotif=null;
+  document.getElementById('gravir-text').value='';
+  GRAVIR_MOTIFS.forEach(m=>document.getElementById('gc-'+m.id).classList.remove('active'));
   upd();
 }
-function onFile(inp) {
-  attachedFile = inp.files[0]||null;
-  document.getElementById('fztxt').textContent = attachedFile ? attachedFile.name : 'Klikněte pro nahrání souboru';
-  document.getElementById('file-zone').classList.toggle('has-file', !!attachedFile);
+function onTisk(){
+  document.getElementById('tisk-wrap').style.display=document.querySelector('input[name="tisk"]:checked').value!=='ne'?'block':'none';
   upd();
 }
-
-/* ── HELPERS ── */
+function onKompl(){
+  document.getElementById('kompl-wrap').style.display=document.querySelector('input[name="kompl"]:checked').value==='ano'?'block':'none';
+  upd();
+}
+function onFile(inp){
+  attachedFile=inp.files[0]||null;
+  document.getElementById('fztxt').textContent=attachedFile?attachedFile.name:'Klikněte pro nahrání souboru';
+  document.getElementById('file-zone').classList.toggle('has-file',!!attachedFile);
+  upd();
+}
 function fmtDate(iso){if(!iso)return'—';const[y,m,d]=iso.split('-');return d+'. '+m+'. '+y;}
-function getData() {
-  const vazba  = document.querySelector('input[name="vazba"]:checked').value;
-  const kompl  = document.querySelector('input[name="kompl"]:checked').value;
-  const color  = STUHA_COLORS.find(c=>c.id===selectedColor)||null;
-  const motif  = GRAVIR_MOTIFS.find(m=>m.id===selectedGravir)||null;
-  return {
-    prod1:sel[0], prod2:sel[1],
-    firma:   document.getElementById('firma').value.trim(),
-    kontakt: document.getElementById('kontakt').value.trim(),
-    email:   document.getElementById('email').value.trim(),
-    pocet:   parseInt(document.getElementById('pocet').value)||0,
-    termin:  document.getElementById('termin').value,
-    vazba, color, motif,
-    gravirId: selectedGravir,
-    gravirText: selectedGravir==='text' ? document.getElementById('gravir-text').value.trim() : '',
-    kompl,
-    komplText: kompl==='ano' ? document.getElementById('kompl-text').value.trim() : '',
-    hasFile: !!(kompl==='ano'&&attachedFile),
-    poznamka: document.getElementById('poznamka').value.trim(),
+function getData(){
+  const vazba=document.querySelector('input[name="vazba"]:checked').value;
+  const kompl=document.querySelector('input[name="kompl"]:checked').value;
+  const tisk =document.querySelector('input[name="tisk"]:checked').value;
+  const color=STUHA_COLORS.find(c=>c.id===selectedColor)||null;
+  const motif=GRAVIR_MOTIFS.find(m=>m.id===selectedMotif)||null;
+  const gtxt =document.getElementById('gravir-text').value.trim();
+  const j1=sel[0]==='__jine__'?document.getElementById('jine1').value.trim():'';
+  const j2=sel[1]==='__jine__'?document.getElementById('jine2').value.trim():'';
+  const prod1Label=sel[0]==='__jine__'?('Jiné: '+(j1||'(upřesnit)')):sel[0];
+  const prod2Label=sel[1]==='__jine__'?('Jiné: '+(j2||'(upřesnit)')):sel[1];
+  return{
+    prod1:sel[0],prod1Label,prod2:sel[1],prod2Label,
+    firma:document.getElementById('firma').value.trim(),
+    kontakt:document.getElementById('kontakt').value.trim(),
+    email:document.getElementById('email').value.trim(),
+    telefon:document.getElementById('telefon').value.trim(),
+    pocet:parseInt(document.getElementById('pocet').value)||0,
+    termin:document.getElementById('termin').value,
+    vazba,color,motif,gravirText:gtxt,
+    hasGravir:!!(motif||gtxt),
+    tisk,tiskText:tisk!=='ne'?document.getElementById('tisk-text').value.trim():'',
+    kompl,komplText:kompl==='ano'?document.getElementById('kompl-text').value.trim():'',
+    hasFile:!!(kompl==='ano'&&attachedFile),
+    poznamka:document.getElementById('poznamka').value.trim(),
   };
 }
 function gravirStr(d){
-  if(d.gravirId==='ne') return'— Bez gravíru';
-  if(d.gravirId==='text') return'✏️ Text: "'+(d.gravirText||'…')+'"';
-  return d.motif ? d.motif.emoji+' '+d.motif.lt+' '+d.motif.label : '?';
+  const parts=[];
+  if(d.motif)parts.push(d.motif.emoji+' '+d.motif.label);
+  if(d.gravirText)parts.push('Text: "'+d.gravirText+'"');
+  return parts.length?parts.join(' + '):'— Bez gravíru';
 }
-
-/* ── LIVE PREVIEW ── */
+function tiskStr(d){
+  if(d.tisk==='ne')return'— Bez tisku';
+  return{logo:'🏷 Logo',full:'🎨 Celý přední potisk',kom:'✨ Kombinace'}[d.tisk]||d.tisk;
+}
 function upd(){
-  const d = getData();
-  const el = document.getElementById('prev-content');
+  const d=getData();
+  const el=document.getElementById('prev-content');
   if(!d.prod1&&!d.prod2&&!d.firma&&!d.pocet){
-    el.innerHTML='<div class="pv-empty"><div style="font-size:52px">🎁</div><div style="margin-top:10px;font-size:13px">Vyplň formulář vlevo…</div></div>';
+    el.innerHTML='<div class="pv-empty"><div style="font-size:52px">🎁</div><div style="margin-top:10px;font-size:13px">Vyberte obsah krabičky…</div></div>';
     return;
   }
-  const ch = d.color?d.color.hex:'#d4c0a8';
-  const cb = d.color?(d.color.border||d.color.hex):'#d4c0a8';
-  let gbadge='';
-  if(d.gravirId==='text') gbadge=`<div class="pv-grav"><div class="gg">✏️</div><div class="glt">T</div></div>`;
-  else if(d.motif) gbadge=`<div class="pv-grav"><div class="gg">${d.motif.emoji}</div><div class="glt">${d.motif.lt}</div></div>`;
-  const p1=d.prod1
-    ?`<div class="pv-row"><div class="pv-num">1</div><span>${d.prod1}</span></div>`
-    :`<div class="pv-row" style="opacity:.35"><div class="pv-num" style="background:#aaa">1</div><span style="font-style:italic">nevybráno</span></div>`;
-  const p2=d.prod2
-    ?`<div class="pv-row"><div class="pv-num">2</div><span>${d.prod2}</span></div>`
-    :`<div class="pv-row" style="opacity:.35"><div class="pv-num" style="background:#aaa">2</div><span style="font-style:italic">nevybráno</span></div>`;
-  const krow=d.kompl==='ano'
-    ?`<div class="pv-dr"><span class="pv-dl">Komplimentka</span><span class="pv-dv"><span class="pv-kompl">💌${d.hasFile?' + soubor':''}</span></span></div>`:'';
+  const ch=d.color?d.color.hex:(d.vazba==='juta'?'#c4a882':'#d4c0a8');
+  const cb=d.color?(d.color.border||d.color.hex):(d.vazba==='juta'?'#a0845c':'#d4c0a8');
+  const tiskRow=d.tisk!=='ne'?`<div class="pv-dr"><span class="pv-dl">Tisk</span><span class="pv-dv"><span class="pv-chip pv-tchip">${tiskStr(d)}</span></span></div>`:'';
+  const krow=d.kompl==='ano'?`<div class="pv-dr"><span class="pv-dl">Komplimentka</span><span class="pv-dv"><span class="pv-chip">💌${d.hasFile?' + soubor':''}</span></span></div>`:'';
   el.innerHTML=`
   <div class="pv-vis">
     <div class="pv-tag">Dárková krabička 2×50g</div>
-    ${p1}${p2}
-    ${gbadge}
+    <div class="pv-mini-box">
+      <div class="pv-slot">
+        ${d.prod1?`<div class="pv-slot-e">${selEmoji[0]}</div><div class="pv-slot-n">${d.prod1Label}</div>`:'<div class="pv-slot-empty">— slot 1</div>'}
+        <div class="pv-slot-g">50 g</div>
+      </div>
+      <div class="pv-slot">
+        ${d.prod2?`<div class="pv-slot-e">${selEmoji[1]}</div><div class="pv-slot-n">${d.prod2Label}</div>`:'<div class="pv-slot-empty">— slot 2</div>'}
+        <div class="pv-slot-g">50 g</div>
+      </div>
+    </div>
     <div class="pv-stuha" style="background:${ch};outline:1px solid ${cb}"></div>
   </div>
   <div class="pv-body">
-    <div class="pv-dr"><span class="pv-dl">Zákazník</span><span class="pv-dv">${d.firma||'—'}</span></div>
+    ${d.firma?`<div class="pv-dr"><span class="pv-dl">Zákazník</span><span class="pv-dv">${d.firma}</span></div>`:''}
     ${d.kontakt?`<div class="pv-dr"><span class="pv-dl">Kontakt</span><span class="pv-dv">${d.kontakt}</span></div>`:''}
     <div class="pv-dr"><span class="pv-dl">Počet</span><span class="pv-dv">${d.pocet?d.pocet+' ks':'—'}</span></div>
     <div class="pv-dr"><span class="pv-dl">Termín</span><span class="pv-dv">${fmtDate(d.termin)}</span></div>
-    <div class="pv-dr"><span class="pv-dl">Stuha</span><span class="pv-dv">${d.vazba==='juta'?'🌿 Juta':'🎀 Satén'} <span class="pv-dot" style="background:${ch};border-color:${cb}"></span>${d.color?d.color.label:'—'}</span></div>
-    <div class="pv-dr"><span class="pv-dl">Gravír</span><span class="pv-dv">${gravirStr(d)}</span></div>
-    ${krow}
+    <div class="pv-dr"><span class="pv-dl">Stuha</span><span class="pv-dv">${d.vazba==='juta'?'🌿 Jutová':'🎀 Saténová'} <span class="pv-dot" style="background:${ch};border-color:${cb}"></span>${d.color?d.color.label:'přírodní'}</span></div>
+    <div class="pv-dr"><span class="pv-dl">Gravír</span><span class="pv-dv" style="font-size:12px">${gravirStr(d)}</span></div>
+    ${tiskRow}${krow}
   </div>
   ${d.komplText?`<div class="pv-vzkaz">💌 "${d.komplText}"</div>`:''}`;
 }
-
-/* ── SUBMIT ── */
 async function doSubmit(){
   hideMsg();
   const d=getData();
-  if(!d.prod1){showErr('Vyberte Produkt 1.');return;}
-  if(!d.prod2){showErr('Vyberte Produkt 2.');return;}
-  if(!d.pocet){showErr('Zadejte počet kusů.');return;}
-  if(!d.termin){showErr('Zadejte termín dodání.');return;}
-
-  setLoad(true,'Vytváří se karta v Trellu…');
-  const cn=d.color?d.color.label:'nevybrána';
-  const cardName=`${d.firma||'Zákazník'} — ${d.pocet} ks — Krabička 2×50g — ${fmtDate(d.termin)}`;
-  const desc=`## 🎁 Dárková krabička 2×50g\n\n**Zákazník:** ${d.firma||'—'}\n**Kontakt:** ${d.kontakt||'—'}${d.email?' · '+d.email:''}\n\n## 📦 Obsah krabičky\n- **Produkt 1 (50 g):** ${d.prod1}\n- **Produkt 2 (50 g):** ${d.prod2}\n\n## 📋 Zakázka\n**Počet kusů:** ${d.pocet} ks\n**Termín dodání:** ${fmtDate(d.termin)}\n\n## 🎀 Personalizace\n**Vazba:** ${d.vazba==='juta'?'Jutová stuha':'Saténová stuha'} — ${cn}\n**Gravír:** ${gravirStr(d)}\n**Komplimentka:** ${d.kompl==='ano'?'Ano'+(d.hasFile?' (+ soubor)':''):'Ne'}\n${d.komplText?`**Text:** "${d.komplText}"\n`:''}\n## 🔒 Interní\n${d.poznamka||'—'}`;
-
+  if(!d.prod1){showErr('Klikněte na Slot 1 v obrázku krabičky a vyberte produkt.');return;}
+  if(!d.prod2){showErr('Klikněte na Slot 2 a vyberte druhý produkt.');return;}
+  if(!d.email&&!d.kontakt){showErr('Vyplňte prosím jméno nebo email.');return;}
+  setLoad(true,'Odesílám konfiguraci…');
+  const cn=d.vazba==='juta'?'Přírodní juta':(d.color?d.color.label:'nevybrána');
+  const cardName=`${d.firma||d.kontakt||'Zákazník'} — ${d.pocet?d.pocet+' ks':'?'} — Krabička 2×50g${d.termin?' — '+fmtDate(d.termin):''}`;
+  const desc=`## 🎁 Dárková krabička 2×50g\n\n**Zákazník:** ${d.firma||'—'}\n**Kontakt:** ${d.kontakt||'—'}${d.email?' · '+d.email:''}${d.telefon?' · '+d.telefon:''}\n\n## 📦 Obsah krabičky\n- **Slot 1 (50 g):** ${d.prod1Label}\n- **Slot 2 (50 g):** ${d.prod2Label}\n\n## 📋 Objednávka\n**Počet:** ${d.pocet||'—'} ks · **Termín:** ${fmtDate(d.termin)}\n\n## 🎀 Personalizace\n**Stuha:** ${d.vazba==='juta'?'Jutová':'Saténová'} — ${cn}\n**Gravír:** ${gravirStr(d)}\n**Tisk:** ${tiskStr(d)}${d.tiskText?' ('+d.tiskText+')':''}\n**Komplimentka:** ${d.kompl==='ano'?'Ano'+(d.hasFile?' (+ soubor)':''):'Ne'}\n${d.komplText?`**Text:** "${d.komplText}"\n`:''}\n## 💬 Přání\n${d.poznamka||'—'}`;
   const due=d.termin?new Date(d.termin+'T10:00:00.000Z').toISOString():null;
   try{
     const res=await fetch(`https://api.trello.com/1/cards?key=${NW_KEY}&token=${NW_TOKEN}`,{
@@ -596,18 +639,19 @@ async function doSubmit(){
     });
     const card=await res.json();
     if(!card.id)throw new Error(card.message||JSON.stringify(card));
-
     setLoad(true,'Přidává se checklist…');
     const cl=await fetch(`https://api.trello.com/1/checklists?key=${NW_KEY}&token=${NW_TOKEN}`,{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({idCard:card.id,name:'Postup zakázky'})
     }).then(r=>r.json());
     if(cl.id){
-      const kroky=['Kontakt potvrzen','Platba přijata','Produkty připraveny','Krabičky připraveny',
-        `Stuha: ${d.vazba==='juta'?'jutová':'saténová'} — ${cn}`,
-        ...(d.gravirId!=='ne'?[`Gravír: ${gravirStr(d)}`]:[]),
+      const kroky=['Kontakt ověřen a objednávka potvrzena','Platba přijata',
+        'Slot 1: '+d.prod1Label,'Slot 2: '+d.prod2Label,
+        'Stuha připravena: '+cn,
+        ...(d.hasGravir?['Gravír připraven: '+gravirStr(d)]:[]),
+        ...(d.tisk!=='ne'?['Tisk připraven: '+tiskStr(d)]:[]),
         ...(d.kompl==='ano'?['Komplimentka připravena'+(d.hasFile?' (viz příloha)':'')]:[]),
-        'Kompletace a balení','Kontrola kvality','Expedice / předání zákazníkovi','Faktura odeslána'];
+        'Kompletace a balení','Kontrola kvality','Expedice / předání','Faktura odeslána'];
       for(const k of kroky){
         await fetch(`https://api.trello.com/1/checklists/${cl.id}/checkItems?key=${NW_KEY}&token=${NW_TOKEN}`,{
           method:'POST',headers:{'Content-Type':'application/json'},
@@ -621,19 +665,19 @@ async function doSubmit(){
       form.append('file',attachedFile,attachedFile.name);
       await fetch(`https://api.trello.com/1/cards/${card.id}/attachments?key=${NW_KEY}&token=${NW_TOKEN}`,{method:'POST',body:form}).catch(()=>{});
     }
-    const eb=`🎁 NOVÁ ZAKÁZKA — Dárková krabička 2×50g\n\nZákazník: ${d.firma||'—'}\nKontakt: ${d.kontakt||'—'}${d.email?' · '+d.email:''}\n\nProdukt 1 (50g): ${d.prod1}\nProdukt 2 (50g): ${d.prod2}\nPočet: ${d.pocet} ks · Termín: ${fmtDate(d.termin)}\n\nStudha: ${d.vazba==='juta'?'jutová':'saténová'} — ${cn}\nGravír: ${gravirStr(d)}\nKomplimentka: ${d.kompl==='ano'?'Ano'+(d.hasFile?' (+ soubor)':''):'Ne'}\n${d.komplText?'Text: '+d.komplText+'\n':''}\n${d.poznamka?'Interní: '+d.poznamka+'\n':''}\nTrello: ${card.url}`;
     fetch('https://script.google.com/macros/s/AKfycbwonbDE6DfEOFOqbY6EhPN2lfx2ue2j37HmeSvHsVx_VQJdR1kE55NDpOGhtOnhwj7-mQ/exec',{
       method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({to:'nutworld.cz@gmail.com',subject:`🎁 Krabička 2×50g — ${d.firma||'zákazník'} — ${d.pocet} ks`,body:eb})
+      body:JSON.stringify({
+        to:'nutworld.cz@gmail.com',
+        subject:`🎁 Krabička 2×50g — ${d.firma||d.kontakt||'zákazník'} — ${d.pocet||'?'} ks`,
+        body:`🎁 NOVÁ KONFIGURACE — Dárková krabička 2×50g\n\nZákazník: ${d.firma||'—'}\nKontakt: ${d.kontakt||'—'}${d.email?' · '+d.email:''}${d.telefon?' · '+d.telefon:''}\nSlot 1 (50g): ${d.prod1Label}\nSlot 2 (50g): ${d.prod2Label}\nPočet: ${d.pocet||'—'} ks · Termín: ${fmtDate(d.termin)}\nStudha: ${d.vazba==='juta'?'jutová':'saténová'} — ${cn}\nGravír: ${gravirStr(d)}\nTisk: ${tiskStr(d)}${d.tiskText?' ('+d.tiskText+')':''}\nKomplimentka: ${d.kompl==='ano'?'Ano'+(d.hasFile?' (+ soubor)':''):'Ne'}\n${d.komplText?'Text: '+d.komplText+'\n':''}${d.poznamka?'Přání: '+d.poznamka+'\n':''}\nTrello: ${card.url}`
+      })
     }).catch(()=>{});
-
     setLoad(false);
     document.getElementById('ok-box').style.display='block';
-    document.getElementById('tlink').href=card.url;
     document.getElementById('btn-sub').disabled=true;
   }catch(e){setLoad(false);showErr('❌ Chyba: '+e.message);}
 }
-
 function setLoad(on,txt){
   document.getElementById('lbox').style.display=on?'block':'none';
   document.getElementById('btn-sub').style.display=on?'none':'block';
