@@ -11,8 +11,8 @@
 body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;font-size:14px}
 h1,h2,h3{font-family:'Exo 2',sans-serif}
 
-.shell{max-width:1100px;margin:0 auto;padding:24px 16px;display:grid;grid-template-columns:1fr 360px;gap:20px;align-items:start}
-@media(max-width:900px){.shell{grid-template-columns:1fr}}
+.shell{max-width:1140px;margin:0 auto;padding:24px 16px;display:grid;grid-template-columns:1fr 380px;gap:20px;align-items:start}
+@media(max-width:940px){.shell{grid-template-columns:1fr}}
 
 .panel{background:var(--white);border-radius:14px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,.1)}
 .panel-head{background:linear-gradient(135deg,var(--bd),var(--br));padding:16px 22px;color:white}
@@ -26,14 +26,13 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
 .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--br)}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 
-.sec{font-family:'Exo 2',sans-serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--br);margin:20px 0 10px;padding-bottom:5px;border-bottom:1.5px solid var(--kraft)}
-.sec:first-child{margin-top:0}
+.sec{font-family:'Exo 2',sans-serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--br);margin:22px 0 10px;padding-bottom:5px;border-bottom:1.5px solid var(--kraft)}
 
 /* Product dropdown */
 .prod-wrap{position:relative}
 .prod-inp{width:100%;border:1.5px solid #d4c0a8;border-radius:8px;padding:9px 12px;font-family:inherit;font-size:13px;color:#2a1a0e;background:#fdf9f6;transition:border-color .15s}
 .prod-inp:focus{outline:none;border-color:var(--br)}
-.prod-drop{position:absolute;top:calc(100% + 2px);left:0;right:0;background:#fff;border:1.5px solid #c8976a;border-radius:0 0 10px 10px;z-index:300;max-height:250px;overflow-y:auto;box-shadow:0 6px 20px rgba(0,0,0,.12);display:none}
+.prod-drop{position:absolute;top:calc(100% + 2px);left:0;right:0;background:#fff;border:1.5px solid #c8976a;border-radius:0 0 10px 10px;z-index:300;max-height:240px;overflow-y:auto;box-shadow:0 6px 20px rgba(0,0,0,.12);display:none}
 .prod-drop.open{display:block}
 .prod-item{padding:9px 14px;cursor:pointer;font-size:13px;border-bottom:1px solid #f1e6da}
 .prod-item:last-child{border-bottom:none}
@@ -49,6 +48,35 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
 .radio-opt:has(input:checked){background:var(--kraft);border-color:var(--br);color:var(--bd)}
 .radio-opt input[type=radio]{display:none}
 
+/* Gravír grid */
+.gravir-top{display:flex;gap:8px;margin-bottom:10px}
+.grav-pill{padding:7px 16px;border:1.5px solid #d4c0a8;border-radius:20px;background:#fdf9f6;color:#5a3a22;font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:all .15s}
+.grav-pill.active{background:var(--kraft);border-color:var(--br);color:var(--bd)}
+.gravir-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+@media(max-width:640px){.gravir-grid{grid-template-columns:repeat(3,1fr)}}
+.gravir-card{position:relative;aspect-ratio:1;border:2px solid #d4c0a8;border-radius:10px;background:#fdf9f6;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:all .15s;padding:6px 4px}
+.gravir-card:hover{border-color:#c8976a;background:var(--kraft)}
+.gravir-card.active{border-color:var(--br);background:var(--kraft);box-shadow:0 0 0 2px rgba(131,80,46,.2)}
+.gravir-card .g-emoji{font-size:24px;line-height:1}
+.gravir-card .g-name{font-size:10px;font-weight:600;color:var(--bd);text-align:center;line-height:1.2}
+.gravir-card .g-letter{position:absolute;top:4px;left:5px;font-family:'Exo 2',sans-serif;font-size:9px;font-weight:800;color:var(--amb);background:var(--bd);width:15px;height:15px;border-radius:3px;display:flex;align-items:center;justify-content:center}
+
+/* Color swatches */
+.color-grid{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.color-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer}
+.color-circle{width:34px;height:34px;border-radius:50%;border:3px solid transparent;transition:transform .12s,box-shadow .12s}
+.color-item.active .color-circle{transform:scale(1.15);box-shadow:0 0 0 2px white,0 0 0 4px var(--br)}
+.color-label{font-size:9px;color:#aaa;text-align:center;max-width:42px;line-height:1.2;transition:color .12s}
+.color-item.active .color-label{color:var(--bd);font-weight:700}
+
+/* File upload */
+.file-zone{border:2px dashed #d4c0a8;border-radius:10px;padding:14px;cursor:pointer;text-align:center;background:#fdfaf8;transition:all .15s}
+.file-zone:hover{border-color:#c8976a;background:var(--kraft)}
+.file-zone.has-file{border-style:solid;border-color:#c8976a;background:var(--kraft)}
+.fz-icon{font-size:22px;margin-bottom:4px}
+.fz-text{font-size:12.5px;color:#aaa}
+.file-zone.has-file .fz-text{color:var(--bd);font-weight:600}
+
 /* Buttons */
 .btn-gen{display:block;width:100%;background:linear-gradient(135deg,#7a5200,var(--amb));color:white;border:none;font-family:'Exo 2',sans-serif;font-weight:800;font-size:16px;padding:14px;border-radius:10px;cursor:pointer;margin-top:20px;letter-spacing:.5px;transition:opacity .15s}
 .btn-gen:hover{opacity:.9}
@@ -61,17 +89,31 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
 .loading-dots span:nth-child(3){animation-delay:.4s}
 @keyframes dp{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
 
-/* Summary */
+/* Preview */
 #preview-wrap{position:sticky;top:24px}
-.s-badge{display:inline-block;background:var(--kraft);border:1.5px solid #c8976a;border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--br);margin-bottom:14px}
-.s-prod{display:flex;align-items:center;gap:10px;padding:9px 13px;border:1.5px solid #d4c0a8;border-radius:10px;margin-bottom:7px;font-size:13px;background:#fdf9f6}
-.s-num{width:22px;height:22px;border-radius:50%;background:var(--bd);color:var(--amb);font-family:'Exo 2',sans-serif;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.s-row{display:flex;justify-content:space-between;align-items:flex-start;padding:7px 0;border-bottom:1px solid #f1e6da;font-size:12.5px;gap:10px}
-.s-row:last-child{border-bottom:none}
-.s-label{color:#999;flex-shrink:0}
-.s-val{font-weight:600;color:var(--bd);text-align:right}
-.s-hr{height:1px;background:#f1e6da;margin:12px 0}
-.vzkaz-box{margin-top:12px;padding:12px;background:#fdf8f4;border:1.5px solid #d4c0a8;border-radius:10px;font-size:12px;color:#5a3a22;font-style:italic;line-height:1.5}
+.prev-vis{margin:0 0 0 0;padding:16px;background:linear-gradient(145deg,#e8d5b8,#d4b896);position:relative;overflow:hidden}
+.prev-vis::after{content:'';position:absolute;top:-20px;right:-20px;width:80px;height:80px;border-radius:50%;background:rgba(247,171,49,.18)}
+.prev-tag{font-family:'Exo 2',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(92,56,31,.55);margin-bottom:8px}
+.prev-prod-row{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.55);border-radius:7px;padding:6px 10px;font-size:12px;font-weight:600;color:var(--bd);margin-bottom:5px}
+.prev-prod-num{width:17px;height:17px;border-radius:50%;background:var(--bd);color:var(--amb);font-family:'Exo 2',sans-serif;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.prev-gravir-badge{position:absolute;top:12px;right:12px;background:var(--bd);color:var(--amb);width:34px;height:34px;border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.prev-gravir-badge .ge{font-size:14px;line-height:1}
+.prev-gravir-badge .gl{font-family:'Exo 2',sans-serif;font-size:8px;font-weight:800;line-height:1}
+.prev-stuha{margin-top:10px;height:4px;border-radius:2px;background:#d4c0a8;transition:background .3s}
+.prev-body{padding:14px 18px}
+.prev-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #f1e6da;font-size:12.5px;gap:10px}
+.prev-row:last-child{border-bottom:none}
+.prev-label{color:#bbb;flex-shrink:0;font-size:12px}
+.prev-val{font-weight:600;color:var(--bd);text-align:right}
+.prev-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:3px;vertical-align:middle;border:1px solid rgba(0,0,0,.1)}
+.prev-kompl{display:inline-flex;align-items:center;gap:3px;background:#fef0f5;border:1px solid #f8bbd9;border-radius:20px;padding:1px 7px;font-size:11px;color:#c41e3a;font-weight:600}
+.prev-vzkaz{margin:0 18px 14px;padding:10px 12px;background:#fdf8f4;border-left:3px solid var(--kraft);font-size:12px;color:#5a3a22;font-style:italic;line-height:1.5;border-radius:0 8px 8px 0}
+.prev-empty{text-align:center;padding:44px 16px;color:#ccc}
+
+/* Status */
+.ok-box{background:#f0fff4;border:1.5px solid var(--leaf);border-radius:12px;padding:16px 20px;margin-top:14px;display:none}
+.ok-box h3{font-family:'Exo 2',sans-serif;font-size:14px;font-weight:700;color:#2e7d32;margin-bottom:6px}
+.err-box{background:#fdecea;border:1.5px solid #e57373;border-radius:10px;padding:14px 18px;margin-top:14px;font-size:13px;color:#c62828;display:none}
 </style>
 </head>
 <body>
@@ -83,7 +125,7 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
 
 <div class="shell">
 
-<!-- ─── FORMULÁŘ ─── -->
+<!-- FORMULÁŘ -->
 <div class="panel">
   <div class="panel-head">
     <h2>🎁 Konfigurace krabičky</h2>
@@ -102,7 +144,7 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
         </div>
         <div class="prod-chosen" id="p1-chosen">
           <span id="p1-name"></span>
-          <button class="clr" onclick="clearP(1)" title="Zrušit">✕</button>
+          <button class="clr" onclick="clearP(1)">✕</button>
         </div>
       </div>
       <div class="field">
@@ -114,7 +156,7 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
         </div>
         <div class="prod-chosen" id="p2-chosen">
           <span id="p2-name"></span>
-          <button class="clr" onclick="clearP(2)" title="Zrušit">✕</button>
+          <button class="clr" onclick="clearP(2)">✕</button>
         </div>
       </div>
     </div>
@@ -132,376 +174,395 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
 
     <div class="sec">Personalizace</div>
 
+    <!-- Vazba -->
     <div class="field">
       <label>Vazba</label>
       <div class="radio-group">
-        <label class="radio-opt"><input type="radio" name="vazba" value="juta" checked onchange="onVazba()"> 🌿 Jutová stuha</label>
-        <label class="radio-opt"><input type="radio" name="vazba" value="saten" onchange="onVazba()"> 🎀 Saténová stuha</label>
+        <label class="radio-opt"><input type="radio" name="vazba" value="juta" checked onchange="upd()"> 🌿 Jutová stuha</label>
+        <label class="radio-opt"><input type="radio" name="vazba" value="saten" onchange="upd()"> 🎀 Saténová stuha</label>
       </div>
     </div>
-    <div id="barva-wrap" style="display:none" class="field">
-      <label>Barva saténové stuhy</label>
-      <input id="barva" placeholder="Zadej barvu stuhy…" oninput="upd()"/>
+
+    <!-- Barva stuhy -->
+    <div class="field">
+      <label>Barva stuhy</label>
+      <div class="color-grid" id="color-grid"></div>
+      <div id="color-hint" style="font-size:11px;color:#ccc;margin-top:6px">— žádná barva nevybrána</div>
     </div>
 
-    <div class="field">
+    <!-- Gravír -->
+    <div class="field" style="margin-bottom:6px">
       <label>Gravír</label>
+      <div class="gravir-top">
+        <button class="grav-pill active" id="gp-ne" onclick="setGravir('ne')">— Bez gravíru</button>
+        <button class="grav-pill" id="gp-text" onclick="setGravir('text')">✏️ Vlastní text</button>
+      </div>
+      <div id="gravir-text-wrap" style="display:none;margin-bottom:10px">
+        <input id="gravir-text" placeholder="Text gravíru (max 60 znaků)…" maxlength="60" oninput="upd()"/>
+      </div>
+      <div class="gravir-grid" id="gravir-grid"></div>
+    </div>
+
+    <div class="sec">Komplimentka</div>
+    <div class="field">
       <div class="radio-group">
-        <label class="radio-opt"><input type="radio" name="gravir" value="ne" checked onchange="onGravir()"> — Bez gravíru</label>
-        <label class="radio-opt"><input type="radio" name="gravir" value="text" onchange="onGravir()"> ✏️ Text</label>
-        <label class="radio-opt"><input type="radio" name="gravir" value="obrazek" onchange="onGravir()"> 🖼 Obrázek</label>
+        <label class="radio-opt"><input type="radio" name="kompl" value="ne" checked onchange="onKompl()"> — Bez komplimentky</label>
+        <label class="radio-opt"><input type="radio" name="kompl" value="ano" onchange="onKompl()"> 💌 Přiložit komplimentku</label>
       </div>
     </div>
-    <div id="gravir-text-wrap" style="display:none" class="field">
-      <label>Text gravíru</label>
-      <input id="gravir-text" placeholder="Text který bude vygravírován…" maxlength="80" oninput="upd()"/>
-    </div>
-    <div id="gravir-obr-wrap" style="display:none" class="field">
-      <label>Obrázek gravíru</label>
-      <input id="gravir-obr" placeholder="Název / popis obrázku (obrázky budou doplněny)…" oninput="upd()"/>
+    <div id="kompl-wrap" style="display:none">
+      <div class="field">
+        <label>Text na komplimentce</label>
+        <textarea id="kompl-text" rows="3" placeholder="Přejeme vám příjemné svátky a těšíme se na spolupráci…" oninput="upd()"></textarea>
+      </div>
+      <div class="field">
+        <label>Přiložit soubor (logo, grafika, PDF…)</label>
+        <div class="file-zone" id="file-zone" onclick="document.getElementById('kompl-file').click()">
+          <input type="file" id="kompl-file" style="display:none" onchange="onFileSelect(this)"/>
+          <div class="fz-icon">📎</div>
+          <div class="fz-text" id="fz-text">Klikněte pro nahrání souboru</div>
+        </div>
+      </div>
     </div>
 
+    <div class="sec">Interní</div>
     <div class="field">
-      <label>Vzkaz na komplimentu</label>
-      <textarea id="vzkaz" rows="3" placeholder="Přejeme vám příjemné svátky a těšíme se na další spolupráci…" oninput="upd()"></textarea>
+      <label>Poznámka pro tým</label>
+      <textarea id="poznamka" rows="2" placeholder="Poznámka (nezobrazí se zákazníkovi)…" oninput="upd()"></textarea>
     </div>
 
-    <div class="field">
-      <label>Interní poznámka</label>
-      <textarea id="poznamka" rows="2" placeholder="Poznámka pro tým (nezobrazí se zákazníkovi)…" oninput="upd()"></textarea>
-    </div>
-
-    <button class="btn-gen" id="btn-sub" onclick="submit()">🎁 Vytvořit zakázku v Trellu</button>
+    <button class="btn-gen" id="btn-sub" onclick="doSubmit()">🎁 Vytvořit zakázku v Trellu</button>
 
     <div id="loading-box" style="display:none;text-align:center;padding:18px 0">
       <div class="loading-dots"><span></span><span></span><span></span></div>
-      <div id="loading-txt" style="margin-top:8px;font-size:13px;color:#888">Vytváří se zakázka…</div>
+      <div id="loading-txt" style="margin-top:8px;font-size:13px;color:#888"></div>
     </div>
 
-    <div id="ok-box" style="display:none;background:#f0fff4;border:1.5px solid var(--leaf);border-radius:12px;padding:16px 20px;margin-top:14px">
-      <div style="font-family:'Exo 2',sans-serif;font-size:14px;font-weight:700;color:#2e7d32;margin-bottom:6px">✅ Zakázka vytvořena!</div>
-      <div style="font-size:13px;color:#2d5a1b">Karta je v Trellu a emailové potvrzení bylo odesláno.</div>
+    <div class="ok-box" id="ok-box">
+      <h3>✅ Zakázka vytvořena!</h3>
+      <p style="font-size:13px;color:#2d5a1b">Karta je připravena v Trellu. Potvrzení odesláno emailem.</p>
       <a id="trello-link" href="#" target="_blank"
         style="display:inline-block;margin-top:12px;background:#2e7d32;color:white;font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;padding:7px 18px;border-radius:20px;text-decoration:none">
         Otevřít kartu v Trellu →
       </a>
     </div>
-
-    <div id="err-box" style="display:none;background:#fdecea;border:1.5px solid #e57373;border-radius:10px;padding:14px 18px;margin-top:14px;font-size:13px;color:#c62828"></div>
+    <div class="err-box" id="err-box"></div>
 
   </div>
 </div>
 
-<!-- ─── LIVE NÁHLED ─── -->
+<!-- LIVE NÁHLED -->
 <div id="preview-wrap" class="panel">
   <div class="panel-head">
     <h2>Náhled zakázky</h2>
     <p>Aktualizuje se průběžně</p>
   </div>
-  <div id="preview-body" style="padding:18px 20px">
-    <div style="text-align:center;padding:40px 16px;color:#ccc">
+  <div id="preview-content">
+    <div class="prev-empty">
       <div style="font-size:52px">🎁</div>
       <div style="margin-top:10px;font-size:13px">Vyplň formulář vlevo…</div>
     </div>
   </div>
 </div>
 
-</div><!-- /.shell -->
+</div>
 
 <script>
 const PRODUKTY = [
-  'Mandle v jahodovém jogurtu',
-  'Mandle v barevné čokoládě',
-  'Mandle v jogurtu',
-  'Mandle ve slaném karamelu',
-  'Mandle v bílé čokoládě',
-  'Mandle tiramisu',
-  'Mandle v mléčné čokoládě',
-  'Mandle v hořké čokoládě',
-  'Mandle tříbarevné',
-  'Mandle exclusive v čokoládě',
-  'Mandle solené',
-  'Mandle uzené',
-  'Mandle natural',
-  'Kešu solené',
-  'Kešu česnek a rozmarýn',
-  'Kešu natural',
-  'Kešu tiramisu',
-  'Kešu tříbarevné',
-  'Kešu v bílé čokoládě',
-  'Kešu v mléčné čokoládě',
-  'Kešu v hořké čokoládě',
-  'Kešu uzené',
-  'Arašídy solené',
-  'Arašídy v karamelu se sezamem',
-  'Arašídy v karamelu s vanilkovým aroma',
-  'Arašídy v cukru a medu',
-  'Arašídy v chili těstíčku',
-  'Arašídy v barevné čokoládě',
-  'Meruňky v jahodovém jogurtu',
-  'Meruňky v jogurtu',
-  'Ananas v jogurtu',
-  'Lískové ořechy v jogurtu',
-  'Lískové ořechy tříbarevné',
-  'Lískové ořechy v čokoládě',
-  'Lískové ořechy v tiramisu',
-  'Kokosové kousky v banánové polevě',
-  'Kukuřice BBQ',
-  'Kukuřice med a hořčice',
+  'Mandle v jahodovém jogurtu','Mandle v barevné čokoládě','Mandle v jogurtu',
+  'Mandle ve slaném karamelu','Mandle v bílé čokoládě','Mandle tiramisu',
+  'Mandle v mléčné čokoládě','Mandle v hořké čokoládě','Mandle tříbarevné',
+  'Mandle exclusive v čokoládě','Mandle solené','Mandle uzené','Mandle natural',
+  'Kešu solené','Kešu česnek a rozmarýn','Kešu natural','Kešu tiramisu',
+  'Kešu tříbarevné','Kešu v bílé čokoládě','Kešu v mléčné čokoládě',
+  'Kešu v hořké čokoládě','Kešu uzené',
+  'Arašídy solené','Arašídy v karamelu se sezamem',
+  'Arašídy v karamelu s vanilkovým aroma','Arašídy v cukru a medu',
+  'Arašídy v chili těstíčku','Arašídy v barevné čokoládě',
+  'Meruňky v jahodovém jogurtu','Meruňky v jogurtu','Ananas v jogurtu',
+  'Lískové ořechy v jogurtu','Lískové ořechy tříbarevné',
+  'Lískové ořechy v čokoládě','Lískové ořechy v tiramisu',
+  'Kokosové kousky v banánové polevě','Kukuřice BBQ','Kukuřice med a hořčice',
+];
+
+const GRAVIR_MOTIFS = [
+  {id:'stromecek',label:'Stromeček',   emoji:'🎄',lt:'A'},
+  {id:'vlocka',   label:'Vločka',      emoji:'❄️',lt:'B'},
+  {id:'veverka',  label:'Veverka',     emoji:'🐿',lt:'C'},
+  {id:'zajicek',  label:'Zajíček',     emoji:'🐰',lt:'D'},
+  {id:'kometa',   label:'Kometa',      emoji:'☄️',lt:'E'},
+  {id:'hvezda',   label:'Hvězda',      emoji:'⭐',lt:'F'},
+  {id:'srdce',    label:'Srdce',       emoji:'❤️',lt:'G'},
+  {id:'vel-zaj',  label:'Vel. zaj.',   emoji:'🐇',lt:'H'},
+  {id:'labut',    label:'Labuť',       emoji:'🦢',lt:'I'},
+  {id:'kvet',     label:'Květ',        emoji:'🌸',lt:'J'},
+];
+
+const STUHA_COLORS = [
+  {id:'cervena', label:'Červená',       hex:'#c0392b'},
+  {id:'zlata',   label:'Zlatá',         hex:'#c8a217'},
+  {id:'smetanová',label:'Smetanová',   hex:'#f5f0e8',border:'#c4a88c'},
+  {id:'fialova', label:'Fialová',       hex:'#8e44ad'},
+  {id:'ruzova',  label:'Růžová',        hex:'#e91e8c'},
+  {id:'modra',   label:'Tmavě modrá',  hex:'#1a3a6b'},
+  {id:'zelena',  label:'Světle zelená',hex:'#5ba85b'},
+  {id:'zluta',   label:'Svítivě žlutá',hex:'#f1c40f'},
+  {id:'oranzova',label:'Svítivě oranž.',hex:'#e67e22'},
 ];
 
 const NW_KEY   = atob('MDM2M2ViYjE0OWRmMDRkMTI4NTY3MmEzMDgwMTYwYTI=');
 const NW_TOKEN = atob('QVRUQTdiMWI4YTFjZWRjMTIyODI3ZmRiMmY4MGRjMjRiNThkMTA4NTVkOTY3ZTAwNDViNWU0ZDdkNmZkMzQwYzJmZWFDNEYxMTFGRQ==');
-const T_LIST   = '6a1d1f2f0dd6bfcd79326c55'; // Nové zakázky
-const ALWAYS_ASSIGN = ['5e6e8c20fea3432b37052e12']; // Jan Vlček
+const T_LIST   = '6a1d1f2f0dd6bfcd79326c55';
+const ALWAYS_ASSIGN = ['5e6e8c20fea3432b37052e12'];
 
-// ── Product autocomplete ──
-let sel = [null, null];
-let hits = [[], []];
-let kidx = [-1, -1];
+let sel=[null,null], hits=[[],[]], kidx=[-1,-1];
+let selectedGravir='ne', selectedColor=null, attachedFile=null;
 
-function filterP(n) {
-  const i = n - 1;
-  const inp  = document.getElementById('p'+n+'-inp');
-  const drop = document.getElementById('p'+n+'-drop');
-  const q = (inp.value || '').trim().toLowerCase();
-  hits[i] = q ? PRODUKTY.filter(p => p.toLowerCase().includes(q)) : PRODUKTY;
-  kidx[i] = -1;
-  if (!hits[i].length) { drop.classList.remove('open'); return; }
-  drop.innerHTML = hits[i].map((p, j) => {
-    const hl = q ? p.replace(new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi'), '<strong>$1</strong>') : p;
-    return `<div class="prod-item" data-j="${j}" onmousedown="pickP(event,${n},${j})">${hl}</div>`;
+/* ── INIT ── */
+(function(){
+  const cg = document.getElementById('color-grid');
+  STUHA_COLORS.forEach(c => {
+    const d = document.createElement('div');
+    d.className='color-item'; d.id='ci-'+c.id; d.title=c.label;
+    d.onclick=()=>selectColor(c.id);
+    d.innerHTML=`<div class="color-circle" style="background:${c.hex};border-color:${c.border||c.hex}"></div><div class="color-label">${c.label}</div>`;
+    cg.appendChild(d);
+  });
+  const gg = document.getElementById('gravir-grid');
+  GRAVIR_MOTIFS.forEach(m => {
+    const d = document.createElement('div');
+    d.className='gravir-card'; d.id='gc-'+m.id;
+    d.onclick=()=>setGravir(m.id);
+    d.innerHTML=`<div class="g-letter">${m.lt}</div><div class="g-emoji">${m.emoji}</div><div class="g-name">${m.label}</div>`;
+    gg.appendChild(d);
+  });
+})();
+
+/* ── PRODUCTS ── */
+function filterP(n){
+  const i=n-1, inp=document.getElementById('p'+n+'-inp'), drop=document.getElementById('p'+n+'-drop');
+  const q=(inp.value||'').trim().toLowerCase();
+  hits[i]=q?PRODUKTY.filter(p=>p.toLowerCase().includes(q)):PRODUKTY;
+  kidx[i]=-1;
+  if(!hits[i].length){drop.classList.remove('open');return;}
+  drop.innerHTML=hits[i].map((p,j)=>{
+    const hl=q?p.replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<strong>$1</strong>'):p;
+    return `<div class="prod-item" onmousedown="pickP(event,${n},${j})">${hl}</div>`;
   }).join('');
   drop.classList.add('open');
 }
-
-function pickP(e, n, j) {
+function pickP(e,n,j){
   e.preventDefault();
-  const i = n - 1;
-  sel[i] = hits[i][j];
-  const inp  = document.getElementById('p'+n+'-inp');
-  const drop = document.getElementById('p'+n+'-drop');
-  const ch   = document.getElementById('p'+n+'-chosen');
-  document.getElementById('p'+n+'-name').textContent = sel[i];
-  inp.value = ''; inp.placeholder = 'Změnit produkt…';
-  drop.classList.remove('open');
-  ch.style.display = 'flex';
+  sel[n-1]=hits[n-1][j];
+  const inp=document.getElementById('p'+n+'-inp');
+  inp.value=''; inp.placeholder='Změnit produkt…';
+  document.getElementById('p'+n+'-drop').classList.remove('open');
+  document.getElementById('p'+n+'-name').textContent=sel[n-1];
+  document.getElementById('p'+n+'-chosen').style.display='flex';
   upd();
 }
-
-function clearP(n) {
-  sel[n-1] = null;
-  const inp = document.getElementById('p'+n+'-inp');
-  inp.value = ''; inp.placeholder = 'Hledat produkt…';
-  document.getElementById('p'+n+'-chosen').style.display = 'none';
+function clearP(n){
+  sel[n-1]=null;
+  const inp=document.getElementById('p'+n+'-inp');
+  inp.value=''; inp.placeholder='Hledat produkt…';
+  document.getElementById('p'+n+'-chosen').style.display='none';
   upd();
 }
-
-function keyP(e, n) {
-  const i = n - 1;
-  const drop = document.getElementById('p'+n+'-drop');
-  if (!drop.classList.contains('open')) return;
-  const items = drop.querySelectorAll('.prod-item');
-  if (e.key === 'ArrowDown') { e.preventDefault(); kidx[i] = Math.min(kidx[i]+1, items.length-1); }
-  else if (e.key === 'ArrowUp') { e.preventDefault(); kidx[i] = Math.max(kidx[i]-1, 0); }
-  else if ((e.key === 'Enter' || e.key === 'Tab') && kidx[i] >= 0) { e.preventDefault(); pickP({preventDefault:()=>{}}, n, kidx[i]); return; }
-  else if (e.key === 'Escape') { drop.classList.remove('open'); return; }
-  items.forEach((el, k) => el.classList.toggle('sel', k === kidx[i]));
+function keyP(e,n){
+  const i=n-1, drop=document.getElementById('p'+n+'-drop');
+  if(!drop.classList.contains('open'))return;
+  const items=drop.querySelectorAll('.prod-item');
+  if(e.key==='ArrowDown'){e.preventDefault();kidx[i]=Math.min(kidx[i]+1,items.length-1);}
+  else if(e.key==='ArrowUp'){e.preventDefault();kidx[i]=Math.max(kidx[i]-1,0);}
+  else if((e.key==='Enter'||e.key==='Tab')&&kidx[i]>=0){e.preventDefault();pickP({preventDefault:()=>{}},n,kidx[i]);return;}
+  else if(e.key==='Escape'){drop.classList.remove('open');return;}
+  items.forEach((el,k)=>el.classList.toggle('sel',k===kidx[i]));
 }
-
-document.addEventListener('click', e => {
-  [1, 2].forEach(n => {
-    if (!e.target.closest('#p'+n+'-inp') && !e.target.closest('#p'+n+'-drop'))
+document.addEventListener('click',e=>{
+  [1,2].forEach(n=>{
+    if(!e.target.closest('#p'+n+'-inp')&&!e.target.closest('#p'+n+'-drop'))
       document.getElementById('p'+n+'-drop').classList.remove('open');
   });
 });
 
-// ── Personalizace toggles ──
-function onVazba() {
-  const v = document.querySelector('input[name="vazba"]:checked').value;
-  document.getElementById('barva-wrap').style.display = v === 'saten' ? 'block' : 'none';
-  upd();
-}
-function onGravir() {
-  const g = document.querySelector('input[name="gravir"]:checked').value;
-  document.getElementById('gravir-text-wrap').style.display = g === 'text'    ? 'block' : 'none';
-  document.getElementById('gravir-obr-wrap').style.display  = g === 'obrazek' ? 'block' : 'none';
+/* ── GRAVÍR ── */
+function setGravir(id){
+  selectedGravir=id;
+  document.getElementById('gp-ne').classList.toggle('active',id==='ne');
+  document.getElementById('gp-text').classList.toggle('active',id==='text');
+  GRAVIR_MOTIFS.forEach(m=>document.getElementById('gc-'+m.id).classList.toggle('active',m.id===id));
+  document.getElementById('gravir-text-wrap').style.display=id==='text'?'block':'none';
   upd();
 }
 
-// ── Collect data ──
-function getData() {
-  const vazba  = document.querySelector('input[name="vazba"]:checked').value;
-  const gravir = document.querySelector('input[name="gravir"]:checked').value;
-  return {
-    prod1: sel[0], prod2: sel[1],
-    firma:   document.getElementById('firma').value.trim(),
-    kontakt: document.getElementById('kontakt').value.trim(),
-    email:   document.getElementById('email').value.trim(),
-    pocet:   parseInt(document.getElementById('pocet').value) || 0,
-    termin:  document.getElementById('termin').value,
-    vazba,
-    barva:  vazba === 'saten' ? document.getElementById('barva').value.trim() : '',
-    gravir,
-    gravirText: gravir === 'text'    ? document.getElementById('gravir-text').value.trim() : '',
-    gravirObr:  gravir === 'obrazek' ? document.getElementById('gravir-obr').value.trim()  : '',
-    vzkaz:   document.getElementById('vzkaz').value.trim(),
+/* ── COLOR ── */
+function selectColor(id){
+  selectedColor=selectedColor===id?null:id;
+  STUHA_COLORS.forEach(c=>document.getElementById('ci-'+c.id).classList.toggle('active',c.id===selectedColor));
+  document.getElementById('color-hint').style.display=selectedColor?'none':'block';
+  upd();
+}
+
+/* ── KOMPLIMENTKA ── */
+function onKompl(){
+  const v=document.querySelector('input[name="kompl"]:checked').value;
+  document.getElementById('kompl-wrap').style.display=v==='ano'?'block':'none';
+  upd();
+}
+function onFileSelect(inp){
+  attachedFile=inp.files[0]||null;
+  const zone=document.getElementById('file-zone');
+  document.getElementById('fz-text').textContent=attachedFile?attachedFile.name:'Klikněte pro nahrání souboru';
+  zone.classList.toggle('has-file',!!attachedFile);
+  upd();
+}
+
+/* ── DATA ── */
+function fmtDate(iso){if(!iso)return'—';const[y,m,d]=iso.split('-');return d+'. '+m+'. '+y;}
+function getData(){
+  const vazba=document.querySelector('input[name="vazba"]:checked').value;
+  const kompl=document.querySelector('input[name="kompl"]:checked').value;
+  const color=STUHA_COLORS.find(c=>c.id===selectedColor)||null;
+  const motif=GRAVIR_MOTIFS.find(m=>m.id===selectedGravir)||null;
+  return{
+    prod1:sel[0],prod2:sel[1],
+    firma:document.getElementById('firma').value.trim(),
+    kontakt:document.getElementById('kontakt').value.trim(),
+    email:document.getElementById('email').value.trim(),
+    pocet:parseInt(document.getElementById('pocet').value)||0,
+    termin:document.getElementById('termin').value,
+    vazba,color,motif,
+    gravirId:selectedGravir,
+    gravirText:selectedGravir==='text'?document.getElementById('gravir-text').value.trim():'',
+    kompl,
+    komplText:kompl==='ano'?document.getElementById('kompl-text').value.trim():'',
+    hasFile:!!(kompl==='ano'&&attachedFile),
     poznamka:document.getElementById('poznamka').value.trim(),
   };
 }
-
-function fmtDate(iso) {
-  if (!iso) return '—';
-  const [y,m,d] = iso.split('-');
-  return d + '. ' + m + '. ' + y;
+function gravirStr(d){
+  if(d.gravirId==='ne')return'— Bez gravíru';
+  if(d.gravirId==='text')return'✏️ Text: "'+(d.gravirText||'…')+'"';
+  return d.motif?d.motif.emoji+' '+d.motif.lt+' '+d.motif.label:'?';
 }
 
-function vazbaStr(d) {
-  return d.vazba === 'juta' ? '🌿 Jutová stuha' : ('🎀 Saténová stuha' + (d.barva ? ' — ' + d.barva : ''));
-}
-function gravirStr(d) {
-  if (d.gravir === 'text')    return '✏️ Text: "' + (d.gravirText || '…') + '"';
-  if (d.gravir === 'obrazek') return '🖼 Obrázek: ' + (d.gravirObr || '…');
-  return '— Bez gravíru';
-}
-
-// ── Live preview ──
-function upd() {
-  const d = getData();
-  const el = document.getElementById('preview-body');
-  const empty = !d.prod1 && !d.prod2 && !d.firma && !d.pocet;
-  if (empty) {
-    el.innerHTML = '<div style="text-align:center;padding:40px 16px;color:#ccc"><div style="font-size:52px">🎁</div><div style="margin-top:10px;font-size:13px">Vyplň formulář vlevo…</div></div>';
+/* ── LIVE PREVIEW ── */
+function upd(){
+  const d=getData();
+  const el=document.getElementById('preview-content');
+  if(!d.prod1&&!d.prod2&&!d.firma&&!d.pocet){
+    el.innerHTML='<div class="prev-empty"><div style="font-size:52px">🎁</div><div style="margin-top:10px;font-size:13px">Vyplň formulář vlevo…</div></div>';
     return;
   }
-  el.innerHTML = `<div style="padding:2px 2px">
-    <div class="s-badge">Dárková krabička 2×50g</div>
-    <div class="s-prod"><div class="s-num">1</div><span>${d.prod1 || '<span style="color:#ccc">—</span>'}</span></div>
-    <div class="s-prod"><div class="s-num">2</div><span>${d.prod2 || '<span style="color:#ccc">—</span>'}</span></div>
-    <div class="s-hr"></div>
-    <div class="s-row"><span class="s-label">Zákazník</span><span class="s-val">${d.firma || '—'}</span></div>
-    ${d.kontakt ? `<div class="s-row"><span class="s-label">Kontakt</span><span class="s-val">${d.kontakt}</span></div>` : ''}
-    <div class="s-row"><span class="s-label">Počet kusů</span><span class="s-val">${d.pocet ? d.pocet + ' ks' : '—'}</span></div>
-    <div class="s-row"><span class="s-label">Termín</span><span class="s-val">${fmtDate(d.termin)}</span></div>
-    <div class="s-hr"></div>
-    <div class="s-row"><span class="s-label">Vazba</span><span class="s-val">${vazbaStr(d)}</span></div>
-    <div class="s-row"><span class="s-label">Gravír</span><span class="s-val">${gravirStr(d)}</span></div>
-    ${d.vzkaz ? `<div class="vzkaz-box">💌 &ldquo;${d.vzkaz}&rdquo;</div>` : ''}
-  </div>`;
+  const ch=d.color?d.color.hex:'#d4c0a8';
+  const cb=d.color?(d.color.border||d.color.hex):'#d4c0a8';
+  let gbadge='';
+  if(d.gravirId==='text')gbadge=`<div class="prev-gravir-badge"><div class="ge">✏️</div><div class="gl">T</div></div>`;
+  else if(d.motif)gbadge=`<div class="prev-gravir-badge"><div class="ge">${d.motif.emoji}</div><div class="gl">${d.motif.lt}</div></div>`;
+  const p1=d.prod1
+    ?`<div class="prev-prod-row"><div class="prev-prod-num">1</div><span>${d.prod1}</span></div>`
+    :`<div class="prev-prod-row" style="opacity:.35"><div class="prev-prod-num" style="background:#aaa">1</div><span style="font-style:italic">nevybráno</span></div>`;
+  const p2=d.prod2
+    ?`<div class="prev-prod-row"><div class="prev-prod-num">2</div><span>${d.prod2}</span></div>`
+    :`<div class="prev-prod-row" style="opacity:.35"><div class="prev-prod-num" style="background:#aaa">2</div><span style="font-style:italic">nevybráno</span></div>`;
+  const krow=d.kompl==='ano'
+    ?`<div class="prev-row"><span class="prev-label">Komplimentka</span><span class="prev-val"><span class="prev-kompl">💌 Přiložena${d.hasFile?' + soubor':''}</span></span></div>`:'';
+  el.innerHTML=`
+  <div class="prev-vis">
+    <div class="prev-tag">Dárková krabička 2×50g</div>
+    ${p1}${p2}
+    ${gbadge}
+    <div class="prev-stuha" style="background:${ch};outline:1px solid ${cb}"></div>
+  </div>
+  <div class="prev-body">
+    <div class="prev-row"><span class="prev-label">Zákazník</span><span class="prev-val">${d.firma||'—'}</span></div>
+    ${d.kontakt?`<div class="prev-row"><span class="prev-label">Kontakt</span><span class="prev-val">${d.kontakt}</span></div>`:''}
+    <div class="prev-row"><span class="prev-label">Počet</span><span class="prev-val">${d.pocet?d.pocet+' ks':'—'}</span></div>
+    <div class="prev-row"><span class="prev-label">Termín</span><span class="prev-val">${fmtDate(d.termin)}</span></div>
+    <div class="prev-row"><span class="prev-label">Stuha</span><span class="prev-val">${d.vazba==='juta'?'🌿 Juta':'🎀 Satén'} <span class="prev-dot" style="background:${ch};border-color:${cb}"></span>${d.color?d.color.label:'—'}</span></div>
+    <div class="prev-row"><span class="prev-label">Gravír</span><span class="prev-val">${gravirStr(d)}</span></div>
+    ${krow}
+  </div>
+  ${d.komplText?`<div class="prev-vzkaz">💌 "${d.komplText}"</div>`:''}
+  `;
 }
 
-// ── Submit ──
-async function submit() {
-  const d = getData();
+/* ── SUBMIT ── */
+async function doSubmit(){
   hideMsg();
-  if (!d.prod1) { showErr('Vyberte Produkt 1.'); return; }
-  if (!d.prod2) { showErr('Vyberte Produkt 2.'); return; }
-  if (!d.pocet) { showErr('Zadejte počet kusů.'); return; }
-  if (!d.termin){ showErr('Zadejte termín dodání.'); return; }
-
-  setLoad(true, 'Vytváří se karta v Trellu…');
-
-  const cardName = `${d.firma || 'Zákazník'} — ${d.pocet} ks — Krabička 2×50g — ${fmtDate(d.termin)}`;
-  const desc = `## 🎁 Dárková krabička 2×50g
-
-**Zákazník:** ${d.firma || '—'}
-**Kontakt:** ${d.kontakt || '—'}${d.email ? ' · ' + d.email : ''}
-
-## 📦 Obsah krabičky
-- **Produkt 1 (50 g):** ${d.prod1}
-- **Produkt 2 (50 g):** ${d.prod2}
-
-## 📋 Zakázka
-**Počet kusů:** ${d.pocet} ks
-**Termín dodání:** ${fmtDate(d.termin)}
-
-## 🎀 Personalizace
-**Vazba:** ${vazbaStr(d).replace(/[🌿🎀]/g, '')}
-**Gravír:** ${gravirStr(d).replace(/[✏️🖼]/g, '')}
-${d.vzkaz ? `**Vzkaz na komplimentu:**\n"${d.vzkaz}"` : ''}
-
-## 🔒 Interní
-${d.poznamka || '—'}`;
-
-  const due = d.termin ? new Date(d.termin + 'T10:00:00.000Z').toISOString() : null;
-
-  try {
-    const res = await fetch(`https://api.trello.com/1/cards?key=${NW_KEY}&token=${NW_TOKEN}`, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        name: cardName, desc, idList: T_LIST, pos: 'top',
-        idMembers: ALWAYS_ASSIGN,
-        ...(due ? { due } : {})
-      })
+  const d=getData();
+  if(!d.prod1){showErr('Vyberte Produkt 1.');return;}
+  if(!d.prod2){showErr('Vyberte Produkt 2.');return;}
+  if(!d.pocet){showErr('Zadejte počet kusů.');return;}
+  if(!d.termin){showErr('Zadejte termín dodání.');return;}
+  setLoad(true,'Vytváří se karta v Trellu…');
+  const cn=d.color?d.color.label:'nevybrána';
+  const cardName=`${d.firma||'Zákazník'} — ${d.pocet} ks — Krabička 2×50g — ${fmtDate(d.termin)}`;
+  const desc=`## 🎁 Dárková krabička 2×50g\n\n**Zákazník:** ${d.firma||'—'}\n**Kontakt:** ${d.kontakt||'—'}${d.email?' · '+d.email:''}\n\n## 📦 Obsah krabičky\n- **Produkt 1 (50 g):** ${d.prod1}\n- **Produkt 2 (50 g):** ${d.prod2}\n\n## 📋 Zakázka\n**Počet kusů:** ${d.pocet} ks\n**Termín dodání:** ${fmtDate(d.termin)}\n\n## 🎀 Personalizace\n**Vazba:** ${d.vazba==='juta'?'Jutová stuha':'Saténová stuha'} — ${cn}\n**Gravír:** ${gravirStr(d)}\n**Komplimentka:** ${d.kompl==='ano'?'Ano'+(d.hasFile?' (+ soubor)':''):'Ne'}\n${d.komplText?`**Text na komplimentce:** "${d.komplText}"\n`:''}\n## 🔒 Interní\n${d.poznamka||'—'}`;
+  const due=d.termin?new Date(d.termin+'T10:00:00.000Z').toISOString():null;
+  try{
+    const res=await fetch(`https://api.trello.com/1/cards?key=${NW_KEY}&token=${NW_TOKEN}`,{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name:cardName,desc,idList:T_LIST,pos:'top',idMembers:ALWAYS_ASSIGN,...(due?{due}:{})})
     });
-    const card = await res.json();
-    if (!card.id) throw new Error(card.message || JSON.stringify(card));
+    const card=await res.json();
+    if(!card.id)throw new Error(card.message||JSON.stringify(card));
 
-    // Checklist
-    setLoad(true, 'Přidává se checklist…');
-    const cl = await fetch(`https://api.trello.com/1/checklists?key=${NW_KEY}&token=${NW_TOKEN}`, {
-      method: 'POST', headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ idCard: card.id, name: 'Postup zakázky' })
-    }).then(r => r.json());
-    if (cl.id) {
-      const kroky = [
+    setLoad(true,'Přidává se checklist…');
+    const cl=await fetch(`https://api.trello.com/1/checklists?key=${NW_KEY}&token=${NW_TOKEN}`,{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({idCard:card.id,name:'Postup zakázky'})
+    }).then(r=>r.json());
+    if(cl.id){
+      const kroky=[
         'Kontakt potvrzen a objednávka odsouhlasena',
         'Platba přijata',
         'Produkty vybrány a připraveny',
         'Krabičky a obalový materiál připraven',
-        d.vazba === 'saten' ? `Saténová stuha připravena (${d.barva || 'barva TBD'})` : 'Jutová stuha připravena',
-        ...(d.gravir !== 'ne' ? [`Gravír připraven: ${d.gravir === 'text' ? d.gravirText : d.gravirObr}`] : []),
-        ...(d.vzkaz ? ['Kompliment karty připraveny'] : []),
+        `Stuha připravena: ${d.vazba==='juta'?'jutová':'saténová'} — ${cn}`,
+        ...(d.gravirId!=='ne'?[`Gravír připraven: ${gravirStr(d)}`]:[]),
+        ...(d.kompl==='ano'?['Komplimentka připravena'+(d.hasFile?' (viz příloha)':'')]:[]),
         'Kompletace a balení krabičky',
         'Kontrola kvality',
         'Expedice / předání zákazníkovi',
         'Faktura odeslána',
       ];
-      for (const k of kroky) {
-        await fetch(`https://api.trello.com/1/checklists/${cl.id}/checkItems?key=${NW_KEY}&token=${NW_TOKEN}`, {
-          method: 'POST', headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ name: k })
+      for(const k of kroky){
+        await fetch(`https://api.trello.com/1/checklists/${cl.id}/checkItems?key=${NW_KEY}&token=${NW_TOKEN}`,{
+          method:'POST',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({name:k})
         });
       }
     }
 
+    if(d.kompl==='ano'&&attachedFile){
+      setLoad(true,'Nahrává se soubor do Trellu…');
+      const form=new FormData();
+      form.append('file',attachedFile,attachedFile.name);
+      await fetch(`https://api.trello.com/1/cards/${card.id}/attachments?key=${NW_KEY}&token=${NW_TOKEN}`,{
+        method:'POST',body:form
+      }).catch(()=>{});
+    }
+
+    const emailBody=`🎁 NOVÁ ZAKÁZKA — Dárková krabička 2×50g\n\nZákazník: ${d.firma||'—'}\nKontakt: ${d.kontakt||'—'}${d.email?' · '+d.email:''}\n\nProdukt 1 (50g): ${d.prod1}\nProdukt 2 (50g): ${d.prod2}\n\nPočet: ${d.pocet} ks\nTermín: ${fmtDate(d.termin)}\n\nStudha: ${d.vazba==='juta'?'jutová':'saténová'} — ${cn}\nGravír: ${gravirStr(d)}\nKomplimentka: ${d.kompl==='ano'?'Ano'+(d.hasFile?' (+ soubor)':''):'Ne'}\n${d.komplText?'Text: '+d.komplText+'\n':''}\n${d.poznamka?'Interní: '+d.poznamka+'\n':''}\nTrello: ${card.url}`;
+    fetch('https://script.google.com/macros/s/AKfycbwonbDE6DfEOFOqbY6EhPN2lfx2ue2j37HmeSvHsVx_VQJdR1kE55NDpOGhtOnhwj7-mQ/exec',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({to:'nutworld.cz@gmail.com',subject:`🎁 Krabička 2×50g — ${d.firma||'zákazník'} — ${d.pocet} ks — ${fmtDate(d.termin)}`,body:emailBody})
+    }).catch(()=>{});
+
     setLoad(false);
-    document.getElementById('ok-box').style.display = 'block';
-    document.getElementById('trello-link').href = card.url;
-    document.getElementById('btn-sub').disabled = true;
-
-    // Owner email
-    const body = `🎁 NOVÁ ZAKÁZKA — Dárková krabička 2×50g\n\nZákazník: ${d.firma || '—'}\nKontakt: ${d.kontakt || '—'}${d.email ? ' · ' + d.email : ''}\n\nProdukt 1 (50g): ${d.prod1}\nProdukt 2 (50g): ${d.prod2}\n\nPočet kusů: ${d.pocet}\nTermín: ${fmtDate(d.termin)}\n\nVazba: ${vazbaStr(d)}\nGravír: ${gravirStr(d)}\n${d.vzkaz ? 'Vzkaz na komplimentu: ' + d.vzkaz + '\n' : ''}${d.poznamka ? 'Interní poznámka: ' + d.poznamka + '\n' : ''}\nTrello: ${card.url}`;
-    fetch('https://script.google.com/macros/s/AKfycbwonbDE6DfEOFOqbY6EhPN2lfx2ue2j37HmeSvHsVx_VQJdR1kE55NDpOGhtOnhwj7-mQ/exec', {
-      method: 'POST', headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        to: 'nutworld.cz@gmail.com',
-        subject: `🎁 Krabička 2×50g — ${d.firma || 'zákazník'} — ${d.pocet} ks — ${fmtDate(d.termin)}`,
-        body
-      })
-    }).catch(() => {});
-
-  } catch(e) {
-    setLoad(false);
-    showErr('❌ Chyba: ' + e.message);
-  }
+    document.getElementById('ok-box').style.display='block';
+    document.getElementById('trello-link').href=card.url;
+    document.getElementById('btn-sub').disabled=true;
+  }catch(e){setLoad(false);showErr('❌ Chyba: '+e.message);}
 }
-
-function setLoad(on, txt) {
-  document.getElementById('loading-box').style.display = on ? 'block' : 'none';
-  document.getElementById('btn-sub').style.display = on ? 'none' : 'block';
-  if (txt) document.getElementById('loading-txt').textContent = txt;
+function setLoad(on,txt){
+  document.getElementById('loading-box').style.display=on?'block':'none';
+  document.getElementById('btn-sub').style.display=on?'none':'block';
+  if(txt)document.getElementById('loading-txt').textContent=txt;
 }
-function hideMsg() {
-  document.getElementById('err-box').style.display = 'none';
-  document.getElementById('ok-box').style.display  = 'none';
-}
-function showErr(msg) {
-  const el = document.getElementById('err-box');
-  el.textContent = msg; el.style.display = 'block';
-  setLoad(false);
-}
+function hideMsg(){document.getElementById('ok-box').style.display='none';document.getElementById('err-box').style.display='none';}
+function showErr(msg){const el=document.getElementById('err-box');el.textContent=msg;el.style.display='block';setLoad(false);}
 </script>
 </body>
 </html>
