@@ -164,6 +164,17 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
 .pv-tchip{background:#fff8ee;border:1px solid rgba(247,171,49,.5);color:var(--br)}
 .pv-vzkaz{margin:0 18px 14px;padding:10px 12px;background:#fdf8f4;border-left:3px solid var(--kraft);font-size:12px;color:#5a3a22;font-style:italic;line-height:1.5;border-radius:0 8px 8px 0}
 .pv-empty{text-align:center;padding:44px 16px;color:#ccc}
+
+/* ═══ COLORED FORM SECTIONS ═══ */
+.fsec{border-radius:12px;margin-bottom:14px;border:1.5px solid transparent;overflow:hidden}
+.fsec-hd{font-family:'Exo 2',sans-serif;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:10px 14px 9px;display:flex;align-items:center;gap:7px}
+.fsec-bd{padding:14px 14px 8px}
+.fsec-obsah{border-color:#d4b896} .fsec-obsah .fsec-hd{background:#f1e6da;color:#6b4c1e}       .fsec-obsah .fsec-bd{background:#faf5ef}
+.fsec-stuha{border-color:#e8c840} .fsec-stuha .fsec-hd{background:#fff8d6;color:#7a5200}         .fsec-stuha .fsec-bd{background:#fffcf0}
+.fsec-gravir{border-color:#c8976a} .fsec-gravir .fsec-hd{background:#ede0d0;color:#5c381f}       .fsec-gravir .fsec-bd{background:#f8f3ec}
+.fsec-tisk{border-color:#9ecf7a} .fsec-tisk .fsec-hd{background:#e6f3de;color:#2d5a1b}           .fsec-tisk .fsec-bd{background:#f5faf1}
+.fsec-kompl{border-color:#f4a0c0} .fsec-kompl .fsec-hd{background:#fde8f2;color:#8c0040}         .fsec-kompl .fsec-bd{background:#fef7fa}
+.fsec-kontakt{border-color:#c4aca0} .fsec-kontakt .fsec-hd{background:#eee8e3;color:#5c381f}     .fsec-kontakt .fsec-bd{background:#f9f6f3}
 </style>
 </head>
 <body>
@@ -183,8 +194,10 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
   </div>
   <div class="pb">
 
-    <div class="sec">Co bude v krabičce</div>
-    <div class="info-box">Klikněte na každý slot a vyberte, co bude uvnitř. Každý sáček obsahuje <strong>50 g</strong>.</div>
+    <div class="fsec fsec-obsah">
+    <div class="fsec-hd">📦 Co bude v krabičce</div>
+    <div class="fsec-bd">
+    <div class="info-box" style="margin-bottom:12px">Klikněte na každý slot a vyberte, co bude uvnitř. Každý sáček obsahuje <strong>50 g</strong>.</div>
 
     <!-- VISUAL BOX -->
     <div class="box-wrapper">
@@ -219,10 +232,12 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
       <label>Upřesnění — Slot 2</label>
       <input id="jine2" placeholder="Popište přesně, co chcete (ozveme se)" oninput="upd()"/>
     </div>
+    </div><!-- /fsec-bd -->
+    </div><!-- /fsec-obsah -->
 
-    <!-- PERSONALIZACE -->
-    <div class="sec">Personalizace krabičky</div>
-
+    <div class="fsec fsec-stuha">
+    <div class="fsec-hd">🎀 Stuha</div>
+    <div class="fsec-bd">
     <div class="field">
       <label>Typ stuhy</label>
       <div class="radio-group">
@@ -242,7 +257,12 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
         <input id="stuha-jine-text" placeholder="Popište požadavek na stuhu — upřesníme se…" oninput="upd()"/>
       </div>
     </div>
+    </div><!-- /fsec-bd -->
+    </div><!-- /fsec-stuha -->
 
+    <div class="fsec fsec-gravir">
+    <div class="fsec-hd">✦ Gravír</div>
+    <div class="fsec-bd">
     <div class="field">
       <label>Gravír</label>
       <div class="radio-group">
@@ -289,10 +309,13 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
         </div>
       </div>
 
-    </div>
+    </div><!-- /fsec-bd -->
+    </div><!-- /fsec-gravir -->
 
+    <div class="fsec fsec-tisk">
+    <div class="fsec-hd">🖨 Tisk na krabičce</div>
+    <div class="fsec-bd">
     <div class="field">
-      <label>Tisk na krabičce (volitelné)</label>
       <div class="radio-group">
         <label class="radio-opt"><input type="radio" name="tisk" value="ne" checked onchange="onTisk()"> — Bez tisku</label>
         <label class="radio-opt"><input type="radio" name="tisk" value="logo" onchange="onTisk()"> 🏷 Logo</label>
@@ -304,9 +327,13 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
       <label>Specifikace tisku</label>
       <textarea id="tisk-text" rows="2" placeholder="Popište váš požadavek: barvy, text, umístění, podklady…" oninput="upd()"></textarea>
     </div>
+    </div><!-- /fsec-bd -->
+    </div><!-- /fsec-tisk -->
 
+    <div class="fsec fsec-kompl">
+    <div class="fsec-hd">💌 Přání a komplimentka</div>
+    <div class="fsec-bd">
     <div class="field">
-      <label>Přání / komplimentka</label>
       <div class="radio-group">
         <label class="radio-opt"><input type="radio" name="kompl" value="ne" checked onchange="onKompl()"> — Bez komplimentky</label>
         <label class="radio-opt"><input type="radio" name="kompl" value="ano" onchange="onKompl()"> 💌 Přiložit komplimentku</label>
@@ -326,9 +353,12 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
         </div>
       </div>
     </div>
+    </div><!-- /fsec-bd -->
+    </div><!-- /fsec-kompl -->
 
-    <!-- KONTAKT -->
-    <div class="sec">Váš kontakt a objednávka</div>
+    <div class="fsec fsec-kontakt">
+    <div class="fsec-hd">👤 Váš kontakt a objednávka</div>
+    <div class="fsec-bd">
     <div class="field"><label>Firma / organizace</label><input id="firma" placeholder="Vaše firma s.r.o." oninput="upd()"/></div>
     <div class="row2">
       <div class="field"><label>Vaše jméno</label><input id="kontakt" placeholder="Jméno Příjmení" oninput="upd()"/></div>
@@ -343,6 +373,8 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
       <label>Vaše přání nebo doplňující informace</label>
       <textarea id="poznamka" rows="3" placeholder="Napište nám cokoliv dalšího…" oninput="upd()"></textarea>
     </div>
+    </div><!-- /fsec-bd -->
+    </div><!-- /fsec-kontakt -->
 
     <button class="btn-gen" id="btn-sub" onclick="doSubmit()">📤 Odeslat konfiguraci</button>
     <div id="lbox" style="display:none;text-align:center;padding:18px 0">
