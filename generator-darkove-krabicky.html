@@ -228,6 +228,7 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
       <div class="radio-group">
         <label class="radio-opt"><input type="radio" name="vazba" value="juta" checked onchange="onVazba()"> 🌿 Jutová stuha</label>
         <label class="radio-opt"><input type="radio" name="vazba" value="saten" onchange="onVazba()"> 🎀 Saténová stuha</label>
+        <label class="radio-opt"><input type="radio" name="vazba" value="jine" onchange="onVazba()"> ✏️ Jiné</label>
       </div>
     </div>
     <div class="field">
@@ -236,6 +237,9 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
       <div id="saten-colors" style="display:none">
         <div class="color-grid" id="color-grid"></div>
         <div id="chint" style="font-size:11px;color:#ccc;margin-top:5px">— nevybráno</div>
+      </div>
+      <div id="stuha-jine-wrap" style="display:none;margin-top:8px">
+        <input id="stuha-jine-text" placeholder="Popište požadavek na stuhu — upřesníme se…" oninput="upd()"/>
       </div>
     </div>
 
@@ -268,8 +272,8 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
           <label class="radio-opt"><input type="radio" name="gravir-logo" value="bez" checked onchange="onGravirLogo()"> — Bez loga</label>
           <label class="radio-opt"><input type="radio" name="gravir-logo" value="ano" onchange="onGravirLogo()"> Přiložit logo</label>
         </div>
-        <div id="gravir-logo-note" style="display:none;margin-top:10px">
-          <input id="gravir-logo-text" placeholder="Popište logo nebo upřesníme se e-mailem…" oninput="upd()"/>
+        <div id="gravir-logo-note" style="display:none;margin-top:8px;font-size:12px;color:#9a7255;background:#fdf6f0;border:1.5px solid #e8dbc8;border-radius:8px;padding:8px 12px">
+          📞 Náš obchodní zástupce vás kontaktuje a logo dovyzadá.
         </div>
       </div>
 
@@ -281,7 +285,7 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
           <label class="radio-opt"><input type="radio" name="gravir-text-opt" value="ano" onchange="onGravirText()"> S textem</label>
         </div>
         <div id="gravir-text-detail" style="display:none;margin-top:10px">
-          <input id="gravir-text" placeholder="Zadejte text k vygravírování…" maxlength="60" oninput="upd()"/>
+          <textarea id="gravir-text" rows="4" maxlength="120" placeholder="Zadejte text k vygravírování…&#10;(např. jméno, přání, datum, slogan)" oninput="upd()" style="resize:vertical;min-height:80px"></textarea>
         </div>
       </div>
 
@@ -490,6 +494,13 @@ let selectedMotif=null, selectedColor=null, attachedFile=null;
     d.innerHTML=`<div class="gl">${m.lt}</div><div class="ge">${m.emoji}</div><div class="gn">${m.label}</div>`;
     gg.appendChild(d);
   });
+  // "Jiné" card for motif
+  const gjine=document.createElement('div');
+  gjine.className='gcard'; gjine.id='gc-__jine__';
+  gjine.style.cssText='border-style:dashed;border-color:#da1668;background:#fff5f8';
+  gjine.onclick=()=>toggleMotif('__jine__');
+  gjine.innerHTML=`<div class="ge" style="font-size:20px">✏️</div><div class="gn" style="color:#da1668">Jiné</div>`;
+  gg.appendChild(gjine);
 })();
 
 function openPicker(n){
@@ -543,10 +554,11 @@ function renderSlotVisual(n){
 }
 
 function onVazba(){
-  const isJuta=document.querySelector('input[name="vazba"]:checked').value==='juta';
-  document.getElementById('juta-info').style.display=isJuta?'flex':'none';
-  document.getElementById('saten-colors').style.display=isJuta?'none':'block';
-  if(isJuta){selectedColor=null;STUHA_COLORS.forEach(c=>document.getElementById('ci-'+c.id).classList.remove('active'));}
+  const v=document.querySelector('input[name="vazba"]:checked').value;
+  document.getElementById('juta-info').style.display=v==='juta'?'flex':'none';
+  document.getElementById('saten-colors').style.display=v==='saten'?'block':'none';
+  document.getElementById('stuha-jine-wrap').style.display=v==='jine'?'block':'none';
+  if(v!=='saten'){selectedColor=null;STUHA_COLORS.forEach(c=>document.getElementById('ci-'+c.id).classList.remove('active'));}
   upd();
 }
 function selectColor(id){
@@ -601,9 +613,11 @@ function getData(){
   const kompl=document.querySelector('input[name="kompl"]:checked').value;
   const tisk =document.querySelector('input[name="tisk"]:checked').value;
   const color=STUHA_COLORS.find(c=>c.id===selectedColor)||null;
+  const stuhaJineText=document.getElementById('stuha-jine-text').value.trim();
   const gravirOn=document.querySelector('input[name="gravir-hlavni"]:checked').value==='ano';
-  const motif=gravirOn&&document.querySelector('input[name="gravir-img"]:checked')?.value==='ano'
-    ?(GRAVIR_MOTIFS.find(m=>m.id===selectedMotif)||null):null;
+  const imgOn=gravirOn&&document.querySelector('input[name="gravir-img"]:checked')?.value==='ano';
+  const motifIsJine=imgOn&&selectedMotif==='__jine__';
+  const motif=imgOn&&!motifIsJine?(GRAVIR_MOTIFS.find(m=>m.id===selectedMotif)||null):null;
   const logoOn=gravirOn&&document.querySelector('input[name="gravir-logo"]:checked')?.value==='ano';
   const logoText=logoOn?(document.getElementById('gravir-logo-text').value.trim()):'';
   const textOn=gravirOn&&document.querySelector('input[name="gravir-text-opt"]:checked')?.value==='ano';
@@ -620,9 +634,9 @@ function getData(){
     telefon:document.getElementById('telefon').value.trim(),
     pocet:parseInt(document.getElementById('pocet').value)||0,
     termin:document.getElementById('termin').value,
-    vazba,color,
-    gravirOn,motif,logoOn,logoText,textOn,gravirText:gtxt,
-    hasGravir:gravirOn&&!!(motif||logoOn||textOn),
+    vazba,color,stuhaJineText,
+    gravirOn,motif,motifIsJine,imgOn,logoOn,logoText,textOn,gravirText:gtxt,
+    hasGravir:gravirOn&&!!(motif||motifIsJine||logoOn||textOn),
     tisk,tiskText:tisk!=='ne'?document.getElementById('tisk-text').value.trim():'',
     kompl,komplText:kompl==='ano'?document.getElementById('kompl-text').value.trim():'',
     hasFile:!!(kompl==='ano'&&attachedFile),
@@ -633,9 +647,10 @@ function gravirStr(d){
   if(!d.gravirOn)return'— Bez gravíru';
   const parts=[];
   if(d.motif)parts.push(d.motif.emoji+' '+d.motif.label);
-  else if(document.querySelector('input[name="gravir-img"]:checked')?.value==='ano')parts.push('🎨 Bez vybraného motivu');
-  if(d.logoOn)parts.push('🏷 Logo'+(d.logoText?': '+d.logoText:''));
-  if(d.textOn&&d.gravirText)parts.push('✍️ Text: "'+d.gravirText+'"');
+  else if(d.motifIsJine)parts.push('🎨 Jiný motiv (upřesnit)');
+  else if(d.imgOn)parts.push('🎨 Motiv (nevybrán)');
+  if(d.logoOn)parts.push('🏷 Logo (dovyzadá zástupce)');
+  if(d.textOn&&d.gravirText)parts.push('✍️ "'+d.gravirText+'"');
   else if(d.textOn)parts.push('✍️ Text (upřesnit)');
   return parts.length?parts.join(' · '):'— Bez obsahu (doplnit)';
 }
@@ -674,7 +689,7 @@ function upd(){
     ${d.kontakt?`<div class="pv-dr"><span class="pv-dl">Kontakt</span><span class="pv-dv">${d.kontakt}</span></div>`:''}
     <div class="pv-dr"><span class="pv-dl">Počet</span><span class="pv-dv">${d.pocet?d.pocet+' ks':'—'}</span></div>
     <div class="pv-dr"><span class="pv-dl">Termín</span><span class="pv-dv">${fmtDate(d.termin)}</span></div>
-    <div class="pv-dr"><span class="pv-dl">Stuha</span><span class="pv-dv">${d.vazba==='juta'?'🌿 Jutová':'🎀 Saténová'} <span class="pv-dot" style="background:${ch};border-color:${cb}"></span>${d.color?d.color.label:'přírodní'}</span></div>
+    <div class="pv-dr"><span class="pv-dl">Stuha</span><span class="pv-dv">${d.vazba==='juta'?'🌿 Jutová — přírodní':d.vazba==='jine'?('✏️ Jiné'+(d.stuhaJineText?' — '+d.stuhaJineText:'')):'🎀 Saténová <span class="pv-dot" style="background:'+ch+';border-color:'+cb+'"></span>'+(d.color?d.color.label:'nevybrána')}</span></div>
     <div class="pv-dr"><span class="pv-dl">Gravír</span><span class="pv-dv" style="font-size:12px">${gravirStr(d)}</span></div>
     ${tiskRow}${krow}
   </div>
