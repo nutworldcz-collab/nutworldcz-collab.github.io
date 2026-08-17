@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Generátor firemních dárků — Nutworld</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --br:#83502e;--bd:#5c381f;--kraft:#f1e6da;--acc:#da1668;
+  --amb:#f7ab31;--amb2:#c9982e;--leaf:#6fa044;
+  --text:#2a1a0e;--muted:#9a7255;--light:#ede4d8;
+  --bg:#f5ede3;--card:#fff;--border:#e2d0bc;
+  --ready-bg:#f0fae8;--ready-border:#6fa044;--ready-text:#2d5a1b;
+  --soon-bg:#f8f4ef;--soon-border:#d4b896;--soon-text:#9a7255;
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#1c1208;--card:#2a1c0e;--border:#4a3018;
+    --text:#f0e4d0;--muted:#c4a07a;--light:#3a2510;--kraft:#3a2510;
+    --ready-bg:#1a2e10;--ready-border:#4a7c2f;--ready-text:#8fcc5a;
+    --soon-bg:#251808;--soon-border:#4a3018;--soon-text:#9a7255;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1c1208;--card:#2a1c0e;--border:#4a3018;
+  --text:#f0e4d0;--muted:#c4a07a;--light:#3a2510;--kraft:#3a2510;
+  --ready-bg:#1a2e10;--ready-border:#4a7c2f;--ready-text:#8fcc5a;
+  --soon-bg:#251808;--soon-border:#4a3018;--soon-text:#9a7255;
+}
+
+body{
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+}
+
+/* HEADER */
+.header{
+  background:linear-gradient(135deg,var(--bd) 0%,var(--br) 55%,#a0622a 100%);
+  padding:36px 24px 32px;
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+.header::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.logo-label{
+  font-size:10px;letter-spacing:4px;text-transform:uppercase;
+  color:rgba(241,230,218,.55);font-weight:700;margin-bottom:10px;
+  position:relative;
+}
+.logo-label strong{color:var(--amb);letter-spacing:5px}
+.header h1{
+  font-size:clamp(22px,5vw,32px);color:#fff;font-weight:800;
+  letter-spacing:.3px;margin-bottom:10px;position:relative;
+}
+.header p{
+  font-size:14px;color:rgba(241,230,218,.72);max-width:480px;
+  margin:0 auto;line-height:1.55;position:relative;
+}
+.amber-bar{
+  height:3px;
+  background:linear-gradient(90deg,var(--bd),var(--amb),var(--amb2),var(--bd));
+  background-size:200% 100%;
+  animation:bar-slide 3s linear infinite;
+}
+@keyframes bar-slide{0%{background-position:0%}100%{background-position:200%}}
+
+/* GRID */
+.wrap{max-width:900px;margin:0 auto;padding:32px 16px 60px}
+
+.intro{
+  display:flex;align-items:center;gap:10px;
+  font-size:13px;color:var(--muted);margin-bottom:24px;
+  padding:12px 16px;background:var(--card);border-radius:10px;
+  border:1.5px solid var(--border);
+}
+.intro strong{color:var(--br)}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:16px;
+}
+
+/* CARD */
+.card{
+  background:var(--card);
+  border:1.5px solid var(--border);
+  border-radius:16px;
+  overflow:hidden;
+  display:flex;flex-direction:column;
+  transition:transform .18s,box-shadow .18s;
+  position:relative;
+}
+.card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 32px rgba(92,56,31,.14);
+}
+.card.ready{border-color:var(--ready-border)}
+.card.soon{opacity:.82}
+
+.card-top{
+  padding:22px 20px 16px;
+  display:flex;align-items:flex-start;gap:14px;
+  flex:1;
+}
+.card-emo{
+  font-size:36px;line-height:1;flex-shrink:0;
+  width:52px;height:52px;display:flex;align-items:center;justify-content:center;
+  background:var(--kraft);border-radius:12px;
+}
+.card-info{flex:1;min-width:0}
+.card-name{
+  font-size:15px;font-weight:800;color:var(--bd);
+  line-height:1.25;margin-bottom:4px;
+}
+.card-gram{
+  font-size:11px;color:var(--muted);font-weight:600;
+  letter-spacing:.5px;margin-bottom:6px;
+}
+.card-desc{
+  font-size:12px;color:var(--muted);line-height:1.5;
+}
+
+.badge{
+  position:absolute;top:12px;right:12px;
+  font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
+  padding:3px 8px;border-radius:20px;
+}
+.badge-ready{background:var(--ready-bg);color:var(--ready-text);border:1px solid var(--ready-border)}
+.badge-soon{background:var(--soon-bg);color:var(--soon-text);border:1px solid var(--soon-border)}
+
+.card-foot{
+  padding:0 20px 18px;
+}
+.btn-konfig{
+  display:block;width:100%;
+  padding:10px 16px;border-radius:10px;
+  font-size:13px;font-weight:700;text-align:center;
+  text-decoration:none;border:none;cursor:pointer;
+  transition:opacity .15s,transform .15s;
+}
+.btn-konfig:hover{opacity:.88;transform:scale(.98)}
+.btn-konfig.active{
+  background:linear-gradient(135deg,var(--bd),var(--br));
+  color:#fff;
+  box-shadow:0 3px 12px rgba(92,56,31,.25);
+}
+.btn-konfig.inactive{
+  background:var(--kraft);color:var(--muted);
+  border:1.5px solid var(--border);
+  cursor:default;pointer-events:none;
+}
+
+/* FOOTER */
+.footer{
+  text-align:center;font-size:11px;color:var(--muted);
+  padding:24px 16px;
+}
+.footer a{color:var(--br);text-decoration:none}
+.footer a:hover{text-decoration:underline}
+
+/* +karta přidat */
+.card-add{
+  border:2px dashed var(--border);background:transparent;
+  align-items:center;justify-content:center;
+  min-height:160px;opacity:.5;
+  cursor:default;
+}
+.card-add:hover{opacity:.65;transform:none;box-shadow:none}
+.card-add-inner{text-align:center;padding:24px}
+.card-add-ico{font-size:28px;margin-bottom:8px}
+.card-add-txt{font-size:12px;color:var(--muted);font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo-label"><strong>NUTWORLD</strong> &nbsp;·&nbsp; firemní dárky</div>
+  <h1>🎁 Generátor firemních dárků</h1>
+  <p>Nakonfigurujte dárkové balení přesně podle vašich představ. Vyberte typ obalu a sestavte obsah, gravír i personalizaci.</p>
+</div>
+<div class="amber-bar"></div>
+
+<div class="wrap">
+  <div class="intro">
+    ✅ <span><strong>1 konfigurátor spuštěn</strong> — ostatní typy připravujeme. Zájem o konkrétní balení? Napište nám na <strong>info@nutworld.cz</strong>.</span>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</div>
+
+<div class="footer">
+  &copy; 2026 <a href="https://www.nutworld.cz">Nutworld.cz</a> &nbsp;·&nbsp; Prémiové ořechy a sušené ovoce<br>
+  Dotazy: <a href="mailto:info@nutworld.cz">info@nutworld.cz</a>
+</div>
+
+<script>
+const TYPES = [
+  {
+    emoji:'📦',
+    name:'Dárková krabička 2×50 g',
+    gram:'2 druhy · 50 g každý',
+    desc:'Kraftová krabička se dvěma druhy ořechů nebo sušeného ovoce — jutová nebo saténová stuha, volitelný gravír.',
+    url:'generator-darkove-krabicky.html',
+    ready:true,
+  },
+  {
+    emoji:'🥛',
+    name:'Eko kelímek 100 g',
+    gram:'1 druh · 100 g',
+    desc:'Papírový kelímek s celofánovým sáčkem uvnitř. Přírodní, minimalistický.',
+    url:null,
+  },
+  {
+    emoji:'🫙',
+    name:'Sklenička DELUXE 180 g',
+    gram:'1 druh · 180 g',
+    desc:'Elegantní sklenička s víčkem — prémiová volba pro firemní obdarování.',
+    url:null,
+  },
+  {
+    emoji:'✨',
+    name:'Sklenička EXCLUSIVE 70 g',
+    gram:'1 druh · 70 g',
+    desc:'Miniaturní sklenička, velký dojem. Ideální jako doplněk nebo malý dáreček.',
+    url:null,
+  },
+  {
+    emoji:'🎀',
+    name:'Celofánek s mašličkou',
+    gram:'variabilní gramáž',
+    desc:'Průhledný celofán s mašlí — vidíte obsah, vypadá slavnostně.',
+    url:null,
+  },
+  {
+    emoji:'🪣',
+    name:'Kraft kelímek',
+    gram:'variabilní gramáž',
+    desc:'Klasický kraftový kelímek. Jednoduchý, praktický, ekologický.',
+    url:null,
+  },
+  {
+    emoji:'🍬',
+    name:'Dárková kazetka 50 g',
+    gram:'1 druh · 50 g',
+    desc:'Plochá kraftová krabička 200×100×35 mm s celofánovým sáčkem a jutovou stužkou.',
+    url:null,
+  },
+  {
+    emoji:'🎁',
+    name:'Krabička 4× 80 g',
+    gram:'4 druhy · 80 g každý',
+    desc:'Čtyři přihrádky, čtyři chutě. Ideální mixbox pro milovníky rozmanitosti.',
+    url:null,
+  },
+  {
+    emoji:'🎄',
+    name:'Vánoční sáček SOB 180 g',
+    gram:'1 druh · 180 g',
+    desc:'Sváteční sáček s vánočním motivem — jednoduchý a hravý dáreček.',
+    url:null,
+  },
+  {
+    emoji:'🧣',
+    name:'Sáček s knírem 180 g',
+    gram:'1 druh · 180 g',
+    desc:'Papírový sáček s charakteristickým knírem — originální a zapamatovatelný.',
+    url:null,
+  },
+  {
+    emoji:'🪡',
+    name:'Sáček s kolíčkem 150 g',
+    gram:'1 druh · 150 g',
+    desc:'Průhledný sáček uzavřený dřevěným kolíčkem — minimalistický a stylový.',
+    url:null,
+  },
+  {
+    emoji:'📦',
+    name:'Krabička 3× Eko kelímek',
+    gram:'3 druhy · 100 g každý',
+    desc:'Krabička s okýnkem, tři papírové kelímky uvnitř — tři chutě, jeden krásný dárek.',
+    url:null,
+  },
+  {
+    emoji:'🫙',
+    name:'Krabice DELUXE 3× Sklenička',
+    gram:'3 druhy · 180 g každý',
+    desc:'Luxusní krabice se třemi skleničkami. Reprezentativní dárek pro klíčové partnery.',
+    url:null,
+  },
+  {
+    emoji:'🗂',
+    name:'Výseková krabice L',
+    gram:'5 druhů · variabilní',
+    desc:'Krabice 320×210×90 mm s pěti sáčky — velkorysý dárek pro větší příležitosti.',
+    url:null,
+  },
+  {
+    emoji:'🎁',
+    name:'Výseková krabice XL',
+    gram:'7 druhů · variabilní',
+    desc:'Největší krabice 300×310×90 mm se sedmi sáčky — impozantní firemní dárek.',
+    url:null,
+  },
+];
+
+const grid = document.getElementById('grid');
+
+TYPES.forEach(t => {
+  const card = document.createElement('div');
+  card.className = 'card ' + (t.ready ? 'ready' : 'soon');
+  card.innerHTML = `
+    <div class="badge ${t.ready ? 'badge-ready' : 'badge-soon'}">${t.ready ? '✓ Spuštěno' : 'Připravujeme'}</div>
+    <div class="card-top">
+      <div class="card-emo">${t.emoji}</div>
+      <div class="card-info">
+        <div class="card-name">${t.name}</div>
+        <div class="card-gram">${t.gram}</div>
+        <div class="card-desc">${t.desc}</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      ${t.ready
+        ? `<a href="${t.url}" class="btn-konfig active">🎛 Konfigurovat →</a>`
+        : `<span class="btn-konfig inactive">Brzy k dispozici</span>`}
+    </div>
+  `;
+  grid.appendChild(card);
+});
+
+// +karta "přidat typ"
+const add = document.createElement('div');
+add.className = 'card card-add';
+add.innerHTML = `<div class="card-add-inner"><div class="card-add-ico">＋</div><div class="card-add-txt">Další typy<br>připravujeme</div></div>`;
+grid.appendChild(add);
+</script>
+</body>
+</html>
