@@ -122,6 +122,21 @@ input:focus, select:focus, textarea:focus { border-color: var(--primary-h); }
 textarea { resize: vertical; min-height: 76px; }
 select option { background: var(--surface); }
 
+/* SLOŽENÍ */
+.slozeni-wrap { display: flex; flex-direction: column; gap: 6px; }
+.sl-row { display: grid; grid-template-columns: 1fr 110px 28px; gap: 6px; align-items: center; }
+.sl-row input { margin: 0; }
+.sl-rm { background: none; border: 1.5px solid var(--border); border-radius: 6px; color: var(--muted); font-size: 15px; cursor: pointer; width: 28px; height: 36px; display: flex; align-items: center; justify-content: center; padding: 0; flex-shrink: 0; }
+.sl-rm:hover { background: var(--sf2); color: var(--acc, #da1668); }
+.btn-add-sl { background: none; border: 1.5px dashed var(--border); border-radius: 8px; color: var(--muted); font-size: 12px; font-weight: 600; padding: 7px 12px; cursor: pointer; width: 100%; margin-top: 2px; font-family: inherit; }
+.btn-add-sl:hover { border-color: var(--primary-h); color: var(--primary-h); background: var(--sf2); }
+
+/* SLOŽENÍ v detailu */
+.slozeni-det { display: flex; flex-direction: column; gap: 4px; }
+.sl-det-row { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.sl-det-row::before { content: '•'; color: var(--xmuted); flex-shrink: 0; }
+.sl-det-kod { font-family: monospace; font-size: 11px; color: var(--xmuted); background: var(--sf2); border-radius: 4px; padding: 1px 6px; }
+
 /* BUTTONS */
 .btn-sec { background: var(--sf2); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 8px 15px; font-size: 13px; font-weight: 600; cursor: pointer; }
 .btn-sec:hover { background: var(--border); }
@@ -352,8 +367,19 @@ function openAdd(id) {
         <input id="ftel" type="tel" placeholder="+420 777 123 456" value="${vz?esc(vz.telefon||''):''}"></div>
     </div>
     <div class="frow">
-      <div class="fg full"><label>Produkt / surovina *</label>
-        <input id="fp" placeholder="Např. Mandle pražené solené" value="${vz?esc(vz.produkt):''}"></div>
+      <div class="fg full"><label>Název produktu / balení *</label>
+        <input id="fp" placeholder="Např. Dárková krabička 4×80g, Sáček s knírem 180g…" value="${vz?esc(vz.produkt):''}"></div>
+    </div>
+    <div class="frow">
+      <div class="fg full">
+        <label>Složení (produkty + kódy)</label>
+        <div class="slozeni-wrap" id="slozeni-list"></div>
+        <button type="button" class="btn-add-sl" onclick="addSlRow()">+ Přidat produkt do složení</button>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg full"><label>Popis / další info</label>
+        <textarea id="fpopis" placeholder="Stručný popis produktu, co klient chce, reference…" style="min-height:60px">${vz?esc(vz.popis||''):''}</textarea></div>
     </div>
     <div class="frow">
       <div class="fg"><label>Obal / forma</label><input id="fo" placeholder="Např. Eko kelímek 100g, vlastní krabička…" value="${vz?esc(vz.obal):''}"></div>
@@ -389,7 +415,35 @@ function openAdd(id) {
           <option value="Doprava" ${vz&&vz.zadal==='Doprava'?'selected':''}>Doprava</option>
         </select></div>
     </div>`;
+  // populate složení rows when editing
+  const list = document.getElementById('slozeni-list');
+  if (list) {
+    list.innerHTML = '';
+    const rows = vz && vz.slozeni && vz.slozeni.length ? vz.slozeni : [];
+    rows.forEach(r => addSlRow(r.nazev, r.kod));
+  }
 }
+
+function addSlRow(nazev='', kod='') {
+  const list = document.getElementById('slozeni-list');
+  if (!list) return;
+  const row = document.createElement('div');
+  row.className = 'sl-row';
+  row.innerHTML = `
+    <input placeholder="Název produktu" value="${esc(nazev)}" class="sl-nazev">
+    <input placeholder="kód" value="${esc(kod)}" class="sl-kod">
+    <button type="button" class="sl-rm" onclick="this.closest('.sl-row').remove()">×</button>
+  `;
+  list.appendChild(row);
+}
+
+function getSlozeni() {
+  return [...document.querySelectorAll('#slozeni-list .sl-row')].map(r => ({
+    nazev: r.querySelector('.sl-nazev').value.trim(),
+    kod:   r.querySelector('.sl-kod').value.trim(),
+  })).filter(r => r.nazev || r.kod);
+}
+
 
 function closeAdd() { document.getElementById('addBk').classList.add('hidden'); editId = null; }
 
@@ -407,6 +461,8 @@ function save() {
   const now = new Date().toISOString();
   const obj = {
     klient, produkt, email, telefon,
+    popis: document.getElementById('fpopis').value.trim(),
+    slozeni: getSlozeni(),
     obal: document.getElementById('fo').value.trim(),
     gramaz: document.getElementById('fg').value.trim(),
     pocet: parseInt(document.getElementById('fn').value)||1,
@@ -484,13 +540,18 @@ function openDet(id) {
       <div>
         <div class="dsec-label">Výrobní podmínky</div>
         <div class="dgrid">
-          <div class="df">
+          <div class="df full">
             <div class="df-l">Produkt</div>
             <div class="df-v" style="font-weight:700">${esc(vz.produkt)}</div>
           </div>
+          ${vz.slozeni && vz.slozeni.length ? `<div class="df full">
+            <div class="df-l">Složení</div>
+            <div class="df-v"><div class="slozeni-det">${vz.slozeni.map(s=>`<div class="sl-det-row">${esc(s.nazev)}${s.kod?` <span class="sl-det-kod">${esc(s.kod)}</span>`:''}</div>`).join('')}</div></div>
+          </div>` : ''}
+          ${vz.popis ? `<div class="df full"><div class="df-l">Popis</div><div class="df-v">${esc(vz.popis)}</div></div>` : ''}
           <div class="df">
-            <div class="df-l">Typ obalu</div>
-            <div class="df-v">${esc(vz.obal)}</div>
+            <div class="df-l">Obal</div>
+            <div class="df-v">${esc(vz.obal)||'—'}</div>
           </div>
           <div class="df">
             <div class="df-l">Gramáž</div>
