@@ -1,97 +1,27 @@
 {
-  "generated": "2026-08-15T03:06:21",
-  "date": "2026-08-14",
-  "total": 9,
+  "generated": "2026-08-17T03:00:05",
+  "date": "2026-08-16",
+  "total": 2,
   "notifications": [
     {
-      "type": "addedToCard",
-      "label": "Přidán/a na kartu",
-      "card": "emedis",
-      "card_url": "https://trello.com/c/3ZjGUskD",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "",
-      "time": "2026-08-14T10:09:40.009Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "ALZA - EDI/2026/27",
-      "card_url": "https://trello.com/c/OLTwpte6",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Balírna",
-      "comment": "",
-      "time": "2026-08-14T09:19:16.526Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "FOREA - 2600011169",
-      "card_url": "https://trello.com/c/B4BoAMo5",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Balírna",
-      "comment": "",
-      "time": "2026-08-14T09:19:04.140Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "ALZA - EDI/2026/28",
-      "card_url": "https://trello.com/c/c1EkG82g",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Balírna",
-      "comment": "",
-      "time": "2026-08-14T09:07:24.370Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "Czech inn",
-      "card_url": "https://trello.com/c/LLEf1zIE",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "",
-      "time": "2026-08-14T08:24:46.795Z"
-    },
-    {
-      "type": "markedCompleteCard",
-      "label": "markedCompleteCard",
-      "card": "Czech inn",
-      "card_url": "https://trello.com/c/LLEf1zIE",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "",
-      "time": "2026-08-14T08:24:43.042Z"
-    },
-    {
-      "type": "markedCompleteCard",
-      "label": "markedCompleteCard",
-      "card": "Czech inn",
-      "card_url": "https://trello.com/c/LLEf1zIE",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "",
-      "time": "2026-08-14T08:24:31.890Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "Dačický s.r.o.",
-      "card_url": "https://trello.com/c/NbU7SSdy",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Balírna",
-      "comment": "",
-      "time": "2026-08-14T08:21:44.429Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
+      "type": "cardDueSoon",
+      "label": "Karta má brzy termín",
       "card": "OREA",
       "card_url": "https://trello.com/c/HOyG0IsA",
       "board": "Firmy dárky + objednávky",
-      "creator": "Balírna",
+      "creator": "",
       "comment": "",
-      "time": "2026-08-14T08:21:34.521Z"
+      "time": "2026-08-16T10:52:42.917Z"
+    },
+    {
+      "type": "cardDueSoon",
+      "label": "Karta má brzy termín",
+      "card": "ALZA - EDI/2026/27",
+      "card_url": "https://trello.com/c/OLTwpte6",
+      "board": "Firmy dárky + objednávky",
+      "creator": "",
+      "comment": "",
+      "time": "2026-08-16T08:11:27.370Z"
     }
   ]
 }
