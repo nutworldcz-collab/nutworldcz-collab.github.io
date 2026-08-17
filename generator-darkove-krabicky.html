@@ -103,9 +103,8 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
 .gcard .ge{font-size:24px;line-height:1}
 .gcard .gn{font-size:9.5px;font-weight:600;color:var(--bd);text-align:center;line-height:1.2}
 .gcard .gl{position:absolute;top:4px;left:5px;font-family:'Exo 2',sans-serif;font-size:9px;font-weight:800;color:var(--amb);background:var(--bd);width:15px;height:15px;border-radius:3px;display:flex;align-items:center;justify-content:center}
-.gravir-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.gravir-clr{font-size:11px;color:#bbb;cursor:pointer;background:none;border:none;font-family:inherit;padding:0}
-.gravir-clr:hover{color:var(--acc)}
+.gsub{background:#fdf9f6;border:1.5px solid #e8dbc8;border-radius:10px;padding:12px 14px;margin-bottom:10px}
+.gsub-lbl{font-family:'Exo 2',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--br);margin-bottom:10px;display:flex;align-items:center;gap:6px}
 
 /* ═══ COLORS ═══ */
 .color-grid{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
@@ -241,16 +240,51 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
     </div>
 
     <div class="field">
-      <div class="gravir-header">
-        <label style="margin-bottom:0">Gravír (volitelné)</label>
-        <button class="gravir-clr" onclick="clearGravir()">✕ Smazat gravír</button>
+      <label>Gravír</label>
+      <div class="radio-group">
+        <label class="radio-opt"><input type="radio" name="gravir-hlavni" value="bez" checked onchange="onGravirMain()"> — Bez gravíru</label>
+        <label class="radio-opt"><input type="radio" name="gravir-hlavni" value="ano" onchange="onGravirMain()"> ✦ S gravírem</label>
       </div>
-      <div class="gravir-grid" id="gravir-grid"></div>
-      <div class="field" style="margin-bottom:0;margin-top:8px">
-        <label>Text gravíru</label>
-        <input id="gravir-text" placeholder="Zadejte text k vygravírování (nepovinné)…" maxlength="60" oninput="upd()"/>
-        <div style="font-size:11px;color:#bbb;margin-top:3px">Motiv a text lze kombinovat zároveň</div>
+    </div>
+    <div id="gravir-detail" style="display:none">
+
+      <!-- Obrázek / motiv -->
+      <div class="gsub">
+        <div class="gsub-lbl">🎨 Obrázek / motiv</div>
+        <div class="radio-group" style="margin-bottom:10px">
+          <label class="radio-opt" id="gravir-bez-img-lbl"><input type="radio" name="gravir-img" value="bez" checked onchange="onGravirImg()"> — Bez obrázku</label>
+          <label class="radio-opt"><input type="radio" name="gravir-img" value="ano" onchange="onGravirImg()"> Vybrat motiv</label>
+        </div>
+        <div id="gravir-grid-wrap" style="display:none">
+          <div class="gravir-grid" id="gravir-grid"></div>
+          <div style="font-size:11px;color:#bbb;margin-top:4px">Kliknutím vyberete · znovu kliknout = zrušit výběr</div>
+        </div>
       </div>
+
+      <!-- Logo -->
+      <div class="gsub">
+        <div class="gsub-lbl">🏷 Logo</div>
+        <div class="radio-group">
+          <label class="radio-opt"><input type="radio" name="gravir-logo" value="bez" checked onchange="onGravirLogo()"> — Bez loga</label>
+          <label class="radio-opt"><input type="radio" name="gravir-logo" value="ano" onchange="onGravirLogo()"> Přiložit logo</label>
+        </div>
+        <div id="gravir-logo-note" style="display:none;margin-top:10px">
+          <input id="gravir-logo-text" placeholder="Popište logo nebo upřesníme se e-mailem…" oninput="upd()"/>
+        </div>
+      </div>
+
+      <!-- Text -->
+      <div class="gsub">
+        <div class="gsub-lbl">✍️ Text gravíru</div>
+        <div class="radio-group">
+          <label class="radio-opt"><input type="radio" name="gravir-text-opt" value="bez" checked onchange="onGravirText()"> — Bez textu</label>
+          <label class="radio-opt"><input type="radio" name="gravir-text-opt" value="ano" onchange="onGravirText()"> S textem</label>
+        </div>
+        <div id="gravir-text-detail" style="display:none;margin-top:10px">
+          <input id="gravir-text" placeholder="Zadejte text k vygravírování…" maxlength="60" oninput="upd()"/>
+        </div>
+      </div>
+
     </div>
 
     <div class="field">
@@ -521,15 +555,30 @@ function selectColor(id){
   document.getElementById('chint').style.display=selectedColor?'none':'block';
   upd();
 }
+function onGravirMain(){
+  const on=document.querySelector('input[name="gravir-hlavni"]:checked').value==='ano';
+  document.getElementById('gravir-detail').style.display=on?'block':'none';
+  upd();
+}
+function onGravirImg(){
+  const on=document.querySelector('input[name="gravir-img"]:checked').value==='ano';
+  document.getElementById('gravir-grid-wrap').style.display=on?'block':'none';
+  if(!on){selectedMotif=null;GRAVIR_MOTIFS.forEach(m=>document.getElementById('gc-'+m.id).classList.remove('active'));}
+  upd();
+}
+function onGravirLogo(){
+  document.getElementById('gravir-logo-note').style.display=
+    document.querySelector('input[name="gravir-logo"]:checked').value==='ano'?'block':'none';
+  upd();
+}
+function onGravirText(){
+  document.getElementById('gravir-text-detail').style.display=
+    document.querySelector('input[name="gravir-text-opt"]:checked').value==='ano'?'block':'none';
+  upd();
+}
 function toggleMotif(id){
   selectedMotif=selectedMotif===id?null:id;
   GRAVIR_MOTIFS.forEach(m=>document.getElementById('gc-'+m.id).classList.toggle('active',m.id===selectedMotif));
-  upd();
-}
-function clearGravir(){
-  selectedMotif=null;
-  document.getElementById('gravir-text').value='';
-  GRAVIR_MOTIFS.forEach(m=>document.getElementById('gc-'+m.id).classList.remove('active'));
   upd();
 }
 function onTisk(){
@@ -552,8 +601,13 @@ function getData(){
   const kompl=document.querySelector('input[name="kompl"]:checked').value;
   const tisk =document.querySelector('input[name="tisk"]:checked').value;
   const color=STUHA_COLORS.find(c=>c.id===selectedColor)||null;
-  const motif=GRAVIR_MOTIFS.find(m=>m.id===selectedMotif)||null;
-  const gtxt =document.getElementById('gravir-text').value.trim();
+  const gravirOn=document.querySelector('input[name="gravir-hlavni"]:checked').value==='ano';
+  const motif=gravirOn&&document.querySelector('input[name="gravir-img"]:checked')?.value==='ano'
+    ?(GRAVIR_MOTIFS.find(m=>m.id===selectedMotif)||null):null;
+  const logoOn=gravirOn&&document.querySelector('input[name="gravir-logo"]:checked')?.value==='ano';
+  const logoText=logoOn?(document.getElementById('gravir-logo-text').value.trim()):'';
+  const textOn=gravirOn&&document.querySelector('input[name="gravir-text-opt"]:checked')?.value==='ano';
+  const gtxt=textOn?(document.getElementById('gravir-text').value.trim()):'';
   const j1=sel[0]==='__jine__'?document.getElementById('jine1').value.trim():'';
   const j2=sel[1]==='__jine__'?document.getElementById('jine2').value.trim():'';
   const prod1Label=sel[0]==='__jine__'?('Jiné: '+(j1||'(upřesnit)')):sel[0];
@@ -566,8 +620,9 @@ function getData(){
     telefon:document.getElementById('telefon').value.trim(),
     pocet:parseInt(document.getElementById('pocet').value)||0,
     termin:document.getElementById('termin').value,
-    vazba,color,motif,gravirText:gtxt,
-    hasGravir:!!(motif||gtxt),
+    vazba,color,
+    gravirOn,motif,logoOn,logoText,textOn,gravirText:gtxt,
+    hasGravir:gravirOn&&!!(motif||logoOn||textOn),
     tisk,tiskText:tisk!=='ne'?document.getElementById('tisk-text').value.trim():'',
     kompl,komplText:kompl==='ano'?document.getElementById('kompl-text').value.trim():'',
     hasFile:!!(kompl==='ano'&&attachedFile),
@@ -575,10 +630,14 @@ function getData(){
   };
 }
 function gravirStr(d){
+  if(!d.gravirOn)return'— Bez gravíru';
   const parts=[];
   if(d.motif)parts.push(d.motif.emoji+' '+d.motif.label);
-  if(d.gravirText)parts.push('Text: "'+d.gravirText+'"');
-  return parts.length?parts.join(' + '):'— Bez gravíru';
+  else if(document.querySelector('input[name="gravir-img"]:checked')?.value==='ano')parts.push('🎨 Bez vybraného motivu');
+  if(d.logoOn)parts.push('🏷 Logo'+(d.logoText?': '+d.logoText:''));
+  if(d.textOn&&d.gravirText)parts.push('✍️ Text: "'+d.gravirText+'"');
+  else if(d.textOn)parts.push('✍️ Text (upřesnit)');
+  return parts.length?parts.join(' · '):'— Bez obsahu (doplnit)';
 }
 function tiskStr(d){
   if(d.tisk==='ne')return'— Bez tisku';
@@ -648,7 +707,7 @@ async function doSubmit(){
       const kroky=['Kontakt ověřen a objednávka potvrzena','Platba přijata',
         'Slot 1: '+d.prod1Label,'Slot 2: '+d.prod2Label,
         'Stuha připravena: '+cn,
-        ...(d.hasGravir?['Gravír připraven: '+gravirStr(d)]:[]),
+        ...(d.gravirOn?['Gravír: '+gravirStr(d)]:[]),
         ...(d.tisk!=='ne'?['Tisk připraven: '+tiskStr(d)]:[]),
         ...(d.kompl==='ano'?['Komplimentka připravena'+(d.hasFile?' (viz příloha)':'')]:[]),
         'Kompletace a balení','Kontrola kvality','Expedice / předání','Faktura odeslána'];
