@@ -746,12 +746,22 @@ ${d.poznamka ? `\n*Poznámka z nabídky: ${d.poznamka}*` : ''}`;
   const cardName = `${d.firma} — ${pocetKs} ks — ${fmt(termin)}`;
 
   try {
-    // 1. Vytvoř kartu
-    const card = await tapi('POST', '/cards', {
-      name: cardName, desc, idList: T_LIST,
-      pos: 'top', idMembers: members,
-      ...(due ? { due } : {})
-    });
+    // 1. Přesuň existující kartu nabídky NEBO vytvoř novou
+    let card;
+    if (offerData._cardId) {
+      setLoading(true, 'Přesouvá se karta nabídky do zakázek…');
+      card = await tapi('PUT', '/cards/' + offerData._cardId, {
+        name: cardName, desc, idList: T_LIST,
+        pos: 'top', idMembers: members.join(','),
+        ...(due ? { due } : {})
+      });
+    } else {
+      card = await tapi('POST', '/cards', {
+        name: cardName, desc, idList: T_LIST,
+        pos: 'top', idMembers: members,
+        ...(due ? { due } : {})
+      });
+    }
     if (!card.id) throw new Error(card.message || JSON.stringify(card));
 
     // 2. Checklist
