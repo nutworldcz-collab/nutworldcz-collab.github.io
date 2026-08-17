@@ -406,14 +406,8 @@ function openAdd(id) {
         <textarea id="fz" placeholder="Specifické požadavky, barvy, materiály, typ tisku...">${vz?esc(vz.poznamka):''}</textarea></div>
     </div>
     <div class="frow">
-      <div class="fg full"><label>Zadal *</label>
-        <select id="fz2">
-          <option value="" ${!vz||!vz.zadal?'selected':''}>— vyber —</option>
-          <option value="Jana" ${vz&&vz.zadal==='Jana'?'selected':''}>Jana</option>
-          <option value="Darkovna" ${vz&&vz.zadal==='Darkovna'?'selected':''}>Darkovna</option>
-          <option value="Balirna" ${vz&&vz.zadal==='Balirna'?'selected':''}>Balírna</option>
-          <option value="Doprava" ${vz&&vz.zadal==='Doprava'?'selected':''}>Doprava</option>
-        </select></div>
+      <div class="fg full"><label>Zadal (obchodní zástupce) *</label>
+        <input id="fz2" placeholder="Jméno obchodního zástupce" value="${vz?esc(vz.zadal||''):''}"></div>
     </div>`;
   // populate složení rows when editing
   const list = document.getElementById('slozeni-list');
@@ -452,10 +446,10 @@ function save() {
   const produkt = document.getElementById('fp').value.trim();
   const email = document.getElementById('fem').value.trim();
   const telefon = document.getElementById('ftel').value.trim();
-  const zadal = document.getElementById('fz2').value;
+  const zadal = document.getElementById('fz2').value.trim();
   if (!klient || !produkt) { toast('Vyplňte klienta a produkt.'); return; }
   if (!email || !telefon) { toast('Email a telefon jsou povinné.'); return; }
-  if (!zadal) { toast('Vyber kdo kartu zadal.'); return; }
+  if (!zadal) { toast('Vyplňte jméno obchodního zástupce.'); return; }
 
   const d = load();
   const now = new Date().toISOString();
@@ -582,6 +576,7 @@ function openDet(id) {
       </div>
       <div class="dfoot">
         <span>Zadal: <strong>${esc(vz.zadal||'—')}</strong></span>
+        <span style="background:var(--sf2);border-radius:6px;padding:3px 10px;font-size:11px">🃏 Označ v Trello: <strong>${esc(vz.zadal||'?')}</strong>, Darkovna, Balírna, Jana</span>
         <span>Zadáno: ${fmtD(vz.created)}</span>
         <span>Stav: <span class="sbadge ${SC[vz.status].cls}">${SC[vz.status].label}</span></span>
       </div>
