@@ -280,12 +280,15 @@ let progress    = {};
 function getDarkyKod(s) {
   const DD = (typeof DARKY_DATA !== 'undefined') ? DARKY_DATA : null;
   if (!DD) return null;
-  if (s.kod && DD[s.kod]) return s.kod;
-  const nv = s.nazev && s.nazev.trim();
-  if (nv && DD[nv]) return nv;
-  const gr = s.gram && s.gram.trim();
-  if (gr && DD[gr]) return gr;
-  return null;
+  // Zkus přímý kód, pak bez SKX prefixu (SK varianta → CZ kód v darky.csv)
+  function tryKod(k) {
+    if (!k) return null;
+    k = k.trim();
+    if (DD[k]) return k;
+    if (k.startsWith('SKX')) { const c = k.slice(3); if (DD[c]) return c; }
+    return null;
+  }
+  return tryKod(s.kod) || tryKod(s.nazev) || tryKod(s.gram) || null;
 }
 function getDarkyTotalKg(dKod, ks) {
   return (DARKY_DATA[dKod].obsah||[]).reduce((sum, item) => sum + item.gram/1000 * ks, 0);
@@ -675,6 +678,8 @@ function renderVyroba(cards){
         // Rozlož dárek na základní produkty (darky-data.js)
         const DD = (typeof DARKY_DATA !== 'undefined') ? DARKY_DATA : null;
         const dKod = getDarkyKod(s);
+        // Přeskoč servisní položky bez gramáže (branding, tisk apod.)
+        if(!dKod && !gramToKg(s.gram) && (s.nazev==='kód'||!s.nazev)) return;
         if(dKod && DD && DD[dKod].obsah && DD[dKod].obsah.length){
           const darky=DD[dKod];
           darky.obsah.forEach(item=>{
