@@ -171,6 +171,22 @@ select option { background: var(--surface); }
 .abtn-print { background: var(--sf2); color: var(--muted); border: 1px solid var(--border); margin-left: auto; }
 .dfoot { font-size: 12px; color: var(--xmuted); display: flex; flex-wrap: wrap; gap: 16px; padding-top: 10px; border-top: 1px solid var(--border); align-items: center; }
 
+/* ITEM BLOKY VE FORMULÁŘI */
+.item-block { border: 1.5px solid var(--border); border-radius: 10px; padding: 14px 16px; background: var(--surface); display: flex; flex-direction: column; gap: 10px; }
+.item-block-hdr { display: flex; justify-content: space-between; align-items: center; }
+.item-block-num { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: var(--primary-h); }
+.item-block-rm { background: none; border: none; color: var(--xmuted); font-size: 18px; cursor: pointer; padding: 0 4px; line-height: 1; }
+.item-block-rm:hover { color: #da1668; }
+.items-wrap { display: flex; flex-direction: column; gap: 10px; }
+.btn-add-item { background: none; border: 2px dashed var(--border); border-radius: 10px; color: var(--muted); font-size: 13px; font-weight: 600; padding: 10px; cursor: pointer; width: 100%; font-family: inherit; }
+.btn-add-item:hover { border-color: var(--primary-h); color: var(--primary-h); }
+
+/* ITEMS v detailu */
+.items-det { display: flex; flex-direction: column; gap: 10px; }
+.item-det { background: var(--sf2); border-radius: 8px; padding: 12px 14px; border-left: 3px solid var(--primary-h); display: flex; flex-direction: column; gap: 6px; }
+.item-det-name { font-weight: 700; font-size: 14px; }
+.item-det-meta { font-size: 12px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 10px; }
+
 /* TOAST */
 .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--primary); color: var(--pt); padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; z-index: 999; opacity: 0; transition: opacity .2s; pointer-events: none; }
 .toast.show { opacity: 1; }
@@ -269,8 +285,12 @@ const SC = {
 let filter = 'all';
 let editId = null;
 
+function migrateOld(vz) {
+  if (vz.items) return vz;
+  return { ...vz, items: [{ produkt: vz.produkt||'', slozeni: vz.slozeni||[], obal: vz.obal||'', gramaz: vz.gramaz||'', pocet: vz.pocet||1, popis: vz.popis||'' }] };
+}
 function load() {
-  try { const r = localStorage.getItem(SK); if (r) return JSON.parse(r); } catch(e) {}
+  try { const r = localStorage.getItem(SK); if (r) return JSON.parse(r).map(migrateOld); } catch(e) {}
   return [];
 }
 function store(d) { localStorage.setItem(SK, JSON.stringify(d)); }
@@ -283,16 +303,19 @@ function parseVzFromCard(card) {
 }
 
 function buildCardDesc(vz) {
-  const slText = vz.slozeni && vz.slozeni.length
-    ? '\n**Složení:**\n' + vz.slozeni.map(s => `- ${s.nazev}${s.kod ? ` (${s.kod})` : ''}`).join('\n')
-    : '';
+  const items = vz.items || [];
+  const itemsText = items.map((it, i) => {
+    const sl = it.slozeni && it.slozeni.length
+      ? '  Složení: ' + it.slozeni.map(s => `${s.nazev}${s.kod ? ` (${s.kod})` : ''}`).join(', ')
+      : '';
+    return [`**Vzorek ${i+1}:** ${it.produkt||'—'} | ${it.obal||'—'} | ${it.gramaz||'—'} | ${it.pocet||1} ks`, sl, it.popis ? `  ${it.popis}` : ''].filter(Boolean).join('\n');
+  }).join('\n\n');
   const human = [
     `**Zadal:** ${vz.zadal||'—'}`, `**Email:** ${vz.email||'—'}`, `**Telefon:** ${vz.telefon||'—'}`,
-    slText, vz.popis ? `**Popis:** ${vz.popis}` : '',
-    `**Obal:** ${vz.obal||'—'}`, vz.gramaz ? `**Gramáž:** ${vz.gramaz}` : '',
-    `**Počet:** ${vz.pocet} ks`, vz.deadline ? `**Deadline:** ${fmtD(vz.deadline)}` : '',
+    vz.deadline ? `**Deadline:** ${fmtD(vz.deadline)}` : '',
     vz.motiv ? `**Motiv:** ${vz.motiv}` : '',
-    vz.adresa ? `**Adresa:**\n${vz.adresa}` : '',
+    `\n**Vzorky (${items.length}):**\n${itemsText}`,
+    vz.adresa ? `\n**Adresa:**\n${vz.adresa}` : '',
     vz.design_link ? `**Design:** ${vz.design_link}` : '',
     vz.poznamka ? `**Poznámka:**\n${vz.poznamka}` : '',
     `**Status:** ${(SC[vz.status]||SC.zadano).label}`,
@@ -387,7 +410,15 @@ function renderGrid() {
     grid.innerHTML = `<div class="empty"><div class="empty-icon">📦</div><h3>Žádné vzorky</h3><p>Pro tento filtr nejsou žádné záznamy.</p></div>`;
     return;
   }
-  grid.innerHTML = list.map(s => `
+  grid.innerHTML = list.map(s => {
+    const items = s.items || [];
+    const itemsSummary = items.map((it,i) =>
+      `<div style="font-size:12px;color:var(--muted);display:flex;gap:6px;align-items:baseline">
+        <span style="font-weight:700;color:var(--text);min-width:16px">${i+1}.</span>
+        <span>${esc(it.produkt||'—')}${it.obal ? ` <span style="color:var(--xmuted)">· ${esc(it.obal)}</span>` : ''}${it.pocet ? ` <span style="color:var(--primary-h);font-weight:700">×${it.pocet}</span>` : ''}</span>
+      </div>`
+    ).join('');
+    return `
     <div class="card" onclick="openDet('${s.id}')">
       <div class="card-top">
         <span class="cid">${s.id}</span>
@@ -395,31 +426,27 @@ function renderGrid() {
       </div>
       <div>
         <div class="card-klient">${esc(s.klient)}</div>
-        <div class="card-produkt">${esc(s.produkt)}</div>
+        <div class="card-produkt" style="color:var(--xmuted);font-size:12px">${items.length} vzorek/vzorků</div>
       </div>
-      <div class="tags">
-        <span class="tag">📦 ${esc(s.obal)}</span>
-        ${s.gramaz ? `<span class="tag">⚖️ ${esc(s.gramaz)}</span>` : ''}
-        <span class="tag">× ${s.pocet} ks</span>
-        ${s.motiv ? `<span class="tag">🎨 ${esc(s.motiv)}</span>` : ''}
-      </div>
+      <div style="display:flex;flex-direction:column;gap:4px">${itemsSummary}</div>
       <div class="card-bot">
-        <div class="zadal-row">
-          <span class="zdot ${s.zdroj==='vyroba'?'v':''}"></span>
-          ${esc(s.zadal||'—')}
-        </div>
+        <div class="zadal-row"><span class="zdot"></span>${esc(s.zadal||'—')}</div>
         <div>Termín: ${fmtDl(s.deadline)}</div>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 function render() { renderFilters(); renderGrid(); }
 
 // ADD / EDIT
+let itemIdx = 0;
+
 function openAdd(id) {
   editId = id || null;
   const vz = id ? load().find(s => s.id === id) : null;
-  document.getElementById('addTitle').textContent = id ? 'Upravit vzorek' : 'Nový vzorek';
+  itemIdx = 0;
+  document.getElementById('addTitle').textContent = id ? 'Upravit požadavek' : 'Nový požadavek';
   document.getElementById('addBk').classList.remove('hidden');
 
   document.getElementById('addForm').innerHTML = `
@@ -434,99 +461,130 @@ function openAdd(id) {
         <input id="ftel" type="tel" placeholder="+420 777 123 456" value="${vz?esc(vz.telefon||''):''}"></div>
     </div>
     <div class="frow">
-      <div class="fg full"><label>Název produktu / balení *</label>
-        <input id="fp" placeholder="Např. Dárková krabička 4×80g, Sáček s knírem 180g…" value="${vz?esc(vz.produkt):''}"></div>
-    </div>
-    <div class="frow">
-      <div class="fg full">
-        <label>Složení (produkty + kódy)</label>
-        <div class="slozeni-wrap" id="slozeni-list"></div>
-        <button type="button" class="btn-add-sl" onclick="addSlRow()">+ Přidat produkt do složení</button>
-      </div>
-    </div>
-    <div class="frow">
-      <div class="fg full"><label>Popis / další info</label>
-        <textarea id="fpopis" placeholder="Stručný popis produktu, co klient chce, reference…" style="min-height:60px">${vz?esc(vz.popis||''):''}</textarea></div>
-    </div>
-    <div class="frow">
-      <div class="fg"><label>Obal / forma</label><input id="fo" placeholder="Např. Eko kelímek 100g, vlastní krabička…" value="${vz?esc(vz.obal):''}"></div>
-      <div class="fg"><label>Gramáž</label><input id="fg" placeholder="Např. 100g" value="${vz?esc(vz.gramaz):''}"></div>
-    </div>
-    <div class="frow">
-      <div class="fg"><label>Počet vzorků *</label><input id="fn" type="number" min="1" placeholder="3" value="${vz?vz.pocet:''}"></div>
       <div class="fg"><label>Deadline</label><input id="fd" type="date" value="${vz?vz.deadline:''}"></div>
-    </div>
-    <div class="frow">
-      <div class="fg full"><label>Motiv / téma</label>
-        <input id="fm" placeholder="Např. Firemní vánoce 2026" value="${vz?esc(vz.motiv):''}"></div>
+      <div class="fg"><label>Motiv / téma</label><input id="fm" placeholder="Firemní vánoce 2026" value="${vz?esc(vz.motiv||''):''}"></div>
     </div>
     <div class="frow">
       <div class="fg full"><label>Adresa doručení</label>
-        <textarea id="fad" placeholder="Jméno, firma&#10;Ulice č.p.&#10;PSČ Město" style="min-height:70px">${vz?esc(vz.adresa||''):''}</textarea></div>
+        <textarea id="fad" placeholder="Jméno, firma&#10;Ulice č.p.&#10;PSČ Město" style="min-height:60px">${vz?esc(vz.adresa||''):''}</textarea></div>
     </div>
     <div class="frow">
       <div class="fg full"><label>Link na design</label>
-        <input id="fl" type="url" placeholder="https://..." value="${vz?esc(vz.design_link):''}"></div>
+        <input id="fl" type="url" placeholder="https://..." value="${vz?esc(vz.design_link||''):''}"></div>
     </div>
     <div class="frow">
       <div class="fg full"><label>Poznámka pro výrobu</label>
-        <textarea id="fz" placeholder="Specifické požadavky, barvy, materiály, typ tisku...">${vz?esc(vz.poznamka):''}</textarea></div>
+        <textarea id="fz" placeholder="Specifické požadavky, barvy, materiály…">${vz?esc(vz.poznamka||''):''}</textarea></div>
     </div>
     <div class="frow">
       <div class="fg full"><label>Zadal (obchodní zástupce) *</label>
         <input id="fz2" placeholder="Jméno obchodního zástupce" value="${vz?esc(vz.zadal||''):''}"></div>
-    </div>`;
-  // populate složení rows when editing
-  const list = document.getElementById('slozeni-list');
-  if (list) {
-    list.innerHTML = '';
-    const rows = vz && vz.slozeni && vz.slozeni.length ? vz.slozeni : [];
-    rows.forEach(r => addSlRow(r.nazev, r.kod));
-  }
+    </div>
+    <hr style="border:none;border-top:1px solid var(--border);margin:4px 0">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:2px">Vzorky *</div>
+    <div class="items-wrap" id="items-wrap"></div>
+    <button type="button" class="btn-add-item" onclick="addItemBlock()">+ Přidat vzorek</button>`;
+
+  // Naplnit items
+  const existingItems = vz && vz.items && vz.items.length ? vz.items : [{}];
+  existingItems.forEach(it => addItemBlock(it));
 }
 
-function addSlRow(nazev='', kod='') {
-  const list = document.getElementById('slozeni-list');
+function addItemBlock(data) {
+  const wrap = document.getElementById('items-wrap');
+  if (!wrap) return;
+  const idx = itemIdx++;
+  const it = data || {};
+  const block = document.createElement('div');
+  block.className = 'item-block';
+  block.dataset.idx = idx;
+  block.innerHTML = `
+    <div class="item-block-hdr">
+      <span class="item-block-num">Vzorek ${wrap.children.length + 1}</span>
+      <button type="button" class="item-block-rm" onclick="removeItemBlock(this)" title="Odebrat">×</button>
+    </div>
+    <div class="fg full"><label>Název produktu / balení *</label>
+      <input placeholder="Dárková krabička 4×80g, Sáček s knírem 180g…" class="it-produkt" value="${esc(it.produkt||'')}"></div>
+    <div class="frow">
+      <div class="fg"><label>Obal / forma</label>
+        <input placeholder="Eko kelímek, kraft kelímek…" class="it-obal" value="${esc(it.obal||'')}"></div>
+      <div class="fg"><label>Gramáž</label>
+        <input placeholder="100g" class="it-gramaz" value="${esc(it.gramaz||'')}"></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Počet ks *</label>
+        <input type="number" min="1" placeholder="1" class="it-pocet" value="${it.pocet||''}"></div>
+      <div class="fg" style="align-self:end">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:4px">Složení</div>
+        <div class="slozeni-wrap it-slozeni-list"></div>
+        <button type="button" class="btn-add-sl" onclick="addSlRowTo(this.previousElementSibling)">+ Přidat položku</button>
+      </div>
+    </div>
+    <div class="fg full"><label>Popis / poznámka k vzorku</label>
+      <textarea placeholder="Co klient chce, reference, barvy…" class="it-popis" style="min-height:50px">${esc(it.popis||'')}</textarea></div>`;
+  wrap.appendChild(block);
+
+  // Naplnit složení
+  const slList = block.querySelector('.it-slozeni-list');
+  (it.slozeni || []).forEach(r => addSlRowTo(slList, r.nazev, r.kod));
+
+  // Přečíslovat
+  renumberItems();
+}
+
+function removeItemBlock(btn) {
+  btn.closest('.item-block').remove();
+  renumberItems();
+}
+
+function renumberItems() {
+  document.querySelectorAll('#items-wrap .item-block').forEach((b, i) => {
+    b.querySelector('.item-block-num').textContent = `Vzorek ${i+1}`;
+  });
+}
+
+function addSlRowTo(list, nazev='', kod='') {
   if (!list) return;
   const row = document.createElement('div');
   row.className = 'sl-row';
   row.innerHTML = `
-    <input placeholder="Název produktu" value="${esc(nazev)}" class="sl-nazev">
+    <input placeholder="Název" value="${esc(nazev)}" class="sl-nazev">
     <input placeholder="kód" value="${esc(kod)}" class="sl-kod">
-    <button type="button" class="sl-rm" onclick="this.closest('.sl-row').remove()">×</button>
-  `;
+    <button type="button" class="sl-rm" onclick="this.closest('.sl-row').remove()">×</button>`;
   list.appendChild(row);
 }
 
-function getSlozeni() {
-  return [...document.querySelectorAll('#slozeni-list .sl-row')].map(r => ({
-    nazev: r.querySelector('.sl-nazev').value.trim(),
-    kod:   r.querySelector('.sl-kod').value.trim(),
-  })).filter(r => r.nazev || r.kod);
+function getItems() {
+  return [...document.querySelectorAll('#items-wrap .item-block')].map(b => ({
+    produkt: b.querySelector('.it-produkt').value.trim(),
+    obal: b.querySelector('.it-obal').value.trim(),
+    gramaz: b.querySelector('.it-gramaz').value.trim(),
+    pocet: parseInt(b.querySelector('.it-pocet').value) || 1,
+    popis: b.querySelector('.it-popis').value.trim(),
+    slozeni: [...b.querySelectorAll('.it-slozeni-list .sl-row')].map(r => ({
+      nazev: r.querySelector('.sl-nazev').value.trim(),
+      kod: r.querySelector('.sl-kod').value.trim(),
+    })).filter(r => r.nazev || r.kod),
+  })).filter(it => it.produkt);
 }
-
 
 function closeAdd() { document.getElementById('addBk').classList.add('hidden'); editId = null; }
 
 function save() {
   const klient = document.getElementById('fk').value.trim();
-  const produkt = document.getElementById('fp').value.trim();
   const email = document.getElementById('fem').value.trim();
   const telefon = document.getElementById('ftel').value.trim();
   const zadal = document.getElementById('fz2').value.trim();
-  if (!klient || !produkt) { toast('Vyplňte klienta a produkt.'); return; }
+  const items = getItems();
+  if (!klient) { toast('Vyplňte klienta.'); return; }
   if (!email || !telefon) { toast('Email a telefon jsou povinné.'); return; }
   if (!zadal) { toast('Vyplňte jméno obchodního zástupce.'); return; }
+  if (!items.length) { toast('Přidejte alespoň jeden vzorek.'); return; }
 
   const d = load();
   const now = new Date().toISOString();
   const obj = {
-    klient, produkt, email, telefon,
-    popis: document.getElementById('fpopis').value.trim(),
-    slozeni: getSlozeni(),
-    obal: document.getElementById('fo').value.trim(),
-    gramaz: document.getElementById('fg').value.trim(),
-    pocet: parseInt(document.getElementById('fn').value)||1,
+    klient, email, telefon, items,
     motiv: document.getElementById('fm').value.trim(),
     deadline: document.getElementById('fd').value,
     adresa: document.getElementById('fad').value.trim(),
@@ -537,7 +595,7 @@ function save() {
 
   if (editId) {
     const i = d.findIndex(s => s.id === editId);
-    if (i >= 0) d[i] = { ...d[i], ...obj, updated: now };
+    if (i >= 0) { d[i] = { ...d[i], ...obj, updated: now }; syncTrelloCardDesc(editId, d[i]); }
     store(d); closeAdd(); render();
     toast('Vzorek upraven.');
   } else {
@@ -601,41 +659,30 @@ function openDet(id) {
     <div class="pipeline">${steps.join('')}</div>
     <div class="dbody">
       <div>
-        <div class="dsec-label">Výrobní podmínky</div>
+        <div class="dsec-label">Kontakt a termín</div>
         <div class="dgrid">
-          <div class="df full">
-            <div class="df-l">Produkt</div>
-            <div class="df-v" style="font-weight:700">${esc(vz.produkt)}</div>
-          </div>
-          ${vz.slozeni && vz.slozeni.length ? `<div class="df full">
-            <div class="df-l">Složení</div>
-            <div class="df-v"><div class="slozeni-det">${vz.slozeni.map(s=>`<div class="sl-det-row">${esc(s.nazev)}${s.kod?` <span class="sl-det-kod">${esc(s.kod)}</span>`:''}</div>`).join('')}</div></div>
-          </div>` : ''}
-          ${vz.popis ? `<div class="df full"><div class="df-l">Popis</div><div class="df-v">${esc(vz.popis)}</div></div>` : ''}
-          <div class="df">
-            <div class="df-l">Obal</div>
-            <div class="df-v">${esc(vz.obal)||'—'}</div>
-          </div>
-          <div class="df">
-            <div class="df-l">Gramáž</div>
-            <div class="df-v">${esc(vz.gramaz)||'—'}</div>
-          </div>
-          <div class="df">
-            <div class="df-l">Počet vzorků</div>
-            <div class="df-v" style="font-weight:700">${vz.pocet} ks</div>
-          </div>
-          <div class="df">
-            <div class="df-l">Motiv / téma</div>
-            <div class="df-v">${esc(vz.motiv)||'—'}</div>
-          </div>
-          <div class="df">
-            <div class="df-l">Deadline</div>
-            <div class="df-v">${fmtDl(vz.deadline)}</div>
-          </div>
           ${vz.email ? `<div class="df"><div class="df-l">Email</div><div class="df-v"><a href="mailto:${esc(vz.email)}" style="color:var(--primary-h)">${esc(vz.email)}</a></div></div>` : ''}
           ${vz.telefon ? `<div class="df"><div class="df-l">Telefon</div><div class="df-v"><a href="tel:${esc(vz.telefon)}" style="color:var(--primary-h)">${esc(vz.telefon)}</a></div></div>` : ''}
+          <div class="df"><div class="df-l">Deadline</div><div class="df-v">${fmtDl(vz.deadline)}</div></div>
+          ${vz.motiv ? `<div class="df"><div class="df-l">Motiv / téma</div><div class="df-v">${esc(vz.motiv)}</div></div>` : ''}
           ${vz.adresa ? `<div class="df full"><div class="df-l">Adresa</div><div class="df-v" style="white-space:pre-line">${esc(vz.adresa)}</div></div>` : ''}
           ${vz.design_link ? `<div class="df full"><div class="df-l">Design</div><div class="df-v"><a href="${esc(vz.design_link)}" target="_blank" style="color:var(--primary-h)">${esc(vz.design_link)}</a></div></div>` : ''}
+        </div>
+      </div>
+      <div>
+        <div class="dsec-label">Vzorky (${(vz.items||[]).length})</div>
+        <div class="items-det">
+          ${(vz.items||[]).map((it,i) => `
+            <div class="item-det">
+              <div class="item-det-name">${i+1}. ${esc(it.produkt||'—')}</div>
+              <div class="item-det-meta">
+                ${it.obal ? `<span>📦 ${esc(it.obal)}</span>` : ''}
+                ${it.gramaz ? `<span>⚖️ ${esc(it.gramaz)}</span>` : ''}
+                <span style="font-weight:700;color:var(--primary-h)">× ${it.pocet||1} ks</span>
+              </div>
+              ${it.slozeni && it.slozeni.length ? `<div class="slozeni-det">${it.slozeni.map(s=>`<div class="sl-det-row">${esc(s.nazev)}${s.kod?` <span class="sl-det-kod">${esc(s.kod)}</span>`:''}</div>`).join('')}</div>` : ''}
+              ${it.popis ? `<div style="font-size:12px;color:var(--muted);font-style:italic">${esc(it.popis)}</div>` : ''}
+            </div>`).join('')}
         </div>
       </div>
       ${vz.poznamka ? `<div><div class="dsec-label">Poznámka pro výrobu</div><div class="nota">${esc(vz.poznamka)}</div></div>` : ''}
@@ -645,7 +692,7 @@ function openDet(id) {
       </div>
       <div class="dfoot">
         <span>Zadal: <strong>${esc(vz.zadal||'—')}</strong></span>
-        <span style="background:var(--sf2);border-radius:6px;padding:3px 10px;font-size:11px">🃏 Označ v Trello: <strong>${esc(vz.zadal||'?')}</strong>, Darkovna, Balírna, Jana</span>
+        <span style="background:var(--sf2);border-radius:6px;padding:3px 10px;font-size:11px">🃏 Trello: <strong>${esc(vz.zadal||'?')}</strong>, Jana, Darkovna, Balírna</span>
         <span>Zadáno: ${fmtD(vz.created)}</span>
         <span>Stav: <span class="sbadge ${SC[vz.status].cls}">${SC[vz.status].label}</span></span>
       </div>
@@ -677,7 +724,7 @@ async function createTrelloCard(vz) {
       : T_MEMBERS;
 
     const body = {
-      name: `[${vz.id}] ${vz.klient} — ${vz.produkt}`,
+      name: `[${vz.id}] ${vz.klient} — ${(vz.items||[]).length} vzorek/vzorků`,
       desc: buildCardDesc(vz),
       idList: T_LIST,
       idMembers: members.join(','),
