@@ -1,27 +1,367 @@
 {
-  "generated": "2026-08-17T03:00:05",
-  "date": "2026-08-16",
-  "total": 2,
+  "generated": "2026-08-18T03:00:17",
+  "date": "2026-08-17",
+  "total": 36,
   "notifications": [
     {
-      "type": "cardDueSoon",
-      "label": "Karta má brzy termín",
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "FOREA - 2600011169",
+      "card_url": "https://trello.com/c/B4BoAMo5",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Renata Pošepná",
+      "comment": "",
+      "time": "2026-08-17T17:31:20.144Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "Poprokan s.r.o. — 600 ks — 15.09.2026",
+      "card_url": "https://trello.com/c/5iHvFSjn",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Jana Nývltová",
+      "comment": "",
+      "time": "2026-08-17T17:19:19.695Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "iMi objednávka",
+      "card_url": "https://trello.com/c/Fz95JWZE",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Jana Nývltová",
+      "comment": "",
+      "time": "2026-08-17T16:48:39.409Z"
+    },
+    {
+      "type": "commentCard",
+      "label": "Nový komentář",
+      "card": "ARBOEKO objednávka",
+      "card_url": "https://trello.com/c/D47dYg6M",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Hamerník Tomáš",
+      "comment": "oni nyní chtějí kulaté o velikosti 70mm. Dejte mi prosím vědět, zda je máme, nebo zda šlo o jiný rozměr. Pokud máme jiný rozměr, ale to samé logo, tak i kolik jich máme. Děkuji Tomáš",
+      "time": "2026-08-17T16:29:53.295Z"
+    },
+    {
+      "type": "mentionedOnCard",
+      "label": "Zmíněn/a v komentáři",
+      "card": "TZMO Czech Republic s.r.o. — 641 ks — 24.09.2026",
+      "card_url": "https://trello.com/c/NhTYSgIO",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Martin Werner",
+      "comment": "@wolf1988 @jananyvltova bude jen 640ks ten jeden kus to počítá i grafické úpravy",
+      "time": "2026-08-17T13:24:37.872Z"
+    },
+    {
+      "type": "commentCard",
+      "label": "Nový komentář",
+      "card": "ARBOEKO objednávka",
+      "card_url": "https://trello.com/c/D47dYg6M",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Renata Pošepná",
+      "comment": "@jananyvltova jo, ale to si myslím, že bylo to Trendy 2026",
+      "time": "2026-08-17T13:20:06.632Z"
+    },
+    {
+      "type": "commentCard",
+      "label": "Nový komentář",
+      "card": "ARBOEKO objednávka",
+      "card_url": "https://trello.com/c/D47dYg6M",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Jana Nývltová",
+      "comment": "@darky70 Reni, nemáme tam jeste ty štítky?",
+      "time": "2026-08-17T13:10:28.415Z"
+    },
+    {
+      "type": "addedToCard",
+      "label": "Přidán/a na kartu",
+      "card": "EDI/2026/27",
+      "card_url": "https://trello.com/c/ba5VlYuj",
+      "board": "ALZA",
+      "creator": "Renata Pošepná",
+      "comment": "",
+      "time": "2026-08-17T12:43:18.428Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "ARBOEKO objednávka",
+      "card_url": "https://trello.com/c/D47dYg6M",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Hamerník Tomáš",
+      "comment": "",
+      "time": "2026-08-17T12:40:41.940Z"
+    },
+    {
+      "type": "addedToCard",
+      "label": "Přidán/a na kartu",
+      "card": "ARBOEKO objednávka",
+      "card_url": "https://trello.com/c/D47dYg6M",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Hamerník Tomáš",
+      "comment": "",
+      "time": "2026-08-17T12:40:19.821Z"
+    },
+    {
+      "type": "addedToCard",
+      "label": "Přidán/a na kartu",
+      "card": "EDI/2026/27",
+      "card_url": "https://trello.com/c/UEpReJqX",
+      "board": "ALZA",
+      "creator": "Renata Pošepná",
+      "comment": "",
+      "time": "2026-08-17T12:40:03.351Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "MARRIOTT",
+      "card_url": "https://trello.com/c/S9MuYdwz",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Balírna",
+      "comment": "",
+      "time": "2026-08-17T12:37:12.527Z"
+    },
+    {
+      "type": "addAttachmentToCard",
+      "label": "addAttachmentToCard",
+      "card": "EDI/2026/27",
+      "card_url": "https://trello.com/c/xacLLkET",
+      "board": "ALZA",
+      "creator": "Renata Pošepná",
+      "comment": "",
+      "time": "2026-08-17T12:29:17.412Z"
+    },
+    {
+      "type": "addAttachmentToCard",
+      "label": "addAttachmentToCard",
+      "card": "EDI/2026/27",
+      "card_url": "https://trello.com/c/xacLLkET",
+      "board": "ALZA",
+      "creator": "Renata Pošepná",
+      "comment": "",
+      "time": "2026-08-17T12:29:15.298Z"
+    },
+    {
+      "type": "addAttachmentToCard",
+      "label": "addAttachmentToCard",
+      "card": "EDI/2026/27",
+      "card_url": "https://trello.com/c/xacLLkET",
+      "board": "ALZA",
+      "creator": "Renata Pošepná",
+      "comment": "",
+      "time": "2026-08-17T12:29:08.462Z"
+    },
+    {
+      "type": "addedToCard",
+      "label": "Přidán/a na kartu",
+      "card": "EDI/2026/27",
+      "card_url": "https://trello.com/c/xacLLkET",
+      "board": "ALZA",
+      "creator": "Renata Pošepná",
+      "comment": "",
+      "time": "2026-08-17T12:26:46.076Z"
+    },
+    {
+      "type": "commentCard",
+      "label": "Nový komentář",
+      "card": "ALZA - EDI/2026/28",
+      "card_url": "https://trello.com/c/c1EkG82g",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Hamerník Tomáš",
+      "comment": "zde je kontakt na chráněnou dílnu.\n\nJosef Petřek\n733747364\n[info@clhp.cz](mailto:info@clhp.cz \"‌\")",
+      "time": "2026-08-17T12:13:33.329Z"
+    },
+    {
+      "type": "commentCard",
+      "label": "Nový komentář",
+      "card": "ALZA - EDI/2026/28",
+      "card_url": "https://trello.com/c/c1EkG82g",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Doprava NutWorld",
+      "comment": "@hamerniktomas  zítra od nás vše odchází na europaletě do chráněné dílny ",
+      "time": "2026-08-17T11:52:48.892Z"
+    },
+    {
+      "type": "addedToCard",
+      "label": "Přidán/a na kartu",
+      "card": "Vzorky Proreco",
+      "card_url": "https://trello.com/c/ulTkbYeR",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Martin Werner",
+      "comment": "",
+      "time": "2026-08-17T11:38:54.435Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "iMI objednávka",
+      "card_url": "https://trello.com/c/L7q8POgK",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Jana Nývltová",
+      "comment": "",
+      "time": "2026-08-17T10:30:18.104Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "iMI objednávka",
+      "card_url": "https://trello.com/c/L7q8POgK",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Jana Nývltová",
+      "comment": "",
+      "time": "2026-08-17T10:29:46.917Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "emedis",
+      "card_url": "https://trello.com/c/3ZjGUskD",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Balírna",
+      "comment": "",
+      "time": "2026-08-17T10:27:28.506Z"
+    },
+    {
+      "type": "commentCard",
+      "label": "Nový komentář",
+      "card": "IMI - 2603779",
+      "card_url": "https://trello.com/c/gpwndw7Z",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Hamerník Tomáš",
+      "comment": "@jananyvltova zadal jsem objednávku i s daty do složky firmy informace.\n\nTak aby se to nezdvojilo. Jde jen o 1 objednávku.\n\nProsím o barevné vytvoření přední etikety dle podkladů. Děkuji Tomáš",
+      "time": "2026-08-17T10:27:20.156Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "iMI objednávka",
+      "card_url": "https://trello.com/c/L7q8POgK",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Hamerník Tomáš",
+      "comment": "",
+      "time": "2026-08-17T10:23:40.429Z"
+    },
+    {
+      "type": "addedToCard",
+      "label": "Přidán/a na kartu",
+      "card": "iMI objednávka",
+      "card_url": "https://trello.com/c/L7q8POgK",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Hamerník Tomáš",
+      "comment": "",
+      "time": "2026-08-17T10:23:03.776Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "IMI - 2603779",
+      "card_url": "https://trello.com/c/gpwndw7Z",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Jana Nývltová",
+      "comment": "",
+      "time": "2026-08-17T10:16:35.036Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "IMI - 2603779",
+      "card_url": "https://trello.com/c/gpwndw7Z",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Jana Nývltová",
+      "comment": "",
+      "time": "2026-08-17T10:12:12.891Z"
+    },
+    {
+      "type": "addedToCard",
+      "label": "Přidán/a na kartu",
+      "card": "IMI - 2603779",
+      "card_url": "https://trello.com/c/gpwndw7Z",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Jana Nývltová",
+      "comment": "",
+      "time": "2026-08-17T10:11:58.956Z"
+    },
+    {
+      "type": "mentionedOnCard",
+      "label": "Zmíněn/a v komentáři",
+      "card": "Poprokan s.r.o. — 600 ks — 15.09.2026",
+      "card_url": "https://trello.com/c/5iHvFSjn",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Jana Nývltová",
+      "comment": "@board tisk objednan",
+      "time": "2026-08-17T09:34:27.719Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "Poprokan s.r.o. — 600 ks — 15.09.2026",
+      "card_url": "https://trello.com/c/5iHvFSjn",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Jana Nývltová",
+      "comment": "",
+      "time": "2026-08-17T07:59:38.464Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "emedis",
+      "card_url": "https://trello.com/c/3ZjGUskD",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Jana Nývltová",
+      "comment": "",
+      "time": "2026-08-17T07:59:08.831Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "MARRIOTT",
+      "card_url": "https://trello.com/c/S9MuYdwz",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Balírna",
+      "comment": "",
+      "time": "2026-08-17T06:32:55.688Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "MARRIOTT",
+      "card_url": "https://trello.com/c/S9MuYdwz",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Jana Nývltová",
+      "comment": "",
+      "time": "2026-08-17T06:21:33.678Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "MARRIOTT",
+      "card_url": "https://trello.com/c/S9MuYdwz",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Jana Nývltová",
+      "comment": "",
+      "time": "2026-08-17T06:16:16.335Z"
+    },
+    {
+      "type": "addedToCard",
+      "label": "Přidán/a na kartu",
+      "card": "MARRIOTT",
+      "card_url": "https://trello.com/c/S9MuYdwz",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Jana Nývltová",
+      "comment": "",
+      "time": "2026-08-17T06:16:04.081Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
       "card": "OREA",
       "card_url": "https://trello.com/c/HOyG0IsA",
       "board": "Firmy dárky + objednávky",
-      "creator": "",
+      "creator": "Renata Pošepná",
       "comment": "",
-      "time": "2026-08-16T10:52:42.917Z"
-    },
-    {
-      "type": "cardDueSoon",
-      "label": "Karta má brzy termín",
-      "card": "ALZA - EDI/2026/27",
-      "card_url": "https://trello.com/c/OLTwpte6",
-      "board": "Firmy dárky + objednávky",
-      "creator": "",
-      "comment": "",
-      "time": "2026-08-16T08:11:27.370Z"
+      "time": "2026-08-17T06:04:46.565Z"
     }
   ]
 }
