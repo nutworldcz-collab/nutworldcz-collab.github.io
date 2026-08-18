@@ -103,15 +103,29 @@ body{
 .card.ready{border-color:var(--ready-border)}
 .card.soon{opacity:.82}
 
+.card-img{
+  width:100%;height:180px;overflow:hidden;
+  background:var(--kraft);
+  display:flex;align-items:center;justify-content:center;
+}
+.card-img img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .3s ease;
+}
+.card:hover .card-img img{transform:scale(1.04)}
+.card-img-placeholder{
+  font-size:48px;opacity:.4;
+}
+
 .card-top{
-  padding:22px 20px 16px;
-  display:flex;align-items:flex-start;gap:14px;
+  padding:16px 20px 14px;
+  display:flex;align-items:flex-start;gap:12px;
   flex:1;
 }
 .card-emo{
-  font-size:36px;line-height:1;flex-shrink:0;
-  width:52px;height:52px;display:flex;align-items:center;justify-content:center;
-  background:var(--kraft);border-radius:12px;
+  font-size:28px;line-height:1;flex-shrink:0;
+  width:42px;height:42px;display:flex;align-items:center;justify-content:center;
+  background:var(--kraft);border-radius:10px;
 }
 .card-info{flex:1;min-width:0}
 .card-name{
@@ -210,6 +224,7 @@ const TYPES = [
     gram:'2 druhy · 50 g každý',
     desc:'Kraftová krabička se dvěma druhy ořechů nebo sušeného ovoce — jutová nebo saténová stuha, volitelný gravír.',
     url:'generator-darkove-krabicky.html',
+    img:'https://cdn.myshoptet.com/usr/www.nutworld.cz/user/shop/big/11798-1_darkova-orechova-krabicka-2x50g-dekujeme-cz.jpg?ff=1&x=600&y=600&q=85&ts=6a0d7c43&sg=38cb01fe',
     ready:true,
   },
   {
@@ -319,6 +334,9 @@ TYPES.forEach(t => {
   card.className = 'card ' + (t.ready ? 'ready' : 'soon');
   card.innerHTML = `
     <div class="badge ${t.ready ? 'badge-ready' : 'badge-soon'}">${t.ready ? '✓ Spuštěno' : 'Připravujeme'}</div>
+    ${t.img
+      ? `<div class="card-img"><img src="${t.img}" alt="${t.name}" loading="lazy"/></div>`
+      : `<div class="card-img"><div class="card-img-placeholder">${t.emoji}</div></div>`}
     <div class="card-top">
       <div class="card-emo">${t.emoji}</div>
       <div class="card-info">
