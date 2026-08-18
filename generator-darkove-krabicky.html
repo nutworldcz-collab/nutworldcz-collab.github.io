@@ -11,6 +11,73 @@
 body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;font-size:14px}
 h1,h2,h3{font-family:'Exo 2',sans-serif}
 
+/* ── SITE HEADER ── */
+.site-header{
+  background:linear-gradient(135deg,var(--bd) 0%,var(--br) 55%,#a0622a 100%);
+  padding:18px 24px;position:relative;overflow:hidden;
+}
+.site-header::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/svg%3E");
+}
+#hparticles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.hp{
+  position:absolute;bottom:-20px;
+  font-size:var(--s,16px);opacity:0;
+  animation:hpfloat var(--dur,4s) var(--dl,0s) ease-out forwards;
+}
+@keyframes hpfloat{
+  0%  {transform:translateY(0) rotate(0deg);opacity:0}
+  15% {opacity:.7}
+  85% {opacity:.35}
+  100%{transform:translateY(-80px) rotate(20deg);opacity:0}
+}
+.site-header-inner{
+  position:relative;display:flex;align-items:center;gap:16px;
+  max-width:1160px;margin:0 auto;
+}
+.sh-logo{
+  font-family:'Exo 2',sans-serif;font-size:20px;font-weight:900;
+  color:#fff;letter-spacing:1px;flex-shrink:0;
+  animation:fade-in .4s .05s both;
+}
+.sh-logo span{color:var(--amb)}
+.sh-center{flex:1;animation:fade-in .4s .15s both}
+.sh-title{
+  font-family:'Exo 2',sans-serif;font-size:15px;font-weight:700;
+  color:rgba(241,230,218,.9);letter-spacing:.5px;
+}
+.sh-sub{font-size:11px;color:rgba(241,230,218,.5);letter-spacing:1.5px;text-transform:uppercase;margin-top:1px}
+.sh-badge{
+  background:rgba(247,171,49,.18);border:1px solid rgba(247,171,49,.35);
+  border-radius:20px;padding:5px 14px;
+  font-size:11px;font-weight:700;color:var(--amb);
+  flex-shrink:0;animation:fade-in .4s .25s both;
+}
+@keyframes fade-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.amber-bar{
+  height:3px;
+  background:linear-gradient(90deg,var(--bd),var(--amb),var(--amb2,#c9982e),var(--bd));
+  background-size:200% 100%;animation:bar-slide 3s linear infinite;
+}
+@keyframes bar-slide{0%{background-position:0%}100%{background-position:200%}}
+
+/* ── FSEC SHIMMER + STAGGER ── */
+.fsec{
+  opacity:0;transform:translateY(16px);
+  transition:opacity .35s,transform .35s;
+  position:relative;overflow:hidden;
+}
+.fsec.visible{opacity:1;transform:none}
+.fsec::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.15) 50%,transparent 60%);
+  transform:translateX(-100%);transition:transform .5s ease;
+  pointer-events:none;border-radius:12px;
+}
+.fsec:hover::after{transform:translateX(120%)}
+
 .shell{max-width:1160px;margin:0 auto;padding:24px 16px;display:grid;grid-template-columns:1fr 370px;gap:20px;align-items:start}
 @media(max-width:960px){.shell{grid-template-columns:1fr}}
 
@@ -179,10 +246,18 @@ h1,h2,h3{font-family:'Exo 2',sans-serif}
 </head>
 <body>
 
-<div style="background:var(--bd);padding:12px 24px;display:flex;align-items:center;gap:14px">
-  <span style="font-family:'Exo 2',sans-serif;font-size:20px;font-weight:900;color:#fff;letter-spacing:1px">🐿 NUT<span style="color:var(--amb)">WORLD</span></span>
-  <span style="color:var(--amb);font-family:'Exo 2',sans-serif;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;opacity:.9">Dárková krabička 2×50g</span>
+<div class="site-header">
+  <div id="hparticles"></div>
+  <div class="site-header-inner">
+    <span class="sh-logo">🐿 NUT<span>WORLD</span></span>
+    <div class="sh-center">
+      <div class="sh-title">Dárková krabička 2×50 g</div>
+      <div class="sh-sub">Konfigurátor firemních dárků</div>
+    </div>
+    <div class="sh-badge">🎁 Na míru</div>
+  </div>
 </div>
+<div class="amber-bar"></div>
 
 <div class="shell">
 
@@ -791,6 +866,36 @@ function setLoad(on,txt){
 }
 function hideMsg(){document.getElementById('ok-box').style.display='none';document.getElementById('err-box').style.display='none';}
 function showErr(msg){const el=document.getElementById('err-box');el.textContent=msg;el.style.display='block';setLoad(false);}
+
+/* ── HEADER PARTICLES ── */
+(function(){
+  const items=['🌰','🥜','🎁','✨','🍂','⭐','🎀','🫙'];
+  const wrap=document.getElementById('hparticles');
+  if(!wrap)return;
+  for(let i=0;i<18;i++){
+    const el=document.createElement('div');
+    el.className='hp';
+    const sz=12+Math.floor(i%3)*5;
+    el.style.cssText=`left:${5+i*5.2}%;--s:${sz}px;--dur:${3+i*0.3}s;--dl:${i*0.15}s`;
+    el.textContent=items[i%items.length];
+    wrap.appendChild(el);
+  }
+})();
+
+/* ── STAGGERED FSEC ENTRANCE ── */
+(function(){
+  const secs=document.querySelectorAll('.fsec');
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const idx=Array.from(secs).indexOf(e.target);
+        setTimeout(()=>e.target.classList.add('visible'),idx*60);
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:0.05});
+  secs.forEach(s=>io.observe(s));
+})();
 </script>
 </body>
 </html>
