@@ -270,6 +270,18 @@ const T_MEMBERS = [
   '652525fd7e535e3209eccbaf', // Doprava NutWorld
   '637f941aa6b49c0099ba1d48', // Nákup_Nutworld (Balírna)
 ];
+// Mapování jmen obchodních zástupců → Trello member ID
+const T_ZADAL_MAP = [
+  { names: ['jan', 'vlček', 'jan vlček', 'vlcek'], id: '637f6dd24161b5005273c0b4' },
+  { names: ['jana', 'nývltová', 'nyvltova', 'jana nývltová'], id: '637f8efd088ca800a01b00a9' },
+  { names: ['renata', 'pošepná', 'posepna', 'darkovna'], id: '65251d10aa96c771890181e4' },
+];
+function resolveZadal(name) {
+  if (!name) return null;
+  const n = name.toLowerCase().trim();
+  const match = T_ZADAL_MAP.find(m => m.names.some(v => n.includes(v)));
+  return match ? match.id : null;
+}
 const SKEY = 'nw_vzorky_settings';
 function getSettings() { try { return JSON.parse(localStorage.getItem(SKEY)||'{}'); } catch(e) { return {}; } }
 function saveSettings(s) { localStorage.setItem(SKEY, JSON.stringify(s)); }
@@ -655,11 +667,16 @@ async function createTrelloCard(vz) {
       `\n🔗 ${location.origin}/vzorky.html#${vz.id}`,
     ].filter(Boolean);
 
+    const zadalId = resolveZadal(vz.zadal);
+    const members = zadalId && !T_MEMBERS.includes(zadalId)
+      ? [...T_MEMBERS, zadalId]
+      : T_MEMBERS;
+
     const params = new URLSearchParams({
       name: `[${vz.id}] ${vz.klient} — ${vz.produkt}`,
       desc: lines.join('\n'),
       idList: T_LIST,
-      idMembers: T_MEMBERS.join(','),
+      idMembers: members.join(','),
       key: cfg.trelloKey,
       token: cfg.trelloToken,
     });
