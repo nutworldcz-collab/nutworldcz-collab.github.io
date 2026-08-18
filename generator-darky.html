@@ -14,14 +14,12 @@
   --ready-bg:#f0fae8;--ready-border:#6fa044;--ready-text:#2d5a1b;
   --soon-bg:#f8f4ef;--soon-border:#d4b896;--soon-text:#9a7255;
 }
-@media(prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --bg:#1c1208;--card:#2a1c0e;--border:#4a3018;
-    --text:#f0e4d0;--muted:#c4a07a;--light:#3a2510;--kraft:#3a2510;
-    --ready-bg:#1a2e10;--ready-border:#4a7c2f;--ready-text:#8fcc5a;
-    --soon-bg:#251808;--soon-border:#4a3018;--soon-text:#9a7255;
-  }
-}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#1c1208;--card:#2a1c0e;--border:#4a3018;
+  --text:#f0e4d0;--muted:#c4a07a;--light:#3a2510;--kraft:#3a2510;
+  --ready-bg:#1a2e10;--ready-border:#4a7c2f;--ready-text:#8fcc5a;
+  --soon-bg:#251808;--soon-border:#4a3018;--soon-text:#9a7255;
+}}
 :root[data-theme="dark"]{
   --bg:#1c1208;--card:#2a1c0e;--border:#4a3018;
   --text:#f0e4d0;--muted:#c4a07a;--light:#3a2510;--kraft:#3a2510;
@@ -29,79 +27,139 @@
   --soon-bg:#251808;--soon-border:#4a3018;--soon-text:#9a7255;
 }
 
-body{
-  font-family:Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  min-height:100vh;
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* ── PARTICLES ── */
+#particles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.p{
+  position:absolute;bottom:-30px;
+  font-size:var(--s,20px);
+  opacity:0;
+  animation:pfloat var(--dur,5s) var(--dl,0s) ease-out forwards;
+  filter:drop-shadow(0 1px 3px rgba(0,0,0,.15));
+}
+@keyframes pfloat{
+  0%  {transform:translateY(0) rotate(0deg) scale(.7);opacity:0}
+  10% {opacity:.85}
+  80% {opacity:.5}
+  100%{transform:translateY(-130px) rotate(25deg) scale(1);opacity:0}
 }
 
-/* HEADER */
+/* ── HEADER ── */
 .header{
   background:linear-gradient(135deg,var(--bd) 0%,var(--br) 55%,#a0622a 100%);
-  padding:36px 24px 32px;
-  text-align:center;
+  padding:44px 24px 38px;text-align:center;
   position:relative;overflow:hidden;
 }
 .header::before{
   content:'';position:absolute;inset:0;
-  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/svg%3E");
 }
 .logo-label{
   font-size:10px;letter-spacing:4px;text-transform:uppercase;
-  color:rgba(241,230,218,.55);font-weight:700;margin-bottom:10px;
-  position:relative;
+  color:rgba(241,230,218,.5);font-weight:700;margin-bottom:14px;position:relative;
+  animation:fade-up .5s .1s both;
 }
 .logo-label strong{color:var(--amb);letter-spacing:5px}
 .header h1{
-  font-size:clamp(22px,5vw,32px);color:#fff;font-weight:800;
-  letter-spacing:.3px;margin-bottom:10px;position:relative;
+  font-size:clamp(24px,5vw,36px);color:#fff;font-weight:800;
+  letter-spacing:.3px;margin-bottom:12px;position:relative;
+  animation:fade-up .5s .2s both;
 }
 .header p{
   font-size:14px;color:rgba(241,230,218,.72);max-width:480px;
-  margin:0 auto;line-height:1.55;position:relative;
+  margin:0 auto;line-height:1.6;position:relative;
+  animation:fade-up .5s .3s both;
 }
+.header-stats{
+  display:inline-flex;gap:20px;margin-top:20px;position:relative;
+  animation:fade-up .5s .4s both;
+}
+.hstat{
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);
+  border-radius:30px;padding:6px 16px;
+  font-size:12px;color:rgba(241,230,218,.85);font-weight:600;
+  backdrop-filter:blur(4px);
+}
+.hstat strong{color:var(--amb)}
+
+@keyframes fade-up{
+  0%{opacity:0;transform:translateY(10px)}
+  100%{opacity:1;transform:none}
+}
+
 .amber-bar{
   height:3px;
   background:linear-gradient(90deg,var(--bd),var(--amb),var(--amb2),var(--bd));
-  background-size:200% 100%;
-  animation:bar-slide 3s linear infinite;
+  background-size:200% 100%;animation:bar-slide 3s linear infinite;
 }
 @keyframes bar-slide{0%{background-position:0%}100%{background-position:200%}}
 
-/* GRID */
-.wrap{max-width:900px;margin:0 auto;padding:32px 16px 60px}
+/* ── WRAP ── */
+.wrap{max-width:940px;margin:0 auto;padding:28px 16px 60px}
 
 .intro{
   display:flex;align-items:center;gap:10px;
-  font-size:13px;color:var(--muted);margin-bottom:24px;
-  padding:12px 16px;background:var(--card);border-radius:10px;
+  font-size:13px;color:var(--muted);margin-bottom:14px;
+  padding:11px 16px;background:var(--card);border-radius:10px;
   border:1.5px solid var(--border);
 }
 .intro strong{color:var(--br)}
+.intro a{color:var(--br);font-weight:700;text-decoration:none}
 
+/* ── FILTER TABS ── */
+.filters{
+  display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;
+}
+.ftab{
+  padding:7px 16px;border-radius:30px;font-size:12px;font-weight:700;
+  border:1.5px solid var(--border);background:var(--card);color:var(--muted);
+  cursor:pointer;transition:all .18s;user-select:none;
+}
+.ftab:hover{border-color:var(--br);color:var(--br)}
+.ftab.active{
+  background:var(--bd);border-color:var(--bd);color:#fff;
+}
+.ftab .fc{
+  display:inline-block;margin-left:5px;
+  background:rgba(0,0,0,.12);border-radius:10px;
+  padding:0 6px;font-size:10px;font-weight:800;
+}
+.ftab.active .fc{background:rgba(255,255,255,.2)}
+
+/* ── GRID ── */
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
   gap:16px;
 }
 
-/* CARD */
+/* ── CARD ── */
 .card{
   background:var(--card);
   border:1.5px solid var(--border);
-  border-radius:16px;
-  overflow:hidden;
+  border-radius:16px;overflow:hidden;
   display:flex;flex-direction:column;
-  transition:transform .18s,box-shadow .18s;
   position:relative;
+  opacity:0;transform:translateY(24px);
+  transition:transform .22s,box-shadow .22s,opacity .22s;
 }
+.card.visible{opacity:1;transform:none}
 .card:hover{
-  transform:translateY(-3px);
-  box-shadow:0 8px 32px rgba(92,56,31,.14);
+  transform:translateY(-4px);
+  box-shadow:0 12px 36px rgba(92,56,31,.16);
 }
 .card.ready{border-color:var(--ready-border)}
-.card.soon{opacity:.82}
+.card.soon{opacity:0} /* starts invisible, JS makes visible */
+
+/* shimmer sweep on hover */
+.card::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.18) 50%,transparent 60%);
+  transform:translateX(-100%);transition:transform .45s ease;
+  pointer-events:none;border-radius:16px;
+}
+.card:hover::after{transform:translateX(100%)}
 
 .card-img{
   width:100%;height:180px;overflow:hidden;
@@ -110,82 +168,79 @@ body{
 }
 .card-img img{
   width:100%;height:100%;object-fit:cover;
-  transition:transform .3s ease;
+  transition:transform .4s ease;
 }
-.card:hover .card-img img{transform:scale(1.04)}
-.card-img-placeholder{
-  font-size:48px;opacity:.4;
-}
+.card:hover .card-img img{transform:scale(1.06)}
+.card-img-placeholder{font-size:52px;opacity:.35}
 
 .card-top{
-  padding:16px 20px 14px;
+  padding:16px 20px 12px;
   display:flex;align-items:flex-start;gap:12px;
   flex:1;
 }
 .card-emo{
-  font-size:28px;line-height:1;flex-shrink:0;
+  font-size:26px;flex-shrink:0;
   width:42px;height:42px;display:flex;align-items:center;justify-content:center;
   background:var(--kraft);border-radius:10px;
 }
 .card-info{flex:1;min-width:0}
-.card-name{
-  font-size:15px;font-weight:800;color:var(--bd);
-  line-height:1.25;margin-bottom:4px;
-}
-.card-gram{
-  font-size:11px;color:var(--muted);font-weight:600;
-  letter-spacing:.5px;margin-bottom:6px;
-}
-.card-desc{
-  font-size:12px;color:var(--muted);line-height:1.5;
-}
+.card-name{font-size:15px;font-weight:800;color:var(--bd);line-height:1.25;margin-bottom:3px}
+.card-gram{font-size:11px;color:var(--muted);font-weight:600;letter-spacing:.5px;margin-bottom:6px}
+.card-desc{font-size:12px;color:var(--muted);line-height:1.5}
 
 .badge{
-  position:absolute;top:12px;right:12px;
+  position:absolute;top:10px;right:10px;
   font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
-  padding:3px 8px;border-radius:20px;
+  padding:3px 8px;border-radius:20px;z-index:2;
 }
 .badge-ready{background:var(--ready-bg);color:var(--ready-text);border:1px solid var(--ready-border)}
 .badge-soon{background:var(--soon-bg);color:var(--soon-text);border:1px solid var(--soon-border)}
-
-.card-foot{
-  padding:0 20px 18px;
+.badge-best{
+  background:linear-gradient(135deg,#b8860b,var(--amb));
+  color:#fff;border:none;
+  box-shadow:0 2px 8px rgba(247,171,49,.4);
 }
+
+.card-foot{padding:0 20px 18px}
 .btn-konfig{
-  display:block;width:100%;
-  padding:10px 16px;border-radius:10px;
+  display:block;width:100%;padding:11px 16px;border-radius:10px;
   font-size:13px;font-weight:700;text-align:center;
   text-decoration:none;border:none;cursor:pointer;
-  transition:opacity .15s,transform .15s;
+  transition:opacity .15s,transform .15s,box-shadow .15s;
 }
-.btn-konfig:hover{opacity:.88;transform:scale(.98)}
 .btn-konfig.active{
-  background:linear-gradient(135deg,var(--bd),var(--br));
-  color:#fff;
-  box-shadow:0 3px 12px rgba(92,56,31,.25);
+  background:linear-gradient(135deg,var(--bd),var(--br));color:#fff;
+  box-shadow:0 3px 12px rgba(92,56,31,.3);
 }
+.btn-konfig.active:hover{box-shadow:0 6px 20px rgba(92,56,31,.4);transform:translateY(-1px)}
 .btn-konfig.inactive{
   background:var(--kraft);color:var(--muted);
-  border:1.5px solid var(--border);
-  cursor:default;pointer-events:none;
+  border:1.5px solid var(--border);cursor:default;pointer-events:none;
 }
 
-/* FOOTER */
-.footer{
-  text-align:center;font-size:11px;color:var(--muted);
-  padding:24px 16px;
+/* ── EMPTY STATE ── */
+.empty{
+  grid-column:1/-1;text-align:center;padding:48px 24px;
+  color:var(--muted);font-size:14px;opacity:0;
+  transition:opacity .3s;
 }
+.empty.show{opacity:1}
+.empty-ico{font-size:40px;margin-bottom:12px}
+
+/* ── FOOTER ── */
+.footer{text-align:center;font-size:11px;color:var(--muted);padding:24px 16px}
 .footer a{color:var(--br);text-decoration:none}
 .footer a:hover{text-decoration:underline}
 
-/* +karta přidat */
+/* ── +KARTA ── */
 .card-add{
   border:2px dashed var(--border);background:transparent;
-  align-items:center;justify-content:center;
-  min-height:160px;opacity:.5;
-  cursor:default;
+  align-items:center;justify-content:center;min-height:160px;
+  opacity:0;cursor:default;
 }
-.card-add:hover{opacity:.65;transform:none;box-shadow:none}
+.card-add.visible{opacity:.45}
+.card-add:hover{opacity:.6 !important;transform:none !important;box-shadow:none !important}
+.card-add::after{display:none}
 .card-add-inner{text-align:center;padding:24px}
 .card-add-ico{font-size:28px;margin-bottom:8px}
 .card-add-txt{font-size:12px;color:var(--muted);font-weight:600}
@@ -194,149 +249,130 @@ body{
 <body>
 
 <div class="header">
+  <div id="particles"></div>
   <div class="logo-label"><strong>NUTWORLD</strong> &nbsp;·&nbsp; firemní dárky</div>
   <h1>🎁 Generátor firemních dárků</h1>
   <p>Nakonfigurujte dárkové balení přesně podle vašich představ. Vyberte typ obalu a sestavte obsah, gravír i personalizaci.</p>
+  <div class="header-stats">
+    <div class="hstat">🎛 <strong>1</strong> konfigurátor spuštěn</div>
+    <div class="hstat">📦 <strong>15</strong> typů balení</div>
+  </div>
 </div>
 <div class="amber-bar"></div>
 
 <div class="wrap">
   <div class="intro">
-    ✅ <span><strong>1 konfigurátor spuštěn</strong> — ostatní typy připravujeme. Zájem o konkrétní balení? Napište nám na <strong>info@nutworld.cz</strong>.</span>
-  </div>
-  <div class="intro" style="margin-bottom:24px">
-    📋 <span>Odeslané konfigurace chodí do Trella → <a href="https://trello.com/b/63d7e8bdb897741ca8a39b43" target="_blank" style="color:var(--br);font-weight:700">FIRMY POPTÁVKY</a></span>
+    📋 <span>Odeslané konfigurace chodí do Trella → <a href="https://trello.com/b/63d7e8bdb897741ca8a39b43" target="_blank">FIRMY POPTÁVKY</a></span>
   </div>
 
-  <div class="grid" id="grid"></div>
+  <div class="filters" id="filters"></div>
+  <div class="grid" id="grid">
+    <div class="empty" id="empty"><div class="empty-ico">🔍</div>Žádné balení v této kategorii.</div>
+  </div>
 </div>
 
 <div class="footer">
-  &copy; 2026 <a href="https://www.nutworld.cz">Nutworld.cz</a> &nbsp;·&nbsp; Prémiové ořechy a sušené ovoce<br>
-  Dotazy: <a href="mailto:info@nutworld.cz">info@nutworld.cz</a>
+  &copy; 2026 <a href="https://www.nutworld.cz">Nutworld.cz</a> &nbsp;·&nbsp; Prémiové ořechy a sušené ovoce
+  &nbsp;·&nbsp; Dotazy: <a href="mailto:info@nutworld.cz">info@nutworld.cz</a>
 </div>
 
 <script>
-const TYPES = [
-  {
-    emoji:'📦',
-    name:'Dárková krabička 2×50 g',
-    gram:'2 druhy · 50 g každý',
-    desc:'Kraftová krabička se dvěma druhy ořechů nebo sušeného ovoce — jutová nebo saténová stuha, volitelný gravír.',
-    url:'generator-darkove-krabicky.html',
-    img:'https://cdn.myshoptet.com/usr/www.nutworld.cz/user/shop/big/11798-1_darkova-orechova-krabicka-2x50g-dekujeme-cz.jpg?ff=1&x=600&y=600&q=85&ts=6a0d7c43&sg=38cb01fe',
-    ready:true,
-  },
-  {
-    emoji:'🥛',
-    name:'Eko kelímek 100 g',
-    gram:'1 druh · 100 g',
-    desc:'Papírový kelímek s celofánovým sáčkem uvnitř. Přírodní, minimalistický.',
-    url:null,
-  },
-  {
-    emoji:'🫙',
-    name:'Sklenička DELUXE 180 g',
-    gram:'1 druh · 180 g',
-    desc:'Elegantní sklenička s víčkem — prémiová volba pro firemní obdarování.',
-    url:null,
-  },
-  {
-    emoji:'✨',
-    name:'Sklenička EXCLUSIVE 70 g',
-    gram:'1 druh · 70 g',
-    desc:'Miniaturní sklenička, velký dojem. Ideální jako doplněk nebo malý dáreček.',
-    url:null,
-  },
-  {
-    emoji:'🎀',
-    name:'Celofánek s mašličkou',
-    gram:'variabilní gramáž',
-    desc:'Průhledný celofán s mašlí — vidíte obsah, vypadá slavnostně.',
-    url:null,
-  },
-  {
-    emoji:'🪣',
-    name:'Kraft kelímek',
-    gram:'variabilní gramáž',
-    desc:'Klasický kraftový kelímek. Jednoduchý, praktický, ekologický.',
-    url:null,
-  },
-  {
-    emoji:'🍬',
-    name:'Dárková kazetka 50 g',
-    gram:'1 druh · 50 g',
-    desc:'Plochá kraftová krabička 200×100×35 mm s celofánovým sáčkem a jutovou stužkou.',
-    url:null,
-  },
-  {
-    emoji:'🎁',
-    name:'Krabička 4× 80 g',
-    gram:'4 druhy · 80 g každý',
-    desc:'Čtyři přihrádky, čtyři chutě. Ideální mixbox pro milovníky rozmanitosti.',
-    url:null,
-  },
-  {
-    emoji:'🎄',
-    name:'Vánoční sáček SOB 180 g',
-    gram:'1 druh · 180 g',
-    desc:'Sváteční sáček s vánočním motivem — jednoduchý a hravý dáreček.',
-    url:null,
-  },
-  {
-    emoji:'🧣',
-    name:'Sáček s knírem 180 g',
-    gram:'1 druh · 180 g',
-    desc:'Papírový sáček s charakteristickým knírem — originální a zapamatovatelný.',
-    url:null,
-  },
-  {
-    emoji:'🪡',
-    name:'Sáček s kolíčkem 150 g',
-    gram:'1 druh · 150 g',
-    desc:'Průhledný sáček uzavřený dřevěným kolíčkem — minimalistický a stylový.',
-    url:null,
-  },
-  {
-    emoji:'📦',
-    name:'Krabička 3× Eko kelímek',
-    gram:'3 druhy · 100 g každý',
-    desc:'Krabička s okýnkem, tři papírové kelímky uvnitř — tři chutě, jeden krásný dárek.',
-    url:null,
-  },
-  {
-    emoji:'🫙',
-    name:'Krabice DELUXE 3× Sklenička',
-    gram:'3 druhy · 180 g každý',
-    desc:'Luxusní krabice se třemi skleničkami. Reprezentativní dárek pro klíčové partnery.',
-    url:null,
-  },
-  {
-    emoji:'🗂',
-    name:'Výseková krabice L',
-    gram:'5 druhů · variabilní',
-    desc:'Krabice 320×210×90 mm s pěti sáčky — velkorysý dárek pro větší příležitosti.',
-    url:null,
-  },
-  {
-    emoji:'🎁',
-    name:'Výseková krabice XL',
-    gram:'7 druhů · variabilní',
-    desc:'Největší krabice 300×310×90 mm se sedmi sáčky — impozantní firemní dárek.',
-    url:null,
-  },
+/* ── PARTICLES ── */
+(function(){
+  const items=['🌰','🥜','🍂','✨','🎁','🍇','🫐','⭐'];
+  const wrap=document.getElementById('particles');
+  for(let i=0;i<22;i++){
+    const el=document.createElement('div');
+    el.className='p';
+    const sz=14+Math.floor(i%4)*5;
+    el.style.cssText=[
+      `left:${4+i*4.3}%`,
+      `--s:${sz}px`,
+      `--dur:${3.5+i*0.35}s`,
+      `--dl:${i*0.18}s`,
+    ].join(';');
+    el.textContent=items[i%items.length];
+    wrap.appendChild(el);
+  }
+})();
+
+/* ── DATA ── */
+const TYPES=[
+  {emoji:'📦',name:'Dárková krabička 2×50 g',gram:'2 druhy · 50 g každý',
+   desc:'Kraftová krabička se dvěma druhy ořechů nebo sušeného ovoce — jutová nebo saténová stuha, volitelný gravír.',
+   url:'generator-darkove-krabicky.html',ready:true,best:true,kat:'krabicky',
+   img:'https://cdn.myshoptet.com/usr/www.nutworld.cz/user/shop/big/11798-1_darkova-orechova-krabicka-2x50g-dekujeme-cz.jpg?ff=1&x=600&y=600&q=85&ts=6a0d7c43&sg=38cb01fe'},
+  {emoji:'🥛',name:'Eko kelímek 100 g',gram:'1 druh · 100 g',kat:'kelimek',
+   desc:'Papírový kelímek s celofánovým sáčkem uvnitř. Přírodní, minimalistický.'},
+  {emoji:'🫙',name:'Sklenička DELUXE 180 g',gram:'1 druh · 180 g',kat:'sklenicka',
+   desc:'Elegantní sklenička s víčkem — prémiová volba pro firemní obdarování.'},
+  {emoji:'✨',name:'Sklenička EXCLUSIVE 70 g',gram:'1 druh · 70 g',kat:'sklenicka',
+   desc:'Miniaturní sklenička, velký dojem. Ideální jako doplněk nebo malý dáreček.'},
+  {emoji:'🎀',name:'Celofánek s mašličkou',gram:'variabilní gramáž',kat:'sacky',
+   desc:'Průhledný celofán s mašlí — vidíte obsah, vypadá slavnostně.'},
+  {emoji:'🪣',name:'Kraft kelímek',gram:'variabilní gramáž',kat:'kelimek',
+   desc:'Klasický kraftový kelímek. Jednoduchý, praktický, ekologický.'},
+  {emoji:'🍬',name:'Dárková kazetka 50 g',gram:'1 druh · 50 g',kat:'krabicky',
+   desc:'Plochá kraftová krabička 200×100×35 mm s celofánovým sáčkem a jutovou stužkou.'},
+  {emoji:'🎁',name:'Krabička 4× 80 g',gram:'4 druhy · 80 g každý',kat:'krabicky',
+   desc:'Čtyři přihrádky, čtyři chutě. Ideální mixbox pro milovníky rozmanitosti.'},
+  {emoji:'🎄',name:'Vánoční sáček SOB 180 g',gram:'1 druh · 180 g',kat:'sacky',
+   desc:'Sváteční sáček s vánočním motivem — jednoduchý a hravý dáreček.'},
+  {emoji:'🧣',name:'Sáček s knírem 180 g',gram:'1 druh · 180 g',kat:'sacky',
+   desc:'Papírový sáček s charakteristickým knírem — originální a zapamatovatelný.'},
+  {emoji:'🪡',name:'Sáček s kolíčkem 150 g',gram:'1 druh · 150 g',kat:'sacky',
+   desc:'Průhledný sáček uzavřený dřevěným kolíčkem — minimalistický a stylový.'},
+  {emoji:'📦',name:'Krabička 3× Eko kelímek',gram:'3 druhy · 100 g každý',kat:'krabicky',
+   desc:'Krabička s okýnkem, tři papírové kelímky uvnitř — tři chutě, jeden krásný dárek.'},
+  {emoji:'🫙',name:'Krabice DELUXE 3× Sklenička',gram:'3 druhy · 180 g každý',kat:'krabicky',
+   desc:'Luxusní krabice se třemi skleničkami. Reprezentativní dárek pro klíčové partnery.'},
+  {emoji:'🗂',name:'Výseková krabice L',gram:'5 druhů · variabilní',kat:'krabicky',
+   desc:'Krabice 320×210×90 mm s pěti sáčky — velkorysý dárek pro větší příležitosti.'},
+  {emoji:'🎁',name:'Výseková krabice XL',gram:'7 druhů · variabilní',kat:'krabicky',
+   desc:'Největší krabice 300×310×90 mm se sedmi sáčky — impozantní firemní dárek.'},
 ];
 
-const grid = document.getElementById('grid');
+const FILTERS=[
+  {id:'vse',   label:'Vše'},
+  {id:'krabicky', label:'📦 Krabičky'},
+  {id:'sacky',    label:'🎀 Sáčky'},
+  {id:'sklenicka',label:'🫙 Skleničky'},
+  {id:'kelimek',  label:'🪣 Kelímky'},
+];
 
-TYPES.forEach(t => {
-  const card = document.createElement('div');
-  card.className = 'card ' + (t.ready ? 'ready' : 'soon');
-  card.innerHTML = `
-    <div class="badge ${t.ready ? 'badge-ready' : 'badge-soon'}">${t.ready ? '✓ Spuštěno' : 'Připravujeme'}</div>
+/* ── RENDER FILTERS ── */
+let activeFilter='vse';
+const filtersEl=document.getElementById('filters');
+
+FILTERS.forEach(f=>{
+  const btn=document.createElement('button');
+  btn.className='ftab'+(f.id==='vse'?' active':'');
+  btn.dataset.kat=f.id;
+  const count=f.id==='vse'?TYPES.length:TYPES.filter(t=>t.kat===f.id).length;
+  btn.innerHTML=`${f.label}<span class="fc">${count}</span>`;
+  btn.onclick=()=>setFilter(f.id);
+  filtersEl.appendChild(btn);
+});
+
+/* ── RENDER CARDS ── */
+const grid=document.getElementById('grid');
+const emptyEl=document.getElementById('empty');
+const cardEls=[];
+
+TYPES.forEach((t,i)=>{
+  const card=document.createElement('div');
+  card.className='card '+(t.ready?'ready':'soon');
+  card.dataset.kat=t.kat;
+
+  const badgeHtml=t.best
+    ?`<div class="badge badge-best">⭐ Nejoblíbenější</div>`
+    :`<div class="badge ${t.ready?'badge-ready':'badge-soon'}">${t.ready?'✓ Spuštěno':'Připravujeme'}</div>`;
+
+  card.innerHTML=`
+    ${badgeHtml}
     ${t.img
-      ? `<div class="card-img"><img src="${t.img}" alt="${t.name}" loading="lazy"/></div>`
-      : `<div class="card-img"><div class="card-img-placeholder">${t.emoji}</div></div>`}
+      ?`<div class="card-img"><img src="${t.img}" alt="${t.name}" loading="lazy"/></div>`
+      :`<div class="card-img"><div class="card-img-placeholder">${t.emoji}</div></div>`}
     <div class="card-top">
       <div class="card-emo">${t.emoji}</div>
       <div class="card-info">
@@ -347,18 +383,55 @@ TYPES.forEach(t => {
     </div>
     <div class="card-foot">
       ${t.ready
-        ? `<a href="${t.url}" class="btn-konfig active">🎛 Konfigurovat →</a>`
-        : `<span class="btn-konfig inactive">Brzy k dispozici</span>`}
-    </div>
-  `;
-  grid.appendChild(card);
+        ?`<a href="${t.url}" class="btn-konfig active">🎛 Konfigurovat →</a>`
+        :`<span class="btn-konfig inactive">Brzy k dispozici</span>`}
+    </div>`;
+
+  grid.insertBefore(card, emptyEl);
+  cardEls.push({el:card, kat:t.kat, idx:i});
 });
 
-// +karta "přidat typ"
-const add = document.createElement('div');
-add.className = 'card card-add';
-add.innerHTML = `<div class="card-add-inner"><div class="card-add-ico">＋</div><div class="card-add-txt">Další typy<br>připravujeme</div></div>`;
+/* +karta */
+const add=document.createElement('div');
+add.className='card card-add';
+add.innerHTML=`<div class="card-add-inner"><div class="card-add-ico">＋</div><div class="card-add-txt">Další typy<br>připravujeme</div></div>`;
 grid.appendChild(add);
+
+/* ── FILTER LOGIC ── */
+function setFilter(kat){
+  activeFilter=kat;
+  document.querySelectorAll('.ftab').forEach(b=>b.classList.toggle('active',b.dataset.kat===kat));
+
+  let visible=0;
+  cardEls.forEach(({el,kat:k,idx})=>{
+    const show=kat==='vse'||k===kat;
+    el.style.display=show?'flex':'none';
+    if(show){
+      // re-trigger stagger
+      el.classList.remove('visible');
+      setTimeout(()=>el.classList.add('visible'), idx*45);
+      visible++;
+    }
+  });
+
+  add.style.display=kat==='vse'?'flex':'none';
+  emptyEl.classList.toggle('show', visible===0);
+}
+
+/* ── STAGGERED ENTRANCE (IntersectionObserver) ── */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const item=cardEls.find(c=>c.el===e.target);
+      const delay=item?item.idx*50:0;
+      setTimeout(()=>e.target.classList.add('visible'),delay);
+      io.unobserve(e.target);
+    }
+  });
+},{threshold:0.08});
+
+cardEls.forEach(({el})=>io.observe(el));
+setTimeout(()=>add.classList.add('visible'),cardEls.length*50+200);
 </script>
 </body>
 </html>
