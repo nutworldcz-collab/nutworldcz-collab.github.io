@@ -440,7 +440,7 @@ function visible(){
 
 /* ── Render ── */
 function render(){
-  if(activeView==='vzorky'){ renderVzorky(); return; }
+  if(activeView==='vzorky'){ syncAndRenderVzorky(); return; }
   const cards=visible();
   updateSummary(cards);
   if(activeView==='firmy') renderFirmy(cards);
@@ -834,6 +834,35 @@ function vzFmtDl(iso){
   return `<span class="ftermin ${cls}">${pre} ${fmt}</span>`;
 }
 
+async function fetchVzorkyFromTrello(){
+  try{
+    const r=await fetch(`https://api.trello.com/1/lists/${VZ_LIST}/cards?key=${VZ_TK}&token=${VZ_TT}&fields=id,name,desc`);
+    if(!r.ok) return null;
+    const cards=await r.json();
+    return cards.filter(c=>/^\[VZ-/.test(c.name)).map(c=>{
+      const m=c.desc&&c.desc.match(/<!--VZ_DATA:([\s\S]*?)-->/);
+      if(!m) return null;
+      try{return JSON.parse(m[1].trim());}catch(e){return null;}
+    }).filter(Boolean);
+  }catch(e){return null;}
+}
+
+async function syncAndRenderVzorky(){
+  renderVzorky();
+  const trelloData=await fetchVzorkyFromTrello();
+  if(trelloData&&trelloData.length>0){
+    const local=loadVzorky();
+    const merged=[...trelloData];
+    local.forEach(lv=>{
+      const inT=merged.find(tv=>tv.id===lv.id);
+      if(!inT) merged.push(lv);
+      else if(lv.updated&&(!inT.updated||lv.updated>inT.updated)) merged[merged.indexOf(inT)]=lv;
+    });
+    saveVzorky(merged.map(migrateVz));
+    if(activeView==='vzorky') renderVzorky();
+  }
+}
+
 function renderVzorky(){
   const mc=document.getElementById('main-content');
   document.getElementById('summary').style.display='none';
@@ -926,6 +955,5 @@ loadProg();
 loadNotes();
 loadData();
 </script>
-<script src="pin-guard.js"></script>
 </body>
 </html>
