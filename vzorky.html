@@ -169,6 +169,12 @@ select option { background: var(--surface); }
 .abtn-z { background: var(--sz-bg); color: var(--sz-t); }
 .abtn-edit { background: var(--sf2); color: var(--text); border: 1px solid var(--border); }
 .abtn-print { background: var(--sf2); color: var(--muted); border: 1px solid var(--border); margin-left: auto; }
+.abtn-del { background: #fff0f0; color: #c0392b; border: 1px solid #f5c6c6; }
+.abtn-del:hover { background: #ffe0e0; }
+.del-confirm { display:flex; align-items:center; gap:10px; background:#fff5f5; border:1.5px solid #f5c6c6; border-radius:10px; padding:10px 14px; margin-top:4px; }
+.del-confirm-text { font-size:13px; color:#c0392b; flex:1; }
+.abtn-del-yes { background:#c0392b; color:#fff; border:none; border-radius:7px; padding:7px 14px; font-size:12px; font-weight:700; cursor:pointer; }
+.abtn-del-no { background:var(--sf2); color:var(--text); border:1px solid var(--border); border-radius:7px; padding:7px 14px; font-size:12px; font-weight:700; cursor:pointer; }
 .dfoot { font-size: 12px; color: var(--xmuted); display: flex; flex-wrap: wrap; gap: 16px; padding-top: 10px; border-top: 1px solid var(--border); align-items: center; }
 
 /* ITEM BLOKY VE FORMULÁŘI */
@@ -647,6 +653,7 @@ function openDet(id) {
   }
   acts.push(`<button class="abtn abtn-edit" onclick="closeDetRaw(); openAdd('${id}')">✏️ Upravit</button>`);
   acts.push(`<button class="abtn abtn-print" onclick="window.print()">🖨️ Tisknout</button>`);
+  acts.push(`<button class="abtn abtn-del" onclick="showDelConfirm('${id}')">🗑️ Smazat</button>`);
 
   document.getElementById('detContent').innerHTML = `
     <div class="mhdr">
@@ -689,6 +696,11 @@ function openDet(id) {
       <div>
         <div class="dsec-label">Posun statusu</div>
         <div class="actions">${acts.join('')}</div>
+        <div id="del-confirm-box" style="display:none" class="del-confirm">
+          <div class="del-confirm-text">⚠️ Opravdu smazat vzorek <strong>${esc(vz.id)}</strong>? Odstraní se i z Trella.</div>
+          <button class="abtn-del-no" onclick="document.getElementById('del-confirm-box').style.display='none'">Zrušit</button>
+          <button class="abtn-del-yes" onclick="deleteVz('${id}')">Smazat</button>
+        </div>
       </div>
       <div class="dfoot">
         <span>Zadal: <strong>${esc(vz.zadal||'—')}</strong></span>
@@ -714,6 +726,29 @@ function chStatus(id, status) {
     toast(`Status → ${SC[status].label}`);
     syncTrelloCardDesc(id, d[i]);
   }
+}
+
+function showDelConfirm(id) {
+  const box = document.getElementById('del-confirm-box');
+  if (box) box.style.display = box.style.display === 'none' ? 'flex' : 'none';
+}
+
+async function deleteVz(id) {
+  const d = load();
+  const i = d.findIndex(s => s.id === id);
+  if (i < 0) return;
+  // Delete from Trello
+  try {
+    const cardId = await getTrelloCardId(id);
+    if (cardId) {
+      await fetch(`https://api.trello.com/1/cards/${cardId}?key=${TK}&token=${TT}`, { method: 'DELETE' });
+    }
+  } catch(e) { console.error('Trello delete:', e); }
+  // Remove from local store
+  d.splice(i, 1);
+  store(d);
+  closeDet();
+  toast('Vzorek smazán');
 }
 
 async function createTrelloCard(vz) {
@@ -785,6 +820,5 @@ async function init() {
 init();
 </script>
 
-<script src="pin-guard.js"></script>
 </body>
 </html>
