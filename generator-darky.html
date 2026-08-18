@@ -420,20 +420,9 @@ function setFilter(kat){
   emptyEl.classList.toggle('show', visible===0);
 }
 
-/* ── STAGGERED ENTRANCE (IntersectionObserver) ── */
-const io=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      const item=cardEls.find(c=>c.el===e.target);
-      const delay=item?item.idx*50:0;
-      setTimeout(()=>e.target.classList.add('visible'),delay);
-      io.unobserve(e.target);
-    }
-  });
-},{threshold:0.08});
-
-cardEls.forEach(({el})=>io.observe(el));
-setTimeout(()=>add.classList.add('visible'),cardEls.length*50+200);
+/* ── STAGGERED ENTRANCE ── */
+cardEls.forEach(({el,idx})=>setTimeout(()=>el.classList.add('visible'),80+idx*55));
+setTimeout(()=>add.classList.add('visible'),80+cardEls.length*55+200);
 </script>
 </body>
 </html>
