@@ -275,6 +275,63 @@ function load() {
 }
 function store(d) { localStorage.setItem(SK, JSON.stringify(d)); }
 
+// Trello jako sdílený backend — data v popisu karty jako JSON blok
+function parseVzFromCard(card) {
+  const m = card.desc && card.desc.match(/<!--VZ_DATA:([\s\S]*?)-->/);
+  if (!m) return null;
+  try { return JSON.parse(m[1].trim()); } catch(e) { return null; }
+}
+
+function buildCardDesc(vz) {
+  const slText = vz.slozeni && vz.slozeni.length
+    ? '\n**Složení:**\n' + vz.slozeni.map(s => `- ${s.nazev}${s.kod ? ` (${s.kod})` : ''}`).join('\n')
+    : '';
+  const human = [
+    `**Zadal:** ${vz.zadal||'—'}`, `**Email:** ${vz.email||'—'}`, `**Telefon:** ${vz.telefon||'—'}`,
+    slText, vz.popis ? `**Popis:** ${vz.popis}` : '',
+    `**Obal:** ${vz.obal||'—'}`, vz.gramaz ? `**Gramáž:** ${vz.gramaz}` : '',
+    `**Počet:** ${vz.pocet} ks`, vz.deadline ? `**Deadline:** ${fmtD(vz.deadline)}` : '',
+    vz.motiv ? `**Motiv:** ${vz.motiv}` : '',
+    vz.adresa ? `**Adresa:**\n${vz.adresa}` : '',
+    vz.design_link ? `**Design:** ${vz.design_link}` : '',
+    vz.poznamka ? `**Poznámka:**\n${vz.poznamka}` : '',
+    `**Status:** ${(SC[vz.status]||SC.zadano).label}`,
+    `🔗 ${location.origin}/vzorky.html#${vz.id}`,
+  ].filter(Boolean).join('\n');
+  return `<!--VZ_DATA:${JSON.stringify(vz)}-->\n\n---\n${human}`;
+}
+
+async function fetchFromTrello() {
+  try {
+    const r = await fetch(`https://api.trello.com/1/lists/${T_LIST}/cards?key=${TK}&token=${TT}&fields=id,name,desc`);
+    if (!r.ok) return null;
+    const cards = await r.json();
+    return cards.filter(c => /^\[VZ-/.test(c.name)).map(parseVzFromCard).filter(Boolean);
+  } catch(e) { console.error('Trello fetch:', e); return null; }
+}
+
+async function getTrelloCardId(vzId) {
+  try {
+    const r = await fetch(`https://api.trello.com/1/lists/${T_LIST}/cards?key=${TK}&token=${TT}&fields=id,name`);
+    if (!r.ok) return null;
+    const cards = await r.json();
+    const c = cards.find(c => c.name.startsWith(`[${vzId}]`));
+    return c ? c.id : null;
+  } catch(e) { return null; }
+}
+
+async function syncTrelloCardDesc(vzId, vz) {
+  try {
+    const cardId = await getTrelloCardId(vzId);
+    if (!cardId) return;
+    await fetch(`https://api.trello.com/1/cards/${cardId}?key=${TK}&token=${TT}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ desc: buildCardDesc(vz) }),
+    });
+  } catch(e) { console.error('Trello update:', e); }
+}
+
 function genId() {
   const d = load();
   const now = new Date();
@@ -608,47 +665,32 @@ function chStatus(id, status) {
     render();
     openDet(id);
     toast(`Status → ${SC[status].label}`);
+    syncTrelloCardDesc(id, d[i]);
   }
 }
 
 async function createTrelloCard(vz) {
   try {
-    const slText = vz.slozeni && vz.slozeni.length
-      ? '\n**Složení:**\n' + vz.slozeni.map(s => `- ${s.nazev}${s.kod ? ` (${s.kod})` : ''}`).join('\n')
-      : '';
-    const lines = [
-      `**Zadal:** ${vz.zadal||'—'}`,
-      `**Email:** ${vz.email||'—'}`,
-      `**Telefon:** ${vz.telefon||'—'}`,
-      slText,
-      vz.popis ? `\n**Popis:** ${vz.popis}` : '',
-      `**Obal:** ${vz.obal||'—'}`,
-      vz.gramaz ? `**Gramáž:** ${vz.gramaz}` : '',
-      `**Počet:** ${vz.pocet} ks`,
-      vz.deadline ? `**Deadline:** ${fmtD(vz.deadline)}` : '',
-      vz.motiv ? `**Motiv:** ${vz.motiv}` : '',
-      vz.adresa ? `\n**Adresa:**\n${vz.adresa}` : '',
-      vz.design_link ? `**Design:** ${vz.design_link}` : '',
-      vz.poznamka ? `\n**Poznámka pro výrobu:**\n${vz.poznamka}` : '',
-      `\n🔗 ${location.origin}/vzorky.html#${vz.id}`,
-    ].filter(Boolean);
-
     const zadalId = resolveZadal(vz.zadal);
     const members = zadalId && !T_MEMBERS.includes(zadalId)
       ? [...T_MEMBERS, zadalId]
       : T_MEMBERS;
 
-    const params = new URLSearchParams({
+    const body = {
       name: `[${vz.id}] ${vz.klient} — ${vz.produkt}`,
-      desc: lines.join('\n'),
+      desc: buildCardDesc(vz),
       idList: T_LIST,
       idMembers: members.join(','),
       key: TK,
       token: TT,
-    });
-    if (vz.deadline) params.set('due', `${vz.deadline}T12:00:00.000Z`);
+    };
+    if (vz.deadline) body.due = `${vz.deadline}T12:00:00.000Z`;
 
-    const r = await fetch(`https://api.trello.com/1/cards?${params}`, { method: 'POST' });
+    const r = await fetch(`https://api.trello.com/1/cards`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
     toast('Vzorek zadán ✓ Trello karta vytvořena');
   } catch(e) {
@@ -669,12 +711,31 @@ function toast(msg) {
 document.getElementById('addBk').addEventListener('click', e => { if (e.target === e.currentTarget) closeAdd(); });
 document.getElementById('detBk').addEventListener('click', e => { if (e.target === e.currentTarget) closeDet(); });
 
-render();
-if (location.hash) {
-  const id = location.hash.slice(1);
-  const vz = load().find(v => v.id === id);
-  if (vz) setTimeout(() => openDet(id), 100);
+async function init() {
+  render(); // zobraz co je v localStorage okamžitě
+  const trelloData = await fetchFromTrello();
+  if (trelloData && trelloData.length > 0) {
+    const local = load();
+    // Trello je zdroj pravdy — přidej záznamy které nejsou lokálně
+    const merged = [...trelloData];
+    local.forEach(lv => {
+      const inTrello = merged.find(tv => tv.id === lv.id);
+      if (!inTrello) merged.push(lv); // lokální ale ještě ne v Trello (race condition)
+      else if (lv.updated && (!inTrello.updated || lv.updated > inTrello.updated)) {
+        // lokální změna novější → přepíše Trello data
+        merged[merged.indexOf(inTrello)] = lv;
+      }
+    });
+    store(merged);
+    render();
+  }
+  if (location.hash) {
+    const id = location.hash.slice(1);
+    const vz = load().find(v => v.id === id);
+    if (vz) setTimeout(() => openDet(id), 150);
+  }
 }
+init();
 </script>
 
 </body>
