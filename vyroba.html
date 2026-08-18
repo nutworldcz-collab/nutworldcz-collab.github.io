@@ -276,6 +276,21 @@ let activeLists = new Set(['ALL']);
 let activeView  = 'firmy';
 let progress    = {};
 
+/* ── Darky helpers ── */
+function getDarkyKod(s) {
+  const DD = (typeof DARKY_DATA !== 'undefined') ? DARKY_DATA : null;
+  if (!DD) return null;
+  if (s.kod && DD[s.kod]) return s.kod;
+  const nv = s.nazev && s.nazev.trim();
+  if (nv && DD[nv]) return nv;
+  const gr = s.gram && s.gram.trim();
+  if (gr && DD[gr]) return gr;
+  return null;
+}
+function getDarkyTotalKg(dKod, ks) {
+  return (DARKY_DATA[dKod].obsah||[]).reduce((sum, item) => sum + item.gram/1000 * ks, 0);
+}
+
 /* ── Progress ── */
 function saveProg() { try { localStorage.setItem(PROG_KEY, JSON.stringify(progress)); } catch(e){} }
 function loadProg() { try { progress = JSON.parse(localStorage.getItem(PROG_KEY)||'{}'); } catch(e){ progress={}; } }
@@ -456,7 +471,8 @@ function updateSummary(cards){
     if(!p.isSluzba) totalKs+=p.ks;
     p.slozeni.forEach((s,ci)=>{
       totalCount++;
-      totalKg+=gramToKg(s.gram)*p.ks;
+      const dk=getDarkyKod(s);
+      totalKg += dk ? getDarkyTotalKg(dk, p.ks) : gramToKg(s.gram)*p.ks;
       if(isDone(c.id,pi,ci)) doneCount++;
     });
   }));
@@ -483,7 +499,12 @@ function buildFirmaCard(card){
   let totalKg=0, doneC=0, totalC=0;
   produkty.forEach((p,pi)=>{
     if(p.isSluzba) return;
-    p.slozeni.forEach((s,ci)=>{ totalC++; totalKg+=gramToKg(s.gram)*p.ks; if(isDone(id,pi,ci)) doneC++; });
+    p.slozeni.forEach((s,ci)=>{
+      totalC++;
+      const dk=getDarkyKod(s);
+      totalKg += dk ? getDarkyTotalKg(dk, p.ks) : gramToKg(s.gram)*p.ks;
+      if(isDone(id,pi,ci)) doneC++;
+    });
   });
   const pct=totalC?Math.round(doneC/totalC*100):0;
   const allDone=totalC>0&&doneC===totalC;
@@ -524,8 +545,11 @@ function buildFirmaCard(card){
     const block=document.createElement('div');
     block.className='darek-block';
 
-    // Kg pro tento dárek
-    const darekKg=prod.slozeni.reduce((s,c)=>s+gramToKg(c.gram)*prod.ks,0);
+    // Kg pro tento dárek (darky kódy rozpočítej přes obsah)
+    const darekKg=prod.slozeni.reduce((sum,c)=>{
+      const dk=getDarkyKod(c);
+      return sum+(dk?getDarkyTotalKg(dk,prod.ks):gramToKg(c.gram)*prod.ks);
+    },0);
 
     block.innerHTML=`
       <div class="darek-hdr">
@@ -543,14 +567,26 @@ function buildFirmaCard(card){
     } else {
       prod.slozeni.forEach((s,ci)=>{
         const done=isDone(id,pi,ci);
-        const compKg=gramToKg(s.gram)*prod.ks;
+        const dk=getDarkyKod(s);
+        let compName=s.nazev||'—';
+        let compGram=s.gram;
+        let compKg=gramToKg(s.gram)*prod.ks;
+        let compKod=s.kod;
+        if(dk){
+          const d=DARKY_DATA[dk];
+          compName=d.nazev||dk;
+          compKod=dk;
+          compKg=getDarkyTotalKg(dk,prod.ks);
+          const totalG=Math.round((d.obsah||[]).reduce((a,i)=>a+i.gram,0));
+          compGram=totalG?totalG+'g':'';
+        }
         const row=document.createElement('div');
         row.className='comp-row'+(done?' done':'');
         row.innerHTML=`
           <div class="comp-check"></div>
           <div class="comp-info">
-            <div class="comp-name">${s.nazev||'—'}${s.kod?`<span class="comp-kod">kód ${s.kod}</span>`:''}</div>
-            ${s.gram?`<div class="comp-gram">${s.gram} × ${prod.ks} ks</div>`:''}
+            <div class="comp-name">${compName}${compKod?`<span class="comp-kod">kód ${compKod}</span>`:''}</div>
+            ${compGram?`<div class="comp-gram">${compGram} × ${prod.ks} ks</div>`:''}
           </div>
           <div class="comp-kg">${compKg?fmtKg(compKg):'—'}</div>
         `;
@@ -638,10 +674,8 @@ function renderVyroba(cards){
       prod.slozeni.forEach((s,ci)=>{
         // Rozlož dárek na základní produkty (darky-data.js)
         const DD = (typeof DARKY_DATA !== 'undefined') ? DARKY_DATA : null;
-        const dKod = DD && s.kod && DD[s.kod] ? s.kod
-                   : DD && s.nazev && DD[s.nazev.trim()] ? s.nazev.trim()
-                   : null;
-        if(dKod && DD[dKod].obsah && DD[dKod].obsah.length){
+        const dKod = getDarkyKod(s);
+        if(dKod && DD && DD[dKod].obsah && DD[dKod].obsah.length){
           const darky=DD[dKod];
           darky.obsah.forEach(item=>{
             const baseName=(PROD_NAMES&&PROD_NAMES[item.kod])||('kód '+item.kod);
