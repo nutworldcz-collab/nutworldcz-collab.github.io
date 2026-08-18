@@ -400,6 +400,10 @@ function parseAndLoad(encoded) {
 }
 
 function renderSummary(d) {
+  const isSK = (d.trh === 'SK');
+  const curSym = isSK ? '€' : 'Kč';
+  const dphRate = isSK ? 0.23 : 0.12;
+  const dphLabel = isSK ? 'DPH 23 %' : 'DPH 12 %';
   document.getElementById('s-firma').textContent = d.firma;
   const meta = [d.adresa, d.kontakt, d.emailKlient].filter(Boolean).join(' · ');
   let icoStr = '';
@@ -427,12 +431,12 @@ function renderSummary(d) {
       : `${p.ks} ks`;
     tr.innerHTML = `<td>${kodSpan}${sluBadge}${p.nazev}</td>
       <td style="text-align:right">${sluKs}</td>
-      <td style="text-align:right">${p.cena.toFixed(2).replace('.',',')} Kč</td>
-      <td style="text-align:right"><strong>${num(celkem.toFixed(2))} Kč</strong></td>
+      <td style="text-align:right">${p.cena.toFixed(2).replace('.',',')} ${curSym}</td>
+      <td style="text-align:right"><strong>${num(celkem.toFixed(2))} ${curSym}</strong></td>
       <td>${p.sluzba ? '' : `<button class="popis-btn-sp" title="Složení dárku" onclick="togglePopisProd(${i})">📦</button>`}</td>`;
     tbody.appendChild(tr);
   });
-  document.getElementById('s-total').textContent = num((totalBez * 1.12).toFixed(2)) + ' Kč';
+  document.getElementById('s-total').textContent = num((totalBez * (1 + dphRate)).toFixed(2)) + ' ' + curSym;
 
   // Výrobní tabulka — výrobní ceny zadává rep
   const vtbody = document.getElementById('v-produkty');
@@ -443,8 +447,8 @@ function renderSummary(d) {
     tr.innerHTML = `
       <td style="font-size:12px">${p.kod ? `<span style="font-size:10px;color:#aaa;font-family:monospace;margin-right:4px">${p.kod}</span>` : ''}${p.nazev}</td>
       <td style="text-align:right;font-size:12px">${p.ks} ks</td>
-      <td style="text-align:right;font-size:12px">${p.cena.toFixed(2)} Kč</td>
-      <td style="text-align:right"><input class="inp-vyr" type="number" id="vyr-${i}" placeholder="0.00" step="0.01" oninput="recalcMarze()"/> Kč</td>
+      <td style="text-align:right;font-size:12px">${p.cena.toFixed(2)} ${curSym}</td>
+      <td style="text-align:right"><input class="inp-vyr" type="number" id="vyr-${i}" placeholder="0.00" step="0.01" oninput="recalcMarze()"/> ${curSym}</td>
       <td style="text-align:right;font-size:12px" id="marze-${i}">—</td>`;
     vtbody.appendChild(tr);
   });
@@ -463,6 +467,9 @@ function renderSummary(d) {
 
 function recalcMarze() {
   if (!offerData) return;
+  const isSK = (offerData.trh === 'SK');
+  const curSym = isSK ? '€' : 'Kč';
+  const dphRate = isSK ? 0.23 : 0.12;
   let totalProd = 0, totalZisk = 0;
   offerData.produkty.forEach((p, i) => {
     const vyr = parseFloat(document.getElementById('vyr-'+i)?.value);
@@ -474,13 +481,13 @@ function recalcMarze() {
     totalProd += vyr * p.ks;
     totalZisk += zisk;
     const cls = marze >= 40 ? 'marze-ok' : marze >= 25 ? 'marze-warn' : 'marze-bad';
-    el.innerHTML = `<span class="${cls}">${marze.toFixed(1)} %</span><br><span style="font-size:10px;color:#999">${num(zisk.toFixed(0))} Kč</span>`;
+    el.innerHTML = `<span class="${cls}">${marze.toFixed(1)} %</span><br><span style="font-size:10px;color:#999">${num(zisk.toFixed(0))} ${curSym}</span>`;
   });
   if (totalZisk && (totalProd + totalZisk) > 0) {
     const marzeCelkem = totalZisk / (totalProd + totalZisk) * 100;
-    document.getElementById('v-celkem-prod').textContent = 'Nákl.: ' + num(totalProd.toFixed(0)) + ' Kč';
+    document.getElementById('v-celkem-prod').textContent = 'Nákl.: ' + num(totalProd.toFixed(0)) + ' ' + curSym;
     document.getElementById('v-celkem-zisk').innerHTML =
-      `<span class="${marzeCelkem >= 40 ? 'marze-ok' : marzeCelkem >= 25 ? 'marze-warn' : 'marze-bad'}">${num(totalZisk.toFixed(0))} Kč · ${marzeCelkem.toFixed(1)} %</span>`;
+      `<span class="${marzeCelkem >= 40 ? 'marze-ok' : marzeCelkem >= 25 ? 'marze-warn' : 'marze-bad'}">${num(totalZisk.toFixed(0))} ${curSym} · ${marzeCelkem.toFixed(1)} %</span>`;
   }
 }
 
@@ -683,6 +690,10 @@ async function createTrelloCard() {
   setLoading(true, 'Vytváří se karta…');
 
   const d = offerData;
+  const isSK = (d.trh === 'SK');
+  const curSym = isSK ? '€' : 'Kč';
+  const dphRate = isSK ? 0.23 : 0.12;
+  const dphLabel = isSK ? 'DPH 23 %' : 'DPH 12 %';
   let totalBez = 0;
 
   // Náklady/zisk z dat nabídky — pro owner email (nezávisle na PIN)
@@ -696,11 +707,11 @@ async function createTrelloCard() {
     const c = p.ks * p.cena; totalBez += c;
     const slozeni = getSlozeniText('sp-'+idx);
     const sluLabel = p.sluzba ? ' *(služba)*' : '';
-    return `**${p.nazev}**${sluLabel}\n- ${p.ks} ks | prod. ${p.cena.toFixed(2)} Kč | celkem ${num(c.toFixed(0))} Kč` +
+    return `**${p.nazev}**${sluLabel}\n- ${p.ks} ks | prod. ${p.cena.toFixed(2)} ${curSym} | celkem ${num(c.toFixed(0))} ${curSym}` +
       (slozeni ? `\n  📦 ${slozeni}` : '');
   }).join('\n\n');
 
-  const dph = totalBez * 0.12;
+  const dph = totalBez * dphRate;
   const fmt = iso => { if(!iso) return ''; const [y,m,dd]=iso.split('-'); return `${dd}.${m}.${y}`; };
 
   const desc = `## 🏢 Zákazník
@@ -720,9 +731,9 @@ async function createTrelloCard() {
 ${prodDesc}
 
 ## 💰 Souhrn
-**Celkem bez DPH:** ${num(totalBez.toFixed(0))} Kč
-**DPH 12 %:** ${num(dph.toFixed(0))} Kč
-**Celkem s DPH:** ${num((totalBez+dph).toFixed(0))} Kč
+**Celkem bez DPH:** ${num(totalBez.toFixed(0))} ${curSym}
+**${dphLabel}:** ${num(dph.toFixed(0))} ${curSym}
+**Celkem s DPH:** ${num((totalBez+dph).toFixed(0))} ${curSym}
 
 ## ✏️ Personalizace
 **Logo:** ${logo||'—'} | **Vlastní složení:** ${vlSlozeni||'—'} | **Vlastní obal:** ${vlObal||'—'}
@@ -802,8 +813,8 @@ ${d.poznamka ? `\n*Poznámka z nabídky: ${d.poznamka}*` : ''}`;
         const ziskKs  = nakupKs ? (p.cena - nakupKs) * p.ks : null;
         const slozeni = getSlozeniText('sp-'+idx);
         return `${p.kod ? p.kod + ' — ' : ''}${p.nazev} × ${p.ks} ks\n` +
-          `  Prod: ${p.cena.toFixed(2)} Kč/ks · Celkem: ${num(c.toFixed(0))} Kč` +
-          (nakupKs ? `\n  Nákup: ${nakupKs.toFixed(2)} Kč/ks · Zisk: ${num(ziskKs.toFixed(0))} Kč` : '') +
+          `  Prod: ${p.cena.toFixed(2)} ${curSym}/ks · Celkem: ${num(c.toFixed(0))} ${curSym}` +
+          (nakupKs ? `\n  Nákup: ${nakupKs.toFixed(2)} ${curSym}/ks · Zisk: ${num(ziskKs.toFixed(0))} ${curSym}` : '') +
           (slozeni ? `\n  📦 ${slozeni}` : '');
       }).join('\n\n');
 
@@ -816,10 +827,10 @@ ${d.poznamka ? `\n*Poznámka z nabídky: ${d.poznamka}*` : ''}`;
         `IČO: ${d.ico || '-'} | DIČ: ${d.dic || '-'}\n` +
         `Kontakt: ${d.kontakt || '-'}${d.emailKlient ? ' · ' + d.emailKlient : ''}${d.telefon ? ' · ' + d.telefon : ''}\n\n` +
         `PRODUKTY:\n${ownerProdLines}\n\n` +
-        `Celkem bez DPH: ${num(totalBez.toFixed(0))} Kč\n` +
-        `DPH 12 %: ${num(dph.toFixed(0))} Kč\n` +
-        `Celkem s DPH: ${num((totalBez + dph).toFixed(0))} Kč\n` +
-        (emailZisk ? `💰 ZISK: +${num(emailZisk.toFixed(0))} Kč${marzeStr}\n` : '') +
+        `Celkem bez DPH: ${num(totalBez.toFixed(0))} ${curSym}\n` +
+        `${dphLabel}: ${num(dph.toFixed(0))} ${curSym}\n` +
+        `Celkem s DPH: ${num((totalBez + dph).toFixed(0))} ${curSym}\n` +
+        (emailZisk ? `💰 ZISK: +${num(emailZisk.toFixed(0))} ${curSym}${marzeStr}\n` : '') +
         `\nTermín: ${fmt(termin)}\n` +
         `Obchodák: ${obchodak}\n` +
         `Doprava: ${doruceni}\n` +
@@ -834,7 +845,7 @@ ${d.poznamka ? `\n*Poznámka z nabídky: ${d.poznamka}*` : ''}`;
         body: JSON.stringify({
           type: 'owner_nabidka',
           to: 'nutworld.cz@gmail.com',
-          subject: `🚀 Zakázka — ${d.firma} — ${num((totalBez + dph).toFixed(0))} Kč`,
+          subject: `🚀 Zakázka — ${d.firma} — ${num((totalBez + dph).toFixed(0))} ${curSym}`,
           body: ownerBody
         })
       });
