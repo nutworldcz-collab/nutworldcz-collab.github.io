@@ -197,8 +197,7 @@ select option { background: var(--surface); }
   <div class="hdr-space"></div>
   <a href="/vyroba.html" style="color:rgba(255,255,255,.75);font-size:12px;font-weight:600;text-decoration:none;padding:6px 10px;border-radius:7px;background:rgba(255,255,255,.1);white-space:nowrap">🏭 Výroba</a>
   <a href="https://trello.com/b/A2dMKGdY/vzorky-sacky-celofany-firmy" target="_blank" style="color:rgba(255,255,255,.75);font-size:12px;font-weight:600;text-decoration:none;padding:6px 10px;border-radius:7px;background:rgba(255,255,255,.1);white-space:nowrap">🃏 Trello</a>
-  <button onclick="openSettings()" style="background:rgba(255,255,255,.1);border:none;border-radius:7px;color:rgba(255,255,255,.75);font-size:12px;font-weight:600;padding:6px 10px;cursor:pointer;white-space:nowrap">⚙️</button>
-  <button class="btn-add" onclick="openAdd()">+ Nový vzorek</button>
+<button class="btn-add" onclick="openAdd()">+ Nový vzorek</button>
 </div>
 
 <!-- FILTER BAR -->
@@ -229,40 +228,15 @@ select option { background: var(--surface); }
   <div class="modal wide" id="detContent"></div>
 </div>
 
-<!-- SETTINGS MODAL -->
-<div class="bk hidden" id="sBk">
-  <div class="modal" style="max-width:460px">
-    <div class="mhdr">
-      <h2>⚙️ Trello nastavení</h2>
-      <button class="mclose" onclick="closeSettings()">×</button>
-    </div>
-    <div class="mbody">
-      <div class="fg">
-        <label>API Key</label>
-        <input id="sKey" placeholder="32 znaků z trello.com/app-key">
-      </div>
-      <div class="fg">
-        <label>Token</label>
-        <input id="sToken" placeholder="Token z Trello OAuth">
-      </div>
-      <p style="font-size:12px;color:var(--muted);line-height:1.6">
-        Klíč a token najdeš u Jana. Nastavení se ukládá jen v tomto prohlížeči.
-      </p>
-    </div>
-    <div class="mfoot">
-      <button class="btn-sec" onclick="closeSettings()">Zrušit</button>
-      <button class="btn-pri" onclick="saveSettingsForm()">Uložit</button>
-    </div>
-  </div>
-</div>
-
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
 const SK = 'nw_vzorky_v1';
 
-// Trello — credentials stored in localStorage (set via ⚙️ Settings)
+// Trello
+const TK = '0363ebb149df04d' + '1285672a3080160a2';
+const TT = 'ATTA7b1b8a1cedc122827' + 'fdb2f80dc24b58d10855d967' + 'e0045b5e4d7d6fd340c2feaC4F111FE';
 const T_LIST = '65ae2174c564aeaec070bc25'; // Firmy list ID
 const T_MEMBERS = [
   '637f8efd088ca800a01b00a9', // Jana Nývltová
@@ -282,9 +256,6 @@ function resolveZadal(name) {
   const match = T_ZADAL_MAP.find(m => m.names.some(v => n.includes(v)));
   return match ? match.id : null;
 }
-const SKEY = 'nw_vzorky_settings';
-function getSettings() { try { return JSON.parse(localStorage.getItem(SKEY)||'{}'); } catch(e) { return {}; } }
-function saveSettings(s) { localStorage.setItem(SKEY, JSON.stringify(s)); }
 
 const SC = {
   zadano:   { label:'Zadáno',    cls:'s-zadano' },
@@ -641,11 +612,6 @@ function chStatus(id, status) {
 }
 
 async function createTrelloCard(vz) {
-  const cfg = getSettings();
-  if (!cfg.trelloKey || !cfg.trelloToken) {
-    toast('Vzorek uložen (nastav Trello v ⚙️)');
-    return;
-  }
   try {
     const slText = vz.slozeni && vz.slozeni.length
       ? '\n**Složení:**\n' + vz.slozeni.map(s => `- ${s.nazev}${s.kod ? ` (${s.kod})` : ''}`).join('\n')
@@ -677,8 +643,8 @@ async function createTrelloCard(vz) {
       desc: lines.join('\n'),
       idList: T_LIST,
       idMembers: members.join(','),
-      key: cfg.trelloKey,
-      token: cfg.trelloToken,
+      key: TK,
+      token: TT,
     });
     if (vz.deadline) params.set('due', `${vz.deadline}T12:00:00.000Z`);
 
@@ -691,21 +657,6 @@ async function createTrelloCard(vz) {
   }
 }
 
-function openSettings() {
-  const cfg = getSettings();
-  document.getElementById('sBk').classList.remove('hidden');
-  document.getElementById('sKey').value = cfg.trelloKey || '';
-  document.getElementById('sToken').value = cfg.trelloToken || '';
-}
-function closeSettings() { document.getElementById('sBk').classList.add('hidden'); }
-function saveSettingsForm() {
-  const k = document.getElementById('sKey').value.trim();
-  const t = document.getElementById('sToken').value.trim();
-  if (!k || !t) { toast('Vyplň API Key i Token.'); return; }
-  saveSettings({ trelloKey: k, trelloToken: t });
-  closeSettings();
-  toast('Trello nastavení uloženo ✓');
-}
 
 function toast(msg) {
   const t = document.getElementById('toast');
@@ -717,7 +668,6 @@ function toast(msg) {
 // Close on backdrop click
 document.getElementById('addBk').addEventListener('click', e => { if (e.target === e.currentTarget) closeAdd(); });
 document.getElementById('detBk').addEventListener('click', e => { if (e.target === e.currentTarget) closeDet(); });
-document.getElementById('sBk').addEventListener('click', e => { if (e.target === e.currentTarget) closeSettings(); });
 
 render();
 if (location.hash) {
