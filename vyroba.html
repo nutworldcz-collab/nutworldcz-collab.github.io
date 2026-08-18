@@ -759,18 +759,64 @@ function renderVyroba(cards){
 /* ═══ VZORKY VIEW ═══ */
 const VZ_KEY = 'nw_vzorky_v1';
 const VZ_SC = {
-  zadano:   { label: 'Zadáno',    cls: 'vz-s-zadano' },
-  vyroba:   { label: 'Ve výrobě', cls: 'vz-s-vyroba' },
-  odeslano: { label: 'Odesláno',  cls: 'vz-s-odeslano' },
+  zadano:    { label: 'Zadáno',    cls: 'vz-s-zadano' },
+  vyroba:    { label: 'Ve výrobě', cls: 'vz-s-vyroba' },
+  odeslano:  { label: 'Odesláno',  cls: 'vz-s-odeslano' },
+  schvaleno: { label: 'Schváleno', cls: 'vz-s-schvaleno' },
+  zamitnuto: { label: 'Zamítnuto', cls: 'vz-s-zamitnuto' },
 };
+const VZ_TK = '0363ebb149df04d' + '1285672a3080160a2';
+const VZ_TT = 'ATTA7b1b8a1cedc122827' + 'fdb2f80dc24b58d10855d967' + 'e0045b5e4d7d6fd340c2feaC4F111FE';
+const VZ_LIST = '65ae2174c564aeaec070bc25';
 
-function loadVzorky(){ try{ return JSON.parse(localStorage.getItem(VZ_KEY)||'[]'); }catch(e){ return []; } }
+function vzFmtD(iso){ if(!iso) return '—'; const p=iso.split('T')[0].split('-'); return `${p[2]}.${p[1]}.${p[0]}`; }
+function migrateVz(vz){ if(vz.items) return vz; return {...vz, items:[{produkt:vz.produkt||'',slozeni:vz.slozeni||[],obal:vz.obal||'',gramaz:vz.gramaz||'',pocet:vz.pocet||1,popis:vz.popis||''}]}; }
+function loadVzorky(){ try{ return JSON.parse(localStorage.getItem(VZ_KEY)||'[]').map(migrateVz); }catch(e){ return []; } }
 function saveVzorky(d){ try{ localStorage.setItem(VZ_KEY,JSON.stringify(d)); }catch(e){} }
+
+function buildVzCardDesc(vz){
+  const items=vz.items||[];
+  const itemsText=items.map((it,i)=>{
+    const sl=it.slozeni&&it.slozeni.length?'  Složení: '+it.slozeni.map(s=>`${s.nazev}${s.kod?` (${s.kod})`:''}`).join(', '):'';
+    return [`**Vzorek ${i+1}:** ${it.produkt||'—'} | ${it.obal||'—'} | ${it.gramaz||'—'} | ${it.pocet||1} ks`,sl,it.popis?`  ${it.popis}`:'']. filter(Boolean).join('\n');
+  }).join('\n\n');
+  const human=[
+    `**Zadal:** ${vz.zadal||'—'}`,`**Email:** ${vz.email||'—'}`,`**Telefon:** ${vz.telefon||'—'}`,
+    vz.deadline?`**Deadline:** ${vzFmtD(vz.deadline)}`:'',
+    vz.motiv?`**Motiv:** ${vz.motiv}`:'',
+    `\n**Vzorky (${items.length}):**\n${itemsText}`,
+    vz.adresa?`\n**Adresa:**\n${vz.adresa}`:'',
+    vz.design_link?`**Design:** ${vz.design_link}`:'',
+    vz.poznamka?`**Poznámka:**\n${vz.poznamka}`:'',
+    `**Status:** ${(VZ_SC[vz.status]||VZ_SC.zadano).label}`,
+    `🔗 ${location.origin}/vzorky.html#${vz.id}`,
+  ].filter(Boolean).join('\n');
+  return `<!--VZ_DATA:${JSON.stringify(vz)}-->\n\n---\n${human}`;
+}
+async function getVzTrelloCardId(vzId){
+  try{
+    const r=await fetch(`https://api.trello.com/1/lists/${VZ_LIST}/cards?key=${VZ_TK}&token=${VZ_TT}&fields=id,name`);
+    if(!r.ok) return null;
+    const cards=await r.json();
+    const c=cards.find(c=>c.name.startsWith(`[${vzId}]`));
+    return c?c.id:null;
+  }catch(e){return null;}
+}
+async function syncVzTrello(vzId,vz){
+  try{
+    const cardId=await getVzTrelloCardId(vzId);
+    if(!cardId) return;
+    await fetch(`https://api.trello.com/1/cards/${cardId}?key=${VZ_TK}&token=${VZ_TT}`,{
+      method:'PUT',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({desc:buildVzCardDesc(vz)}),
+    });
+  }catch(e){console.error('Trello sync:',e);}
+}
 
 function vzChStatus(id, status){
   const d=loadVzorky();
   const i=d.findIndex(s=>s.id===id);
-  if(i>=0){ d[i].status=status; d[i].updated=new Date().toISOString(); saveVzorky(d); }
+  if(i>=0){ d[i].status=status; d[i].updated=new Date().toISOString(); saveVzorky(d); syncVzTrello(id,d[i]); }
   renderVzorky();
 }
 
@@ -831,33 +877,40 @@ function renderVzorky(){
     }
     acts.push(`<a href="/vzorky.html#${vzEsc(vz.id)}" class="vz-link">Detail →</a>`);
 
-    const tags=[
-      vz.obal?`<span class="vz-tag">📦 ${vzEsc(vz.obal)}</span>`:'',
-      vz.gramaz?`<span class="vz-tag">⚖️ ${vzEsc(vz.gramaz)}</span>`:'',
-      `<span class="vz-tag">× ${parseInt(vz.pocet)||'?'} ks</span>`,
-      vz.deadline?vzFmtDl(vz.deadline):'',
-    ].filter(Boolean).join('');
+    const items = vz.items || [];
+    const itemsHtml = items.map((it, idx) => {
+      const slHtml = (it.slozeni && it.slozeni.length)
+        ? `<div style="font-size:11px;color:#888;margin-left:14px;margin-top:2px;display:flex;flex-direction:column;gap:2px">${it.slozeni.map(s=>`<span>• ${vzEsc(s.nazev)}${s.kod?` <span style="font-family:monospace;font-size:10px;background:#f1e6da;border-radius:3px;padding:1px 4px;color:#b8860b">${vzEsc(s.kod)}</span>`:''}</span>`).join('')}</div>`
+        : '';
+      const itTags = [
+        it.obal ? `<span class="vz-tag">📦 ${vzEsc(it.obal)}</span>` : '',
+        it.gramaz ? `<span class="vz-tag">⚖️ ${vzEsc(it.gramaz)}</span>` : '',
+        it.pocet ? `<span class="vz-tag">× ${it.pocet} ks</span>` : '',
+      ].filter(Boolean).join('');
+      return `<div style="border-left:2px solid #e0d0c0;padding:4px 0 4px 10px;margin:4px 0">
+        <div style="font-size:13px;font-weight:600;color:#5c381f">Vzorek ${idx+1}: ${vzEsc(it.produkt||'—')}</div>
+        ${itTags ? `<div class="vz-tags" style="margin-top:2px">${itTags}</div>` : ''}
+        ${it.popis ? `<div style="font-size:12px;color:#888;font-style:italic;margin-top:2px">${vzEsc(it.popis)}</div>` : ''}
+        ${slHtml}
+      </div>`;
+    }).join('');
 
-    const slozeniHtml=(vz.slozeni&&vz.slozeni.length)
-      ?`<div style="font-size:12px;color:#666;border-top:1px solid #ede0d4;margin-top:6px;padding-top:6px;display:flex;flex-direction:column;gap:3px">${vz.slozeni.map(s=>`<span>• ${vzEsc(s.nazev)}${s.kod?` <span style="font-family:monospace;font-size:10px;background:#f1e6da;border-radius:3px;padding:1px 5px;color:#b8860b">${vzEsc(s.kod)}</span>`:''}</span>`).join('')}</div>`
-      :'';
-
-    const pozHtml=vz.poznamka?`<div class="vz-nota">${vzEsc(vz.poznamka)}</div>`:'';
-    const pisHtml=vz.popis?`<div style="font-size:12px;color:#888;font-style:italic">${vzEsc(vz.popis)}</div>`:'';
+    const pozHtml = vz.poznamka ? `<div class="vz-nota">${vzEsc(vz.poznamka)}</div>` : '';
 
     card.innerHTML=`
       <div class="vz-hdr">
         <div class="vz-hdr-left">
           <div class="vz-id">${vzEsc(vz.id)}</div>
           <div class="vz-klient">${vzEsc(vz.klient)}</div>
-          <div class="vz-produkt">${vzEsc(vz.produkt)}</div>
+          <div class="vz-produkt">${items.length} ${items.length===1?'vzorek':'vzorků'}${vz.motiv?' · '+vzEsc(vz.motiv):''}</div>
         </div>
-        <span class="vz-sbadge ${sc.cls}">${sc.label}</span>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+          <span class="vz-sbadge ${sc.cls}">${sc.label}</span>
+          ${vz.deadline?vzFmtDl(vz.deadline):''}
+        </div>
       </div>
       <div class="vz-body">
-        <div class="vz-tags">${tags}</div>
-        ${slozeniHtml}
-        ${pisHtml}
+        ${itemsHtml}
         ${pozHtml}
         <div class="vz-actions">${acts.join('')}</div>
       </div>
