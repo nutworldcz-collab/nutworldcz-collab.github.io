@@ -620,6 +620,29 @@ function deleteMeeting(mid){
     url: 'https://claude.ai/code/artifact/7d128cb0-14fb-4baa-ab56-b2a66480bed8'
   }];
   sv(DK, ds);
+
+  // Alive s.r.o.
+  if (!cs.some(c => c.company === 'Alive s.r.o.')) {
+    const cid2 = 'alive-' + Date.now().toString(36);
+    cs.push({
+      id: cid2, status: 'ok',
+      company: 'Alive s.r.o.',
+      contact: 'Zuzana',
+      sector: 'Korporáty / Promo předměty / ISO 9001',
+      email: 'zuzana@alivecz.com',
+      phone: '724 364 552',
+      web: 'https://www.alivecz.com'
+    });
+    sv(CK, cs);
+    const ds2 = ld(DK, {});
+    ds2[cid2] = [{
+      id: 'doc-alive-' + Date.now().toString(36),
+      title: 'Nabídka — Kešu natural WW320 40g doypack (2026-08)',
+      type: 'nabidka',
+      url: 'https://claude.ai/code/artifact/73f5c66e-a8ef-42fd-a4d1-e4117c277c4b'
+    }];
+    sv(DK, ds2);
+  }
 })();
 
 
