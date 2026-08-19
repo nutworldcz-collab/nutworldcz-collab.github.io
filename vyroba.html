@@ -120,9 +120,11 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .icard{background:white;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);overflow:hidden}
 .icard.all-done .ihdr{background:#e8f5e9;border-color:var(--leaf)}
 
-.ihdr{padding:12px 16px;background:var(--amb-soft);border-bottom:2px solid var(--amb);display:flex;align-items:center;justify-content:space-between;gap:8px}
-.iname{font-family:'Exo 2',sans-serif;font-weight:800;font-size:14px;color:var(--bd);flex:1}
-.itotal-kg{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:800;color:var(--br);white-space:nowrap}
+.ihdr{padding:12px 16px;background:var(--amb-soft);border-bottom:2px solid var(--amb);display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.iname-wrap{flex:1;min-width:0}
+.iname{font-family:'Exo 2',sans-serif;font-weight:800;font-size:14px;color:var(--bd)}
+.ikod{display:inline-block;background:var(--br);color:white;border-radius:5px;padding:2px 9px;font-family:'Exo 2',sans-serif;font-size:12px;font-weight:700;margin-top:4px}
+.itotal-kg{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:800;color:var(--br);white-space:nowrap;padding-top:2px}
 
 /* Pack sekce (gramáž + dárek) */
 .pack-section{border-bottom:1px solid #f0e8e0}
@@ -237,7 +239,7 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 
   <div class="toolbar">
     <div class="search-wrap">
-      <input type="text" id="search" placeholder="Hledat firmu nebo produkt…" oninput="render()"/>
+      <input type="text" id="search" placeholder="Hledat firmu, produkt nebo kód…" oninput="render()"/>
     </div>
     <div class="view-toggle">
       <button id="btn-firmy"  class="view-btn active" onclick="setView('firmy')">🏢 Firmy</button>
@@ -457,11 +459,15 @@ function visible(){
     );
   });
 }
+// Pro Výrobu: filtruj jen podle listu (search se aplikuje na ingredience níže)
+function vyrobaCards(){
+  return parsedCards.filter(c=>activeLists.has('ALL')||activeLists.has(c.idList));
+}
 
 /* ── Render ── */
 function render(){
   if(activeView==='vzorky'){ syncAndRenderVzorky(); return; }
-  const cards=visible();
+  const cards = activeView==='vyroba' ? vyrobaCards() : visible();
   updateSummary(cards);
   if(activeView==='firmy') renderFirmy(cards);
   else renderVyroba(cards);
@@ -708,7 +714,10 @@ function renderVyroba(cards){
 
   if(!ingMap.size){mc.innerHTML='<div class="empty-state">Žádné dílčí produkty.<br>Doplňte složení v zakázkách.</div>';return;}
 
-  const sorted=[...ingMap.entries()].sort((a,b)=>a[1].nazev.localeCompare(b[1].nazev,'cs'));
+  const q=document.getElementById('search').value.toLowerCase().trim();
+  const sorted=[...ingMap.entries()]
+    .sort((a,b)=>a[1].nazev.localeCompare(b[1].nazev,'cs'))
+    .filter(([,ing])=>!q||ing.nazev.toLowerCase().includes(q)||(ing.kod&&ing.kod.toLowerCase().includes(q)));
   const grid=document.createElement('div');
   grid.className='vyroba-grid';
 
@@ -731,7 +740,10 @@ function renderVyroba(cards){
     const hdr=document.createElement('div');
     hdr.className='ihdr';
     hdr.innerHTML=`
-      <div class="iname">${ing.nazev}${ing.kod?`<span style="font-size:10px;color:#b8860b;font-family:monospace;font-weight:400;margin-left:8px">kód ${ing.kod}</span>`:''}</div>
+      <div class="iname-wrap">
+        <div class="iname">${ing.nazev}</div>
+        ${ing.kod?`<div class="ikod">kód ${ing.kod}</div>`:''}
+      </div>
       <div class="itotal-kg">${fmtKg(totalKg)}</div>
     `;
     card.appendChild(hdr);
