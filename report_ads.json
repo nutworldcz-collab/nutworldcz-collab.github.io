@@ -1,49 +1,50 @@
 {
-  "generated": "2026-08-18T08:30:25",
-  "period": "2026-08-11 – 2026-08-17",
+  "generated": "2026-08-19T10:02:02",
+  "period": "2026-08-12 – 2026-08-18",
   "channels": {
     "Meta CZ": {
-      "spend": 4600.0,
-      "revenue": 28191.0,
-      "pno": 16.3,
-      "conversions": 36.0,
-      "clicks": 1338,
-      "prev_spend": 9540.0,
-      "prev_pno": 27.3
+      "spend": 4534.0,
+      "revenue": 26091.0,
+      "pno": 17.4,
+      "conversions": 33.0,
+      "clicks": 1308,
+      "prev_spend": 8102.0,
+      "prev_pno": 21.4
     },
     "Meta SK": {
-      "spend": 249.0,
-      "revenue": 187.0,
-      "pno": 133.2,
+      "spend": 251.0,
+      "revenue": 136.0,
+      "pno": 184.2,
       "conversions": 5.0,
-      "clicks": 1006,
-      "prev_spend": 242.0,
-      "prev_pno": 160.3
+      "clicks": 1007,
+      "prev_spend": 246.0,
+      "prev_pno": 136.9
     },
     "Google CZ": {
-      "spend": 5067.0,
-      "revenue": 28331.0,
-      "pno": 17.9,
-      "conversions": 33.0,
-      "clicks": 608,
-      "prev_spend": 5228.0,
-      "prev_pno": 9.4
+      "spend": 5053.0,
+      "revenue": 33056.0,
+      "pno": 15.3,
+      "conversions": 39.0,
+      "clicks": 591,
+      "prev_spend": 5365.0,
+      "prev_pno": 11.5
     },
     "Google SK": {
-      "spend": 3210.0,
-      "revenue": 8718.0,
-      "pno": 36.8,
-      "conversions": 5.0,
-      "clicks": 309,
-      "prev_spend": 2811.0,
-      "prev_pno": 26.7
+      "spend": 3264.0,
+      "revenue": 11176.0,
+      "pno": 29.2,
+      "conversions": 7.0,
+      "clicks": 307,
+      "prev_spend": 3210.0,
+      "prev_pno": 30.2
     }
   },
   "anomalies": [
-    "🟡 Meta CZ: útrata -52% vs minulý týden",
-    "🔴 Meta SK: PNO 133.2% — nad break-even (40%)"
+    "🟡 Meta CZ: útrata -44% vs minulý týden",
+    "🔴 Meta SK: PNO 184.2% — nad break-even (40%)",
+    "🟡 Meta SK: PNO zhoršilo o 47.3pp vs minulý týden"
   ],
   "priorities": [
-    "Zkontrolovat kampaně Meta SK — PNO 133.2%"
+    "Zkontrolovat kampaně Meta SK — PNO 184.2%"
   ]
 }
