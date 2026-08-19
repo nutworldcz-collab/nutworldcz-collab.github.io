@@ -327,7 +327,8 @@ function render(){
     </div>`;
     renderAlerts(); return;
   }
-  grid.innerHTML=cs.map((c,i)=>{
+  const sorted=[...cs].sort((a,b)=>a.company.localeCompare(b.company,'cs'));
+  grid.innerHTML=sorted.map((c,i)=>{
     const mt=ts[c.id]||[];
     const open=mt.filter(t=>!t.done);
     const overdue=open.filter(t=>t.due&&t.due<TODAY).length;
@@ -600,7 +601,7 @@ function deleteMeeting(mid){
     sv(DK, ds);
   }
 
-  if (cs.some(c => c.company === 'SGEF')) return;
+  if (!cs.some(c => c.company === 'SGEF')) {
   const cid = 'sgef-' + Date.now().toString(36);
   cs.push({
     id: cid, status: 'ok',
@@ -620,6 +621,7 @@ function deleteMeeting(mid){
     url: 'https://claude.ai/code/artifact/7d128cb0-14fb-4baa-ab56-b2a66480bed8'
   }];
   sv(DK, ds);
+  }
 
   // Alive s.r.o.
   if (!cs.some(c => c.company === 'Alive s.r.o.')) {
