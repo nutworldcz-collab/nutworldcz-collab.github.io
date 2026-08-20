@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ceník grafických prací — Claudia Fiori</title>
+<style>
+  :root {
+    --bg: #f4ede4;--surface: #ffffff;--surface-2: #faf6f1;
+    --brown: #83502e;--brown-dark: #5c381f;--brown-soft: #f1e6da;
+    --amber: #f7ab31;--amber-bg: #fff8e8;--amber-border: #f0c060;
+    --text: #2d1f14;--text-muted: #7a5a3d;--border: #dcc9b0;
+    --accent-pink: #da1668;--rule-bg: #e8f3dc;--rule-border: #6fa044;
+    --rule-text: #2d5a1b;--shadow: rgba(92,56,31,0.10);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg:#180e07;--surface:#231209;--surface-2:#2a1710;
+      --brown:#d4956a;--brown-dark:#f0c99a;--brown-soft:#2a1710;
+      --amber:#f7c44a;--amber-bg:#2b1e00;--amber-border:#a07010;
+      --text:#f2e4d4;--text-muted:#c4956a;--border:#4a2e18;
+      --accent-pink:#f04080;--rule-bg:#162210;--rule-border:#5a8a34;
+      --rule-text:#9fcf70;--shadow:rgba(0,0,0,0.40);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg:#180e07;--surface:#231209;--surface-2:#2a1710;
+    --brown:#d4956a;--brown-dark:#f0c99a;--brown-soft:#2a1710;
+    --amber:#f7c44a;--amber-bg:#2b1e00;--amber-border:#a07010;
+    --text:#f2e4d4;--text-muted:#c4956a;--border:#4a2e18;
+    --accent-pink:#f04080;--rule-bg:#162210;--rule-border:#5a8a34;
+    --rule-text:#9fcf70;--shadow:rgba(0,0,0,0.40);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:15px;line-height:1.6;padding:32px 16px 64px}
+  .wrapper{max-width:660px;margin:0 auto}
+  .header{background:var(--brown-dark);border-radius:14px 14px 0 0;padding:32px 36px 28px;position:relative;overflow:hidden}
+  .header::after{content:'';position:absolute;top:-30px;right:-30px;width:160px;height:160px;border-radius:50%;background:rgba(247,171,49,0.12)}
+  .header-eyebrow{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--amber);margin-bottom:8px;font-weight:600}
+  .header h1{font-family:Georgia,'Times New Roman',serif;font-size:26px;color:#fff;font-weight:normal;text-wrap:balance;line-height:1.3;margin-bottom:10px}
+  .header-sub{font-size:13px;color:rgba(255,255,255,0.6)}
+  .header-badge{display:inline-block;background:var(--amber);color:var(--brown-dark);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-top:14px}
+  .card{background:var(--surface);border:1px solid var(--border);border-top:none;padding:28px 36px;box-shadow:0 4px 18px var(--shadow)}
+  .card:last-child{border-radius:0 0 14px 14px}
+  .card+.card{border-top:1px solid var(--border)}
+  .callout{background:var(--amber-bg);border:1.5px solid var(--amber-border);border-radius:10px;padding:18px 22px;margin-bottom:28px;display:flex;gap:14px;align-items:flex-start}
+  .callout-icon{font-size:22px;flex-shrink:0;margin-top:1px}
+  .callout-title{font-family:Georgia,serif;font-size:15px;font-weight:bold;color:#7a4a00;margin-bottom:5px}
+  @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .callout-title{color:#f0c060}}
+  :root[data-theme="dark"] .callout-title{color:#f0c060}
+  .callout p{font-size:14px;color:var(--text-muted);line-height:1.55}
+  .section-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--brown);font-weight:700;margin-bottom:14px}
+  .section-title{font-family:Georgia,serif;font-size:19px;color:var(--text);font-weight:normal;margin-bottom:18px;text-wrap:balance}
+  .price-table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums;margin-bottom:8px}
+  .price-table thead tr{background:var(--surface-2);border-bottom:2px solid var(--border)}
+  .price-table thead th{padding:10px 14px;text-align:left;font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-muted)}
+  .price-table thead th:last-child{text-align:right}
+  .price-table tbody tr{border-bottom:1px solid var(--border);transition:background 0.12s}
+  .price-table tbody tr:last-child{border-bottom:none}
+  .price-table tbody tr:hover{background:var(--surface-2)}
+  .price-table td{padding:11px 14px;color:var(--text);vertical-align:top}
+  .price-table td:last-child{text-align:right;font-weight:700;color:var(--brown);white-space:nowrap}
+  .row-num{color:var(--text-muted);font-size:12px;width:28px}
+  .price-note{font-size:12px;color:var(--text-muted);margin-top:4px;font-style:italic;line-height:1.4}
+  .rules-section{background:var(--surface-2);border-radius:10px;border:1px solid var(--border);overflow:hidden;margin-bottom:28px}
+  .rules-header{background:var(--brown);padding:14px 22px;display:flex;align-items:center;gap:10px}
+  .rules-header-text{font-family:Georgia,serif;font-size:16px;color:#fff;font-weight:normal}
+  .rules-header-badge{margin-left:auto;background:rgba(255,255,255,0.18);font-size:11px;color:rgba(255,255,255,0.85);font-weight:600;letter-spacing:0.8px;text-transform:uppercase;padding:3px 9px;border-radius:20px}
+  .rule-row{display:flex;align-items:stretch;border-bottom:1px solid var(--border);gap:0}
+  .rule-row:last-child{border-bottom:none}
+  .rule-icon-col{width:54px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;border-right:1px solid var(--border);padding:18px 0;background:var(--surface)}
+  .rule-content{padding:16px 20px;flex:1}
+  .rule-title{font-weight:700;font-size:14px;color:var(--text);margin-bottom:3px}
+  .rule-desc{font-size:13px;color:var(--text-muted);line-height:1.5}
+  .rule-formula{display:inline-block;background:var(--brown-soft);border:1px solid var(--border);border-radius:6px;padding:4px 12px;font-family:'Courier New',monospace;font-size:13px;font-weight:700;color:var(--brown);margin-top:8px}
+  .example-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:8px}
+  @media(max-width:500px){.example-grid{grid-template-columns:1fr}}
+  .example-card{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:16px 18px}
+  .example-card-title{font-size:12px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--brown);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+  .example-line{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;padding:3px 0;gap:8px}
+  .example-line span:first-child{color:var(--text-muted);flex:1}
+  .example-line span:last-child{font-weight:600;color:var(--text);white-space:nowrap;font-variant-numeric:tabular-nums}
+  .example-total{border-top:1.5px solid var(--border);margin-top:8px;padding-top:8px;font-weight:700;font-size:14px}
+  .example-total span:first-child{color:var(--text)}
+  .example-total span:last-child{color:var(--brown)}
+  .divider{height:1px;background:var(--border);margin:24px 0}
+  .contact-box{display:flex;align-items:center;gap:16px;background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:16px 22px;margin-top:24px}
+  .contact-icon{font-size:26px;flex-shrink:0}
+  .contact-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);font-weight:600;margin-bottom:2px}
+  .contact-email{font-size:15px;font-weight:700;color:var(--brown)}
+  .footer{background:var(--brown-soft);border:1px solid var(--border);border-top:none;padding:16px 36px;border-radius:0 0 14px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .footer-brand{font-family:Georgia,serif;font-size:13px;color:var(--brown);font-weight:bold}
+  .footer-date{font-size:12px;color:var(--text-muted)}
+  .alert-row{display:flex;align-items:flex-start;gap:10px;background:var(--rule-bg);border:1px solid var(--rule-border);border-radius:8px;padding:12px 16px;margin-top:14px;font-size:13px;color:var(--rule-text);line-height:1.5}
+  .alert-row strong{font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+    <div class="header-eyebrow">Nutworld — interní dokument pro obchodní zástupce</div>
+    <h1>Ceník grafických prací<br>a tisku — Claudia Fiori</h1>
+    <div class="header-sub">Partnerská tisková příprava a branding obalů</div>
+    <div class="header-badge">Platné od srpna 2026</div>
+  </div>
+
+  <div class="card">
+    <div class="callout">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body">
+        <div class="callout-title">Pozor — tyto ceny jsou naše nákupní!</div>
+        <p>Všechny ceny níže jsou to, co platíme my tiskárně. Zákazníkovi vždy účtujeme jinak — pravidla najdeš v sekci <strong>„Co účtujeme zákazníkovi"</strong> níže.</p>
+      </div>
+    </div>
+
+    <div class="section-label">Naše nákupní ceny</div>
+    <div class="section-title">Grafické práce</div>
+    <div style="overflow-x:auto">
+      <table class="price-table">
+        <thead><tr><th class="row-num">#</th><th>Služba</th><th>Naše cena</th></tr></thead>
+        <tbody>
+          <tr><td class="row-num">1</td><td><strong>Výměna loga</strong><div class="price-note">Kvalitní podklad pro tisk; v ceně i vizualizace (mock-up kazetky, doypacku, krabičky)</div></td><td>200 Kč</td></tr>
+          <tr><td class="row-num">2</td><td><strong>Úprava loga nebo doplnění textu</strong><div class="price-note">Nekvalitní logo, věnování, doplňkový text k logu</div></td><td>250 Kč</td></tr>
+          <tr><td class="row-num">3</td><td><strong>Menší zásah do grafiky</strong><div class="price-note">Změna barvy, vytažení loga z obrázku apod.</div></td><td>300 Kč</td></tr>
+          <tr><td class="row-num">4</td><td><strong>Nový obal vycházející z existujícího</strong><div class="price-note">Nová příchuť, varianta motivu ze stávající grafiky</div></td><td>500 Kč</td></tr>
+          <tr><td class="row-num">5</td><td><strong>Příprava komplexní grafiky pro tisk</strong><div class="price-note">Přepracování AI návrhu, složité motivy, přechody, stíny</div></td><td>1 000 Kč</td></tr>
+          <tr><td class="row-num">6</td><td><strong>Retušování, mazání, dokreslování</strong><div class="price-note">Složitější úpravy existujících fotografií nebo grafiky</div></td><td>1 000 Kč</td></tr>
+          <tr><td class="row-num">7</td><td><strong>Nový produktový obal od nuly</strong><div class="price-note">Komplexní návrh jako adventní kalendář apod.</div></td><td>od 2 000 Kč</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section-label">Naše nákupní ceny</div>
+    <div class="section-title">Tisk</div>
+    <div style="overflow-x:auto">
+      <table class="price-table">
+        <thead><tr><th>Formát</th><th>Naše cena / ks</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Tisková příprava</strong><div class="price-note">Platí na každý rozměr, bez ohledu na počet motivů stejného rozměru</div></td><td>250 Kč</td></tr>
+          <tr><td><strong>Doypack 50 g, 100 g</strong></td><td>0,60 – 0,80 Kč</td></tr>
+          <tr><td><strong>Doypack 250 g</strong></td><td>0,80 – 1,60 Kč</td></tr>
+          <tr><td><strong>Kazetka</strong></td><td>0,80 – 1,20 Kč</td></tr>
+          <tr><td><strong>Krabička NKS6</strong> <span style="color:var(--text-muted);font-size:12px">(2×50 g)</span></td><td>0,60 – 2,50 Kč</td></tr>
+          <tr><td><strong>Krabička NKS5</strong> <span style="color:var(--text-muted);font-size:12px">(4×80 g)</span></td><td>0,60 – 2,50 Kč</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert-row">
+      <span>🌿</span>
+      <span><strong>Celopotisk doypacku</strong> (plná přední strana, složité motivy) — cena se může lišit, řešíme individuálně. Barva tisku (černobílá vs. barevná) cenu <strong>neovlivňuje</strong>.</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">Klíčová sekce</div>
+    <div class="section-title">Co účtujeme zákazníkovi</div>
+
+    <div class="rules-section">
+      <div class="rules-header">
+        <div class="rules-header-text">Pravidla pro tvorbu zákaznické ceny</div>
+        <div class="rules-header-badge">3 pravidla</div>
+      </div>
+      <div class="rule-row">
+        <div class="rule-icon-col">📋</div>
+        <div class="rule-content">
+          <div class="rule-title">Tisková příprava</div>
+          <div class="rule-desc">Zákazníkovi účtujeme fixní cenu, která pokryje i dopravu k nám a naše mezipráce.</div>
+          <div class="rule-formula">450 Kč (zákazník)</div>
+        </div>
+      </div>
+      <div class="rule-row">
+        <div class="rule-icon-col">🖨️</div>
+        <div class="rule-content">
+          <div class="rule-title">Tisk doypacku a krabičky</div>
+          <div class="rule-desc">Naši nákupní cenu za tisk zdvojnásobíme.</div>
+          <div class="rule-formula">naše cena × 2</div>
+        </div>
+      </div>
+      <div class="rule-row">
+        <div class="rule-icon-col">🎨</div>
+        <div class="rule-content">
+          <div class="rule-title">Grafické úpravy</div>
+          <div class="rule-desc">Ke každé grafické položce přidáme 100 Kč za mezipráce na naší straně.</div>
+          <div class="rule-formula">naše cena + 100 Kč</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:24px">Praktické příklady</div>
+    <div class="example-grid">
+      <div class="example-card">
+        <div class="example-card-title">Nekvalitní logo + 100× doypack 100 g</div>
+        <div class="example-line"><span>Tisková příprava</span><span>450 Kč</span></div>
+        <div class="example-line"><span>Úprava loga (250 + 100)</span><span>350 Kč</span></div>
+        <div class="example-line"><span>Tisk 100× (0,80 × 2)</span><span>160 Kč</span></div>
+        <div class="example-line example-total"><span>Celkem zákazník</span><span>960 Kč</span></div>
+      </div>
+      <div class="example-card">
+        <div class="example-card-title">Kvalitní logo, bez vizualizace + 100× doypack</div>
+        <div class="example-line"><span>Tisková příprava</span><span>450 Kč</span></div>
+        <div class="example-line"><span>Grafika</span><span>—</span></div>
+        <div class="example-line"><span>Tisk 100× (0,80 × 2)</span><span>160 Kč</span></div>
+        <div class="example-line example-total"><span>Celkem zákazník</span><span>610 Kč</span></div>
+      </div>
+    </div>
+    <p class="price-note" style="margin-top:8px">Pokud zákazník trvá na vizualizaci ale logo je kvalitní: + 200 Kč (výměna loga + 100 Kč mezipráce = 300 Kč navíc).</p>
+
+    <div class="contact-box">
+      <div class="contact-icon">📩</div>
+      <div>
+        <div class="contact-label">Zasílání podkladů a vše ohledně brandingu</div>
+        <div class="contact-email">grafika@claudiafiori.cz</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-brand">Nutworld.cz</div>
+    <div class="footer-date">Interní ceník · srpen 2026</div>
+  </div>
+
+</div>
+</body>
+</html>
