@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bulk ceník — Nutworld.cz</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --bd: #5c381f;
+  --bm: #83502e;
+  --bs: #f1e6da;
+  --am: #f7ab31;
+  --tx: #2a1a0e;
+  --tx2: #7a5a40;
+  --bg: #f7f3ef;
+  --wh: #ffffff;
+  --ln: #e8ddd4;
+  --row-alt: #fdf9f6;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bd: #e8c49a;
+    --bm: #c8925a;
+    --bs: #2a1a0e;
+    --am: #f7ab31;
+    --tx: #f0e8df;
+    --tx2: #b09070;
+    --bg: #1a1008;
+    --wh: #261708;
+    --ln: #3a2510;
+    --row-alt: #221408;
+  }
+}
+:root[data-theme="dark"] {
+  --bd: #e8c49a;
+  --bm: #c8925a;
+  --bs: #2a1a0e;
+  --am: #f7ab31;
+  --tx: #f0e8df;
+  --tx2: #b09070;
+  --bg: #1a1008;
+  --wh: #261708;
+  --ln: #3a2510;
+  --row-alt: #221408;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--tx);
+  min-height: 100vh;
+}
+
+/* HEADER */
+.hdr {
+  background: linear-gradient(135deg, var(--bd) 0%, var(--bm) 60%, #a0622a 100%);
+  padding: 18px 28px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,.25);
+}
+.hdr-left h1 {
+  font-size: 20px;
+  font-weight: 800;
+  color: white;
+  letter-spacing: -.3px;
+}
+.hdr-left p {
+  font-size: 11px;
+  color: rgba(255,255,255,.65);
+  margin-top: 2px;
+}
+.hdr-right {
+  font-size: 11px;
+  color: rgba(255,255,255,.7);
+  text-align: right;
+  line-height: 1.7;
+}
+.hdr-right strong { color: var(--am); }
+
+/* TOOLBAR */
+.toolbar {
+  background: var(--wh);
+  border-bottom: 1px solid var(--ln);
+  padding: 10px 28px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 62px;
+  z-index: 90;
+}
+.search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 180px;
+  max-width: 320px;
+}
+.search-wrap input {
+  width: 100%;
+  padding: 7px 12px 7px 32px;
+  border: 1.5px solid var(--ln);
+  border-radius: 20px;
+  font-size: 13px;
+  background: var(--bg);
+  color: var(--tx);
+  outline: none;
+  transition: border-color .15s;
+}
+.search-wrap input:focus { border-color: var(--bm); }
+.search-wrap::before {
+  content: '🔍';
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 13px;
+  pointer-events: none;
+}
+.tabs {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.tab {
+  padding: 5px 13px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1.5px solid var(--ln);
+  background: var(--bg);
+  color: var(--tx2);
+  transition: all .15s;
+  white-space: nowrap;
+}
+.tab.active, .tab:hover {
+  background: var(--bd);
+  color: white;
+  border-color: var(--bd);
+}
+.count-badge {
+  font-size: 11px;
+  color: var(--tx2);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* TABLE */
+.table-wrap {
+  padding: 16px 28px 40px;
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--wh);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 8px rgba(0,0,0,.07);
+}
+thead tr {
+  background: var(--bd);
+}
+thead th {
+  padding: 10px 14px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: white;
+  text-align: left;
+  letter-spacing: .3px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+thead th.r { text-align: right; }
+
+/* Category separator */
+tr.cat-sep td {
+  background: var(--bs);
+  color: var(--bd);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-top: 2px solid var(--ln);
+}
+
+tbody tr.data-row {
+  border-bottom: 1px solid var(--ln);
+  transition: background .1s;
+}
+tbody tr.data-row:nth-child(even) { background: var(--row-alt); }
+tbody tr.data-row:hover { background: var(--bs); }
+
+tbody td {
+  padding: 8px 14px;
+  font-size: 13px;
+  color: var(--tx);
+  vertical-align: middle;
+}
+td.nazev { font-weight: 600; max-width: 280px; }
+td.kod { font-size: 11.5px; color: var(--tx2); font-family: monospace; }
+td.list-badge span {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: var(--bs);
+  color: var(--bm);
+}
+td.baleni { color: var(--tx2); font-size: 12.5px; }
+td.cena-kg {
+  text-align: right;
+  font-weight: 700;
+  color: var(--bd);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+td.cena-bal {
+  text-align: right;
+  font-size: 12.5px;
+  color: var(--tx2);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+td.nedostupne { color: #c0392b; font-size: 11.5px; font-style: italic; }
+
+.no-results {
+  text-align: center;
+  padding: 48px;
+  color: var(--tx2);
+  font-size: 14px;
+}
+
+/* Print */
+@media print {
+  .toolbar, .hdr { position: static; }
+  body { background: white; }
+  .tab { display: none; }
+}
+</style>
+
+<style>
+.intro {
+  max-width: 860px;
+  margin: 28px auto 0;
+  padding: 0 28px 32px;
+}
+.intro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 20px;
+}
+.intro-box {
+  background: var(--wh);
+  border-radius: 10px;
+  padding: 18px 20px;
+  box-shadow: 0 1px 6px rgba(0,0,0,.07);
+}
+.intro-box.full { grid-column: 1 / -1; }
+.intro-box h3 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--bm);
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+.intro-box p, .intro-box li {
+  font-size: 13px;
+  color: var(--tx);
+  line-height: 1.65;
+}
+.intro-box ul { padding-left: 16px; }
+.intro-box li { margin-bottom: 3px; }
+.intro-lead {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--tx);
+  margin-bottom: 16px;
+}
+.intro-badge {
+  display: inline-block;
+  background: var(--am);
+  color: var(--bd);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 8px;
+  margin-bottom: 14px;
+  letter-spacing: .3px;
+}
+.cond-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-bottom: 7px;
+  font-size: 13px;
+  color: var(--tx);
+  line-height: 1.5;
+}
+.cond-row .ic { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+.divider {
+  border: none;
+  border-top: 1px solid var(--ln);
+  margin: 28px 0 0;
+}
+.section-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--tx2);
+  font-weight: 700;
+  padding: 14px 28px 0;
+  max-width: 860px;
+  margin: 0 auto;
+}
+</style>
+
+<div class="hdr">
+  <div class="hdr-left">
+    <h1>Bulk ceník — Nutworld.cz</h1>
+    <p>Solo produkty · Originální balení + přelepená etiketa · Platnost: duben 2026</p>
+  </div>
+  <div class="hdr-right">
+    <strong id="total-count">178</strong> produktů<br>
+    Ceny bez DPH · Kč/kg
+  </div>
+</div>
+
+<div class="intro">
+  <div class="intro-lead">
+    <div class="intro-badge">Velkoobchodní ceník · Duben 2026</div><br>
+    Vážení obchodní partneři, dovolujeme si Vás oslovit a nabídnout nákup ve velkém (bulkovém) balení. Naším cílem je být spolehlivým partnerem pro všechny, kteří hledají kvalitní a speciální sortiment, profesionální servis a férové obchodní podmínky.
+  </div>
+
+  <div class="intro-grid">
+    <div class="intro-box">
+      <h3>Nabídka je určena pro</h3>
+      <ul>
+        <li>Bulk odběr ve větších objemech</li>
+        <li>Vlastní další zpracování nebo prodej</li>
+        <li>Stabilní zásobování vybraným sortimentem</li>
+      </ul>
+    </div>
+    <div class="intro-box">
+      <h3>Dvě možnosti spolupráce</h3>
+      <ul>
+        <li><strong>Bulk ceník</strong> — větší objemové objednávky (tento ceník)</li>
+        <li><strong>E-shop VO registrace</strong> — dárkové produkty & menší balení na <a href="https://www.nutworld.cz/registrace/" style="color:var(--bm)">nutworld.cz/registrace</a></li>
+      </ul>
+    </div>
+    <div class="intro-box">
+      <h3>Obchodní podmínky</h3>
+      <div class="cond-row"><span class="ic">🕐</span><span>Provozní doba objednávek: <strong>6:00–14:00</strong></span></div>
+      <div class="cond-row"><span class="ic">📦</span><span>Doručení do <strong>5 pracovních dní</strong> od potvrzení objednávky</span></div>
+      <div class="cond-row"><span class="ic">🚚</span><span><strong>Doprava zdarma</strong> od 5 000 Kč bez DPH · jinak 150 Kč bez DPH</span></div>
+      <div class="cond-row"><span class="ic">🏢</span><span>Osobní odběr: Areál IDA 825, Rtyně v Podkrkonoší 542 34 (po domluvě)</span></div>
+      <div class="cond-row"><span class="ic">🚛</span><span>Dopravci: Geis, Top Trans, PPL, GLS · možnost vlastní dopravy</span></div>
+      <div class="cond-row"><span class="ic">💳</span><span>Platba: dobírka (+39 Kč), bankovní převod proforma, splatnost po domluvě</span></div>
+    </div>
+    <div class="intro-box">
+      <h3>Kontakty & objednávky</h3>
+      <div class="cond-row"><span class="ic">✉</span><span>Objednávky: <strong>nakup@nutworld.cz</strong></span></div>
+      <div class="cond-row"><span class="ic">👤</span><span>Obchodní manažeři:<br>hamernik@nutworld.cz<br>martin.werner@nutworld.cz</span></div>
+      <div class="cond-row"><span class="ic">📞</span><span>Dotazy: <strong>734 633 385</strong></span></div>
+      <div class="cond-row"><span class="ic">🔄</span><span>Reklamace: nakup@nutworld.cz nebo obchodní manažer</span></div>
+    </div>
+    <div class="intro-box full">
+      <h3>Vysvětlivky</h3>
+      <p>Ceny jsou uvedeny <strong>bez DPH za 1 kg</strong>. Balení určuje prodejní množství — objednávky pouze v násobcích daného balení. Produkty označené kódem lze dohledat na <a href="https://www.nutworld.cz" style="color:var(--bm)">nutworld.cz</a> včetně fotografií a podkladů.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+<div class="section-title">Přehled produktů</div>
+
+<div class="toolbar">
+  <div class="search-wrap">
+    <input type="text" id="search" placeholder="Hledat produkt nebo kód…" oninput="filter()">
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="setTab('vše')">Vše</div>
+    <div class="tab" onclick="setTab('SMĚSI')">Směsi</div>
+    <div class="tab" onclick="setTab('SPECIÁLNÍ PRODUKTY')">Speciální</div>
+    <div class="tab" onclick="setTab('DRAŽÉ PRODUKTY')">Dražé</div>
+    <div class="tab" onclick="setTab('TĚSTÍČKO, KREKRY, CHIPSY')">Těstíčko & Chipsy</div>
+  </div>
+  <div class="count-badge">Zobrazeno: <strong id="shown-count">178</strong></div>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th style="width:34%">Název produktu</th>
+        <th>Kód</th>
+        <th>Kategorie</th>
+        <th>Balení</th>
+        <th class="r">Kč / kg</th>
+        <th class="r">Kč / bal</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+  <div class="no-results" id="no-results" style="display:none">Žádné výsledky pro tento filtr.</div>
+</div>
+
+<script>
+const DATA = [
+  // SMĚSI — naturální
+  {l:"SMĚSI",k:"Směsi naturální",n:"Ananas plátky MIX",c:"2123",b:3,p:189},
+  {l:"SMĚSI",k:"Směsi naturální",n:"Antioxidační směs",c:"1040",b:3,p:199},
+  {l:"SMĚSI",k:"Směsi naturální",n:"Brustáciový mix",c:"1037",b:3,p:379},
+  {l:"SMĚSI",k:"Směsi naturální",n:"Fitness směs",c:"3094",b:3,p:245},
+  {l:"SMĚSI",k:"Směsi naturální",n:"Lyofilizovaný mix",c:"293",b:1,p:810},
+  {l:"SMĚSI",k:"Směsi naturální",n:"Rozinky obří MIX",c:"3082",b:3,p:149},
+  {l:"SMĚSI",k:"Směsi naturální",n:"Směs jader",c:"158",b:3,p:349},
+  {l:"SMĚSI",k:"Směsi naturální",n:"Směs kešu a mandle",c:"5499",b:3,p:255},
+  {l:"SMĚSI",k:"Směsi naturální",n:"Směs ořechů",c:"155",b:3,p:339},
+  {l:"SMĚSI",k:"Směsi naturální",n:"Směs ořechů a rozinek",c:"3097",b:3,p:229},
+  {l:"SMĚSI",k:"Směsi naturální",n:"Směs ořechů deluxe",c:"2342",b:3,p:249},
+  {l:"SMĚSI",k:"Směsi naturální",n:"Směs ořechů šťastné srdce",c:"2345",b:3,p:219},
+  {l:"SMĚSI",k:"Směsi naturální",n:"Směs ovoce a kokosu KOSTKY",c:"5496",b:3,p:165},
+  {l:"SMĚSI",k:"Směsi naturální",n:"Směs ovoce EXOTIC",c:"3085",b:3,p:219},
+  {l:"SMĚSI",k:"Směsi naturální",n:"Směs ovoce VÁNOČNÍ",c:"5406",b:3,p:null},
+  {l:"SMĚSI",k:"Směsi naturální",n:"Směs semínek a piniová ořech SALÁTOVÁ",c:"5502",b:3,p:189},
+  {l:"SMĚSI",k:"Směsi naturální",n:"Směs SEMÍNEK, KEŠU A MANDLE",c:"5505",b:3,p:169},
+  {l:"SMĚSI",k:"Směsi naturální",n:"Směs semínková",c:"2474",b:3,p:109},
+  {l:"SMĚSI",k:"Směsi naturální",n:"Směs zdravá ENERGIE",c:"6450",b:3,p:309},
+  {l:"SMĚSI",k:"Směsi naturální",n:"Studentská směs",c:"2702",b:3,p:189},
+  {l:"SMĚSI",k:"Směsi naturální",n:"Tropická směs",c:"2423",b:3,p:159},
+  // SMĚSI — pražené/solené
+  {l:"SMĚSI",k:"Směsi pražené & solené",n:"Mix ořechů v medu a soli",c:"4794",b:5,p:229},
+  {l:"SMĚSI",k:"Směsi pražené & solené",n:"Slaný mix ALL in one",c:"1028",b:3,p:245},
+  {l:"SMĚSI",k:"Směsi pražené & solené",n:"Slaný mix exclusive",c:"5511",b:3,p:269},
+  {l:"SMĚSI",k:"Směsi pražené & solené",n:"Slaný mix Itálie",c:"6459",b:10,p:209},
+  {l:"SMĚSI",k:"Směsi pražené & solené",n:"Slaný mix Mexico",c:"6462",b:10,p:209},
+  {l:"SMĚSI",k:"Směsi pražené & solené",n:"Slaný mix premium",c:"9547",b:3,p:429},
+  {l:"SMĚSI",k:"Směsi pražené & solené",n:"Slaný párty mix",c:"161",b:3,p:299},
+  {l:"SMĚSI",k:"Směsi pražené & solené",n:"Směs ořechů pražená nesolená",c:"3091",b:3,p:275},
+  // SMĚSI — arašídy
+  {l:"SMĚSI",k:"Arašídové směsi",n:"Arašídové hrudky - mix 4 barev",c:"4443",b:3,p:269},
+  {l:"SMĚSI",k:"Arašídové směsi",n:"Arašídy tří barev (hořká, bílá, mléčná)",c:"5484",b:3,p:189},
+  {l:"SMĚSI",k:"Arašídové směsi",n:"Arašídy v bravné čokoládě",c:"3714",b:3,p:249},
+  // SMĚSI — kešu
+  {l:"SMĚSI",k:"Kešu směsi",n:"Kešu exclusive",c:"10503",b:3,p:329},
+  {l:"SMĚSI",k:"Kešu směsi",n:"Kešu mix",c:"2705",b:3,p:269},
+  {l:"SMĚSI",k:"Kešu směsi",n:"Kešu tří barev (hořká, bílá, mléčná)",c:"4446",b:3,p:299},
+  // SMĚSI — ostatní
+  {l:"SMĚSI",k:"Ostatní směsi",n:"Kokos v čokoládě mix",c:"3729",b:5,p:265},
+  {l:"SMĚSI",k:"Ostatní směsi",n:"Lískové ořechy tří barev",c:"2504",b:3,p:279},
+  {l:"SMĚSI",k:"Mandle směsi",n:"Mandle exclusive",c:"3993",b:3,p:319},
+  {l:"SMĚSI",k:"Mandle směsi",n:"Mandle mix BROWN",c:"4896",b:3,p:279},
+  {l:"SMĚSI",k:"Mandle směsi",n:"Mandle mix pink blue",c:"8544",b:2,p:439},
+  {l:"SMĚSI",k:"Mandle směsi",n:"Mandle tří barev (hořká, bílá, mléčná)",c:"1985",b:3,p:259},
+  {l:"SMĚSI",k:"Mandle směsi",n:"Mandle v barevné krustě",c:"1970",b:3,p:null},
+  {l:"SMĚSI",k:"Mandle směsi",n:"Mandle v barevném jogurtu",c:"1975",b:10,p:239},
+  {l:"SMĚSI",k:"Mandle směsi",n:"Mandle vienna",c:"3726",b:5,p:299},
+  {l:"SMĚSI",k:"Mix ořechů",n:"Kávový mix",c:"2726",b:3,p:329},
+  {l:"SMĚSI",k:"Mix ořechů",n:"Královská směs",c:"6453",b:5,p:319},
+  {l:"SMĚSI",k:"Mix ořechů",n:"Mandle a meruňky v čokoládě a jogurtu",c:"2738",b:3,p:319},
+  {l:"SMĚSI",k:"Mix ořechů",n:"Ořechový mix VELKÝ",c:"6456",b:5,p:359},
+  {l:"SMĚSI",k:"Mix ořechů",n:"Skořicový mix",c:"2693",b:3,p:299},
+  {l:"SMĚSI",k:"Mix ořechů",n:"Slaný karamel MIX",c:"6582",b:3,p:299},
+  {l:"SMĚSI",k:"Mix ořechů",n:"Směs sladká DELUXE",c:"2708",b:3,p:289},
+  {l:"SMĚSI",k:"Mix ořechů",n:"Směs tiramisu",c:"2699",b:3,p:259},
+  {l:"SMĚSI",k:"Slunečnice & Banán",n:"Slunečnice tří barev",c:"1949",b:null,p:229},
+  {l:"SMĚSI",k:"Slunečnice & Banán",n:"Slunečnice v barevné krustě",c:"1991",b:null,p:149},
+  {l:"SMĚSI",k:"Slunečnice & Banán",n:"Banánové chipsy DUO",c:"2762",b:null,p:199},
+  {l:"SMĚSI",k:"Slunečnice & Banán",n:"Banánové chipsy tří barev",c:"5481",b:null,p:199},
+  {l:"SMĚSI",k:"Maliny & Rozinky",n:"Lyo maliny tříbarevné (hořká, bílá, mléčná)",c:"2677",b:2,p:479},
+  {l:"SMĚSI",k:"Maliny & Rozinky",n:"Rozinky tří barevné",c:"",b:null,p:189},
+  {l:"SMĚSI",k:"Maliny & Rozinky",n:"Rozinky v barevné čokoládě",c:"3717",b:5,p:255},
+  {l:"SMĚSI",k:"Ořechy v těstíčku",n:"Arašídy ďábelské koření",c:"3732",b:5,p:155},
+  {l:"SMĚSI",k:"Ořechy v těstíčku",n:"Arašídy Flamengo MIX",c:"7569",b:5,p:159},
+  {l:"SMĚSI",k:"Ořechy v těstíčku",n:"Arašídy sýrovo-kečupivé",c:"3735",b:5,p:159},
+  {l:"SMĚSI",k:"Ořechy v těstíčku",n:"Arašídy wasabi MIX",c:"10585",b:5,p:145},
+  {l:"SMĚSI",k:"Ořechy v těstíčku",n:"Japonská směs JUMBO",c:"2102",b:5,p:145},
+  {l:"SMĚSI",k:"Neořechové směsi",n:"Čokoládové kamínky",c:"6465",b:5,p:125},
+  {l:"SMĚSI",k:"Neořechové směsi",n:"Preclíky tří barev",c:"4452",b:2,p:229},
+  // SPECIÁLNÍ PRODUKTY — arašídy
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Arašídy speciality",n:"Arašídy karamelizované s jahodou",c:"",b:5,p:149},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Arašídy speciality",n:"Arašídy v karamelu",c:"",b:5,p:139},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Arašídy speciality",n:"Arašídy v karamelu s CHILLI",c:"4146",b:null,p:175},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Arašídy speciality",n:"Arašídy v karamelu s medem",c:"",b:5,p:139},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Arašídy speciality",n:"Arašídy v karamelu s vanilkovou příchutí",c:"9598",b:5,p:159},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Arašídy speciality",n:"Arašídy v karamelu se sezamem",c:"9604",b:5,p:149},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Arašídy speciality",n:"Arašídy v medu a soli",c:"10035",b:3,p:139},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Arašídy speciality",n:"Arašídy ve slaném karamelu",c:"",b:5,p:139},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Arašídy speciality",n:"Arašídy ve slaném karamelu s medem",c:"",b:5,p:149},
+  // SPECIÁLNÍ — kešu
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Kešu speciality",n:"Kešu karamelizované s příchutí banánu a čokolády",c:"10270",b:5,p:285},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Kešu speciality",n:"Kešu ořechy s česnekem a rozmarýnem",c:"5364",b:5,p:339},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Kešu speciality",n:"Kešu ořechy v těstíčku BBQ",c:"5358",b:5,p:289},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Kešu speciality",n:"Kešu pražené s CHILLI a LIMETKOU",c:"8657",b:5,p:269},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Kešu speciality",n:"Kešu pražené s LANÝŽI",c:"8656",b:5,p:419},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Kešu speciality",n:"Kešu pražené se sýrem GOUDA",c:"8662",b:5,p:419},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Kešu speciality",n:"Kešu pražené se sýrem CHEDAR",c:"8660",b:5,p:419},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Kešu speciality",n:"Kešu pražené solené s KARI",c:"3013",b:7,p:259},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Kešu speciality",n:"Kešu s příchutí CHILLI",c:"2537",b:3,p:269},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Kešu speciality",n:"Kešu slaný karamel",c:"",b:5,p:279},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Kešu speciality",n:"Kešu solené",c:"",b:25,p:229},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Kešu speciality",n:"Kešu uzené",c:"728",b:3,p:265},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Kešu speciality",n:"Kešu v karamelu",c:"",b:5,p:275},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Kešu speciality",n:"Kešu v karamelu s příchutí skořice a jablka",c:"10246",b:5,p:282},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Kešu speciality",n:"Kešu v karamelu se sezamem",c:"",b:5,p:275},
+  // SPECIÁLNÍ — ostatní
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Makadamové ořechy",n:"Makadamové ořechy pražené solené",c:"4893",b:null,p:485},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Mandle speciality",n:"Mandle solené (3 kg)",c:"101",b:3,p:259},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Mandle speciality",n:"Mandle solené (25 kg)",c:"",b:25,p:249},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Mandle speciality",n:"Mandle uzené — snížený obsah soli",c:"89",b:5,p:245},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Mandle speciality",n:"Mandle s příchutí HOŘČICE",c:"9945",b:3,p:249},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Mandle speciality",n:"Mandle pražené solené s bylinkami Valencie",c:"3721",b:5,p:385},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Mandle speciality",n:"Mandle pražené solené s chilli paprikou Valencie",c:"3723",b:5,p:385},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Mandle speciality",n:"Mandle pražené solené s lanýžem Valencie",c:"3722",b:5,p:405},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Mandle speciality",n:"Mandle pražené solené s lanýžem a parmazánem Valencie",c:"9543",b:5,p:405},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Mandle speciality",n:"Mandle pražené solené Valencie",c:"",b:5,p:379},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Mandle speciality",n:"Mandle v jahodovém jogurtu",c:"5852",b:10,p:229},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Mandle speciality",n:"Mandle v medu a soli",c:"95",b:3,p:299},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Mandle speciality",n:"Mandle v bílé čokoládě se zeleným čajem",c:"",b:null,p:259},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Mandle speciality",n:"Mandle v bílé čokoládě s kouksami malin",c:"",b:null,p:289},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Mandle speciality",n:"Mandle v karamelu",c:"",b:5,p:249},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Mandle speciality",n:"Mandle v karamelu s ostružinou",c:"",b:5,p:269},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Mandle speciality",n:"Mandle v karamelu se skořicí",c:"",b:5,p:259},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Mandle speciality",n:"Mandle v karamelu se sezamem",c:"",b:5,p:249},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Mandle speciality",n:"Mandle v karamelu s vanilkovou příchutí",c:"9601",b:5,p:269},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Mandle speciality",n:"Mandle v karamelu s chilli",c:"7855",b:5,p:285},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Mandle speciality",n:"Mandle ve slaném karamelu",c:"",b:5,p:259},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Pekan",n:"Pekan v karamelu",c:"",b:5,p:389},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Pistácie",n:"Pistácie ve slaném karamelu",c:"",b:5,p:565},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Pistácie",n:"Pistácie v karamelu",c:"",b:5,p:575},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Kokos & Kukuřice",n:"Kokosové chipsy ve slaném karamelu",c:"7564",b:5,p:189},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Kokos & Kukuřice",n:"Kokosové chipsy s příchutí kakaa",c:"",b:8,p:179},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Kokos & Kukuřice",n:"Kukuřice v medu a hořčici",c:"",b:25,p:99},
+  {l:"SPECIÁLNÍ PRODUKTY",k:"Kokos & Kukuřice",n:"Kukuřice BBQ",c:"",b:25,p:75},
+  // DRAŽÉ
+  {l:"DRAŽÉ PRODUKTY",k:"Arašídy",n:"Arašídy v mléčné čokoládě",c:"27562",b:5,p:139},
+  {l:"DRAŽÉ PRODUKTY",k:"Arašídy",n:"Arašídy v hořké čokoládě",c:"",b:5,p:149},
+  {l:"DRAŽÉ PRODUKTY",k:"Banán",n:"Banán plátky v mléčné čokoládě",c:"5475",b:4,p:185},
+  {l:"DRAŽÉ PRODUKTY",k:"Banán",n:"Banán plátky v hořké čokoládě",c:"2759",b:4,p:189},
+  {l:"DRAŽÉ PRODUKTY",k:"Brusinky",n:"Brusinky celé v hořké čokoládě",c:"",b:5,p:210},
+  {l:"DRAŽÉ PRODUKTY",k:"Brusinky",n:"Brusinky celé v mléčné čokoládě",c:"",b:5,p:205},
+  {l:"DRAŽÉ PRODUKTY",k:"Brusinky",n:"Brusinky celé v bílé čokoládě",c:"",b:5,p:205},
+  {l:"DRAŽÉ PRODUKTY",k:"Kešu",n:"Kešu v hořké čokoládě",c:"4035",b:5,p:239},
+  {l:"DRAŽÉ PRODUKTY",k:"Kešu",n:"Kešu v mléčné čokoládě",c:"119",b:5,p:249},
+  {l:"DRAŽÉ PRODUKTY",k:"Jahody",n:"Jahody v mléčné čokoládě celé",c:"10271",b:5,p:379},
+  {l:"DRAŽÉ PRODUKTY",k:"Jahody",n:"Jahody v hořké čokoládě celé",c:"",b:5,p:409},
+  {l:"DRAŽÉ PRODUKTY",k:"Jahody",n:"Jahody v bílé čokoládě celé",c:"",b:5,p:289},
+  {l:"DRAŽÉ PRODUKTY",k:"Kokos",n:"Kokosová kostka v mléčné čokoládě",c:"",b:5,p:225},
+  {l:"DRAŽÉ PRODUKTY",k:"Kokos",n:"Kokosová kostka v hořké čokoládě",c:"",b:5,p:235},
+  {l:"DRAŽÉ PRODUKTY",k:"Lísková jádra",n:"Lísková jádra v bílé čokoládě",c:"3107",b:5,p:269},
+  {l:"DRAŽÉ PRODUKTY",k:"Lísková jádra",n:"Lísková jádra v mléčné čokoládě",c:"1475",b:5,p:249},
+  {l:"DRAŽÉ PRODUKTY",k:"Lísková jádra",n:"Lísková jádra v hořké čokoládě",c:"3106",b:5,p:259},
+  {l:"DRAŽÉ PRODUKTY",k:"Lísková jádra",n:"Lísková jádra v mléčné čokoládě a skořici",c:"510",b:5,p:259},
+  {l:"DRAŽÉ PRODUKTY",k:"Maliny",n:"Maliny v bílé čokoládě",c:"914",b:4.5,p:445},
+  {l:"DRAŽÉ PRODUKTY",k:"Mandle",n:"Mandle v bílé čokoládě se zeleným čajem",c:"1545",b:5,p:269},
+  {l:"DRAŽÉ PRODUKTY",k:"Mandle",n:"Mandle v bílé čokoládě s kouksami malin",c:"8977",b:5,p:289},
+  {l:"DRAŽÉ PRODUKTY",k:"Mandle",n:"Mandle v bílé čokoládě s kokosem",c:"1988",b:4,p:315},
+  {l:"DRAŽÉ PRODUKTY",k:"Mandle",n:"Mandle v bílé čokoládě",c:"107",b:5,p:259},
+  {l:"DRAŽÉ PRODUKTY",k:"Mandle",n:"Mandle v hořké čokoládě",c:"1955",b:5,p:259},
+  {l:"DRAŽÉ PRODUKTY",k:"Mandle",n:"Mandle v mléčné čokoládě",c:"4038",b:5,p:249},
+  {l:"DRAŽÉ PRODUKTY",k:"Mandle",n:"Mandle v mléčné TIRAMISU",c:"1964",b:null,p:215},
+  {l:"DRAŽÉ PRODUKTY",k:"Mandle",n:"Mandle v mléčné čokoládě a skořici",c:"1958",b:null,p:245},
+  {l:"DRAŽÉ PRODUKTY",k:"Mandle",n:"Mandle v mléčné čokoládě slaný karamel",c:"1552",b:5,p:249},
+  {l:"DRAŽÉ PRODUKTY",k:"Mandle",n:"Mandle borůvkové",c:"3651",b:null,p:289},
+  {l:"DRAŽÉ PRODUKTY",k:"Mandle",n:"Mandle citronové",c:"3648",b:null,p:289},
+  {l:"DRAŽÉ PRODUKTY",k:"Mandle",n:"Mandle v jahodovém jogurtu",c:"5852",b:null,p:225},
+  {l:"DRAŽÉ PRODUKTY",k:"Švestky & Višně",n:"Švestky v hořké čokoládě",c:"917",b:5,p:249},
+  {l:"DRAŽÉ PRODUKTY",k:"Švestky & Višně",n:"Višně v hořké čokoládě",c:"",b:5,p:259},
+  {l:"DRAŽÉ PRODUKTY",k:"Preclíky",n:"Preclíky ve slaném karamelu",c:"3980",b:5,p:239},
+  {l:"DRAŽÉ PRODUKTY",k:"Preclíky",n:"Preclíky v mléčné čokoládě",c:"3978",b:5,p:229},
+  {l:"DRAŽÉ PRODUKTY",k:"Preclíky",n:"Preclíky v hořké čokoládě",c:"3975",b:5,p:259},
+  // TĚSTÍČKO
+  {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Krekry",n:"Rýžové krekry — barbecue",c:"10564",b:5,p:190},
+  {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Krekry",n:"Rýžové krekry — chilli",c:"10558",b:5,p:190},
+  {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Krekry",n:"Rýžové krekry — original",c:"10570",b:5,p:190},
+  {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Krekry",n:"Rýžové krekry — zahradní bylinky",c:"10161",b:4,p:190},
+  {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Chipsy",n:"Chipsy jablečné se skořicí",c:"9571",b:6,p:409},
+  {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Chipsy",n:"Chipsy ovocné mix",c:"9572",b:8.4,p:479},
+  {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Chipsy",n:"Chipsy zeleninové mix",c:"9570",b:8.4,p:380},
+  {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Chipsy",n:"Chipsy zeleninové mix — WASABI",c:"9673",b:8.4,p:409},
+  {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Chipsy luštěninové",n:"Česnekové",c:"",b:0.18,p:75},
+  {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Chipsy luštěninové",n:"Kmínové",c:"",b:0.18,p:75},
+  {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Chipsy luštěninové",n:"Chilli",c:"",b:0.18,p:75},
+  {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Chipsy luštěninové",n:"S červenou řepou",c:"",b:0.18,p:75},
+  {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Chipsy luštěninové",n:"Černé",c:"",b:0.18,p:75},
+  {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Preclíky",n:"Preclíky solené mini",c:"3979",b:5,p:95},
+  {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Ořechy v těstíčku",n:"Arašídy v sezamovém těstíčku",c:"9549",b:5,p:179},
+  {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Ořechy v těstíčku",n:"Arašídy v těstíčku BBQ a chilli",c:"7563",b:5,p:159},
+  {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Ořechy v těstíčku",n:"Arašídy v těstíčku FLAMENGO MIX",c:"7569",b:5,p:159},
+  {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Ořechy v těstíčku",n:"Arašídy v těstíčku s ďábelským kořením",c:"3732",b:5,p:159},
+  {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Ořechy v těstíčku",n:"Arašídy v těstíčku s příchutí cibule a česneku",c:"7566",b:5,p:159},
+  {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Ořechy v těstíčku",n:"Arašídy v těstíčku se sýrovo-kečupovou příchutí",c:"3735",b:5,p:179},
+  {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Ořechy v těstíčku",n:"Arašídy Wasabi",c:"354",b:7.5,p:139},
+  {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Ořechy v těstíčku",n:"Arašídy Wasabi červené",c:"10579",b:7.5,p:149},
+  {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Ořechy v těstíčku",n:"Arašídy Wasabi MIX",c:"10585",b:3,p:159},
+  {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Ořechy v těstíčku",n:"Japonská směs JUMBO",c:"2102",b:5,p:159},
+];
+
+let activeTab = 'vše';
+
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function setTab(t){
+  activeTab = t;
+  document.querySelectorAll('.tab').forEach(el=>{
+    el.classList.toggle('active', el.textContent.trim() === t || (t==='vše' && el.textContent.trim()==='Vše'));
+  });
+  filter();
+}
+
+function filter(){
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = '';
+
+  const filtered = DATA.filter(r => {
+    const matchTab = activeTab === 'vše' || r.l === activeTab;
+    const matchQ = !q || r.n.toLowerCase().includes(q) || r.c.toLowerCase().includes(q) || r.k.toLowerCase().includes(q);
+    return matchTab && matchQ;
+  });
+
+  document.getElementById('shown-count').textContent = filtered.length;
+  document.getElementById('no-results').style.display = filtered.length ? 'none' : 'block';
+
+  let lastCat = '';
+  filtered.forEach(r => {
+    const catKey = r.l + '|' + r.k;
+    if (catKey !== lastCat) {
+      lastCat = catKey;
+      const sep = document.createElement('tr');
+      sep.className = 'cat-sep';
+      sep.innerHTML = `<td colspan="6">${esc(r.k)}</td>`;
+      tbody.appendChild(sep);
+    }
+    const cenabal = r.p && r.b ? (r.p * r.b).toLocaleString('cs') + ' Kč' : '—';
+    const tr = document.createElement('tr');
+    tr.className = 'data-row';
+    tr.innerHTML = `
+      <td class="nazev">${esc(r.n)}</td>
+      <td class="kod">${esc(r.c) || '<span style="color:var(--ln)">—</span>'}</td>
+      <td class="list-badge"><span>${esc(r.l.split(',')[0])}</span></td>
+      <td class="baleni">${r.b ? r.b + ' kg' : '—'}</td>
+      ${r.p ? `<td class="cena-kg">${r.p.toLocaleString('cs')} Kč</td>` : '<td class="nedostupne">nedostupné</td>'}
+      <td class="cena-bal">${cenabal}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+filter();
+</script>
+
+<script src="pin-guard.js"></script>
+</body>
+</html>
