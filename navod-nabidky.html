@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nutworld — Návod: Nabídky &amp; Zakázky</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bd:#5c381f;--br:#83502e;--kraft:#f1e6da;--acc:#da1668;--amb:#f7ab31;--leaf:#6fa044;
+  --bg:#f0e6da;--card:#fff;--border:#d4bfa8;--text:#2a1a0e;--muted:#7a5a3a;
+  --code-bg:#f8f2ec;--code-border:#d4bfa8;
+  --nabidky:#83502e;--zakazky:#6fa044;--vyroba:#e07010;--trello:#0079bf;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#180e06;--card:#241408;--border:#5c381f;--text:#f0e8de;--muted:#a08060;
+  --kraft:#2a1a0e;--code-bg:#1e1006;--code-border:#5c381f;
+}}
+:root[data-theme="dark"]{
+  --bg:#180e06;--card:#241408;--border:#5c381f;--text:#f0e8de;--muted:#a08060;
+  --kraft:#2a1a0e;--code-bg:#1e1006;--code-border:#5c381f;
+}
+
+body{font-family:-apple-system,'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);font-size:14.5px;line-height:1.6;padding:0 16px 60px}
+
+.page{max-width:860px;margin:0 auto}
+
+/* ── HEADER ── */
+.site-header{padding:28px 0 20px;border-bottom:2px solid var(--border);margin-bottom:32px}
+.header-inner{display:flex;align-items:center;gap:16px}
+.logo-mark{width:42px;height:42px;background:linear-gradient(135deg,var(--bd),var(--br));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.logo-text{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);font-weight:600}
+.logo-title{font-size:22px;font-weight:800;color:var(--bd);letter-spacing:-0.5px;line-height:1.1}
+.header-badge{margin-left:auto;background:var(--kraft);border:1.5px solid var(--border);border-radius:20px;padding:4px 14px;font-size:11px;color:var(--br);font-weight:700;letter-spacing:1px;text-transform:uppercase;white-space:nowrap}
+
+/* ── TOC ── */
+.toc{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:18px 22px;margin-bottom:30px}
+.toc-title{font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);font-weight:700;margin-bottom:10px}
+.toc-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:3px 24px}
+.toc-list a{color:var(--br);text-decoration:none;font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:7px;padding:3px 0}
+.toc-list a:hover{color:var(--bd);text-decoration:underline}
+.toc-num{font-size:10px;background:var(--kraft);border-radius:50%;width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;color:var(--br);flex-shrink:0}
+
+/* ── FLOW OVERVIEW ── */
+.flow{display:flex;gap:0;margin-bottom:32px;border-radius:12px;overflow:hidden;border:1.5px solid var(--border)}
+.flow-step{flex:1;padding:18px 16px;background:var(--card);text-align:center;position:relative}
+.flow-step:not(:last-child)::after{content:'→';position:absolute;right:-10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:18px;z-index:2;background:var(--card);padding:0 2px}
+.flow-step:not(:last-child){border-right:1.5px solid var(--border)}
+.flow-icon{font-size:26px;display:block;margin-bottom:6px}
+.flow-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--br)}
+.flow-sub{font-size:11px;color:var(--muted);margin-top:3px}
+
+/* ── SECTIONS ── */
+.sec{margin-bottom:36px;scroll-margin-top:20px}
+.sec-header{display:flex;align-items:center;gap:12px;margin-bottom:18px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+.sec-num{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#fff;flex-shrink:0}
+.sec-title{font-size:20px;font-weight:800;color:var(--text);letter-spacing:-0.3px}
+.sec-url{font-size:11px;color:var(--muted);font-family:monospace;background:var(--code-bg);border:1px solid var(--code-border);border-radius:4px;padding:1px 7px;margin-left:auto;white-space:nowrap}
+
+.card{background:var(--card);border:1.5px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:12px}
+.card-title{font-size:13px;font-weight:800;color:var(--br);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;display:flex;align-items:center;gap:7px}
+
+/* ── STEPS ── */
+.steps{counter-reset:step;display:flex;flex-direction:column;gap:10px}
+.step{display:grid;grid-template-columns:28px 1fr;gap:0 12px;align-items:start}
+.step-n{counter-increment:step;width:28px;height:28px;background:var(--bd);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;margin-top:1px}
+.step-body{padding-top:3px}
+.step-body strong{color:var(--bd)}
+
+/* ── TAGS / BADGES ── */
+.tag{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;border-radius:4px;padding:2px 8px;white-space:nowrap}
+.tag-green{background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7}
+.tag-yellow{background:#fff8e1;color:#e65100;border:1px solid #ffe082}
+.tag-orange{background:#fff3e0;color:#bf360c;border:1px solid #ffcc80}
+.tag-red{background:#fce4ec;color:#c62828;border:1px solid #f48fb1}
+.tag-blue{background:#e3f2fd;color:#1565c0;border:1px solid #90caf9}
+.tag-brown{background:var(--kraft);color:var(--br);border:1px solid var(--border)}
+
+/* ── KEY → VALUE PAIRS ── */
+.kv-grid{display:grid;grid-template-columns:max-content 1fr;gap:5px 16px;font-size:13.5px}
+.kv-key{font-weight:700;color:var(--muted);white-space:nowrap;padding-top:1px}
+
+/* ── TIP BOX ── */
+.tip{background:#fff8e1;border:1.5px solid #f7ab31;border-radius:8px;padding:11px 15px;font-size:13px;color:#7a5200;margin:10px 0;display:flex;gap:9px;align-items:flex-start}
+.tip-icon{font-size:16px;flex-shrink:0;margin-top:-1px}
+.warn{background:#fce4ec;border:1.5px solid #da1668;border-radius:8px;padding:11px 15px;font-size:13px;color:#880e4f;margin:10px 0;display:flex;gap:9px;align-items:flex-start}
+
+/* ── INLINE UI ELEMENTS ── */
+.ui-btn{display:inline-block;font-size:11px;font-weight:700;border-radius:5px;padding:2px 9px;border:1.5px solid;white-space:nowrap}
+.ui-btn-brown{background:var(--bd);color:#fff;border-color:var(--bd)}
+.ui-btn-outline{background:var(--kraft);color:var(--br);border-color:var(--border)}
+.ui-btn-slu{background:#fff5f7;color:#da1668;border-color:#da1668}
+.ui-btn-slozeni{background:var(--kraft);color:var(--br);border-color:var(--border)}
+
+/* ── MARGIN TABLE ── */
+.marze-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+.marze-table th{background:var(--bd);color:#fff;padding:5px 10px;text-align:left;font-size:11px;letter-spacing:.5px}
+.marze-table td{padding:6px 10px;border-bottom:1px solid var(--border)}
+.marze-table tr:last-child td{border-bottom:none}
+
+/* ── EMAIL FLOW ── */
+.email-flow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.email-box{background:var(--card);border:1.5px solid var(--border);border-radius:8px;padding:13px 15px}
+.email-box-title{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px}
+.email-box ul{list-style:none;font-size:12.5px;display:flex;flex-direction:column;gap:3px}
+.email-box li::before{content:'✓ ';color:var(--leaf);font-weight:800}
+
+/* ── PROGRESS STEPS ── */
+.progress{display:flex;gap:0;margin:12px 0;border-radius:8px;overflow:hidden;border:1.5px solid var(--border)}
+.prog-step{flex:1;text-align:center;padding:8px 4px;background:var(--card);font-size:11px;font-weight:700;border-right:1px solid var(--border)}
+.prog-step:last-child{border-right:none}
+.prog-step.done{background:linear-gradient(135deg,var(--leaf),#4a7c2f);color:#fff}
+.prog-icon{display:block;font-size:16px;margin-bottom:2px}
+
+hr{border:none;border-top:1.5px solid var(--border);margin:28px 0}
+
+@media(max-width:600px){
+  .flow{flex-direction:column}
+  .flow-step:not(:last-child)::after{content:'↓';right:50%;top:auto;bottom:-12px;transform:translateX(50%)}
+  .flow-step:not(:last-child){border-right:none;border-bottom:1.5px solid var(--border)}
+  .toc-list{grid-template-columns:1fr}
+  .email-flow{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo-mark">🌰</div>
+    <div>
+      <div class="logo-text">Nutworld · Interní nástroje</div>
+      <div class="logo-title">Návod: Nabídky &amp; Zakázky</div>
+    </div>
+    <div class="header-badge">nutworldcz-collab.github.io</div>
+  </div>
+</header>
+
+<!-- TOC -->
+<nav class="toc">
+  <div class="toc-title">Obsah</div>
+  <ul class="toc-list">
+    <li><a href="#flow"><span class="toc-num">→</span> Celkový flow</a></li>
+    <li><a href="#nabidky"><span class="toc-num">1</span> Generátor nabídek</a></li>
+    <li><a href="#produkty"><span class="toc-num">2</span> Produkty, ceny, marže</a></li>
+    <li><a href="#darky"><span class="toc-num">3</span> Dárky &amp; složení</a></li>
+    <li><a href="#sluzby"><span class="toc-num">4</span> Služby (SLU)</a></li>
+    <li><a href="#zakazka"><span class="toc-num">5</span> Zakázka — potvrzení</a></li>
+    <li><a href="#prehled"><span class="toc-num">6</span> Přehled zakázek</a></li>
+    <li><a href="#vyroba"><span class="toc-num">7</span> Výrobní plán</a></li>
+    <li><a href="#emaily"><span class="toc-num">8</span> Emaily &amp; Trello</a></li>
+    <li><a href="#tipy"><span class="toc-num">★</span> Tipy a zkratky</a></li>
+  </ul>
+</nav>
+
+<!-- FLOW OVERVIEW -->
+<div class="flow" id="flow">
+  <div class="flow-step">
+    <span class="flow-icon">📄</span>
+    <div class="flow-label">Nabídka</div>
+    <div class="flow-sub">nabidky.html<br>vyplníš, vygeneruješ</div>
+  </div>
+  <div class="flow-step">
+    <span class="flow-icon">📬</span>
+    <div class="flow-label">Trello + Email</div>
+    <div class="flow-sub">karta + 2 emaily<br>firmě + tobě</div>
+  </div>
+  <div class="flow-step">
+    <span class="flow-icon">✅</span>
+    <div class="flow-label">Zakázka</div>
+    <div class="flow-sub">zakazka.html<br>klient potvrdí</div>
+  </div>
+  <div class="flow-step">
+    <span class="flow-icon">🏭</span>
+    <div class="flow-label">Výroba</div>
+    <div class="flow-sub">vyroba.html<br>co a pro koho</div>
+  </div>
+</div>
+
+<!-- 1. GENERÁTOR NABÍDEK -->
+<section class="sec" id="nabidky">
+  <div class="sec-header">
+    <div class="sec-num" style="background:var(--nabidky)">1</div>
+    <div class="sec-title">Generátor nabídek</div>
+    <span class="sec-url">nabidky.html</span>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🇨🇿 🇸🇰 Trh a měna</div>
+    <p>Vždy první věc — nastav trh. Přepínač vlevo nahoře:</p>
+    <div style="margin-top:10px" class="kv-grid">
+      <span class="kv-key">🇨🇿 CZ</span><span>Kč · DPH 12 % · česká legislativa</span>
+      <span class="kv-key">🇸🇰 SK</span><span>EUR · DPH 23 % · zobrazí se pole <strong>Kurz CZK/EUR</strong> (výchozí 25,00)</span>
+    </div>
+    <div class="tip" style="margin-top:12px"><span class="tip-icon">💡</span>Trh ovlivňuje výpočty marží, DPH v nabídce i ceny dárků při autocomplete.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">👤 Obchodní zástupce</div>
+    <div class="kv-grid">
+      <span class="kv-key">Jméno</span><span>Tvoje jméno — zobrazí se v nabídce jako kontaktní osoba Nutworld</span>
+      <span class="kv-key">Email</span><span>Tvůj @nutworld.cz email — klient na něj může odpovědět</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🏢 Klient — autocomplete z registru partnerů</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">1</div>
+        <div class="step-body">Začni psát <strong>název firmy</strong> — po 2 znacích se otevře dropdown s firmami z registru partnerů (<a href="https://nutworldcz-collab.github.io/partneri.html" style="color:var(--br)">partneri.html</a>).</div>
+      </div>
+      <div class="step">
+        <div class="step-n">2</div>
+        <div class="step-body">Vyber firmu ze seznamu (myší nebo <strong>↑↓ + Enter</strong>) → automaticky se vyplní <strong>IČO</strong> a <strong>Adresa</strong>.</div>
+      </div>
+      <div class="step">
+        <div class="step-n">3</div>
+        <div class="step-body">Doplň <strong>Kontaktní osobu</strong>, <strong>Telefon</strong> a <strong>Email klienta</strong> — tyto údaje jdou do Trello karty i do emailu firmě.</div>
+      </div>
+    </div>
+    <div class="tip"><span class="tip-icon">💡</span>Firma ještě není v registru? Vyplň ručně a přidej ji do <a href="https://nutworldcz-collab.github.io/partneri.html" style="color:var(--br)">partneri.html</a> → příště se naseptá.</div>
+  </div>
+</section>
+
+<!-- 2. PRODUKTY, CENY, MARŽE -->
+<section class="sec" id="produkty">
+  <div class="sec-header">
+    <div class="sec-num" style="background:var(--nabidky)">2</div>
+    <div class="sec-title">Produkty, ceny a marže</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">➕ Přidání produktu</div>
+    <p style="margin-bottom:10px">Klikni <span class="ui-btn ui-btn-outline">+ Přidat řádek</span> — každý řádek má:</p>
+    <div class="kv-grid">
+      <span class="kv-key">Kód</span><span>Napiš číslo produktu (101, 4700…) — naseptá kódy ze sortimentu i dárků 🎁</span>
+      <span class="kv-key">Název</span><span>Nebo piš název (mandle, kešu…) — autocomplete hledá ve všech produktech i dárcích</span>
+      <span class="kv-key">Ks</span><span>Počet kusů</span>
+      <span class="kv-key">Prodejní/ks</span><span><strong>Bez DPH.</strong> Co zaplatí klient za 1 kus. Tato cena jde do nabídky i Trella.</span>
+      <span class="kv-key">Nák./ks</span><span><strong>Bez DPH. Povinná!</strong> Nákupní/výrobní cena — vidíš jen ty. Blokuje odeslání pokud chybí.</span>
+      <span class="kv-key">Celkem</span><span>Automaticky = ks × prodejní/ks + barevná marže</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎨 Barevná marže — přehled na první pohled</div>
+    <table class="marze-table">
+      <thead><tr><th>Barva</th><th>Marže</th><th>Situace</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tag-green">🟢 zelená</span></td><td>≥ 25 %</td><td>V pořádku, zdravá nabídka</td></tr>
+        <tr><td><span class="tag tag-yellow">🟡 žlutá</span></td><td>15–25 %</td><td>Přijatelné, hlídej u větších objemů</td></tr>
+        <tr><td><span class="tag tag-orange">🟠 oranžová</span></td><td>0–15 %</td><td>Nízká marže — zvažuj</td></tr>
+        <tr><td><span class="tag tag-red">🔴 červená</span></td><td>pod 0 %</td><td>Prodáváš pod cenou! Systém varuje.</td></tr>
+      </tbody>
+    </table>
+    <div class="warn" style="margin-top:10px"><span class="tip-icon">⚠️</span>Pokud je nákupní cena vyšší než prodejní, systém tě upozorní a nezašle nabídku bez potvrzení.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🚚 Doprava</div>
+    <p>Pod tabulkou produktů. Zadej cenu <strong>bez DPH</strong> v Kč (nebo EUR pro SK) — zobrazí se automatický přepočet s DPH.</p>
+    <div class="tip"><span class="tip-icon">💡</span>Nechej prázdné pro osobní odběr nebo dopravu zdarma.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📋 Podmínky nabídky</div>
+    <div class="kv-grid">
+      <span class="kv-key">Splatnost</span><span>7 / 14 / 30 dní nebo Dle domluvy</span>
+      <span class="kv-key">Dodání</span><span>Dle domluvy / Do 3 dnů / Do 5 dnů / Osobní odběr</span>
+      <span class="kv-key">Trvanlivost</span><span>3 / 4 / 6 měsíců nebo Dle obalu</span>
+      <span class="kv-key">Poznámka</span><span>Volitelný text (ceny platí pro tento odběr, speciální podmínky…)</span>
+    </div>
+  </div>
+</section>
+
+<!-- 3. DÁRKY -->
+<section class="sec" id="darky">
+  <div class="sec-header">
+    <div class="sec-num" style="background:var(--amb)">3</div>
+    <div class="sec-title">Dárky &amp; automatické složení</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎁 Dárek v autocomplete</div>
+    <p style="margin-bottom:10px">Při psaní kódu nebo názvu se v dropdownu zobrazí i dárkové produkty — označeny ikonou <strong>🎁</strong>.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">1</div>
+        <div class="step-body">Napiš kód dárku (např. <strong>4700</strong>) nebo název (např. <strong>dárková krabička mandle</strong>).</div>
+      </div>
+      <div class="step">
+        <div class="step-n">2</div>
+        <div class="step-body">V dropdownu uvidíš dárky s <strong>🎁</strong> — v závorce typ obalu. Klikni nebo stiskni Enter.</div>
+      </div>
+      <div class="step">
+        <div class="step-n">3</div>
+        <div class="step-body">Systém automaticky vyplní:<br>
+          &nbsp;· <strong>Kód a název</strong> dárku<br>
+          &nbsp;· <strong>Prodejní cenu</strong> = VO cena bez DPH (uprav dle domluvy)<br>
+          &nbsp;· <strong>Složení</strong> — rozbalí panel s jednotlivými surovinami</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📦 Složení dárku — ruční správa</div>
+    <p style="margin-bottom:8px">Každý řádek produktu má tlačítko <span class="ui-btn ui-btn-slozeni">📦</span>. Kliknutím otevřeš panel složení.</p>
+    <div class="kv-grid">
+      <span class="kv-key">Kód/Název</span><span>Vyhledej složku (surovina) — autocomplete ze sortimentu</span>
+      <span class="kv-key">Gramáž</span><span>Kolik gramů jde do dárku (např. 100g, 180g)</span>
+      <span class="kv-key">Obal</span><span>Typ obalu složky (sáček, eko kelímek, sklenička…)</span>
+      <span class="kv-key">+ Přidat</span><span>Tlačítko pro další složku (vícedruhové dárky)</span>
+      <span class="kv-key">✕</span><span>Smazat řádek složení</span>
+    </div>
+    <div class="tip"><span class="tip-icon">💡</span>Složení se používá ve <strong>výrobním plánu</strong> — suroviny se agregují přes všechny zakázky.</div>
+  </div>
+</section>
+
+<!-- 4. SLUŽBY -->
+<section class="sec" id="sluzby">
+  <div class="sec-header">
+    <div class="sec-num" style="background:var(--acc)">4</div>
+    <div class="sec-title">Služby (SLU) — grafika, tisk, personalizace</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">⚙️ Co je Služba</div>
+    <p style="margin-bottom:10px">Někdy součástí zakázky není jen produkt, ale i služba — grafické zpracování loga, tisk štítků, personalizace. Tyto položky se <strong>nesmí počítat do výrobních kusů</strong>.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">1</div>
+        <div class="step-body">Přidej normální řádek, vyplň název služby (např. <em>Grafické zpracování loga</em>) a cenu.</div>
+      </div>
+      <div class="step">
+        <div class="step-n">2</div>
+        <div class="step-body">Klikni na tlačítko <span class="ui-btn ui-btn-slu">SLU</span> na pravé straně řádku — změní se na růžové a řádek se označí modře.</div>
+      </div>
+      <div class="step">
+        <div class="step-n">3</div>
+        <div class="step-body">Výsledek: v nabídce se zobrazí s odznakem <span class="tag tag-blue">⚙️ Služba</span> a <strong>nepočítá se do výrobního plánu</strong>.</div>
+      </div>
+    </div>
+    <div class="tip"><span class="tip-icon">💡</span>Nákupní cena u služby je volitelná, ale doporučená — abys viděl celkový zisk zakázky správně.</div>
+  </div>
+</section>
+
+<!-- ODESÍLÁNÍ / VÝSTUP -->
+<section class="sec" id="odesilani">
+  <div class="sec-header">
+    <div class="sec-num" style="background:var(--nabidky)">→</div>
+    <div class="sec-title">Odeslání nabídky — co se stane</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🖨 Generovat nabídku (PDF)</div>
+    <p>Tlačítko <span class="ui-btn ui-btn-brown">🖨 Generovat nabídku</span> otevře <strong>tisknutelné HTML</strong> s Nutworld brandem — standardní B2B nabídka. Vytiskni nebo ulož jako PDF (Ctrl+P → Uložit jako PDF).</p>
+    <div class="tip"><span class="tip-icon">💡</span>Nákupní ceny ani celkový zisk se v PDF nezobrazí — je bezpečné poslat klientovi.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📋 Odkaz zakázky → Trello + emaily</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">1</div>
+        <div class="step-body">Po vygenerování nabídky se objeví tlačítko <span class="ui-btn ui-btn-outline">📋 Zkopírovat odkaz zakázky</span>.</div>
+      </div>
+      <div class="step">
+        <div class="step-n">2</div>
+        <div class="step-body">Kliknutím zkopíruješ odkaz — obsahuje všechna data zakázky zakódovaná v URL. Pošli ho klientovi nebo vlož do Trella.</div>
+      </div>
+      <div class="step">
+        <div class="step-n">3</div>
+        <div class="step-body">Odkaz otevře stránku <strong>zakazka.html</strong> kde klient uvidí přehled a může potvrdit zakázku → automaticky se vytvoří Trello karta.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📧 Co se odešle automaticky</div>
+    <div class="email-flow">
+      <div class="email-box">
+        <div class="email-box-title" style="color:#0079bf">📬 Email firmě</div>
+        <ul>
+          <li>Přehled objednávky</li>
+          <li>Produkty s prodejními cenami</li>
+          <li>Doprava a podmínky</li>
+          <li>Kontaktní osoba Nutworld</li>
+        </ul>
+        <div style="margin-top:8px;font-size:11px;color:var(--muted)">→ na email klienta ze formuláře</div>
+      </div>
+      <div class="email-box">
+        <div class="email-box-title" style="color:var(--bd)">🔒 Email vlastníkovi</div>
+        <ul>
+          <li>Produkty s nákupními cenami</li>
+          <li>Marže na každém řádku</li>
+          <li>Celkový zisk zakázky</li>
+          <li>Odkaz do Trella</li>
+        </ul>
+        <div style="margin-top:8px;font-size:11px;color:var(--muted)">→ na nutworld.cz@gmail.com</div>
+      </div>
+    </div>
+    <div class="tip" style="margin-top:10px"><span class="tip-icon">💡</span>Kolegové a balírna vidí Trello kartu BEZ nákupních cen a součtů. Ty dostaneš kompletní přehled jen ty.</div>
+  </div>
+</section>
+
+<hr>
+
+<!-- 5. ZAKÁZKA -->
+<section class="sec" id="zakazka">
+  <div class="sec-header">
+    <div class="sec-num" style="background:var(--zakazky)">5</div>
+    <div class="sec-title">Zakázka — potvrzení klientem</div>
+    <span class="sec-url">zakazka.html</span>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📋 Co vidí klient</div>
+    <p>Klient otevře zakázkový odkaz (z emailu nebo zaslán ručně). Vidí:</p>
+    <ul style="margin:10px 0 0 18px;font-size:13.5px;display:flex;flex-direction:column;gap:4px">
+      <li>Přehled firmy a kontaktních údajů</li>
+      <li>Tabulku produktů s prodejními cenami <span class="tag tag-green">🟢 Produkt</span></li>
+      <li>Služby odlišené <span class="tag tag-blue">⚙️ Služba</span> — modré pozadí, bez výrobního počtu</li>
+      <li>Pole pro personalizaci (logo, vzkaz na přání)</li>
+      <li>Tlačítko <strong>Vytvořit zakázku</strong> → Trello karta</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔒 PIN pro vlastníka</div>
+    <p>Zákazka.html má skrytý PIN vstup (pro tebe jako vlastníka) — odemkne zobrazení nákupních cen přímo na stránce. PIN zadáš v soukromí bez toho, aby ho klient viděl.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📊 Co se vytvoří v Trellu</div>
+    <p>Po kliknutí klienta na <strong>Vytvořit zakázku</strong>:</p>
+    <ul style="margin:10px 0 0 18px;font-size:13.5px;display:flex;flex-direction:column;gap:4px">
+      <li>Trello karta v listu <strong>Nabídky</strong></li>
+      <li>Název karty: <em>Firma s.r.o. — seznam produktů</em></li>
+      <li>Popis: kontakt, telefon, email, produkty s prodejními cenami/ks</li>
+      <li>Checklist: každý produkt jako položka (s ks)</li>
+      <li>Příloha: odkaz na nabídku</li>
+      <li>Termín: pokud byl zadán</li>
+    </ul>
+    <div class="tip"><span class="tip-icon">💡</span>BEZ nákupních cen, BEZ celkového součtu — karta je bezpečná pro celý tým.</div>
+  </div>
+</section>
+
+<hr>
+
+<!-- 6. PŘEHLED ZAKÁZEK -->
+<section class="sec" id="prehled">
+  <div class="sec-header">
+    <div class="sec-num" style="background:#0079bf">6</div>
+    <div class="sec-title">Přehled zakázek</div>
+    <span class="sec-url">zakazy.html</span>
+  </div>
+
+  <div class="card">
+    <div class="card-title">👁 Co vidíš</div>
+    <p>Live Trello board "Firmy dárky + objednávky" — aktualizuje se každých <strong>60 sekund</strong> s odpočtem. Při prvním otevření načte z cache (okamžité), pak se synchronizuje.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎨 Barevné stavy — Trello sloupce</div>
+    <div class="kv-grid" style="font-size:13px">
+      <span class="kv-key"><span style="color:#1565c0;font-weight:700">● Nové zakázky</span></span><span>Klient potvrdil zakázku — čeká na zařazení do K2</span>
+      <span class="kv-key"><span style="color:#6a1b9a;font-weight:700">● K2</span></span><span>Zakázka zařazena do výrobního systému K2</span>
+      <span class="kv-key"><span style="color:#e65100;font-weight:700">● Balírna</span></span><span>Produkt se aktuálně balí v balírně</span>
+      <span class="kv-key"><span style="color:#b8860b;font-weight:700">● Dárkovna</span></span><span>Zabalené produkty se kompletují do dárků</span>
+      <span class="kv-key"><span style="color:var(--leaf);font-weight:700">● Hotovo</span></span><span>Zakázka zkompletována, připravena k expedici</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔍 Filtrování a řazení</div>
+    <div class="kv-grid">
+      <span class="kv-key">Filtr stavu</span><span>Zobraz jen Nabídky / jen Výroba atd.</span>
+      <span class="kv-key">Vyhledávání</span><span>Hledej podle názvu firmy nebo produktu</span>
+      <span class="kv-key">Řazení</span><span>Nejnovější / Termín / Firma / Hodnota</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📞 Akce na kartě</div>
+    <ul style="margin:8px 0 0 18px;font-size:13.5px;display:flex;flex-direction:column;gap:3px">
+      <li>📞 Telefon — otevře volání (důležité na mobilu)</li>
+      <li>📧 Email — otevře mailového klienta</li>
+      <li>🃏 Odkaz na Trello kartu — otevře Trello</li>
+      <li>📋 Odkaz na zakázku — znovu otevře zakázku klienta</li>
+    </ul>
+  </div>
+</section>
+
+<hr>
+
+<!-- 7. VÝROBNÍ PLÁN -->
+<section class="sec" id="vyroba">
+  <div class="sec-header">
+    <div class="sec-num" style="background:var(--vyroba)">7</div>
+    <div class="sec-title">Výrobní plán</div>
+    <span class="sec-url">vyroba.html</span>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🏭 Jak výrobní plán funguje</div>
+    <p style="margin-bottom:10px">Automaticky agreguje <strong>složení dárků</strong> ze všech aktivních zakázek (listy Potvrzená, Výroba, Hotovo) a zobrazí co je potřeba vyrobit.</p>
+    <p>Hierarchie zobrazení:</p>
+    <div style="margin:10px 0;font-size:13px;font-family:monospace;background:var(--code-bg);border:1.5px solid var(--code-border);border-radius:8px;padding:12px 16px;line-height:2">
+      🌰 <strong>Surovina</strong> (např. Mandle uzené)<br>
+      &nbsp;&nbsp;└─ 📦 <strong>Gramáž + obal</strong> (100g / eko kelímek)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ 🏢 <strong>Firma</strong> + ks + termín + checkbox + poznámka
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📅 Termíny</div>
+    <div class="kv-grid" style="margin-top:4px">
+      <span class="kv-key"><span style="color:var(--leaf);font-weight:800">📅 zelený</span></span><span>Více než 7 dní — klid</span>
+      <span class="kv-key"><span style="color:#e65100;font-weight:800">📅 žlutý</span></span><span>Méně než 7 dní — pozor</span>
+      <span class="kv-key"><span style="color:#c62828;font-weight:800">⚠️ červený</span></span><span>Po termínu — urgentní!</span>
+    </div>
+    <p style="margin-top:8px;font-size:13px;color:var(--muted)">Firmy jsou seřazeny od nejbližšího termínu.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">☑️ Checkboxy — průběh výroby</div>
+    <p>Každá firma má checkbox — zaškrtni když je konkrétní surovina pro tuto firmu hotová. Stav se uloží v prohlížeči (localStorage) a přežije refresh stránky.</p>
+    <div class="tip"><span class="tip-icon">💡</span>Checkboxy jsou lokální — každý na svém zařízení vidí svůj stav. Není to sdílené přes Trello.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📝 Poznámky per firma</div>
+    <p>Každá firma má tlačítko <strong>📝</strong> — otevře textové pole pro poznámky (speciální požadavky, logo zaslat emailem, jiný kontakt pro vyzvednutí…).</p>
+    <div class="kv-grid" style="margin-top:8px">
+      <span class="kv-key">Uložení</span><span>Automatické při psaní (localStorage)</span>
+      <span class="kv-key">Sdílení</span><span>Stejné poznámky vidíš v záložce <strong>Firmy</strong> i ve <strong>Výrobě</strong></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">👁 Přepínání pohledů — Výroba vs. Firmy</div>
+    <div class="kv-grid">
+      <span class="kv-key">Výroba</span><span>Pohled podle suroviny — co musím nakoupit/vyrobit a pro koho</span>
+      <span class="kv-key">Firmy</span><span>Pohled podle firmy — co dostane která firma (celý seznam dárků na firmě)</span>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- 8. EMAILY A TRELLO -->
+<section class="sec" id="emaily">
+  <div class="sec-header">
+    <div class="sec-num" style="background:#0079bf">8</div>
+    <div class="sec-title">Automatické emaily — přesun karet v Trellu</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📬 Jak funguje automatický email firmě</div>
+    <p style="margin-bottom:12px">Každých <strong>5 minut</strong> běží skript <code style="font-size:12px;background:var(--code-bg);border:1px solid var(--code-border);padding:1px 6px;border-radius:3px">trello_zakazy_watch.py</code>, který sleduje pohyby karet v Trellu. Když přesuneš kartu do jiného listu, firma dostane automatický email.</p>
+    <div class="progress">
+      <div class="prog-step done"><span class="prog-icon">✅</span>Přijato</div>
+      <div class="prog-step done"><span class="prog-icon">⚙️</span>Výroba</div>
+      <div class="prog-step done"><span class="prog-icon">🏭</span>Balírna</div>
+      <div class="prog-step done"><span class="prog-icon">🎁</span>Dárkovna</div>
+      <div class="prog-step done"><span class="prog-icon">🚚</span>Expedice</div>
+    </div>
+    <div class="kv-grid" style="margin-top:12px;font-size:13px">
+      <span class="kv-key">Nové zakázky</span><span>„Zakázka byla přijata — brzy se do ní s chutí pustíme." + info o dalších krocích</span>
+      <span class="kv-key">K2</span><span>„Zakázka vstoupila do výrobního systému — tým ji má v plánu."</span>
+      <span class="kv-key">Balírna</span><span>„Vaše zakázka je aktuálně ve výrobě — kolegové v balírně balí Vaše produkty."</span>
+      <span class="kv-key">Dárkovna</span><span>„Blížíme se do cíle — produkty se kompletují do finálního balení."</span>
+      <span class="kv-key">Hotovo</span><span>„Máme hotovo! 🎉 Zakázka je připravena k expedici."</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">⏱ Časování emailů</div>
+    <p>Email odejde do <strong>5 minut</strong> od přesunu karty. Skript kontroluje Trello každých 5 minut, porovnává s posledním stavem a posílá emaily pouze pro <em>nové</em> přesuny.</p>
+    <div class="warn"><span class="tip-icon">⚠️</span>Přesunuješ-li kartu rychle přes více listů najednou, email odejde jen za finální přesun (ten, který skript zachytí).</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📧 Odkud se posílají emaily</div>
+    <div class="kv-grid">
+      <span class="kv-key">Odesílatel</span><span>claudie.nutworld.cz@gmail.com (Gmail SMTP)</span>
+      <span class="kv-key">Příjemce</span><span>Email klienta z Trello karty</span>
+      <span class="kv-key">Styl</span><span>Branded HTML email v Nutworld barvách</span>
+      <span class="kv-key">Log</span><span><code style="font-size:11px">~/Library/Logs/nutworld-trello-zakazy.log</code></span>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- TIPY A ZKRATKY -->
+<section class="sec" id="tipy">
+  <div class="sec-header">
+    <div class="sec-num" style="background:var(--bd)">★</div>
+    <div class="sec-title">Tipy a zkratky</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">⌨️ Klávesové zkratky</div>
+    <div class="kv-grid">
+      <span class="kv-key">↑ ↓</span><span>Pohyb v dropdownu autocomplete</span>
+      <span class="kv-key">Enter</span><span>Vybrat zvýrazněnou položku z dropdownu</span>
+      <span class="kv-key">Escape</span><span>Zavřít dropdown</span>
+      <span class="kv-key">Tab</span><span>Vybrat a přejít na další pole</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">✏️ Editace existující nabídky</div>
+    <p>Nabídka je uložená v URL jako hash (zakódovaná data). Pokud chceš nabídku upravit:</p>
+    <div class="steps" style="margin-top:10px">
+      <div class="step">
+        <div class="step-n">1</div>
+        <div class="step-body">Otevři <strong>nabidky.html</strong> — klikni na <em>Načíst nabídku z odkazu</em>.</div>
+      </div>
+      <div class="step">
+        <div class="step-n">2</div>
+        <div class="step-body">Vlož URL zakázky (ze zprávy nebo Trella) a klikni <strong>Načíst</strong>.</div>
+      </div>
+      <div class="step">
+        <div class="step-n">3</div>
+        <div class="step-body">Formulář se předvyplní — uprav co potřebuješ a vygeneruj nový odkaz nebo PDF.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">💡 Nejčastější chyby a řešení</div>
+    <div class="kv-grid" style="font-size:13px">
+      <span class="kv-key">Nelze odeslat do Trella</span><span>Chybí nákupní cena alespoň u jednoho produktu — doplň nebo zapiš 0</span>
+      <span class="kv-key">Email firmě nepřišel</span><span>Zkontroluj email klienta v formuláři zakázky. Log: <code style="font-size:11px">~/Library/Logs/nutworld-trello-zakazy.log</code></span>
+      <span class="kv-key">Dárek nemá cenu v autocomplete</span><span>VO cena v darky.csv = 0 — nastav cenu ručně</span>
+      <span class="kv-key">Firma v autocomplete chybí</span><span>Přidej ji v <a href="https://nutworldcz-collab.github.io/partneri.html" style="color:var(--br)">partneri.html</a></span>
+      <span class="kv-key">Složení ve výrobě chybí</span><span>Zkontroluj zda je u produktu vyplněno složení (tlačítko 📦 v zakázce)</span>
+      <span class="kv-key">Výroba se neaktualizuje</span><span>Klikni ⟳ Refresh nebo počkej na auto-refresh (5 minut)</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔗 Rychlé odkazy</div>
+    <div class="kv-grid" style="font-size:13px">
+      <span class="kv-key"><a href="https://nutworldcz-collab.github.io/nabidky.html" style="color:var(--br)">nabidky.html</a></span><span>Generátor nabídek</span>
+      <span class="kv-key"><a href="https://nutworldcz-collab.github.io/zakazy.html" style="color:var(--br)">zakazy.html</a></span><span>Přehled všech zakázek</span>
+      <span class="kv-key"><a href="https://nutworldcz-collab.github.io/vyroba.html" style="color:var(--br)">vyroba.html</a></span><span>Výrobní plán</span>
+      <span class="kv-key"><a href="https://nutworldcz-collab.github.io/partneri.html" style="color:var(--br)">partneri.html</a></span><span>Registr partnerů (autocomplete)</span>
+      <span class="kv-key"><a href="https://trello.com/b/637f702c5e323c01d42feeac" style="color:var(--br)">Trello board</a></span><span>Firmy dárky + objednávky</span>
+    </div>
+  </div>
+</section>
+
+<div style="text-align:center;font-size:11px;color:var(--muted);padding-top:20px;border-top:1.5px solid var(--border);margin-top:20px">
+  Nutworld s.r.o. · Interní dokumentace · nutworldcz-collab.github.io · Aktualizováno 2026-08
+</div>
+
+</div>
+</body>
+</html>
