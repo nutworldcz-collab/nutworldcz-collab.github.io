@@ -63,7 +63,7 @@ tr:hover td{background:#f1e6da}
 <div class="topbar">
   <span class="topbar-title">🐿 Nutworld · Přehled marží</span>
   <a class="topbar-back" href="/">← Zpět na rozcestník</a>
-  <span class="topbar-sub">Aktualizováno: 20.08.2026 15:10</span>
+  <span class="topbar-sub">Aktualizováno: 20.08.2026 15:54</span>
 </div>
 <div class="tabs">
   <div class="tab active" onclick="showTab('darky')">🎁 Dárky (359)</div>
@@ -107,10 +107,11 @@ tr:hover td{background:#f1e6da}
       <th onclick="sortTable('d-table',1)">Název ↕</th>
       <th onclick="sortTable('d-table',2)">Typ obalu ↕</th>
       <th class="right" onclick="sortTable('d-table',3)">Náklady bez DPH ↕</th>
-      <th class="right" onclick="sortTable('d-table',4)">MO s DPH ↕</th>
-      <th class="right" onclick="sortTable('d-table',5)">VO s DPH ↕</th>
-      <th class="center" onclick="sortTable('d-table',6)">Marže MO ↕</th>
-      <th class="center" onclick="sortTable('d-table',7)">Marže VO ↕</th>
+      <th class="right" onclick="sortTable('d-table',4)">Eshop MO ↕</th>
+      <th class="right" onclick="sortTable('d-table',5)">Vzorec MO ↕</th>
+      <th class="right" onclick="sortTable('d-table',6)">VO s DPH ↕</th>
+      <th class="center" onclick="sortTable('d-table',7)">Marže MO ↕</th>
+      <th class="center" onclick="sortTable('d-table',8)">Marže VO ↕</th>
     </tr></thead>
     <tbody id="d-tbody"></tbody>
   </table>
@@ -184,23 +185,20 @@ function renderDarky(data) {
     const fmo = d.mo, fm = d.marze_mo;
     const emo = d.eshop_mo, em = d.eshop_marze_mo;
     let moCell, marzeCell;
+    let eshopCell, vzorzecCell;
     if (emo) {
       const hasDiff = Math.abs(emo - fmo) > 2;
-      const warn = hasDiff ? ' style="background:#fffde7"' : '';
-      const priceColor = hasDiff ? '#c62828' : '#1a0a00';
-      moCell = `<td class="right"${warn}>
-        <span style="font-family:'Exo 2',sans-serif;font-size:15px;font-weight:800;color:${priceColor};display:block">${emo.toFixed(0)} Kč</span>
-        <span style="font-size:10px;color:#aaa">vzorec: ${fmo} Kč</span>
-      </td>`;
-      marzeCell = `<td class="center"${warn}>
+      const bg = hasDiff ? ' style="background:#fffde7"' : '';
+      const col = hasDiff ? '#c62828' : '#1a0a00';
+      eshopCell = `<td class="right"${bg}><strong style="font-family:'Exo 2',sans-serif;font-size:14px;color:${col}">${emo.toFixed(0)} Kč</strong></td>`;
+      vzorzecCell = `<td class="right"${bg}><span style="color:${hasDiff ? '#c62828' : '#aaa'}">${fmo.toFixed(0)} Kč</span></td>`;
+      marzeCell = `<td class="center"${bg}>
         <span ${mcSm(em)}>${em.toFixed(1)} %</span>
         <span ${mcSmFormula(fm)}>${fm.toFixed(1)} %</span>
       </td>`;
     } else {
-      moCell = `<td class="right">
-        <span style="font-family:'Exo 2',sans-serif;font-size:12px;font-weight:400;color:#bbb;display:block">⚠️ —</span>
-        <span style="font-size:10px;color:#aaa">vzorec: ${fmo} Kč</span>
-      </td>`;
+      eshopCell = `<td class="right" style="color:#bbb">⚠️ —</td>`;
+      vzorzecCell = `<td class="right"><strong>${fmo.toFixed(0)} Kč</strong></td>`;
       marzeCell = `<td class="center" ${mc(fm)}>${fm.toFixed(1)} %</td>`;
     }
     return `<tr>
@@ -208,7 +206,8 @@ function renderDarky(data) {
       <td>${d.nazev}</td>
       <td style="font-size:11px;color:#888">${d.obal}</td>
       <td class="right">${d.nakup.toFixed(1)} Kč</td>
-      ${moCell}
+      ${eshopCell}
+      ${vzorzecCell}
       <td class="right">${d.vo} Kč</td>
       ${marzeCell}
       <td class="center" ${mc(d.marze_vo)}>${d.marze_vo.toFixed(1)} %</td>
@@ -297,7 +296,7 @@ function sortTable(tblId, col) {
   sortDir[key] = !sortDir[key];
   const asc = sortDir[key];
   if (tblId === 'd-table') {
-    const keys = ['kod','nazev','obal','nakup','mo','vo','marze_mo','marze_vo'];
+    const keys = ['kod','nazev','obal','nakup','eshop_mo','mo','vo','marze_mo','marze_vo'];
     const sorted = [...DARKY].sort((a,b) => {
       const va = a[keys[col]], vb = b[keys[col]];
       return asc ? (va > vb ? 1 : -1) : (va < vb ? 1 : -1);
