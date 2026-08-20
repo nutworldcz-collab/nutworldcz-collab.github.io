@@ -45,6 +45,7 @@ tr:hover td{background:#f1e6da}
 /* Dual-price cell */
 .price-cell{text-align:center;min-width:68px;padding:4px 6px}
 .price-eshop{font-family:'Exo 2',sans-serif;font-size:15px;font-weight:800;color:#1a0a00;display:block;line-height:1.2}
+.price-eshop.differs{color:#c62828}
 .price-formula{font-size:10px;color:#aaa;display:block;line-height:1.3}
 .marze-cell{text-align:center;min-width:42px;padding:4px 4px}
 .marze-eshop{font-size:12px;font-weight:700;display:block;line-height:1.2}
@@ -62,7 +63,7 @@ tr:hover td{background:#f1e6da}
 <div class="topbar">
   <span class="topbar-title">🐿 Nutworld · Přehled marží</span>
   <a class="topbar-back" href="/">← Zpět na rozcestník</a>
-  <span class="topbar-sub">Aktualizováno: 20.08.2026 15:05</span>
+  <span class="topbar-sub">Aktualizováno: 20.08.2026 15:10</span>
 </div>
 <div class="tabs">
   <div class="tab active" onclick="showTab('darky')">🎁 Dárky (359)</div>
@@ -75,8 +76,8 @@ tr:hover td{background:#f1e6da}
     <strong style="color:#5c381f;font-family:'Exo 2',sans-serif">Legenda:</strong>
     <span class="legend-item"><strong style="font-size:14px">115 Kč</strong> = skutečná cena na e-shopu</span>
     <span class="legend-item"><span style="color:#aaa;font-size:11px">vzorec: 119 Kč</span> = výpočtová cena</span>
-    <span class="legend-item"><div class="legend-box" style="background:#fffde7;border:1px solid #f7ab31"></div> žlutá = rozdíl &gt;2 Kč</span>
-    <span class="legend-item"><span style="color:#bbb">⚠️</span> = cena v e-shopu nenalezena</span>
+    <span class="legend-item"><span style="color:#c62828;font-weight:700">červená</span> + <div class="legend-box" style="background:#fffde7;border:1px solid #f7ab31;display:inline-block"></div> žlutá = liší se o &gt;2 Kč</span>
+    <span class="legend-item"><span style="color:#bbb">⚠️ —</span> = varianta nenalezena v e-shopu</span>
   </div>
   <div class="controls">
     <input class="search" id="d-search" placeholder="Hledat název nebo kód…" oninput="filterDarky()"/>
@@ -105,7 +106,7 @@ tr:hover td{background:#f1e6da}
       <th onclick="sortTable('d-table',0)">Kód ↕</th>
       <th onclick="sortTable('d-table',1)">Název ↕</th>
       <th onclick="sortTable('d-table',2)">Typ obalu ↕</th>
-      <th class="right" onclick="sortTable('d-table',3)">Náklady ↕</th>
+      <th class="right" onclick="sortTable('d-table',3)">Náklady bez DPH ↕</th>
       <th class="right" onclick="sortTable('d-table',4)">MO s DPH ↕</th>
       <th class="right" onclick="sortTable('d-table',5)">VO s DPH ↕</th>
       <th class="center" onclick="sortTable('d-table',6)">Marže MO ↕</th>
@@ -121,8 +122,8 @@ tr:hover td{background:#f1e6da}
     <strong style="color:#5c381f;font-family:'Exo 2',sans-serif">Legenda:</strong>
     <span class="legend-item"><strong style="font-size:14px">115 Kč</strong> = skutečná cena na e-shopu</span>
     <span class="legend-item"><span style="color:#aaa;font-size:11px">vzorec: 119 Kč</span> = výpočtová cena</span>
-    <span class="legend-item"><div class="legend-box" style="background:#fffde7;border:1px solid #f7ab31"></div> žlutá buňka = rozdíl &gt;2 Kč</span>
-    <span class="legend-item"><span style="color:#bbb">⚠️</span> = cena v e-shopu nenalezena</span>
+    <span class="legend-item"><span style="color:#c62828;font-weight:700">červená</span> + <div class="legend-box" style="background:#fffde7;border:1px solid #f7ab31;display:inline-block"></div> žlutá = eshop cena se liší od vzorce o &gt;2 Kč</span>
+    <span class="legend-item"><span style="color:#bbb">⚠️ —</span> = varianta nenalezena v e-shopu</span>
     <span class="legend-item"><span class="m-high">▶ 50%+</span> <span class="m-mid">▶ 35–50%</span> <span class="m-low">▶ &lt;35%</span> = marže</span>
   </div>
   <div class="controls">
@@ -144,12 +145,12 @@ tr:hover td{background:#f1e6da}
     </tr>
     <tr style="background:#4a2a10">
       <th></th><th></th><th></th>
-      <th class="center" style="font-size:10px">Cena</th><th class="center" style="font-size:10px">Marže</th>
-      <th class="center" style="font-size:10px">Cena</th><th class="center" style="font-size:10px">Marže</th>
-      <th class="center" style="font-size:10px">Cena</th><th class="center" style="font-size:10px">Marže</th>
-      <th class="center" style="font-size:10px">Cena</th><th class="center" style="font-size:10px">Marže</th>
-      <th class="center" style="font-size:10px">Cena</th><th class="center" style="font-size:10px">Marže</th>
-      <th class="center" style="font-size:10px">Cena</th><th class="center" style="font-size:10px">Marže</th>
+      <th class="center" style="font-size:10px">MO s DPH</th><th class="center" style="font-size:10px">Marže</th>
+      <th class="center" style="font-size:10px">MO s DPH</th><th class="center" style="font-size:10px">Marže</th>
+      <th class="center" style="font-size:10px">MO s DPH</th><th class="center" style="font-size:10px">Marže</th>
+      <th class="center" style="font-size:10px">MO s DPH</th><th class="center" style="font-size:10px">Marže</th>
+      <th class="center" style="font-size:10px">MO s DPH</th><th class="center" style="font-size:10px">Marže</th>
+      <th class="center" style="font-size:10px">MO s DPH</th><th class="center" style="font-size:10px">Marže</th>
     </tr></thead>
     <tbody id="s-tbody"></tbody>
   </table>
@@ -184,10 +185,11 @@ function renderDarky(data) {
     const emo = d.eshop_mo, em = d.eshop_marze_mo;
     let moCell, marzeCell;
     if (emo) {
-      const warn = Math.abs(emo - fmo) > 2 ? ' style="background:#fffde7"' : '';
-      const diff = Math.abs(emo - fmo) > 2 ? ' ⚠️' : '';
+      const hasDiff = Math.abs(emo - fmo) > 2;
+      const warn = hasDiff ? ' style="background:#fffde7"' : '';
+      const priceColor = hasDiff ? '#c62828' : '#1a0a00';
       moCell = `<td class="right"${warn}>
-        <span style="font-family:'Exo 2',sans-serif;font-size:15px;font-weight:800;display:block">${emo.toFixed(0)} Kč${diff}</span>
+        <span style="font-family:'Exo 2',sans-serif;font-size:15px;font-weight:800;color:${priceColor};display:block">${emo.toFixed(0)} Kč</span>
         <span style="font-size:10px;color:#aaa">vzorec: ${fmo} Kč</span>
       </td>`;
       marzeCell = `<td class="center"${warn}>
@@ -196,7 +198,7 @@ function renderDarky(data) {
       </td>`;
     } else {
       moCell = `<td class="right">
-        <span style="font-family:'Exo 2',sans-serif;font-size:13px;font-weight:800;color:#bbb;display:block">⚠️ —</span>
+        <span style="font-family:'Exo 2',sans-serif;font-size:12px;font-weight:400;color:#bbb;display:block">⚠️ —</span>
         <span style="font-size:10px;color:#aaa">vzorec: ${fmo} Kč</span>
       </td>`;
       marzeCell = `<td class="center" ${mc(fm)}>${fm.toFixed(1)} %</td>`;
@@ -244,10 +246,11 @@ function renderSacky(data) {
       if (ep) {
         const emo = ep.mo;
         const em = ep.marze_mo;
-        const warn = Math.abs(emo - fmo) > 2 ? ' cell-warn' : '';
-        const diff = Math.abs(emo - fmo) > 2 ? ' ⚠️' : '';
+        const hasDiff = Math.abs(emo - fmo) > 2;
+        const warn = hasDiff ? ' cell-warn' : '';
+        const priceClass = hasDiff ? 'price-eshop differs' : 'price-eshop';
         return `<td class="price-cell${warn}">
-          <span class="price-eshop">${emo.toFixed(0)} Kč${diff}</span>
+          <span class="${priceClass}">${emo.toFixed(0)} Kč</span>
           <span class="price-formula">vzorec: ${fmo} Kč</span>
         </td>
         <td class="marze-cell${warn}">
@@ -256,7 +259,7 @@ function renderSacky(data) {
         </td>`;
       } else {
         return `<td class="price-cell no-eshop">
-          <span class="price-eshop">⚠️ —</span>
+          <span class="price-eshop" style="color:#bbb;font-size:12px;font-weight:400">⚠️ —</span>
           <span class="price-formula">vzorec: ${fmo} Kč</span>
         </td>
         <td class="marze-cell">
