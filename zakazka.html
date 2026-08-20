@@ -459,7 +459,17 @@ function renderSummary(d) {
     d.produkty.forEach((p, i) => {
       if (p.sluzba) return;
       if (!document.getElementById('popis-row-sp-'+i)) {
-        togglePopisProd(i, (p.slozeni && p.slozeni.length) ? p.slozeni : null);
+        let prefill = (p.slozeni && p.slozeni.length) ? p.slozeni : null;
+        if (!prefill && typeof DARKY_DATA !== 'undefined' && DARKY_DATA[p.kod]) {
+          const dk = DARKY_DATA[p.kod];
+          prefill = (dk.obsah || []).map(o => ({
+            kod: o.kod,
+            nazev: (PRODUKTY.find(pr => pr.kod === o.kod) || {}).nazev || '',
+            gram: o.gram,
+            obal: dk.obal || '',
+          }));
+        }
+        togglePopisProd(i, prefill);
       }
     });
   }, 0);
@@ -875,6 +885,7 @@ function showError(msg) {
 }
 function hideError() { document.getElementById('link-error').style.display = 'none'; }
 </script>
+<script src="darky-data.js"></script>
 <script src="pin-guard.js"></script>
 </body>
 </html>
