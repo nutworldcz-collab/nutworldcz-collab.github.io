@@ -223,9 +223,10 @@ function filterDarky() {
   const filtered = DARKY.filter(d => {
     if (q && !d.nazev.toLowerCase().includes(q) && !d.kod.toLowerCase().includes(q)) return false;
     if (ob && !d.obal.toLowerCase().includes(ob)) return false;
-    if (mf === 'high' && d.marze_mo < 50) return false;
-    if (mf === 'mid' && (d.marze_mo < 35 || d.marze_mo >= 50)) return false;
-    if (mf === 'low' && d.marze_mo >= 35) return false;
+    const m = d.eshop_marze_mo !== undefined ? d.eshop_marze_mo : d.marze_mo;
+    if (mf === 'high' && m < 50) return false;
+    if (mf === 'mid' && (m < 35 || m >= 50)) return false;
+    if (mf === 'low' && m >= 35) return false;
     return true;
   });
   renderDarky(filtered);
