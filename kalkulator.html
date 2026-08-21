@@ -141,6 +141,12 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
         </div>
       </div>
 
+      <div class="field" style="margin-top:2px">
+        <label>Obal + práce (Kč bez DPH, volitelně)</label>
+        <input type="number" id="p-obal-prace" placeholder="0" min="0" step="0.5" oninput="pCalculate()"/>
+        <div class="hint">Přičte se k NC produktu → celkový náklad a správná marže</div>
+      </div>
+
       <button class="rollup-toggle" id="p-rollup-btn" onclick="pToggleRollup()">
         ➕ Roll-up — míchání více produktů
       </button>
@@ -183,9 +189,9 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
             <div class="result-sub" id="p-r-marze-czk">—</div>
           </div>
           <div class="result-box">
-            <div class="result-label">Nákupní cena / ks</div>
+            <div class="result-label">Celkový náklad / ks</div>
             <div class="result-value" id="p-r-nakup">—</div>
-            <div class="result-sub">bez DPH</div>
+            <div class="result-sub" id="p-r-nakup-sub">bez DPH</div>
           </div>
         </div>
         <div class="result-total" id="p-result-total" style="display:none">
@@ -337,9 +343,9 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
             <div class="result-sub" id="dr-zisk">—</div>
           </div>
           <div class="result-box">
-            <div class="result-label">Zisk / ks</div>
+            <div class="result-label">Celkový náklad</div>
             <div class="result-value" id="dr-zisk-czk">—</div>
-            <div class="result-sub">MO − náklady</div>
+            <div class="result-sub" id="dr-zisk-sub">—</div>
           </div>
         </div>
       </div>
@@ -623,17 +629,23 @@ function pCalculate() {
 }
 
 function pShow(g, kc, pocet) {
+  const obalPrace = parseFloat(document.getElementById('p-obal-prace').value) || 0;
   const mo = moCZ(g, kc);
   const vo = voCZ(g, kc, mo);
   const nakup = nakupCena(g, kc);
+  const celkNakl = nakup + obalPrace;
   if (!mo) return;
-  const zisk = mo - nakup;
-  const marze = Math.round((zisk / mo) * 100);
+  const moBez = mo / 1.12;
+  const zisk = moBez - celkNakl;
+  const marze = Math.round((zisk / moBez) * 100);
   document.getElementById('p-empty-state').style.display = 'none';
   document.getElementById('p-result-content').style.display = 'block';
   document.getElementById('p-r-mo').textContent = mo + ' Kč';
   document.getElementById('p-r-vo').textContent = vo + ' Kč';
-  document.getElementById('p-r-nakup').textContent = Math.round(nakup) + ' Kč';
+  document.getElementById('p-r-nakup').textContent = Math.round(celkNakl) + ' Kč';
+  document.getElementById('p-r-nakup-sub').textContent = obalPrace > 0
+    ? 'produkt ' + Math.round(nakup) + ' + obal ' + obalPrace + ' Kč'
+    : 'jen produkt (bez obalu)';
   document.getElementById('p-r-marze').textContent = marze + ' %';
   document.getElementById('p-r-marze-czk').textContent = 'zisk ' + Math.round(zisk) + ' Kč / ks';
   document.getElementById('p-r-nakup-kg').textContent = kc.toLocaleString('cs') + ' Kč';
@@ -851,8 +863,9 @@ function dCalculate() {
   document.getElementById('dr-vo-bez').textContent = 'bez DPH: ' + voExVat + ' Kč';
   document.getElementById('dr-marze').textContent = realMarze + ' %';
   document.getElementById('dr-marze').style.color = realMarze >= 45 ? '#2e7d32' : realMarze >= 35 ? '#f57c00' : '#c62828';
-  document.getElementById('dr-zisk').textContent = 'zisk ' + zisk.toFixed(0) + ' Kč/ks bez DPH';
-  document.getElementById('dr-zisk-czk').textContent = zisk.toFixed(0) + ' Kč';
+  document.getElementById('dr-zisk').textContent = 'zisk ' + zisk.toFixed(0) + ' Kč / ks';
+  document.getElementById('dr-zisk-czk').textContent = naklady.toFixed(0) + ' Kč';
+  document.getElementById('dr-zisk-sub').textContent = 'zisk: ' + zisk.toFixed(0) + ' Kč / ks';
   document.getElementById('dr-gram-label').textContent = totalG > 0 ? totalG + ' g obsahu' : '';
   document.getElementById('dr-vo-label').textContent = 'MO × ' + voFakt;
 }
