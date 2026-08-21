@@ -170,12 +170,12 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
           <div class="result-box highlight">
             <div class="result-label">MO cena / ks</div>
             <div class="result-value" id="p-r-mo">—</div>
-            <div class="result-sub">maloobchod s DPH 12&nbsp;%</div>
+            <div class="result-sub">s DPH 12 % | bez DPH: <span id="p-r-mo-bez" style="font-weight:700">—</span> Kč</div>
           </div>
           <div class="result-box">
             <div class="result-label">VO cena / ks</div>
             <div class="result-value" id="p-r-vo">—</div>
-            <div class="result-sub">velkoobchod</div>
+            <div class="result-sub">s DPH | bez DPH: <span id="p-r-vo-bez" style="font-weight:700">—</span> Kč</div>
           </div>
           <div class="result-box green">
             <div class="result-label">Marže</div>
@@ -322,11 +322,13 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
           <div class="result-box highlight">
             <div class="result-label">MO cena</div>
             <div class="result-value" id="dr-mo">—</div>
+            <div class="result-sub" id="dr-mo-bez" style="opacity:.85">—</div>
             <div class="result-sub" id="dr-gram-label">—</div>
           </div>
           <div class="result-box">
             <div class="result-label">VO cena</div>
             <div class="result-value" id="dr-vo">—</div>
+            <div class="result-sub" id="dr-vo-bez">—</div>
             <div class="result-sub" id="dr-vo-label">—</div>
           </div>
           <div class="result-box green">
@@ -637,6 +639,8 @@ function pShow(g, kc, pocet) {
   document.getElementById('p-r-nakup-kg').textContent = kc.toLocaleString('cs') + ' Kč';
   document.getElementById('p-r-nakup-ks').textContent = nakup.toFixed(2).replace('.', ',') + ' Kč';
   document.getElementById('p-r-marze').style.color = marze >= 45 ? '#2e7d32' : marze >= 35 ? '#f57c00' : '#c62828';
+  document.getElementById('p-r-mo-bez').textContent = Math.round(mo / 1.12);
+  document.getElementById('p-r-vo-bez').textContent = Math.round(vo / 1.12);
   if (pocet > 1) {
     document.getElementById('p-result-total').style.display = 'block';
     document.getElementById('p-t-pocet').textContent = pocet + ' ks';
@@ -830,8 +834,10 @@ function dCalculate() {
   if (vzorCfg.floor && mo < vzorCfg.floor) mo = vzorCfg.floor;
 
   const vo = Math.round(mo * voFakt);
-  const realMarze = Math.round(((mo - naklady) / mo) * 100);
-  const zisk = mo - naklady;
+  const moExVat = mo / dph;
+  const voExVat = Math.round(vo / dph);
+  const realMarze = Math.round(((moExVat - naklady) / moExVat) * 100);
+  const zisk = moExVat - naklady;
 
   document.getElementById('d-empty-state').style.display = 'none';
   document.getElementById('d-result-content').style.display = 'block';
@@ -840,10 +846,12 @@ function dCalculate() {
   document.getElementById('dr-obal').textContent = obalPrace.toFixed(2) + ' Kč';
   document.getElementById('dr-nakl').textContent = naklady.toFixed(2) + ' Kč';
   document.getElementById('dr-mo').textContent = mo + ' Kč';
+  document.getElementById('dr-mo-bez').textContent = 'bez DPH: ' + Math.round(moExVat) + ' Kč';
   document.getElementById('dr-vo').textContent = vo + ' Kč';
+  document.getElementById('dr-vo-bez').textContent = 'bez DPH: ' + voExVat + ' Kč';
   document.getElementById('dr-marze').textContent = realMarze + ' %';
   document.getElementById('dr-marze').style.color = realMarze >= 45 ? '#2e7d32' : realMarze >= 35 ? '#f57c00' : '#c62828';
-  document.getElementById('dr-zisk').textContent = 'zisk ' + zisk.toFixed(0) + ' Kč/ks';
+  document.getElementById('dr-zisk').textContent = 'zisk ' + zisk.toFixed(0) + ' Kč/ks bez DPH';
   document.getElementById('dr-zisk-czk').textContent = zisk.toFixed(0) + ' Kč';
   document.getElementById('dr-gram-label').textContent = totalG > 0 ? totalG + ' g obsahu' : '';
   document.getElementById('dr-vo-label').textContent = 'MO × ' + voFakt;
