@@ -1,49 +1,49 @@
 {
-  "generated": "2026-08-20T08:30:16",
-  "period": "2026-08-13 – 2026-08-19",
+  "generated": "2026-08-21T09:25:25",
+  "period": "2026-08-14 – 2026-08-20",
   "channels": {
     "Meta CZ": {
-      "spend": 6566.0,
-      "revenue": 28696.0,
-      "pno": 22.9,
-      "conversions": 37.0,
-      "clicks": 1445,
-      "prev_spend": 6634.0,
-      "prev_pno": 19.4
+      "spend": 8946.0,
+      "revenue": 37393.0,
+      "pno": 23.9,
+      "conversions": 41.0,
+      "clicks": 1684,
+      "prev_spend": 5069.0,
+      "prev_pno": 22.9
     },
     "Meta SK": {
-      "spend": 252.0,
-      "revenue": 136.0,
-      "pno": 184.6,
-      "conversions": 5.0,
-      "clicks": 973,
-      "prev_spend": 249.0,
-      "prev_pno": 138.7
+      "spend": 248.0,
+      "revenue": 156.0,
+      "pno": 158.5,
+      "conversions": 6.0,
+      "clicks": 933,
+      "prev_spend": 251.0,
+      "prev_pno": 215.8
     },
     "Google CZ": {
-      "spend": 5204.0,
-      "revenue": 37110.0,
-      "pno": 14.0,
-      "conversions": 43.0,
-      "clicks": 624,
-      "prev_spend": 5250.0,
-      "prev_pno": 15.7
+      "spend": 5370.0,
+      "revenue": 52844.0,
+      "pno": 10.2,
+      "conversions": 50.0,
+      "clicks": 623,
+      "prev_spend": 5047.0,
+      "prev_pno": 21.7
     },
     "Google SK": {
-      "spend": 3260.0,
-      "revenue": 16123.0,
-      "pno": 20.2,
-      "conversions": 7.0,
-      "clicks": 318,
-      "prev_spend": 3360.0,
-      "prev_pno": 39.1
+      "spend": 3036.0,
+      "revenue": 17878.0,
+      "pno": 17.0,
+      "conversions": 8.0,
+      "clicks": 314,
+      "prev_spend": 3795.0,
+      "prev_pno": 27.9
     }
   },
   "anomalies": [
-    "🔴 Meta SK: PNO 184.6% — nad break-even (40%)",
-    "🟡 Meta SK: PNO zhoršilo o 45.9pp vs minulý týden"
+    "🟡 Meta CZ: útrata +76% vs minulý týden",
+    "🔴 Meta SK: PNO 158.5% — nad break-even (40%)"
   ],
   "priorities": [
-    "Zkontrolovat kampaně Meta SK — PNO 184.6%"
+    "Zkontrolovat kampaně Meta SK — PNO 158.5%"
   ]
 }
