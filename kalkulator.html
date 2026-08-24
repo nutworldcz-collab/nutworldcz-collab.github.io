@@ -182,6 +182,22 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
 
     <div class="card" id="p-result-card">
       <div class="card-title">💰 Výsledek</div>
+      <div style="margin-bottom:14px">
+        <label style="font-size:12px;font-weight:600;color:#666;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px">Marže</label>
+        <div class="marze-row" id="p-marze-row">
+          <button class="marze-btn active" data-val="auto" onclick="pSetMarze('auto')">Auto</button>
+          <button class="marze-btn" data-val="30" onclick="pSetMarze(30)">30 %</button>
+          <button class="marze-btn" data-val="40" onclick="pSetMarze(40)">40 %</button>
+          <button class="marze-btn" data-val="50" onclick="pSetMarze(50)">50 %</button>
+          <button class="marze-btn" data-val="60" onclick="pSetMarze(60)">60 %</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:6px">
+          <input type="number" id="p-marze-input" placeholder="vlastní %" min="1" max="90" step="0.5"
+                 oninput="pSyncMarzeInput()"
+                 style="max-width:110px;font-size:13px;padding:7px 10px;border:1.5px solid #d4c0a8;border-radius:8px;font-family:inherit"/>
+          <span style="font-size:12px;color:#888">% vlastní marže → přepočítá MO</span>
+        </div>
+      </div>
       <div class="empty-state" id="p-empty-state">👆 Vyber produkt a gramáž</div>
       <div id="p-result-content" style="display:none">
         <div class="nakup-box">
@@ -545,6 +561,23 @@ function roundTo9(x) {
 let pProduct = null;
 let pRollupActive = false;
 let pRollupRows = [];
+let pMarze = null; // null = auto vzorec, číslo = vlastní %
+
+function pSetMarze(val) {
+  pMarze = val === 'auto' ? null : Number(val);
+  document.getElementById('p-marze-input').value = pMarze !== null ? pMarze : '';
+  const activeVal = pMarze !== null ? String(pMarze) : 'auto';
+  document.querySelectorAll('#p-marze-row .marze-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.val === activeVal));
+  pCalculate();
+}
+
+function pSyncMarzeInput() {
+  const v = parseFloat(document.getElementById('p-marze-input').value);
+  pMarze = isNaN(v) ? null : v;
+  document.querySelectorAll('#p-marze-row .marze-btn').forEach(b => b.classList.remove('active'));
+  pCalculate();
+}
 
 function pOnSearch(q) {
   const box = document.getElementById('p-search-results');
@@ -679,10 +712,16 @@ function pShow(g, kc, pocet) {
   const etiketa  = parseFloat(document.getElementById('p-etiketa').value) || 0;
   const taveni   = parseFloat(document.getElementById('p-taveni').value)  || 0;
   const obalPrace = obal + prace + etiketa + taveni;
-  const mo = moCZ(g, kc);
-  const vo = voCZ(g, kc, mo);
   const nakup = nakupCena(g, kc);
   const celkNakl = nakup + obalPrace;
+  let mo, vo;
+  if (pMarze !== null && celkNakl > 0) {
+    mo = roundTo9((celkNakl * 1.12) / (1 - pMarze / 100));
+    vo = Math.round(mo * 0.8);
+  } else {
+    mo = moCZ(g, kc);
+    vo = voCZ(g, kc, mo);
+  }
   if (!mo) return;
   const moBez = mo / 1.12;
   const zisk = moBez - celkNakl;
