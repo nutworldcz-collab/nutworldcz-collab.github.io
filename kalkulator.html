@@ -612,8 +612,9 @@ function pShow(g, kc, pocet) {
   const vo = voCZ(g, kc, mo);
   const nakup = nakupCena(g, kc);
   if (!mo) return;
-  const zisk = mo - nakup;
-  const marze = Math.round((zisk / mo) * 100);
+  const mo_bez = mo / 1.12;
+  const zisk = mo_bez - nakup;
+  const marze = Math.round((zisk / mo_bez) * 100);
   document.getElementById('p-empty-state').style.display = 'none';
   document.getElementById('p-result-content').style.display = 'block';
   document.getElementById('p-r-mo').textContent = mo + ' Kč';
