@@ -1,50 +1,50 @@
 {
-  "generated": "2026-08-24T08:48:37",
-  "period": "2026-08-17 – 2026-08-23",
+  "generated": "2026-08-25T10:45:16",
+  "period": "2026-08-18 – 2026-08-24",
   "channels": {
     "Meta CZ": {
-      "spend": 14263.0,
-      "revenue": 41012.0,
-      "pno": 34.8,
-      "conversions": 48.0,
-      "clicks": 2160,
-      "prev_spend": 4923.0,
-      "prev_pno": 19.1
+      "spend": 14545.0,
+      "revenue": 53322.0,
+      "pno": 27.3,
+      "conversions": 50.0,
+      "clicks": 2139,
+      "prev_spend": 4634.0,
+      "prev_pno": 16.4
     },
     "Meta SK": {
-      "spend": 257.0,
-      "revenue": 190.0,
-      "pno": 135.3,
-      "conversions": 7.0,
-      "clicks": 973,
-      "prev_spend": 254.0,
-      "prev_pno": 336.8
+      "spend": 264.0,
+      "revenue": 99.0,
+      "pno": 266.0,
+      "conversions": 5.0,
+      "clicks": 994,
+      "prev_spend": 249.0,
+      "prev_pno": 133.2
     },
     "Google CZ": {
-      "spend": 5348.0,
-      "revenue": 49972.0,
-      "pno": 10.7,
-      "conversions": 51.0,
-      "clicks": 663,
-      "prev_spend": 5094.0,
-      "prev_pno": 12.4
+      "spend": 5230.0,
+      "revenue": 60236.0,
+      "pno": 8.7,
+      "conversions": 50.5,
+      "clicks": 648,
+      "prev_spend": 5067.0,
+      "prev_pno": 11.4
     },
     "Google SK": {
-      "spend": 3368.0,
-      "revenue": 24265.0,
-      "pno": 13.9,
-      "conversions": 16.0,
-      "clicks": 379,
-      "prev_spend": 3342.0,
-      "prev_pno": 34.1
+      "spend": 3207.0,
+      "revenue": 26834.0,
+      "pno": 11.9,
+      "conversions": 18.0,
+      "clicks": 389,
+      "prev_spend": 3210.0,
+      "prev_pno": 36.8
     }
   },
   "anomalies": [
-    "🟡 Meta CZ: útrata +190% vs minulý týden",
-    "🟡 Meta CZ: PNO zhoršilo o 15.7pp vs minulý týden",
-    "🔴 Meta SK: PNO 135.3% — nad break-even (40%)"
+    "🟡 Meta CZ: útrata +214% vs minulý týden",
+    "🔴 Meta SK: PNO 266.0% — nad break-even (40%)",
+    "🟡 Meta SK: PNO zhoršilo o 132.8pp vs minulý týden"
   ],
   "priorities": [
-    "Zkontrolovat kampaně Meta SK — PNO 135.3%"
+    "Zkontrolovat kampaně Meta SK — PNO 266.0%"
   ]
 }
