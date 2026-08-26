@@ -1,50 +1,49 @@
 {
-  "generated": "2026-08-25T10:45:16",
-  "period": "2026-08-18 – 2026-08-24",
+  "generated": "2026-08-26T11:57:15",
+  "period": "2026-08-19 – 2026-08-25",
   "channels": {
     "Meta CZ": {
-      "spend": 14545.0,
-      "revenue": 53322.0,
-      "pno": 27.3,
-      "conversions": 50.0,
-      "clicks": 2139,
-      "prev_spend": 4634.0,
-      "prev_pno": 16.4
+      "spend": 14644.0,
+      "revenue": 57945.0,
+      "pno": 25.3,
+      "conversions": 52.0,
+      "clicks": 2095,
+      "prev_spend": 4540.0,
+      "prev_pno": 17.4
     },
     "Meta SK": {
-      "spend": 264.0,
-      "revenue": 99.0,
-      "pno": 266.0,
+      "spend": 262.0,
+      "revenue": 155.0,
+      "pno": 169.5,
       "conversions": 5.0,
-      "clicks": 994,
-      "prev_spend": 249.0,
-      "prev_pno": 133.2
+      "clicks": 961,
+      "prev_spend": 251.0,
+      "prev_pno": 184.2
     },
     "Google CZ": {
-      "spend": 5230.0,
-      "revenue": 60236.0,
-      "pno": 8.7,
-      "conversions": 50.5,
-      "clicks": 648,
-      "prev_spend": 5067.0,
-      "prev_pno": 11.4
+      "spend": 4762.0,
+      "revenue": 69047.0,
+      "pno": 6.9,
+      "conversions": 44.2,
+      "clicks": 612,
+      "prev_spend": 5053.0,
+      "prev_pno": 10.7
     },
     "Google SK": {
-      "spend": 3207.0,
-      "revenue": 26834.0,
-      "pno": 11.9,
-      "conversions": 18.0,
-      "clicks": 389,
-      "prev_spend": 3210.0,
-      "prev_pno": 36.8
+      "spend": 2884.0,
+      "revenue": 23082.0,
+      "pno": 12.5,
+      "conversions": 15.0,
+      "clicks": 375,
+      "prev_spend": 3264.0,
+      "prev_pno": 29.2
     }
   },
   "anomalies": [
-    "🟡 Meta CZ: útrata +214% vs minulý týden",
-    "🔴 Meta SK: PNO 266.0% — nad break-even (40%)",
-    "🟡 Meta SK: PNO zhoršilo o 132.8pp vs minulý týden"
+    "🟡 Meta CZ: útrata +223% vs minulý týden",
+    "🔴 Meta SK: PNO 169.5% — nad break-even (40%)"
   ],
   "priorities": [
-    "Zkontrolovat kampaně Meta SK — PNO 266.0%"
+    "Zkontrolovat kampaně Meta SK — PNO 169.5%"
   ]
 }
