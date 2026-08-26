@@ -99,7 +99,7 @@ table.pt input.inp-cena{width:100px;text-align:right}
 .slozeni-ac-drop.open{display:block}
 .slozeni-ac-item{padding:6px 10px;cursor:pointer;font-size:12px;display:flex;gap:8px;align-items:center}
 .slozeni-ac-item:hover,.slozeni-ac-item.sel{background:#f1e6da}
-.slozeni-nazev{flex:1;min-width:120px;padding:5px 8px;border:1px solid #ddd;border-radius:6px;font-size:12px;background:#f5f0ea;color:#666;font-family:inherit}
+.slozeni-nazev{flex:1;min-width:120px;padding:5px 8px;border:1px solid #c8a87a;border-radius:6px;font-size:12px;background:#fff;color:#2a1a0e;font-family:inherit}
 .slozeni-gram{flex:0 0 75px;padding:5px 8px;border:1.5px solid #c8976a;border-radius:6px;font-size:12px;font-family:inherit;color:#2a1a0e}
 .slozeni-gram:focus{outline:none;border-color:#83502e}
 .slozeni-obal{flex:1;min-width:110px;padding:5px 8px;border:1.5px solid #c8976a;border-radius:6px;font-size:12px;font-family:inherit;color:#2a1a0e}
@@ -625,7 +625,7 @@ function fillDarekSlozeni(id, darek) {
           <input class="slozeni-kod-inp" id="slozeni-s-${id}-${i}" value="${item.kod}" autocomplete="off"/>
           <div class="slozeni-ac-drop" id="slozeni-d-${id}-${i}"></div>
         </div>
-        <input class="slozeni-nazev" id="slozeni-n-${id}-${i}" readonly value="${prod ? prod.nazev : ''}"/>
+        <input class="slozeni-nazev" id="slozeni-n-${id}-${i}" value="${prod ? prod.nazev : ''}" placeholder="Název produktu"/>
         <input class="slozeni-gram" id="slozeni-g-${id}-${i}" value="${item.gram}g"/>
         <input class="slozeni-obal" id="slozeni-o-${id}-${i}" value="${darek.obal}"/>
         <button class="slozeni-rm" type="button" title="Odebrat" onclick="this.closest('.slozeni-row').remove()">✕</button>
@@ -665,7 +665,7 @@ function addSlozeniRow(cid) {
       <input class="slozeni-kod-inp" id="slozeni-s-${cid}-${idx}" placeholder="Kód nebo název…" autocomplete="off"/>
       <div class="slozeni-ac-drop" id="slozeni-d-${cid}-${idx}"></div>
     </div>
-    <input class="slozeni-nazev" id="slozeni-n-${cid}-${idx}" readonly placeholder="Název produktu"/>
+    <input class="slozeni-nazev" id="slozeni-n-${cid}-${idx}" placeholder="Název produktu"/>
     <input class="slozeni-gram" id="slozeni-g-${cid}-${idx}" placeholder="Gramáž"/>
     <input class="slozeni-obal" id="slozeni-o-${cid}-${idx}" placeholder="Obal / balení (sáček, sklo…)"/>
     <button class="slozeni-rm" type="button" title="Odebrat" onclick="this.closest('.slozeni-row').remove()">✕</button>
