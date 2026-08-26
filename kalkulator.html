@@ -984,6 +984,9 @@ document.addEventListener('click', e => {
 
 // ══ VYHLEDÁVÁNÍ DÁRKŮ ══
 let dkMatches = [];
+let dkCurrent = null;
+let dkMarze = null; // null = auto (z DB), číslo = vlastní %
+
 function dkSearch(q) {
   const drop = document.getElementById('dk-drop');
   q = (q || '').trim();
@@ -1002,14 +1005,30 @@ function dkSearch(q) {
 }
 
 function dkPick(i) {
-  const d = dkMatches[i];
-  document.getElementById('dk-search').value = d.nazev;
+  dkCurrent = dkMatches[i];
+  dkMarze = null;
+  document.getElementById('dk-search').value = dkCurrent.nazev;
   document.getElementById('dk-drop').classList.remove('open');
-  dkShow(d);
+  dkShow();
 }
 
-function dkShow(d) {
+function dkSetMarze(val) {
+  dkMarze = val === 'auto' ? null : Number(val);
+  dkShow();
+}
+
+function dkSyncMarzeInput() {
+  const v = parseFloat(document.getElementById('dk-marze-input').value);
+  dkMarze = isNaN(v) ? null : v;
+  document.querySelectorAll('#dk-marze-row .marze-btn').forEach(b => b.classList.remove('active'));
+  dkShow();
+}
+
+function dkShow() {
+  const d = dkCurrent;
+  if (!d) return;
   const dph = 1.12;
+
   // Rozlož složení obsahu "kod:gram,kod:gram,..."
   const items = (d.obsah || '').split(',').filter(Boolean).map(s => {
     const [kod, gram] = s.split(':');
@@ -1021,11 +1040,26 @@ function dkShow(d) {
   const totalGram = items.reduce((s, x) => s + x.gram, 0);
   const prodCost = items.reduce((s, x) => s + (x.nakup || 0), 0);
   const celkNakl = prodCost + (d.naklady_obal || 0) + (d.naklady_prace || 0);
-  const moExVat = d.mo / dph;
-  const voExVat = d.vo / dph;
+
+  // Výpočet cen dle marže
+  let mo, vo;
+  if (dkMarze !== null && celkNakl > 0) {
+    mo = roundTo9((celkNakl * dph) / (1 - dkMarze / 100));
+    vo = Math.round(mo * 0.8);
+  } else {
+    mo = d.mo;
+    vo = d.vo;
+  }
+  const moExVat = mo / dph;
+  const voExVat = vo / dph;
   const marze = celkNakl > 0 ? Math.round((moExVat - celkNakl) / moExVat * 100) : 0;
   const zisk = moExVat - celkNakl;
   const marzeColor = marze >= 45 ? '#2e7d32' : marze >= 35 ? '#f57c00' : '#c62828';
+
+  const activeVal = dkMarze !== null ? String(dkMarze) : 'auto';
+  const marzeBtns = ['auto','30','40','45','50','60'].map(v =>
+    `<button class="marze-btn${activeVal===v?' active':''}" onclick="dkSetMarze('${v}')">${v==='auto'?'Aktuální':v+' %'}</button>`
+  ).join('');
 
   const slozeniHtml = items.map(x =>
     `<div class="cost-row">
@@ -1034,7 +1068,8 @@ function dkShow(d) {
     </div>`
   ).join('');
 
-  document.getElementById('dk-detail').innerHTML = `
+  const detail = document.getElementById('dk-detail');
+  detail.innerHTML = `
     <div style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:15px;color:var(--bd);margin-bottom:2px">${d.nazev}</div>
     <div style="font-size:12px;color:#999;margin-bottom:10px">${d.kod} · ${d.obal}</div>
     <div class="total-costs">
@@ -1046,15 +1081,25 @@ function dkShow(d) {
       <div class="cost-row"><span>Práce</span><span>${(d.naklady_prace || 0).toFixed(1)} Kč</span></div>
       <div class="cost-row"><span>Náklady celkem</span><span>${celkNakl.toFixed(1)} Kč</span></div>
     </div>
+    <div style="margin-top:10px">
+      <div style="font-size:11px;font-weight:600;color:#666;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Marže</div>
+      <div class="marze-row" id="dk-marze-row">${marzeBtns}</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:6px">
+        <input type="number" id="dk-marze-input" placeholder="vlastní %" min="1" max="90" step="0.5"
+               value="${dkMarze !== null ? dkMarze : ''}"
+               oninput="dkSyncMarzeInput()" style="max-width:110px"/>
+        <span style="font-size:12px;color:#888">% vlastní marže</span>
+      </div>
+    </div>
     <div class="result-grid" style="margin-top:10px">
       <div class="result-box highlight">
         <div class="result-label">MO cena</div>
-        <div class="result-value">${d.mo} Kč</div>
+        <div class="result-value">${mo} Kč</div>
         <div class="result-sub">bez DPH: ${Math.round(moExVat)} Kč</div>
       </div>
       <div class="result-box">
         <div class="result-label">VO cena</div>
-        <div class="result-value">${d.vo} Kč</div>
+        <div class="result-value">${vo} Kč</div>
         <div class="result-sub">bez DPH: ${Math.round(voExVat)} Kč</div>
       </div>
       <div class="result-box" style="background:#e8f5e9">
@@ -1068,7 +1113,7 @@ function dkShow(d) {
         <div class="result-sub">bez DPH</div>
       </div>
     </div>`;
-  document.getElementById('dk-detail').style.display = 'block';
+  detail.style.display = 'block';
 }
 </script>
 </body>
