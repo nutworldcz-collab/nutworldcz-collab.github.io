@@ -645,29 +645,29 @@ document.addEventListener('click', e => {
 // TAB DÁRKY — stav + logika
 // ══════════════════════════════════════════════
 const OBALY = [
-  { id:'celofanek',       name:'Celofánek s mašličkou',            icon:'🎀', obal:2.5, prace:7.5,dm:50, note:'1 produkt, variabilní gramáž (obal 2,5 + mašličkování 3 + etiketa+etiketování 2 + plnění 2,5 = 10 Kč celkem)' },
-  { id:'sacek-knir',      name:'Sáček s knírem',                   icon:'👔', obal:10,  prace:5,  dm:50, note:'1 produkt, 180g' },
-  { id:'sacek-kolicek',   name:'Sáček s kolíčkem',                 icon:'📎', obal:15,  prace:10, dm:50, note:'1 produkt, 150g' },
-  { id:'sacek-sob',       name:'Vánoční sáček SOB',                icon:'🦌', obal:5,   prace:5,  dm:50, note:'1 produkt, 180g' },
-  { id:'zajicek',         name:'Velikonoční zajíček',              icon:'🐰', obal:10,  prace:10, dm:50, note:'1 produkt, 180g, téma Velikonoce' },
-  { id:'kornout',         name:'Ořechový kornout',                 icon:'🌽', obal:12,  prace:7,  dm:50, note:'1 produkt, 150g nebo 500g' },
-  { id:'eko-kelimek',     name:'Eko kelímek',                      icon:'☕', obal:9.5, prace:7,  dm:45, note:'1 produkt, 100g, papírový + celofán' },
-  { id:'kraft-kelimek',   name:'Kraft kelímek',                    icon:'🧃', obal:8,   prace:16, dm:54, note:'1 produkt, variabilní gramáž' },
-  { id:'kazetka',         name:'Dárková kazetka',                  icon:'📦', obal:8,   prace:14, dm:47, note:'1 produkt, 50g, 200×100×35mm' },
-  { id:'sklenic-deluxe',  name:'Sklenička DELUXE',                 icon:'🫙', obal:14,  prace:7,  dm:50, note:'1 produkt, 180g, sklenička s víčkem' },
-  { id:'sklenic-excl',    name:'Sklenička EXCLUSIVE',              icon:'✨', obal:15,  prace:6,  dm:50, note:'1 produkt, ~70g, 78×50mm' },
-  { id:'krabicka-2x50',   name:'Dárková krabička 2×50g',           icon:'🎁', obal:15,  prace:20, dm:50, note:'2 produkty po 50g, 145×95×25mm' },
-  { id:'krabicka-4x80',   name:'Dárková krabička 4×80g',           icon:'🎁', obal:20,  prace:20, dm:50, note:'4 produkty po 80g, 245×150×25mm' },
-  { id:'van-krabicka',    name:'Vánoční krabička',                 icon:'🎄', obal:15,  prace:20, dm:50, note:'2×50g nebo 4×80g, vánoční design' },
-  { id:'krabice-kel',     name:'Krabice s kelímky 2×',             icon:'📫', obal:69,  prace:17, dm:50, note:'2× eko kelímek, 250×220×60mm' },
-  { id:'krabicka-3kel',   name:'Krabička 3× eko kelímek',          icon:'📋', obal:70,  prace:30, dm:50, note:'3× 100g kelímek, 350×130×90mm' },
-  { id:'krabice-deluxe',  name:'Krabice DELUXE 3× sklenička',      icon:'💎', obal:82,  prace:33, dm:50, note:'3× sklenička DELUXE, 350×130×90mm' },
-  { id:'krabicka-4mix',   name:'Krabička 4 druhy MIX',             icon:'🎨', obal:35,  prace:30, dm:50, note:'4 různé produkty' },
-  { id:'orechova-3druhy', name:'Ořechová krabice 3 druhy',         icon:'🍱', obal:70,  prace:33, dm:50, note:'3 produkty, 350×130×90mm (4560X)' },
-  { id:'eko-3ks-pecet',   name:'Eko kelímky 3ks s pečetí',         icon:'🎗️', obal:30,  prace:21, dm:50, note:'3× kelímek 100g, 92×92×207mm (2968)' },
-  { id:'krabicka-excl',   name:'Krabička EXCLUSIVE 6× sklenička',  icon:'🪟', obal:95,  prace:34, dm:50, note:'6× sklenička 60g, 250×220×60mm (4598X)' },
-  { id:'vysekova-l',      name:'Krabice výseková L',               icon:'📐', obal:85,  prace:50, dm:50, note:'5× variabilní, 320×210×90mm' },
-  { id:'vysekova-xl',     name:'Krabice výseková XL',              icon:'📏', obal:129, prace:55, dm:50, note:'7× variabilní, 300×310×90mm' },
+  { id:'celofanek',       name:'Celofánek s mašličkou',            icon:'🎀', obal:2.5, prace:7.5, dm:50, vo:0.8, note:'1 produkt, variabilní gramáž' },
+  { id:'sacek-knir',      name:'Sáček s knírem',                   icon:'👔', obal:10,  prace:5,   dm:50, vo:0.8, note:'1 produkt, 180g' },
+  { id:'sacek-kolicek',   name:'Sáček s kolíčkem',                 icon:'📎', obal:15,  prace:10,  dm:50, vo:0.8, note:'1 produkt, 150g' },
+  { id:'sacek-sob',       name:'Vánoční sáček SOB',                icon:'🦌', obal:5,   prace:5,   dm:50, vo:0.8, note:'1 produkt, 180g' },
+  { id:'zajicek',         name:'Velikonoční zajíček',              icon:'🐰', obal:10,  prace:10,  dm:50, vo:0.8, note:'1 produkt, 180g, téma Velikonoce' },
+  { id:'kornout',         name:'Ořechový kornout',                 icon:'🌽', obal:12,  prace:7,   dm:50, vo:0.8, note:'1 produkt, 150g nebo 500g' },
+  { id:'eko-kelimek',     name:'Eko kelímek',                      icon:'☕', obal:9.5, prace:7,   dm:45, vo:0.8, note:'1 produkt, 100g, papírový + celofán' },
+  { id:'kraft-kelimek',   name:'Kraft kelímek',                    icon:'🧃', obal:8,   prace:16,  dm:54, vo:0.7, note:'1 produkt, variabilní gramáž, VO×0.7' },
+  { id:'kazetka',         name:'Dárková kazetka',                  icon:'📦', obal:8,   prace:14,  dm:47, vo:0.8, note:'1 produkt, 50g, 200×100×35mm' },
+  { id:'sklenic-deluxe',  name:'Sklenička DELUXE',                 icon:'🫙', obal:14,  prace:7,   dm:50, vo:0.8, note:'1 produkt, 180g, sklenička s víčkem' },
+  { id:'sklenic-excl',    name:'Sklenička EXCLUSIVE',              icon:'✨', obal:15,  prace:6,   dm:50, vo:0.8, note:'1 produkt, ~70g, 78×50mm' },
+  { id:'krabicka-2x50',   name:'Dárková krabička 2×50g',           icon:'🎁', obal:15,  prace:20,  dm:50, vo:0.7, formula:'nasobek', N:2.5, note:'2 produkty po 50g, 145×95×25mm, násobek ×2.5, VO×0.7' },
+  { id:'krabicka-4x80',   name:'Dárková krabička 4×80g',           icon:'🎁', obal:15,  prace:20,  dm:55, vo:0.7, note:'4 produkty po 80g, 245×150×25mm, VO×0.7' },
+  { id:'van-krabicka',    name:'Vánoční krabička',                 icon:'🎄', obal:15,  prace:20,  dm:50, vo:0.7, formula:'nasobek', N:2.5, note:'2×50g nebo 4×80g, vánoční design, násobek ×2.5, VO×0.7' },
+  { id:'krabice-kel',     name:'Krabice s kelímky 2×',             icon:'📫', obal:69,  prace:17,  dm:50, vo:0.8, note:'2× eko kelímek, 250×220×60mm' },
+  { id:'krabicka-3kel',   name:'Krabička 3× eko kelímek',          icon:'📋', obal:70,  prace:30,  dm:50, vo:0.8, note:'3× 100g kelímek, 350×130×90mm' },
+  { id:'krabice-deluxe',  name:'Krabice DELUXE 3× sklenička',      icon:'💎', obal:82,  prace:33,  dm:50, vo:0.8, note:'3× sklenička DELUXE, 350×130×90mm' },
+  { id:'krabicka-4mix',   name:'Krabička 4 druhy MIX',             icon:'🎨', obal:35,  prace:30,  dm:50, vo:0.8, note:'4 různé produkty' },
+  { id:'orechova-3druhy', name:'Ořechová krabice 3 druhy',         icon:'🍱', obal:70,  prace:33,  dm:50, vo:0.8, note:'3 produkty, 350×130×90mm (4560X)' },
+  { id:'eko-3ks-pecet',   name:'Eko kelímky 3ks s pečetí',         icon:'🎗️', obal:30,  prace:21,  dm:50, vo:0.8, note:'3× kelímek 100g, 92×92×207mm (2968)' },
+  { id:'krabicka-excl',   name:'Krabička EXCLUSIVE 6× sklenička',  icon:'🪟', obal:95,  prace:34,  dm:50, vo:0.8, note:'6× sklenička 60g, 250×220×60mm (4598X)' },
+  { id:'vysekova-l',      name:'Krabice výseková L',               icon:'📐', obal:85,  prace:50,  dm:50, vo:0.8, note:'5× variabilní, 320×210×90mm' },
+  { id:'vysekova-xl',     name:'Krabice výseková XL',              icon:'📏', obal:129, prace:55,  dm:50, vo:0.8, note:'7× variabilní, 300×310×90mm' },
 ];
 
 let selObal = null;
@@ -688,7 +688,14 @@ function pickObal(id) {
   if (!o) return;
   document.getElementById('d-obal-cena').value = o.obal;
   document.getElementById('d-prace-cena').value = o.prace;
-  dSetMarze(o.dm);
+  document.getElementById('d-vo-fakt').value = o.vo ?? 0.8;
+  if (o.formula === 'nasobek') {
+    dSetFormula('nasobek');
+    document.getElementById('d-nasobek-input').value = o.N ?? 2;
+  } else {
+    dSetFormula('marze');
+    dSetMarze(o.dm);
+  }
   renderObalChips();
   dCalculate();
 }
