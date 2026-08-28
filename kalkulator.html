@@ -431,7 +431,7 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
     </div>
 
     <!-- Card 5: Individuální nadstavby -->
-    <div class="card" id="d-nadstavby-card" style="display:none">
+    <div class="card" id="d-nadstavby-card">
       <div class="card-title">➕ Individuální nadstavby</div>
       <div class="hint" style="margin-bottom:12px">Přidej volitelné nadstavby (personalizace, stuha, karta…) — jejich cena se přičte k výsledné MO ceně dárku.</div>
       <div id="ns-rows"></div>
@@ -442,7 +442,7 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
     </div>
 
     <!-- Card 6: Přidat do kalkulace -->
-    <div class="card" id="d-pridat-card" style="display:none">
+    <div class="card" id="d-pridat-card">
       <div class="card-title">🛒 Přidat do kalkulace</div>
       <div class="grid2">
         <div class="field">
@@ -454,7 +454,8 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
           <input type="number" id="d-kalk-ks" value="1" min="1"/>
         </div>
       </div>
-      <button class="btn-kosik" onclick="kalkAddItem()" style="margin-top:4px">+ Přidat do kalkulace</button>
+      <button class="btn-kosik" id="btn-pridat" onclick="kalkAddItem()" style="margin-top:4px;opacity:.4;cursor:not-allowed" disabled>+ Přidat do kalkulace</button>
+      <div class="hint" id="pridat-hint" style="margin-top:6px">👆 Nejdřív spočítej dárek výše — pak sem zadej název a klikni pro přidání do kalkulace</div>
     </div>
 
   </div><!-- /tab-darky -->
@@ -1218,8 +1219,10 @@ let KALK_ITEMS = [];
 let _nsCount = 0;
 
 function dShowKalkCards(show) {
-  document.getElementById('d-nadstavby-card').style.display = show ? '' : 'none';
-  document.getElementById('d-pridat-card').style.display = show ? '' : 'none';
+  const btn = document.getElementById('btn-pridat');
+  const hint = document.getElementById('pridat-hint');
+  if (btn) { btn.disabled = !show; btn.style.opacity = show ? '1' : '.4'; btn.style.cursor = show ? 'pointer' : 'not-allowed'; }
+  if (hint) hint.style.display = show ? 'none' : '';
 }
 
 function nsAddRow() {
