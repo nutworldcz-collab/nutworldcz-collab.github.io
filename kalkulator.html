@@ -317,7 +317,7 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
               <input type="text" id="p-kalk-nazev" placeholder="např. Mandle 100g doypack"/>
             </div>
             <div class="field" style="margin:0">
-              <label>Finální MO (Kč)</label>
+              <label>Cena bez DPH (Kč)</label>
               <input type="number" id="p-kalk-mo" placeholder="—" min="0" step="0.5" oninput="pKalkSyncVO()"/>
             </div>
             <div class="field" style="margin:0">
@@ -513,7 +513,7 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
           <input type="text" id="d-kalk-nazev" placeholder="např. Sáček s knírem — Mandle"/>
         </div>
         <div class="field" style="margin:0">
-          <label>Finální MO (Kč)</label>
+          <label>Cena bez DPH (Kč)</label>
           <input type="number" id="d-kalk-mo" placeholder="—" min="0" step="0.5" oninput="dKalkSyncVO()"/>
         </div>
         <div class="field" style="margin:0">
@@ -539,8 +539,8 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
     </div>
     <div id="kosik-items"></div>
     <div class="total-costs" style="margin-top:12px">
-      <div class="cost-row"><span>Celkem MO (s DPH)</span><span id="kosik-mo-total" style="font-family:'Exo 2',sans-serif;font-weight:700;color:var(--bd)">—</span></div>
-      <div class="cost-row"><span>Celkem VO (s DPH)</span><span id="kosik-vo-total" style="font-family:'Exo 2',sans-serif;font-weight:700;color:var(--bd)">—</span></div>
+      <div class="cost-row"><span>Celkem bez DPH</span><span id="kosik-mo-total" style="font-family:'Exo 2',sans-serif;font-weight:700;color:var(--bd)">—</span></div>
+      <div class="cost-row"><span>Celkem VO</span><span id="kosik-vo-total" style="font-family:'Exo 2',sans-serif;font-weight:700;color:var(--bd)">—</span></div>
     </div>
     <div style="display:flex;gap:10px;margin-top:16px">
       <button class="btn-kosik sec" id="btn-trello" onclick="kalkUlozit()">💾 Uložit na Trello</button>
@@ -954,38 +954,37 @@ function pShow(g, kc, pocet) {
   const obalPrace = obal + prace + etiketa + taveni;
   const nakup = nakupCena(g, kc);
   const celkNakl = nakup + obalPrace;
-  let mo, vo;
+  let mo;
   if (pMarze !== null && celkNakl > 0) {
     mo = roundTo9((celkNakl * 1.12) / (1 - pMarze / 100));
-    vo = Math.round(mo * 0.8);
   } else {
     mo = moCZ(g, kc);
-    vo = voCZ(g, kc, mo);
   }
   if (!mo) return;
 
-  // Přičti potisk — fixní přirážka mimo maržový vzorec, bez zaokrouhlení
+  // Potisk se přičítá k ceně BEZ DPH — pak se aplikuje DPH/marže na celkovou cenu bez DPH
   const potisk = pGetPotiskKc();
-  mo = mo + potisk;
-  vo = Math.round(mo * 0.8);
+  const moBez = mo / 1.12;              // základ bez DPH (bez potisku)
+  const finalBezDPH = moBez + potisk;   // finální cena bez DPH (s potiskem)
+  const moFinal = Math.round(finalBezDPH * 1.12);  // s DPH (pro zobrazení)
+  const voFinal = Math.round(finalBezDPH * 0.8);   // VO = bez DPH × 0,8
 
-  const moBez = mo / 1.12;
-  const zisk = moBez - celkNakl;
-  const marze = Math.round((zisk / moBez) * 100);
+  const zisk = finalBezDPH - celkNakl;
+  const marze = Math.round((zisk / finalBezDPH) * 100);
   document.getElementById('p-empty-state').style.display = 'none';
   document.getElementById('p-result-content').style.display = 'block';
-  document.getElementById('p-r-mo').textContent = mo + ' Kč';
-  document.getElementById('p-r-vo').textContent = vo + ' Kč';
-  // Předvyplň editovatelná pole
-  const kmo = document.getElementById('p-kalk-mo'); if (kmo) kmo.value = mo;
-  const kvo = document.getElementById('p-kalk-vo'); if (kvo) kvo.value = vo;
+  document.getElementById('p-r-mo').textContent = moFinal + ' Kč';
+  document.getElementById('p-r-vo').textContent = Math.round(voFinal * 1.12) + ' Kč';
+  // Předvyplň editovatelná pole — cena BEZ DPH
+  const kmo = document.getElementById('p-kalk-mo'); if (kmo) kmo.value = Math.round(finalBezDPH * 10) / 10;
+  const kvo = document.getElementById('p-kalk-vo'); if (kvo) kvo.value = voFinal;
   document.getElementById('p-r-nakup').textContent = Math.round(celkNakl) + ' Kč';
   const subParts = ['produkt ' + Math.round(nakup)];
   if (obal > 0)    subParts.push('obal ' + obal);
   if (prace > 0)   subParts.push('práce ' + prace);
   if (etiketa > 0) subParts.push('etiketa ' + etiketa);
   if (taveni > 0)  subParts.push('tavení ' + taveni);
-  if (potisk > 0)  subParts.push('potisk ' + potisk);
+  if (potisk > 0)  subParts.push('potisk +' + potisk + ' (bez DPH)');
   document.getElementById('p-r-nakup-sub').textContent = subParts.join(' + ') + ' Kč';
   document.getElementById('p-obal-total').textContent = obalPrace > 0
     ? 'Celkem obal + práce + etiketa: ' + obalPrace.toFixed(1) + ' Kč'
@@ -995,8 +994,8 @@ function pShow(g, kc, pocet) {
   document.getElementById('p-r-nakup-kg').textContent = kc.toLocaleString('cs') + ' Kč';
   document.getElementById('p-r-nakup-ks').textContent = nakup.toFixed(2).replace('.', ',') + ' Kč';
   document.getElementById('p-r-marze').style.color = marze >= 45 ? '#2e7d32' : marze >= 35 ? '#f57c00' : '#c62828';
-  document.getElementById('p-r-mo-bez').textContent = Math.round(mo / 1.12);
-  document.getElementById('p-r-vo-bez').textContent = Math.round(vo / 1.12);
+  document.getElementById('p-r-mo-bez').textContent = (Math.round(finalBezDPH * 10) / 10).toLocaleString('cs');
+  document.getElementById('p-r-vo-bez').textContent = voFinal;
   if (pocet > 1) {
     document.getElementById('p-result-total').style.display = 'block';
     document.getElementById('p-t-pocet').textContent = pocet + ' ks';
@@ -1206,8 +1205,8 @@ function dCalculate() {
   document.getElementById('dr-mo').textContent = mo + ' Kč';
   document.getElementById('dr-mo-bez').textContent = 'bez DPH: ' + Math.round(moExVat) + ' Kč';
   // Předvyplň editovatelná pole pro kalkulaci
-  const dkmo = document.getElementById('d-kalk-mo'); if (dkmo) dkmo.value = mo;
-  const dkvo = document.getElementById('d-kalk-vo'); if (dkvo) dkvo.value = vo;
+  const dkmo = document.getElementById('d-kalk-mo'); if (dkmo) dkmo.value = Math.round(moExVat * 10) / 10;
+  const dkvo = document.getElementById('d-kalk-vo'); if (dkvo) dkvo.value = voExVat;
   document.getElementById('dr-vo').textContent = vo + ' Kč';
   document.getElementById('dr-vo-bez').textContent = 'bez DPH: ' + voExVat + ' Kč';
   document.getElementById('dr-marze').textContent = realMarze + ' %';
@@ -1438,7 +1437,7 @@ function dKalkSyncVO() {
 function kalkAddProdItem() {
   const mo = parseFloat(document.getElementById('p-kalk-mo').value) || 0;
   const vo = parseFloat(document.getElementById('p-kalk-vo').value) || 0;
-  if (!mo) { alert('Nejdřív spočítej produkt — pole Finální MO se předvyplní automaticky.'); return; }
+  if (!mo) { alert('Nejdřív spočítej produkt — pole Cena bez DPH se předvyplní automaticky.'); return; }
   const nakupEl = document.getElementById('p-r-nakup');
   const nakl = parseFloat(nakupEl?.textContent) || 0;
   const nazev = document.getElementById('p-kalk-nazev').value.trim() || (pProduct?.nazev || 'Produkt');
@@ -1452,7 +1451,7 @@ function kalkAddProdItem() {
 function kalkAddItem() {
   const mo = parseFloat(document.getElementById('d-kalk-mo').value) || 0;
   const vo = parseFloat(document.getElementById('d-kalk-vo').value) || 0;
-  if (!mo) { alert('Nejdřív spočítej dárek — pole Finální MO se předvyplní automaticky.'); return; }
+  if (!mo) { alert('Nejdřív spočítej dárek — pole Cena bez DPH se předvyplní automaticky.'); return; }
   const naklEl = document.getElementById('dr-nakl');
   const nakl = parseFloat(naklEl?.textContent) || 0;
   const nazev = document.getElementById('d-kalk-nazev').value.trim() || 'Dárek';
@@ -1479,7 +1478,7 @@ function kalkRender() {
       </div>
       <div class="kosik-item-prices">
         <span><strong>${item.ks} ks</strong></span>
-        <span>MO: <strong>${item.mo} Kč/ks</strong> → ${(item.mo*item.ks).toLocaleString('cs')} Kč</span>
+        <span>Bez DPH: <strong>${item.mo} Kč/ks</strong> → ${(item.mo*item.ks).toLocaleString('cs')} Kč</span>
         <span>VO: <strong>${item.vo} Kč/ks</strong> → ${(item.vo*item.ks).toLocaleString('cs')} Kč</span>
       </div>
     </div>`;
@@ -1525,14 +1524,14 @@ async function kalkUlozit() {
   const nabUrl = 'https://nutworldcz-collab.github.io/nabidky.html#' + _buildHash();
 
   let totMo = 0, totVo = 0;
-  let desc = `## Kalkulace — ${today} (${repName})\n\n| Produkt | ks | MO/ks | VO/ks |\n|---------|----|----|----|\n`;
+  let desc = `## Kalkulace — ${today} (${repName})\n\n| Produkt | ks | Bez DPH/ks | VO/ks |\n|---------|----|----|----|\n`;
   KALK_ITEMS.forEach(item => {
     totMo += item.mo * item.ks;
     totVo += item.vo * item.ks;
     const ns = item.nadstavby.length ? ` *(+${item.nadstavby.map(n=>n.nazev).join(', ')})*` : '';
     desc += `| ${item.nazev}${ns} | ${item.ks} ks | ${item.mo} Kč | ${item.vo} Kč |\n`;
   });
-  desc += `\n**Celkem MO:** ${totMo.toLocaleString('cs')} Kč &nbsp;·&nbsp; **VO:** ${totVo.toLocaleString('cs')} Kč\n\n[📋 Vytvořit nabídku →](${nabUrl})`;
+  desc += `\n**Celkem bez DPH:** ${totMo.toLocaleString('cs')} Kč &nbsp;·&nbsp; **VO:** ${totVo.toLocaleString('cs')} Kč\n\n[📋 Vytvořit nabídku →](${nabUrl})`;
 
   const cardName = KALK_ITEMS.length === 1
     ? `Kalkulace ${today} — ${KALK_ITEMS[0].nazev}`
