@@ -311,13 +311,21 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
         </div>
         <!-- Přidat do kalkulace (Produkty tab) -->
         <div style="margin-top:14px;border-top:1px dashed #c8a882;padding-top:14px">
-          <div class="grid2" style="margin-bottom:8px">
-            <div class="field" style="margin:0">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px">
+            <div class="field" style="margin:0;grid-column:1/-1">
               <label>Název pro kalkulaci</label>
               <input type="text" id="p-kalk-nazev" placeholder="např. Mandle 100g doypack"/>
             </div>
             <div class="field" style="margin:0">
-              <label>Počet ks (pro kalkulaci)</label>
+              <label>Finální MO (Kč)</label>
+              <input type="number" id="p-kalk-mo" placeholder="—" min="0" step="0.5" oninput="pKalkSyncVO()"/>
+            </div>
+            <div class="field" style="margin:0">
+              <label>VO (Kč)</label>
+              <input type="number" id="p-kalk-vo" placeholder="—" min="0" step="0.5"/>
+            </div>
+            <div class="field" style="margin:0">
+              <label>Počet ks</label>
               <input type="number" id="p-kalk-ks" value="1" min="1"/>
             </div>
           </div>
@@ -499,18 +507,26 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
     <!-- Card 6: Přidat do kalkulace -->
     <div class="card" id="d-pridat-card">
       <div class="card-title">🛒 Přidat do kalkulace</div>
-      <div class="grid2">
-        <div class="field">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px">
+        <div class="field" style="margin:0;grid-column:1/-1">
           <label>Název / popis</label>
           <input type="text" id="d-kalk-nazev" placeholder="např. Sáček s knírem — Mandle"/>
         </div>
-        <div class="field">
+        <div class="field" style="margin:0">
+          <label>Finální MO (Kč)</label>
+          <input type="number" id="d-kalk-mo" placeholder="—" min="0" step="0.5" oninput="dKalkSyncVO()"/>
+        </div>
+        <div class="field" style="margin:0">
+          <label>VO (Kč)</label>
+          <input type="number" id="d-kalk-vo" placeholder="—" min="0" step="0.5"/>
+        </div>
+        <div class="field" style="margin:0">
           <label>Počet kusů</label>
           <input type="number" id="d-kalk-ks" value="1" min="1"/>
         </div>
       </div>
       <button class="btn-kosik" id="btn-pridat" onclick="kalkAddItem()" style="margin-top:4px;opacity:.4;cursor:not-allowed" disabled>+ Přidat do kalkulace</button>
-      <div class="hint" id="pridat-hint" style="margin-top:6px">👆 Nejdřív spočítej dárek výše — pak sem zadej název a klikni pro přidání do kalkulace</div>
+      <div class="hint" id="pridat-hint" style="margin-top:6px">👆 Nejdřív spočítej dárek výše</div>
     </div>
 
   </div><!-- /tab-darky -->
@@ -960,6 +976,9 @@ function pShow(g, kc, pocet) {
   document.getElementById('p-result-content').style.display = 'block';
   document.getElementById('p-r-mo').textContent = mo + ' Kč';
   document.getElementById('p-r-vo').textContent = vo + ' Kč';
+  // Předvyplň editovatelná pole
+  const kmo = document.getElementById('p-kalk-mo'); if (kmo) kmo.value = mo;
+  const kvo = document.getElementById('p-kalk-vo'); if (kvo) kvo.value = vo;
   document.getElementById('p-r-nakup').textContent = Math.round(celkNakl) + ' Kč';
   const subParts = ['produkt ' + Math.round(nakup)];
   if (obal > 0)    subParts.push('obal ' + obal);
@@ -1186,6 +1205,9 @@ function dCalculate() {
   document.getElementById('dr-nakl').textContent = naklady.toFixed(2) + ' Kč';
   document.getElementById('dr-mo').textContent = mo + ' Kč';
   document.getElementById('dr-mo-bez').textContent = 'bez DPH: ' + Math.round(moExVat) + ' Kč';
+  // Předvyplň editovatelná pole pro kalkulaci
+  const dkmo = document.getElementById('d-kalk-mo'); if (dkmo) dkmo.value = mo;
+  const dkvo = document.getElementById('d-kalk-vo'); if (dkvo) dkvo.value = vo;
   document.getElementById('dr-vo').textContent = vo + ' Kč';
   document.getElementById('dr-vo-bez').textContent = 'bez DPH: ' + voExVat + ' Kč';
   document.getElementById('dr-marze').textContent = realMarze + ' %';
@@ -1401,44 +1423,41 @@ function nsGetItems() {
   return items;
 }
 
+function pKalkSyncVO() {
+  const mo = parseFloat(document.getElementById('p-kalk-mo').value) || 0;
+  const voFakt = 0.8;
+  if (mo) document.getElementById('p-kalk-vo').value = Math.round(mo * voFakt);
+}
+
+function dKalkSyncVO() {
+  const mo = parseFloat(document.getElementById('d-kalk-mo').value) || 0;
+  const voFakt = parseFloat(document.getElementById('d-vo-fakt')?.value) || 0.8;
+  if (mo) document.getElementById('d-kalk-vo').value = Math.round(mo * voFakt);
+}
+
 function kalkAddProdItem() {
-  const moEl = document.getElementById('p-r-mo');
-  if (!moEl || moEl.textContent === '—') { alert('Nejdřív vyber produkt a gramáž.'); return; }
-  const mo = parseFloat(moEl.textContent) || 0;
-  const voEl = document.getElementById('p-r-vo');
-  const vo = parseFloat(voEl?.textContent) || 0;
+  const mo = parseFloat(document.getElementById('p-kalk-mo').value) || 0;
+  const vo = parseFloat(document.getElementById('p-kalk-vo').value) || 0;
+  if (!mo) { alert('Nejdřív spočítej produkt — pole Finální MO se předvyplní automaticky.'); return; }
   const nakupEl = document.getElementById('p-r-nakup');
   const nakl = parseFloat(nakupEl?.textContent) || 0;
   const nazev = document.getElementById('p-kalk-nazev').value.trim() || (pProduct?.nazev || 'Produkt');
   const ks = parseInt(document.getElementById('p-kalk-ks').value) || 1;
-  const potiskKc = pGetPotiskKc();
-  const potiskLabel = document.querySelector('.potisk-btn.active')?.textContent?.trim() || 'Potisk';
-  const nadstavby = potiskKc > 0 ? [{ nazev: 'Potisk — ' + potiskLabel, cena: potiskKc }] : [];
-  KALK_ITEMS.push({ nazev, ks, mo: Math.round(mo), vo: Math.round(vo), nakl, nadstavby });
+  KALK_ITEMS.push({ nazev, ks, mo, vo, nakl, nadstavby: [] });
   kalkRender();
   document.getElementById('p-kalk-nazev').value = '';
   document.getElementById('p-kalk-ks').value = '1';
 }
 
 function kalkAddItem() {
-  const moEl = document.getElementById('dr-mo');
-  if (!moEl || moEl.textContent === '—') { alert('Nejdřív spočítej dárek v záložce Dárky.'); return; }
-  const mo = parseFloat(moEl.textContent) || 0;
-  const voEl = document.getElementById('dr-vo');
-  const baseVo = parseFloat(voEl.textContent) || 0;
+  const mo = parseFloat(document.getElementById('d-kalk-mo').value) || 0;
+  const vo = parseFloat(document.getElementById('d-kalk-vo').value) || 0;
+  if (!mo) { alert('Nejdřív spočítej dárek — pole Finální MO se předvyplní automaticky.'); return; }
   const naklEl = document.getElementById('dr-nakl');
-  const nakl = parseFloat(naklEl ? naklEl.textContent : 0) || 0;
-  const voFakt = parseFloat(document.getElementById('d-vo-fakt').value) || 0.8;
-
-  const nadstavby = nsGetItems();
-  const nsTotal = nadstavby.reduce((s, n) => s + n.cena, 0);
-  const finalMo = Math.round(mo + nsTotal);
-  const finalVo = Math.round(finalMo * voFakt);
-
+  const nakl = parseFloat(naklEl?.textContent) || 0;
   const nazev = document.getElementById('d-kalk-nazev').value.trim() || 'Dárek';
   const ks = parseInt(document.getElementById('d-kalk-ks').value) || 1;
-
-  KALK_ITEMS.push({ nazev, ks, mo: finalMo, vo: finalVo, nakl, nadstavby });
+  KALK_ITEMS.push({ nazev, ks, mo, vo, nakl, nadstavby: [] });
   kalkRender();
   document.getElementById('d-kalk-nazev').value = '';
   document.getElementById('d-kalk-ks').value = '1';
@@ -1453,13 +1472,11 @@ function kalkRender() {
   document.getElementById('kosik-items').innerHTML = KALK_ITEMS.map((item, i) => {
     totMo += item.mo * item.ks;
     totVo += item.vo * item.ks;
-    const ns = item.nadstavby.length ? `<div class="kosik-item-ns">+ ${item.nadstavby.map(n=>`${n.nazev} (${n.cena} Kč)`).join(' · ')}</div>` : '';
     return `<div class="kosik-item">
       <div class="kosik-item-header">
         <div class="kosik-item-nazev">${item.nazev}</div>
         <button class="kosik-rm" onclick="kalkRemove(${i})">×</button>
       </div>
-      ${ns}
       <div class="kosik-item-prices">
         <span><strong>${item.ks} ks</strong></span>
         <span>MO: <strong>${item.mo} Kč/ks</strong> → ${(item.mo*item.ks).toLocaleString('cs')} Kč</span>
