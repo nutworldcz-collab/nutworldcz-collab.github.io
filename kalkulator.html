@@ -968,7 +968,7 @@ function pShow(g, kc, pocet) {
   const celkNakl = nakup + obalPrace;
   let mo;
   if (pMarze !== null && celkNakl > 0) {
-    mo = priceRoundMO((celkNakl * 1.12) / (1 - pMarze / 100));
+    mo = Math.round((celkNakl * 1.12) / (1 - pMarze / 100));
   } else {
     mo = moCZ(g, kc);
   }
