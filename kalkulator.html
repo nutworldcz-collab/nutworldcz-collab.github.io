@@ -203,42 +203,6 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
         <div class="hint" id="p-obal-total" style="margin-top:4px"></div>
       </div>
 
-      <!-- Potisk doypacku -->
-      <div style="margin-top:14px;background:linear-gradient(135deg,#fdf6ee,#f7ede0);border:1.5px solid #d4b896;border-radius:12px;padding:14px 16px">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-          <span style="font-size:18px">🖨</span>
-          <span style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:13px;color:var(--bd);text-transform:uppercase;letter-spacing:1.5px">Potisk doypacku</span>
-        </div>
-
-        <!-- Typ potisku — tlačítka -->
-        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">
-          <button class="potisk-btn active" data-typ="none" onclick="pPotiskBtnClick(this,'none')">Bez potisku</button>
-          <button class="potisk-btn" data-typ="nw" onclick="pPotiskBtnClick(this,'nw')">Logo Nutworld</button>
-          <button class="potisk-btn" data-typ="logo" onclick="pPotiskBtnClick(this,'logo')">Logo zákazníka</button>
-          <button class="potisk-btn" data-typ="celo" onclick="pPotiskBtnClick(this,'celo')">Celopotisk</button>
-          <button class="potisk-btn" data-typ="vlastni" onclick="pPotiskBtnClick(this,'vlastni')">Vlastní</button>
-        </div>
-
-        <!-- Barevný + vlastní cena (řádek) -->
-        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-          <label style="display:flex;align-items:center;gap:6px;margin:0;font-size:13px;text-transform:none;letter-spacing:0;cursor:pointer;font-weight:600;color:var(--bd)">
-            <input type="checkbox" id="p-potisk-barveny" onchange="pPotiskUpdate()" style="width:auto;accent-color:var(--br)"/>
-            🎨 Barevný +1 Kč/ks
-          </label>
-          <div id="p-potisk-vlastni-wrap" style="display:none;flex:1;min-width:160px">
-            <label style="font-size:11px;margin-bottom:3px">Cena zákazník (Kč/ks bez DPH)</label>
-            <input type="number" id="p-potisk-vlastni-cena" placeholder="např. 5" min="0" step="0.5" oninput="pPotiskUpdate()" style="padding:6px 10px;font-size:13px"/>
-          </div>
-        </div>
-
-        <!-- Výsledná info lišta -->
-        <div id="p-potisk-result" style="display:none;margin-top:10px;background:white;border-radius:8px;padding:9px 13px;display:flex;justify-content:space-between;align-items:center">
-          <span id="p-potisk-hint" style="font-size:12px;color:#666"></span>
-          <span id="p-potisk-zak" style="font-family:'Exo 2',sans-serif;font-size:16px;font-weight:800;color:var(--bd)"></span>
-        </div>
-        <input type="hidden" id="p-potisk-typ" value="none"/>
-      </div>
-
       <button class="rollup-toggle" id="p-rollup-btn" onclick="pToggleRollup()">
         ➕ Roll-up — míchání více produktů
       </button>
@@ -309,8 +273,38 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
           <div class="total-row"><span>Celkem VO</span><span id="p-t-vo">—</span></div>
           <div class="total-row"><span>Celkový zisk (MO)</span><span id="p-t-zisk">—</span></div>
         </div>
+        <!-- Potisk doypacku — za výsledkem, před přidáním do košíku -->
+        <div style="margin-top:14px;border-top:1px dashed #c8a882;padding-top:14px;background:linear-gradient(135deg,#fdf6ee,#f7ede0);border-radius:10px;padding:12px 14px;margin-bottom:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <span style="font-size:16px">🖨</span>
+            <span style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;color:var(--bd);text-transform:uppercase;letter-spacing:1.5px">Potisk doypacku</span>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
+            <button class="potisk-btn active" data-typ="none" onclick="pPotiskBtnClick(this,'none')">Bez potisku</button>
+            <button class="potisk-btn" data-typ="nw" onclick="pPotiskBtnClick(this,'nw')">Logo Nutworld</button>
+            <button class="potisk-btn" data-typ="logo" onclick="pPotiskBtnClick(this,'logo')">Logo zákazníka</button>
+            <button class="potisk-btn" data-typ="celo" onclick="pPotiskBtnClick(this,'celo')">Celopotisk</button>
+            <button class="potisk-btn" data-typ="vlastni" onclick="pPotiskBtnClick(this,'vlastni')">Vlastní</button>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+            <label style="display:flex;align-items:center;gap:6px;margin:0;font-size:13px;text-transform:none;letter-spacing:0;cursor:pointer;font-weight:600;color:var(--bd)">
+              <input type="checkbox" id="p-potisk-barveny" onchange="pPotiskUpdate()" style="width:auto;accent-color:var(--br)"/>
+              🎨 Barevný +1 Kč/ks
+            </label>
+            <div id="p-potisk-vlastni-wrap" style="display:none;flex:1;min-width:160px">
+              <label style="font-size:11px;margin-bottom:3px">Cena zákazník (Kč/ks bez DPH)</label>
+              <input type="number" id="p-potisk-vlastni-cena" placeholder="např. 5" min="0" step="0.5" oninput="pPotiskUpdate()" style="padding:6px 10px;font-size:13px"/>
+            </div>
+          </div>
+          <div id="p-potisk-result" style="display:none;margin-top:8px;background:white;border-radius:8px;padding:8px 12px;display:flex;justify-content:space-between;align-items:center">
+            <span id="p-potisk-hint" style="font-size:12px;color:#666"></span>
+            <span id="p-potisk-zak" style="font-family:'Exo 2',sans-serif;font-size:15px;font-weight:800;color:var(--bd)"></span>
+          </div>
+          <input type="hidden" id="p-potisk-typ" value="none"/>
+        </div>
+
         <!-- Přidat do kalkulace (Produkty tab) -->
-        <div style="margin-top:14px;border-top:1px dashed #c8a882;padding-top:14px">
+        <div style="margin-top:8px;border-top:1px dashed #c8a882;padding-top:14px">
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px">
             <div class="field" style="margin:0;grid-column:1/-1">
               <label>Název pro kalkulaci</label>
@@ -957,7 +951,7 @@ function pShow(g, kc, pocet) {
   const celkNakl = nakup + obalPrace;
   let mo;
   if (pMarze !== null && celkNakl > 0) {
-    mo = roundTo9((celkNakl * 1.12) / (1 - pMarze / 100));
+    mo = priceRoundMO((celkNakl * 1.12) / (1 - pMarze / 100));
   } else {
     mo = moCZ(g, kc);
   }
