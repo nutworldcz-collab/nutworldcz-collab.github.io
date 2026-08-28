@@ -305,25 +305,42 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
 
         <!-- Přidat do kalkulace (Produkty tab) -->
         <div style="margin-top:8px;border-top:1px dashed #c8a882;padding-top:14px">
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px">
+
+          <!-- Reference z kalkulace -->
+          <div id="p-kalk-ref" style="display:none;background:#f7f0e8;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:#5c381f">
+            Z kalkulace: MO bez DPH <strong id="p-kalk-ref-mo">—</strong> Kč &nbsp;·&nbsp; VO bez DPH <strong id="p-kalk-ref-vo">—</strong> Kč
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
             <div class="field" style="margin:0;grid-column:1/-1">
               <label>Název pro kalkulaci</label>
               <input type="text" id="p-kalk-nazev" placeholder="např. Mandle 100g doypack"/>
             </div>
             <div class="field" style="margin:0">
-              <label>Cena bez DPH (Kč) <span style="font-weight:400;color:#999;font-size:11px">— nastav slevu zde</span></label>
-              <input type="number" id="p-kalk-mo" placeholder="—" min="0" step="0.5" oninput="pKalkSyncVO()"/>
-              <div id="p-kalk-potisk-hint" style="display:none;font-size:11px;color:#e65100;margin-top:3px;font-weight:600"></div>
-            </div>
-            <div class="field" style="margin:0">
-              <label>VO (Kč)</label>
-              <input type="number" id="p-kalk-vo" placeholder="—" min="0" step="0.5"/>
+              <label>Zákaznická cena bez DPH (Kč)</label>
+              <input type="number" id="p-kalk-mo" placeholder="zadej slevu z MO" min="0" step="0.5" oninput="pKalkUpdate()"/>
             </div>
             <div class="field" style="margin:0">
               <label>Počet ks</label>
-              <input type="number" id="p-kalk-ks" value="1" min="1"/>
+              <input type="number" id="p-kalk-ks" value="1" min="1" oninput="pKalkUpdate()"/>
             </div>
           </div>
+
+          <!-- Live výpočet: cena + potisk × ks -->
+          <div id="p-kalk-total" style="display:none;background:#fff8f0;border:1.5px solid #f7ab31;border-radius:8px;padding:10px 14px;margin-bottom:10px;font-family:'Exo 2',sans-serif">
+            <div style="font-size:12px;color:#888;margin-bottom:4px">Cena zákazník s potiskem</div>
+            <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap">
+              <span id="p-kalk-jps" style="font-size:20px;font-weight:800;color:var(--bd)">—</span>
+              <span style="font-size:13px;color:#888">Kč/ks bez DPH</span>
+              <span style="font-size:14px;color:#aaa">×</span>
+              <span id="p-kalk-ks-disp" style="font-size:15px;font-weight:700;color:#5c381f">—</span>
+              <span style="font-size:13px;color:#888">ks</span>
+              <span style="font-size:16px;color:#aaa">=</span>
+              <span id="p-kalk-total-czk" style="font-size:22px;font-weight:800;color:var(--br)">—</span>
+              <span style="font-size:13px;color:#888">Kč bez DPH</span>
+            </div>
+          </div>
+
           <button class="btn-kosik" id="btn-p-pridat" onclick="kalkAddProdItem()">+ Přidat do kalkulace</button>
         </div>
       </div>
@@ -968,24 +985,19 @@ function pShow(g, kc, pocet) {
   document.getElementById('p-r-mo').textContent = mo + ' Kč';
   document.getElementById('p-r-vo').textContent = vo + ' Kč';
 
-  // p-kalk-mo = základ BEZ potisku — uživatel zde nastaví slevu
-  // potisk se přičte až při vložení do košíku (po slevě)
+  // Předvyplň zákaznickou cenu = MO bez DPH (uživatel může snížit = sleva)
   const kmo = document.getElementById('p-kalk-mo');
   if (kmo) kmo.value = Math.round(moBez * 10) / 10;
-  const kvo = document.getElementById('p-kalk-vo');
-  if (kvo) kvo.value = Math.round((moBez + potisk) * 0.8);
 
-  // Hint: finální cena do košíku s potiskem
-  const pHint = document.getElementById('p-kalk-potisk-hint');
-  if (pHint) {
-    if (potisk > 0) {
-      const finalni = Math.round((moBez + potisk) * 10) / 10;
-      pHint.textContent = '+ potisk ' + potisk.toFixed(1) + ' Kč → do košíku: ' + finalni.toLocaleString('cs') + ' Kč bez DPH';
-      pHint.style.display = '';
-    } else {
-      pHint.style.display = 'none';
-    }
-  }
+  // Reference z kalkulace
+  const refEl = document.getElementById('p-kalk-ref');
+  const refMo = document.getElementById('p-kalk-ref-mo');
+  const refVo = document.getElementById('p-kalk-ref-vo');
+  if (refEl) refEl.style.display = '';
+  if (refMo) refMo.textContent = (Math.round(moBez * 10) / 10).toLocaleString('cs');
+  if (refVo) refVo.textContent = Math.round(moBez * 0.8);
+
+  pKalkUpdate();
 
   document.getElementById('p-r-nakup').textContent = Math.round(celkNakl) + ' Kč';
   const subParts = ['produkt ' + Math.round(nakup)];
@@ -1430,17 +1442,24 @@ function nsGetItems() {
   return items;
 }
 
-function pKalkSyncVO() {
-  const bezDPH = parseFloat(document.getElementById('p-kalk-mo').value) || 0;
+function pKalkUpdate() {
+  const zakCena = parseFloat(document.getElementById('p-kalk-mo')?.value) || 0;
+  const ks = parseInt(document.getElementById('p-kalk-ks')?.value) || 1;
   const potisk = pGetPotiskKc();
-  if (bezDPH) document.getElementById('p-kalk-vo').value = Math.round((bezDPH + potisk) * 0.8);
-  const pHint = document.getElementById('p-kalk-potisk-hint');
-  if (pHint && potisk > 0 && bezDPH) {
-    const finalni = Math.round((bezDPH + potisk) * 10) / 10;
-    pHint.textContent = '+ potisk ' + potisk.toFixed(1) + ' Kč → do košíku: ' + finalni.toLocaleString('cs') + ' Kč bez DPH';
-    pHint.style.display = '';
-  }
+  const jps = Math.round((zakCena + potisk) * 10) / 10;  // cena/ks s potiskem
+  const total = Math.round(jps * ks * 10) / 10;
+
+  const totalEl = document.getElementById('p-kalk-total');
+  if (totalEl) totalEl.style.display = zakCena > 0 ? '' : 'none';
+  const jpsEl = document.getElementById('p-kalk-jps');
+  if (jpsEl) jpsEl.textContent = jps.toLocaleString('cs');
+  const ksDisp = document.getElementById('p-kalk-ks-disp');
+  if (ksDisp) ksDisp.textContent = ks;
+  const totalCzk = document.getElementById('p-kalk-total-czk');
+  if (totalCzk) totalCzk.textContent = total.toLocaleString('cs');
 }
+
+function pKalkSyncVO() { pKalkUpdate(); }
 
 function dKalkSyncVO() {
   const mo = parseFloat(document.getElementById('d-kalk-mo').value) || 0;
@@ -1449,11 +1468,11 @@ function dKalkSyncVO() {
 }
 
 function kalkAddProdItem() {
-  const bezDPH = parseFloat(document.getElementById('p-kalk-mo').value) || 0;
-  if (!bezDPH) { alert('Nejdřív spočítej produkt — pole Cena bez DPH se předvyplní automaticky.'); return; }
-  // Potisk se přičítá PO slevě (bezDPH je již po slevě uživatelem)
+  const zakCena = parseFloat(document.getElementById('p-kalk-mo').value) || 0;
+  if (!zakCena) { alert('Nejdřív spočítej produkt — zákaznická cena se předvyplní automaticky.'); return; }
   const potisk = pGetPotiskKc();
-  const finalBezDPH = Math.round((bezDPH + potisk) * 10) / 10;
+  // finalBezDPH = zákaznická cena po slevě + potisk
+  const finalBezDPH = Math.round((zakCena + potisk) * 10) / 10;
   const vo = Math.round(finalBezDPH * 0.8);
   const nakupEl = document.getElementById('p-r-nakup');
   const nakl = parseFloat(nakupEl?.textContent) || 0;
@@ -1463,6 +1482,7 @@ function kalkAddProdItem() {
   kalkRender();
   document.getElementById('p-kalk-nazev').value = '';
   document.getElementById('p-kalk-ks').value = '1';
+  pKalkUpdate();
 }
 
 function kalkAddItem() {
