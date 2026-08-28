@@ -1477,8 +1477,9 @@ function kalkAddProdItem() {
   const nakupEl = document.getElementById('p-r-nakup');
   const nakl = parseFloat(nakupEl?.textContent) || 0;
   const nazev = document.getElementById('p-kalk-nazev').value.trim() || (pProduct?.nazev || 'Produkt');
+  const kod = pProduct?.kod || '';
   const ks = parseInt(document.getElementById('p-kalk-ks').value) || 1;
-  KALK_ITEMS.push({ nazev, ks, mo: finalBezDPH, vo, nakl, nadstavby: [] });
+  KALK_ITEMS.push({ nazev, kod, ks, mo: finalBezDPH, vo, nakl, nadstavby: [] });
   kalkRender();
   document.getElementById('p-kalk-nazev').value = '';
   document.getElementById('p-kalk-ks').value = '1';
@@ -1533,9 +1534,10 @@ function kalkClear() {
 function _buildHash() {
   const repName = REP_NAMES[document.getElementById('rep-sel').value] || '';
   const produkty = KALK_ITEMS.map(item => ({
+    kod: item.kod || '',
     nazev: item.nazev + (item.nadstavby.length ? ' (+ ' + item.nadstavby.map(n=>n.nazev).join(', ') + ')' : ''),
     ks: item.ks,
-    cena: item.vo,
+    cena: item.mo,   // zákaznická cena bez DPH (po slevě + potisk)
     nakup: item.nakl || ''
   }));
   return btoa(unescape(encodeURIComponent(JSON.stringify({ repName, produkty }))));
