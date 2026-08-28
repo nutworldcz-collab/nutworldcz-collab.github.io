@@ -949,9 +949,9 @@ function pShow(g, kc, pocet) {
   }
   if (!mo) return;
 
-  // Přičti potisk zákazník (naše × 2) — fixní přirážka mimo maržový vzorec
+  // Přičti potisk — fixní přirážka mimo maržový vzorec, bez zaokrouhlení
   const potisk = pGetPotiskKc();
-  mo = mo + Math.round(potisk);
+  mo = mo + potisk;
   vo = Math.round(mo * 0.8);
 
   const moBez = mo / 1.12;
@@ -972,7 +972,7 @@ function pShow(g, kc, pocet) {
   if (prace > 0)   subParts.push('práce ' + prace);
   if (etiketa > 0) subParts.push('etiketa ' + etiketa);
   if (taveni > 0)  subParts.push('tavení ' + taveni);
-  if (potisk > 0)  subParts.push('potisk ' + Math.round(potisk));
+  if (potisk > 0)  subParts.push('potisk ' + potisk);
   document.getElementById('p-r-nakup-sub').textContent = subParts.join(' + ') + ' Kč';
   document.getElementById('p-obal-total').textContent = obalPrace > 0
     ? 'Celkem obal + práce + etiketa: ' + obalPrace.toFixed(1) + ' Kč'
