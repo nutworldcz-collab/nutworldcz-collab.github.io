@@ -631,7 +631,7 @@ const PRODUKTY = [{"kod": "185", "nazev": "Datle 2026 06 -MBI", "kg_czk": 49.0, 
 const DOYPACK_OBAL   = [{max:50,v:2},{max:100,v:2.5},{max:250,v:3.5},{max:550,v:4.5},{max:1000,v:7.5},{max:99999,v:9}];
 const DOYPACK_PRACE  = [{max:50,v:2.5},{max:100,v:3.5},{max:250,v:3.9},{max:550,v:4.5},{max:1000,v:5},{max:99999,v:6}];
 const DOYPACK_TAVENI = [{max:250,v:1},{max:1000,v:1.5},{max:99999,v:2}];
-// Potisk — naše nákupní cena/ks; zákazník platí × 2
+// Potisk — finální zákazníkova cena Kč/ks
 const DOYPACK_POTISK_BRK = [
   {max:50,   logo:1.5, celo:2.0},
   {max:110,  logo:1.6, celo:2.2},
@@ -662,9 +662,9 @@ function pGetPotiskKc() {
   if (!g || g > 1000) return 0;
   const brk = DOYPACK_POTISK_BRK.find(b => g <= b.max);
   if (!brk) return 0;
-  let nase = typ === 'logo' ? brk.logo : brk.celo;
-  if (barveny) nase += 1;
-  return nase * 2; // zákazník platí naše × 2
+  let zak = typ === 'logo' ? brk.logo : brk.celo;
+  if (barveny) zak += 1;
+  return zak;
 }
 
 function pPotiskUpdate() {
@@ -696,10 +696,9 @@ function pPotiskUpdate() {
     const brk = DOYPACK_POTISK_BRK.find(b => g <= b.max);
     if (!brk) { hintText = '⚠ Nad 1 kg potisk nelze'; zakText = 'nelze'; showResult = true; }
     else {
-      let nase = typ === 'logo' ? brk.logo : brk.celo;
-      if (barveny) nase += 1;
-      const zak = nase * 2;
-      hintText = `Naše ${nase.toFixed(1)} Kč × 2`;
+      let zak = typ === 'logo' ? brk.logo : brk.celo;
+      if (barveny) zak += 1;
+      hintText = barveny ? `${(zak - 1).toFixed(1)} Kč + 1 Kč barevný` : '';
       zakText = '+' + zak.toFixed(1) + ' Kč/ks';
       showResult = true;
     }
