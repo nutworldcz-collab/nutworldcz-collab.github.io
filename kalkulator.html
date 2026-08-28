@@ -552,7 +552,7 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
     <div id="kosik-items"></div>
     <div class="total-costs" style="margin-top:12px">
       <div class="cost-row"><span>Celkem bez DPH</span><span id="kosik-mo-total" style="font-family:'Exo 2',sans-serif;font-weight:700;color:var(--bd)">—</span></div>
-      <div class="cost-row"><span>Celkem VO</span><span id="kosik-vo-total" style="font-family:'Exo 2',sans-serif;font-weight:700;color:var(--bd)">—</span></div>
+      <span id="kosik-vo-total" style="display:none"></span>
     </div>
     <div style="display:flex;gap:10px;margin-top:16px">
       <button class="btn-kosik sec" id="btn-trello" onclick="kalkUlozit()">💾 Uložit na Trello</button>
@@ -1516,7 +1516,6 @@ function kalkRender() {
       <div class="kosik-item-prices">
         <span><strong>${item.ks} ks</strong></span>
         <span>Bez DPH: <strong>${item.mo} Kč/ks</strong> → ${(item.mo*item.ks).toLocaleString('cs')} Kč</span>
-        <span>VO: <strong>${item.vo} Kč/ks</strong> → ${(item.vo*item.ks).toLocaleString('cs')} Kč</span>
       </div>
     </div>`;
   }).join('');
