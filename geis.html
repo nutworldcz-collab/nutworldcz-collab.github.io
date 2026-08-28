@@ -7,139 +7,156 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Exo+2:wght@700&display=swap" rel="stylesheet"/>
 <style>
   :root {
-    --bg: #F5F1EC; --surface: #EDE8DF; --surface-2: #E4DDD3;
-    --border: #CEC6B9; --text: #1C1710; --text-muted: #72604F;
-    --accent: #83502E; --accent-light: rgba(131,80,46,0.11);
-    --amber: #D4900E;
-    --good: #3A6A28; --good-bg: rgba(58,106,40,0.10); --good-border: rgba(58,106,40,0.22);
-    --dead: #B02818; --dead-bg: rgba(176,40,24,0.09); --dead-border: rgba(176,40,24,0.22);
-    --warn: #8B5E00; --warn-bg: rgba(139,94,0,0.09); --warn-border: rgba(139,94,0,0.22);
+    --bg:#F5F1EC;--surface:#EDE8DF;--surface-2:#E4DDD3;--border:#CEC6B9;
+    --text:#1C1710;--text-muted:#72604F;--accent:#83502E;--accent-light:rgba(131,80,46,0.11);--amber:#D4900E;
+    --good:#3A6A28;--good-bg:rgba(58,106,40,0.10);--good-border:rgba(58,106,40,0.22);
+    --dead:#B02818;--dead-bg:rgba(176,40,24,0.09);--dead-border:rgba(176,40,24,0.22);
+    --warn:#8B5E00;--warn-bg:rgba(139,94,0,0.09);--warn-border:rgba(139,94,0,0.22);
+    --sk:#1a5276;--sk-bg:rgba(26,82,118,0.08);--sk-border:rgba(26,82,118,0.22);
   }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 1.5rem 1.25rem 3rem; font-size: 14.5px; }
-  .topnav { display: flex; align-items: center; gap: 10px; margin-bottom: 1.75rem; }
-  .topnav a { font-family: 'Exo 2', sans-serif; font-size: 13px; font-weight: 700; color: var(--accent); text-decoration: none; opacity: .7; }
-  .topnav a:hover { opacity: 1; }
-  .topnav-sep { color: var(--text-muted); font-size: 12px; }
-  .page { max-width: 560px; margin: 0 auto; }
-  .header { margin-bottom: 2rem; }
-  .eyebrow { font-size: 10.5px; letter-spacing: .13em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .4rem; font-weight: 500; }
-  h1 { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.75rem; font-weight: 400; line-height: 1.2; margin-bottom: .6rem; }
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
-  .zone-card-title { font-size: 11px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .8rem; }
-  .zone-btns-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 1rem; }
-  .zone-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; background: var(--surface-2); border: 1.5px solid var(--border); border-radius: 10px; padding: .6rem .4rem; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all .15s; text-align: center; }
-  .zone-btn:hover { border-color: var(--accent); background: var(--accent-light); }
-  .zone-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .zone-btn .zn { font-size: 1.1rem; font-weight: 700; font-family: 'DM Serif Display', serif; }
-  .zone-btn .zd { font-size: 10px; font-weight: 500; opacity: .75; }
-  .zone-btn .ze { font-size: 10.5px; font-weight: 600; margin-top: 2px; }
-  .zone-btn.active .ze, .zone-btn.active .zd { opacity: 1; }
-  .city-search-wrap { position: relative; }
-  #citySearch { width: 100%; background: var(--bg); border: 1.5px solid var(--border); border-radius: 8px; padding: .5rem .75rem; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); outline: none; }
-  #citySearch:focus { border-color: var(--accent); }
-  .city-dropdown { position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 50; background: var(--surface); border: 1.5px solid var(--border); border-radius: 8px; overflow: hidden; display: none; box-shadow: 0 4px 12px rgba(0,0,0,.08); }
-  .city-item { display: flex; align-items: center; justify-content: space-between; padding: .55rem .9rem; cursor: pointer; gap: 8px; transition: background .1s; }
-  .city-item:hover { background: var(--accent-light); }
-  .city-item + .city-item { border-top: 1px solid var(--border); }
-  .city-name { font-weight: 500; font-size: 13.5px; }
-  .city-meta { font-size: 11.5px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
-  .city-zone-badge { font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 10px; background: var(--accent-light); color: var(--accent); }
-  .city-confirmed { color: var(--good); font-size: 10.5px; font-weight: 600; }
-  .city-result { margin-top: .7rem; padding: .55rem .8rem; border-radius: 8px; background: var(--accent-light); border: 1px solid rgba(131,80,46,0.2); font-size: 12.5px; display: flex; align-items: center; justify-content: space-between; }
-  .city-result-name { font-weight: 600; color: var(--accent); }
-  .city-result-info { font-size: 11.5px; color: var(--text-muted); }
-  .city-clear-btn { background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 1rem; padding: 0 .2rem; line-height: 1; }
-  .zone-odhad-note { font-size: 11px; color: var(--text-muted); margin-top: .6rem; line-height: 1.5; }
-  .input-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; margin-bottom: 1rem; }
-  .kg-row { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.1rem; }
-  .btn-adj { width: 38px; height: 38px; border-radius: 8px; border: 1.5px solid var(--border); background: var(--surface-2); color: var(--text); font-size: 1.3rem; font-weight: 400; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; flex-shrink: 0; transition: background .15s; }
-  .btn-adj:hover { background: var(--accent-light); border-color: var(--accent); }
-  .kg-input-wrap { flex: 1; display: flex; align-items: baseline; gap: 5px; background: var(--bg); border: 1.5px solid var(--border); border-radius: 8px; padding: .4rem .75rem; }
-  .kg-input-wrap:focus-within { border-color: var(--accent); }
-  #kgInput { background: none; border: none; outline: none; font-family: 'DM Sans', sans-serif; font-size: 2rem; font-weight: 700; color: var(--accent); width: 100%; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
-  #kgInput::-webkit-inner-spin-button, #kgInput::-webkit-outer-spin-button { -webkit-appearance: none; }
-  .kg-unit { font-size: 1rem; font-weight: 500; color: var(--text-muted); flex-shrink: 0; }
-  .slider-wrap { position: relative; }
-  #kgSlider { width: 100%; -webkit-appearance: none; appearance: none; height: 6px; border-radius: 3px; background: var(--surface-2); outline: none; cursor: pointer; }
-  #kgSlider::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--accent); border: 3px solid var(--bg); box-shadow: 0 1px 4px rgba(0,0,0,.2); cursor: pointer; }
-  #kgSlider::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: var(--accent); border: 3px solid var(--bg); cursor: pointer; }
-  .slider-labels { display: flex; justify-content: space-between; margin-top: .4rem; font-size: 10px; color: var(--text-muted); }
-  .presets { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; margin-bottom: 1rem; }
-  .preset-label { font-size: 11px; color: var(--text-muted); margin-right: 2px; align-self: center; }
-  .btn-preset { background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px; padding: 3px 10px; font-size: 12px; font-weight: 500; color: var(--text-muted); cursor: pointer; font-family: 'DM Sans', sans-serif; font-variant-numeric: tabular-nums; transition: all .15s; }
-  .btn-preset:hover { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
-  .btn-preset.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .pallet-divider { border: none; border-top: 1px solid var(--border); margin: .85rem 0; }
-  .pallet-section-label { font-size: 11px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .65rem; }
-  .pallet-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: .6rem; }
-  .pallet-btn { background: var(--surface-2); border: 1.5px solid var(--border); border-radius: 7px; padding: 4px 12px; font-size: 12.5px; font-weight: 500; color: var(--text-muted); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all .15s; }
-  .pallet-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
-  .pallet-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .pcount-row { display: flex; align-items: center; gap: 6px; margin-bottom: .5rem; }
-  .pcount-label { font-size: 12px; color: var(--text-muted); }
-  .pcount-btn { width: 30px; height: 30px; border-radius: 6px; border: 1.5px solid var(--border); background: var(--surface-2); color: var(--text-muted); font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all .15s; display: flex; align-items: center; justify-content: center; }
-  .pcount-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .pcount-btn:hover:not(.active) { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
-  .billable-note { font-size: 12px; color: var(--text-muted); background: var(--surface-2); border-radius: 7px; padding: 6px 10px; line-height: 1.5; }
-  .billable-note strong { color: var(--accent); }
-  .band-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
-  .band-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; background: var(--accent-light); color: var(--accent); }
-  .band-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
-  .prepravne-note { font-size: 12px; color: var(--text-muted); }
-  .breakdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 1rem; }
-  .b-card { background: var(--surface-2); border-radius: 8px; padding: .65rem .75rem; }
-  .b-label { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); margin-bottom: .3rem; }
-  .b-value { font-size: 1.05rem; font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; }
-  .b-value.muted { color: var(--text-muted); font-weight: 400; }
-  .b-sub { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
-  .total-box { background: var(--surface); border: 1.5px solid var(--border); border-radius: 10px; padding: 1rem 1.1rem; margin-bottom: 1.1rem; }
-  .total-main { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: .5rem; padding-bottom: .5rem; border-bottom: 1px solid var(--border); }
-  .total-main-label { font-size: 13px; font-weight: 500; }
-  .total-main-val { font-family: 'DM Serif Display', serif; font-size: 2rem; font-weight: 400; color: var(--accent); font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
-  .total-sec { display: flex; justify-content: space-between; align-items: center; }
-  .total-sec-item { display: flex; flex-direction: column; align-items: center; gap: 2px; }
-  .total-sec-label { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); }
-  .total-sec-val { font-size: 1.05rem; font-weight: 600; font-variant-numeric: tabular-nums; }
-  .sep { width: 1px; height: 30px; background: var(--border); }
-  .per-kg-big { color: var(--accent); font-size: 1.35rem !important; }
-  .zone-box { border-radius: 10px; padding: 1rem 1.1rem; border: 1.5px solid; margin-bottom: .9rem; }
-  .zone-box.good { background: var(--good-bg); border-color: var(--good-border); }
-  .zone-box.dead { background: var(--dead-bg); border-color: var(--dead-border); }
-  .zone-box.warn { background: var(--warn-bg); border-color: var(--warn-border); }
-  .zone-head { display: flex; align-items: center; gap: 8px; margin-bottom: .4rem; }
-  .zone-icon { font-size: 1rem; }
-  .zone-label { font-size: 13px; font-weight: 700; }
-  .good .zone-label { color: var(--good); }
-  .dead .zone-label { color: var(--dead); }
-  .warn .zone-label { color: var(--warn); }
-  .zone-note { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
-  .zone-alt { margin-top: .7rem; padding-top: .7rem; border-top: 1px solid var(--border); font-size: 12.5px; color: var(--text-muted); }
-  .zone-alt strong { color: var(--text); }
-  .confidence-row { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--text-muted); margin-bottom: .5rem; }
-  .conf-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-  .conf-high { background: var(--good); }
-  .conf-mid { background: var(--amber); }
-  .conf-low { background: var(--dead); }
-  .disclaimer { font-size: 11px; color: var(--text-muted); line-height: 1.6; padding-top: .75rem; border-top: 1px solid var(--border); }
-  @media (max-width: 480px) {
-    .breakdown { grid-template-columns: repeat(2, 1fr); }
-    h1 { font-size: 1.5rem; }
-    .total-main-val { font-size: 1.7rem; }
-    .zone-btns-row { grid-template-columns: repeat(2, 1fr); }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:1.5rem 1.25rem 3rem;font-size:14.5px}
+  .topnav{display:flex;align-items:center;gap:10px;margin-bottom:1.75rem}
+  .topnav a{font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700;color:var(--accent);text-decoration:none;opacity:.7}
+  .topnav a:hover{opacity:1}
+  .topnav-sep{color:var(--text-muted);font-size:12px}
+  .page{max-width:560px;margin:0 auto}
+  .header{margin-bottom:2rem}
+  .eyebrow{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.4rem;font-weight:500}
+  h1{font-family:'DM Serif Display',Georgia,serif;font-size:1.75rem;font-weight:400;line-height:1.2;margin-bottom:.6rem}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:1rem}
+
+  /* Country toggle */
+  .country-row{display:flex;gap:8px;margin-bottom:1rem}
+  .country-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:var(--surface-2);border:1.5px solid var(--border);border-radius:9px;padding:.55rem;font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:600;cursor:pointer;transition:all .15s;color:var(--text-muted)}
+  .country-btn:hover{border-color:var(--accent);background:var(--accent-light);color:var(--accent)}
+  .country-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+  .country-btn.active-sk{background:var(--sk);border-color:var(--sk);color:#fff}
+
+  /* Zone selector */
+  .zone-card-title{font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.8rem}
+  .zone-btns-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1rem}
+  .zone-btn{display:flex;flex-direction:column;align-items:center;gap:2px;background:var(--surface-2);border:1.5px solid var(--border);border-radius:10px;padding:.6rem .4rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;text-align:center}
+  .zone-btn:hover{border-color:var(--accent);background:var(--accent-light)}
+  .zone-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+  .zone-btn .zn{font-size:1.1rem;font-weight:700;font-family:'DM Serif Display',serif}
+  .zone-btn .zd{font-size:10px;font-weight:500;opacity:.75}
+  .zone-btn .ze{font-size:10.5px;font-weight:600;margin-top:2px}
+  .zone-btn.active .ze,.zone-btn.active .zd{opacity:1}
+
+  /* SK info box */
+  .sk-info{background:var(--sk-bg);border:1.5px solid var(--sk-border);border-radius:10px;padding:.8rem 1rem;margin-bottom:.8rem}
+  .sk-info-title{font-size:13px;font-weight:700;color:var(--sk);margin-bottom:.25rem}
+  .sk-info-note{font-size:12px;color:var(--text-muted);line-height:1.5}
+
+  /* City search */
+  .city-search-wrap{position:relative}
+  #citySearch{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:.5rem .75rem;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);outline:none}
+  #citySearch:focus{border-color:var(--accent)}
+  .city-dropdown{position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:50;background:var(--surface);border:1.5px solid var(--border);border-radius:8px;overflow:hidden;display:none;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+  .city-item{display:flex;align-items:center;justify-content:space-between;padding:.55rem .9rem;cursor:pointer;gap:8px;transition:background .1s}
+  .city-item:hover{background:var(--accent-light)}
+  .city-item+.city-item{border-top:1px solid var(--border)}
+  .city-name{font-weight:500;font-size:13.5px}
+  .city-meta{font-size:11.5px;color:var(--text-muted);display:flex;align-items:center;gap:6px}
+  .city-zone-badge{font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;background:var(--accent-light);color:var(--accent)}
+  .city-confirmed{color:var(--good);font-size:10.5px;font-weight:600}
+  .city-result{margin-top:.7rem;padding:.55rem .8rem;border-radius:8px;background:var(--accent-light);border:1px solid rgba(131,80,46,0.2);font-size:12.5px;display:flex;align-items:center;justify-content:space-between}
+  .city-result-name{font-weight:600;color:var(--accent)}
+  .city-clear-btn{background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:1rem;padding:0 .2rem;line-height:1}
+  .zone-odhad-note{font-size:11px;color:var(--text-muted);margin-top:.6rem;line-height:1.5}
+
+  /* Input card */
+  .input-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.5rem;margin-bottom:1rem}
+  .kg-row{display:flex;align-items:center;gap:.75rem;margin-bottom:1.1rem}
+  .btn-adj{width:38px;height:38px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface-2);color:var(--text);font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s}
+  .btn-adj:hover{background:var(--accent-light);border-color:var(--accent)}
+  .kg-input-wrap{flex:1;display:flex;align-items:baseline;gap:5px;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:.4rem .75rem}
+  .kg-input-wrap:focus-within{border-color:var(--accent)}
+  #kgInput{background:none;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:2rem;font-weight:700;color:var(--accent);width:100%;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  #kgInput::-webkit-inner-spin-button,#kgInput::-webkit-outer-spin-button{-webkit-appearance:none}
+  .kg-unit{font-size:1rem;font-weight:500;color:var(--text-muted);flex-shrink:0}
+  .slider-wrap{position:relative}
+  #kgSlider{width:100%;-webkit-appearance:none;appearance:none;height:6px;border-radius:3px;background:var(--surface-2);outline:none;cursor:pointer}
+  #kgSlider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--accent);border:3px solid var(--bg);box-shadow:0 1px 4px rgba(0,0,0,.2);cursor:pointer}
+  #kgSlider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--accent);border:3px solid var(--bg);cursor:pointer}
+  .slider-labels{display:flex;justify-content:space-between;margin-top:.4rem;font-size:10px;color:var(--text-muted)}
+  .presets{display:flex;flex-wrap:wrap;gap:6px;margin-top:1rem;margin-bottom:1rem}
+  .preset-label{font-size:11px;color:var(--text-muted);margin-right:2px;align-self:center}
+  .btn-preset{background:var(--surface-2);border:1px solid var(--border);border-radius:6px;padding:3px 10px;font-size:12px;font-weight:500;color:var(--text-muted);cursor:pointer;font-family:'DM Sans',sans-serif;font-variant-numeric:tabular-nums;transition:all .15s}
+  .btn-preset:hover{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
+  .btn-preset.active{background:var(--accent);border-color:var(--accent);color:#fff}
+  .pallet-divider{border:none;border-top:1px solid var(--border);margin:.85rem 0}
+  .pallet-section-label{font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.65rem}
+  .pallet-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:.6rem}
+  .pallet-btn{background:var(--surface-2);border:1.5px solid var(--border);border-radius:7px;padding:4px 12px;font-size:12.5px;font-weight:500;color:var(--text-muted);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
+  .pallet-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
+  .pallet-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+  .pcount-row{display:flex;align-items:center;gap:6px;margin-bottom:.5rem}
+  .pcount-label{font-size:12px;color:var(--text-muted)}
+  .pcount-btn{width:30px;height:30px;border-radius:6px;border:1.5px solid var(--border);background:var(--surface-2);color:var(--text-muted);font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;display:flex;align-items:center;justify-content:center}
+  .pcount-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+  .pcount-btn:hover:not(.active){border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
+  .billable-note{font-size:12px;color:var(--text-muted);background:var(--surface-2);border-radius:7px;padding:6px 10px;line-height:1.5}
+  .billable-note strong{color:var(--accent)}
+
+  /* Band + breakdown */
+  .band-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+  .band-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:4px 12px;border-radius:20px;background:var(--accent-light);color:var(--accent)}
+  .band-dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+  .prepravne-note{font-size:12px;color:var(--text-muted)}
+  .breakdown{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1rem}
+  .b-card{background:var(--surface-2);border-radius:8px;padding:.65rem .75rem}
+  .b-label{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:.3rem}
+  .b-value{font-size:1.05rem;font-weight:600;color:var(--text);font-variant-numeric:tabular-nums}
+  .b-value.muted{color:var(--text-muted);font-weight:400}
+  .b-sub{font-size:10px;color:var(--text-muted);margin-top:1px}
+
+  /* Total */
+  .total-box{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:1rem 1.1rem;margin-bottom:1.1rem}
+  .total-main{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:.5rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+  .total-main-label{font-size:13px;font-weight:500}
+  .total-main-val{font-family:'DM Serif Display',serif;font-size:2rem;font-weight:400;color:var(--accent);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+  .total-sec{display:flex;justify-content:space-between;align-items:center}
+  .total-sec-item{display:flex;flex-direction:column;align-items:center;gap:2px}
+  .total-sec-label{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted)}
+  .total-sec-val{font-size:1.05rem;font-weight:600;font-variant-numeric:tabular-nums}
+  .sep{width:1px;height:30px;background:var(--border)}
+  .per-kg-big{color:var(--accent);font-size:1.35rem!important}
+
+  /* Zone insight */
+  .zone-box{border-radius:10px;padding:1rem 1.1rem;border:1.5px solid;margin-bottom:.9rem}
+  .zone-box.good{background:var(--good-bg);border-color:var(--good-border)}
+  .zone-box.dead{background:var(--dead-bg);border-color:var(--dead-border)}
+  .zone-box.warn{background:var(--warn-bg);border-color:var(--warn-border)}
+  .zone-head{display:flex;align-items:center;gap:8px;margin-bottom:.4rem}
+  .zone-icon{font-size:1rem}
+  .zone-lbl{font-size:13px;font-weight:700}
+  .good .zone-lbl{color:var(--good)}.dead .zone-lbl{color:var(--dead)}.warn .zone-lbl{color:var(--warn)}
+  .zone-note{font-size:13px;color:var(--text-muted);line-height:1.55}
+  .zone-alt{margin-top:.7rem;padding-top:.7rem;border-top:1px solid var(--border);font-size:12.5px;color:var(--text-muted)}
+  .zone-alt strong{color:var(--text)}
+
+  /* Confidence */
+  .confidence-row{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text-muted);margin-bottom:.5rem}
+  .conf-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+  .conf-high{background:var(--good)}.conf-mid{background:var(--amber)}.conf-low{background:var(--dead)}
+  .disclaimer{font-size:11px;color:var(--text-muted);line-height:1.6;padding-top:.75rem;border-top:1px solid var(--border)}
+
+  @media(max-width:480px){
+    .breakdown{grid-template-columns:repeat(2,1fr)}
+    h1{font-size:1.5rem}.total-main-val{font-size:1.7rem}
+    .zone-btns-row{grid-template-columns:repeat(2,1fr)}
   }
 </style>
 </head>
 <body>
-
 <div class="page">
 
   <nav class="topnav">
     <a href="/index.html">🐿 Nutworld</a>
     <span class="topnav-sep">›</span>
-    <a href="/index.html" style="opacity:.5">Obchod</a>
-    <span class="topnav-sep">›</span>
-    <span style="color:var(--text-muted);font-size:13px">Kalkulačka Geis</span>
+    <span style="color:var(--text-muted);font-size:13px">Paletová doprava</span>
   </nav>
 
   <div class="header">
@@ -147,46 +164,55 @@
     <h1>Paletová doprava</h1>
   </div>
 
-  <!-- ZONE SELECTOR CARD -->
+  <!-- ZONE / COUNTRY CARD -->
   <div class="card">
-    <div class="zone-card-title">Mýtné zóna — odkud–kam</div>
-    <div class="zone-btns-row">
-      <button class="zone-btn" data-zone="1">
-        <span class="zn">1</span><span class="zd">blízká</span><span class="ze">Náchod</span>
-      </button>
-      <button class="zone-btn" data-zone="2">
-        <span class="zn">2</span><span class="zd">střední</span><span class="ze">Praha</span>
-      </button>
-      <button class="zone-btn active" data-zone="3">
-        <span class="zn">3</span><span class="zd">vzdálená</span><span class="ze">Brno ✓</span>
-      </button>
-      <button class="zone-btn" data-zone="4">
-        <span class="zn">4</span><span class="zd">daleká</span><span class="ze">Plzeň</span>
-      </button>
+    <div class="zone-card-title">Cílová destinace</div>
+
+    <!-- Country toggle -->
+    <div class="country-row">
+      <button class="country-btn active" data-country="CZ">🇨🇿 Česká republika</button>
+      <button class="country-btn" data-country="SK">🇸🇰 Slovenská republika</button>
     </div>
-    <div class="city-search-wrap">
-      <input type="text" id="citySearch" placeholder="Hledat cílové město…" autocomplete="off">
-      <div class="city-dropdown" id="cityDropdown"></div>
-    </div>
-    <div class="city-result" id="cityResult" style="display:none">
-      <div>
-        <span class="city-result-name" id="cityResultName"></span>
-        <span class="city-result-info" id="cityResultInfo"></span>
+
+    <!-- CZ zone section -->
+    <div id="czSection">
+      <div class="zone-btns-row">
+        <button class="zone-btn" data-zone="1"><span class="zn">1</span><span class="zd">blízká</span><span class="ze">Náchod</span></button>
+        <button class="zone-btn" data-zone="2"><span class="zn">2</span><span class="zd">střední</span><span class="ze">Praha</span></button>
+        <button class="zone-btn active" data-zone="3"><span class="zn">3</span><span class="zd">vzdálená</span><span class="ze">Brno ✓</span></button>
+        <button class="zone-btn" data-zone="4"><span class="zn">4</span><span class="zd">daleká</span><span class="ze">Plzeň</span></button>
       </div>
-      <button class="city-clear-btn" id="cityClear" title="Zrušit">✕</button>
+      <div class="city-search-wrap">
+        <input type="text" id="citySearch" placeholder="Hledat cílové město…" autocomplete="off">
+        <div class="city-dropdown" id="cityDropdown"></div>
+      </div>
+      <div class="city-result" id="cityResult" style="display:none">
+        <div><span class="city-result-name" id="cityResultName"></span><span id="cityResultInfo"></span></div>
+        <button class="city-clear-btn" id="cityClear">✕</button>
+      </div>
+      <p class="zone-odhad-note" id="zoneOdhadNote">Zóna 3 = Hronov–Brno, potvrzeno fakturami. Ostatní města jsou odhad — přesné zóny závisí na PSČ příloze Geis CZ.</p>
     </div>
-    <p class="zone-odhad-note" id="zoneOdhadNote">Zóna 3 = Hronov–Brno, potvrzeno fakturami. Ostatní města jsou odhad — přesné zóny závisí na PSČ příloze Geis CZ.</p>
+
+    <!-- SK info section -->
+    <div id="skSection" style="display:none">
+      <div class="sk-info">
+        <div class="sk-info-title">🇸🇰 Slovenská republika — 1 zóna</div>
+        <div class="sk-info-note">
+          Individuální ceník Geis CZ pro expedici z Hronova. SK tarif obsahuje SK mýtné. CZ mýtné (trasa Hronov → hranice) je účtováno zvlášť dle Zóny 3 (odhad).
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- INPUT CARD -->
   <div class="input-card">
     <div class="kg-row">
-      <button class="btn-adj" id="btnMinus" aria-label="minus 10 kg">−</button>
+      <button class="btn-adj" id="btnMinus">−</button>
       <div class="kg-input-wrap">
         <input type="number" id="kgInput" value="430" min="50" max="2500" step="1" inputmode="numeric">
         <span class="kg-unit">kg zásilka</span>
       </div>
-      <button class="btn-adj" id="btnPlus" aria-label="plus 10 kg">+</button>
+      <button class="btn-adj" id="btnPlus">+</button>
     </div>
     <div class="slider-wrap">
       <input type="range" id="kgSlider" min="50" max="2000" value="430" step="1">
@@ -222,12 +248,12 @@
 
   <!-- BAND + BREAKDOWN -->
   <div class="band-row">
-    <div class="band-badge"><div class="band-dot"></div><span id="bandLabel">Pásmo</span></div>
+    <div class="band-badge"><div class="band-dot"></div><span id="bandLabel">—</span></div>
     <span class="prepravne-note" id="prepravneNote"></span>
   </div>
   <div class="breakdown">
-    <div class="b-card"><div class="b-label">Přepravné</div><div class="b-value" id="bPrepravne">—</div><div class="b-sub">fixní / pásmo</div></div>
-    <div class="b-card"><div class="b-label">Mýtné CZ</div><div class="b-value" id="bMytne">—</div><div class="b-sub" id="bMytneConf">Zóna 3</div></div>
+    <div class="b-card"><div class="b-label" id="bPrepravneLabel">Přepravné</div><div class="b-value" id="bPrepravne">—</div><div class="b-sub" id="bPrepravneSub">fixní / pásmo</div></div>
+    <div class="b-card"><div class="b-label">CZ mýtné</div><div class="b-value" id="bMytne">—</div><div class="b-sub" id="bMytneConf">Zóna 3</div></div>
     <div class="b-card"><div class="b-label">Pal. přípl.</div><div class="b-value" id="bPal">—</div><div class="b-sub">12 % z přepravného</div></div>
     <div class="b-card"><div class="b-label">Avizace</div><div class="b-value muted">20 Kč</div><div class="b-sub">SMS + tel.</div></div>
   </div>
@@ -249,87 +275,255 @@
 
   <!-- ZONE INSIGHT -->
   <div class="zone-box good" id="zoneBox">
-    <div class="zone-head"><span class="zone-icon" id="zoneIcon">✓</span><span class="zone-label" id="zoneLabel">Dobrá zóna</span></div>
+    <div class="zone-head"><span class="zone-icon" id="zoneIcon">✓</span><span class="zone-lbl" id="zoneLbl">Dobrá zóna</span></div>
     <div class="zone-note" id="zoneNote"></div>
     <div class="zone-alt" id="zoneAlt" style="display:none"></div>
   </div>
 
   <div class="confidence-row"><div class="conf-dot" id="confDot"></div><span id="confText"></span></div>
 
-  <div class="disclaimer">
-    Přepravné dle individuálního ceníku Geis CZ platného od 1.4.2026. Mýtné Zóna 3 potvrzeno fakturami (srpen 2026) — ostatní zóny z ceníku, neověřeny. Palivový příplatek 12 % (nafta 40–44,99 Kč/l). Avizace 20 Kč. DPH 21 %. Pozn.: zásilka 430 kg ve faktuře vyšla o ~250 Kč dráže než čistý ceník — pravděpodobně minimální paleta sazba.
+  <div class="disclaimer" id="disclaimer">
+    Přepravné dle individuálního ceníku Geis CZ platného od 1.4.2026. Mýtné Zóna 3 potvrzeno fakturami (srpen 2026) — ostatní zóny z ceníku, neověřeny. Palivový příplatek 12 % (nafta 40–44,99 Kč/l). Avizace 20 Kč. DPH 21 %.
   </div>
 
 </div>
-
 <script>
-const CENIK = [
+// ── CZ Přepravné (pásma) ──────────────────────────────────────────────
+const CENIK_CZ=[
   {from:0,to:50,price:349},{from:51,to:75,price:487},{from:76,to:100,price:609},
   {from:101,to:150,price:697},{from:151,to:250,price:783},{from:251,to:350,price:1019},
   {from:351,to:450,price:1335},{from:451,to:600,price:1489},{from:601,to:800,price:1724},
   {from:801,to:1500,price:2039},{from:1501,to:2000,price:2930},{from:2001,to:2500,price:3918},
 ];
-const MYTNE = {
+
+// ── SK Přepravné (ceník str. 2 — Hronov→SR, Zóna 1, v Kč)
+// SK tarif zahrnuje SK mýtné. CZ mýtné se účtuje zvlášť (Zóna 3 odhad).
+const CENIK_SK=[
+  {maxKg:50,price:551},{maxKg:75,price:657},{maxKg:100,price:794},
+  {maxKg:150,price:1097},{maxKg:200,price:1315},{maxKg:250,price:1490},
+  {maxKg:300,price:1695},{maxKg:350,price:1876},{maxKg:400,price:2054},
+  {maxKg:450,price:2239},{maxKg:500,price:2394},{maxKg:600,price:2746},
+  {maxKg:700,price:3119},{maxKg:800,price:3471},{maxKg:1000,price:4158},
+  {maxKg:1500,price:5272},{maxKg:2000,price:6560},{maxKg:2500,price:8225},
+];
+
+// ── Mýtné CZ — 4 zóny (str. 3+4 ceníku)
+const MYTNE={
   1:[{maxKg:50,price:5.42},{maxKg:75,price:7.78},{maxKg:100,price:10.82},{maxKg:150,price:16.20},{maxKg:200,price:21.61},{maxKg:250,price:26.62},{maxKg:300,price:32.39},{maxKg:350,price:36.95},{maxKg:400,price:43.17},{maxKg:450,price:48.71},{maxKg:500,price:53.96},{maxKg:600,price:64.74},{maxKg:700,price:75.52},{maxKg:800,price:86.30},{maxKg:1000,price:107.91},{maxKg:1500,price:161.82},{maxKg:2000,price:215.76},{maxKg:2500,price:269.72}],
   2:[{maxKg:50,price:21.61},{maxKg:75,price:34.70},{maxKg:100,price:43.17},{maxKg:150,price:64.74},{maxKg:200,price:86.30},{maxKg:250,price:111.32},{maxKg:300,price:129.46},{maxKg:350,price:152.98},{maxKg:400,price:172.59},{maxKg:450,price:196.49},{maxKg:500,price:215.76},{maxKg:600,price:258.90},{maxKg:700,price:302.07},{maxKg:800,price:345.19},{maxKg:1000,price:431.49},{maxKg:1500,price:647.27},{maxKg:2000,price:862.97},{maxKg:2500,price:1078.74}],
   3:[{maxKg:50,price:32.39},{maxKg:75,price:49.44},{maxKg:100,price:64.74},{maxKg:150,price:97.13},{maxKg:200,price:129.46},{maxKg:250,price:159.22},{maxKg:300,price:194.21},{maxKg:350,price:229.56},{maxKg:400,price:258.90},{maxKg:450,price:293.45},{maxKg:500,price:323.62},{maxKg:600,price:388.37},{maxKg:700,price:453.10},{maxKg:800,price:517.78},{maxKg:1000,price:647.27},{maxKg:1500,price:970.87},{maxKg:2000,price:1294.47},{maxKg:2500,price:1618.08}],
   4:[{maxKg:50,price:43.17},{maxKg:75,price:71.28},{maxKg:100,price:86.30},{maxKg:150,price:129.46},{maxKg:200,price:172.59},{maxKg:250,price:226.43},{maxKg:300,price:258.90},{maxKg:350,price:317.97},{maxKg:400,price:345.19},{maxKg:450,price:400.07},{maxKg:500,price:431.49},{maxKg:600,price:517.78},{maxKg:700,price:604.09},{maxKg:800,price:690.38},{maxKg:1000,price:862.97},{maxKg:1500,price:1294.47},{maxKg:2000,price:1725.94},{maxKg:2500,price:2157.43}],
 };
+
 const CITIES=[
   {name:'Hronov',zone:1,dist:'~0 km'},{name:'Náchod',zone:1,dist:'~5 km'},{name:'Broumov',zone:1,dist:'~20 km'},
   {name:'Rychnov nad Kněžnou',zone:1,dist:'~25 km'},{name:'Jaroměř',zone:1,dist:'~28 km'},{name:'Trutnov',zone:1,dist:'~30 km'},
   {name:'Dvůr Králové nad Labem',zone:1,dist:'~35 km'},{name:'Nová Paka',zone:1,dist:'~45 km'},{name:'Jičín',zone:1,dist:'~55 km'},
-  {name:'Hradec Králové',zone:2,dist:'~55 km'},{name:'Chrudim',zone:2,dist:'~80 km'},{name:'Turnov',zone:2,dist:'~80 km'},
-  {name:'Pardubice',zone:2,dist:'~75 km'},{name:'Liberec',zone:2,dist:'~100 km'},{name:'Kolín',zone:2,dist:'~100 km'},
+  {name:'Hradec Králové',zone:2,dist:'~55 km'},{name:'Pardubice',zone:2,dist:'~75 km'},{name:'Turnov',zone:2,dist:'~80 km'},
+  {name:'Chrudim',zone:2,dist:'~80 km'},{name:'Liberec',zone:2,dist:'~100 km'},{name:'Kolín',zone:2,dist:'~100 km'},
   {name:'Svitavy',zone:2,dist:'~100 km'},{name:'Kutná Hora',zone:2,dist:'~115 km'},{name:'Mladá Boleslav',zone:2,dist:'~120 km'},
   {name:'Praha',zone:2,dist:'~130 km'},
   {name:'Brno',zone:3,dist:'~260 km',confirmed:true},{name:'Jihlava',zone:3,dist:'~175 km'},{name:'Havlíčkův Brod',zone:3,dist:'~175 km'},
   {name:'Olomouc',zone:3,dist:'~215 km'},{name:'Ostrava',zone:3,dist:'~265 km'},{name:'Frýdek-Místek',zone:3,dist:'~285 km'},
   {name:'Opava',zone:3,dist:'~290 km'},{name:'Zlín',zone:3,dist:'~295 km'},{name:'Uherské Hradiště',zone:3,dist:'~295 km'},
-  {name:'Plzeň',zone:4,dist:'~340 km'},{name:'České Budějovice',zone:4,dist:'~300 km'},{name:'Ústí nad Labem',zone:4,dist:'~205 km'},
-  {name:'Chomutov',zone:4,dist:'~195 km'},{name:'Most',zone:4,dist:'~215 km'},{name:'Teplice',zone:4,dist:'~210 km'},{name:'Děčín',zone:4,dist:'~225 km'},
+  {name:'Plzeň',zone:4,dist:'~340 km'},{name:'České Budějovice',zone:4,dist:'~300 km'},
+  {name:'Ústí nad Labem',zone:4,dist:'~205 km'},{name:'Chomutov',zone:4,dist:'~195 km'},{name:'Most',zone:4,dist:'~215 km'},
 ];
+
 const ALL_BRACKETS=[50,75,100,150,200,250,300,350,400,450,500,600,700,800,1000,1500,2000,2500];
-let currentKg=430,currentZone=3,palletTare=0,palletCount=1;
+
+// ── State ────────────────────────────────────────────────────────────────
+let currentKg=430, currentZone=3, currentCountry='CZ', palletTare=0, palletCount=1;
 function billableKg(){return palletTare>0?currentKg+palletTare*palletCount:currentKg;}
-function getCenikBand(kg){return CENIK.find(b=>kg>=b.from&&kg<=b.to)||CENIK[CENIK.length-1];}
-function getPrepravne(kg){return getCenikBand(kg).price;}
+
+// ── Calc ─────────────────────────────────────────────────────────────────
+function getCZBand(kg){return CENIK_CZ.find(b=>kg>=b.from&&kg<=b.to)||CENIK_CZ[CENIK_CZ.length-1];}
+function getPrepravneCZ(kg){return getCZBand(kg).price;}
+function getPrepravneSK(kg){for(const e of CENIK_SK){if(kg<=e.maxKg)return e.price;}return CENIK_SK[CENIK_SK.length-1].price+(kg-2500)*2.90;}
 function getMytne(kg,zone){const t=MYTNE[zone];for(const e of t){if(kg<=e.maxKg)return e.price;}const l=t[t.length-1];return l.price+(kg-l.maxKg)*(l.price/l.maxKg);}
-function calc(kg,zone){const p=getPrepravne(kg);const pp=Math.round(p*0.12*100)/100;const m=getMytne(kg,zone);const a=20;const tot=p+pp+m+a;return{prepravne:p,palPriplatek:pp,mytne:m,avizace:a,total:tot,totalDph:Math.round(tot*1.21*100)/100,perKg:tot/kg};}
-function getZoneInsight(kg,zone){const r=calc(kg,zone);const band=getCenikBand(kg);const below=ALL_BRACKETS.filter(x=>x<kg);let best={perKg:Infinity,kg:0,total:0};for(const x of below){const rx=calc(x,zone);if(rx.perKg<best.perKg)best={perKg:rx.perKg,kg:x,total:rx.total};}
-if(best.kg>0&&r.perKg>best.perKg+0.001){const future=ALL_BRACKETS.filter(x=>x>kg);let be=null;for(const x of future){if(calc(x,zone).perKg<=best.perKg+0.005){be=x;break;}}const extra=Math.round(r.total-best.total);return{type:'dead',icon:'⚠',label:be?`Mrtvá zóna (${fi(best.kg+1)}–${fi(be)} kg)`:'Mrtvá zóna',note:`Za ${fi(kg)} kg platíš ${fmt(r.perKg)} Kč/kg, přitom ${fi(best.kg)} kg vychází na ${fmt(best.perKg)} Kč/kg.`,alt:`<strong>Možnost A — pošli ${fi(best.kg)} kg:</strong> ${fk(best.total)} Kč · ${fmt(best.perKg)} Kč/kg (o ${fk(extra)} Kč méně)`+(be?`<br><strong>Možnost B — přidej do ${fi(be)} kg:</strong> Pak se to opět vyplatí.`:'')};}
-const rem=band.to-kg;const note=rem>0?`Přepravné ${fi(band.price)} Kč je fixní do ${fi(band.to)} kg. Přidej ${fi(rem)} kg zdarma (jen +mýtné).`:`Ideální bod — horní hrana pásma přepravného ${fi(band.price)} Kč.`;return{type:'good',icon:'✓',label:'Dobrá zóna',note,alt:null};}
-function getConf(kg,zone){const inv=[590,775,820,1065,1840];if(zone===3&&inv.some(p=>Math.abs(kg-p)<15))return{level:'high',text:'Zóna 3 · potvrzeno fakturou (srpen 2026)'};if(zone===3)return{level:'mid',text:'Zóna 3 · z ceníku Geis CZ (potvrzena pro jiné váhy)'};return{level:'low',text:`Zóna ${zone} · výpočet z ceníku — zatím neověřeno fakturou`};}
-function fmt(n){return n.toFixed(2).replace('.',',');}function fk(n){return Math.round(n).toLocaleString('cs-CZ');}function fi(n){return Math.round(n).toLocaleString('cs-CZ');}
-function render(){const cargo=Math.max(50,Math.min(2500,Math.round(Number(currentKg))));const bill=Math.max(50,Math.min(2500,billableKg()));const r=calc(bill,currentZone);const zi=getZoneInsight(bill,currentZone);const conf=getConf(bill,currentZone);const band=getCenikBand(bill);
-document.getElementById('kgInput').value=cargo;document.getElementById('kgSlider').value=Math.min(2000,cargo);
-const palN=document.getElementById('billableNote');const palC=document.getElementById('palletCountRow');
-if(palletTare>0){palC.style.display='';const tn=palletTare===20?'FP':'HP';palN.innerHTML=`<strong>${fi(bill)} kg</strong> účtováno Geisem = ${fi(cargo)} kg zásilka + ${palletCount}× ${tn} (${palletTare*palletCount} kg tára)`;palN.style.display='';}else{palC.style.display='none';palN.style.display='none';}
-document.getElementById('bandLabel').textContent=`${fi(band.from)}–${fi(band.to)} kg`;document.getElementById('prepravneNote').textContent=`přepravné ${fi(band.price)} Kč`;
-document.getElementById('bPrepravne').textContent=fi(r.prepravne)+' Kč';document.getElementById('bMytne').textContent=fi(r.mytne)+' Kč';document.getElementById('bPal').textContent=fi(r.palPriplatek)+' Kč';document.getElementById('bMytneConf').textContent=`Zóna ${currentZone}`;
-document.getElementById('totalBezLabel').textContent=palletTare>0?`Celkem bez DPH (${fi(bill)} kg)`:'Celkem bez DPH';document.getElementById('totalBez').textContent=fi(r.total)+' Kč';document.getElementById('totalDph').textContent=fi(r.totalDph)+' Kč';document.getElementById('perKg').textContent=fmt(r.perKg)+' Kč';document.getElementById('prepravnePerKg').textContent=fmt(r.prepravne/bill)+' Kč';
-const box=document.getElementById('zoneBox');box.className='zone-box '+zi.type;document.getElementById('zoneIcon').textContent=zi.icon;document.getElementById('zoneLabel').textContent=zi.label;document.getElementById('zoneNote').textContent=zi.note;const altEl=document.getElementById('zoneAlt');if(zi.alt){altEl.innerHTML=zi.alt;altEl.style.display='';}else{altEl.style.display='none';}
-const cd=document.getElementById('confDot');cd.className='conf-dot conf-'+conf.level;document.getElementById('confText').textContent=conf.text;
-document.querySelectorAll('.btn-preset').forEach(b=>b.classList.toggle('active',Number(b.dataset.kg)===cargo));}
+
+function calc(kg){
+  if(currentCountry==='SK'){
+    const p=getPrepravneSK(kg);
+    const pp=Math.round(p*0.12*100)/100;
+    const m=getMytne(kg,3); // CZ mýtné Zóna 3 (odhad — CZ část trasy k hranici)
+    const a=20;
+    const tot=p+pp+m+a;
+    return{prepravne:p,palPriplatek:pp,mytne:m,avizace:a,total:tot,totalDph:Math.round(tot*1.21*100)/100,perKg:tot/kg};
+  }
+  const p=getPrepravneCZ(kg);
+  const pp=Math.round(p*0.12*100)/100;
+  const m=getMytne(kg,currentZone);
+  const a=20;
+  const tot=p+pp+m+a;
+  return{prepravne:p,palPriplatek:pp,mytne:m,avizace:a,total:tot,totalDph:Math.round(tot*1.21*100)/100,perKg:tot/kg};
+}
+
+// ── Dead-zone detection ───────────────────────────────────────────────────
+function getZoneInsight(kg){
+  const r=calc(kg);
+  const below=ALL_BRACKETS.filter(x=>x<kg);
+  let best={perKg:Infinity,kg:0,total:0};
+  for(const x of below){const rx=calc(x);if(rx.perKg<best.perKg)best={perKg:rx.perKg,kg:x,total:rx.total};}
+  if(best.kg>0&&r.perKg>best.perKg+0.001){
+    const future=ALL_BRACKETS.filter(x=>x>kg);let be=null;
+    for(const x of future){if(calc(x).perKg<=best.perKg+0.005){be=x;break;}}
+    const extra=Math.round(r.total-best.total);
+    return{type:'dead',icon:'⚠',label:be?`Mrtvá zóna (${fi(best.kg+1)}–${fi(be)} kg)`:'Mrtvá zóna',
+      note:`Za ${fi(kg)} kg platíš ${fmt(r.perKg)} Kč/kg, přitom ${fi(best.kg)} kg vychází na ${fmt(best.perKg)} Kč/kg.`,
+      alt:`<strong>Možnost A — pošli ${fi(best.kg)} kg:</strong> ${fk(best.total)} Kč · ${fmt(best.perKg)} Kč/kg (o ${fk(extra)} Kč méně)`+
+          (be?`<br><strong>Možnost B — přidej do ${fi(be)} kg:</strong> Pak se to opět vyplatí.`:'')};
+  }
+  // Good zone
+  if(currentCountry==='SK'){
+    // SK: find next SK breakpoint
+    const nextBrk=ALL_BRACKETS.find(x=>x>kg);
+    const remaining=nextBrk?nextBrk-kg:0;
+    return{type:'good',icon:'✓',label:'Dobrá zóna',
+      note:remaining>0?`Přidej ${fi(remaining)} kg a SK tarif zůstane na ${fk(r.prepravne)} Kč (+ jen mýtné).`:`Ideální bod — horní hrana tarifní sazby ${fk(r.prepravne)} Kč.`,alt:null};
+  }
+  const band=getCZBand(kg);const rem=band.to-kg;
+  return{type:'good',icon:'✓',label:'Dobrá zóna',
+    note:rem>0?`Přepravné ${fi(band.price)} Kč je fixní do ${fi(band.to)} kg. Přidej ${fi(rem)} kg zdarma (jen +mýtné).`:`Ideální bod — horní hrana pásma přepravného ${fi(band.price)} Kč.`,alt:null};
+}
+
+function getConf(kg){
+  if(currentCountry==='SK') return{level:'mid',text:'SK tarif z ceníku Geis CZ · CZ mýtné = odhad Zóna 3 (neověřeno fakturou)'};
+  const inv=[590,775,820,1065,1840];
+  if(currentZone===3&&inv.some(p=>Math.abs(kg-p)<15))return{level:'high',text:'Zóna 3 · potvrzeno fakturou (srpen 2026)'};
+  if(currentZone===3)return{level:'mid',text:'Zóna 3 · z ceníku Geis CZ (potvrzena pro jiné váhy)'};
+  return{level:'low',text:`Zóna ${currentZone} · výpočet z ceníku — zatím neověřeno fakturou`};
+}
+
+function getBandInfo(kg){
+  if(currentCountry==='SK'){
+    const e=CENIK_SK.find(x=>kg<=x.maxKg)||CENIK_SK[CENIK_SK.length-1];
+    const prev=CENIK_SK[CENIK_SK.indexOf(e)-1];
+    const from=prev?prev.maxKg+1:1;
+    return{label:`${fi(from)}–${fi(e.maxKg)} kg`,price:e.price,isSK:true};
+  }
+  const b=getCZBand(kg);return{label:`${fi(b.from)}–${fi(b.to)} kg`,price:b.price,isSK:false};
+}
+
+// ── Formatters ────────────────────────────────────────────────────────────
+function fmt(n){return n.toFixed(2).replace('.',',');}
+function fk(n){return Math.round(n).toLocaleString('cs-CZ');}
+function fi(n){return Math.round(n).toLocaleString('cs-CZ');}
+
+// ── Render ────────────────────────────────────────────────────────────────
+function render(){
+  const cargo=Math.max(50,Math.min(2500,Math.round(Number(currentKg))));
+  const bill=Math.max(50,Math.min(2500,billableKg()));
+  const r=calc(bill);const zi=getZoneInsight(bill);const conf=getConf(bill);const band=getBandInfo(bill);
+
+  document.getElementById('kgInput').value=cargo;
+  document.getElementById('kgSlider').value=Math.min(2000,cargo);
+
+  // Pallet note
+  const palN=document.getElementById('billableNote');const palC=document.getElementById('palletCountRow');
+  if(palletTare>0){palC.style.display='';const tn=palletTare===20?'FP':'HP';
+    palN.innerHTML=`<strong>${fi(bill)} kg</strong> účtováno Geisem = ${fi(cargo)} kg zásilka + ${palletCount}× ${tn} (${palletTare*palletCount} kg tára)`;palN.style.display='';}
+  else{palC.style.display='none';palN.style.display='none';}
+
+  document.getElementById('bandLabel').textContent=band.label;
+  document.getElementById('prepravneNote').textContent=(band.isSK?'SK tarif ':'přepravné ')+fi(band.price)+' Kč';
+
+  // Breakdown labels
+  document.getElementById('bPrepravneLabel').textContent=band.isSK?'SK tarif':'Přepravné';
+  document.getElementById('bPrepravneSub').textContent=band.isSK?'vč. SK mýtného':'fixní / pásmo';
+  document.getElementById('bPrepravne').textContent=fi(r.prepravne)+' Kč';
+  document.getElementById('bMytne').textContent=fi(r.mytne)+' Kč';
+  document.getElementById('bMytneConf').textContent=band.isSK?'Zóna 3 (odhad)':'Zóna '+currentZone;
+  document.getElementById('bPal').textContent=fi(r.palPriplatek)+' Kč';
+
+  document.getElementById('totalBezLabel').textContent=palletTare>0?`Celkem bez DPH (${fi(bill)} kg)`:'Celkem bez DPH';
+  document.getElementById('totalBez').textContent=fi(r.total)+' Kč';
+  document.getElementById('totalDph').textContent=fi(r.totalDph)+' Kč';
+  document.getElementById('perKg').textContent=fmt(r.perKg)+' Kč';
+  document.getElementById('prepravnePerKg').textContent=fmt(r.prepravne/bill)+' Kč';
+
+  const box=document.getElementById('zoneBox');box.className='zone-box '+zi.type;
+  document.getElementById('zoneIcon').textContent=zi.icon;
+  document.getElementById('zoneLbl').textContent=zi.label;
+  document.getElementById('zoneNote').textContent=zi.note;
+  const altEl=document.getElementById('zoneAlt');
+  if(zi.alt){altEl.innerHTML=zi.alt;altEl.style.display='';}else{altEl.style.display='none';}
+
+  const cd=document.getElementById('confDot');cd.className='conf-dot conf-'+conf.level;
+  document.getElementById('confText').textContent=conf.text;
+
+  document.querySelectorAll('.btn-preset').forEach(b=>b.classList.toggle('active',Number(b.dataset.kg)===cargo));
+
+  // Disclaimer
+  document.getElementById('disclaimer').textContent=currentCountry==='SK'
+    ?'SK tarif: individuální ceník Geis CZ od 1.4.2026, expedice Hronov → SR, Zóna 1. SK mýtné je součástí tarifu. CZ mýtné (Zóna 3) = odhad, neověřeno fakturou. Palivový příplatek 12 % z SK tarifu. Avizace 20 Kč. DPH 21 %.'
+    :'Přepravné dle individuálního ceníku Geis CZ platného od 1.4.2026. Mýtné Zóna 3 potvrzeno fakturami (srpen 2026) — ostatní zóny z ceníku, neověřeny. Palivový příplatek 12 % (nafta 40–44,99 Kč/l). Avizace 20 Kč. DPH 21 %.';
+}
+
+// ── Country toggle ────────────────────────────────────────────────────────
+function setCountry(c){
+  currentCountry=c;
+  document.querySelectorAll('.country-btn').forEach(b=>{
+    b.classList.remove('active','active-sk');
+    if(b.dataset.country===c) b.classList.add(c==='SK'?'active-sk':'active');
+  });
+  document.getElementById('czSection').style.display=c==='CZ'?'':'none';
+  document.getElementById('skSection').style.display=c==='SK'?'':'none';
+  render();
+}
+document.querySelectorAll('.country-btn').forEach(btn=>btn.addEventListener('click',()=>setCountry(btn.dataset.country)));
+
+// ── Zone selector (CZ only) ───────────────────────────────────────────────
 function setZone(z){currentZone=z;document.querySelectorAll('.zone-btn').forEach(b=>b.classList.toggle('active',Number(b.dataset.zone)===z));render();}
 document.querySelectorAll('.zone-btn').forEach(btn=>btn.addEventListener('click',()=>setZone(Number(btn.dataset.zone))));
-const citySearch=document.getElementById('citySearch');const cityDropdown=document.getElementById('cityDropdown');const cityResult=document.getElementById('cityResult');const zoneOdhadNote=document.getElementById('zoneOdhadNote');
-function buildCityItem(city){const item=document.createElement('div');item.className='city-item';const cb=city.confirmed?`<span class="city-confirmed">✓ potvrzeno</span>`:'<span style="font-size:10px;opacity:.65">(odhad)</span>';item.innerHTML=`<span class="city-name">${city.name}</span><span class="city-meta">${city.dist}&nbsp;<span class="city-zone-badge">Zóna ${city.zone}</span>${cb}</span>`;item.addEventListener('click',()=>selectCity(city));return item;}
-function selectCity(city){cityDropdown.style.display='none';citySearch.value='';cityResult.style.display='';document.getElementById('cityResultName').textContent=city.name+' ';document.getElementById('cityResultInfo').innerHTML=`<span style="color:var(--text-muted);font-size:11.5px">${city.dist}${city.confirmed?' · ✓ potvrzeno fakturou':' · odhad'}</span>`;zoneOdhadNote.style.display='none';setZone(city.zone);}
+
+// ── City search ───────────────────────────────────────────────────────────
+const citySearch=document.getElementById('citySearch');const cityDropdown=document.getElementById('cityDropdown');
+const cityResult=document.getElementById('cityResult');const zoneOdhadNote=document.getElementById('zoneOdhadNote');
+
+function buildCityItem(city){
+  const item=document.createElement('div');item.className='city-item';
+  const cb=city.confirmed?`<span class="city-confirmed">✓ potvrzeno</span>`:'<span style="font-size:10px;opacity:.65">(odhad)</span>';
+  item.innerHTML=`<span class="city-name">${city.name}</span><span class="city-meta">${city.dist}&nbsp;<span class="city-zone-badge">Zóna ${city.zone}</span>${cb}</span>`;
+  item.addEventListener('click',()=>{
+    cityDropdown.style.display='none';citySearch.value='';cityResult.style.display='';
+    document.getElementById('cityResultName').textContent=city.name+' ';
+    document.getElementById('cityResultInfo').innerHTML=`<span style="color:var(--text-muted);font-size:11.5px">${city.dist}${city.confirmed?' · ✓ potvrzeno fakturou':' · odhad'}</span>`;
+    zoneOdhadNote.style.display='none';setZone(city.zone);
+  });
+  return item;
+}
 document.getElementById('cityClear').addEventListener('click',()=>{cityResult.style.display='none';zoneOdhadNote.style.display='';render();});
-citySearch.addEventListener('input',()=>{const q=citySearch.value.trim().toLowerCase();cityDropdown.innerHTML='';if(q.length<1){cityDropdown.style.display='none';return;}const matches=CITIES.filter(c=>c.name.toLowerCase().includes(q)).slice(0,8);if(!matches.length){cityDropdown.style.display='none';return;}matches.forEach(c=>cityDropdown.appendChild(buildCityItem(c)));cityDropdown.style.display='block';});
+citySearch.addEventListener('input',()=>{
+  const q=citySearch.value.trim().toLowerCase();cityDropdown.innerHTML='';
+  if(q.length<1){cityDropdown.style.display='none';return;}
+  const m=CITIES.filter(c=>c.name.toLowerCase().includes(q)).slice(0,8);
+  if(!m.length){cityDropdown.style.display='none';return;}
+  m.forEach(c=>cityDropdown.appendChild(buildCityItem(c)));cityDropdown.style.display='block';
+});
 citySearch.addEventListener('blur',()=>setTimeout(()=>{cityDropdown.style.display='none';},150));
-document.querySelectorAll('.pallet-btn').forEach(btn=>btn.addEventListener('click',()=>{palletTare=Number(btn.dataset.tare);document.querySelectorAll('.pallet-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render();}));
-document.querySelectorAll('.pcount-btn').forEach(btn=>btn.addEventListener('click',()=>{palletCount=Number(btn.dataset.n);document.querySelectorAll('.pcount-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render();}));
-function setKg(val){currentKg=Math.max(50,Math.min(2500,Math.round(Number(val))));render();}
+
+// ── Pallet ────────────────────────────────────────────────────────────────
+document.querySelectorAll('.pallet-btn').forEach(btn=>btn.addEventListener('click',()=>{
+  palletTare=Number(btn.dataset.tare);document.querySelectorAll('.pallet-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render();
+}));
+document.querySelectorAll('.pcount-btn').forEach(btn=>btn.addEventListener('click',()=>{
+  palletCount=Number(btn.dataset.n);document.querySelectorAll('.pcount-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render();
+}));
+
+// ── Kg input ──────────────────────────────────────────────────────────────
+function setKg(v){currentKg=Math.max(50,Math.min(2500,Math.round(Number(v))));render();}
 document.getElementById('kgInput').addEventListener('input',e=>{if(Number(e.target.value)>=50)setKg(e.target.value);});
 document.getElementById('kgInput').addEventListener('change',e=>setKg(e.target.value));
 document.getElementById('kgSlider').addEventListener('input',e=>setKg(e.target.value));
 document.getElementById('btnMinus').addEventListener('click',()=>setKg(currentKg-10));
 document.getElementById('btnPlus').addEventListener('click',()=>setKg(currentKg+10));
 let pt;function sp(d){pt=setInterval(()=>setKg(currentKg+d),80);}function ep(){clearInterval(pt);}
-['btnMinus','btnPlus'].forEach(id=>{const btn=document.getElementById(id);const d=id==='btnPlus'?10:-10;btn.addEventListener('mousedown',()=>sp(d));btn.addEventListener('touchstart',e=>{e.preventDefault();sp(d);});['mouseup','mouseleave','touchend'].forEach(ev=>btn.addEventListener(ev,ep));});
+['btnMinus','btnPlus'].forEach(id=>{const btn=document.getElementById(id);const d=id==='btnPlus'?10:-10;
+  btn.addEventListener('mousedown',()=>sp(d));btn.addEventListener('touchstart',e=>{e.preventDefault();sp(d);});
+  ['mouseup','mouseleave','touchend'].forEach(ev=>btn.addEventListener(ev,ep));});
 document.querySelectorAll('.btn-preset').forEach(btn=>btn.addEventListener('click',()=>setKg(Number(btn.dataset.kg))));
+
 render();
 </script>
 </body>
