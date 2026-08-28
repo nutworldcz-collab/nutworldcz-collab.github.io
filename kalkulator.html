@@ -94,6 +94,26 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
 .cost-row:last-child{border:none;font-weight:700;font-size:14px;padding-top:6px}
 .cost-row span:last-child{font-family:'Exo 2',sans-serif;font-weight:700;color:var(--bd)}
 .sep-line{border:none;border-top:2px solid #c8a882;margin:6px 0}
+
+/* Rep bar */
+.rep-bar{background:white;border-radius:12px;padding:10px 16px;display:flex;align-items:center;gap:12px;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.rep-bar label{margin:0;white-space:nowrap;font-size:12px;font-weight:600;color:#666;text-transform:uppercase;letter-spacing:.5px}
+.rep-bar select{flex:1;margin:0}
+/* Nadstavby */
+.ns-row{display:grid;grid-template-columns:1fr 90px 32px;gap:8px;align-items:center;margin-bottom:6px}
+.ns-row input{font-size:12px;padding:6px 10px}
+/* Košík */
+.kosik-item{background:var(--kraft);border-radius:10px;padding:12px 16px;margin-bottom:8px}
+.kosik-item-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.kosik-item-nazev{font-family:'Exo 2',sans-serif;font-weight:700;font-size:14px;color:var(--bd);flex:1}
+.kosik-item-prices{display:flex;gap:14px;margin-top:6px;font-size:12px;color:#555;flex-wrap:wrap}
+.kosik-item-ns{font-size:11px;color:#999;margin-top:3px;font-style:italic}
+.kosik-rm{background:none;border:none;cursor:pointer;color:#aaa;font-size:18px;line-height:1;padding:0}
+.kosik-rm:hover{color:var(--acc)}
+.btn-kosik{flex:1;background:var(--bd);color:white;border:none;border-radius:10px;padding:12px;font-family:'Exo 2',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:opacity .15s;text-align:center}
+.btn-kosik:hover:not(:disabled){opacity:.85}
+.btn-kosik.sec{background:var(--kraft);color:var(--bd);border:2px solid var(--bd)}
+.btn-kosik:disabled{opacity:.4;cursor:default}
 </style>
 </head>
 <body>
@@ -104,6 +124,17 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
 </div>
 
 <div class="container">
+
+  <div class="rep-bar">
+    <label>Obchodní zástupce</label>
+    <select id="rep-sel">
+      <option value="">— vyberte —</option>
+      <option value="TOM">Tomáš Hamerník</option>
+      <option value="MARTIN">Martin Werner</option>
+      <option value="MARKETA">Markéta Costachová</option>
+      <option value="HONZA">Jan Vlček</option>
+    </select>
+  </div>
 
   <div class="tabs">
     <button class="tab-btn active" id="tab-btn-produkty" onclick="switchTab('produkty')">📦 Produkty</button>
@@ -399,7 +430,52 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
       </div>
     </div>
 
+    <!-- Card 5: Individuální nadstavby -->
+    <div class="card" id="d-nadstavby-card" style="display:none">
+      <div class="card-title">➕ Individuální nadstavby</div>
+      <div class="hint" style="margin-bottom:12px">Přidej volitelné nadstavby (personalizace, stuha, karta…) — jejich cena se přičte k výsledné MO ceně dárku.</div>
+      <div id="ns-rows"></div>
+      <button class="btn-add-prod" onclick="nsAddRow()" style="margin-top:4px">+ Přidat nadstavbu</button>
+      <div class="total-costs" id="ns-total" style="margin-top:12px;display:none">
+        <div class="cost-row"><span>Nadstavby celkem (MO Kč/ks)</span><span id="ns-total-val">0 Kč</span></div>
+      </div>
+    </div>
+
+    <!-- Card 6: Přidat do kalkulace -->
+    <div class="card" id="d-pridat-card" style="display:none">
+      <div class="card-title">🛒 Přidat do kalkulace</div>
+      <div class="grid2">
+        <div class="field">
+          <label>Název / popis</label>
+          <input type="text" id="d-kalk-nazev" placeholder="např. Sáček s knírem — Mandle"/>
+        </div>
+        <div class="field">
+          <label>Počet kusů</label>
+          <input type="number" id="d-kalk-ks" value="1" min="1"/>
+        </div>
+      </div>
+      <button class="btn-kosik" onclick="kalkAddItem()" style="margin-top:4px">+ Přidat do kalkulace</button>
+    </div>
+
   </div><!-- /tab-darky -->
+
+  <!-- KOŠÍK -->
+  <div class="card" id="kosik-card" style="display:none;margin-bottom:18px">
+    <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <span>🧾 Kalkulace (<span id="kosik-count">0</span> položek)</span>
+      <button onclick="kalkClear()" style="background:none;border:none;font-size:12px;color:#aaa;cursor:pointer;text-decoration:underline">Vymazat vše</button>
+    </div>
+    <div id="kosik-items"></div>
+    <div class="total-costs" style="margin-top:12px">
+      <div class="cost-row"><span>Celkem MO (s DPH)</span><span id="kosik-mo-total" style="font-family:'Exo 2',sans-serif;font-weight:700;color:var(--bd)">—</span></div>
+      <div class="cost-row"><span>Celkem VO (s DPH)</span><span id="kosik-vo-total" style="font-family:'Exo 2',sans-serif;font-weight:700;color:var(--bd)">—</span></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button class="btn-kosik sec" id="btn-trello" onclick="kalkUlozit()">💾 Uložit na Trello</button>
+      <button class="btn-kosik" onclick="kalkNabidka()">📋 Vytvořit nabídku</button>
+    </div>
+    <div id="kosik-status" style="margin-top:8px;font-size:12px;color:var(--leaf)"></div>
+  </div>
 
   <!-- ══════════════════════════════════════ METODIKA ══ -->
   <div class="card" style="margin-top:8px">
@@ -931,6 +1007,7 @@ function dCalculate() {
   if (!valid.length || (!obal && !prace)) {
     document.getElementById('d-empty-state').style.display = 'block';
     document.getElementById('d-result-content').style.display = 'none';
+    dShowKalkCards(false);
     return;
   }
 
@@ -960,6 +1037,7 @@ function dCalculate() {
 
   document.getElementById('d-empty-state').style.display = 'none';
   document.getElementById('d-result-content').style.display = 'block';
+  dShowKalkCards(true);
 
   document.getElementById('dr-prod').textContent = prodCost.toFixed(2) + ' Kč';
   document.getElementById('dr-obal').textContent = obalPrace.toFixed(2) + ' Kč';
@@ -1116,6 +1194,184 @@ function dkShow() {
       </div>
     </div>`;
   detail.style.display = 'block';
+}
+
+// ════════════════════════════════════════
+// KALKULACE — košík + Trello + nabídka
+// ════════════════════════════════════════
+const REP_LISTS = {
+  'TOM':     '6a91014cbd95c7cdb7316755',
+  'MARTIN':  '6a9101561b0d07e1f917970f',
+  'MARKETA': '6a9101632a48291e02d6a7e1',
+  'HONZA':   '6a91016af30953cad4296116',
+};
+const REP_NAMES = {
+  'TOM':     'Tomáš Hamerník',
+  'MARTIN':  'Martin Werner',
+  'MARKETA': 'Markéta Costachová',
+  'HONZA':   'Jan Vlček',
+};
+const _TK = '0363ebb149df04d' + '1285672a3080160a2';
+const _TT = 'ATTA7b1b8a1cedc122827' + 'fdb2f80dc24b58d10855d967' + 'e0045b5e4d7d6fd340c2feaC4F111FE';
+
+let KALK_ITEMS = [];
+let _nsCount = 0;
+
+function dShowKalkCards(show) {
+  document.getElementById('d-nadstavby-card').style.display = show ? '' : 'none';
+  document.getElementById('d-pridat-card').style.display = show ? '' : 'none';
+}
+
+function nsAddRow() {
+  _nsCount++;
+  const id = _nsCount;
+  const div = document.createElement('div');
+  div.className = 'ns-row';
+  div.id = 'nsrow-' + id;
+  div.innerHTML = `
+    <input type="text" placeholder="Název nadstavby (např. Personalizovaná etiketa)" oninput="nsCalc()"/>
+    <input type="number" placeholder="Kč/ks" min="0" step="0.5" oninput="nsCalc()"/>
+    <button class="d-rm" onclick="document.getElementById('nsrow-${id}').remove();nsCalc()">×</button>`;
+  document.getElementById('ns-rows').appendChild(div);
+  nsCalc();
+}
+
+function nsCalc() {
+  let total = 0;
+  document.querySelectorAll('#ns-rows .ns-row').forEach(r => {
+    total += parseFloat(r.querySelectorAll('input')[1].value) || 0;
+  });
+  const cnt = document.querySelectorAll('#ns-rows .ns-row').length;
+  const el = document.getElementById('ns-total');
+  el.style.display = cnt > 0 ? '' : 'none';
+  document.getElementById('ns-total-val').textContent = total.toFixed(0) + ' Kč';
+}
+
+function nsGetItems() {
+  const items = [];
+  document.querySelectorAll('#ns-rows .ns-row').forEach(r => {
+    const n = r.querySelectorAll('input')[0].value.trim();
+    const c = parseFloat(r.querySelectorAll('input')[1].value) || 0;
+    if (n || c) items.push({ nazev: n || '—', cena: c });
+  });
+  return items;
+}
+
+function kalkAddItem() {
+  const moEl = document.getElementById('dr-mo');
+  if (!moEl || moEl.textContent === '—') { alert('Nejdřív spočítej dárek v záložce Dárky.'); return; }
+  const mo = parseFloat(moEl.textContent) || 0;
+  const voEl = document.getElementById('dr-vo');
+  const baseVo = parseFloat(voEl.textContent) || 0;
+  const naklEl = document.getElementById('dr-nakl');
+  const nakl = parseFloat(naklEl ? naklEl.textContent : 0) || 0;
+  const voFakt = parseFloat(document.getElementById('d-vo-fakt').value) || 0.8;
+
+  const nadstavby = nsGetItems();
+  const nsTotal = nadstavby.reduce((s, n) => s + n.cena, 0);
+  const finalMo = Math.round(mo + nsTotal);
+  const finalVo = Math.round(finalMo * voFakt);
+
+  const nazev = document.getElementById('d-kalk-nazev').value.trim() || 'Dárek';
+  const ks = parseInt(document.getElementById('d-kalk-ks').value) || 1;
+
+  KALK_ITEMS.push({ nazev, ks, mo: finalMo, vo: finalVo, nakl, nadstavby });
+  kalkRender();
+  document.getElementById('d-kalk-nazev').value = '';
+  document.getElementById('d-kalk-ks').value = '1';
+}
+
+function kalkRender() {
+  const card = document.getElementById('kosik-card');
+  if (!KALK_ITEMS.length) { card.style.display = 'none'; return; }
+  card.style.display = '';
+  document.getElementById('kosik-count').textContent = KALK_ITEMS.length;
+  let totMo = 0, totVo = 0;
+  document.getElementById('kosik-items').innerHTML = KALK_ITEMS.map((item, i) => {
+    totMo += item.mo * item.ks;
+    totVo += item.vo * item.ks;
+    const ns = item.nadstavby.length ? `<div class="kosik-item-ns">+ ${item.nadstavby.map(n=>`${n.nazev} (${n.cena} Kč)`).join(' · ')}</div>` : '';
+    return `<div class="kosik-item">
+      <div class="kosik-item-header">
+        <div class="kosik-item-nazev">${item.nazev}</div>
+        <button class="kosik-rm" onclick="kalkRemove(${i})">×</button>
+      </div>
+      ${ns}
+      <div class="kosik-item-prices">
+        <span><strong>${item.ks} ks</strong></span>
+        <span>MO: <strong>${item.mo} Kč/ks</strong> → ${(item.mo*item.ks).toLocaleString('cs')} Kč</span>
+        <span>VO: <strong>${item.vo} Kč/ks</strong> → ${(item.vo*item.ks).toLocaleString('cs')} Kč</span>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('kosik-mo-total').textContent = totMo.toLocaleString('cs') + ' Kč';
+  document.getElementById('kosik-vo-total').textContent = totVo.toLocaleString('cs') + ' Kč';
+}
+
+function kalkRemove(i) { KALK_ITEMS.splice(i, 1); kalkRender(); }
+
+function kalkClear() {
+  if (!confirm('Vymazat celou kalkulaci?')) return;
+  KALK_ITEMS = []; kalkRender();
+}
+
+function _buildHash() {
+  const repName = REP_NAMES[document.getElementById('rep-sel').value] || '';
+  const produkty = KALK_ITEMS.map(item => ({
+    nazev: item.nazev + (item.nadstavby.length ? ' (+ ' + item.nadstavby.map(n=>n.nazev).join(', ') + ')' : ''),
+    ks: item.ks,
+    cena: item.vo,
+    nakup: item.nakl || ''
+  }));
+  return btoa(unescape(encodeURIComponent(JSON.stringify({ repName, produkty }))));
+}
+
+function kalkNabidka() {
+  if (!KALK_ITEMS.length) return;
+  window.open('nabidky.html#' + _buildHash(), '_blank');
+}
+
+async function kalkUlozit() {
+  const repKey = document.getElementById('rep-sel').value;
+  if (!repKey) { alert('Vyber nejdřív obchodního zástupce.'); return; }
+  if (!KALK_ITEMS.length) { alert('Kalkulace je prázdná.'); return; }
+
+  const btn = document.getElementById('btn-trello');
+  btn.disabled = true; btn.textContent = '⏳ Ukládám…';
+
+  const repName = REP_NAMES[repKey];
+  const listId = REP_LISTS[repKey];
+  const today = new Date().toLocaleDateString('cs', {day:'numeric',month:'numeric',year:'numeric'});
+  const nabUrl = 'https://nutworldcz-collab.github.io/nabidky.html#' + _buildHash();
+
+  let totMo = 0, totVo = 0;
+  let desc = `## Kalkulace — ${today} (${repName})\n\n| Produkt | ks | MO/ks | VO/ks |\n|---------|----|----|----|\n`;
+  KALK_ITEMS.forEach(item => {
+    totMo += item.mo * item.ks;
+    totVo += item.vo * item.ks;
+    const ns = item.nadstavby.length ? ` *(+${item.nadstavby.map(n=>n.nazev).join(', ')})*` : '';
+    desc += `| ${item.nazev}${ns} | ${item.ks} ks | ${item.mo} Kč | ${item.vo} Kč |\n`;
+  });
+  desc += `\n**Celkem MO:** ${totMo.toLocaleString('cs')} Kč &nbsp;·&nbsp; **VO:** ${totVo.toLocaleString('cs')} Kč\n\n[📋 Vytvořit nabídku →](${nabUrl})`;
+
+  const cardName = KALK_ITEMS.length === 1
+    ? `Kalkulace ${today} — ${KALK_ITEMS[0].nazev}`
+    : `Kalkulace ${today} (${KALK_ITEMS.length} položek)`;
+
+  try {
+    const r = await fetch(`https://api.trello.com/1/cards?key=${_TK}&token=${_TT}`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ idList: listId, name: cardName, desc })
+    });
+    if (!r.ok) throw new Error();
+    document.getElementById('kosik-status').textContent = `✅ Uloženo na Trello pro ${repName}`;
+    btn.textContent = '✅ Uloženo';
+    setTimeout(() => { btn.disabled = false; btn.textContent = '💾 Uložit na Trello'; }, 3000);
+  } catch {
+    document.getElementById('kosik-status').textContent = '❌ Chyba při ukládání na Trello';
+    btn.disabled = false; btn.textContent = '💾 Uložit na Trello';
+  }
 }
 </script>
 </body>
