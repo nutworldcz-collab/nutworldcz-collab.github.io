@@ -321,8 +321,7 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
               <input type="number" id="p-kalk-ks" value="1" min="1"/>
             </div>
           </div>
-          <button class="btn-kosik" id="btn-p-pridat" onclick="kalkAddProdItem()" style="opacity:.4;cursor:not-allowed" disabled>+ Přidat do kalkulace</button>
-          <div class="hint" id="p-pridat-hint" style="margin-top:5px">👆 Nejdřív vyber produkt a gramáž výše</div>
+          <button class="btn-kosik" id="btn-p-pridat" onclick="kalkAddProdItem()">+ Přidat do kalkulace</button>
         </div>
       </div>
     </div>
@@ -959,11 +958,6 @@ function pShow(g, kc, pocet) {
   const marze = Math.round((zisk / moBez) * 100);
   document.getElementById('p-empty-state').style.display = 'none';
   document.getElementById('p-result-content').style.display = 'block';
-  // Aktivuj tlačítko přidání do kalkulace
-  const btnP = document.getElementById('btn-p-pridat');
-  const hintP = document.getElementById('p-pridat-hint');
-  if (btnP) { btnP.disabled = false; btnP.style.opacity='1'; btnP.style.cursor='pointer'; }
-  if (hintP) hintP.style.display = 'none';
   document.getElementById('p-r-mo').textContent = mo + ' Kč';
   document.getElementById('p-r-vo').textContent = vo + ' Kč';
   document.getElementById('p-r-nakup').textContent = Math.round(celkNakl) + ' Kč';
@@ -1418,7 +1412,8 @@ function kalkAddProdItem() {
   const nazev = document.getElementById('p-kalk-nazev').value.trim() || (pProduct?.nazev || 'Produkt');
   const ks = parseInt(document.getElementById('p-kalk-ks').value) || 1;
   const potiskKc = pGetPotiskKc();
-  const nadstavby = potiskKc > 0 ? [{ nazev: 'Potisk (' + (document.getElementById('p-potisk-typ')?.options[document.getElementById('p-potisk-typ')?.selectedIndex]?.text || '') + ')', cena: Math.round(potiskKc) }] : [];
+  const potiskLabel = document.querySelector('.potisk-btn.active')?.textContent?.trim() || 'Potisk';
+  const nadstavby = potiskKc > 0 ? [{ nazev: 'Potisk — ' + potiskLabel, cena: potiskKc }] : [];
   KALK_ITEMS.push({ nazev, ks, mo: Math.round(mo), vo: Math.round(vo), nakl, nadstavby });
   kalkRender();
   document.getElementById('p-kalk-nazev').value = '';
