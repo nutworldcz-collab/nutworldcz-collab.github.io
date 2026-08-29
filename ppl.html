@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>PPL Kalkulátor — Nutworld</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Exo+2:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg:#F5F1EC;--surface:#EDE8DF;--surface-2:#E4DDD3;--border:#CEC6B9;
+    --text:#1C1710;--text-muted:#72604F;--text-faint:#9E8570;
+    --accent:#83502E;--accent-light:rgba(131,80,46,0.10);--accent-border:rgba(131,80,46,0.22);
+    --green:#3A6A28;--pink:#A01050;--amber:#D4900E;
+    --warn-bg:rgba(212,144,14,0.10);--warn-border:rgba(212,144,14,0.28);--warn-text:#7A5000;
+    --result-bg:#5C381F;--result-text:#FBF6F1;--result-muted:rgba(251,246,241,0.60);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:1.5rem 1.25rem 3rem;font-size:14.5px}
+
+  .topnav{display:flex;align-items:center;gap:10px;margin-bottom:1.75rem}
+  .topnav a{font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700;color:var(--accent);text-decoration:none;opacity:.7}
+  .topnav a:hover{opacity:1}
+  .topnav-sep{color:var(--text-muted);font-size:12px}
+
+  .page{max-width:600px;margin:0 auto}
+
+  .header{margin-bottom:1.5rem}
+  .eyebrow{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.4rem;font-weight:500}
+  h1{font-family:'DM Serif Display',Georgia,serif;font-size:1.75rem;font-weight:400;line-height:1.2;margin-bottom:.3rem}
+  .header-sub{font-size:13px;color:var(--text-muted)}
+
+  /* Service tabs */
+  .svc-row{display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap}
+  .svc-btn{padding:.45rem 1.1rem;border-radius:8px;border:1.5px solid var(--border);background:var(--surface-2);color:var(--text-muted);font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:600;cursor:pointer;transition:all .13s}
+  .svc-btn:hover:not(.active){border-color:var(--accent);color:var(--accent)}
+  .svc-btn.active.cz-home{background:var(--accent);border-color:var(--accent);color:#fff}
+  .svc-btn.active.cz-pbox{background:var(--green);border-color:var(--green);color:#fff}
+  .svc-btn.active.sk{background:var(--pink);border-color:var(--pink);color:#fff}
+
+  /* Cards */
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.1rem 1.4rem;margin-bottom:.8rem}
+  .card-title{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);font-weight:600;margin-bottom:.8rem}
+
+  /* Weight */
+  .weight-top{display:flex;align-items:baseline;gap:5px;margin-bottom:.8rem}
+  .weight-num{width:68px;font-family:'DM Serif Display',serif;font-size:2rem;font-weight:400;border:none;background:transparent;color:var(--text);padding:0;text-align:right;font-variant-numeric:tabular-nums;-moz-appearance:textfield}
+  .weight-num::-webkit-inner-spin-button,.weight-num::-webkit-outer-spin-button{-webkit-appearance:none}
+  .weight-num:focus{outline:none}
+  .weight-unit{font-size:1.1rem;color:var(--text-muted);font-weight:600}
+
+  .slider{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:3px;background:var(--border);outline:none;cursor:pointer;display:block}
+  .slider::-webkit-slider-thumb{-webkit-appearance:none;width:19px;height:19px;border-radius:50%;background:var(--accent);border:3px solid var(--surface);box-shadow:0 1px 4px rgba(0,0,0,.18);cursor:pointer}
+  .slider::-moz-range-thumb{width:19px;height:19px;border-radius:50%;background:var(--accent);border:3px solid var(--surface);box-shadow:0 1px 4px rgba(0,0,0,.18);cursor:pointer}
+
+  .band-dots{display:flex;gap:3px;margin-top:8px}
+  .band-dot{flex:1;height:3px;border-radius:2px;background:var(--surface-2)}
+  .band-dot.lit-cz-home{background:var(--accent)}
+  .band-dot.lit-cz-pbox{background:var(--green)}
+  .band-dot.lit-sk{background:var(--pink)}
+  .band-dot.past{background:var(--border);opacity:.5}
+  .band-scale{display:flex;justify-content:space-between;font-size:10px;color:var(--text-faint);margin-top:3px;font-variant-numeric:tabular-nums}
+
+  /* Add-ons */
+  .addon{display:flex;align-items:flex-start;gap:10px;padding:.5rem 0}
+  .addon+.addon{border-top:1px solid var(--border)}
+  .addon input[type="checkbox"]{width:14px;height:14px;margin-top:3px;flex-shrink:0;accent-color:var(--accent);cursor:pointer}
+  .addon input[type="checkbox"]:disabled{opacity:.4;cursor:not-allowed}
+  .addon-body{flex:1}
+  .addon-name{font-size:13.5px;font-weight:500;cursor:pointer;display:block}
+  .addon-name.dim{color:var(--text-faint);cursor:not-allowed}
+  .addon-hint{font-size:11.5px;color:var(--text-muted);margin-top:1px;display:block}
+
+  /* Pal rate */
+  .pal-row{display:flex;align-items:center;gap:10px}
+  .pal-box{display:flex;align-items:center;gap:3px;background:var(--surface-2);border:1.5px solid var(--border);border-radius:7px;padding:.35rem .8rem;flex-shrink:0}
+  .pal-box:focus-within{border-color:var(--accent)}
+  .pal-input{width:40px;border:none;background:transparent;font-size:14px;font-weight:600;text-align:right;font-variant-numeric:tabular-nums;-moz-appearance:textfield;color:var(--text)}
+  .pal-input::-webkit-inner-spin-button,.pal-input::-webkit-outer-spin-button{-webkit-appearance:none}
+  .pal-input:focus{outline:none}
+  .pal-pct{font-size:13px;color:var(--text-muted)}
+  .pal-note{font-size:11.5px;color:var(--text-faint);line-height:1.4}
+
+  /* Result */
+  .result-card{background:var(--result-bg);border-radius:14px;padding:1.25rem 1.4rem;color:var(--result-text);margin-bottom:.8rem}
+  .res-eyebrow{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--result-muted);margin-bottom:4px}
+  .res-total{font-family:'DM Serif Display',serif;font-size:2.2rem;font-weight:400;font-variant-numeric:tabular-nums;line-height:1;margin-bottom:3px}
+  .res-bez{font-size:12.5px;color:var(--result-muted);font-variant-numeric:tabular-nums;margin-bottom:1rem}
+  .res-hr{border:none;border-top:1px solid rgba(255,255,255,.12);margin-bottom:.75rem}
+  .res-row{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;padding:2px 0;font-variant-numeric:tabular-nums;gap:8px}
+  .res-row.sub{border-top:1px solid rgba(255,255,255,.12);margin-top:5px;padding-top:.5rem;font-weight:600}
+  .res-k{color:var(--result-muted)}
+  .res-v{color:var(--result-text);font-weight:500;white-space:nowrap}
+  .est-note{margin-top:.75rem;padding:.45rem .75rem;background:rgba(212,144,14,.18);border:1px solid rgba(212,144,14,.30);border-radius:7px;font-size:11.5px;color:#FFCC55;line-height:1.4}
+  .unavail-card{background:var(--result-bg);border-radius:14px;padding:2.5rem 1.4rem;text-align:center;color:var(--result-muted)}
+  .unavail-card strong{display:block;font-family:'DM Serif Display',serif;font-size:1.3rem;font-weight:400;color:var(--result-text);margin-bottom:.3rem}
+
+  /* Comparison */
+  .cmp-title{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);font-weight:600;margin-bottom:.65rem}
+  .cmp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  @media(max-width:380px){.cmp-grid{grid-template-columns:1fr}}
+  .cmp-card{background:var(--surface);border:2px solid transparent;border-radius:10px;padding:.75rem .9rem}
+  .cmp-card.active-cz-home{border-color:var(--accent)}
+  .cmp-card.active-cz-pbox{border-color:var(--green)}
+  .cmp-card.active-sk{border-color:var(--pink)}
+  .cmp-card.na{opacity:.45}
+  .cmp-name{font-size:11px;font-weight:700;margin-bottom:.5rem;letter-spacing:.05em}
+  .cmp-name.cz-home{color:var(--accent)}
+  .cmp-name.cz-pbox{color:var(--green)}
+  .cmp-name.sk{color:var(--pink)}
+  .cmp-name.na{color:var(--text-faint)}
+  .cmp-row{display:flex;justify-content:space-between;font-size:11.5px;padding:1.5px 0;font-variant-numeric:tabular-nums}
+  .cmp-k{color:var(--text-muted)}
+  .cmp-v{font-weight:600;color:var(--text)}
+  .cmp-v.big{font-family:'DM Serif Display',serif;font-size:13.5px;font-weight:400}
+  .cmp-hr{border:none;border-top:1px solid var(--border);margin:5px 0}
+  .cmp-na{font-size:11.5px;color:var(--text-faint);margin-top:.25rem}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <a href="/">Rozcestník</a>
+  <span class="topnav-sep">›</span>
+  <a href="/doprava.html">Doprava</a>
+  <span class="topnav-sep">›</span>
+  <span>PPL</span>
+</div>
+
+<div class="page">
+
+  <div class="header">
+    <div class="eyebrow">Doprava · Zásilky</div>
+    <h1>PPL Kalkulátor</h1>
+    <div class="header-sub">CZ domů · CZ výdejna · SK — ceník IČO 27517357 + faktury 2026</div>
+  </div>
+
+  <!-- Service tabs -->
+  <div class="svc-row">
+    <button class="svc-btn active cz-home" data-svc="cz-home">CZ domů</button>
+    <button class="svc-btn cz-pbox" data-svc="cz-pbox">CZ výdejna</button>
+    <button class="svc-btn sk" data-svc="sk">SK</button>
+  </div>
+
+  <!-- Weight -->
+  <div class="card">
+    <div class="card-title">Hmotnost zásilky</div>
+    <div class="weight-top">
+      <input type="number" class="weight-num" id="wNum" value="2.0" min="0.1" max="31.5" step="0.1" aria-label="Hmotnost v kg">
+      <span class="weight-unit">kg</span>
+    </div>
+    <input type="range" class="slider" id="wSlider" min="1" max="315" step="1" value="20" aria-label="Posuvník hmotnosti">
+    <div class="band-dots" id="bandDots"></div>
+    <div class="band-scale"><span>0</span><span>5</span><span>10</span><span>20</span><span>31,5 kg</span></div>
+  </div>
+
+  <!-- Result -->
+  <div id="resultEl"></div>
+
+  <!-- Add-ons -->
+  <div class="card">
+    <div class="card-title">Příplatky</div>
+    <div class="addon">
+      <input type="checkbox" id="dobCheck">
+      <div class="addon-body">
+        <label class="addon-name" for="dobCheck">Dobírka</label>
+        <span class="addon-hint" id="dobHint">CZ: 26,50 Kč / zásilka</span>
+      </div>
+    </div>
+    <div class="addon">
+      <input type="checkbox" id="karCheck" disabled>
+      <div class="addon-body">
+        <label class="addon-name dim" for="karCheck" id="karLabel">Platba kartou</label>
+        <span class="addon-hint">+18,00 Kč navíc k dobírce</span>
+      </div>
+    </div>
+    <div style="margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border)">
+      <div class="card-title" style="margin-bottom:.5rem">Palivový příplatek</div>
+      <div class="pal-row">
+        <div class="pal-box">
+          <input type="number" class="pal-input" id="palInput" value="16.5" min="0" max="99" step="0.1" aria-label="Palivový příplatek %">
+          <span class="pal-pct">%</span>
+        </div>
+        <p class="pal-note">PPL aktualizuje měsíčně na ppl.cz. Červen 17,3 %, srpen 16,3 %.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparison -->
+  <div class="cmp-title">Srovnání všech služeb</div>
+  <div class="cmp-grid" id="cmpGrid"></div>
+
+</div>
+
+<script>
+const SVCS = {
+  'cz-home': {name:'CZ domů',cls:'cz-home',mytne:'cz',dob:26.50,maxKg:31.5,
+    bands:[{max:2,price:76.47,est:false},{max:5,price:78.30,est:false},{max:10,price:85.77,est:false},{max:20,price:89.67,est:false},{max:31.5,price:124.82,est:false}]},
+  'cz-pbox':{name:'CZ výdejna',cls:'cz-pbox',mytne:'cz',dob:26.50,maxKg:20,
+    bands:[{max:2,price:55.05,est:false},{max:5,price:65.23,est:false},{max:10,price:73.36,est:false},{max:20,price:88.50,est:true}]},
+  'sk':{name:'SK',cls:'sk',mytne:'sk',dob:54.20,maxKg:20,
+    bands:[{max:2,price:76.00,est:true},{max:5,price:95.00,est:true},{max:10,price:99.50,est:false},{max:20,price:101.97,est:false}]}
+};
+const BANDS=[2,5,10,20,31.5];
+
+function fmt(v){return v.toLocaleString('cs-CZ',{minimumFractionDigits:2,maximumFractionDigits:2})+' Kč'}
+
+function calc(key,kg,pal,dob,kar){
+  const s=SVCS[key];
+  if(kg>s.maxKg)return null;
+  const band=s.bands.find(b=>kg<=b.max);
+  if(!band)return null;
+  const base=band.price,palF=base*(pal/100),mCZ=kg*1.10,mSK=s.mytne==='sk'?kg*0.50:0;
+  const dobF=dob?s.dob:0,karF=(dob&&kar)?18:0;
+  const tot=base+palF+mCZ+mSK+dobF+karF;
+  return{base,pal:palF,mCZ,mSK,dobF,karF,tot,totD:tot*1.21,est:band.est};
+}
+
+let cur='cz-home';
+
+function inputs(){
+  let kg=parseFloat(document.getElementById('wNum').value)||0.1;
+  kg=Math.max(0.1,Math.min(31.5,kg));
+  let pal=parseFloat(document.getElementById('palInput').value)||0;
+  const dob=document.getElementById('dobCheck').checked;
+  const kar=document.getElementById('karCheck').checked;
+  return{kg,pal,dob,kar};
+}
+
+function update(){
+  const{kg,pal,dob,kar}=inputs();
+  const svc=SVCS[cur];
+
+  document.getElementById('dobHint').textContent=cur==='sk'?'SK: 54,20 Kč / zásilka':'CZ: 26,50 Kč / zásilka';
+  const karCk=document.getElementById('karCheck');
+  const karLb=document.getElementById('karLabel');
+  karCk.disabled=!dob;
+  karLb.className='addon-name'+(dob?'':' dim');
+  if(!dob)karCk.checked=false;
+
+  // Band dots
+  const dots=document.getElementById('bandDots');
+  dots.innerHTML='';
+  BANDS.forEach((m,i)=>{
+    const from=i===0?0:BANDS[i-1];
+    const d=document.createElement('div');
+    d.className='band-dot';
+    if(kg>=from&&kg<=m)d.classList.add('lit-'+cur);
+    else if(kg>m)d.classList.add('past');
+    dots.appendChild(d);
+  });
+
+  // Result
+  const r=calc(cur,kg,pal,dob,dob&&kar);
+  const el=document.getElementById('resultEl');
+  if(!r){
+    el.innerHTML=`<div class="unavail-card"><strong>Nad limit</strong>${svc.name} přijímá zásilky do ${svc.maxKg} kg.</div>`;
+  } else {
+    const skRow=svc.mytne==='sk'?`<div class="res-row"><span class="res-k">Mýtné SK / zahraničí (0,50 Kč/kg)</span><span class="res-v">${fmt(r.mSK)}</span></div>`:'';
+    const dobRow=dob?`<div class="res-row"><span class="res-k">Dobírka</span><span class="res-v">${fmt(r.dobF)}</span></div>`:'';
+    const karRow=(dob&&r.karF)?`<div class="res-row"><span class="res-k">Platba kartou</span><span class="res-v">${fmt(r.karF)}</span></div>`:'';
+    const est=r.est?`<div class="est-note">★ Cena v tomto pásmu je odhad — nepotvrzena fakturou.</div>`:'';
+    el.innerHTML=`<div class="result-card">
+      <div class="res-eyebrow">Celkem s DPH 21 %</div>
+      <div class="res-total">${fmt(r.totD)}</div>
+      <div class="res-bez">bez DPH: ${fmt(r.tot)}</div>
+      <hr class="res-hr">
+      <div class="res-row"><span class="res-k">Dopravné</span><span class="res-v">${fmt(r.base)}</span></div>
+      <div class="res-row"><span class="res-k">Pal. příplatek (${pal} %)</span><span class="res-v">${fmt(r.pal)}</span></div>
+      <div class="res-row"><span class="res-k">Mýtné CZ (1,10 Kč/kg)</span><span class="res-v">${fmt(r.mCZ)}</span></div>
+      ${skRow}${dobRow}${karRow}
+      <div class="res-row sub"><span class="res-k">Celkem bez DPH</span><span class="res-v">${fmt(r.tot)}</span></div>
+      <div class="res-row"><span class="res-k">DPH 21 %</span><span class="res-v">${fmt(r.totD-r.tot)}</span></div>
+      ${est}</div>`;
+  }
+
+  // Comparison
+  const grid=document.getElementById('cmpGrid');
+  grid.innerHTML='';
+  ['cz-home','cz-pbox','sk'].forEach(key=>{
+    const s=SVCS[key],rc=calc(key,kg,pal,dob,dob&&kar);
+    const active=key===cur;
+    const card=document.createElement('div');
+    card.className='cmp-card'+(active?' active-'+key:'')+(rc?'':' na');
+    if(!rc){card.innerHTML=`<div class="cmp-name na">${s.name}</div><div class="cmp-na">Nad limit ${s.maxKg} kg</div>`;}
+    else{card.innerHTML=`<div class="cmp-name ${key}">${s.name}</div>
+      <div class="cmp-row"><span class="cmp-k">Dopravné</span><span class="cmp-v">${fmt(rc.base)}</span></div>
+      <div class="cmp-row"><span class="cmp-k">Příplatky</span><span class="cmp-v">${fmt(rc.tot-rc.base)}</span></div>
+      <hr class="cmp-hr">
+      <div class="cmp-row"><span class="cmp-k">bez DPH</span><span class="cmp-v">${fmt(rc.tot)}</span></div>
+      <div class="cmp-row"><span class="cmp-k">s DPH</span><span class="cmp-v big">${fmt(rc.totD)}</span></div>`;}
+    grid.appendChild(card);
+  });
+}
+
+// Service tabs
+document.querySelectorAll('.svc-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.svc-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    cur=btn.dataset.svc;
+    update();
+  });
+});
+
+// Weight sync
+const slider=document.getElementById('wSlider'),wNum=document.getElementById('wNum');
+slider.addEventListener('input',()=>{wNum.value=(slider.value/10).toFixed(1);update();});
+wNum.addEventListener('input',()=>{
+  const v=parseFloat(wNum.value);
+  if(!isNaN(v))slider.value=Math.round(Math.max(1,Math.min(315,v*10)));
+  update();
+});
+wNum.addEventListener('blur',()=>{
+  let v=parseFloat(wNum.value);
+  if(isNaN(v)||v<0.1)v=0.1;
+  if(v>31.5)v=31.5;
+  wNum.value=v.toFixed(1);slider.value=Math.round(v*10);update();
+});
+document.getElementById('dobCheck').addEventListener('change',update);
+document.getElementById('karCheck').addEventListener('change',update);
+document.getElementById('palInput').addEventListener('input',update);
+
+update();
+</script>
+
+<script src="pin-guard.js"></script>
+</body>
+</html>
