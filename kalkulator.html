@@ -422,26 +422,42 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
         <select id="d-vzorec-sel" onchange="dApplyVzorec()">
           <option value="">— vlastní zadání —</option>
           <optgroup label="Sáčky">
-            <option value="sacek_knir">Sáček s knírem — obal 10 + práce 5 Kč</option>
-            <option value="sacek_kolick">Sáček s kolíčkem — obal 15 + práce 10 Kč</option>
-            <option value="sacek_vanoce">Vánoční sáček SOB — obal 5 + práce 5 Kč</option>
+            <option value="sacek_knir">Sáček s knírem — obal 9 + práce 8 Kč</option>
+            <option value="sacek_kolick">Sáček s kolíčkem — obal 10 + práce 8 Kč</option>
+            <option value="sacek_vanoce">Vánoční sáček SOB — obal 9 + práce 8 Kč</option>
             <option value="zajicek">Velikonoční zajíček — obal 10 + práce 10 Kč</option>
-            <option value="celofan">Celofánek s mašličkou — obal 2,5 + práce 7,5 Kč</option>
-            <option value="kornout">Ořechový kornout — obal 12 + práce 7 Kč</option>
+            <option value="celofan_maly">Celofánek s mašličkou malý (30–100g) — obal 6 + práce 9,5 Kč</option>
+            <option value="celofan_velky">Celofánek s mašličkou velký (101–200g) — obal 7 + práce 10 Kč</option>
+            <option value="kornout_maly">Ořechový kornout malý 150g — obal 9 + práce 11 Kč</option>
+            <option value="kornout_velky">Ořechový kornout velký 500g — obal 11 + práce 11 Kč</option>
           </optgroup>
-          <optgroup label="Kelímky & skleničky">
-            <option value="eko_kelimek">Eko kelímek — obal 9,5 + práce 7 Kč</option>
-            <option value="sklenic_deluxe">Sklenička DELUXE — obal 14 + práce 7 Kč</option>
-            <option value="sklenic_exclusive">Sklenička EXCLUSIVE — obal 15 + práce 6 Kč</option>
+          <optgroup label="Kelímky &amp; skleničky">
+            <option value="eko_kelimek">Eko kelímek — obal 13 + práce 11 Kč</option>
+            <option value="kraft">Kraft kelímek — obal 9,5 + práce 12 Kč</option>
+            <option value="sklenic_deluxe">Sklenička DELUXE — obal 14 + práce 9 Kč</option>
+            <option value="sklenic_exclusive">Sklenička EXCLUSIVE — obal 13 + práce 8 Kč</option>
           </optgroup>
-          <optgroup label="Krabičky">
-            <option value="krabicka_2x50">🟤 Krabička 2×50g — obal 15 + práce 20 Kč, ×2.5</option>
-            <option value="krabicka_4x80">🟤 Krabička 4×80g — obal 15 + práce 20 Kč, marže 55 %</option>
-            <option value="vanocni_krabicka">🎄 Vánoční krabička — obal 15 + práce 20 Kč, ×2.5</option>
-            <option value="kazetka">Dárková kazetka — obal 8 + práce 14 Kč</option>
-            <option value="krabice_kelimky">Dárková krabice s kelímky — obal 69 + práce 17 Kč</option>
-            <option value="krabicka">Dárková krabička — obal 17,5 + práce 27,5 Kč</option>
-            <option value="kraft">Kraft kelímek — obal 8 + práce 16 Kč</option>
+          <optgroup label="Krabičky malé">
+            <option value="kazetka">Dárková kazetka 50g — obal 10,5 + práce 11 Kč</option>
+            <option value="krabicka_2x50">Krabička 2×50g — obal 12,1 + práce 20,9 Kč</option>
+            <option value="vanocni_krabicka">🎄 Vánoční krabička 2×50g — obal 15 + práce 20 Kč</option>
+            <option value="krabicka_4x80">Krabička 4×80g — obal 29,2 + práce 29,7 Kč</option>
+            <option value="krabicka_4mix">Krabička 4 druhy MIX — obal 40,2 + práce 29,7 Kč</option>
+            <option value="krabicka_6x50">Krabička 6×50g — obal 72,6 + práce 30,8 Kč</option>
+          </optgroup>
+          <optgroup label="Krabice střední">
+            <option value="eko_kelimek_3ks">EKO kelímek 3ks s pečetí — obal 30 + práce 21 Kč</option>
+            <option value="krabice_kelimky">Dárková krabice s kelímky — obal 66 + práce 26 Kč</option>
+            <option value="krabicka_3eko">Krabička 3× EKO kelímek — obal 83,1 + práce 31 Kč</option>
+            <option value="krabice_deluxe">Krabice DELUXE 3× sklenička — obal 84 + práce 24 Kč</option>
+          </optgroup>
+          <optgroup label="Krabičky EXCLUSIVE &amp; velké">
+            <option value="exclusive_bez">Krabička EXCLUSIVE — obal 95 + práce 34 Kč</option>
+            <option value="exclusive_vzkaz">Krabička EXCLUSIVE s vzkazem — obal 105 + práce 34 Kč</option>
+            <option value="box_6sklenicky">Box 6× sklenička EXCLUSIVE — obal 105,6 + práce 39,6 Kč</option>
+            <option value="krabice_vys_l">Krabice výseková L — obal 97 + práce 44 Kč</option>
+            <option value="krabice_vys_xl">Krabice výseková XL — obal 139 + práce 62 Kč</option>
+            <option value="prekvapeni">Krabice s překvapením — obal 132 + práce 75 Kč</option>
           </optgroup>
         </select>
       </div>
@@ -1172,22 +1188,40 @@ document.addEventListener('click', e => {
 // TAB DÁRKY — stav + logika
 // ══════════════════════════════════════════════
 const D_VZORCE = {
-  sacek_knir:       { obal: 10,   prace: 5,    marze: 50, vo: 0.8 },
-  sacek_kolick:     { obal: 15,   prace: 10,   marze: 50, vo: 0.8 },
-  sacek_vanoce:     { obal: 5,    prace: 5,    marze: 50, vo: 0.8 },
-  zajicek:          { obal: 10,   prace: 10,   marze: 50, vo: 0.8 },
-  celofan:          { obal: 2.5,  prace: 7.5,  marze: 50, vo: 0.8 },
-  kornout:          { obal: 12,   prace: 7,    marze: 50, vo: 0.8 },
-  eko_kelimek:      { obal: 9.5,  prace: 7,    marze: 45, vo: 0.8 },
-  sklenic_deluxe:   { obal: 14,   prace: 7,    marze: 50, vo: 0.8 },
-  sklenic_exclusive:{ obal: 15,   prace: 6,    marze: 50, vo: 0.8 },
-  kazetka:          { obal: 8,    prace: 14,   marze: 47, vo: 0.8 },
-  krabice_kelimky:  { obal: 69,   prace: 17,   marze: 50, vo: 0.8 },
-  krabicka:         { obal: 17.5, prace: 27.5, marze: 50, vo: 0.7 },
-  kraft:            { obal: 8,    prace: 16,   marze: 54, vo: 0.7 },
-  krabicka_2x50:    { obal: 15,   prace: 20,   marze: null, formula: 'nasobek', N: 2.5, vo: 0.7 },
-  krabicka_4x80:    { obal: 15,   prace: 20,   marze: 55,   vo: 0.7 },
-  vanocni_krabicka: { obal: 15,   prace: 20,   marze: null, formula: 'nasobek', N: 2.5, vo: 0.7 },
+  // Sáčky — násobek ×2
+  sacek_knir:        { obal: 9,     prace: 8,    formula: 'nasobek', N: 2,   vo: 0.8 },
+  sacek_kolick:      { obal: 10,    prace: 8,    formula: 'nasobek', N: 2,   vo: 0.8 },
+  sacek_vanoce:      { obal: 9,     prace: 8,    formula: 'nasobek', N: 2,   vo: 0.8 },
+  zajicek:           { obal: 10,    prace: 10,   formula: 'nasobek', N: 2,   vo: 0.8 },
+  celofan_maly:      { obal: 6,     prace: 9.5,  formula: 'nasobek', N: 2,   vo: 0.8 },
+  celofan_velky:     { obal: 7,     prace: 10,   formula: 'nasobek', N: 2,   vo: 0.8 },
+  kornout_maly:      { obal: 9,     prace: 11,   formula: 'nasobek', N: 2,   vo: 0.8 },
+  kornout_velky:     { obal: 11,    prace: 11,   formula: 'nasobek', N: 2,   vo: 0.8 },
+  // Kelímky & skleničky — marže
+  eko_kelimek:       { obal: 13,    prace: 11,   marze: 45, vo: 0.8 },
+  kraft:             { obal: 9.5,   prace: 12,   marze: 54, vo: 0.7 },
+  sklenic_deluxe:    { obal: 14,    prace: 9,    marze: 50, vo: 0.8 },
+  sklenic_exclusive: { obal: 13,    prace: 8,    marze: 50, vo: 0.8 },
+  // Krabičky malé — marže 50 %
+  kazetka:           { obal: 10.5,  prace: 11,   marze: 47, vo: 0.8 },
+  krabicka_2x50:     { obal: 12.1,  prace: 20.9, marze: 50, vo: 0.7 },
+  vanocni_krabicka:  { obal: 15,    prace: 20,   marze: 50, vo: 0.7 },
+  krabicka_4x80:     { obal: 29.2,  prace: 29.7, marze: 55, vo: 0.7 },
+  krabicka_4mix:     { obal: 40.2,  prace: 29.7, marze: 50, vo: 0.8 },
+  krabicka_6x50:     { obal: 72.6,  prace: 30.8, marze: 50, vo: 0.8 },
+  // Krabice střední — marže 50 %
+  eko_kelimek_3ks:   { obal: 30,    prace: 21,   marze: 50, vo: 0.8 },
+  krabice_kelimky:   { obal: 66,    prace: 26,   marze: 50, vo: 0.8 },
+  krabicka_3eko:     { obal: 83.1,  prace: 31,   marze: 50, vo: 0.8 },
+  krabice_deluxe:    { obal: 84,    prace: 24,   marze: 50, vo: 0.8 },
+  // Krabičky EXCLUSIVE — marže 50 %
+  exclusive_bez:     { obal: 95,    prace: 34,   marze: 50, vo: 0.8 },
+  exclusive_vzkaz:   { obal: 105,   prace: 34,   marze: 50, vo: 0.8 },
+  box_6sklenicky:    { obal: 105.6, prace: 39.6, marze: 50, vo: 0.8 },
+  // Krabice velké — marže 50 %
+  krabice_vys_l:     { obal: 97,    prace: 44,   marze: 50, vo: 0.8 },
+  krabice_vys_xl:    { obal: 139,   prace: 62,   marze: 50, vo: 0.8 },
+  prekvapeni:        { obal: 132,   prace: 75,   marze: 50, vo: 0.7 },
 };
 
 let dRows = [];   // [{product, gramaz}]
