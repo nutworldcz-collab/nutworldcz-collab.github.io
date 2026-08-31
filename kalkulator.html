@@ -157,6 +157,8 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
 .nd-sum-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;color:#555}
 .nd-sum-total{display:flex;justify-content:space-between;font-size:14px;font-weight:700;padding-top:6px;margin-top:4px;border-top:1px solid #d4c0a8}
 .nd-sum-total span:last-child{font-family:'Exo 2',sans-serif;color:var(--bd)}
+.kosik-item-nd{font-size:11px;color:var(--br);padding:3px 0 0;line-height:1.4;font-style:italic;opacity:.9}
+.kosik-item-sluzba{color:var(--acc)!important}
 </style>
 </head>
 <body>
@@ -1697,7 +1699,10 @@ function kalkAddItem() {
   const nakl = parseFloat(naklEl?.textContent) || 0;
   const nazev = document.getElementById('d-kalk-nazev').value.trim() || 'Dárek';
   const ks = parseInt(document.getElementById('d-kalk-ks').value) || 1;
-  KALK_ITEMS.push({ nazev, ks, mo, vo, nakl, nadstavby: [] });
+  const _allNd = nsGetItems();
+  const nadstavby = _allNd.filter(n => !n.sluzba);
+  const pripravy  = _allNd.filter(n => n.sluzba);
+  KALK_ITEMS.push({ nazev, ks, mo, vo, nakl, nadstavby, pripravy });
   kalkRender();
   document.getElementById('d-kalk-nazev').value = '';
   document.getElementById('d-kalk-ks').value = '1';
@@ -1721,6 +1726,8 @@ function kalkRender() {
         <span><strong>${item.ks} ks</strong></span>
         <span>Bez DPH: <strong>${item.mo} Kč/ks</strong> → ${(item.mo*item.ks).toLocaleString('cs')} Kč</span>
       </div>
+      ${item.nadstavby?.length ? `<div class="kosik-item-nd">${item.nadstavby.map(n=>'+ '+n.nazev).join(' · ')}</div>` : ''}
+      ${item.pripravy?.length ? `<div class="kosik-item-nd kosik-item-sluzba">SLUŽBA: ${item.pripravy.map(n=>n.nazev).join(', ')}</div>` : ''}
     </div>`;
   }).join('');
   document.getElementById('kosik-mo-total').textContent = totMo.toLocaleString('cs') + ' Kč';
@@ -1738,11 +1745,17 @@ function _buildHash() {
   const repName = REP_NAMES[document.getElementById('rep-sel').value] || '';
   const produkty = KALK_ITEMS.map(item => ({
     kod: item.kod || '',
-    nazev: item.nazev + (item.nadstavby.length ? ' (+ ' + item.nadstavby.map(n=>n.nazev).join(', ') + ')' : ''),
+    nazev: item.nazev + (item.nadstavby?.length ? ' (+ ' + item.nadstavby.map(n=>n.nazev).join(', ') + ')' : ''),
     ks: item.ks,
     cena: item.mo,   // zákaznická cena bez DPH (po slevě + potisk)
     nakup: item.nakl || ''
   }));
+  const _bSeen = new Set();
+  KALK_ITEMS.forEach(item => {
+    (item.pripravy||[]).forEach(p => {
+      if (!_bSeen.has(p.nazev)) { _bSeen.add(p.nazev); produkty.push({ kod:'', nazev: p.nazev + ' [PŘÍPRAVA]', ks: 1, cena: p.cena, nakup: '' }); }
+    });
+  });
   return btoa(unescape(encodeURIComponent(JSON.stringify({ repName, produkty }))));
 }
 
@@ -1772,6 +1785,9 @@ async function kalkUlozit() {
     const ns = item.nadstavby.length ? ` *(+${item.nadstavby.map(n=>n.nazev).join(', ')})*` : '';
     desc += `| ${item.nazev}${ns} | ${item.ks} ks | ${item.mo} Kč | ${item.vo} Kč |\n`;
   });
+  const _uPrip = []; const _uSeen = new Set();
+  KALK_ITEMS.forEach(item => { (item.pripravy||[]).forEach(p => { if (!_uSeen.has(p.nazev)) { _uSeen.add(p.nazev); _uPrip.push(p); } }); });
+  if (_uPrip.length) { desc += `\n**Přípravy (jednorázové — SLUŽBA):**\n`; _uPrip.forEach(p => { desc += `- ${p.nazev}: **${p.cena} Kč**\n`; }); }
   desc += `\n**Celkem bez DPH:** ${totMo.toLocaleString('cs')} Kč &nbsp;·&nbsp; **VO:** ${totVo.toLocaleString('cs')} Kč\n\n[📋 Vytvořit nabídku →](${nabUrl})`;
 
   const cardName = KALK_ITEMS.length === 1
