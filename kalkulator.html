@@ -1750,6 +1750,12 @@ function _buildHash() {
     cena: item.mo,   // zákaznická cena bez DPH (po slevě + potisk)
     nakup: item.nakl || ''
   }));
+  const _bSeen = new Set();
+  KALK_ITEMS.forEach(item => {
+    (item.pripravy||[]).forEach(p => {
+      if (!_bSeen.has(p.nazev)) { _bSeen.add(p.nazev); produkty.push({ kod:'', nazev: p.nazev + ' — SLUŽBA', ks: 1, cena: p.cena, nakup: '' }); }
+    });
+  });
   return btoa(unescape(encodeURIComponent(JSON.stringify({ repName, produkty }))));
 }
 
