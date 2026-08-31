@@ -436,7 +436,15 @@ function renderSummary(d) {
       <td>${p.sluzba ? '' : `<button class="popis-btn-sp" title="Složení dárku" onclick="togglePopisProd(${i})">📦</button>`}</td>`;
     tbody.appendChild(tr);
   });
-  document.getElementById('s-total').textContent = num((totalBez * (1 + dphRate)).toFixed(2)) + ' ' + curSym;
+  const dopravaNabidka = d.doprava || 0;
+  if (dopravaNabidka > 0) {
+    const dtr = document.createElement('tr');
+    dtr.innerHTML = `<td colspan="3" style="text-align:right;color:#888;font-size:12px;font-style:italic">Doprava</td>
+      <td style="text-align:right;color:#888">${num(dopravaNabidka.toFixed(2))} ${curSym}</td>
+      <td></td>`;
+    tbody.appendChild(dtr);
+  }
+  document.getElementById('s-total').textContent = num(((totalBez + dopravaNabidka) * (1 + dphRate)).toFixed(2)) + ' ' + curSym;
 
   // Výrobní tabulka — výrobní ceny zadává rep
   const vtbody = document.getElementById('v-produkty');
@@ -721,7 +729,9 @@ async function createTrelloCard() {
       (slozeni ? `\n  📦 ${slozeni}` : '');
   }).join('\n\n');
 
-  const dph = totalBez * dphRate;
+  const dopravaNabidkaZ = d.doprava || 0;
+  const totalBezSDopravou = totalBez + dopravaNabidkaZ;
+  const dph = totalBezSDopravou * dphRate;
   const fmt = iso => { if(!iso) return ''; const [y,m,dd]=iso.split('-'); return `${dd}.${m}.${y}`; };
 
   const desc = `## 🏢 Zákazník
@@ -742,8 +752,8 @@ ${prodDesc}
 
 ## 💰 Souhrn
 **Celkem bez DPH:** ${num(totalBez.toFixed(0))} ${curSym}
-**${dphLabel}:** ${num(dph.toFixed(0))} ${curSym}
-**Celkem s DPH:** ${num((totalBez+dph).toFixed(0))} ${curSym}
+${dopravaNabidkaZ > 0 ? `**Doprava:** ${num(dopravaNabidkaZ.toFixed(0))} ${curSym}\n` : ''}**${dphLabel}:** ${num(dph.toFixed(0))} ${curSym}
+**Celkem s DPH:** ${num((totalBezSDopravou+dph).toFixed(0))} ${curSym}
 
 ## ✏️ Personalizace
 **Logo:** ${logo||'—'} | **Vlastní složení:** ${vlSlozeni||'—'} | **Vlastní obal:** ${vlObal||'—'}
@@ -838,12 +848,13 @@ ${d.poznamka ? `\n*Poznámka z nabídky: ${d.poznamka}*` : ''}`;
         `Kontakt: ${d.kontakt || '-'}${d.emailKlient ? ' · ' + d.emailKlient : ''}${d.telefon ? ' · ' + d.telefon : ''}\n\n` +
         `PRODUKTY:\n${ownerProdLines}\n\n` +
         `Celkem bez DPH: ${num(totalBez.toFixed(0))} ${curSym}\n` +
+        (dopravaNabidkaZ > 0 ? `Doprava: ${num(dopravaNabidkaZ.toFixed(0))} ${curSym}\n` : '') +
         `${dphLabel}: ${num(dph.toFixed(0))} ${curSym}\n` +
-        `Celkem s DPH: ${num((totalBez + dph).toFixed(0))} ${curSym}\n` +
+        `Celkem s DPH: ${num((totalBezSDopravou + dph).toFixed(0))} ${curSym}\n` +
         (emailZisk ? `💰 ZISK: +${num(emailZisk.toFixed(0))} ${curSym}${marzeStr}\n` : '') +
         `\nTermín: ${fmt(termin)}\n` +
         `Obchodák: ${obchodak}\n` +
-        `Doprava: ${doruceni}\n` +
+        `Doprava: ${doruceni}${dopravaNabidkaZ > 0 ? ' · ' + num(dopravaNabidkaZ.toFixed(0)) + ' ' + curSym : ''}\n` +
         (prani ? `Přání: ${prani}\n` : '') +
         (persPopis ? `Personalizace: ${persPopis}\n` : '') +
         (poznamka ? `Interní poznámka: ${poznamka}\n` : '') +
@@ -855,7 +866,7 @@ ${d.poznamka ? `\n*Poznámka z nabídky: ${d.poznamka}*` : ''}`;
         body: JSON.stringify({
           type: 'owner_nabidka',
           to: 'nutworld.cz@gmail.com',
-          subject: `🚀 Zakázka — ${d.firma} — ${num((totalBez + dph).toFixed(0))} ${curSym}`,
+          subject: `🚀 Zakázka — ${d.firma} — ${num((totalBezSDopravou + dph).toFixed(0))} ${curSym}`,
           body: ownerBody
         })
       });
