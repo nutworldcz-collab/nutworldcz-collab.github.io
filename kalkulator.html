@@ -119,6 +119,44 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
 .btn-kosik:hover:not(:disabled){opacity:.85}
 .btn-kosik.sec{background:var(--kraft);color:var(--bd);border:2px solid var(--bd)}
 .btn-kosik:disabled{opacity:.4;cursor:default}
+
+/* ═══ NADSTAVBY visual ═══ */
+.nd-cats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.nd-cat-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;border:1.5px solid #c8a882;border-radius:10px;background:white;font-family:'Exo 2',sans-serif;font-size:12px;font-weight:700;color:var(--br);cursor:pointer;transition:all .15s;white-space:nowrap}
+.nd-cat-btn:hover{border-color:var(--br);background:var(--kraft)}
+.nd-cat-btn.active{background:var(--bd);border-color:var(--bd);color:white}
+.nd-panel{display:none;margin-bottom:10px;border-radius:10px;overflow:hidden}
+.nd-panel.open{display:block}
+.nd-panel-hd{font-family:'Exo 2',sans-serif;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:9px 14px;display:flex;align-items:center;gap:6px}
+.nd-panel-bd{padding:12px 14px}
+.nd-opts{display:flex;gap:8px;flex-wrap:wrap}
+.nd-opt{display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 14px;border:1.5px solid #d4c0a8;border-radius:10px;background:white;cursor:pointer;transition:all .15s;text-align:center;min-width:90px;user-select:none}
+.nd-opt:hover{border-color:#c8976a;background:var(--kraft)}
+.nd-opt.sel{border-color:var(--bd);background:var(--kraft);box-shadow:0 0 0 2px rgba(92,56,31,.15)}
+.nd-opt-nm{font-family:'Exo 2',sans-serif;font-size:12px;font-weight:700;color:var(--bd);line-height:1.2}
+.nd-opt-sub{font-size:10px;color:#aaa;line-height:1.3}
+.nd-opt-czk{font-size:11px;font-weight:700;color:var(--br);background:rgba(131,80,46,.1);padding:2px 7px;border-radius:4px;margin-top:2px}
+.nd-opt.sel .nd-opt-czk{background:rgba(92,56,31,.15)}
+.nd-panel-potisk  {border:1.5px solid #9ecf7a} .nd-panel-potisk   .nd-panel-hd{background:#e6f3de;color:#2d5a1b} .nd-panel-potisk  .nd-panel-bd{background:#f5faf1}
+.nd-panel-gravir  {border:1.5px solid #c8976a} .nd-panel-gravir   .nd-panel-hd{background:#ede0d0;color:#5c381f} .nd-panel-gravir  .nd-panel-bd{background:#f8f3ec}
+.nd-panel-obalka  {border:1.5px solid #f4a0c0} .nd-panel-obalka   .nd-panel-hd{background:#fde8f2;color:#8c0040} .nd-panel-obalka  .nd-panel-bd{background:#fef7fa}
+.nd-panel-stuha   {border:1.5px solid #e8c840} .nd-panel-stuha    .nd-panel-hd{background:#fff8d6;color:#7a5200} .nd-panel-stuha   .nd-panel-bd{background:#fffcf0}
+.nd-panel-visacka {border:1.5px solid #d4b896} .nd-panel-visacka  .nd-panel-hd{background:#f1e6da;color:#6b4c1e} .nd-panel-visacka .nd-panel-bd{background:#faf5ef}
+.nd-panel-peceteni{border:1.5px solid #b0a0f0} .nd-panel-peceteni .nd-panel-hd{background:#eeeaff;color:#3a2080} .nd-panel-peceteni.nd-panel-bd{background:#f8f6ff}
+.nd-panel-etiketa {border:1.5px solid #90c0e8} .nd-panel-etiketa  .nd-panel-hd{background:#dff0ff;color:#1a4a7a} .nd-panel-etiketa .nd-panel-bd{background:#f2f8ff}
+.nd-sluzby{margin-top:12px;padding-top:12px;border-top:1px dashed #c8a882}
+.nd-sluzby-ttl{font-family:'Exo 2',sans-serif;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--acc);margin-bottom:8px}
+.sluzba-pill{display:inline-block;background:var(--acc);color:white;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:1px 5px;border-radius:4px}
+.nd-sl-item{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#fff4f8;border:1.5px solid #f5c0d4;border-radius:8px;margin-bottom:6px;cursor:pointer;transition:border-color .12s;gap:8px;user-select:none}
+.nd-sl-item.on{border-color:var(--acc)}
+.nd-sl-item input[type=checkbox]{width:14px;height:14px;accent-color:var(--acc);cursor:pointer;flex:none}
+.nd-sl-nm{flex:1;font-size:13px;color:#2a1a0e}
+.nd-sl-sub{font-size:11px;color:#aaa}
+.nd-sl-czk{font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700;color:var(--acc);white-space:nowrap}
+.nd-sum{background:var(--kraft);border-radius:8px;padding:10px 14px;margin-top:12px;display:none}
+.nd-sum-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;color:#555}
+.nd-sum-total{display:flex;justify-content:space-between;font-size:14px;font-weight:700;padding-top:6px;margin-top:4px;border-top:1px solid #d4c0a8}
+.nd-sum-total span:last-child{font-family:'Exo 2',sans-serif;color:var(--bd)}
 </style>
 </head>
 <body>
@@ -508,16 +546,111 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
 
     <!-- Card 5: Individuální nadstavby -->
     <div class="card" id="d-nadstavby-card">
-      <div class="card-title">➕ Individuální nadstavby</div>
-      <div class="hint" style="margin-bottom:12px">Přidej volitelné nadstavby (personalizace, stuha, karta…) — jejich cena se přičte k výsledné MO ceně dárku.</div>
-      <div id="ns-rows"></div>
-      <button class="btn-add-prod" onclick="nsAddRow()" style="margin-top:4px">+ Přidat nadstavbu</button>
-      <div class="total-costs" id="ns-total" style="margin-top:12px;display:none">
+      <div class="card-title">🎨 Nadstavby & personalizace</div>
+      <div class="nd-cats">
+        <button class="nd-cat-btn" id="nd-btn-potisk"   onclick="ndToggle('potisk')">🖨 Potisk</button>
+        <button class="nd-cat-btn" id="nd-btn-gravir"   onclick="ndToggle('gravir')">✒️ Gravírování</button>
+        <button class="nd-cat-btn" id="nd-btn-obalka"   onclick="ndToggle('obalka')">💌 Obálka / karta</button>
+        <button class="nd-cat-btn" id="nd-btn-stuha"    onclick="ndToggle('stuha')">🎀 Stuha</button>
+        <button class="nd-cat-btn" id="nd-btn-visacka"  onclick="ndToggle('visacka')">🏷 Visačka</button>
+        <button class="nd-cat-btn" id="nd-btn-peceteni" onclick="ndToggle('peceteni')">🔏 Pečetění</button>
+        <button class="nd-cat-btn" id="nd-btn-etiketa"  onclick="ndToggle('etiketa')">🏷️ Vlastní etiketa</button>
+      </div>
+      <!-- Potisk -->
+      <div class="nd-panel nd-panel-potisk" id="nd-panel-potisk">
+        <div class="nd-panel-hd">🖨 Potisk dárku</div>
+        <div class="nd-panel-bd">
+          <div class="nd-opts">
+            <div class="nd-opt" id="nd-potisk-maly"    onclick="ndOpt('potisk','maly')">   <span class="nd-opt-nm">Malý</span>   <span class="nd-opt-sub">primárně logo</span><span class="nd-opt-czk">+1,5 Kč/ks</span></div>
+            <div class="nd-opt" id="nd-potisk-stredni" onclick="ndOpt('potisk','stredni')"><span class="nd-opt-nm">Střední</span><span class="nd-opt-sub">logo + text</span>   <span class="nd-opt-czk">+3,5 Kč/ks</span></div>
+            <div class="nd-opt" id="nd-potisk-velky"   onclick="ndOpt('potisk','velky')">  <span class="nd-opt-nm">Velký</span>  <span class="nd-opt-sub">celopotisk</span>    <span class="nd-opt-czk">+6 Kč/ks</span>  </div>
+          </div>
+          <label style="display:flex;align-items:center;gap:7px;margin-top:10px;font-size:13px;text-transform:none;letter-spacing:0;cursor:pointer;font-weight:600;color:var(--bd)">
+            <input type="checkbox" id="nd-potisk-barveny" onchange="ndCalc()" style="width:auto;accent-color:var(--br)"/>
+            🎨 Barevný <span style="font-size:12px;color:#888;font-weight:400">+1 Kč/ks</span>
+          </label>
+        </div>
+      </div>
+      <!-- Gravírování -->
+      <div class="nd-panel nd-panel-gravir" id="nd-panel-gravir">
+        <div class="nd-panel-hd">✒️ Gravírování</div>
+        <div class="nd-panel-bd">
+          <div class="nd-opts">
+            <div class="nd-opt" id="nd-gravir-male"    onclick="ndOpt('gravir','male')">   <span class="nd-opt-nm">Malé</span>   <span class="nd-opt-sub">jednoduché logo</span><span class="nd-opt-czk">+3 Kč/ks</span></div>
+            <div class="nd-opt" id="nd-gravir-stredni" onclick="ndOpt('gravir','stredni')"><span class="nd-opt-nm">Střední</span><span class="nd-opt-sub">logo + text</span>     <span class="nd-opt-czk">+5 Kč/ks</span></div>
+            <div class="nd-opt" id="nd-gravir-velke"   onclick="ndOpt('gravir','velke')">  <span class="nd-opt-nm">Velké</span>  <span class="nd-opt-sub">složené / výřez</span> <span class="nd-opt-czk">+9 Kč/ks</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- Obálka -->
+      <div class="nd-panel nd-panel-obalka" id="nd-panel-obalka">
+        <div class="nd-panel-hd">💌 Obálka / karta</div>
+        <div class="nd-panel-bd">
+          <div class="nd-opts">
+            <div class="nd-opt" id="nd-obalka-comp"  onclick="ndOpt('obalka','comp')"> <span class="nd-opt-nm">Complimentin</span><span class="nd-opt-sub">bez obálky</span><span class="nd-opt-czk">+5 Kč/ks</span>  </div>
+            <div class="nd-opt" id="nd-obalka-mala"  onclick="ndOpt('obalka','mala')"> <span class="nd-opt-nm">Obálka malá</span> <span class="nd-opt-sub">s kartičkou</span><span class="nd-opt-czk">+4,5 Kč/ks</span></div>
+            <div class="nd-opt" id="nd-obalka-velka" onclick="ndOpt('obalka','velka')"><span class="nd-opt-nm">Obálka velká</span><span class="nd-opt-sub">s kartičkou</span><span class="nd-opt-czk">+5,5 Kč/ks</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- Stuha -->
+      <div class="nd-panel nd-panel-stuha" id="nd-panel-stuha">
+        <div class="nd-panel-hd">🎀 Vázání stuhou</div>
+        <div class="nd-panel-bd">
+          <div class="nd-opts">
+            <div class="nd-opt sel" id="nd-stuha-satyn" onclick="ndOpt('stuha','satyn')"><span class="nd-opt-nm">Saténová stuha</span><span class="nd-opt-sub">vázání s mašlí</span><span class="nd-opt-czk">+1 Kč/ks</span></div>
+          </div>
+          <div class="hint" style="margin-top:8px">Jutový provázek je součástí základní ceny dárku.</div>
+        </div>
+      </div>
+      <!-- Visačka -->
+      <div class="nd-panel nd-panel-visacka" id="nd-panel-visacka">
+        <div class="nd-panel-hd">🏷 Visačka</div>
+        <div class="nd-panel-bd">
+          <div class="nd-opts">
+            <div class="nd-opt sel" id="nd-visacka-pap" onclick="ndOpt('visacka','pap')"><span class="nd-opt-nm">Papírová</span><span class="nd-opt-sub">jmenovka s textem</span><span class="nd-opt-czk">+3,9 Kč/ks</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- Pečetění -->
+      <div class="nd-panel nd-panel-peceteni" id="nd-panel-peceteni">
+        <div class="nd-panel-hd">🔏 Pečetění</div>
+        <div class="nd-panel-bd">
+          <div class="nd-opts">
+            <div class="nd-opt sel" id="nd-peceteni-vosk" onclick="ndOpt('peceteni','vosk')"><span class="nd-opt-nm">Vosk + pečeť</span><span class="nd-opt-sub">na obálce / krabičce</span><span class="nd-opt-czk">+10 Kč/ks</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- Vlastní etiketa -->
+      <div class="nd-panel nd-panel-etiketa" id="nd-panel-etiketa">
+        <div class="nd-panel-hd">🏷️ Vlastní etiketa</div>
+        <div class="nd-panel-bd">
+          <div class="nd-opts">
+            <div class="nd-opt" id="nd-etiketa-mala"    onclick="ndOpt('etiketa','mala')">   <span class="nd-opt-nm">Malá</span>   <span class="nd-opt-sub">logo / text</span><span class="nd-opt-czk">+3,9 Kč/ks</span></div>
+            <div class="nd-opt" id="nd-etiketa-stredni" onclick="ndOpt('etiketa','stredni')"><span class="nd-opt-nm">Střední</span><span class="nd-opt-sub">více info</span>  <span class="nd-opt-czk">+5,9 Kč/ks</span></div>
+            <div class="nd-opt" id="nd-etiketa-velka"   onclick="ndOpt('etiketa','velka')">  <span class="nd-opt-nm">Velká</span>  <span class="nd-opt-sub">plná etiketa</span><span class="nd-opt-czk">+7,9 Kč/ks</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- Přípravy SLUŽBA -->
+      <div id="nd-sluzby-wrap" style="display:none">
+        <div class="nd-sluzby">
+          <div class="nd-sluzby-ttl">Přípravy <span class="sluzba-pill">Služba</span></div>
+          <div id="nd-sl-items"></div>
+        </div>
+      </div>
+      <!-- Výsledek -->
+      <div class="nd-sum" id="nd-sum">
+        <div id="nd-sum-rows"></div>
+        <div class="nd-sum-total"><span>Nadstavby celkem / ks</span><span id="nd-total-ks">0 Kč</span></div>
+      </div>
+      <div class="total-costs" id="ns-total" style="display:none">
         <div class="cost-row"><span>Nadstavby celkem (MO Kč/ks)</span><span id="ns-total-val">0 Kč</span></div>
       </div>
     </div>
 
     <!-- Card 6: Přidat do kalkulace -->
+
     <div class="card" id="d-pridat-card">
       <div class="card-title">🛒 Přidat do kalkulace</div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px">
@@ -1408,42 +1541,111 @@ function dShowKalkCards(show) {
   if (hint) hint.style.display = show ? 'none' : '';
 }
 
-function nsAddRow() {
-  _nsCount++;
-  const id = _nsCount;
-  const div = document.createElement('div');
-  div.className = 'ns-row';
-  div.id = 'nsrow-' + id;
-  div.innerHTML = `
-    <input type="text" placeholder="Název nadstavby (např. Personalizovaná etiketa)" oninput="nsCalc()"/>
-    <input type="number" placeholder="Kč/ks" min="0" step="0.5" oninput="nsCalc()"/>
-    <button class="d-rm" onclick="document.getElementById('nsrow-${id}').remove();nsCalc()">×</button>`;
-  document.getElementById('ns-rows').appendChild(div);
-  nsCalc();
+// ═══ NADSTAVBY visual system ═══
+const ND_DEF = {
+  potisk:   { maly:{n:'Tisk malý',cena:1.5,pr:'tisk'}, stredni:{n:'Tisk střední',cena:3.5,pr:'tisk'}, velky:{n:'Tisk velký',cena:6.0,pr:'tisk'} },
+  gravir:   { male:{n:'Gravírování malé',cena:3.0,pr:'gravir'}, stredni:{n:'Gravírování střední',cena:5.0,pr:'gravir'}, velke:{n:'Gravírování velké',cena:9.0,pr:'gravir'} },
+  obalka:   { comp:{n:'Complimentin card',cena:5.0,pr:null}, mala:{n:'Obálka malá',cena:4.5,pr:null}, velka:{n:'Obálka velká',cena:5.5,pr:null} },
+  stuha:    { satyn:{n:'Vázání stuhou',cena:1.0,pr:null} },
+  visacka:  { pap:{n:'Visačka papírová',cena:3.9,pr:null} },
+  peceteni: { vosk:{n:'Pečetění vosk',cena:10.0,pr:'pecetidlo'} },
+  etiketa:  { mala:{n:'Vlastní etiketa malá',cena:3.9,pr:null}, stredni:{n:'Vlastní etiketa střední',cena:5.9,pr:null}, velka:{n:'Vlastní etiketa velká',cena:7.9,pr:null} },
+};
+const ND_PRIP = {
+  tisk:      { n:'Tisková příprava',     c:450 },
+  gravir:    { n:'Gravírovací příprava', c:250 },
+  pecetidlo: { n:'Výroba pečetidla',     c:890 },
+};
+let _ndSel={}, _ndPrip=new Set(), _nsCount=0;
+
+function ndToggle(cat) {
+  const btn=document.getElementById('nd-btn-'+cat), panel=document.getElementById('nd-panel-'+cat);
+  if (_ndSel.hasOwnProperty(cat)) {
+    delete _ndSel[cat];
+    btn.classList.remove('active'); panel.classList.remove('open');
+    Object.keys(ND_DEF[cat]||{}).forEach(o=>{ const e=document.getElementById('nd-'+cat+'-'+o); if(e) e.classList.remove('sel'); });
+  } else {
+    const first=Object.keys(ND_DEF[cat]||{})[0];
+    _ndSel[cat]=first||null;
+    btn.classList.add('active'); panel.classList.add('open');
+    if(first){ const e=document.getElementById('nd-'+cat+'-'+first); if(e) e.classList.add('sel'); }
+  }
+  _ndAutoprip(); ndCalc();
 }
 
-function nsCalc() {
-  let total = 0;
-  document.querySelectorAll('#ns-rows .ns-row').forEach(r => {
-    total += parseFloat(r.querySelectorAll('input')[1].value) || 0;
+function ndOpt(cat,optId) {
+  if (!_ndSel.hasOwnProperty(cat)) {
+    _ndSel[cat]=null;
+    const b=document.getElementById('nd-btn-'+cat); if(b) b.classList.add('active');
+    const p=document.getElementById('nd-panel-'+cat); if(p) p.classList.add('open');
+  }
+  const prev=_ndSel[cat];
+  if(prev){ const e=document.getElementById('nd-'+cat+'-'+prev); if(e) e.classList.remove('sel'); }
+  _ndSel[cat]=prev===optId?null:optId;
+  if(_ndSel[cat]){ const e=document.getElementById('nd-'+cat+'-'+_ndSel[cat]); if(e) e.classList.add('sel'); }
+  _ndAutoprip(); ndCalc();
+}
+
+function _ndAutoprip() {
+  const need=new Set();
+  Object.entries(_ndSel).forEach(([c,o])=>{ if(!o) return; const pr=ND_DEF[c]?.[o]?.pr; if(pr) need.add(pr); });
+  _ndPrip=new Set([...need]);
+  _ndRenderPrip(need);
+}
+
+function _ndRenderPrip(possible) {
+  const wrap=document.getElementById('nd-sluzby-wrap'), el=document.getElementById('nd-sl-items');
+  if(!possible||!possible.size){ wrap.style.display='none'; return; }
+  wrap.style.display='';
+  el.innerHTML=[...possible].map(pid=>{
+    const d=ND_PRIP[pid]; if(!d) return '';
+    const on=_ndPrip.has(pid);
+    return `<label class="nd-sl-item${on?' on':''}" onclick="ndPrip('${pid}')">
+      <input type="checkbox"${on?' checked':''} onclick="event.stopPropagation();ndPrip('${pid}')">
+      <div class="nd-sl-nm">${d.n}<div class="nd-sl-sub">Jednorázová — evidováno jako SLUŽBA</div></div>
+      <div class="nd-sl-czk">${d.c} Kč</div>
+    </label>`;
+  }).join('');
+}
+
+function ndPrip(pid){ _ndPrip.has(pid)?_ndPrip.delete(pid):_ndPrip.add(pid); _ndRenderPrip(_ndPrip); ndCalc(); }
+
+function ndCalc() {
+  let ksTotal=0; const rows=[];
+  Object.entries(_ndSel).forEach(([cat,optId])=>{
+    if(!optId) return;
+    const def=ND_DEF[cat]?.[optId]; if(!def) return;
+    let cena=def.cena, nm=def.n;
+    if(cat==='potisk'&&document.getElementById('nd-potisk-barveny')?.checked){cena+=1;nm+=' (barevný)';}
+    ksTotal+=cena; rows.push({nm,cena});
   });
-  const cnt = document.querySelectorAll('#ns-rows .ns-row').length;
-  const el = document.getElementById('ns-total');
-  el.style.display = cnt > 0 ? '' : 'none';
-  document.getElementById('ns-total-val').textContent = total.toFixed(0) + ' Kč';
+  const sumEl=document.getElementById('nd-sum'), sumRows=document.getElementById('nd-sum-rows'), totalKs=document.getElementById('nd-total-ks');
+  if(rows.length){
+    sumEl.style.display='';
+    sumRows.innerHTML=rows.map(r=>`<div class="nd-sum-row"><span>${r.nm}</span><span style="font-family:'Exo 2',sans-serif;font-weight:700">+${r.cena.toFixed(1).replace('.',',')} Kč/ks</span></div>`).join('');
+    totalKs.textContent=ksTotal.toFixed(1).replace('.',',')+' Kč/ks';
+  } else { sumEl.style.display='none'; }
+  const nsTotal=document.getElementById('ns-total'), nsVal=document.getElementById('ns-total-val');
+  if(nsTotal&&nsVal){ nsTotal.style.display=rows.length?'':'none'; nsVal.textContent=ksTotal.toFixed(0)+' Kč'; }
 }
 
 function nsGetItems() {
-  const items = [];
-  document.querySelectorAll('#ns-rows .ns-row').forEach(r => {
-    const n = r.querySelectorAll('input')[0].value.trim();
-    const c = parseFloat(r.querySelectorAll('input')[1].value) || 0;
-    if (n || c) items.push({ nazev: n || '—', cena: c });
+  const items=[];
+  Object.entries(_ndSel).forEach(([cat,optId])=>{
+    if(!optId) return;
+    const def=ND_DEF[cat]?.[optId]; if(!def) return;
+    let cena=def.cena;
+    if(cat==='potisk'&&document.getElementById('nd-potisk-barveny')?.checked) cena+=1;
+    items.push({nazev:def.n,cena});
   });
+  _ndPrip.forEach(pid=>{ const d=ND_PRIP[pid]; if(d) items.push({nazev:d.n+' [SLUŽBA]',cena:d.c,sluzba:true}); });
   return items;
 }
 
+function nsAddRow(){ ndCalc(); }
+
 function pKalkUpdate() {
+
   const zakCena = parseFloat(document.getElementById('p-kalk-mo')?.value) || 0;
   const ks = parseInt(document.getElementById('p-kalk-ks')?.value) || 1;
   const potisk = pGetPotiskKc();
