@@ -1556,7 +1556,7 @@ const ND_PRIP = {
   gravir:    { n:'Gravírovací příprava', c:250 },
   pecetidlo: { n:'Výroba pečetidla',     c:890 },
 };
-let _ndSel={}, _ndPrip=new Set(), _nsCount=0;
+let _ndSel={}, _ndPrip=new Set();
 
 function ndToggle(cat) {
   const btn=document.getElementById('nd-btn-'+cat), panel=document.getElementById('nd-panel-'+cat);
