@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Import klienta…</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f1e6da;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0}
+.box{background:white;border-radius:12px;padding:32px 40px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,.12);max-width:420px}
+.logo{font-size:22px;font-weight:800;color:#5c381f;margin-bottom:8px}
+.logo span{color:#f7ab31}
+p{color:#7a5c42;font-size:14px;margin:0 0 20px}
+.status{font-size:14px;color:#5c381f;font-weight:600;margin-top:12px}
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="logo">Nut<span>world</span></div>
+  <p>Ukládám klienta Metrostav Estate…</p>
+  <div class="status" id="st">⏳ Probíhá…</div>
+</div>
+<script>
+(function(){
+  const CK='nw_clients_v1', DK='nw_client_docs_v1', NK='nw_client_notes_v1';
+  try {
+    // ── Klient ──
+    const cs = JSON.parse(localStorage.getItem(CK)||'[]');
+    // Smaž existující záznam pokud byl přidán dříve
+    const filtered = cs.filter(c => c.company !== 'Metrostav Estate a.s.');
+    const cid = 'metrostav-estate-as-mqy4x2';
+    filtered.push({
+      id: cid,
+      status: 'ok',
+      company: 'Metrostav Estate a.s.',
+      contact: 'Mgr. Marianna Brožinová',
+      sector: 'Real estate / firemní dárky',
+      email: 'marianna.brozinova@metrostav.sk',
+      phone: '+421 905 349 744',
+      web: 'metrostavestate'
+    });
+    localStorage.setItem(CK, JSON.stringify(filtered));
+
+    // ── Dokument / prezentace ──
+    const ds = JSON.parse(localStorage.getItem(DK)||'{}');
+    ds[cid] = [{
+      id: 'doc-metrostav-xl-01',
+      title: 'Cenová prezentace — Dárková krabice XL (31. 8. 2026)',
+      url: 'https://claude.ai/code/artifact/054c7db1-e5e3-4ef5-a9b8-98df25bba656',
+      type: 'nabidka'
+    }];
+    localStorage.setItem(DK, JSON.stringify(ds));
+
+    // ── Poznámka — kalkulace + složení ──
+    const ns = JSON.parse(localStorage.getItem(NK)||'{}');
+    ns[cid] = [
+      'DÁRKOVÁ KRABICE XL — kalkulace 2026-08-31',
+      'Rozměry: 300×310×90 mm | 6 kornoutů | 570g obsahu',
+      '',
+      'SLOŽENÍ KORNOUTŮ:',
+      '- Kukuřice pražená BBQ (546) — 70g — 66,00 Kč/kg — NC: 4,62 Kč',
+      '- Mandle v mléčné čokoládě (4038) — 100g — 210,00 Kč/kg — NC: 21,00 Kč',
+      '- Kešu natural (110) — 100g — 201,01 Kč/kg — NC: 20,10 Kč',
+      '- Arašídy karamelizované se sezamem (9604) — 100g — 146,25 Kč/kg — NC: 14,63 Kč',
+      '- Mix ořechů v medu a soli (4794) — 100g — 191,25 Kč/kg — NC: 19,13 Kč',
+      '- Mandle solené (101) — 100g — 240,40 Kč/kg — NC: 24,04 Kč',
+      'Celkem produkty: 103,52 Kč',
+      '',
+      'OBAL KRABICE: 50+5+4+4 = 63 Kč',
+      'BALENÍ kornoutů (13 Kč × 6): 78 Kč',
+      '  plnění 3 | obal 2 | tavení 1 | mašle 1 | etiketa 5 | etiketování 1',
+      'Kompletace: 10 Kč | Polštář: 20 Kč',
+      '',
+      'NÁKLADY CELKEM: 254,52 Kč',
+      'FLOOR (náklady + polštář): 274,52 Kč',
+      '',
+      'VZOREC: floor × 2 = prodejní cena',
+      'CENA: 549 Kč = 21,96 EUR (kurz 25 CZK/EUR)',
+      'MARŽE: 50 % (na flooru) / 53,6 % (na čistých nákladech)',
+    ].join('\n');
+    localStorage.setItem(NK, JSON.stringify(ns));
+
+    document.getElementById('st').textContent = '✅ Hotovo! Přesměrovávám…';
+    setTimeout(()=>{ location.href='klienti.html'; }, 800);
+  } catch(e) {
+    document.getElementById('st').textContent = '❌ Chyba: ' + e.message;
+  }
+})();
+</script>
+</body>
+</html>
