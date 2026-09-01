@@ -1,6 +1,179 @@
 {
-  "generated": "2026-09-01T07:44:51",
-  "total": 0,
-  "spam_skipped": 0,
-  "emails": []
+  "generated": "2026-09-01T12:00:50",
+  "total": 12,
+  "spam_skipped": 1,
+  "emails": [
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 7 upozornění od poslední návštěvy 8:15 (1. září 2026)",
+      "date": "úterý 1. září 2026 8:17:00",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Doprava NutWorld označil(a) kartu Hotel hilton jako dokončenou Odpovědět e-mailem ￼ Doprava NutWorld označil(a) kartu Hotel hilton jako dokončenou Odpovědět e-mailem ￼ Doprava NutWorld přesunul(a) kartu Hotel hilton do sloupce Firmy 2026 na nástěnce Firmy dárky + objednávky ",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Doprava NutWorld vložil/a komentář na kartu Hotel hilton na nástěnce Firmy dárky + objednávky",
+      "date": "úterý 1. září 2026 8:13:59",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Doprava NutWorld okomentoval(a) kartu Hotel hilton na nástěnce Firmy dárky + objednávky @marketacostachova odesláno i s dárkem Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "s.r.o.\" <info@ecofol.cz>",
+      "sender": "Nová pravidla PPWR a servisní obaly od 12. srpna 2026",
+      "subject": "úterý 1. září 2026 8:13:25",
+      "date": "true",
+      "unread": false,
+      "preview": "",
+      "category": "ostatni",
+      "sender_short": "Nová pravidla PPWR a servisní obaly od 1",
+      "sender_email": "Nová pravidla PPWR a servisní obaly od 12. srpna 2026",
+      "ai": {
+        "shrn": "Informace o nových pravidlech PPWR a servisních obalech platných od srpna 2026. Jedná se o regulatorní zprávu.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Hotel hilton na Firmy dárky + objednávky má termín za den",
+      "date": "úterý 1. září 2026 8:08:58",
+      "unread": true,
+      "preview": "￼ Termín je brzy... Hotel hilton na nástěnce Firmy dárky + objednávky s termínem má termín za den Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Prace.cz <overeni-emailu@prace.cz>",
+      "subject": "Vítáme vás na Prace.cz 🎉",
+      "date": "úterý 1. září 2026 7:52:36",
+      "unread": false,
+      "preview": "￼ Dokončení registrace Dobrý den",
+      "category": "ostatni",
+      "sender_short": "Prace.cz",
+      "sender_email": "overeni-emailu@prace.cz",
+      "ai": {
+        "shrn": "Potvrzovací email registrace na portálu Prace.cz. Vyžaduje dokončení registrace.",
+        "tyka_se": true,
+        "akce": "Dokončit registraci na Prace.cz nebo zrušit, pokud není potřebná"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Radka Goderová <radka.goderova@mekrs.cz>",
+      "subject": "8/26 hodiny",
+      "date": "úterý 1. září 2026 7:46:53",
+      "unread": false,
+      "preview": "Dobrý den",
+      "category": "tym",
+      "sender_short": "Radka Goderová",
+      "sender_email": "radka.goderova@mekrs.cz",
+      "ai": {
+        "shrn": "Radka Goderová hlásí odpracované hodiny (8/26). Informace pro účetnictví.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "MERGADO Billing <billing@mergado.com>",
+      "subject": "Mergado faktura",
+      "date": "úterý 1. září 2026 7:46:05",
+      "unread": false,
+      "preview": "Dobrý den, zasíláme Vám fakturu za využívání Mergado Editoru. Jeho pomocí nastavujete inzerci na srovnávačích zboží či zpracováváte dodavatelské feedy. Fakturu najdete na adrese: https://app.fakturoid.cz/mergado/p/7SGUHzcOIA/1202625544 Děkujeme za její včasné uhrazení. Pokud máte otázky související ",
+      "category": "dodavatel",
+      "sender_short": "MERGADO Billing",
+      "sender_email": "billing@mergado.com",
+      "ai": {
+        "shrn": "Mergado Billing zasílá fakturu za službu Mergado Editoru pro správu inzerce. Vyžaduje úhradu faktury.",
+        "tyka_se": true,
+        "akce": "Zaplatit fakturu za Mergado Editor"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Víno z Kobylí na Firmy dárky + objednávky má termín za den",
+      "date": "úterý 1. září 2026 7:07:52",
+      "unread": true,
+      "preview": "￼ Termín je brzy... Víno z Kobylí na nástěnce Firmy dárky + objednávky s termínem má termín za den Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Renata Pošepná přesunul/a kartu Objednávka ALBI do sloupce Připravují - VERPET Náchod na nástěnce Firmy dárky + objednávky",
+      "date": "úterý 1. září 2026 5:50:36",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Renata Pošepná přesunul(a) kartu Objednávka ALBI do sloupce Připravují - VERPET Náchod na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "b2b",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com",
+      "ai": {
+        "shrn": "Trello notifikace o přesunu karty Objednávka ALBI do sloupce Připravují. Informace o stavu objednávky.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "\"SEVT.cz\" <marketing@mailing.sevt.cz>",
+      "subject": "🌟 Přejeme vám krásný nový školní rok",
+      "date": "úterý 1. září 2026 11:41:07",
+      "unread": true,
+      "preview": "Nezobrazuje se Vám e-mail správně? Přejděte na webovou verzi. ￼ Vše do školy a kanceláře na jednom místě ￼ Školní potřeby Výtvarné potřeby Kancelářské potřeby Hry a hračky Knihkupectví ￼ Dnes začíná NOVÝ ŠKOLNÍ ROK Všem učitelům přejeme pevné nervy",
+      "category": "ostatni",
+      "sender_short": "SEVT.cz",
+      "sender_email": "marketing@mailing.sevt.cz",
+      "ai": {
+        "shrn": "Marketing email od SEVT.cz o začátku školního roku s nabídkou školních potřeb. Nejedná se o podnikatelsky relevantní obsah.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "Lucie | Fitlines Studio <info@fitlines.cz>",
+      "subject": "PILATES | Novinka od září 2026",
+      "date": "úterý 1. září 2026 9:00:42",
+      "unread": true,
+      "preview": "FITLiNES ⚡ STUDIO · ČERVENÝ KOSTELEC ✦ NOVINKA OD ZÁŘÍ 2026 PILATES síla",
+      "category": "ostatni",
+      "sender_short": "Lucie | Fitlines Studio",
+      "sender_email": "info@fitlines.cz",
+      "ai": {
+        "shrn": "Nabídka nového pilates třídy od Fitlines Studio od září 2026. Jedná se o marketing email.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "CrossFit <crossfit@mail.crossfit.com>",
+      "subject": "260901 Workout of the Day: Front Squat",
+      "date": "úterý 1. září 2026 2:31:32",
+      "unread": true,
+      "preview": "￼ ￼ ￼ TUESDAY",
+      "category": "ostatni",
+      "sender_short": "CrossFit",
+      "sender_email": "crossfit@mail.crossfit.com",
+      "ai": {
+        "shrn": "CrossFit notifikace o cvičení dne - Front Squat. Fitness email.",
+        "tyka_se": false,
+        "akce": null
+      }
+    }
+  ]
 }
