@@ -11,7 +11,6 @@
     --text:#1C1710;--text-muted:#72604F;--text-faint:#9E8570;
     --accent:#A01050;--accent-light:rgba(160,16,80,0.09);--accent-border:rgba(160,16,80,0.22);
     --amber:#D4900E;
-    --good:#3A6A28;--good-bg:rgba(58,106,40,0.10);--good-border:rgba(58,106,40,0.22);
     --result-bg:#6B0A30;--result-text:#FBF6F1;--result-muted:rgba(251,246,241,0.58);
   }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -24,15 +23,21 @@
 
   .page{max-width:580px;margin:0 auto}
 
-  .header{margin-bottom:1.5rem}
+  .header{margin-bottom:1.25rem}
   .eyebrow{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.4rem;font-weight:500}
   h1{font-family:'DM Serif Display',Georgia,serif;font-size:1.75rem;font-weight:400;line-height:1.2;margin-bottom:.3rem}
   .header-sub{font-size:13px;color:var(--text-muted)}
 
+  /* Route tabs */
+  .route-tabs{display:flex;gap:6px;margin-bottom:1rem}
+  .rtab{flex:1;padding:.6rem 1rem;border-radius:9px;border:1.5px solid var(--border);background:var(--surface);font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700;color:var(--text-muted);text-align:center;cursor:pointer;transition:all .14s}
+  .rtab:hover{border-color:var(--accent);color:var(--accent)}
+  .rtab.active{background:var(--accent);border-color:var(--accent);color:#fff}
+  .rtab-label{display:block;font-size:10px;font-weight:400;font-family:'DM Sans',sans-serif;opacity:.8;margin-top:1px}
+
   .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.1rem 1.4rem;margin-bottom:.8rem}
   .card-title{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);font-weight:600;margin-bottom:.85rem}
 
-  /* Inputs */
   .input-row{display:flex;align-items:baseline;gap:5px;margin-bottom:.8rem}
   .big-num{width:90px;font-family:'DM Serif Display',serif;font-size:2rem;font-weight:400;border:none;background:transparent;color:var(--text);padding:0;text-align:right;font-variant-numeric:tabular-nums;-moz-appearance:textfield}
   .big-num::-webkit-inner-spin-button,.big-num::-webkit-outer-spin-button{-webkit-appearance:none}
@@ -45,7 +50,6 @@
 
   .scale-row{display:flex;justify-content:space-between;font-size:10px;color:var(--text-faint);margin-top:4px;font-variant-numeric:tabular-nums}
 
-  /* City buttons */
   .city-label{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint);font-weight:600;margin:1rem 0 .5rem}
   .city-grid{display:flex;gap:6px;flex-wrap:wrap}
   .city-btn{padding:.35rem .75rem;border-radius:7px;border:1.5px solid var(--border);background:var(--surface-2);color:var(--text-muted);font-size:12.5px;font-weight:600;cursor:pointer;transition:all .13s}
@@ -53,12 +57,10 @@
   .city-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
   .city-dist{font-size:10px;font-weight:400;opacity:.8}
 
-  /* Band indicator */
   .band-info{display:flex;align-items:center;gap:8px;margin-top:.75rem;padding:.5rem .75rem;background:var(--accent-light);border:1px solid var(--accent-border);border-radius:8px;font-size:12.5px}
   .band-label{color:var(--text-muted)}
   .band-value{color:var(--accent);font-weight:700}
 
-  /* Add-ons */
   .addon{display:flex;align-items:flex-start;gap:10px;padding:.5rem 0}
   .addon+.addon{border-top:1px solid var(--border)}
   .addon input[type="checkbox"]{width:14px;height:14px;margin-top:3px;flex-shrink:0;accent-color:var(--accent);cursor:pointer}
@@ -69,7 +71,6 @@
   .addon-check-dummy{width:14px;height:14px;margin-top:3px;flex-shrink:0;background:var(--accent);border-radius:3px;display:flex;align-items:center;justify-content:center}
   .addon-check-dummy::after{content:'✓';font-size:9px;color:#fff;font-weight:700}
 
-  /* Result */
   .result-card{background:var(--result-bg);border-radius:14px;padding:1.25rem 1.4rem;color:var(--result-text);margin-bottom:.8rem}
   .res-eyebrow{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--result-muted);margin-bottom:4px}
   .res-total{font-family:'DM Serif Display',serif;font-size:2.2rem;font-weight:400;font-variant-numeric:tabular-nums;line-height:1;margin-bottom:3px}
@@ -81,9 +82,10 @@
   .res-v{color:var(--result-text);font-weight:500;white-space:nowrap}
   .res-context{margin-top:.75rem;padding:.45rem .75rem;background:rgba(255,255,255,.08);border-radius:7px;font-size:11.5px;color:var(--result-muted);line-height:1.5}
 
-  /* Info box */
   .info-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.2rem;margin-bottom:.8rem;font-size:12.5px;color:var(--text-muted);line-height:1.6}
   .info-box strong{color:var(--text)}
+
+  .hidden{display:none}
 </style>
 </head>
 <body>
@@ -99,9 +101,21 @@
 <div class="page">
 
   <div class="header">
-    <div class="eyebrow">Doprava · Mezinárodní CZ–SK</div>
+    <div class="eyebrow">Doprava · TopTrans</div>
     <h1>TopTrans Kalkulátor</h1>
     <div class="header-sub">Zásilky a palety · ceník IČO 001-378196 · platnost od 01.09.2026</div>
+  </div>
+
+  <!-- Route tabs -->
+  <div class="route-tabs">
+    <button class="rtab active" id="tabCZ" onclick="setRoute('CZ')">
+      🇨🇿 CZ — tuzemsko
+      <span class="rtab-label">bez mezinárodního příplatku</span>
+    </button>
+    <button class="rtab" id="tabSK" onclick="setRoute('SK')">
+      🇸🇰 SK — mezinárodní
+      <span class="rtab-label">+200 Kč Mezinárodní CZK</span>
+    </button>
   </div>
 
   <!-- Weight -->
@@ -123,22 +137,40 @@
   <div class="card">
     <div class="card-title">Vzdálenost doručení</div>
     <div class="input-row">
-      <input type="number" class="big-num" id="kmNum" value="400" min="100" max="900" step="100" aria-label="Vzdálenost v km">
+      <input type="number" class="big-num" id="kmNum" value="300" min="100" max="900" step="100" aria-label="Vzdálenost v km">
       <span class="big-unit">km</span>
     </div>
-    <input type="range" class="slider" id="kmSlider" min="100" max="900" step="100" value="400" aria-label="Posuvník vzdálenosti">
+    <input type="range" class="slider" id="kmSlider" min="100" max="900" step="100" value="300" aria-label="Posuvník vzdálenosti">
     <div class="scale-row"><span>100 km</span><span>300</span><span>500</span><span>700</span><span>900 km</span></div>
 
-    <div class="city-label">Rychlý výběr · Praha →</div>
-    <div class="city-grid" id="cityGrid">
-      <button class="city-btn" data-km="310">Trenčín <span class="city-dist">~310 km</span></button>
-      <button class="city-btn" data-km="330">Bratislava <span class="city-dist">~330 km</span></button>
-      <button class="city-btn" data-km="350">Trnava <span class="city-dist">~350 km</span></button>
-      <button class="city-btn" data-km="380">Nitra <span class="city-dist">~380 km</span></button>
-      <button class="city-btn" data-km="490">Žilina <span class="city-dist">~490 km</span></button>
-      <button class="city-btn" data-km="480">B. Bystrica <span class="city-dist">~480 km</span></button>
-      <button class="city-btn" data-km="625">Prešov <span class="city-dist">~625 km</span></button>
-      <button class="city-btn" data-km="630">Košice <span class="city-dist">~630 km</span></button>
+    <!-- CZ cities -->
+    <div id="citiesCZ">
+      <div class="city-label">Rychlý výběr · Praha →</div>
+      <div class="city-grid">
+        <button class="city-btn" data-km="90">Plzeň <span class="city-dist">~90 km</span></button>
+        <button class="city-btn" data-km="90">Ústí n.L. <span class="city-dist">~90 km</span></button>
+        <button class="city-btn" data-km="110">Liberec <span class="city-dist">~110 km</span></button>
+        <button class="city-btn" data-km="110">Pardubice <span class="city-dist">~110 km</span></button>
+        <button class="city-btn" data-km="150">Č. Budějovice <span class="city-dist">~150 km</span></button>
+        <button class="city-btn" data-km="210">Brno <span class="city-dist">~210 km</span></button>
+        <button class="city-btn" data-km="280">Olomouc <span class="city-dist">~280 km</span></button>
+        <button class="city-btn" data-km="360">Ostrava <span class="city-dist">~360 km</span></button>
+      </div>
+    </div>
+
+    <!-- SK cities -->
+    <div id="citiesSK" class="hidden">
+      <div class="city-label">Rychlý výběr · Praha →</div>
+      <div class="city-grid">
+        <button class="city-btn" data-km="310">Trenčín <span class="city-dist">~310 km</span></button>
+        <button class="city-btn" data-km="330">Bratislava <span class="city-dist">~330 km</span></button>
+        <button class="city-btn" data-km="350">Trnava <span class="city-dist">~350 km</span></button>
+        <button class="city-btn" data-km="380">Nitra <span class="city-dist">~380 km</span></button>
+        <button class="city-btn" data-km="480">B. Bystrica <span class="city-dist">~480 km</span></button>
+        <button class="city-btn" data-km="490">Žilina <span class="city-dist">~490 km</span></button>
+        <button class="city-btn" data-km="625">Prešov <span class="city-dist">~625 km</span></button>
+        <button class="city-btn" data-km="630">Košice <span class="city-dist">~630 km</span></button>
+      </div>
     </div>
   </div>
 
@@ -149,8 +181,8 @@
   <div class="card">
     <div class="card-title">Doplňkové služby</div>
 
-    <!-- Always included -->
-    <div class="addon-always">
+    <!-- Mezinárodní CZK — pouze SK -->
+    <div class="addon-always" id="mezRow">
       <div class="addon-check-dummy"></div>
       <div class="addon-body">
         <span class="addon-name" style="color:var(--text-muted)">Mezinárodní CZK (vždy)</span>
@@ -158,7 +190,7 @@
       </div>
     </div>
 
-    <div class="addon" style="border-top:1px solid var(--border)">
+    <div class="addon" id="firstAddon" style="border-top:1px solid var(--border)">
       <input type="checkbox" id="avNakl">
       <div class="addon-body">
         <label class="addon-name" for="avNakl">Avizace telefonem — nakládka</label>
@@ -204,7 +236,6 @@
 </div>
 
 <script>
-// Tariff table: rows = weight bands (maxKg), cols = distance (100,200,...,900 km)
 const BANDS = [
   {max:5,    label:'do 5 kg',    p:[224,255,318,344,361,392,416,439,468]},
   {max:15,   label:'do 15 kg',   p:[333,389,426,476,532,561,592,626,658]},
@@ -226,16 +257,32 @@ const BANDS = [
 ];
 
 const DIST_KM = [100,200,300,400,500,600,700,800,900];
+let currentRoute = 'CZ';
 
 function fmt(v){return v.toLocaleString('cs-CZ',{minimumFractionDigits:2,maximumFractionDigits:2})+' Kč'}
 
 function getDistIdx(km){
-  // Round up to nearest 100 km column
   const idx = Math.ceil(km/100)-1;
   return Math.max(0,Math.min(8,idx));
 }
 
 function getBand(kg){return BANDS.find(b=>kg<=b.max);}
+
+function setRoute(route){
+  currentRoute = route;
+  document.getElementById('tabCZ').classList.toggle('active', route==='CZ');
+  document.getElementById('tabSK').classList.toggle('active', route==='SK');
+  document.getElementById('citiesCZ').classList.toggle('hidden', route!=='CZ');
+  document.getElementById('citiesSK').classList.toggle('hidden', route!=='SK');
+  document.getElementById('mezRow').classList.toggle('hidden', route!=='SK');
+  // Remove first addon top border when mezRow hidden
+  document.getElementById('firstAddon').style.borderTop = route==='SK' ? '1px solid var(--border)' : 'none';
+  // Clear active city
+  document.querySelectorAll('.city-btn').forEach(b=>b.classList.remove('active'));
+  // Set sensible default distance
+  const defaultKm = route==='SK' ? 400 : 300;
+  setKm(defaultKm);
+}
 
 function calcResult(){
   const kg    = Math.max(1,Math.min(3000,parseFloat(document.getElementById('kgNum').value)||1));
@@ -250,7 +297,6 @@ function calcResult(){
   const distIdx = getDistIdx(km);
   const distCol = DIST_KM[distIdx];
 
-  // Band indicator
   document.getElementById('bandVal').textContent = band ? band.label : '> 3 000 kg';
 
   if(!band){
@@ -262,22 +308,25 @@ function calcResult(){
     return;
   }
 
-  const base      = band.p[distIdx];
-  const topFee    = ttime ? Math.round(base*0.25) : 0;
-  const mezFee    = 200; // always
-  const avNFee    = avNk ? 20 : 0;
-  const avVFee    = avVk ? 20 : 0;
-  const tpFee     = tpriv ? 400 : 0;
-  const dokFee    = dok ? 75 : 0;
+  const base   = band.p[distIdx];
+  const topFee = ttime ? Math.round(base*0.25) : 0;
+  const mezFee = currentRoute==='SK' ? 200 : 0;
+  const avNFee = avNk ? 20 : 0;
+  const avVFee = avVk ? 20 : 0;
+  const tpFee  = tpriv ? 400 : 0;
+  const dokFee = dok ? 75 : 0;
 
-  const total     = base + topFee + mezFee + avNFee + avVFee + tpFee + dokFee;
-  const totalD    = total * 1.21;
+  const total  = base + topFee + mezFee + avNFee + avVFee + tpFee + dokFee;
+  const totalD = total * 1.21;
 
-  const topRow    = ttime    ? `<div class="res-row"><span class="res-k">TopTime +25 %</span><span class="res-v">${fmt(topFee)}</span></div>` : '';
-  const tpRow     = tpriv   ? `<div class="res-row"><span class="res-k">TopPrivat</span><span class="res-v">${fmt(tpFee)}</span></div>` : '';
-  const avNRow    = avNk    ? `<div class="res-row"><span class="res-k">Avizace nakládka</span><span class="res-v">${fmt(avNFee)}</span></div>` : '';
-  const avVRow    = avVk    ? `<div class="res-row"><span class="res-k">Avizace vykládka</span><span class="res-v">${fmt(avVFee)}</span></div>` : '';
-  const dokRow    = dok     ? `<div class="res-row"><span class="res-k">Dodací listy zpět</span><span class="res-v">${fmt(dokFee)}</span></div>` : '';
+  const mezRow  = mezFee  ? `<div class="res-row"><span class="res-k">Mezinárodní CZK</span><span class="res-v">${fmt(mezFee)}</span></div>` : '';
+  const topRow  = ttime   ? `<div class="res-row"><span class="res-k">TopTime +25 %</span><span class="res-v">${fmt(topFee)}</span></div>` : '';
+  const tpRow   = tpriv   ? `<div class="res-row"><span class="res-k">TopPrivat</span><span class="res-v">${fmt(tpFee)}</span></div>` : '';
+  const avNRow  = avNk    ? `<div class="res-row"><span class="res-k">Avizace nakládka</span><span class="res-v">${fmt(avNFee)}</span></div>` : '';
+  const avVRow  = avVk    ? `<div class="res-row"><span class="res-k">Avizace vykládka</span><span class="res-v">${fmt(avVFee)}</span></div>` : '';
+  const dokRow  = dok     ? `<div class="res-row"><span class="res-k">Dodací listy zpět</span><span class="res-v">${fmt(dokFee)}</span></div>` : '';
+
+  const routeLabel = currentRoute==='SK' ? 'CZ–SK mezinárodní' : 'CZ tuzemsko';
 
   document.getElementById('resultEl').innerHTML=`
     <div class="result-card">
@@ -286,11 +335,10 @@ function calcResult(){
       <div class="res-bez">bez DPH: ${fmt(total)}</div>
       <hr class="res-hr">
       <div class="res-row"><span class="res-k">Základní tarif (${band.label}, ${distCol} km)</span><span class="res-v">${fmt(base)}</span></div>
-      <div class="res-row"><span class="res-k">Mezinárodní CZK</span><span class="res-v">${fmt(mezFee)}</span></div>
-      ${topRow}${tpRow}${avNRow}${avVRow}${dokRow}
+      ${mezRow}${topRow}${tpRow}${avNRow}${avVRow}${dokRow}
       <div class="res-row sub"><span class="res-k">Celkem bez DPH</span><span class="res-v">${fmt(total)}</span></div>
       <div class="res-row"><span class="res-k">DPH 21 %</span><span class="res-v">${fmt(totalD-total)}</span></div>
-      <div class="res-context">Pásmo: ${band.label} · Vzdálenostní sloupec: ${distCol} km${km!==distCol?' (zaokrouhleno z '+km+' km)':''}</div>
+      <div class="res-context">${routeLabel} · Pásmo: ${band.label} · Sloupec: ${distCol} km${km!==distCol?' (zaokrouhleno z '+km+' km)':''}</div>
     </div>`;
 }
 
@@ -318,7 +366,7 @@ function setKm(v){
   calcResult();
 }
 kmSlider.addEventListener('input',()=>setKm(parseFloat(kmSlider.value)));
-kmNum.addEventListener('blur',()=>setKm(parseFloat(kmNum.value)||400));
+kmNum.addEventListener('blur',()=>setKm(parseFloat(kmNum.value)||300));
 
 // City buttons
 document.querySelectorAll('.city-btn').forEach(btn=>{
@@ -337,7 +385,8 @@ document.querySelectorAll('.city-btn').forEach(btn=>{
   document.getElementById(id).addEventListener('change',calcResult);
 });
 
-calcResult();
+// Init
+setRoute('CZ');
 </script>
 
 <script src="pin-guard.js"></script>
