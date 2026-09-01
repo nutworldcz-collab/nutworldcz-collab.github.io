@@ -218,6 +218,13 @@ details summary:hover { background:var(--br-lt); }
     <button class="tpl-btn" onclick="addFromTemplate('doypack200')">📦 Doypack 200g</button>
     <button class="tpl-btn" onclick="addFromTemplate('doypack500')">📦 Doypack 500g</button>
     <button class="tpl-btn" onclick="addFromTemplate('doypack1000')">📦 Doypack 1000g</button>
+    <div class="tpl-sep"></div>
+    <span class="tpl-lbl" style="color:#2d7a1a;font-weight:bold">Vilgain:</span>
+    <button class="tpl-btn" style="border-color:#2d7a1a;color:#2d7a1a" onclick="addFromTemplate('vilgainSeminkova')">🌿 Seminková směs 500g</button>
+    <button class="tpl-btn" style="border-color:#2d7a1a;color:#2d7a1a" onclick="addFromTemplate('vilgainSeminkaPinie')">🌿 Semínka a pinii 500g</button>
+    <button class="tpl-btn" style="border-color:#2d7a1a;color:#2d7a1a" onclick="addFromTemplate('vilgainKesuMed')">🌿 Kešu s medem 500g</button>
+    <button class="tpl-btn" style="border-color:#2d7a1a;color:#2d7a1a" onclick="addFromTemplate('vilgainSmes1000')">🌿 Směs ořechů 1000g</button>
+    <button class="tpl-btn" style="border-color:#2d7a1a;color:#2d7a1a" onclick="addFromTemplate('vilgainKesuBylinky')">🌿 Kešu bylinkové 500g</button>
   </div>
   <div id="prods"></div>
   <button class="btn-add-prod" onclick="addProduct()">＋ Přidat prázdný produkt</button>
@@ -897,6 +904,16 @@ const NORM_OPTS = [
   ['🎁 Ostatní dárkové','Razítkování sáčků 50g',200],
   ['🎁 Ostatní dárkové','Lepení předního štítku — vel. sáčky',400],
   ['🎁 Ostatní dárkové','Lepení kazetky',200],
+  ['🟢 Vilgain — míchání','Míchání — seminková směs (500g)',300],
+  ['🟢 Vilgain — míchání','Míchání — semínka+pinii (500g)',325],
+  ['🟢 Vilgain — plnění','Plnění Vilgain — seminková směs',115],
+  ['🟢 Vilgain — plnění','Plnění Vilgain — semínka a pinii',125],
+  ['🟢 Vilgain — plnění','Plnění Vilgain — kešu s medem',120],
+  ['🟢 Vilgain — plnění','Plnění Vilgain — kešu bylinkové',156],
+  ['🟢 Vilgain — plnění','Plnění Vilgain — směs ořechů 1000g',158],
+  ['🟢 Vilgain — lepení','Lepení štítku Vilgain (všechny produkty)',162],
+  ['🟢 Vilgain — tavení+expedice','Tavení + vkládání do krabic — 500g (28ks/krab.)',509],
+  ['🟢 Vilgain — tavení+expedice','Tavení + vkládání do krabic — 1000g (15ks/krab.)',450],
   ['🎁 Velikonoce','Papírový zajíček — razítkování',142],
   ['🎁 Velikonoce','Papírový zajíček — lepení oči+bambulka+uší',43],
   ['🎁 Velikonoce','Papírový zajíček — vázání+štítek',120],
@@ -927,7 +944,7 @@ function buildSel(pid, oid, curName){
 function opColor(name){
   const n=(name||'').toLowerCase();
   if(n.includes('tavení')) return 'taveni';
-  if(n.includes('balení')||n.includes('plnění')||n.includes('automatické')) return 'baleni';
+  if(n.includes('balení')||n.includes('plnění')||n.includes('automatické')||n.includes('míchání')) return 'baleni';
   if(n.includes('vázání')) return 'vazani';
   if(n.includes('štítek')) return 'stitek';
   if(n.includes('skládání')||n.includes('lepení kazetky')||n.includes('lepení krabičky')) return 'skladani';
@@ -1208,6 +1225,48 @@ const TEMPLATES = {
       {name:'Doypack standard — 1000g', ksh:154},
       {name:'Tavení sáčků', ksh:667},
       {name:'Štítek legislativní — velký', ksh:150},
+    ]
+  },
+  vilgainSeminkova: {
+    name: 'Vilgain — Seminková směs 500g',
+    ops: [
+      {name:'Míchání — seminková směs (500g)', ksh:300},
+      {name:'Lepení štítku Vilgain (všechny produkty)', ksh:162},
+      {name:'Plnění Vilgain — seminková směs', ksh:115},
+      {name:'Tavení + vkládání do krabic — 500g (28ks/krab.)', ksh:509},
+    ]
+  },
+  vilgainSeminkaPinie: {
+    name: 'Vilgain — Semínka a pinii 500g',
+    ops: [
+      {name:'Míchání — semínka+pinii (500g)', ksh:325},
+      {name:'Lepení štítku Vilgain (všechny produkty)', ksh:162},
+      {name:'Plnění Vilgain — semínka a pinii', ksh:125},
+      {name:'Tavení + vkládání do krabic — 500g (28ks/krab.)', ksh:509},
+    ]
+  },
+  vilgainKesuMed: {
+    name: 'Vilgain — Kešu s medem 500g',
+    ops: [
+      {name:'Lepení štítku Vilgain (všechny produkty)', ksh:162},
+      {name:'Plnění Vilgain — kešu s medem', ksh:120},
+      {name:'Tavení + vkládání do krabic — 500g (28ks/krab.)', ksh:509},
+    ]
+  },
+  vilgainSmes1000: {
+    name: 'Vilgain — Směs ořechů 1000g',
+    ops: [
+      {name:'Lepení štítku Vilgain (všechny produkty)', ksh:162},
+      {name:'Plnění Vilgain — směs ořechů 1000g', ksh:158},
+      {name:'Tavení + vkládání do krabic — 1000g (15ks/krab.)', ksh:450},
+    ]
+  },
+  vilgainKesuBylinky: {
+    name: 'Vilgain — Kešu bylinkové 500g',
+    ops: [
+      {name:'Lepení štítku Vilgain (všechny produkty)', ksh:162},
+      {name:'Plnění Vilgain — kešu bylinkové', ksh:156},
+      {name:'Tavení + vkládání do krabic — 500g (28ks/krab.)', ksh:509},
     ]
   },
 };
