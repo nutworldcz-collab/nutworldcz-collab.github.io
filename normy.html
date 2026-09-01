@@ -55,6 +55,7 @@ body { font-family: Arial, sans-serif; background: var(--bg); color: var(--text)
 .op-row-stitek  { border-left:4px solid #da1668; background:rgba(218,22,104,.05); }
 .op-row-skladani{ border-left:4px solid #5b7ec8; background:rgba(91,126,200,.05); }
 .op-row-lepeni  { border-left:4px solid #2a8a7a; background:rgba(42,138,122,.05); }
+.op-row-cisteni { border-left:4px solid #999; background:rgba(150,150,150,.06); }
 .op-row-other   { border-left:4px solid #ccc; }
 .ops-table td:not(:first-child) { text-align:right; }
 
@@ -218,6 +219,7 @@ details summary:hover { background:var(--br-lt); }
     <button class="tpl-btn" onclick="addFromTemplate('doypack200')">📦 Doypack 200g</button>
     <button class="tpl-btn" onclick="addFromTemplate('doypack500')">📦 Doypack 500g</button>
     <button class="tpl-btn" onclick="addFromTemplate('doypack1000')">📦 Doypack 1000g</button>
+    <button class="tpl-btn" style="border-color:#777;color:#555" onclick="addFromTemplate('doymandleuzene100')">🔧 Mandle uzené 100g</button>
     <div class="tpl-sep"></div>
     <span class="tpl-lbl" style="color:#2d7a1a;font-weight:bold">Vilgain:</span>
     <button class="tpl-btn" style="border-color:#2d7a1a;color:#2d7a1a" onclick="addFromTemplate('vilgainSeminkova')">🌿 Seminková směs 500g</button>
@@ -932,6 +934,7 @@ const NORM_OPTS = [
   ['🔬 Odvozené operace','Bambulka (kelímek zajíc)',72],
   ['🔬 Odvozené operace','Navázání oříšku (nugát)',257],
   ['🔬 Odvozené operace','Plnění do svatební krabičky',112],
+  ['🔧 Čištění stroje','Průběžné čištění — špinivé ořechy (po 100ks)',1500],
 ];
 
 function buildSel(pid, oid, curName){
@@ -958,6 +961,7 @@ function opColor(name){
   if(n.includes('štítek')) return 'stitek';
   if(n.includes('skládání')||n.includes('lepení kazetky')||n.includes('lepení krabičky')) return 'skladani';
   if(n.includes('lepení')) return 'lepeni';
+  if(n.includes('čištění')) return 'cisteni';
   return 'other';
 }
 
@@ -1305,6 +1309,15 @@ const TEMPLATES = {
     name: 'Alza — box degustační 5×100',
     ops: [
       {name:'Alza box degustační 5×100', ksh:18},
+    ]
+  },
+  doymandleuzene100: {
+    name: 'Mandle uzené — doypack 100g',
+    ops: [
+      {name:'Doypack standard — 100g', ksh:158},
+      {name:'Průběžné čištění — špinivé ořechy (po 100ks)', ksh:1500},
+      {name:'Tavení sáčků', ksh:667},
+      {name:'Štítek legislativní — malý', ksh:300},
     ]
   },
   albiKelimek: {
