@@ -1,0 +1,1228 @@
+<title>Nutworld — Kalkulátor zakázky + Normy</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --br:#83502e; --br-dk:#5c381f; --br-lt:#f1e6da;
+  --amber:#f7ab31; --green:#3a8a1e; --pink:#da1668;
+  --bg:#f5ede3; --surf:#fff; --bdr:#e2d0be;
+  --text:#3a2010; --muted:#8a6040;
+}
+body { font-family: Arial, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; padding-bottom: 60px; }
+
+.page-header { background: linear-gradient(135deg,#5c381f 0%,#83502e 55%,#a0622a 100%); padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; }
+.page-header h1 { color:#fff; font-size:20px; }
+.page-header p { color:#f1e6da; font-size:12px; margin-top:3px; }
+.page-header-right { color:#f1e6da; font-size:12px; text-align:right; line-height:2; }
+
+.sticky-bar { position:sticky; top:0; z-index:200; background:var(--br-dk); color:#f1e6da; padding:8px 24px; font-size:13px; border-bottom:2px solid var(--amber); text-align:center; }
+
+.wrap { max-width:1060px; margin:0 auto; padding:0 18px; }
+
+/* CALC */
+.calc-section { padding:20px 0 10px; }
+.calc-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; gap:12px; }
+.calc-title { font-size:16px; font-weight:bold; color:var(--br-dk); }
+.calc-meta { display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+.calc-meta label { font-size:12px; color:var(--muted); display:flex; align-items:center; gap:6px; }
+.calc-meta input { border:1.5px solid var(--bdr); border-radius:5px; padding:5px 8px; font-size:13px; font-family:Arial; color:var(--text); background:var(--surf); width:70px; }
+.calc-meta input:focus { outline:none; border-color:var(--br); }
+.pause-hint { font-size:11px; color:#999; margin-left:2px; }
+
+/* PRODUCT CARDS */
+.prod-card { background:var(--surf); border:2px solid var(--bdr); border-radius:10px; margin-bottom:14px; overflow:hidden; transition:border-color .15s; }
+.prod-card.active { border-color:var(--br); }
+.prod-header { background:var(--br-lt); padding:10px 14px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; border-bottom:1px solid var(--bdr); }
+.prod-active-lbl { background:var(--br); color:#fff; font-size:10px; font-weight:bold; padding:2px 8px; border-radius:10px; white-space:nowrap; }
+.prod-name { flex:1; min-width:160px; border:1.5px solid var(--bdr); border-radius:5px; padding:6px 10px; font-size:14px; font-weight:bold; color:var(--br-dk); font-family:Arial; background:var(--surf); }
+.prod-name:focus { outline:none; border-color:var(--br); }
+.prod-name::placeholder { font-weight:normal; color:#bbb; }
+.qty-wrap { display:flex; align-items:center; gap:6px; font-size:13px; color:var(--muted); white-space:nowrap; }
+.prod-qty { border:1.5px solid var(--bdr); border-radius:5px; padding:5px 8px; font-size:14px; font-weight:bold; font-family:Arial; color:var(--text); width:88px; font-variant-numeric:tabular-nums; background:var(--surf); }
+.prod-qty:focus { outline:none; border-color:var(--br); }
+.btn-rm-prod { background:none; border:1px solid #e0b0b0; color:#c04040; border-radius:5px; padding:5px 10px; font-size:12px; cursor:pointer; margin-left:auto; }
+.btn-rm-prod:hover { background:#fde8e8; }
+
+/* OPS TABLE */
+.ops-table { width:100%; border-collapse:collapse; }
+.ops-table th { background:#faf5ef; color:var(--muted); font-size:10px; font-weight:bold; text-transform:uppercase; letter-spacing:.5px; padding:6px 12px; border-bottom:1px solid var(--bdr); text-align:left; }
+.ops-table th:not(:first-child) { text-align:right; }
+.ops-table td { padding:7px 12px; border-bottom:1px solid #f5ede3; vertical-align:middle; }
+.ops-table tbody tr:last-child td { border-bottom:none; }
+.ops-table tbody tr:hover { filter: brightness(.97); }
+.op-row-taveni  { border-left:4px solid #f7ab31; background:rgba(247,171,49,.05); }
+.op-row-baleni  { border-left:4px solid #3a8a1e; background:rgba(58,138,30,.05); }
+.op-row-vazani  { border-left:4px solid #83502e; background:rgba(131,80,46,.05); }
+.op-row-stitek  { border-left:4px solid #da1668; background:rgba(218,22,104,.05); }
+.op-row-skladani{ border-left:4px solid #5b7ec8; background:rgba(91,126,200,.05); }
+.op-row-lepeni  { border-left:4px solid #2a8a7a; background:rgba(42,138,122,.05); }
+.op-row-other   { border-left:4px solid #ccc; }
+.ops-table td:not(:first-child) { text-align:right; }
+
+.op-sel { border:1.5px solid var(--bdr); border-radius:5px; padding:5px 8px; font-size:13px; font-family:Arial; color:var(--text); background:var(--surf); max-width:300px; width:100%; }
+.op-sel:focus { outline:none; border-color:var(--br); }
+.op-custom-name { border:1.5px solid var(--br); border-radius:5px; padding:5px 8px; font-size:13px; font-family:Arial; color:var(--text); background:var(--surf); width:220px; }
+.op-custom-name:focus { outline:none; }
+.op-ksh { border:1.5px solid var(--bdr); border-radius:5px; padding:5px 6px; font-size:13px; font-family:Arial; text-align:right; font-variant-numeric:tabular-nums; color:var(--text); background:var(--surf); width:76px; }
+.op-ksh:focus { outline:none; border-color:var(--br); }
+.op-cnt { border:1.5px solid var(--bdr); border-radius:5px; padding:5px 4px; font-size:12px; font-family:Arial; text-align:center; font-variant-numeric:tabular-nums; color:var(--muted); background:var(--surf); width:44px; }
+.op-cnt:focus { outline:none; border-color:var(--amber); }
+.op-cnt.multi { border-color:var(--amber); color:#9a6000; font-weight:bold; background:rgba(247,171,49,.08); }
+.op-time { color:var(--muted); font-variant-numeric:tabular-nums; font-size:13px; }
+.op-cost { color:var(--green); font-weight:bold; font-variant-numeric:tabular-nums; }
+.btn-rm-op { background:none; border:none; cursor:pointer; color:#ccc; font-size:17px; padding:0 3px; transition:color .15s; }
+.btn-rm-op:hover { color:var(--pink); }
+.btn-back { font-size:11px; color:var(--muted); background:none; border:none; cursor:pointer; text-decoration:underline; margin-left:6px; }
+.btn-back:hover { color:var(--br); }
+
+.prod-footer { padding:10px 14px; display:flex; align-items:center; justify-content:space-between; background:#fdf8f3; border-top:1px solid var(--bdr); }
+.btn-add-op { background:none; border:1.5px dashed var(--bdr); border-radius:6px; padding:6px 12px; font-size:12px; color:var(--muted); cursor:pointer; font-family:Arial; transition:border-color .15s, color .15s; }
+.btn-add-op:hover { border-color:var(--br); color:var(--br); }
+.prod-subtotal { font-size:13px; font-weight:bold; color:var(--br-dk); font-variant-numeric:tabular-nums; }
+
+.empty-prods { background:var(--surf); border:2px dashed var(--bdr); border-radius:10px; padding:28px; text-align:center; color:var(--muted); margin-bottom:14px; }
+.btn-add-prod { background:var(--br); color:#fff; border:none; border-radius:8px; padding:10px 20px; font-size:14px; font-weight:bold; cursor:pointer; font-family:Arial; }
+.btn-add-prod:hover { background:var(--br-dk); }
+
+/* OVERALL */
+.overall-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:20px 0 14px; }
+@media(max-width:600px){.overall-grid{grid-template-columns:repeat(2,1fr);}}
+.oc { background:var(--surf); border:1px solid var(--bdr); border-radius:10px; padding:13px 15px; }
+.oc.amber { border-color:var(--amber); background:rgba(247,171,49,.08); }
+.oc.green { border-color:var(--green); background:rgba(58,138,30,.07); }
+.oc-lbl { font-size:10px; font-weight:bold; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); margin-bottom:4px; }
+.oc-val { font-size:22px; font-weight:bold; color:var(--br-dk); font-variant-numeric:tabular-nums; line-height:1.1; }
+.oc.amber .oc-val { color:#9a6000; }
+.oc.green .oc-val { color:var(--green); }
+.oc-sub { font-size:11px; color:var(--muted); margin-top:3px; }
+.breakdown-wrap { background:var(--surf); border:1px solid var(--bdr); border-radius:10px; overflow:hidden; }
+.breakdown-head { background:var(--br-lt); padding:8px 16px; font-size:10px; font-weight:bold; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); border-bottom:1px solid var(--bdr); }
+.breakdown-tbl { width:100%; border-collapse:collapse; font-size:13px; font-variant-numeric:tabular-nums; }
+.breakdown-tbl th { padding:7px 14px; font-size:10px; font-weight:bold; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); background:#faf5ef; border-bottom:1px solid var(--bdr); text-align:left; }
+.breakdown-tbl th:not(:first-child) { text-align:right; }
+.breakdown-tbl td { padding:8px 14px; border-bottom:1px solid #f5ede3; }
+.breakdown-tbl tbody tr:last-child td { border-bottom:none; }
+.breakdown-tbl tfoot td { border-top:2px solid var(--bdr); padding:9px 14px; }
+.breakdown-tbl td:not(:first-child) { text-align:right; }
+.pause-info { background:#fff8e1; border:1px solid #e8c84a; border-radius:8px; padding:9px 14px; margin-top:12px; font-size:12px; color:#5c381f; }
+
+/* DIVIDER */
+hr.sec { border:none; border-top:2px solid var(--bdr); margin:28px 0 20px; }
+.sec-lbl { font-size:11px; font-weight:bold; letter-spacing:2px; text-transform:uppercase; color:var(--br); margin-bottom:14px; }
+
+/* DETAILS / REFERENCE */
+details { margin-bottom:12px; }
+details summary { cursor:pointer; list-style:none; padding:11px 18px; background:var(--surf); border:1px solid var(--bdr); border-radius:8px; font-size:14px; font-weight:bold; color:var(--br-dk); display:flex; align-items:center; gap:10px; user-select:none; }
+details summary::-webkit-details-marker { display:none; }
+details summary::before { content:'▶'; font-size:10px; color:var(--muted); transition:transform .15s; display:inline-block; }
+details[open] summary::before { transform:rotate(90deg); }
+details[open] summary { border-radius:8px 8px 0 0; }
+details summary:hover { background:var(--br-lt); }
+.ref-body { border:1px solid var(--bdr); border-top:none; border-radius:0 0 8px 8px; padding:16px; background:var(--surf); }
+
+/* REFERENCE TABLES */
+.group { margin-bottom:24px; }
+.group-title { font-size:11px; font-weight:bold; letter-spacing:2px; text-transform:uppercase; color:var(--br); padding:0 4px 6px; border-bottom:2px solid #c8976a; margin-bottom:12px; }
+.cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:12px; }
+.card { background:var(--bg); border-radius:8px; overflow:hidden; border:1px solid var(--bdr); }
+.card-hdr { background:#5c381f; color:#fff; padding:8px 14px; display:flex; align-items:center; gap:8px; }
+.card-hdr .ic { font-size:14px; }
+.card-hdr .ti { font-size:12px; font-weight:bold; }
+.card-hdr .su { font-size:10px; color:#d4b896; margin-top:1px; }
+.card table { width:100%; border-collapse:collapse; font-size:13px; }
+.card thead th { background:#f7f0e8; color:var(--br); padding:5px 10px; font-size:10px; font-weight:bold; text-transform:uppercase; letter-spacing:.4px; text-align:left; border-bottom:1px solid var(--bdr); }
+.card thead th:not(:first-child) { text-align:right; }
+.card tbody tr { border-bottom:1px solid var(--br-lt); }
+.card tbody tr:last-child { border-bottom:none; }
+.card tbody tr:hover { background:#fdf5ed; }
+.card tbody td { padding:6px 10px; vertical-align:middle; }
+.card tbody td:not(:first-child) { text-align:right; }
+.gram { font-weight:bold; color:var(--br-dk); }
+.ksh  { font-weight:bold; color:var(--br); font-variant-numeric:tabular-nums; }
+.kcs  { font-weight:bold; color:var(--green); font-variant-numeric:tabular-nums; }
+.cas  { font-size:11px; color:#888; }
+.pozn { font-size:11px; color:#aaa; font-style:italic; }
+.big-sec { margin-bottom:22px; }
+.big-hdr { background:#5c381f; color:#fff; padding:9px 16px; border-radius:8px 8px 0 0; font-size:14px; font-weight:bold; display:flex; align-items:center; gap:8px; }
+.big-tbl { width:100%; border-collapse:collapse; background:var(--bg); border-radius:0 0 8px 8px; border:1px solid var(--bdr); border-top:none; }
+.big-tbl thead th { background:var(--br-lt); color:var(--br-dk); padding:6px 12px; font-size:10px; font-weight:bold; text-transform:uppercase; letter-spacing:.5px; border-bottom:2px solid #c8976a; text-align:left; }
+.big-tbl tbody tr { border-bottom:1px solid var(--br-lt); }
+.big-tbl tbody tr:last-child { border-bottom:none; }
+.big-tbl tbody tr:hover { background:#fdf5ed; }
+.big-tbl tbody td { padding:7px 12px; vertical-align:top; font-size:13px; }
+.pname { font-weight:bold; color:var(--text); }
+.pdet  { font-size:11px; color:#999; margin-top:2px; }
+.norm  { font-weight:bold; color:var(--br); font-variant-numeric:tabular-nums; }
+.normsub { font-size:10px; color:#bbb; }
+.cost  { font-weight:bold; color:var(--br-dk); font-variant-numeric:tabular-nums; }
+.bdg { display:inline-block; font-size:10px; padding:2px 6px; border-radius:6px; font-weight:bold; }
+.fast { background:#e8f5e0; color:#3a7a1e; }
+.mid  { background:#fff3e0; color:#b36000; }
+.slow { background:#fde8e8; color:#b71c1c; }
+.add-col { width:36px !important; padding:4px 8px !important; text-align:center !important; }
+.btn-plus { display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; background:var(--br-lt); border:1.5px solid #c8976a; color:var(--br); font-size:14px; font-weight:bold; cursor:pointer; transition:background .15s, transform .1s; }
+.btn-plus:hover { background:var(--br); border-color:var(--br); color:#fff; transform:scale(1.1); }
+.notice { background:#fff8e1; border-left:4px solid var(--amber); border-radius:0 8px 8px 0; padding:10px 16px; margin-bottom:18px; font-size:13px; color:#5c381f; line-height:1.7; }
+.tag-row { display:flex; gap:6px; flex-wrap:wrap; font-size:11px; margin-top:4px; }
+.tag { background:#eee; color:#666; padding:2px 7px; border-radius:10px; }
+.tbd-note { padding:16px; color:#aaa; font-size:13px; font-style:italic; border:1px dashed #ddd; border-radius:0 0 8px 8px; }
+/* TEMPLATES */
+.tpl-bar { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:16px; align-items:center; padding:12px 14px; background:var(--surf); border:1px solid var(--bdr); border-radius:10px; }
+.tpl-lbl { font-size:10px; font-weight:bold; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-right:4px; white-space:nowrap; }
+.tpl-btn { background:var(--bg); border:1.5px solid var(--bdr); border-radius:20px; padding:5px 13px; font-size:12px; color:var(--br-dk); cursor:pointer; font-family:Arial; transition:all .15s; white-space:nowrap; }
+.tpl-btn:hover { border-color:var(--amber); background:rgba(247,171,49,.1); }
+.tpl-sep { width:1px; height:18px; background:var(--bdr); margin:0 4px; }
+.toast { position:fixed; bottom:20px; right:20px; z-index:500; background:var(--green); color:#fff; border-radius:8px; padding:10px 18px; font-size:13px; font-weight:bold; box-shadow:0 4px 16px rgba(0,0,0,.25); opacity:0; transform:translateY(6px); transition:opacity .2s, transform .2s; pointer-events:none; }
+.toast.show { opacity:1; transform:none; }
+/* SECTION DIVIDERS */
+.sec-div { border-radius:6px; padding:10px 18px; margin:20px 0 8px; font-size:11px; font-weight:bold; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:10px; }
+.sec-div.balici { background:#eaf4e4; border-left:4px solid #6fa044; color:#2d5a1b; }
+.sec-div.darkova { background:#fff8e1; border-left:4px solid #f7ab31; color:#7a5200; }
+.sec-div span { font-size:16px; }
+</style>
+
+<div class="page-header">
+  <div><h1>🐿 Výrobní normy balení</h1><p>Interní dokument — Nutworld s.r.o.</p></div>
+  <div class="page-header-right">Sazba práce: <strong style="color:var(--amber)">250 Kč / hod</strong><br>Září 2026</div>
+</div>
+<div class="sticky-bar" id="sbar">🧮 Kalkulátor zakázky — přidej produkty níže</div>
+<div class="toast" id="toast"></div>
+
+<div class="wrap">
+
+<!-- ════ KALKULÁTOR ════ -->
+<div class="calc-section">
+  <div class="calc-top">
+    <div class="calc-title">🧮 Kalkulátor zakázky</div>
+    <div class="calc-meta">
+      <label>Pracovníků <input type="number" id="workers" value="1" min="1" max="20" oninput="recalc()"></label>
+      <label>Délka směny <input type="number" id="shift" value="8" min="0.5" max="24" step="0.5" oninput="recalc()"> hod</label>
+      <label>Přestávka <input type="number" id="pause" value="40" min="0" max="120" step="5" oninput="recalc()"> min <span class="pause-hint" title="Pro 8h směnu: 30 min povinná + 10 min WC/svačina = 40 min">ⓘ</span></label>
+    </div>
+  </div>
+  <div class="tpl-bar">
+    <span class="tpl-lbl">Šablony:</span>
+    <button class="tpl-btn" onclick="addFromTemplate('ekokelimek')">🥤 Eko kelímek</button>
+    <button class="tpl-btn" onclick="addFromTemplate('celofankelimek')">🎁 Celofán + kelímek</button>
+    <button class="tpl-btn" onclick="addFromTemplate('celofanek')">🛍️ Stojací celofánek</button>
+    <button class="tpl-btn" onclick="addFromTemplate('kornout')">🌽 Kornout</button>
+    <div class="tpl-sep"></div>
+    <button class="tpl-btn" onclick="addFromTemplate('kazetka')">📦 Kazetka 50g</button>
+    <button class="tpl-btn" onclick="addFromTemplate('krabicka2x50')">🎀 Krabička 2×50g</button>
+    <button class="tpl-btn" onclick="addFromTemplate('4x80')">🗃️ 4×80 se senem</button>
+    <div class="tpl-sep"></div>
+    <button class="tpl-btn" onclick="addFromTemplate('sklenickaExclusive')">🫙 Sklenička Exclusive</button>
+    <button class="tpl-btn" onclick="addFromTemplate('nugat')">🟤 Nugát ve skle</button>
+    <div class="tpl-sep"></div>
+    <button class="tpl-btn" onclick="addFromTemplate('doypack50')">📦 Doypack 50g</button>
+    <button class="tpl-btn" onclick="addFromTemplate('doypack100')">📦 Doypack 100g</button>
+    <button class="tpl-btn" onclick="addFromTemplate('doypack200')">📦 Doypack 200g</button>
+    <button class="tpl-btn" onclick="addFromTemplate('doypack500')">📦 Doypack 500g</button>
+    <button class="tpl-btn" onclick="addFromTemplate('doypack1000')">📦 Doypack 1000g</button>
+  </div>
+  <div id="prods"></div>
+  <button class="btn-add-prod" onclick="addProduct()">＋ Přidat prázdný produkt</button>
+  <div id="overall"></div>
+</div>
+
+<!-- ════ REFERENCE ════ -->
+<hr class="sec">
+<div class="sec-lbl">📋 Referenční tabulky norem — klikni ＋ pro přidání k aktivnímu produktu</div>
+
+<div class="sec-div balici"><span>🏭</span> Balicí operace — plnění sáčků a tavení</div>
+
+<details>
+  <summary><span class="ic">⚙️</span> Strojové balení</summary>
+  <div class="ref-body">
+    <div class="cards">
+      <div class="card">
+        <div class="card-hdr"><span class="ic">🤖</span><div><div class="ti">Automatické kontinuální</div><div class="su">Plně strojové</div></div></div>
+        <table><thead><tr><th>Gramáž</th><th>Ks/hod</th><th>Kč/ks</th><th class="add-col"></th></tr></thead><tbody>
+          <tr><td class="gram">50 g</td><td class="ksh">755</td><td class="kcs">0,33 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Automatické kontinuální — 50g',755)">＋</button></td></tr>
+          <tr><td class="gram">100 g</td><td class="ksh">690</td><td class="kcs">0,36 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Automatické kontinuální — 100g',690)">＋</button></td></tr>
+        </tbody></table>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><span class="ic">🎀</span><div><div class="ti">Celofán — poloautomat</div><div class="su">Strojové vážení + ruční zavírání</div></div></div>
+        <table><thead><tr><th>Gramáž</th><th>Ks/hod</th><th>Kč/ks</th><th class="add-col"></th></tr></thead><tbody>
+          <tr><td class="gram">80 g</td><td class="ksh">122</td><td class="kcs">2,05 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Celofán poloautomat — 80g',122)">＋</button></td></tr>
+          <tr><td class="gram">180 g</td><td class="ksh">103</td><td class="kcs">2,43 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Celofán poloautomat — 180g',103)">＋</button></td></tr>
+          <tr><td class="gram">200 g</td><td class="ksh">102</td><td class="kcs">2,45 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Celofán poloautomat — 200g',102)">＋</button></td></tr>
+        </tbody></table>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><span class="ic">📦</span><div><div class="ti">Doypack standard</div><div class="su">Stojací sáček, poloautomat</div></div></div>
+        <table><thead><tr><th>Gramáž</th><th>Ks/hod</th><th>Kč/ks</th><th class="add-col"></th></tr></thead><tbody>
+          <tr><td class="gram">50 g</td><td class="ksh">154</td><td class="kcs">1,62 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Doypack standard — 50g',154)">＋</button></td></tr>
+          <tr><td class="gram">100 g</td><td class="ksh">162</td><td class="kcs">1,54 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Doypack standard — 100g',162)">＋</button></td></tr>
+          <tr><td class="gram">200 g</td><td class="ksh">143</td><td class="kcs">1,75 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Doypack standard — 200g',143)">＋</button></td></tr>
+          <tr><td class="gram">500 g</td><td class="ksh">143</td><td class="kcs">1,75 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Doypack standard — 500g',143)">＋</button></td></tr>
+          <tr><td class="gram">1 000 g</td><td class="ksh">154</td><td class="kcs">1,62 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Doypack standard — 1000g',154)">＋</button></td></tr>
+        </tbody></table>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><span class="ic">🛒</span><div><div class="ti">Doypack Alza mix</div><div class="su">Bez míchání</div></div></div>
+        <table><thead><tr><th>Gramáž</th><th>Ks/hod</th><th>Kč/ks</th><th class="add-col"></th></tr></thead><tbody>
+          <tr><td class="gram">500 g</td><td class="ksh">63</td><td class="kcs">3,97 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Doypack Alza mix — 500g',63)">＋</button></td></tr>
+          <tr><td class="gram">1 000 g</td><td class="ksh">152</td><td class="kcs">1,64 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Doypack Alza mix — 1000g',152)">＋</button></td></tr>
+        </tbody></table>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><span class="ic">🧪</span><div><div class="ti">Alza TUBUS</div><div class="su">Tavení + plnění</div></div></div>
+        <table><thead><tr><th>Gramáž</th><th>Ks/hod</th><th>Kč/ks</th><th class="add-col"></th></tr></thead><tbody>
+          <tr><td class="gram">450 g</td><td class="ksh">117</td><td class="kcs">2,14 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Alza TUBUS — 450g',117)">＋</button></td></tr>
+        </tbody></table>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><span class="ic">🖐️</span><div><div class="ti">Ručně zpracované</div></div></div>
+        <table><thead><tr><th>Typ</th><th>Ks/hod</th><th>Kč/ks</th><th class="add-col"></th></tr></thead><tbody>
+          <tr><td class="gram">Celofánek 200g (Medvídci)</td><td class="ksh">80</td><td class="kcs">3,13 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Celofánek ručně — 200g',80)">＋</button></td></tr>
+          <tr><td class="gram">Sklenička šestihran 60g</td><td class="ksh">130</td><td class="kcs">1,92 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Sklenička šestihran — 60g',130)">＋</button></td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details>
+  <summary><span>🏭</span> Ruční balení — celofánky (norma včetně tavení)</summary>
+  <div class="ref-body">
+    <div class="notice">
+      Normy níže <strong>zahrnují plnění i tavení (zavírání)</strong> — standardně 150–180 g. Při výpočtu zakázky neudávat zavírání zvlášť.
+    </div>
+    <div class="big-sec">
+      <div style="overflow-x:auto">
+      <table class="big-tbl">
+        <thead><tr><th style="width:40%">Typ</th><th style="width:35%">Co zahrnuje</th><th>Norma</th><th>Kč/ks</th><th class="add-col"></th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="pname">Balení + tavení — 180 g</div><div class="pdet">stojací celofánek 180 g</div></td>
+            <td><div class="pdet">plnění + tavení vč. přípravy</div></td>
+            <td><div class="norm">103 ks/hod</div></td><td class="cost">2,43 Kč</td>
+            <td class="add-col"><button class="btn-plus" onclick="addToActive('Balení + tavení — 180g',103)">＋</button></td>
+          </tr>
+          <tr>
+            <td><div class="pname">Balení + tavení — 80 g</div><div class="pdet">stojací celofánek 80 g</div></td>
+            <td><div class="pdet">plnění + tavení vč. přípravy</div></td>
+            <td><div class="norm">122 ks/hod</div></td><td class="cost">2,05 Kč</td>
+            <td class="add-col"><button class="btn-plus" onclick="addToActive('Balení + tavení — 80g',122)">＋</button></td>
+          </tr>
+          <tr>
+            <td><div class="pname">Stojací celofánek — bez štítku</div><div class="pdet">manuální balení, lehčí gramáže</div></td>
+            <td><div class="pdet">plnění + ruční uzavření</div></td>
+            <td><div class="norm">130 ks/hod</div></td><td class="cost">1,92 Kč</td>
+            <td class="add-col"><button class="btn-plus" onclick="addToActive('Stojací celofánek — bez štítku',130)">＋</button></td>
+          </tr>
+          <tr>
+            <td><div class="pname">Stojací celofánek — s logem</div><div class="pdet">manuální balení + kulatý lepík</div></td>
+            <td><div class="pdet">plnění + ruční uzavření + lepík logo</div></td>
+            <td><div class="norm">120 ks/hod</div></td><td class="cost">2,08 Kč</td>
+            <td class="add-col"><button class="btn-plus" onclick="addToActive('Stojací celofánek — s logem',120)">＋</button></td>
+          </tr>
+          <tr>
+            <td><div class="pname">Tavení sáčků</div><div class="pdet">pouze tavení, bez plnění</div></td>
+            <td><div class="pdet">jen utěsnění fólie (po plnění strojem)</div></td>
+            <td><div class="norm">667 ks/hod</div></td><td class="cost">0,37 Kč</td>
+            <td class="add-col"><button class="btn-plus" onclick="addToActive('Tavení sáčků',667)">＋</button></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+</details>
+
+<div class="sec-div darkova"><span>🎁</span> Dárková kompletace — etiketování, vázání, skládání</div>
+
+<details>
+  <summary><span>🎁</span> Dárkové balení — kompletace</summary>
+  <div class="ref-body">
+    <div class="big-sec">
+      <div style="overflow-x:auto">
+      <table class="big-tbl">
+        <thead><tr><th style="width:25%">Typ balení</th><th style="width:32%">Co zahrnuje</th><th style="width:14%">Norma</th><th style="width:9%">Kč/ks</th><th style="width:12%">Náročnost</th><th class="add-col"></th></tr></thead>
+        <tbody>
+          <tr><td><div class="pname">Eko kelímek — komplet</div></td><td><div class="pdet">vnitřní + spodní + přední štítek + nahřátí + víčko</div></td><td><div class="norm">60 ks/hod</div></td><td class="cost">4,17 Kč</td><td><span class="bdg fast">Nízká</span></td><td class="add-col"><button class="btn-plus" onclick="addToActive('Eko kelímek — komplet',60)">＋</button></td></tr>
+          <tr><td><div class="pname">Eko kelímek — jen štítky</div></td><td><div class="pdet">nahřátí + lepení štítku</div></td><td><div class="norm">200 ks/hod</div></td><td class="cost">1,25 Kč</td><td><span class="bdg fast">Nízká</span></td><td class="add-col"><button class="btn-plus" onclick="addToActive('Eko kelímek — jen štítky',200)">＋</button></td></tr>
+          <tr><td><div class="pname">Eko kelímek zajíc</div></td><td><div class="pdet">mašlička juta + štítek + bambulka</div></td><td><div class="norm">40 ks/hod</div></td><td class="cost">6,25 Kč</td><td><span class="bdg mid">Střední</span></td><td class="add-col"><button class="btn-plus" onclick="addToActive('Eko kelímek zajíc',40)">＋</button></td></tr>
+          <tr><td><div class="pname">Kazetka — komplet</div></td><td><div class="pdet">lepení + štítek + jutová mašlička</div></td><td><div class="norm">60 ks/hod</div></td><td class="cost">4,17 Kč</td><td><span class="bdg mid">Střední</span></td><td class="add-col"><button class="btn-plus" onclick="addToActive('Kazetka — komplet',60)">＋</button></td></tr>
+          <tr><td><div class="pname">Sklenička Exclusive — komplet</div></td><td><div class="pdet">malý + velký štítek + mašlička juta</div></td><td><div class="norm">70 ks/hod</div><div class="normsub">100 ks / 86 min</div></td><td class="cost">3,58 Kč</td><td><span class="bdg mid">Střední</span></td><td class="add-col"><button class="btn-plus" onclick="addToActive('Sklenička Exclusive — komplet',70)">＋</button></td></tr>
+          <tr><td><div class="pname">Kornout — komplet</div></td><td><div class="pdet">zadní štítek + jutová mašle + celofán</div></td><td><div class="norm">75 ks/hod</div></td><td class="cost">3,33 Kč</td><td><span class="bdg fast">Nízká</span></td><td class="add-col"><button class="btn-plus" onclick="addToActive('Kornout — komplet',75)">＋</button></td></tr>
+          <tr><td><div class="pname">Papírový kornout zajíc / mrkvička</div></td><td><div class="pdet">skládání + štítky + bambulka + uši</div></td><td><div class="norm">38 ks/hod</div></td><td class="cost">6,67 Kč</td><td><span class="bdg slow">Vysoká</span></td><td class="add-col"><button class="btn-plus" onclick="addToActive('Papírový kornout zajíc/mrkvička',38)">＋</button></td></tr>
+          <tr><td><div class="pname">Celofán + kelímek s mašlí</div></td><td><div class="pdet">mašlička + vložení + 2× štítek + nahřátí</div></td><td><div class="norm">60 ks/hod</div></td><td class="cost">4,17 Kč</td><td><span class="bdg mid">Střední</span></td><td class="add-col"><button class="btn-plus" onclick="addToActive('Celofán + kelímek s mašlí',60)">＋</button></td></tr>
+          <tr><td><div class="pname">Vázání přes roh</div></td><td><div class="pdet">vázání jutou přes roh (2×50)</div></td><td><div class="norm">120 ks/hod</div></td><td class="cost">2,08 Kč</td><td><span class="bdg fast">Nízká</span></td><td class="add-col"><button class="btn-plus" onclick="addToActive('Vázání přes roh',120)">＋</button></td></tr>
+          <tr><td><div class="pname">Krabička 2×50g</div></td><td><div class="pdet">složení + sáčky + štítek + mašlička</div></td><td><div class="norm">60 ks/hod</div></td><td class="cost">4,17 Kč</td><td><span class="bdg mid">Střední</span></td><td class="add-col"><button class="btn-plus" onclick="addToActive('Krabička 2×50g',60)">＋</button></td></tr>
+          <tr><td><div class="pname">4×80 se senem</div></td><td><div class="pdet">seno + sáčky + štítek + vázání</div></td><td><div class="norm">30 ks/hod</div></td><td class="cost">8,33 Kč</td><td><span class="bdg slow">Vysoká</span></td><td class="add-col"><button class="btn-plus" onclick="addToActive('4×80 se senem',30)">＋</button></td></tr>
+          <tr><td><div class="pname">Dárková krabice 3×200 doypack</div></td><td><div class="pdet">složení + razítko + seno + dvojitá juta + mašlička</div></td><td><div class="norm">30 ks/hod</div></td><td class="cost">8,33 Kč</td><td><span class="bdg slow">Vysoká</span></td><td class="add-col"><button class="btn-plus" onclick="addToActive('Dárková krabice 3×200 doypack',30)">＋</button></td></tr>
+          <tr><td><div class="pname">Bonboniera 2 řady</div></td><td><div class="pdet">celofán + jutová mašlička</div></td><td><div class="norm">40 ks/hod</div></td><td class="cost">6,25 Kč</td><td><span class="bdg mid">Střední</span></td><td class="add-col"><button class="btn-plus" onclick="addToActive('Bonboniera 2 řady',40)">＋</button></td></tr>
+          <tr><td><div class="pname">Bonboniera 4 řady</div></td><td><div class="pdet">celofán + jutová mašlička</div></td><td><div class="norm">30 ks/hod</div></td><td class="cost">8,33 Kč</td><td><span class="bdg slow">Vysoká</span></td><td class="add-col"><button class="btn-plus" onclick="addToActive('Bonboniera 4 řady',30)">＋</button></td></tr>
+          <tr><td><div class="pname">Trubičky</div></td><td><div class="pdet">kulaté logo + mašlička + štítek</div></td><td><div class="norm">100 ks/hod</div></td><td class="cost">2,50 Kč</td><td><span class="bdg fast">Nízká</span></td><td class="add-col"><button class="btn-plus" onclick="addToActive('Trubičky',100)">＋</button></td></tr>
+          <tr><td><div class="pname">Celofán — želé srdíčka</div></td><td><div class="pdet">oříšek + stuha + štítek</div></td><td><div class="norm">60 ks/hod</div></td><td class="cost">4,17 Kč</td><td><span class="bdg mid">Střední</span></td><td class="add-col"><button class="btn-plus" onclick="addToActive('Celofán — želé srdíčka',60)">＋</button></td></tr>
+          <tr><td><div class="pname">TOP 10 sáčky</div></td><td><div class="pdet">sáčky + štítek + kartička + jutová mašlička</div></td><td><div class="norm">24 ks/hod</div></td><td class="cost">10,42 Kč</td><td><span class="bdg slow">Vysoká</span></td><td class="add-col"><button class="btn-plus" onclick="addToActive('TOP 10 sáčky',24)">＋</button></td></tr>
+          <tr><td><div class="pname">Box 6 skleniček</div></td><td><div class="pdet">složení + štítek + kulatý lepík + mašle</div></td><td><div class="norm">17 ks/hod</div></td><td class="cost">14,62 Kč</td><td><span class="bdg slow">Vysoká</span></td><td class="add-col"><button class="btn-plus" onclick="addToActive('Box 6 skleniček',17)">＋</button></td></tr>
+          <tr><td><div class="pname">Alza box degustační 5×100</div></td><td><div class="pdet">krabička + seno + sáčky + štítek + stuha</div></td><td><div class="norm">18 ks/hod</div></td><td class="cost">13,89 Kč</td><td><span class="bdg slow">Vysoká</span></td><td class="add-col"><button class="btn-plus" onclick="addToActive('Alza box degustační 5×100',18)">＋</button></td></tr>
+          <tr><td><div class="pname">Svatební dárková krabička</div></td><td><div class="pdet">skládání + plnění + mašlička + visačka</div></td><td><div class="norm">43 ks/hod</div></td><td class="cost">5,83 Kč</td><td><span class="bdg mid">Střední</span></td><td class="add-col"><button class="btn-plus" onclick="addToActive('Svatební dárková krabička',43)">＋</button></td></tr>
+          <tr><td><div class="pname">Nugát ve skle</div></td><td><div class="pdet">štítek + mašlička + navázání oříšku</div></td><td><div class="norm">67 ks/hod</div></td><td class="cost">3,75 Kč</td><td><span class="bdg fast">Nízká</span></td><td class="add-col"><button class="btn-plus" onclick="addToActive('Nugát ve skle',67)">＋</button></td></tr>
+          <tr><td><div class="pname">Svatební mandličky v celofánu 30g</div></td><td><div class="pdet">jutová mašlička + ustřižení celofánu</div></td><td><div class="norm">122 ks/hod</div></td><td class="cost">2,05 Kč</td><td><span class="bdg fast">Nízká</span></td><td class="add-col"><button class="btn-plus" onclick="addToActive('Svatební mandličky v celofánu 30g',122)">＋</button></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+</details>
+
+<!-- ════ ŠTÍTKY — NOVÁ SEKCE ════ -->
+<details>
+  <summary><span>🏷️</span> Štítky — lepení dle velikosti</summary>
+  <div class="ref-body">
+    <div class="notice">
+      Velikosti dle formátu přepravce: <strong>Malý</strong> = eko kelímek, celofánek, sklenička &nbsp;·&nbsp; <strong>Střední</strong> = zásilkovnový formát (celofánek+kelímek) &nbsp;·&nbsp; <strong>Velký</strong> = PPL, 4×80, krabice (dárky 200 Kč+)
+    </div>
+    <div class="big-sec">
+      <div class="big-hdr">🏷️ Přední designový štítek</div>
+      <div style="overflow-x:auto">
+      <table class="big-tbl">
+        <thead><tr><th style="width:15%">Velikost</th><th style="width:40%">Použití</th><th>Norma</th><th>Kč/ks</th><th class="add-col"></th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="pname">Malý</div></td>
+            <td><div class="tag-row"><span class="tag">eko kelímek</span><span class="tag">celofánek</span><span class="tag">celofánek+kelímek</span></div></td>
+            <td><div class="norm">300 ks/hod</div></td><td class="cost">0,83 Kč</td>
+            <td class="add-col"><button class="btn-plus" onclick="addToActive('Štítek přední designový — malý',300)">＋</button></td>
+          </tr>
+          <tr>
+            <td><div class="pname">Střední</div></td>
+            <td><div class="tag-row"><span class="tag">zásilkovnový formát</span><span class="tag">celofánek+kelímek</span></div></td>
+            <td><div class="norm">200 ks/hod</div></td><td class="cost">1,25 Kč</td>
+            <td class="add-col"><button class="btn-plus" onclick="addToActive('Štítek přední designový — střední',200)">＋</button></td>
+          </tr>
+          <tr>
+            <td><div class="pname">Velký</div></td>
+            <td><div class="tag-row"><span class="tag">PPL formát</span><span class="tag">4×80</span><span class="tag">velké krabičky</span></div></td>
+            <td><div class="norm">150 ks/hod</div></td><td class="cost">1,67 Kč</td>
+            <td class="add-col"><button class="btn-plus" onclick="addToActive('Štítek přední designový — velký',150)">＋</button></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+    <div class="big-sec">
+      <div class="big-hdr">🏷️ Legislativní štítek</div>
+      <div style="overflow-x:auto">
+      <table class="big-tbl">
+        <thead><tr><th style="width:15%">Velikost</th><th style="width:40%">Použití</th><th>Norma</th><th>Kč/ks</th><th class="add-col"></th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="pname">Malý</div></td>
+            <td><div class="tag-row"><span class="tag">eko kelímek</span><span class="tag">celofánek</span></div></td>
+            <td><div class="norm">300 ks/hod</div></td><td class="cost">0,83 Kč</td>
+            <td class="add-col"><button class="btn-plus" onclick="addToActive('Štítek legislativní — malý',300)">＋</button></td>
+          </tr>
+          <tr>
+            <td><div class="pname">Střední</div></td>
+            <td><div class="tag-row"><span class="tag">zásilkovnový</span><span class="tag">celofánek+kelímek</span></div></td>
+            <td><div class="norm">200 ks/hod</div></td><td class="cost">1,25 Kč</td>
+            <td class="add-col"><button class="btn-plus" onclick="addToActive('Štítek legislativní — střední',200)">＋</button></td>
+          </tr>
+          <tr>
+            <td><div class="pname">Velký</div></td>
+            <td><div class="tag-row"><span class="tag">PPL</span><span class="tag">4×80</span><span class="tag">dárky 200+ Kč</span></div></td>
+            <td><div class="norm">150 ks/hod</div></td><td class="cost">1,67 Kč</td>
+            <td class="add-col"><button class="btn-plus" onclick="addToActive('Štítek legislativní — velký',150)">＋</button></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+</details>
+
+<!-- ════ VÁZÁNÍ — NOVÁ SEKCE ════ -->
+<details>
+  <summary><span>🎀</span> Vázání — juta a mašle</summary>
+  <div class="ref-body">
+    <div class="big-sec">
+      <div class="big-hdr">🎀 Malé produkty</div>
+      <div class="notice" style="border-radius:8px;margin-bottom:12px">celofánek, kelímek, kazetka, zajíček, kornouty, skleničky</div>
+      <div style="overflow-x:auto">
+      <table class="big-tbl">
+        <thead><tr><th style="width:30%">Typ</th><th>Norma</th><th>Kč/ks</th><th class="add-col"></th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="pname">Juta — malé</div></td>
+            <td><div class="norm">130 ks/hod</div></td><td class="cost">1,92 Kč</td>
+            <td class="add-col"><button class="btn-plus" onclick="addToActive('Vázání jutou — malé',130)">＋</button></td>
+          </tr>
+          <tr>
+            <td><div class="pname">Mašle saténová — malé</div></td>
+            <td><div class="norm">80 ks/hod</div></td><td class="cost">3,13 Kč</td>
+            <td class="add-col"><button class="btn-plus" onclick="addToActive('Vázání mašlí — malé',80)">＋</button></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+    <div class="big-sec">
+      <div class="big-hdr">🎀 Střední produkty</div>
+      <div class="notice" style="border-radius:8px;margin-bottom:12px">2×50g, 4×80g</div>
+      <div style="overflow-x:auto">
+      <table class="big-tbl">
+        <thead><tr><th style="width:30%">Typ</th><th>Norma</th><th>Kč/ks</th><th class="add-col"></th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="pname">Juta — střední (2×50)</div></td>
+            <td><div class="norm">120 ks/hod</div></td><td class="cost">2,08 Kč</td>
+            <td class="add-col"><button class="btn-plus" onclick="addToActive('Vázání jutou — střední 2×50',120)">＋</button></td>
+          </tr>
+          <tr>
+            <td><div class="pname">Juta — střední (4×80)</div></td>
+            <td><div class="norm">100 ks/hod</div></td><td class="cost">2,50 Kč</td>
+            <td class="add-col"><button class="btn-plus" onclick="addToActive('Vázání jutou — střední 4×80',100)">＋</button></td>
+          </tr>
+          <tr>
+            <td><div class="pname">Mašle saténová — střední</div></td>
+            <td><div class="norm">70 ks/hod</div></td><td class="cost">3,57 Kč</td>
+            <td class="add-col"><button class="btn-plus" onclick="addToActive('Vázání mašlí — střední',70)">＋</button></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+    <div class="big-sec">
+      <div class="big-hdr">🎀 Velké produkty — připravujeme</div>
+      <div class="tbd-note">Normy budou doplněny po prvním měření výroby (velké krabice XL, dárkové koše…)</div>
+    </div>
+  </div>
+</details>
+
+<details>
+  <summary><span>🔧</span> Samostatné operace + Skládání krabic + Velikonoce</summary>
+  <div class="ref-body">
+    <div class="big-sec">
+      <div class="big-hdr">🔧 Samostatné operace</div>
+      <table class="big-tbl">
+        <thead><tr><th style="width:55%">Operace</th><th style="width:22%">Norma</th><th style="width:13%">Kč/ks</th><th class="add-col"></th></tr></thead>
+        <tbody>
+          <tr><td><div class="pname">Lepení štítků — stroj</div></td><td><div class="norm">600 ks/hod</div></td><td class="cost">0,42 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Lepení štítků — stroj',600)">＋</button></td></tr>
+          <tr><td><div class="pname">Lepení přední + zadní štítek (strojový sáček 100g)</div></td><td><div class="norm">171 ks/hod</div></td><td class="cost">1,46 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Lepení přední+zadní štítek (100g)',171)">＋</button></td></tr>
+          <tr><td><div class="pname">Bery Jones — lepení štítků</div></td><td><div class="norm">382 ks/hod</div></td><td class="cost">0,65 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Bery Jones — lepení štítků',382)">＋</button></td></tr>
+          <tr><td><div class="pname">Razítkování sáčků 50g</div></td><td><div class="norm">200 ks/hod</div></td><td class="cost">1,25 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Razítkování sáčků 50g',200)">＋</button></td></tr>
+          <tr><td><div class="pname">Lepení předního štítku — velikonoční sáčky</div></td><td><div class="norm">400 ks/hod</div></td><td class="cost">0,63 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Lepení předního štítku — vel. sáčky',400)">＋</button></td></tr>
+          <tr><td><div class="pname">Lepení kazetky</div><div class="pdet">20 ks / 6 min</div></td><td><div class="norm">200 ks/hod</div></td><td class="cost">1,25 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Lepení kazetky',200)">＋</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="big-sec">
+      <div class="big-hdr">📦 Skládání krabic</div>
+      <table class="big-tbl">
+        <thead><tr><th style="width:55%">Typ</th><th style="width:22%">Norma</th><th style="width:13%">Kč/ks</th><th class="add-col"></th></tr></thead>
+        <tbody>
+          <tr><td><div class="pname">Krabička 2×50</div></td><td><div class="norm">375 ks/hod</div></td><td class="cost">0,67 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Skládání — krabička 2×50',375)">＋</button></td></tr>
+          <tr><td><div class="pname">4×80 průhledná</div></td><td><div class="norm">200 ks/hod</div></td><td class="cost">1,25 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Skládání — 4×80 průhledná',200)">＋</button></td></tr>
+          <tr><td><div class="pname">Exclusive průhledná</div></td><td><div class="norm">200 ks/hod</div></td><td class="cost">1,25 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Skládání — Exclusive průhledná',200)">＋</button></td></tr>
+          <tr><td><div class="pname">Párty box 18×18</div></td><td><div class="norm">200 ks/hod</div></td><td class="cost">1,25 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Skládání — párty box 18×18',200)">＋</button></td></tr>
+          <tr><td><div class="pname">Odnoska jedno okno</div></td><td><div class="norm">120 ks/hod</div></td><td class="cost">2,08 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Skládání — odnoska jedno okno',120)">＋</button></td></tr>
+          <tr><td><div class="pname">Kornout zajíc / mrkvička</div></td><td><div class="norm">150 ks/hod</div></td><td class="cost">1,67 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Skládání — kornout zajíc/mrkvička',150)">＋</button></td></tr>
+          <tr><td><div class="pname">Bonboniera 2 řady</div></td><td><div class="norm">40 ks/hod</div></td><td class="cost">6,25 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Skládání — bonboniera 2 řady',40)">＋</button></td></tr>
+          <tr><td><div class="pname">Bonboniera 4 řady malá</div></td><td><div class="norm">30 ks/hod</div></td><td class="cost">8,33 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Skládání — bonboniera 4 řady malá',30)">＋</button></td></tr>
+          <tr><td><div class="pname">Svatební krabička hnědá</div></td><td><div class="norm">300 ks/hod</div></td><td class="cost">0,83 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Skládání — svatební krabička hnědá',300)">＋</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="big-sec">
+      <div class="big-hdr">🐣 Velikonoční výroba</div>
+      <table class="big-tbl">
+        <thead><tr><th style="width:55%">Operace</th><th style="width:22%">Norma</th><th style="width:13%">Kč/ks</th><th class="add-col"></th></tr></thead>
+        <tbody>
+          <tr><td><div class="pname">Papírový zajíček — razítkování</div></td><td><div class="norm">142 ks/hod</div></td><td class="cost">1,76 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Papírový zajíček — razítkování',142)">＋</button></td></tr>
+          <tr><td><div class="pname">Papírový zajíček — lepení oči + bambulka + uší</div></td><td><div class="norm">43 ks/hod</div></td><td class="cost">5,81 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Papírový zajíček — lepení oči+bambulka+uší',43)">＋</button></td></tr>
+          <tr><td><div class="pname">Papírový zajíček — vázání + štítek</div></td><td><div class="norm">120 ks/hod</div></td><td class="cost">2,08 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Papírový zajíček — vázání+štítek',120)">＋</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</details>
+
+<!-- ════ ODVOZENÉ NORMY ════ -->
+<details>
+  <summary><span>🔬</span> Odvozené normy — z analýzy kompletací</summary>
+  <div class="ref-body">
+    <div class="notice">
+      Matematicky odvozeno odečtením změřených dílčích norem od kompletní normy.
+      <strong>Doporučujeme ověřit přímým měřením</strong> před nasazením do kalkulátoru zakázky.
+    </div>
+
+    <!-- ── OVĚŘENÍ KOMPLETACÍ ── -->
+    <div class="big-sec">
+      <div class="big-hdr">🔍 Ověření — dílčí operace × komplet norma</div>
+      <div style="overflow-x:auto">
+      <table class="big-tbl">
+        <thead><tr>
+          <th style="width:18%">Komplet</th>
+          <th style="width:9%">Norma</th>
+          <th style="width:34%">Dílčí operace (sec/ks)</th>
+          <th style="width:28%">Odvozeno / zbývá</th>
+          <th style="width:11%">Shoda</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="pname">Eko kelímek</div></td>
+            <td><div class="norm">60 ks/hod</div><div class="normsub">60 sec</div></td>
+            <td><div class="pdet">3× štítek malý = 3×12 = 36 sec</div></td>
+            <td><div class="pname" style="color:var(--green)">Vložení + víčko: 24 sec → 150 ks/hod</div></td>
+            <td><span class="bdg fast">✅ přesně</span></td>
+          </tr>
+          <tr>
+            <td><div class="pname">Sklenička Exclusive</div></td>
+            <td><div class="norm">70 ks/hod</div><div class="normsub">51,4 sec</div></td>
+            <td><div class="pdet">2× štítek malý (24 sec) + juta malá (27,7 sec) = 51,7 sec</div></td>
+            <td><div class="pdet" style="color:var(--green)">0,3 sec odchylka → beze zbytku</div></td>
+            <td><span class="bdg fast">✅ přesně</span></td>
+          </tr>
+          <tr>
+            <td><div class="pname">Kazetka</div></td>
+            <td><div class="norm">60 ks/hod</div><div class="normsub">60 sec</div></td>
+            <td><div class="pdet">lepení (18 sec) + štítek (12 sec) + juta (27,7 sec) = 57,7 sec</div></td>
+            <td><div class="pdet" style="color:#b36000">2,3 sec overhead (orientace, přeložení)</div></td>
+            <td><span class="bdg mid">✅ ~4 %</span></td>
+          </tr>
+          <tr>
+            <td><div class="pname">Kornout</div></td>
+            <td><div class="norm">75 ks/hod</div><div class="normsub">48 sec</div></td>
+            <td><div class="pdet">štítek (12 sec) + juta (27,7 sec) = 39,7 sec</div></td>
+            <td><div class="pname" style="color:var(--green)">Zavření celofánu: 8,3 sec → ~430 ks/hod</div></td>
+            <td><span class="bdg fast">✅ přesně</span></td>
+          </tr>
+          <tr>
+            <td><div class="pname">Celofán + kelímek s mašlí</div></td>
+            <td><div class="norm">60 ks/hod</div><div class="normsub">60 sec</div></td>
+            <td><div class="pdet">juta (27,7 sec) + 2× štítek (24 sec) = 51,7 sec</div></td>
+            <td><div class="pname" style="color:var(--green)">Vložení + nahřátí: 8,3 sec → ~430 ks/hod ← potvrzuje kornout</div></td>
+            <td><span class="bdg fast">✅ přesně</span></td>
+          </tr>
+          <tr>
+            <td><div class="pname">Stojací celofánek bez štítku</div></td>
+            <td><div class="norm">130 ks/hod</div><div class="normsub">27,7 sec</div></td>
+            <td><div class="pdet">juta malá = 27,7 sec</div></td>
+            <td><div class="pdet" style="color:var(--green)">= Vázání jutou malé — opraveno ze 150</div></td>
+            <td><span class="bdg fast">✅ sjednoceno</span></td>
+          </tr>
+          <tr>
+            <td><div class="pname">Krabička 2×50g</div></td>
+            <td><div class="norm">60 ks/hod</div><div class="normsub">60 sec</div></td>
+            <td><div class="pdet">složení (9,6 sec) + štítek (12 sec) + juta (27,7 sec) = 49,3 sec</div></td>
+            <td><div class="pname" style="color:var(--green)">Plnění 2 sáčků: 10,7 sec → ~336 ks/hod</div></td>
+            <td><span class="bdg fast">✅ přesně</span></td>
+          </tr>
+          <tr>
+            <td><div class="pname">4×80 se senem</div></td>
+            <td><div class="norm">30 ks/hod</div><div class="normsub">120 sec</div></td>
+            <td><div class="pdet">složení (18 sec) + štítek velký (24 sec) + juta střední 4×80 (36 sec) = 78 sec</div></td>
+            <td><div class="pname" style="color:var(--green)">Plnění 4 sáčků + seno: 42 sec → ~86 ks/hod</div></td>
+            <td><span class="bdg fast">✅ přesně</span></td>
+          </tr>
+          <tr>
+            <td><div class="pname">Eko kelímek zajíc</div></td>
+            <td><div class="norm">40 ks/hod</div><div class="normsub">90 sec</div></td>
+            <td><div class="pdet">juta malá (27,7 sec) + štítek (12 sec) = 39,7 sec</div></td>
+            <td><div class="pname" style="color:var(--green)">Bambulka: 50,3 sec → ~72 ks/hod</div></td>
+            <td><span class="bdg fast">✅ přesně</span></td>
+          </tr>
+          <tr>
+            <td><div class="pname">Nugát ve skle</div></td>
+            <td><div class="norm">67 ks/hod</div><div class="normsub">53,7 sec</div></td>
+            <td><div class="pdet">štítek (12 sec) + juta (27,7 sec) = 39,7 sec</div></td>
+            <td><div class="pname" style="color:var(--green)">Navázání oříšku: 14 sec → ~257 ks/hod</div></td>
+            <td><span class="bdg fast">✅ přesně</span></td>
+          </tr>
+          <tr>
+            <td><div class="pname">Svatební dárková krabička</div></td>
+            <td><div class="norm">43 ks/hod</div><div class="normsub">83,7 sec</div></td>
+            <td><div class="pdet">skládání hnědá (12 sec) + juta (27,7 sec) + visačka/štítek (12 sec) = 51,7 sec</div></td>
+            <td><div class="pname" style="color:var(--green)">Plnění do krabičky: 32 sec → ~112 ks/hod</div></td>
+            <td><span class="bdg fast">✅ přesně</span></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <!-- ── ODVOZENÉ DÍLČÍ OPERACE ── -->
+    <div class="big-sec">
+      <div class="big-hdr">➕ Odvozené dílčí operace — přidat do kalkulátoru</div>
+      <div style="overflow-x:auto">
+      <table class="big-tbl">
+        <thead><tr>
+          <th style="width:30%">Operace</th>
+          <th style="width:28%">Odvozeno z</th>
+          <th style="width:14%">Sec/ks</th>
+          <th style="width:13%">Norma</th>
+          <th style="width:9%">Kč/ks</th>
+          <th class="add-col"></th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="pname">Vložení do eko kelímku + víčko</div></td>
+            <td><div class="pdet">Eko kelímek komplet − 3× štítek</div></td>
+            <td>24,0 sec</td><td><div class="norm">150 ks/hod</div></td><td class="cost">1,67 Kč</td>
+            <td class="add-col"><button class="btn-plus" onclick="addToActive('Vložení do eko kelímku + víčko',150)">＋</button></td>
+          </tr>
+          <tr>
+            <td><div class="pname">Plnění — 2 sáčky do krabičky</div></td>
+            <td><div class="pdet">Krabička 2×50g komplet − složení − štítek − juta</div></td>
+            <td>10,7 sec</td><td><div class="norm">~336 ks/hod</div></td><td class="cost">0,74 Kč</td>
+            <td class="add-col"><button class="btn-plus" onclick="addToActive('Plnění — 2 sáčky do krabičky',336)">＋</button></td>
+          </tr>
+          <tr>
+            <td><div class="pname">Plnění 4 sáčků + seno (4×80)</div></td>
+            <td><div class="pdet">4×80 se senem − složení − štítek velký − juta střední</div></td>
+            <td>42,0 sec</td><td><div class="norm">~86 ks/hod</div></td><td class="cost">2,91 Kč</td>
+            <td class="add-col"><button class="btn-plus" onclick="addToActive('Plnění 4 sáčků + seno (4×80)',86)">＋</button></td>
+          </tr>
+          <tr>
+            <td><div class="pname">Bambulka (kelímek zajíc)</div></td>
+            <td><div class="pdet">Eko kelímek zajíc − štítek − juta</div></td>
+            <td>50,3 sec</td><td><div class="norm">~72 ks/hod</div></td><td class="cost">3,47 Kč</td>
+            <td class="add-col"><button class="btn-plus" onclick="addToActive('Bambulka (kelímek zajíc)',72)">＋</button></td>
+          </tr>
+          <tr>
+            <td><div class="pname">Navázání oříšku (nugát)</div></td>
+            <td><div class="pdet">Nugát ve skle − štítek − juta</div></td>
+            <td>14,0 sec</td><td><div class="norm">~257 ks/hod</div></td><td class="cost">0,97 Kč</td>
+            <td class="add-col"><button class="btn-plus" onclick="addToActive('Navázání oříšku (nugát)',257)">＋</button></td>
+          </tr>
+          <tr>
+            <td><div class="pname">Plnění do svatební krabičky</div></td>
+            <td><div class="pdet">Svatební dárková krabička − skládání − juta − visačka</div></td>
+            <td>32,0 sec</td><td><div class="norm">~112 ks/hod</div></td><td class="cost">2,23 Kč</td>
+            <td class="add-col"><button class="btn-plus" onclick="addToActive('Plnění do svatební krabičky',112)">＋</button></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+</details>
+
+</div><!-- /wrap -->
+
+<script>
+const SAZBA = 250;
+let prods = [], pid = 0, oid = 0, activeId = null;
+
+function W(id){ return document.getElementById(id); }
+function getW(){ return Math.max(1, +W('workers').value||1); }
+function getS(){ return Math.max(0.5, +W('shift').value||8); }
+function getPauseMin(){ return Math.max(0, +W('pause').value||0); }
+function getEffSh(){ return Math.max(0.25, getS() - getPauseMin()/60); }
+
+function fmtH(h){
+  if(!h) return '—';
+  if(h<1/60) return '<1 min';
+  if(h<1){ const m=Math.round(h*60); return m+' min'; }
+  const hh=Math.floor(h), mm=Math.round((h-hh)*60);
+  return mm ? hh+' h '+mm+' min' : hh+' h';
+}
+function czk(n){ return Math.round(n).toLocaleString('cs-CZ')+' Kč'; }
+
+/* ── STATE MUTATIONS ── */
+function addProduct(){
+  const p = { id:++pid, name:'', qty:0, ops:[] };
+  prods.push(p);
+  setActive(p.id);
+  renderAll();
+  setTimeout(()=>{ const el=document.querySelector(`[data-pid="${p.id}"].prod-name`); if(el) el.focus(); },60);
+}
+
+function removeProduct(id){
+  prods = prods.filter(p=>p.id!==id);
+  if(activeId===id) activeId = prods.length ? prods[prods.length-1].id : null;
+  renderAll();
+}
+
+function setActive(id){
+  activeId = id;
+  document.querySelectorAll('.prod-card').forEach(c=>{
+    c.classList.toggle('active', +c.dataset.pid===id);
+  });
+  document.querySelectorAll('.prod-active-lbl').forEach(l=>{
+    l.style.display = +l.dataset.pid===id ? '' : 'none';
+  });
+}
+
+function addOp(pid, name='', ksh=0, cnt=1){
+  const p = prods.find(p=>p.id===pid); if(!p) return;
+  const o = { id:++oid, name, ksh, cnt, custom: name&&!ksh ? true : false };
+  p.ops.push(o);
+  renderOps(pid);
+  recalc();
+  setTimeout(()=>{
+    const sel = W('sel_'+pid+'_'+o.id);
+    if(name && sel) { /* already pre-filled */ }
+    else if(sel) sel.focus();
+  }, 60);
+}
+
+function removeOp(pid, oid){
+  const p=prods.find(p=>p.id===pid); if(!p) return;
+  p.ops=p.ops.filter(o=>o.id!==oid);
+  renderOps(pid);
+  recalc();
+}
+
+function addToActive(name, ksh){
+  if(!prods.length) addProduct();
+  if(!activeId) activeId = prods[prods.length-1].id;
+  addOp(activeId, name, ksh);
+  const card=W('pc_'+activeId);
+  if(card) card.scrollIntoView({behavior:'smooth', block:'nearest'});
+  const pn = prods.find(p=>p.id===activeId)?.name||'(nový produkt)';
+  toast('Přidáno k: '+pn);
+}
+
+/* ── INPUT HANDLERS ── */
+function updProd(pid, field, val){
+  const p=prods.find(p=>p.id===pid); if(!p) return;
+  p[field]=field==='qty'?+val:val;
+  recalc();
+}
+
+function updOp(pid, oid, field, val){
+  const p=prods.find(p=>p.id===pid); if(!p) return;
+  const o=p.ops.find(o=>o.id===oid); if(!o) return;
+  o[field]=(field==='ksh'||field==='cnt')?+val:val;
+  recalc();
+}
+
+function onSelChange(pid, oid, sel){
+  const p=prods.find(p=>p.id===pid); if(!p) return;
+  const o=p.ops.find(o=>o.id===oid); if(!o) return;
+  const v=sel.value;
+  if(v==='custom'){
+    o.name=''; o.ksh=0; o.custom=true;
+    sel.style.display='none';
+    const ni=W('ni_'+pid+'_'+oid);
+    if(ni){ ni.style.display=''; ni.focus(); }
+    const bb=W('bb_'+pid+'_'+oid); if(bb) bb.style.display='';
+  } else if(v){
+    const parts=v.split('|');
+    o.name=parts[0]; o.ksh=+parts[1]; o.custom=false;
+    const ki=W('ki_'+pid+'_'+oid); if(ki) ki.value=o.ksh;
+    const row=W('orow_'+pid+'_'+oid);
+    if(row) row.className='op-row-'+opColor(o.name);
+  }
+  recalc();
+}
+
+function backToSel(pid, oid){
+  const p=prods.find(p=>p.id===pid); if(!p) return;
+  const o=p.ops.find(o=>o.id===oid); if(!o) return;
+  o.name=''; o.ksh=0; o.custom=false;
+  const sel=W('sel_'+pid+'_'+oid);
+  const ni=W('ni_'+pid+'_'+oid);
+  const bb=W('bb_'+pid+'_'+oid);
+  if(sel){ sel.style.display=''; sel.value=''; }
+  if(ni) ni.style.display='none';
+  if(bb) bb.style.display='none';
+  recalc();
+}
+
+/* ── SELECT OPTIONS ── */
+const NORM_OPTS = [
+  ['🏭 Balicí — stroje','Automatické kontinuální — 50g',755],
+  ['🏭 Balicí — stroje','Automatické kontinuální — 100g',690],
+  ['🏭 Balicí — stroje','Celofán poloautomat — 80g',122],
+  ['🏭 Balicí — stroje','Celofán poloautomat — 180g',103],
+  ['🏭 Balicí — stroje','Celofán poloautomat — 200g',102],
+  ['🏭 Balicí — stroje','Doypack standard — 50g',154],
+  ['🏭 Balicí — stroje','Doypack standard — 100g',162],
+  ['🏭 Balicí — stroje','Doypack standard — 200g',143],
+  ['🏭 Balicí — stroje','Doypack standard — 500g',143],
+  ['🏭 Balicí — stroje','Doypack standard — 1000g',154],
+  ['🏭 Balicí — stroje','Doypack Alza mix — 500g',63],
+  ['🏭 Balicí — stroje','Doypack Alza mix — 1000g',152],
+  ['🏭 Balicí — stroje','Alza TUBUS — 450g',117],
+  ['🏭 Balicí — stroje','Celofánek ručně — 200g',80],
+  ['🏭 Balicí — stroje','Sklenička šestihran — 60g',130],
+  ['🏭 Balicí — celofánky (vč. tavení)','Balení + tavení — 180g',103],
+  ['🏭 Balicí — celofánky (vč. tavení)','Balení + tavení — 80g',122],
+  ['🏭 Balicí — celofánky (vč. tavení)','Balení — 80g',122],
+  ['🏭 Balicí — celofánky (vč. tavení)','Stojací celofánek — bez štítku',130],
+  ['🏭 Balicí — celofánky (vč. tavení)','Stojací celofánek — s logem',120],
+  ['🏭 Balicí — celofánky (vč. tavení)','Tavení sáčků',667],
+  ['🎁 Dárkové kompletace','Eko kelímek — komplet',60],
+  ['🎁 Dárkové kompletace','Eko kelímek — jen štítky',200],
+  ['🎁 Dárkové kompletace','Eko kelímek zajíc',40],
+  ['🎁 Dárkové kompletace','Kazetka — komplet',60],
+  ['🎁 Dárkové kompletace','Sklenička Exclusive — komplet',70],
+  ['🎁 Dárkové kompletace','Kornout — komplet',75],
+  ['🎁 Dárkové kompletace','Papírový kornout zajíc/mrkvička',38],
+  ['🎁 Dárkové kompletace','Celofán + kelímek s mašlí',60],
+  ['🎁 Dárkové kompletace','Vázání přes roh',120],
+  ['🎁 Dárkové kompletace','Krabička 2×50g',60],
+  ['🎁 Dárkové kompletace','4×80 se senem',30],
+  ['🎁 Dárkové kompletace','Dárková krabice 3×200 doypack',30],
+  ['🎁 Dárkové kompletace','Bonboniera 2 řady',40],
+  ['🎁 Dárkové kompletace','Bonboniera 4 řady',30],
+  ['🎁 Dárkové kompletace','Trubičky',100],
+  ['🎁 Dárkové kompletace','Celofán — želé srdíčka',60],
+  ['🎁 Dárkové kompletace','TOP 10 sáčky',24],
+  ['🎁 Dárkové kompletace','Box 6 skleniček',17],
+  ['🎁 Dárkové kompletace','Alza box degustační 5×100',18],
+  ['🎁 Dárkové kompletace','Svatební dárková krabička',43],
+  ['🎁 Dárkové kompletace','Nugát ve skle',67],
+  ['🎁 Dárkové kompletace','Svatební mandličky v celofánu 30g',122],
+  ['🎁 Štítky','Štítek přední designový — malý',300],
+  ['🎁 Štítky','Štítek legislativní — malý',300],
+  ['🎁 Štítky','Štítek přední designový — střední',200],
+  ['🎁 Štítky','Štítek legislativní — střední',200],
+  ['🎁 Štítky','Štítek přední designový — velký',150],
+  ['🎁 Štítky','Štítek legislativní — velký',150],
+  ['🎁 Vázání','Vázání jutou — malé',130],
+  ['🎁 Vázání','Vázání mašlí — malé',80],
+  ['🎁 Vázání','Vázání jutou — střední 2×50',120],
+  ['🎁 Vázání','Vázání jutou — střední 4×80',100],
+  ['🎁 Vázání','Vázání mašlí — střední',70],
+  ['🎁 Skládání krabic','Skládání — krabička 2×50',375],
+  ['🎁 Skládání krabic','Skládání — 4×80 průhledná',200],
+  ['🎁 Skládání krabic','Skládání — Exclusive průhledná',200],
+  ['🎁 Skládání krabic','Skládání — párty box 18×18',200],
+  ['🎁 Skládání krabic','Skládání — odnoska jedno okno',120],
+  ['🎁 Skládání krabic','Skládání — kornout zajíc/mrkvička',150],
+  ['🎁 Skládání krabic','Skládání — bonboniera 2 řady',40],
+  ['🎁 Skládání krabic','Skládání — bonboniera 4 řady malá',30],
+  ['🎁 Skládání krabic','Skládání — svatební krabička hnědá',300],
+  ['🎁 Ostatní dárkové','Lepení štítků — stroj',600],
+  ['🎁 Ostatní dárkové','Lepení přední+zadní štítek (100g)',171],
+  ['🎁 Ostatní dárkové','Bery Jones — lepení štítků',382],
+  ['🎁 Ostatní dárkové','Razítkování sáčků 50g',200],
+  ['🎁 Ostatní dárkové','Lepení předního štítku — vel. sáčky',400],
+  ['🎁 Ostatní dárkové','Lepení kazetky',200],
+  ['🎁 Velikonoce','Papírový zajíček — razítkování',142],
+  ['🎁 Velikonoce','Papírový zajíček — lepení oči+bambulka+uší',43],
+  ['🎁 Velikonoce','Papírový zajíček — vázání+štítek',120],
+  ['🔬 Odvozené operace','Vložení do eko kelímku + víčko',150],
+  ['🔬 Odvozené operace','Plnění — 2 sáčky do krabičky',336],
+  ['🔬 Odvozené operace','Plnění 4 sáčků + seno (4×80)',86],
+  ['🔬 Odvozené operace','Bambulka (kelímek zajíc)',72],
+  ['🔬 Odvozené operace','Navázání oříšku (nugát)',257],
+  ['🔬 Odvozené operace','Plnění do svatební krabičky',112],
+];
+
+function buildSel(pid, oid, curName){
+  const cats=[...new Set(NORM_OPTS.map(n=>n[0]))];
+  let h='<option value="">— vybrat z norem —</option><option value="custom">✏️ Vlastní operace...</option>';
+  cats.forEach(cat=>{
+    h+=`<optgroup label="${cat}">`;
+    NORM_OPTS.filter(n=>n[0]===cat).forEach(n=>{
+      const v=n[1]+'|'+n[2];
+      const s=curName===n[1]?' selected':'';
+      h+=`<option value="${v}"${s}>${n[1]} · ${n[2]} ks/h</option>`;
+    });
+    h+='</optgroup>';
+  });
+  return h;
+}
+
+/* ── RENDER ── */
+function opColor(name){
+  const n=(name||'').toLowerCase();
+  if(n.includes('tavení')) return 'taveni';
+  if(n.includes('balení')||n.includes('plnění')||n.includes('automatické')) return 'baleni';
+  if(n.includes('vázání')) return 'vazani';
+  if(n.includes('štítek')) return 'stitek';
+  if(n.includes('skládání')||n.includes('lepení kazetky')||n.includes('lepení krabičky')) return 'skladani';
+  if(n.includes('lepení')) return 'lepeni';
+  return 'other';
+}
+
+function renderOps(pid){
+  const p=prods.find(p=>p.id===pid); if(!p) return;
+  const tb=W('ops_'+pid); if(!tb) return;
+  tb.innerHTML = p.ops.map(o=>{
+    const isCustom = o.custom || (o.name && !NORM_OPTS.find(n=>n[1]===o.name));
+    return `<tr id="orow_${pid}_${o.id}" class="op-row-${opColor(o.name)}">
+      <td style="min-width:240px">
+        <select id="sel_${pid}_${o.id}" class="op-sel" style="${isCustom?'display:none':''}"
+          onchange="onSelChange(${pid},${o.id},this)">${buildSel(pid,o.id,o.name)}</select>
+        <input id="ni_${pid}_${o.id}" class="op-custom-name" placeholder="Název operace..."
+          style="${isCustom?'':'display:none'}" value="${isCustom?o.name:''}"
+          oninput="updOp(${pid},${o.id},'name',this.value)">
+        ${isCustom?`<button id="bb_${pid}_${o.id}" class="btn-back" onclick="backToSel(${pid},${o.id})">← ze seznamu</button>`
+                  :`<span id="bb_${pid}_${o.id}" style="display:none"></span>`}
+      </td>
+      <td style="width:52px;text-align:center">
+        <input id="ci_${pid}_${o.id}" class="op-cnt${(o.cnt||1)>1?' multi':''}" type="number" min="1" max="99"
+          value="${o.cnt||1}" oninput="updOp(${pid},${o.id},'cnt',this.value);this.className='op-cnt'+(parseFloat(this.value)>1?' multi':'')">
+      </td>
+      <td style="width:120px">
+        <input id="ki_${pid}_${o.id}" class="op-ksh" type="number" min="1" placeholder="ks/hod"
+          value="${o.ksh||''}" oninput="updOp(${pid},${o.id},'ksh',this.value)">
+      </td>
+      <td class="op-kpc" id="okpc_${pid}_${o.id}" style="text-align:right;color:var(--br);font-variant-numeric:tabular-nums;font-size:13px">—</td>
+      <td class="op-time" id="ot_${pid}_${o.id}">—</td>
+      <td class="op-cost" id="oc_${pid}_${o.id}">—</td>
+      <td><button class="btn-rm-op" onclick="removeOp(${pid},${o.id})">×</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderAll(){
+  const c=W('prods');
+  if(!prods.length){
+    c.innerHTML='<div class="empty-prods">Ještě žádný produkt. Klikni <strong>＋ Přidat produkt</strong> nebo použij <strong>＋</strong> u normy níže.</div>';
+    recalc(); return;
+  }
+  c.innerHTML = prods.map(p=>`
+    <div class="prod-card${activeId===p.id?' active':''}" id="pc_${p.id}" data-pid="${p.id}" onclick="setActive(${p.id})">
+      <div class="prod-header">
+        <span class="prod-active-lbl" data-pid="${p.id}" style="${activeId===p.id?'':'display:none'}">● Aktivní</span>
+        <input class="prod-name" data-pid="${p.id}" placeholder="Název produktu (napr. Eko kelímek Mandle 100g)…"
+          value="${p.name}" onchange="updProd(${p.id},'name',this.value)" onclick="event.stopPropagation()">
+        <div class="qty-wrap">
+          Počet
+          <input class="prod-qty" type="number" min="1" placeholder="0" value="${p.qty||''}"
+            oninput="updProd(${p.id},'qty',this.value)" onclick="event.stopPropagation()">
+          ks
+        </div>
+        <button class="btn-rm-prod" onclick="event.stopPropagation();removeProduct(${p.id})">× Odebrat</button>
+      </div>
+      <table class="ops-table">
+        <thead><tr>
+          <th>Operace</th>
+          <th style="width:52px;text-align:center">×N</th>
+          <th style="width:120px;text-align:right">Ks/hod</th>
+          <th style="width:78px;text-align:right">Kč/ks</th>
+          <th style="width:120px;text-align:right">Čas (${getW()} prac.)</th>
+          <th style="width:100px;text-align:right">Náklady</th>
+          <th style="width:28px"></th>
+        </tr></thead>
+        <tbody id="ops_${p.id}"></tbody>
+      </table>
+      <div class="prod-footer">
+        <button class="btn-add-op" onclick="event.stopPropagation();addOp(${p.id})">＋ Přidat operaci</button>
+        <div class="prod-subtotal" id="ps_${p.id}"></div>
+      </div>
+    </div>`).join('');
+  prods.forEach(p=>renderOps(p.id));
+  recalc();
+}
+
+/* ── RECALC ── */
+function recalc(){
+  const ws=getW(), sh=getS(), effSh=getEffSh(), pauseMin=getPauseMin();
+  let totH=0, totC=0, totKs=0;
+  prods.forEach(p=>{
+    let pH=0;
+    p.ops.forEach(o=>{
+      const cnt=o.cnt||1;
+      const h=(o.ksh&&p.qty)?p.qty*cnt/o.ksh:0;
+      const c=h*SAZBA;
+      pH+=h;
+      const tc=document.getElementById('ot_'+p.id+'_'+o.id);
+      const cc=document.getElementById('oc_'+p.id+'_'+o.id);
+      const kpc=document.getElementById('okpc_'+p.id+'_'+o.id);
+      if(tc) tc.textContent=(o.ksh&&p.qty)?fmtH(h/ws):'—';
+      if(cc) cc.textContent=(o.ksh&&p.qty)?czk(c):'—';
+      if(kpc) kpc.textContent=o.ksh?(SAZBA*cnt/o.ksh).toFixed(2).replace('.',',')+' Kč':'—';
+    });
+    totH+=pH; totC+=pH*SAZBA; if(p.qty) totKs+=p.qty;
+    const ps=document.getElementById('ps_'+p.id);
+    if(ps) ps.textContent=pH&&p.qty ? `Subtotal: ${fmtH(pH/ws)} · ${czk(pH*SAZBA)} · ${(pH*SAZBA/p.qty).toFixed(2).replace('.',',')} Kč/ks` : '';
+  });
+  renderOverall(totH,totC,totKs,ws,sh,effSh,pauseMin);
+  const sb=W('sbar');
+  if(sb) sb.textContent = totH
+    ? `🧮 ${fmtH(totH/ws)} · ${Math.ceil(totH/ws/effSh)} směn · ${czk(totC)}`
+    : '🧮 Kalkulátor zakázky';
+}
+
+function renderOverall(totH,totC,totKs,workers,shift,effSh,pauseMin){
+  const el=W('overall'); if(!el) return;
+  if(!totH){ el.innerHTML=''; return; }
+  const realH=totH/workers, shifts=Math.ceil(realH/effSh);
+  const pauseLabel = pauseMin>0 ? `${pauseMin} min pauza → efektivní čas ${fmtH(effSh)}/směnu` : 'bez přestávky';
+  const rows=prods.filter(p=>p.qty&&p.ops.some(o=>o.ksh)).map(p=>{
+    const pH=p.ops.reduce((a,o)=>a+(o.ksh&&p.qty?p.qty/o.ksh:0),0);
+    const kpc=pH&&p.qty?(pH*SAZBA/p.qty).toFixed(2).replace('.',',')+' Kč':'—';
+    return `<tr>
+      <td>${p.name||'(bez názvu)'}</td>
+      <td style="text-align:right">${(p.qty||0).toLocaleString('cs-CZ')} ks</td>
+      <td style="text-align:right">${fmtH(pH/workers)}</td>
+      <td style="text-align:right;color:var(--br);font-weight:bold">${kpc}</td>
+      <td style="text-align:right;color:var(--green);font-weight:bold">${czk(pH*SAZBA)}</td>
+    </tr>`;
+  }).join('');
+  const avgKpc=totKs?(totC/totKs).toFixed(2).replace('.',','):'—';
+  el.innerHTML=`
+    <div class="overall-grid" style="margin-top:20px">
+      <div class="oc amber"><div class="oc-lbl">Celkový čas výroby</div><div class="oc-val">${fmtH(realH)}</div><div class="oc-sub">${workers>1?workers+' pracovníci · celkem '+fmtH(totH):'1 pracovník'}</div></div>
+      <div class="oc"><div class="oc-lbl">Směny potřeba</div><div class="oc-val">${shifts<1?'< 1':shifts}</div><div class="oc-sub">${pauseLabel}</div></div>
+      <div class="oc green"><div class="oc-lbl">Náklady práce</div><div class="oc-val">${czk(totC)}</div><div class="oc-sub">${totKs?avgKpc+' Kč/ks průměr':''}</div></div>
+      <div class="oc"><div class="oc-lbl">Celkem kusů</div><div class="oc-val">${totKs.toLocaleString('cs-CZ')}</div><div class="oc-sub">${prods.filter(p=>p.qty).length} produkt${prods.filter(p=>p.qty).length===1?'':'y'}</div></div>
+    </div>
+    <div class="breakdown-wrap" style="margin-top:14px">
+      <div class="breakdown-head">Rozpis po produktech</div>
+      <table class="breakdown-tbl">
+        <thead><tr><th>Produkt</th><th>Ks</th><th>Čas</th><th>Kč/ks</th><th>Kč práce</th></tr></thead>
+        <tbody>${rows}</tbody>
+        <tfoot><tr><td><strong>CELKEM</strong></td><td style="text-align:right"><strong>${totKs.toLocaleString('cs-CZ')}</strong></td><td style="text-align:right"><strong>${fmtH(realH)}</strong></td><td style="text-align:right;color:var(--br);font-weight:bold">${totKs?avgKpc+' Kč':'—'}</td><td style="text-align:right;color:var(--green);font-weight:bold">${czk(totC)}</td></tr></tfoot>
+      </table>
+    </div>`;
+}
+
+let toastT;
+function toast(msg){
+  const t=document.getElementById('toast'); if(!t) return;
+  t.textContent='✓ '+msg; t.classList.add('show');
+  clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+/* ── ŠABLONY ── */
+const TEMPLATES = {
+  ekokelimek: {
+    name: 'Eko kelímek 100g',
+    ops: [
+      {name:'Balení + tavení — 80g', ksh:122},
+      {name:'Tavení sáčků', ksh:667},
+      {name:'Štítek přední designový — malý', ksh:300},
+      {name:'Štítek legislativní — malý', ksh:300},
+      {name:'Štítek legislativní — malý', ksh:300},
+    ]
+  },
+  celofankelimek: {
+    name: 'Celofán + kelímek s mašlí',
+    ops: [
+      {name:'Balení + tavení — 180g', ksh:103},
+      {name:'Štítek přední designový — malý', ksh:300},
+      {name:'Štítek legislativní — střední', ksh:200},
+      {name:'Vázání jutou — malé', ksh:130},
+    ]
+  },
+  celofanek: {
+    name: 'Stojací celofánek',
+    ops: [
+      {name:'Balení + tavení — 180g', ksh:103},
+      {name:'Vázání jutou — malé', ksh:130},
+      {name:'Štítek přední designový — malý', ksh:300},
+      {name:'Štítek legislativní — malý', ksh:300},
+    ]
+  },
+  kornout: {
+    name: 'Kornout',
+    ops: [
+      {name:'Balení + tavení — 180g', ksh:103},
+      {name:'Štítek přední designový — malý', ksh:300},
+      {name:'Štítek legislativní — malý', ksh:300},
+      {name:'Vázání jutou — malé', ksh:130},
+    ]
+  },
+  kazetka: {
+    name: 'Kazetka 50g',
+    ops: [
+      {name:'Balení + tavení — 80g', ksh:122},
+      {name:'Tavení sáčků', ksh:667},
+      {name:'Lepení kazetky', ksh:200},
+      {name:'Štítek legislativní — malý', ksh:300},
+      {name:'Vázání jutou — malé', ksh:130},
+    ]
+  },
+  krabicka2x50: {
+    name: 'Krabička 2×50g',
+    ops: [
+      {name:'Skládání — krabička 2×50', ksh:375},
+      {name:'Automatické kontinuální — 50g', ksh:755},
+      {name:'Automatické kontinuální — 50g', ksh:755},
+      {name:'Štítek legislativní — střední', ksh:200},
+      {name:'Vázání jutou — střední 2×50', ksh:120},
+    ]
+  },
+  '4x80': {
+    name: '4×80 se senem',
+    ops: [
+      {name:'Skládání — 4×80 průhledná', ksh:200},
+      {name:'Plnění 4 sáčků + seno (4×80)', ksh:86},
+      {name:'Balení — 80g', ksh:122},
+      {name:'Balení — 80g', ksh:122},
+      {name:'Balení — 80g', ksh:122},
+      {name:'Balení — 80g', ksh:122},
+      {name:'Tavení sáčků', ksh:667},
+      {name:'Tavení sáčků', ksh:667},
+      {name:'Tavení sáčků', ksh:667},
+      {name:'Tavení sáčků', ksh:667},
+      {name:'Štítek legislativní — velký', ksh:150},
+      {name:'Vázání jutou — střední 4×80', ksh:100},
+    ]
+  },
+  sklenickaExclusive: {
+    name: 'Sklenička Exclusive',
+    ops: [
+      {name:'Štítek přední designový — malý', ksh:300},
+      {name:'Štítek legislativní — malý', ksh:300},
+      {name:'Vázání jutou — malé', ksh:130},
+    ]
+  },
+  nugat: {
+    name: 'Nugát ve skle',
+    ops: [
+      {name:'Štítek přední designový — malý', ksh:300},
+      {name:'Štítek legislativní — malý', ksh:300},
+      {name:'Vázání jutou — malé', ksh:130},
+      {name:'Navázání oříšku (nugát)', ksh:257},
+    ]
+  },
+  doypack50: {
+    name: 'Doypack Nutworld 50g',
+    ops: [
+      {name:'Doypack standard — 50g', ksh:154},
+      {name:'Tavení sáčků', ksh:667},
+      {name:'Štítek legislativní — malý', ksh:300},
+    ]
+  },
+  doypack100: {
+    name: 'Doypack Nutworld 100g',
+    ops: [
+      {name:'Doypack standard — 100g', ksh:162},
+      {name:'Tavení sáčků', ksh:667},
+      {name:'Štítek legislativní — malý', ksh:300},
+    ]
+  },
+  doypack200: {
+    name: 'Doypack Nutworld 200g',
+    ops: [
+      {name:'Doypack standard — 200g', ksh:143},
+      {name:'Tavení sáčků', ksh:667},
+      {name:'Štítek legislativní — velký', ksh:150},
+    ]
+  },
+  doypack500: {
+    name: 'Doypack Nutworld 500g',
+    ops: [
+      {name:'Doypack standard — 500g', ksh:143},
+      {name:'Tavení sáčků', ksh:667},
+      {name:'Štítek legislativní — velký', ksh:150},
+    ]
+  },
+  doypack1000: {
+    name: 'Doypack Nutworld 1000g',
+    ops: [
+      {name:'Doypack standard — 1000g', ksh:154},
+      {name:'Tavení sáčků', ksh:667},
+      {name:'Štítek legislativní — velký', ksh:150},
+    ]
+  },
+};
+
+function addFromTemplate(key){
+  const tpl = TEMPLATES[key]; if(!tpl) return;
+  const p = { id:++pid, name:tpl.name, qty:0, ops:[] };
+  prods.push(p);
+  setActive(p.id);
+  tpl.ops.forEach(o => p.ops.push({id:++oid, name:o.name, ksh:o.ksh, cnt:o.cnt||1, custom:false}));
+  renderAll();
+  setTimeout(()=>{ const el=document.querySelector(`[data-pid="${p.id}"].prod-qty`); if(el) el.focus(); },80);
+  toast('Šablona: ' + tpl.name);
+}
+
+// init
+addProduct();
+</script>
