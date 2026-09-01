@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>TopTrans Kalkulátor — Nutworld</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Exo+2:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg:#F5F1EC;--surface:#EDE8DF;--surface-2:#E4DDD3;--border:#CEC6B9;
+    --text:#1C1710;--text-muted:#72604F;--text-faint:#9E8570;
+    --accent:#A01050;--accent-light:rgba(160,16,80,0.09);--accent-border:rgba(160,16,80,0.22);
+    --amber:#D4900E;
+    --good:#3A6A28;--good-bg:rgba(58,106,40,0.10);--good-border:rgba(58,106,40,0.22);
+    --result-bg:#6B0A30;--result-text:#FBF6F1;--result-muted:rgba(251,246,241,0.58);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:1.5rem 1.25rem 3rem;font-size:14.5px}
+
+  .topnav{display:flex;align-items:center;gap:10px;margin-bottom:1.75rem;flex-wrap:wrap}
+  .topnav a{font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700;color:var(--accent);text-decoration:none;opacity:.75}
+  .topnav a:hover{opacity:1}
+  .topnav-sep{color:var(--text-muted);font-size:12px}
+
+  .page{max-width:580px;margin:0 auto}
+
+  .header{margin-bottom:1.5rem}
+  .eyebrow{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.4rem;font-weight:500}
+  h1{font-family:'DM Serif Display',Georgia,serif;font-size:1.75rem;font-weight:400;line-height:1.2;margin-bottom:.3rem}
+  .header-sub{font-size:13px;color:var(--text-muted)}
+
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.1rem 1.4rem;margin-bottom:.8rem}
+  .card-title{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);font-weight:600;margin-bottom:.85rem}
+
+  /* Inputs */
+  .input-row{display:flex;align-items:baseline;gap:5px;margin-bottom:.8rem}
+  .big-num{width:90px;font-family:'DM Serif Display',serif;font-size:2rem;font-weight:400;border:none;background:transparent;color:var(--text);padding:0;text-align:right;font-variant-numeric:tabular-nums;-moz-appearance:textfield}
+  .big-num::-webkit-inner-spin-button,.big-num::-webkit-outer-spin-button{-webkit-appearance:none}
+  .big-num:focus{outline:none}
+  .big-unit{font-size:1.1rem;color:var(--text-muted);font-weight:600}
+
+  .slider{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:3px;background:var(--border);outline:none;cursor:pointer;display:block}
+  .slider::-webkit-slider-thumb{-webkit-appearance:none;width:19px;height:19px;border-radius:50%;background:var(--accent);border:3px solid var(--surface);box-shadow:0 1px 4px rgba(0,0,0,.18);cursor:pointer}
+  .slider::-moz-range-thumb{width:19px;height:19px;border-radius:50%;background:var(--accent);border:3px solid var(--surface);box-shadow:0 1px 4px rgba(0,0,0,.18);cursor:pointer}
+
+  .scale-row{display:flex;justify-content:space-between;font-size:10px;color:var(--text-faint);margin-top:4px;font-variant-numeric:tabular-nums}
+
+  /* City buttons */
+  .city-label{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint);font-weight:600;margin:1rem 0 .5rem}
+  .city-grid{display:flex;gap:6px;flex-wrap:wrap}
+  .city-btn{padding:.35rem .75rem;border-radius:7px;border:1.5px solid var(--border);background:var(--surface-2);color:var(--text-muted);font-size:12.5px;font-weight:600;cursor:pointer;transition:all .13s}
+  .city-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .city-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+  .city-dist{font-size:10px;font-weight:400;opacity:.8}
+
+  /* Band indicator */
+  .band-info{display:flex;align-items:center;gap:8px;margin-top:.75rem;padding:.5rem .75rem;background:var(--accent-light);border:1px solid var(--accent-border);border-radius:8px;font-size:12.5px}
+  .band-label{color:var(--text-muted)}
+  .band-value{color:var(--accent);font-weight:700}
+
+  /* Add-ons */
+  .addon{display:flex;align-items:flex-start;gap:10px;padding:.5rem 0}
+  .addon+.addon{border-top:1px solid var(--border)}
+  .addon input[type="checkbox"]{width:14px;height:14px;margin-top:3px;flex-shrink:0;accent-color:var(--accent);cursor:pointer}
+  .addon-body{flex:1}
+  .addon-name{font-size:13.5px;font-weight:500;cursor:pointer;display:block}
+  .addon-hint{font-size:11.5px;color:var(--text-muted);margin-top:1px;display:block}
+  .addon-always{display:flex;align-items:flex-start;gap:10px;padding:.5rem 0;opacity:.65}
+  .addon-check-dummy{width:14px;height:14px;margin-top:3px;flex-shrink:0;background:var(--accent);border-radius:3px;display:flex;align-items:center;justify-content:center}
+  .addon-check-dummy::after{content:'✓';font-size:9px;color:#fff;font-weight:700}
+
+  /* Result */
+  .result-card{background:var(--result-bg);border-radius:14px;padding:1.25rem 1.4rem;color:var(--result-text);margin-bottom:.8rem}
+  .res-eyebrow{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--result-muted);margin-bottom:4px}
+  .res-total{font-family:'DM Serif Display',serif;font-size:2.2rem;font-weight:400;font-variant-numeric:tabular-nums;line-height:1;margin-bottom:3px}
+  .res-bez{font-size:12.5px;color:var(--result-muted);font-variant-numeric:tabular-nums;margin-bottom:1rem}
+  .res-hr{border:none;border-top:1px solid rgba(255,255,255,.12);margin-bottom:.75rem}
+  .res-row{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;padding:2.5px 0;font-variant-numeric:tabular-nums;gap:8px}
+  .res-row.sub{border-top:1px solid rgba(255,255,255,.12);margin-top:5px;padding-top:.5rem;font-weight:600}
+  .res-k{color:var(--result-muted)}
+  .res-v{color:var(--result-text);font-weight:500;white-space:nowrap}
+  .res-context{margin-top:.75rem;padding:.45rem .75rem;background:rgba(255,255,255,.08);border-radius:7px;font-size:11.5px;color:var(--result-muted);line-height:1.5}
+
+  /* Info box */
+  .info-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.2rem;margin-bottom:.8rem;font-size:12.5px;color:var(--text-muted);line-height:1.6}
+  .info-box strong{color:var(--text)}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <a href="/">Rozcestník</a>
+  <span class="topnav-sep">›</span>
+  <a href="/doprava.html">Doprava</a>
+  <span class="topnav-sep">›</span>
+  <span>TopTrans</span>
+</div>
+
+<div class="page">
+
+  <div class="header">
+    <div class="eyebrow">Doprava · Mezinárodní CZ–SK</div>
+    <h1>TopTrans Kalkulátor</h1>
+    <div class="header-sub">Zásilky a palety · ceník IČO 001-378196 · platnost od 01.09.2026</div>
+  </div>
+
+  <!-- Weight -->
+  <div class="card">
+    <div class="card-title">Hmotnost zásilky</div>
+    <div class="input-row">
+      <input type="number" class="big-num" id="kgNum" value="50" min="1" max="3000" step="1" aria-label="Hmotnost v kg">
+      <span class="big-unit">kg</span>
+    </div>
+    <input type="range" class="slider" id="kgSlider" min="1" max="3000" step="1" value="50" aria-label="Posuvník hmotnosti">
+    <div class="scale-row"><span>1 kg</span><span>500</span><span>1 000</span><span>2 000</span><span>3 000 kg</span></div>
+    <div class="band-info" id="bandInfo">
+      <span class="band-label">Tarifní pásmo:</span>
+      <span class="band-value" id="bandVal">—</span>
+    </div>
+  </div>
+
+  <!-- Distance -->
+  <div class="card">
+    <div class="card-title">Vzdálenost doručení</div>
+    <div class="input-row">
+      <input type="number" class="big-num" id="kmNum" value="400" min="100" max="900" step="100" aria-label="Vzdálenost v km">
+      <span class="big-unit">km</span>
+    </div>
+    <input type="range" class="slider" id="kmSlider" min="100" max="900" step="100" value="400" aria-label="Posuvník vzdálenosti">
+    <div class="scale-row"><span>100 km</span><span>300</span><span>500</span><span>700</span><span>900 km</span></div>
+
+    <div class="city-label">Rychlý výběr · Praha →</div>
+    <div class="city-grid" id="cityGrid">
+      <button class="city-btn" data-km="310">Trenčín <span class="city-dist">~310 km</span></button>
+      <button class="city-btn" data-km="330">Bratislava <span class="city-dist">~330 km</span></button>
+      <button class="city-btn" data-km="350">Trnava <span class="city-dist">~350 km</span></button>
+      <button class="city-btn" data-km="380">Nitra <span class="city-dist">~380 km</span></button>
+      <button class="city-btn" data-km="490">Žilina <span class="city-dist">~490 km</span></button>
+      <button class="city-btn" data-km="480">B. Bystrica <span class="city-dist">~480 km</span></button>
+      <button class="city-btn" data-km="625">Prešov <span class="city-dist">~625 km</span></button>
+      <button class="city-btn" data-km="630">Košice <span class="city-dist">~630 km</span></button>
+    </div>
+  </div>
+
+  <!-- Result -->
+  <div id="resultEl"></div>
+
+  <!-- Add-ons -->
+  <div class="card">
+    <div class="card-title">Doplňkové služby</div>
+
+    <!-- Always included -->
+    <div class="addon-always">
+      <div class="addon-check-dummy"></div>
+      <div class="addon-body">
+        <span class="addon-name" style="color:var(--text-muted)">Mezinárodní CZK (vždy)</span>
+        <span class="addon-hint">+200 Kč · příplatek pro CZ–SK zásilky fakturované v Kč</span>
+      </div>
+    </div>
+
+    <div class="addon" style="border-top:1px solid var(--border)">
+      <input type="checkbox" id="avNakl">
+      <div class="addon-body">
+        <label class="addon-name" for="avNakl">Avizace telefonem — nakládka</label>
+        <span class="addon-hint">+20 Kč · řidič volá odesílateli 1 hod. před příjezdem</span>
+      </div>
+    </div>
+    <div class="addon">
+      <input type="checkbox" id="avVykl">
+      <div class="addon-body">
+        <label class="addon-name" for="avVykl">Avizace telefonem — vykládka</label>
+        <span class="addon-hint">+20 Kč · řidič volá příjemci 1 hod. před příjezdem</span>
+      </div>
+    </div>
+    <div class="addon">
+      <input type="checkbox" id="toptime">
+      <div class="addon-body">
+        <label class="addon-name" for="toptime">TopTime (do 12:00)</label>
+        <span class="addon-hint">+25 % ze základního tarifu · dopolední doručení</span>
+      </div>
+    </div>
+    <div class="addon">
+      <input type="checkbox" id="topprivat">
+      <div class="addon-body">
+        <label class="addon-name" for="topprivat">TopPrivat (16:00–20:00)</label>
+        <span class="addon-hint">+400 Kč · večerní doručení</span>
+      </div>
+    </div>
+    <div class="addon">
+      <input type="checkbox" id="doklady">
+      <div class="addon-body">
+        <label class="addon-name" for="doklady">Dodací listy zpět</label>
+        <span class="addon-hint">+75 Kč · potvrzení dodacího listu příjemcem + zaslání zpět</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Info -->
+  <div class="info-box">
+    <strong>Ceny platné z regionu střediska Praha.</strong> Nakládka z jiného střediska TopTrans → sleva 15 % ze základního tarifu.<br>
+    Nad 3 000 kg: individuální nacenění. Ceny bez DPH — kalkulátor přidává DPH 21 %.
+  </div>
+
+</div>
+
+<script>
+// Tariff table: rows = weight bands (maxKg), cols = distance (100,200,...,900 km)
+const BANDS = [
+  {max:5,    label:'do 5 kg',    p:[224,255,318,344,361,392,416,439,468]},
+  {max:15,   label:'do 15 kg',   p:[333,389,426,476,532,561,592,626,658]},
+  {max:30,   label:'do 30 kg',   p:[520,613,688,745,792,839,880,928,983]},
+  {max:50,   label:'do 50 kg',   p:[704,844,955,1034,1109,1174,1232,1300,1375]},
+  {max:75,   label:'do 75 kg',   p:[896,1089,1232,1346,1444,1534,1610,1700,1799]},
+  {max:100,  label:'do 100 kg',  p:[1063,1301,1482,1628,1748,1856,1955,2068,2188]},
+  {max:150,  label:'do 150 kg',  p:[1434,1763,2019,2228,2396,2555,2694,2848,3012]},
+  {max:200,  label:'do 200 kg',  p:[1693,2113,2428,2688,2899,3097,3262,3449,3648]},
+  {max:300,  label:'do 300 kg',  p:[2152,2715,3146,3494,3783,4043,4276,4525,4780]},
+  {max:400,  label:'do 400 kg',  p:[2542,3245,3767,4202,4566,4891,5175,5475,5788]},
+  {max:500,  label:'do 500 kg',  p:[2880,3715,4336,4847,5273,5655,5993,6340,6699]},
+  {max:700,  label:'do 700 kg',  p:[3470,4539,5343,5993,6556,7045,7481,7917,8367]},
+  {max:1000, label:'do 1 000 kg',p:[4196,5592,6640,7494,8225,8866,9438,9981,10549]},
+  {max:1500, label:'do 1 500 kg',p:[5147,7036,8465,9621,10612,11477,12249,12959,13696]},
+  {max:2000, label:'do 2 000 kg',p:[5891,8242,10010,11450,12671,13746,14706,15558,16448]},
+  {max:2500, label:'do 2 500 kg',p:[6509,9311,10345,13067,14515,15785,16924,17904,18928]},
+  {max:3000, label:'do 3 000 kg',p:[7017,10203,12594,14544,16207,17663,18955,19333,19780]},
+];
+
+const DIST_KM = [100,200,300,400,500,600,700,800,900];
+
+function fmt(v){return v.toLocaleString('cs-CZ',{minimumFractionDigits:2,maximumFractionDigits:2})+' Kč'}
+
+function getDistIdx(km){
+  // Round up to nearest 100 km column
+  const idx = Math.ceil(km/100)-1;
+  return Math.max(0,Math.min(8,idx));
+}
+
+function getBand(kg){return BANDS.find(b=>kg<=b.max);}
+
+function calcResult(){
+  const kg    = Math.max(1,Math.min(3000,parseFloat(document.getElementById('kgNum').value)||1));
+  const km    = Math.max(100,Math.min(900,parseFloat(document.getElementById('kmNum').value)||100));
+  const avNk  = document.getElementById('avNakl').checked;
+  const avVk  = document.getElementById('avVykl').checked;
+  const ttime = document.getElementById('toptime').checked;
+  const tpriv = document.getElementById('topprivat').checked;
+  const dok   = document.getElementById('doklady').checked;
+
+  const band = getBand(kg);
+  const distIdx = getDistIdx(km);
+  const distCol = DIST_KM[distIdx];
+
+  // Band indicator
+  document.getElementById('bandVal').textContent = band ? band.label : '> 3 000 kg';
+
+  if(!band){
+    document.getElementById('resultEl').innerHTML=`
+      <div style="background:var(--result-bg);border-radius:14px;padding:2.5rem 1.4rem;text-align:center;color:var(--result-muted);margin-bottom:.8rem">
+        <span style="display:block;font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--result-text);margin-bottom:.3rem">Nad 3 000 kg</span>
+        Vyžádejte individuální nacenění u TopTrans.
+      </div>`;
+    return;
+  }
+
+  const base      = band.p[distIdx];
+  const topFee    = ttime ? Math.round(base*0.25) : 0;
+  const mezFee    = 200; // always
+  const avNFee    = avNk ? 20 : 0;
+  const avVFee    = avVk ? 20 : 0;
+  const tpFee     = tpriv ? 400 : 0;
+  const dokFee    = dok ? 75 : 0;
+
+  const total     = base + topFee + mezFee + avNFee + avVFee + tpFee + dokFee;
+  const totalD    = total * 1.21;
+
+  const topRow    = ttime    ? `<div class="res-row"><span class="res-k">TopTime +25 %</span><span class="res-v">${fmt(topFee)}</span></div>` : '';
+  const tpRow     = tpriv   ? `<div class="res-row"><span class="res-k">TopPrivat</span><span class="res-v">${fmt(tpFee)}</span></div>` : '';
+  const avNRow    = avNk    ? `<div class="res-row"><span class="res-k">Avizace nakládka</span><span class="res-v">${fmt(avNFee)}</span></div>` : '';
+  const avVRow    = avVk    ? `<div class="res-row"><span class="res-k">Avizace vykládka</span><span class="res-v">${fmt(avVFee)}</span></div>` : '';
+  const dokRow    = dok     ? `<div class="res-row"><span class="res-k">Dodací listy zpět</span><span class="res-v">${fmt(dokFee)}</span></div>` : '';
+
+  document.getElementById('resultEl').innerHTML=`
+    <div class="result-card">
+      <div class="res-eyebrow">Celkem s DPH 21 %</div>
+      <div class="res-total">${fmt(totalD)}</div>
+      <div class="res-bez">bez DPH: ${fmt(total)}</div>
+      <hr class="res-hr">
+      <div class="res-row"><span class="res-k">Základní tarif (${band.label}, ${distCol} km)</span><span class="res-v">${fmt(base)}</span></div>
+      <div class="res-row"><span class="res-k">Mezinárodní CZK</span><span class="res-v">${fmt(mezFee)}</span></div>
+      ${topRow}${tpRow}${avNRow}${avVRow}${dokRow}
+      <div class="res-row sub"><span class="res-k">Celkem bez DPH</span><span class="res-v">${fmt(total)}</span></div>
+      <div class="res-row"><span class="res-k">DPH 21 %</span><span class="res-v">${fmt(totalD-total)}</span></div>
+      <div class="res-context">Pásmo: ${band.label} · Vzdálenostní sloupec: ${distCol} km${km!==distCol?' (zaokrouhleno z '+km+' km)':''}</div>
+    </div>`;
+}
+
+// Weight sync
+const kgSlider=document.getElementById('kgSlider'),kgNum=document.getElementById('kgNum');
+kgSlider.addEventListener('input',()=>{kgNum.value=kgSlider.value;calcResult();});
+kgNum.addEventListener('input',()=>{
+  const v=parseFloat(kgNum.value);
+  if(!isNaN(v))kgSlider.value=Math.max(1,Math.min(3000,v));
+  calcResult();
+});
+kgNum.addEventListener('blur',()=>{
+  let v=parseFloat(kgNum.value);
+  if(isNaN(v)||v<1)v=1;
+  if(v>3000)v=3000;
+  kgNum.value=Math.round(v);kgSlider.value=Math.round(v);calcResult();
+});
+
+// Distance sync
+const kmSlider=document.getElementById('kmSlider'),kmNum=document.getElementById('kmNum');
+function setKm(v){
+  v=Math.max(100,Math.min(900,Math.round(v/100)*100));
+  kmNum.value=v;kmSlider.value=v;
+  document.querySelectorAll('.city-btn').forEach(b=>b.classList.remove('active'));
+  calcResult();
+}
+kmSlider.addEventListener('input',()=>setKm(parseFloat(kmSlider.value)));
+kmNum.addEventListener('blur',()=>setKm(parseFloat(kmNum.value)||400));
+
+// City buttons
+document.querySelectorAll('.city-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.city-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const km=parseInt(btn.dataset.km);
+    const rounded=Math.ceil(km/100)*100;
+    kmNum.value=km;kmSlider.value=rounded;
+    calcResult();
+  });
+});
+
+// Add-ons
+['avNakl','avVykl','toptime','topprivat','doklady'].forEach(id=>{
+  document.getElementById(id).addEventListener('change',calcResult);
+});
+
+calcResult();
+</script>
+
+<script src="pin-guard.js"></script>
+</body>
+</html>
