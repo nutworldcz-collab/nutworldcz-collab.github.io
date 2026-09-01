@@ -1736,7 +1736,9 @@ function kalkAddItem() {
   const _allNd = nsGetItems();
   const nadstavby = _allNd.filter(n => !n.sluzba);
   const pripravy  = _allNd.filter(n => n.sluzba);
-  KALK_ITEMS.push({ nazev, ks, mo, vo, nakl, nadstavby, pripravy });
+  const slozeni = dRows.filter(r => r && r.product && r.gramaz > 0)
+    .map(r => ({ kod: r.product.kod, nazev: r.product.nazev, gram: r.gramaz, obal: '' }));
+  KALK_ITEMS.push({ nazev, ks, mo, vo, nakl, nadstavby, pripravy, slozeni });
   kalkRender();
   document.getElementById('d-kalk-nazev').value = '';
   document.getElementById('d-kalk-ks').value = '1';
@@ -1782,12 +1784,13 @@ function _buildHash() {
     nazev: item.nazev + (item.nadstavby?.length ? ' (+ ' + item.nadstavby.map(n=>n.nazev).join(', ') + ')' : ''),
     ks: item.ks,
     cena: item.mo,   // zákaznická cena bez DPH (po slevě + potisk)
-    nakup: item.nakl || ''
+    nakup: item.nakl || '',
+    slozeni: item.slozeni || []
   }));
   const _bSeen = new Set();
   KALK_ITEMS.forEach(item => {
     (item.pripravy||[]).forEach(p => {
-      if (!_bSeen.has(p.nazev)) { _bSeen.add(p.nazev); produkty.push({ kod:'', nazev: p.nazev + ' — SLUŽBA', ks: 1, cena: p.cena, nakup: '' }); }
+      if (!_bSeen.has(p.nazev)) { _bSeen.add(p.nazev); produkty.push({ kod:'', nazev: p.nazev + ' — SLUŽBA', ks: 1, cena: p.cena, nakup: '', sluzba: true }); }
     });
   });
   return btoa(unescape(encodeURIComponent(JSON.stringify({ repName, produkty }))));
