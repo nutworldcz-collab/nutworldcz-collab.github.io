@@ -225,6 +225,15 @@ details summary:hover { background:var(--br-lt); }
     <button class="tpl-btn" style="border-color:#2d7a1a;color:#2d7a1a" onclick="addFromTemplate('vilgainKesuMed')">🌿 Kešu s medem 500g</button>
     <button class="tpl-btn" style="border-color:#2d7a1a;color:#2d7a1a" onclick="addFromTemplate('vilgainSmes1000')">🌿 Směs ořechů 1000g</button>
     <button class="tpl-btn" style="border-color:#2d7a1a;color:#2d7a1a" onclick="addFromTemplate('vilgainKesuBylinky')">🌿 Kešu bylinkové 500g</button>
+    <div class="tpl-sep"></div>
+    <span class="tpl-lbl" style="color:#b85a00;font-weight:bold">Alza:</span>
+    <button class="tpl-btn" style="border-color:#b85a00;color:#b85a00" onclick="addFromTemplate('alzaDoypack500')">🛒 Mix doypack 500g</button>
+    <button class="tpl-btn" style="border-color:#b85a00;color:#b85a00" onclick="addFromTemplate('alzaDoypack1000')">🛒 Mix doypack 1000g</button>
+    <button class="tpl-btn" style="border-color:#b85a00;color:#b85a00" onclick="addFromTemplate('alzaTubus')">🛒 TUBUS 450g</button>
+    <button class="tpl-btn" style="border-color:#b85a00;color:#b85a00" onclick="addFromTemplate('alzaBox5x100')">🛒 Box degustační 5×100</button>
+    <div class="tpl-sep"></div>
+    <span class="tpl-lbl" style="color:#1a5fa0;font-weight:bold">ALBI:</span>
+    <button class="tpl-btn" style="border-color:#1a5fa0;color:#1a5fa0" onclick="addFromTemplate('albiKelimek')">🎁 Celofán + kelímek s mašlí</button>
   </div>
   <div id="prods"></div>
   <button class="btn-add-prod" onclick="addProduct()">＋ Přidat prázdný produkt</button>
@@ -1267,6 +1276,44 @@ const TEMPLATES = {
       {name:'Lepení štítku Vilgain (všechny produkty)', ksh:162},
       {name:'Plnění Vilgain — kešu bylinkové', ksh:156},
       {name:'Tavení + vkládání do krabic — 500g (28ks/krab.)', ksh:509},
+    ]
+  },
+  alzaDoypack500: {
+    name: 'Alza — Mix doypack 500g',
+    ops: [
+      {name:'Doypack Alza mix — 500g', ksh:63},
+      {name:'Tavení sáčků', ksh:667},
+      {name:'Štítek legislativní — velký', ksh:150},
+    ]
+  },
+  alzaDoypack1000: {
+    name: 'Alza — Mix doypack 1000g',
+    ops: [
+      {name:'Doypack Alza mix — 1000g', ksh:152},
+      {name:'Tavení sáčků', ksh:667},
+      {name:'Štítek legislativní — velký', ksh:150},
+    ]
+  },
+  alzaTubus: {
+    name: 'Alza — TUBUS 450g',
+    ops: [
+      {name:'Alza TUBUS — 450g', ksh:117},
+      {name:'Štítek legislativní — velký', ksh:150},
+    ]
+  },
+  alzaBox5x100: {
+    name: 'Alza — box degustační 5×100',
+    ops: [
+      {name:'Alza box degustační 5×100', ksh:18},
+    ]
+  },
+  albiKelimek: {
+    name: 'ALBI — Celofán + kelímek s mašlí',
+    ops: [
+      {name:'Balení + tavení — 180g', ksh:103},
+      {name:'Štítek přední designový — malý', ksh:300},
+      {name:'Štítek legislativní — střední', ksh:200},
+      {name:'Vázání jutou — malé', ksh:130},
     ]
   },
 };
