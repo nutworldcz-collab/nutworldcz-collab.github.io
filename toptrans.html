@@ -145,31 +145,31 @@
 
     <!-- CZ cities -->
     <div id="citiesCZ">
-      <div class="city-label">Rychlý výběr · Praha →</div>
+      <div class="city-label">Rychlý výběr · Rtyně v Podkrkonoší →</div>
       <div class="city-grid">
-        <button class="city-btn" data-km="90">Plzeň <span class="city-dist">~90 km</span></button>
-        <button class="city-btn" data-km="90">Ústí n.L. <span class="city-dist">~90 km</span></button>
-        <button class="city-btn" data-km="110">Liberec <span class="city-dist">~110 km</span></button>
-        <button class="city-btn" data-km="110">Pardubice <span class="city-dist">~110 km</span></button>
-        <button class="city-btn" data-km="150">Č. Budějovice <span class="city-dist">~150 km</span></button>
-        <button class="city-btn" data-km="210">Brno <span class="city-dist">~210 km</span></button>
-        <button class="city-btn" data-km="280">Olomouc <span class="city-dist">~280 km</span></button>
-        <button class="city-btn" data-km="360">Ostrava <span class="city-dist">~360 km</span></button>
+        <button class="city-btn" data-km="55">Hradec Králové <span class="city-dist">~55 km</span></button>
+        <button class="city-btn" data-km="75">Pardubice <span class="city-dist">~75 km</span></button>
+        <button class="city-btn" data-km="100">Liberec <span class="city-dist">~100 km</span></button>
+        <button class="city-btn" data-km="130">Praha <span class="city-dist">~130 km</span></button>
+        <button class="city-btn" data-km="215">Olomouc <span class="city-dist">~215 km</span></button>
+        <button class="city-btn" data-km="260">Brno <span class="city-dist">~260 km</span></button>
+        <button class="city-btn" data-km="265">Ostrava <span class="city-dist">~265 km</span></button>
+        <button class="city-btn" data-km="340">Plzeň <span class="city-dist">~340 km</span></button>
       </div>
     </div>
 
     <!-- SK cities -->
     <div id="citiesSK" class="hidden">
-      <div class="city-label">Rychlý výběr · Praha →</div>
+      <div class="city-label">Rychlý výběr · Rtyně v Podkrkonoší →</div>
       <div class="city-grid">
-        <button class="city-btn" data-km="310">Trenčín <span class="city-dist">~310 km</span></button>
-        <button class="city-btn" data-km="330">Bratislava <span class="city-dist">~330 km</span></button>
-        <button class="city-btn" data-km="350">Trnava <span class="city-dist">~350 km</span></button>
-        <button class="city-btn" data-km="380">Nitra <span class="city-dist">~380 km</span></button>
-        <button class="city-btn" data-km="480">B. Bystrica <span class="city-dist">~480 km</span></button>
-        <button class="city-btn" data-km="490">Žilina <span class="city-dist">~490 km</span></button>
-        <button class="city-btn" data-km="625">Prešov <span class="city-dist">~625 km</span></button>
-        <button class="city-btn" data-km="630">Košice <span class="city-dist">~630 km</span></button>
+        <button class="city-btn" data-km="355">Žilina <span class="city-dist">~355 km</span></button>
+        <button class="city-btn" data-km="395">Trenčín <span class="city-dist">~395 km</span></button>
+        <button class="city-btn" data-km="400">Bratislava <span class="city-dist">~400 km</span></button>
+        <button class="city-btn" data-km="415">Trnava <span class="city-dist">~415 km</span></button>
+        <button class="city-btn" data-km="425">Nitra <span class="city-dist">~425 km</span></button>
+        <button class="city-btn" data-km="455">B. Bystrica <span class="city-dist">~455 km</span></button>
+        <button class="city-btn" data-km="545">Prešov <span class="city-dist">~545 km</span></button>
+        <button class="city-btn" data-km="585">Košice <span class="city-dist">~585 km</span></button>
       </div>
     </div>
   </div>
@@ -181,6 +181,15 @@
   <div class="card">
     <div class="card-title">Doplňkové služby</div>
 
+    <!-- 15% sleva za nakládku mimo Prahu -->
+    <div class="addon">
+      <input type="checkbox" id="sleva15" checked>
+      <div class="addon-body">
+        <label class="addon-name" for="sleva15">Nakládka mimo středisko Praha (−15 %)</label>
+        <span class="addon-hint">Sleva ze základního tarifu · platí pro Rtyně / Hradec Králové region</span>
+      </div>
+    </div>
+
     <!-- Mezinárodní CZK — pouze SK -->
     <div class="addon-always" id="mezRow">
       <div class="addon-check-dummy"></div>
@@ -190,7 +199,7 @@
       </div>
     </div>
 
-    <div class="addon" id="firstAddon" style="border-top:1px solid var(--border)">
+    <div class="addon" id="firstAddon">
       <input type="checkbox" id="avNakl">
       <div class="addon-body">
         <label class="addon-name" for="avNakl">Avizace telefonem — nakládka</label>
@@ -229,7 +238,7 @@
 
   <!-- Info -->
   <div class="info-box">
-    <strong>Ceny platné z regionu střediska Praha.</strong> Nakládka z jiného střediska TopTrans → sleva 15 % ze základního tarifu.<br>
+    <strong>Výchozí místo: Rtyně v Podkrkonoší.</strong> Nejbližší středisko TopTrans: Hradec Králové (~55 km) → sleva 15 % ze základního tarifu (zapnuta ve výchozím stavu).<br>
     Nad 3 000 kg: individuální nacenění. Ceny bez DPH — kalkulátor přidává DPH 21 %.
   </div>
 
@@ -280,7 +289,7 @@ function setRoute(route){
   // Clear active city
   document.querySelectorAll('.city-btn').forEach(b=>b.classList.remove('active'));
   // Set sensible default distance
-  const defaultKm = route==='SK' ? 400 : 300;
+  const defaultKm = route==='SK' ? 400 : 200;
   setKm(defaultKm);
 }
 
@@ -308,7 +317,8 @@ function calcResult(){
     return;
   }
 
-  const base   = band.p[distIdx];
+  const sleva  = document.getElementById('sleva15').checked;
+  const base   = sleva ? Math.round(band.p[distIdx]*0.85) : band.p[distIdx];
   const topFee = ttime ? Math.round(base*0.25) : 0;
   const mezFee = currentRoute==='SK' ? 200 : 0;
   const avNFee = avNk ? 20 : 0;
@@ -319,6 +329,7 @@ function calcResult(){
   const total  = base + topFee + mezFee + avNFee + avVFee + tpFee + dokFee;
   const totalD = total * 1.21;
 
+  const slevaRow = sleva  ? `<div class="res-row"><span class="res-k">Sleva nakládka mimo Prahu −15 %</span><span class="res-v">−${fmt(band.p[distIdx]-base)}</span></div>` : '';
   const mezRow  = mezFee  ? `<div class="res-row"><span class="res-k">Mezinárodní CZK</span><span class="res-v">${fmt(mezFee)}</span></div>` : '';
   const topRow  = ttime   ? `<div class="res-row"><span class="res-k">TopTime +25 %</span><span class="res-v">${fmt(topFee)}</span></div>` : '';
   const tpRow   = tpriv   ? `<div class="res-row"><span class="res-k">TopPrivat</span><span class="res-v">${fmt(tpFee)}</span></div>` : '';
@@ -334,8 +345,8 @@ function calcResult(){
       <div class="res-total">${fmt(totalD)}</div>
       <div class="res-bez">bez DPH: ${fmt(total)}</div>
       <hr class="res-hr">
-      <div class="res-row"><span class="res-k">Základní tarif (${band.label}, ${distCol} km)</span><span class="res-v">${fmt(base)}</span></div>
-      ${mezRow}${topRow}${tpRow}${avNRow}${avVRow}${dokRow}
+      <div class="res-row"><span class="res-k">Základní tarif (${band.label}, ${distCol} km)</span><span class="res-v">${fmt(band.p[distIdx])}</span></div>
+      ${slevaRow}${mezRow}${topRow}${tpRow}${avNRow}${avVRow}${dokRow}
       <div class="res-row sub"><span class="res-k">Celkem bez DPH</span><span class="res-v">${fmt(total)}</span></div>
       <div class="res-row"><span class="res-k">DPH 21 %</span><span class="res-v">${fmt(totalD-total)}</span></div>
       <div class="res-context">${routeLabel} · Pásmo: ${band.label} · Sloupec: ${distCol} km${km!==distCol?' (zaokrouhleno z '+km+' km)':''}</div>
@@ -366,7 +377,7 @@ function setKm(v){
   calcResult();
 }
 kmSlider.addEventListener('input',()=>setKm(parseFloat(kmSlider.value)));
-kmNum.addEventListener('blur',()=>setKm(parseFloat(kmNum.value)||300));
+kmNum.addEventListener('blur',()=>setKm(parseFloat(kmNum.value)||200));
 
 // City buttons
 document.querySelectorAll('.city-btn').forEach(btn=>{
@@ -381,7 +392,7 @@ document.querySelectorAll('.city-btn').forEach(btn=>{
 });
 
 // Add-ons
-['avNakl','avVykl','toptime','topprivat','doklady'].forEach(id=>{
+['sleva15','avNakl','avVykl','toptime','topprivat','doklady'].forEach(id=>{
   document.getElementById(id).addEventListener('change',calcResult);
 });
 
