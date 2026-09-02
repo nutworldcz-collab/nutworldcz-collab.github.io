@@ -1382,7 +1382,7 @@ function dCalculate() {
   const vo = Math.round(mo * voFakt);
   const moExVat = mo / dph;
   const voExVat = Math.round(vo / dph);
-  const realMarze = Math.round(((moExVat - naklady) / moExVat) * 100);
+  const realMarze = dFormula === 'marze' ? dMarze : Math.round(((moExVat - naklady) / moExVat) * 100);
   const zisk = moExVat - naklady;
 
   document.getElementById('d-empty-state').style.display = 'none';
