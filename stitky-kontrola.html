@@ -212,13 +212,15 @@ function removeProd(kod) {
 }
 
 function renderProdList() {
-  document.getElementById('prod-list').innerHTML = selectedProds.map(p =>
-    `<div class="prod-item">
+  document.getElementById('prod-list').innerHTML = selectedProds.map(p => {
+    const noSpec = p.source === 'shoptet_only';
+    return `<div class="prod-item" style="${noSpec ? 'border:1.5px solid var(--amb)' : ''}">
       <span class="prod-item-badge">${p.kod}</span>
       <span class="prod-item-nazev">${p.nazev}</span>
-      <button class="prod-item-rm" onclick="removeProd('${p.kod}')" title="Odebrat">×</button>
-    </div>`
-  ).join('');
+      ${noSpec ? '<span style="font-size:11px;color:#b36a00;font-weight:600;white-space:nowrap">⚠️ bez spec</span>' : ''}
+      <button class="prod-item-rm" onclick="removeProd(\'${p.kod}\')" title="Odebrat">×</button>
+    </div>`;
+  }).join('');
 }
 
 document.addEventListener('click', e => {
@@ -314,6 +316,12 @@ function runCheck() {
   for (const p of selectedProds) {
     const rows = [];
     let score = 0, maxScore = 0;
+
+    // Varování pro produkty bez spec
+    if (p.source === 'shoptet_only') {
+      rows.push({ icon: '⚠️', cls: 'warn', label: 'Upozornění',
+        detail: `Produkt <strong>${p.kod}</strong> nemá specifikaci v databázi (vstup_cz.csv). Kontroluji jen název — pro plnou kontrolu spusť spec-import pro tento produkt.` });
+    }
 
     // 1. Název
     const nazevOk = norm(labelText).includes(norm(p.nazev));
