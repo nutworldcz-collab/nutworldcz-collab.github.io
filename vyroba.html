@@ -690,7 +690,7 @@ function renderVyroba(cards){
           const darky=DD[dKod];
           darky.obsah.forEach(item=>{
             const baseName=(PROD_NAMES&&PROD_NAMES[item.kod])||('kód '+item.kod);
-            const ingKey=baseName.trim().toLowerCase()+'|'+item.kod;
+            const ingKey=item.kod;
             if(!ingMap.has(ingKey)) ingMap.set(ingKey,{nazev:baseName,kod:item.kod,byPack:new Map()});
             const ing=ingMap.get(ingKey);
             const gram=item.gram+'g';
@@ -701,8 +701,9 @@ function renderVyroba(cards){
           });
         } else {
           // Standardní produkt (ne dárek)
-          const ingKey=s.nazev.trim().toLowerCase()+'|'+(s.kod||'');
-          if(!ingMap.has(ingKey)) ingMap.set(ingKey,{nazev:s.nazev||(s.kod?'kód '+s.kod:'—'),kod:s.kod,byPack:new Map()});
+          const ingKey=s.kod||s.nazev.trim().toLowerCase();
+          const ingNazev=s.kod&&PROD_NAMES&&PROD_NAMES[s.kod]?PROD_NAMES[s.kod]:(s.nazev||(s.kod?'kód '+s.kod:'—'));
+          if(!ingMap.has(ingKey)) ingMap.set(ingKey,{nazev:ingNazev,kod:s.kod,byPack:new Map()});
           const ing=ingMap.get(ingKey);
           const packKey=s.gram+'__'+prod.nazev;
           if(!ing.byPack.has(packKey)) ing.byPack.set(packKey,{gram:s.gram,darek:prod.nazev,usages:[]});
