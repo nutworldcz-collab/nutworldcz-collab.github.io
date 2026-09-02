@@ -204,6 +204,8 @@ details summary:hover { background:var(--br-lt); }
 .qt-zakaz-wrap{margin-bottom:14px}
 .qt-btns{display:flex;gap:10px}
 .qt-cancel{padding:10px 18px;border:1.5px solid var(--bdr);border-radius:8px;background:none;cursor:pointer;font-size:14px;font-family:Arial;color:var(--text)}
+.btn-prc{background:none;border:1.5px solid var(--amber);border-radius:6px;padding:4px 9px;font-size:14px;line-height:1;cursor:pointer;color:var(--br-dk);transition:background .15s;white-space:nowrap}
+.btn-prc:hover{background:rgba(247,171,49,.18)}
 .print-toggle-btn{display:block;margin-top:14px;background:none;border:2px solid var(--amber);border-radius:8px;padding:10px 20px;font-size:14px;font-weight:bold;color:var(--br-dk);cursor:pointer;font-family:Arial;transition:background .15s}
 .print-toggle-btn:hover{background:rgba(247,171,49,.12)}
 #print-panel{display:none;background:var(--surf);border:2px solid var(--amber);border-radius:10px;padding:16px 20px;margin-top:10px}
@@ -311,27 +313,6 @@ table.pp-ops td.b{font-weight:bold;color:#5c381f}
   <div id="prods"></div>
   <button class="btn-add-prod" onclick="addProduct()">＋ Přidat prázdný produkt</button>
   <div id="overall"></div>
-  <div id="print-area">
-    <button class="print-toggle-btn" onclick="togglePrintPanel()">🖨️ Vytisknout výrobní příkaz</button>
-    <div id="print-panel">
-      <h3>🖨️ Výrobní příkaz — doplnit před tiskem</h3>
-      <div class="pp-fields">
-        <div class="ppf">
-          <label>Zakázka / popis</label>
-          <input type="text" id="pp-zakaz" placeholder="např. Eko kelímky — firma Novák" autocomplete="off">
-        </div>
-        <div class="ppf">
-          <label>Datum výroby</label>
-          <input type="date" id="pp-datum">
-        </div>
-        <div class="ppf">
-          <label>Zaměstnanec / č. (nepovinné)</label>
-          <input type="text" id="pp-zam" placeholder="Jméno nebo číslo" autocomplete="off">
-        </div>
-      </div>
-      <button class="btn-print" onclick="printOrder()">🖨️ Tisknout</button>
-    </div>
-  </div>
 </div>
 
 <!-- ════ REFERENCE ════ -->
@@ -1135,6 +1116,7 @@ function renderAll(){
             oninput="updProd(${p.id},'qty',this.value)" onclick="event.stopPropagation()">
           ks
         </div>
+        <button class="btn-prc" onclick="event.stopPropagation();printCard(${p.id})" title="Tisknout výrobní příkaz">🖨️</button>
         <button class="btn-rm-prod" onclick="event.stopPropagation();removeProduct(${p.id})">× Odebrat</button>
       </div>
       <table class="ops-table">
@@ -1464,10 +1446,28 @@ function addFromTemplate(key){
 }
 
 /* ── QUICK PRINT ── */
-let _qtTpl=null;
+let _qtTpl=null, _qtCardQty=0;
+function printCard(pid){
+  const p=prods.find(q=>q.id===pid); if(!p) return;
+  if(!p.qty){alert('Zadej nejdřív počet kusů v kartě produktu.');return;}
+  const validOps=p.ops.filter(o=>o.ksh&&o.name);
+  if(!validOps.length){alert('Přidej nejdřív operace s normou.');return;}
+  _qtTpl={name:p.name||'(bez názvu)',ops:validOps,_pid:pid};
+  _qtCardQty=p.qty;
+  W('qt-title').textContent=(p.name||'(bez názvu)')+' — '+p.qty.toLocaleString('cs-CZ')+' ks';
+  W('qt-ops-list').innerHTML=validOps.map(o=>`<div class="qt-op-row"><span class="qt-op-name">${o.name}${(o.cnt||1)>1?' ×'+(o.cnt||1):''}</span><span class="qt-op-ksh">${o.ksh} ks/hod</span></div>`).join('');
+  const _qf=W('qt-qty')?.closest('.qt-field');if(_qf)_qf.style.display='none';
+  const di=W('qt-datum');
+  if(di&&!di.value){const t=new Date();di.value=t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');}
+  if(W('qt-zakaz'))W('qt-zakaz').value='';
+  if(W('qt-zam'))W('qt-zam').value='';
+  W('qt-modal').style.display='flex';
+  setTimeout(()=>{if(W('qt-zam'))W('qt-zam').focus();},60);
+}
 function openQT(key){
   const tpl=TEMPLATES[key]; if(!tpl) return;
   _qtTpl=tpl;
+  const _qf=W('qt-qty')?.closest('.qt-field');if(_qf)_qf.style.display='';
   W('qt-title').textContent=tpl.name;
   W('qt-ops-list').innerHTML=tpl.ops.map(o=>`<div class="qt-op-row"><span class="qt-op-name">${o.name}${(o.cnt||1)>1?' ×'+(o.cnt||1):''}</span><span class="qt-op-ksh">${o.ksh} ks/hod</span></div>`).join('');
   W('qt-qty').value='';
@@ -1478,11 +1478,11 @@ function openQT(key){
   W('qt-modal').style.display='flex';
   setTimeout(()=>{if(W('qt-qty'))W('qt-qty').focus();},60);
 }
-function closeQT(){W('qt-modal').style.display='none';_qtTpl=null;}
+function closeQT(){W('qt-modal').style.display='none';_qtTpl=null;_qtCardQty=0;const _qf=W('qt-qty')?.closest('.qt-field');if(_qf)_qf.style.display='';}
 function execQT(){
   if(!_qtTpl) return;
-  const qty=+W('qt-qty').value||0;
-  if(!qty){alert('Zadej počet kusů.');W('qt-qty').focus();return;}
+  const qty=(_qtTpl&&_qtTpl._pid)?_qtCardQty:(+W('qt-qty').value||0);
+  if(!qty){alert('Zadej počet kusů.');if(!(_qtTpl&&_qtTpl._pid))W('qt-qty').focus();return;}
   const zakaz=(W('qt-zakaz')?.value||'').trim()||_qtTpl.name;
   const datum=W('qt-datum')?.value||'';
   const zam=(W('qt-zam')?.value||'').trim();
