@@ -97,7 +97,7 @@ textarea{resize:vertical;min-height:130px;font-family:monospace;font-size:12px;l
     <div class="prod-list" id="prod-list"></div>
     <div class="prod-add-row">
       <div class="ac-wrap">
-        <input type="text" id="prod-search" placeholder="Přidat produkt — zadej kód nebo název…" oninput="acSearch(this.value)" autocomplete="off"/>
+        <input type="text" id="prod-search" placeholder="⏳ Načítám produkty…" disabled oninput="acSearch(this.value)" autocomplete="off"/>
         <div class="ac-drop" id="ac-drop"></div>
       </div>
     </div>
@@ -162,7 +162,14 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs
 let SPEC = null;
 let selectedProds = []; // [{kod, nazev, ...}]
 
-fetch('/vstup_spec.json').then(r => r.json()).then(d => { SPEC = d; });
+fetch('/vstup_spec.json').then(r => r.json()).then(d => {
+  SPEC = d;
+  const si = document.getElementById('prod-search');
+  if (si) { si.placeholder = 'Přidat produkt — zadej kód nebo název…'; si.disabled = false; }
+}).catch(() => {
+  const si = document.getElementById('prod-search');
+  if (si) si.placeholder = 'Chyba načítání dat — obnovte stránku';
+});
 
 // ── Tab přepínání ──
 function switchTab(t) {
@@ -176,7 +183,11 @@ function switchTab(t) {
 function acSearch(q) {
   const drop = document.getElementById('ac-drop');
   q = q.trim();
-  if (!q || !SPEC) { drop.classList.remove('open'); return; }
+  if (!q) { drop.classList.remove('open'); return; }
+  if (!SPEC) {
+    drop.innerHTML = '<div class="ac-item" style="color:#aaa;font-style:italic">⏳ Stále načítám data…</div>';
+    drop.classList.add('open'); return;
+  }
   const ql = q.toLowerCase();
   const selected = new Set(selectedProds.map(p => p.kod));
   const hits = Object.values(SPEC).filter(p =>
