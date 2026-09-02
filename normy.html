@@ -287,7 +287,7 @@ table.pp-ops td.b{font-weight:bold;color:#5c381f}
   <div id="prods"></div>
   <button class="btn-add-prod" onclick="addProduct()">＋ Přidat prázdný produkt</button>
   <div id="overall"></div>
-  <div id="print-area" style="display:none">
+  <div id="print-area">
     <button class="print-toggle-btn" onclick="togglePrintPanel()">🖨️ Vytisknout výrobní příkaz</button>
     <div id="print-panel">
       <h3>🖨️ Výrobní příkaz — doplnit před tiskem</h3>
@@ -1137,7 +1137,7 @@ function recalc(){
 
 function renderOverall(totH,totC,totKs,workers,shift,effSh,pauseMin){
   const el=W('overall'); if(!el) return;
-  if(!totH){ el.innerHTML=''; const pa=W('print-area');if(pa)pa.style.display='none'; return; }
+  if(!totH){ el.innerHTML=''; return; }
   const realH=totH/workers, shifts=Math.ceil(realH/effSh);
   const pauseLabel = pauseMin>0 ? `${pauseMin} min pauza → efektivní čas ${fmtH(effSh)}/směnu` : 'bez přestávky';
   const rows=prods.filter(p=>p.qty&&p.ops.some(o=>o.ksh)).map(p=>{
@@ -1167,7 +1167,6 @@ function renderOverall(totH,totC,totKs,workers,shift,effSh,pauseMin){
         <tfoot><tr><td><strong>CELKEM</strong></td><td style="text-align:right"><strong>${totKs.toLocaleString('cs-CZ')}</strong></td><td style="text-align:right"><strong>${fmtH(realH)}</strong></td><td style="text-align:right;color:var(--br);font-weight:bold">${totKs?avgKpc+' Kč':'—'}</td><td style="text-align:right;color:var(--green);font-weight:bold">${czk(totC)}</td></tr></tfoot>
       </table>
     </div>`;
-  const _pa=W('print-area');if(_pa)_pa.style.display='';
 }
 
 let toastT;
