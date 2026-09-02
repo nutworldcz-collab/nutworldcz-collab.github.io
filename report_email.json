@@ -1,8 +1,56 @@
 {
-  "generated": "2026-09-02T12:01:30",
-  "total": 11,
+  "generated": "2026-09-02T17:00:40",
+  "total": 13,
   "spam_skipped": 1,
   "emails": [
+    {
+      "account": "Exchange",
+      "sender": "Poptin <contact@popt.in>",
+      "subject": "Important: Your Credit Card Is About to Expire",
+      "date": "středa 2. září 2026 14:15:45",
+      "unread": true,
+      "preview": "￼ ￼ Hi Jan, Your credit card in Poptin’s platform is about to expire on 06/26. Updating your credit card only takes a few seconds. Click Here to Update Your Credit Card If you have any difficulties",
+      "category": "ostatni",
+      "sender_short": "Poptin",
+      "sender_email": "contact@popt.in",
+      "ai": {
+        "shrn": "Upozornění na vypršení platební karty na platformě Poptin. Vyžaduje aktualizaci údajů.",
+        "tyka_se": true,
+        "akce": "Aktualizovat platební kartu na Poptin platformě"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Brožinová Marianna Mgr. <marianna.brozinova@metrostavsk.sk>",
+      "subject": "RE: Kornútkova krabička mix",
+      "date": "středa 2. září 2026 13:33:07",
+      "unread": true,
+      "preview": "￼ S pozdravom, Mgr. Marianna Brožinová Asistentka vedenia spoločnosti Metrostav Estate a.s. Mlynské Nivy 68, 821 05 Bratislava",
+      "category": "ostatni",
+      "sender_short": "Brožinová Marianna Mgr.",
+      "sender_email": "marianna.brozinova@metrostavsk.sk",
+      "ai": {
+        "shrn": "Odpověď od Metrostav Estate s kontaktními údaji asistentky vedení. Potvrzení přijetí objednávky.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Markéta Costachova <marketa.costachova@nutworld.cz>",
+      "subject": "RE: Úprava spolupráce",
+      "date": "středa 2. září 2026 12:10:06",
+      "unread": false,
+      "preview": "Ahoj, reaguji na Tvůj email Honzo modře pod Tvým textem",
+      "category": "tym",
+      "sender_short": "Markéta Costachova",
+      "sender_email": "marketa.costachova@nutworld.cz",
+      "ai": {
+        "shrn": "Interní email od Markéty Costachové reagující na Janův email ohledně úpravy spolupráce. Vyžaduje Janovu reakci.",
+        "tyka_se": true,
+        "akce": "Přečíst a odpovědět na email od Markéty Costachové"
+      }
+    },
     {
       "account": "Exchange",
       "sender": "Martina Frýdlová <martina.frydlova@guzu.cz>",
@@ -14,36 +62,25 @@
       "sender_short": "Martina Frýdlová",
       "sender_email": "martina.frydlova@guzu.cz",
       "ai": {
-        "shrn": "Martina Frýdlová se dotazuje na dárky pro zaměstnance.",
-        "tyka_se": true,
-        "akce": "Odpovědět Martině a zjistit konkrétní požadavky na dárky"
+        "shrn": "Email od Martiny Frýdlové s předáním zprávy o dárcích pro zaměstnance. Nedostačující obsah.",
+        "tyka_se": false,
+        "akce": null
       }
     },
     {
       "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Balírna přesunul/a kartu HUFA do sloupce Připravují se komponenty - Balírna na nástěnce Firmy dárky + objednávky",
-      "date": "středa 2. září 2026 10:43:50",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Balírna přesunul(a) kartu HUFA do sloupce Připravují se komponenty - Balírna na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Exchange",
-      "sender": "\"divisek.lukas@email.cz\" <divisek.lukas@email.cz>",
+      "sender": "divisek.lukas@email.cz",
       "subject": "Re: Odpověď na nabídku zaměstnání",
       "date": "středa 2. září 2026 10:41:13",
-      "unread": true,
+      "unread": false,
       "preview": "Dobrý den,děkuji za odpověď.Mohl bych přijet ve čtvrtek-čas nechám na Vás,já mohu kdykoliv.S pozdravem Divíšek",
       "category": "ostatni",
       "sender_short": "divisek.lukas@email.cz",
       "sender_email": "divisek.lukas@email.cz",
       "ai": {
-        "shrn": "Lukáš Divíšek potvrzuje návštěvu na pohovor ve čtvrtek.",
+        "shrn": "Kandidát Divíšek potvrzuje účast na pohovoru ve čtvrtek a nabízí flexibilitu v čase. Vyžaduje Janovo potvrzení.",
         "tyka_se": true,
-        "akce": "Potvrdit konkrétní čas návštěvy Lukáše Divíška"
+        "akce": "Potvrdit čas a den pohovoru s kandidátem Divíškem"
       }
     },
     {
@@ -57,9 +94,9 @@
       "sender_short": "Adam Špringer",
       "sender_email": "adam.springerr@gmail.com",
       "ai": {
-        "shrn": "Adam Špringer reaguje na nabídku pozice skladníka.",
-        "tyka_se": true,
-        "akce": "Zhodnotit zájemce a pokračovat v procesu přijímání"
+        "shrn": "Email od kandidáta Adama Špringera na pracovní pozici skladníka. Minimální obsah.",
+        "tyka_se": false,
+        "akce": null
       }
     },
     {
@@ -73,7 +110,7 @@
       "sender_short": "Trello",
       "sender_email": "do-not-reply@trello.com",
       "ai": {
-        "shrn": "Trello notifikace - Jiřina Hamerníková přidala PDF specifikaci pro Lámanou čokoládu hořkou.",
+        "shrn": "Notifikace z Trello o přidané příloze specifikace produktu Lámaná čokoláda hořká. Informační zpráva.",
         "tyka_se": false,
         "akce": null
       }
@@ -89,7 +126,7 @@
       "sender_short": "FAKTURA VLČEK Jan Mgr. 2 2605758",
       "sender_email": "FAKTURA VLČEK Jan Mgr. 2 2605758",
       "ai": {
-        "shrn": "Automatizovaná notifikace o faktuře od Jan Vlčeka.",
+        "shrn": "Faktury od Jana Vlčka s časovým razítkem. Prázdný obsah.",
         "tyka_se": false,
         "akce": null
       }
@@ -105,37 +142,42 @@
       "sender_short": "Shoptet Pay",
       "sender_email": "info@shoptetpay.com",
       "ai": {
-        "shrn": "Shoptet Pay zasílá měsíční výpis karetních transakcí za srpna 2026.",
+        "shrn": "Měsíční výpis karetních transakcí z Shoptet Pay za srpen 2026. Rutinní výkaz.",
         "tyka_se": false,
         "akce": null
       }
     },
     {
-      "account": "Exchange",
-      "sender": "Markéta Costachova <marketa.costachova@nutworld.cz>",
-      "subject": "RE: Úprava spolupráce",
-      "date": "středa 2. září 2026 8:31:50",
-      "unread": false,
-      "preview": "Ahoj, Já ted jedu na neurologii",
-      "category": "tym",
-      "sender_short": "Markéta Costachova",
-      "sender_email": "marketa.costachova@nutworld.cz",
+      "account": "Google",
+      "sender": "Temu <temu@eu.temuemail.com>",
+      "subject": "Blahopřejeme! Byla vám zaslána nabídka! ❤️",
+      "date": "středa 2. září 2026 14:32:28",
+      "unread": true,
+      "preview": "Otevřete ji! ￼ U jakýchkoli položek uvedených v tomto e-mailu nebo v rámci této promoakce",
+      "category": "dodavatel",
+      "sender_short": "Temu",
+      "sender_email": "temu@eu.temuemail.com",
       "ai": {
-        "shrn": "Markéta Costachova informuje, že jede na neurologii.",
-        "tyka_se": true,
-        "akce": "Poznamenamat si nepřítomnost Markéty a případně zajistit její zastoupení"
+        "shrn": "Nabídka od Temu s promocí. Spam či marketingový email.",
+        "tyka_se": false,
+        "akce": null
       }
     },
     {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Na nástěnce Firmy dárky + objednávky máš 3 upozornění od poslední návštěvy 8:24 (2. září 2026)",
-      "date": "středa 2. září 2026 8:26:31",
+      "account": "Google",
+      "sender": "SEVT.cz <marketing@mailing.sevt.cz>",
+      "subject": "🎁 Nakupte a získejte DÁREK!",
+      "date": "středa 2. září 2026 12:01:17",
       "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Renata Pošepná připojil(a) přílohu IMG_20260902_075142.jpg ke kartě REDA objednávka č.2 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem ￼ Renata Pošepná připojil(a) přílohu IMG_20260902_075013.jpg ke kartě REDA objednávka č.2 na nástěnce Firmy dárky + objednávky Odpo",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
+      "preview": "Nezobrazuje se Vám e-mail správně? Přejděte na webovou verzi. ￼ Vše do školy a kanceláře na jednom místě ￼ Školní potřeby Výtvarné potřeby Kancelářské potřeby Hry a hračky Knihkupectví 🎁 Dárek zdarma k objednávce od 2 999 Kč ￼ Jak akce funguje? 1. Nakupte minimálně za 2 999 Kč. 2. D",
+      "category": "ostatni",
+      "sender_short": "SEVT.cz",
+      "sender_email": "marketing@mailing.sevt.cz",
+      "ai": {
+        "shrn": "Marketingový email od SEVT.cz s akcí na nákup školního a kancelářského vybavení. Spam.",
+        "tyka_se": false,
+        "akce": null
+      }
     },
     {
       "account": "Google",
@@ -148,14 +190,14 @@
       "sender_short": "Tým Nutsman",
       "sender_email": "pisklak@nutsman.cz",
       "ai": {
-        "shrn": "Nutsman zasílá novou měsíční nabídku velkoobchodních produktů.",
-        "tyka_se": false,
-        "akce": null
+        "shrn": "Nová nabídka od dodavatele Nutsman se zpracování a novinkami. Relevantní pro nákup zboží.",
+        "tyka_se": true,
+        "akce": "Zkontrolovat novou nabídku Nutsmanu a zvážit nákup produktů"
       }
     },
     {
       "account": "Google",
-      "sender": "\"CrossFit\" <crossfit@mail.crossfit.com>",
+      "sender": "CrossFit <crossfit@mail.crossfit.com>",
       "subject": "260902 Workout of the Day: Rewarding",
       "date": "středa 2. září 2026 2:32:10",
       "unread": true,
@@ -164,7 +206,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "CrossFit rozesílá motivační zprávu s cvičením pro daný den.",
+        "shrn": "Cvičební program dne od CrossFitu. Minimální obsah.",
         "tyka_se": false,
         "akce": null
       }
