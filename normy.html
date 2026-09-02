@@ -180,6 +180,30 @@ details summary:hover { background:var(--br-lt); }
 .sec-div.darkova { background:#fff8e1; border-left:4px solid #f7ab31; color:#7a5200; }
 .sec-div span { font-size:16px; }
 /* ── PRINT PANEL ── */
+/* ── QUICK PRINT MODAL ── */
+.tpl-wrap{display:inline-flex;align-items:stretch;gap:0}
+.tpl-print-btn{background:none;border:1.5px solid var(--bdr);border-left:none;border-radius:0 20px 20px 0;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--muted);transition:all .15s;line-height:1}
+.tpl-print-btn:hover{background:rgba(247,171,49,.12);color:var(--br-dk);border-color:var(--amber)}
+.tpl-wrap .tpl-btn{border-radius:20px 0 0 20px}
+#qt-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;align-items:center;justify-content:center}
+#qt-box{background:var(--bg);border:2px solid var(--amber);border-radius:12px;padding:20px 24px;width:500px;max-width:95vw;max-height:90vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.25)}
+.qt-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.qt-name{font-size:15px;font-weight:bold;color:var(--br-dk)}
+.qt-close{background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted);line-height:1;padding:0 4px}
+.qt-ops{margin-bottom:14px;background:var(--surf);border:1px solid var(--bdr);border-radius:8px;padding:10px 14px}
+.qt-ops-title{font-size:11px;font-weight:bold;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px}
+.qt-op-row{font-size:12px;padding:3px 0;display:flex;justify-content:space-between;border-bottom:.5px solid var(--bdr)}
+.qt-op-row:last-child{border-bottom:none}
+.qt-op-name{color:var(--text)}
+.qt-op-ksh{color:var(--muted);font-variant-numeric:tabular-nums}
+.qt-fields{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px}
+.qt-field{display:flex;flex-direction:column;gap:5px}
+.qt-label{font-size:11px;font-weight:bold;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.qt-input{border:1.5px solid var(--bdr);border-radius:6px;padding:7px 10px;font-size:14px;font-family:Arial;color:var(--text);background:var(--bg);width:100%;box-sizing:border-box}
+.qt-input:focus{outline:none;border-color:var(--amber)}
+.qt-zakaz-wrap{margin-bottom:14px}
+.qt-btns{display:flex;gap:10px}
+.qt-cancel{padding:10px 18px;border:1.5px solid var(--bdr);border-radius:8px;background:none;cursor:pointer;font-size:14px;font-family:Arial;color:var(--text)}
 .print-toggle-btn{display:block;margin-top:14px;background:none;border:2px solid var(--amber);border-radius:8px;padding:10px 20px;font-size:14px;font-weight:bold;color:var(--br-dk);cursor:pointer;font-family:Arial;transition:background .15s}
 .print-toggle-btn:hover{background:rgba(247,171,49,.12)}
 #print-panel{display:none;background:var(--surf);border:2px solid var(--amber);border-radius:10px;padding:16px 20px;margin-top:10px}
@@ -790,6 +814,34 @@ table.pp-ops td.b{font-weight:bold;color:#5c381f}
 </details>
 
 </div><!-- /wrap -->
+
+<!-- Quick-print modal -->
+<div id="qt-modal">
+  <div id="qt-box">
+    <div class="qt-hdr">
+      <div class="qt-name" id="qt-title"></div>
+      <button class="qt-close" onclick="closeQT()">×</button>
+    </div>
+    <div class="qt-ops">
+      <div class="qt-ops-title">Operace a normy</div>
+      <div id="qt-ops-list"></div>
+    </div>
+    <div class="qt-fields">
+      <div class="qt-field"><label class="qt-label">Počet kusů ★</label><input type="number" id="qt-qty" class="qt-input" min="1" placeholder="0"></div>
+      <div class="qt-field"><label class="qt-label">Datum výroby</label><input type="date" id="qt-datum" class="qt-input"></div>
+      <div class="qt-field"><label class="qt-label">Zaměstnanec</label><input type="text" id="qt-zam" class="qt-input" placeholder="Jméno nebo č."></div>
+    </div>
+    <div class="qt-zakaz-wrap">
+      <label class="qt-label">Popis zakázky (nepovinné)</label>
+      <input type="text" id="qt-zakaz" class="qt-input" style="margin-top:5px" placeholder="např. Eko kelímky — firma Novák">
+    </div>
+    <div class="qt-btns">
+      <button class="btn-print" onclick="execQT()">🖨️ Tisknout</button>
+      <button class="qt-cancel" onclick="closeQT()">Zrušit</button>
+    </div>
+  </div>
+</div>
+
 <div class="print-page" id="print-page"></div>
 
 <script>
@@ -1410,6 +1462,96 @@ function addFromTemplate(key){
   setTimeout(()=>{ const el=document.querySelector(`[data-pid="${p.id}"].prod-qty`); if(el) el.focus(); },80);
   toast('Šablona: ' + tpl.name);
 }
+
+/* ── QUICK PRINT ── */
+let _qtTpl=null;
+function openQT(key){
+  const tpl=TEMPLATES[key]; if(!tpl) return;
+  _qtTpl=tpl;
+  W('qt-title').textContent=tpl.name;
+  W('qt-ops-list').innerHTML=tpl.ops.map(o=>`<div class="qt-op-row"><span class="qt-op-name">${o.name}${(o.cnt||1)>1?' ×'+(o.cnt||1):''}</span><span class="qt-op-ksh">${o.ksh} ks/hod</span></div>`).join('');
+  W('qt-qty').value='';
+  const di=W('qt-datum');
+  if(di&&!di.value){const t=new Date();di.value=t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');}
+  if(W('qt-zakaz'))W('qt-zakaz').value='';
+  if(W('qt-zam'))W('qt-zam').value='';
+  W('qt-modal').style.display='flex';
+  setTimeout(()=>{if(W('qt-qty'))W('qt-qty').focus();},60);
+}
+function closeQT(){W('qt-modal').style.display='none';_qtTpl=null;}
+function execQT(){
+  if(!_qtTpl) return;
+  const qty=+W('qt-qty').value||0;
+  if(!qty){alert('Zadej počet kusů.');W('qt-qty').focus();return;}
+  const zakaz=(W('qt-zakaz')?.value||'').trim()||_qtTpl.name;
+  const datum=W('qt-datum')?.value||'';
+  const zam=(W('qt-zam')?.value||'').trim();
+  const ws=getW();
+  let grandH=0;
+  const opsRows=_qtTpl.ops.map(o=>{
+    const cnt=o.cnt||1; const h=qty*cnt/o.ksh; grandH+=h;
+    return `<tr><td>${o.name}</td><td class="r">${cnt>1?cnt:'—'}</td><td class="r">${o.ksh}</td><td class="r b">${fmtH(h/ws)}</td><td class="r">${czk(h*SAZBA)}</td></tr>`;
+  }).join('');
+  let html=`<div class="pp-page">
+<div class="pp-ph">
+  <div><div class="pp-ph-ti">Výrobní příkaz</div><div class="pp-ph-su">Nutworld s.r.o. · Sazba práce: 250 Kč/hod</div></div>
+  <div class="pp-ph-lo">Nutworld.cz</div>
+</div>
+<div class="pp-meta">
+  <div class="pp-mf"><div class="pp-mf-l">Zakázka / popis</div><div class="pp-mf-v">${zakaz}</div></div>
+  <div class="pp-mf"><div class="pp-mf-l">Datum výroby</div><div class="pp-mf-v">${fmtDatePrint(datum)}</div></div>
+  <div class="pp-mf"><div class="pp-mf-l">Zaměstnanec</div><div class="pp-mf-v" style="${zam?'':'border-bottom:1px solid #5c381f;min-height:5mm'}">${zam||''}</div></div>
+</div>
+<div class="pp-pb">
+<div class="pp-ph2">${_qtTpl.name} — ${qty.toLocaleString('cs-CZ')} ks</div>
+<table class="pp-ops">
+<thead><tr><th style="width:48%">Operace</th><th class="r" style="width:8%">×N</th><th class="r" style="width:13%">Ks/hod</th><th class="r" style="width:18%">Doporuč. čas</th><th class="r" style="width:13%">Kč práce</th></tr></thead>
+<tbody>${opsRows}</tbody>
+</table>
+<div class="pp-pt">Produkt celkem: ${fmtH(grandH/ws)} · ${czk(grandH*SAZBA)}</div>
+</div>
+<div class="pp-gt">CELKOVÁ DOPORUČENÁ DOBA: ${fmtH(grandH/ws)}</div>
+<div class="pp-fh">Vyplní zaměstnanec</div>
+<div class="pp-fg">
+  <div><div class="pp-ff-l">Jméno / č. zaměstnance</div><div class="pp-ff-li"></div></div>
+  <div><div class="pp-ff-l">Začátek práce</div><div class="pp-ff-li"></div></div>
+  <div><div class="pp-ff-l">Konec práce</div><div class="pp-ff-li"></div></div>
+  <div><div class="pp-ff-l">Skutečný čas (min)</div><div class="pp-ff-li"></div></div>
+</div>
+<div class="pp-nb"><div class="pp-nb-l">Poznámka / problémy</div></div>
+<div class="pp-sr">
+  <div class="pp-sign"><div class="pp-sl">Podpis zaměstnance</div><div class="pp-sli"></div></div>
+  <div class="pp-sign"><div class="pp-sl">Schválil vedoucí</div><div class="pp-sli"></div></div>
+</div>
+<div class="pp-ft"><span>Nutworld s.r.o. · Interní dokument — výroba</span><span>Vytisknuto: ${new Date().toLocaleString('cs-CZ',{dateStyle:'short',timeStyle:'short'})}</span></div>
+</div>`;
+  W('print-page').innerHTML=html;
+  closeQT();
+  document.body.classList.add('printing');
+  window.addEventListener('afterprint',()=>document.body.classList.remove('printing'),{once:true});
+  window.print();
+}
+// wire up print icons dynamically on all template buttons
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.tpl-btn').forEach(btn=>{
+    const m=btn.getAttribute('onclick')?.match(/addFromTemplate\('(\w+)'\)/);
+    if(!m) return;
+    const key=m[1];
+    const wrap=document.createElement('span');
+    wrap.className='tpl-wrap';
+    btn.parentNode.insertBefore(wrap,btn);
+    wrap.appendChild(btn);
+    const pb=document.createElement('button');
+    pb.className='tpl-print-btn';
+    pb.title='Tisknout výrobní příkaz';
+    pb.textContent='🖨';
+    pb.onclick=e=>{e.stopPropagation();openQT(key);};
+    wrap.appendChild(pb);
+  });
+  W('qt-modal')?.addEventListener('click',e=>{if(e.target===W('qt-modal'))closeQT();});
+  W('qt-qty')?.addEventListener('keydown',e=>{if(e.key==='Enter')execQT();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&_qtTpl)closeQT();});
+});
 
 /* ── PRINT ── */
 function togglePrintPanel(){
