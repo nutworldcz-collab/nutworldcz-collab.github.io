@@ -179,6 +179,53 @@ details summary:hover { background:var(--br-lt); }
 .sec-div.balici { background:#eaf4e4; border-left:4px solid #6fa044; color:#2d5a1b; }
 .sec-div.darkova { background:#fff8e1; border-left:4px solid #f7ab31; color:#7a5200; }
 .sec-div span { font-size:16px; }
+/* ── PRINT PANEL ── */
+.print-toggle-btn{display:block;margin-top:14px;background:none;border:2px solid var(--amber);border-radius:8px;padding:10px 20px;font-size:14px;font-weight:bold;color:var(--br-dk);cursor:pointer;font-family:Arial;transition:background .15s}
+.print-toggle-btn:hover{background:rgba(247,171,49,.12)}
+#print-panel{display:none;background:var(--surf);border:2px solid var(--amber);border-radius:10px;padding:16px 20px;margin-top:10px}
+#print-panel h3{font-size:14px;font-weight:bold;color:var(--br-dk);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.pp-fields{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;margin-bottom:14px}
+.ppf{display:flex;flex-direction:column;gap:5px}
+.ppf label{font-size:11px;font-weight:bold;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.ppf input{border:1.5px solid var(--bdr);border-radius:6px;padding:7px 10px;font-size:14px;font-family:Arial;color:var(--text);background:var(--surf)}
+.ppf input:focus{outline:none;border-color:var(--amber)}
+.btn-print{background:var(--amber);color:var(--br-dk);border:none;border-radius:8px;padding:12px 28px;font-size:15px;font-weight:bold;cursor:pointer;font-family:Arial}
+.btn-print:hover{background:#e89b1c}
+/* ── PRINT PAGE ── */
+.print-page{display:none}
+@media print{body.printing>*:not(.print-page){display:none!important}.print-page{display:block!important}@page{margin:0;size:A4}}
+.pp-page{width:210mm;padding:10mm 12mm;font-family:Arial,sans-serif;box-sizing:border-box}
+.pp-ph{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:2.5px solid #f7ab31;padding-bottom:3mm;margin-bottom:4mm}
+.pp-ph-ti{font-size:16pt;font-weight:bold;color:#5c381f;line-height:1}
+.pp-ph-su{font-size:8pt;color:#7a5030;margin-top:2px}
+.pp-ph-lo{font-size:10pt;font-weight:bold;color:#83502e;opacity:.6}
+.pp-meta{display:grid;grid-template-columns:2fr 1fr 1fr;gap:5mm;margin-bottom:5mm}
+.pp-mf{border-bottom:1.2px solid #5c381f;padding-bottom:1.5mm}
+.pp-mf-l{font-size:6.5pt;font-weight:bold;text-transform:uppercase;letter-spacing:.5px;color:#7a5030;margin-bottom:2.5mm}
+.pp-mf-v{font-size:10pt;font-weight:bold;min-height:5mm;color:#2a1a0e}
+.pp-pb{margin-bottom:4mm}
+.pp-ph2{background:#5c381f;color:#fff;padding:3px 7px;font-size:9pt;font-weight:bold}
+.pp-pm{font-size:8pt;color:#7a5030;padding:2px 7px 3px;background:#f1e6da;border-bottom:1px solid #e0c9b0}
+table.pp-ops{width:100%;border-collapse:collapse;font-size:7.5pt}
+table.pp-ops thead th{background:#f8f2eb;color:#5c381f;padding:3px 6px;font-size:7pt;font-weight:bold;border-bottom:1px solid #e0c9b0;text-align:left}
+table.pp-ops thead th.r{text-align:right}
+table.pp-ops td{padding:3.5px 6px;border-bottom:.5px solid #eeddd0}
+table.pp-ops tr:nth-child(even) td{background:#fdf8f3}
+table.pp-ops td.r{text-align:right;font-variant-numeric:tabular-nums}
+table.pp-ops td.b{font-weight:bold;color:#5c381f}
+.pp-pt{background:#f1e6da;padding:3px 7px;font-size:8pt;font-weight:bold;color:#5c381f;text-align:right;border-top:1.5px solid #f7ab31}
+.pp-gt{background:#5c381f;color:#fff;padding:5px 7px;font-size:10pt;font-weight:bold;text-align:right;margin-bottom:5mm}
+.pp-fh{background:#83502e;color:#fff;padding:3px 7px;font-size:7.5pt;font-weight:bold;text-transform:uppercase;letter-spacing:.5px;margin-top:4mm;margin-bottom:3mm}
+.pp-fg{display:grid;grid-template-columns:repeat(4,1fr);gap:5mm;margin-bottom:4mm}
+.pp-ff-l{font-size:6.5pt;font-weight:bold;text-transform:uppercase;letter-spacing:.4px;color:#7a5030;margin-bottom:6mm}
+.pp-ff-li{border-bottom:1.2px solid #5c381f}
+.pp-nb{border:1px solid #e0c9b0;border-radius:3px;padding:2mm 3mm;min-height:16mm;margin-bottom:4mm}
+.pp-nb-l{font-size:6.5pt;font-weight:bold;text-transform:uppercase;letter-spacing:.4px;color:#7a5030;margin-bottom:1mm}
+.pp-sr{display:flex;gap:8mm;margin-top:2mm}
+.pp-sign{flex:1}
+.pp-sl{font-size:6.5pt;font-weight:bold;text-transform:uppercase;letter-spacing:.4px;color:#7a5030;margin-bottom:8mm}
+.pp-sli{border-bottom:1.2px solid #5c381f}
+.pp-ft{margin-top:4mm;border-top:1px solid #e0c9b0;padding-top:2mm;display:flex;justify-content:space-between;font-size:6pt;color:#b09070}
 </style>
 
 <div class="page-header">
@@ -240,6 +287,27 @@ details summary:hover { background:var(--br-lt); }
   <div id="prods"></div>
   <button class="btn-add-prod" onclick="addProduct()">＋ Přidat prázdný produkt</button>
   <div id="overall"></div>
+  <div id="print-area" style="display:none">
+    <button class="print-toggle-btn" onclick="togglePrintPanel()">🖨️ Vytisknout výrobní příkaz</button>
+    <div id="print-panel">
+      <h3>🖨️ Výrobní příkaz — doplnit před tiskem</h3>
+      <div class="pp-fields">
+        <div class="ppf">
+          <label>Zakázka / popis</label>
+          <input type="text" id="pp-zakaz" placeholder="např. Eko kelímky — firma Novák" autocomplete="off">
+        </div>
+        <div class="ppf">
+          <label>Datum výroby</label>
+          <input type="date" id="pp-datum">
+        </div>
+        <div class="ppf">
+          <label>Zaměstnanec / č. (nepovinné)</label>
+          <input type="text" id="pp-zam" placeholder="Jméno nebo číslo" autocomplete="off">
+        </div>
+      </div>
+      <button class="btn-print" onclick="printOrder()">🖨️ Tisknout</button>
+    </div>
+  </div>
 </div>
 
 <!-- ════ REFERENCE ════ -->
@@ -722,6 +790,7 @@ details summary:hover { background:var(--br-lt); }
 </details>
 
 </div><!-- /wrap -->
+<div class="print-page" id="print-page"></div>
 
 <script>
 const SAZBA = 250;
@@ -1068,7 +1137,7 @@ function recalc(){
 
 function renderOverall(totH,totC,totKs,workers,shift,effSh,pauseMin){
   const el=W('overall'); if(!el) return;
-  if(!totH){ el.innerHTML=''; return; }
+  if(!totH){ el.innerHTML=''; const pa=W('print-area');if(pa)pa.style.display='none'; return; }
   const realH=totH/workers, shifts=Math.ceil(realH/effSh);
   const pauseLabel = pauseMin>0 ? `${pauseMin} min pauza → efektivní čas ${fmtH(effSh)}/směnu` : 'bez přestávky';
   const rows=prods.filter(p=>p.qty&&p.ops.some(o=>o.ksh)).map(p=>{
@@ -1098,6 +1167,7 @@ function renderOverall(totH,totC,totKs,workers,shift,effSh,pauseMin){
         <tfoot><tr><td><strong>CELKEM</strong></td><td style="text-align:right"><strong>${totKs.toLocaleString('cs-CZ')}</strong></td><td style="text-align:right"><strong>${fmtH(realH)}</strong></td><td style="text-align:right;color:var(--br);font-weight:bold">${totKs?avgKpc+' Kč':'—'}</td><td style="text-align:right;color:var(--green);font-weight:bold">${czk(totC)}</td></tr></tfoot>
       </table>
     </div>`;
+  const _pa=W('print-area');if(_pa)_pa.style.display='';
 }
 
 let toastT;
@@ -1340,6 +1410,82 @@ function addFromTemplate(key){
   renderAll();
   setTimeout(()=>{ const el=document.querySelector(`[data-pid="${p.id}"].prod-qty`); if(el) el.focus(); },80);
   toast('Šablona: ' + tpl.name);
+}
+
+/* ── PRINT ── */
+function togglePrintPanel(){
+  const p=W('print-panel'); if(!p) return;
+  p.style.display=p.style.display==='none'?'block':'none';
+  if(p.style.display==='block'){
+    const di=W('pp-datum');
+    if(di&&!di.value){const t=new Date();di.value=t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');}
+    setTimeout(()=>{const z=W('pp-zakaz');if(z)z.focus();},60);
+  }
+}
+
+function fmtDatePrint(val){
+  if(!val) return '—';
+  const[y,m,d]=val.split('-'); return d+'. '+m+'. '+y;
+}
+
+function printOrder(){
+  const zakaz=(W('pp-zakaz')?.value||'').trim()||'—';
+  const datum=W('pp-datum')?.value||'';
+  const zam=(W('pp-zam')?.value||'').trim();
+  const ws=getW();
+  const validProds=prods.filter(p=>p.qty&&p.ops.some(o=>o.ksh&&o.name));
+  if(!validProds.length){alert('Nejprve přidej produkt s operacemi a počtem kusů.');return;}
+
+  let html=`<div class="pp-page">
+<div class="pp-ph">
+  <div><div class="pp-ph-ti">Výrobní příkaz</div><div class="pp-ph-su">Nutworld s.r.o. · Sazba práce: 250 Kč/hod</div></div>
+  <div class="pp-ph-lo">Nutworld.cz</div>
+</div>
+<div class="pp-meta">
+  <div class="pp-mf"><div class="pp-mf-l">Zakázka / popis</div><div class="pp-mf-v">${zakaz}</div></div>
+  <div class="pp-mf"><div class="pp-mf-l">Datum výroby</div><div class="pp-mf-v">${fmtDatePrint(datum)}</div></div>
+  <div class="pp-mf"><div class="pp-mf-l">Zaměstnanec</div><div class="pp-mf-v" style="${zam?'':'border-bottom:1px solid #5c381f;min-height:5mm'}">${zam||''}</div></div>
+</div>`;
+
+  let grandH=0;
+  validProds.forEach(p=>{
+    const pTotH=p.ops.filter(o=>o.ksh&&o.name).reduce((s,o)=>s+(p.qty*(o.cnt||1)/o.ksh),0);
+    grandH+=pTotH;
+    html+=`<div class="pp-pb">
+<div class="pp-ph2">${p.name||'(bez názvu)'} — ${(p.qty||0).toLocaleString('cs-CZ')} ks</div>
+<table class="pp-ops">
+<thead><tr><th style="width:48%">Operace</th><th class="r" style="width:8%">×N</th><th class="r" style="width:13%">Ks/hod</th><th class="r" style="width:18%">Doporuč. čas</th><th class="r" style="width:13%">Kč práce</th></tr></thead>
+<tbody>`;
+    p.ops.filter(o=>o.ksh&&o.name).forEach(o=>{
+      const cnt=o.cnt||1;
+      const h=p.qty*cnt/o.ksh;
+      html+=`<tr><td>${o.name}</td><td class="r">${cnt>1?cnt:'—'}</td><td class="r">${o.ksh}</td><td class="r b">${fmtH(h/ws)}</td><td class="r">${czk(h*SAZBA)}</td></tr>`;
+    });
+    html+=`</tbody></table>
+<div class="pp-pt">Produkt celkem: ${fmtH(pTotH/ws)} · ${czk(pTotH*SAZBA)}</div>
+</div>`;
+  });
+
+  html+=`<div class="pp-gt">CELKOVÁ DOPORUČENÁ DOBA: ${fmtH(grandH/ws)}</div>`;
+  html+=`<div class="pp-fh">Vyplní zaměstnanec</div>
+<div class="pp-fg">
+  <div><div class="pp-ff-l">Jméno / č. zaměstnance</div><div class="pp-ff-li"></div></div>
+  <div><div class="pp-ff-l">Začátek práce</div><div class="pp-ff-li"></div></div>
+  <div><div class="pp-ff-l">Konec práce</div><div class="pp-ff-li"></div></div>
+  <div><div class="pp-ff-l">Skutečný čas (min)</div><div class="pp-ff-li"></div></div>
+</div>
+<div class="pp-nb"><div class="pp-nb-l">Poznámka / problémy</div></div>
+<div class="pp-sr">
+  <div class="pp-sign"><div class="pp-sl">Podpis zaměstnance</div><div class="pp-sli"></div></div>
+  <div class="pp-sign"><div class="pp-sl">Schválil vedoucí</div><div class="pp-sli"></div></div>
+</div>
+<div class="pp-ft"><span>Nutworld s.r.o. · Interní dokument — výroba</span><span>Vytisknuto: ${new Date().toLocaleString('cs-CZ',{dateStyle:'short',timeStyle:'short'})}</span></div>
+</div>`;
+
+  W('print-page').innerHTML=html;
+  document.body.classList.add('printing');
+  window.addEventListener('afterprint',()=>document.body.classList.remove('printing'),{once:true});
+  window.print();
 }
 
 // init
