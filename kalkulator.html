@@ -1817,7 +1817,10 @@ function kalkRender() {
       <div class="kosik-item-prices">
         <span class="kosik-item-ks">${item.ks} ks ×</span>
         <div>
-          <div class="kosik-item-mo">${moS} Kč <span style="font-size:12px;font-weight:400;color:#83502e">bez DPH</span></div>
+          <div style="display:flex;align-items:baseline;gap:6px">
+            <span style="background:var(--bd);color:white;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:.5px">MO</span>
+            <div class="kosik-item-mo">${moS} Kč <span style="font-size:12px;font-weight:400;color:#83502e">bez DPH</span></div>
+          </div>
           <div class="kosik-item-mo-total">celkem ${moTotS} Kč${voS ? ` · <span class="kosik-item-vo">VO ${voS} Kč/ks</span>` : ''}</div>
         </div>
       </div>
