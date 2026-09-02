@@ -1,4 +1,4 @@
-<title>Nutworld — Kalkulátor zakázky + Normy</title>
+<title>Nutworld — Kalkulátor norem</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -256,7 +256,7 @@ table.pp-ops td.b{font-weight:bold;color:#5c381f}
   <div><h1>🐿 Výrobní normy balení</h1><p>Interní dokument — Nutworld s.r.o.</p></div>
   <div class="page-header-right">Sazba práce: <strong style="color:var(--amber)">250 Kč / hod</strong><br>Září 2026</div>
 </div>
-<div class="sticky-bar" id="sbar">🧮 Kalkulátor zakázky — přidej produkty níže</div>
+<div class="sticky-bar" id="sbar">🧮 Kalkulátor norem — přidej produkty níže</div>
 <div class="toast" id="toast"></div>
 
 <div class="wrap">
@@ -264,7 +264,7 @@ table.pp-ops td.b{font-weight:bold;color:#5c381f}
 <!-- ════ KALKULÁTOR ════ -->
 <div class="calc-section">
   <div class="calc-top">
-    <div class="calc-title">🧮 Kalkulátor zakázky</div>
+    <div class="calc-title">🧮 Kalkulátor norem</div>
     <div class="calc-meta">
       <label>Pracovníků <input type="number" id="workers" value="1" min="1" max="20" oninput="recalc()"></label>
       <label>Délka směny <input type="number" id="shift" value="8" min="0.5" max="24" step="0.5" oninput="recalc()"> hod</label>
@@ -1184,7 +1184,7 @@ function recalc(){
   const sb=W('sbar');
   if(sb) sb.textContent = totH
     ? `🧮 ${fmtH(totH/ws)} · ${Math.ceil(totH/ws/effSh)} směn · ${czk(totC)}`
-    : '🧮 Kalkulátor zakázky';
+    : '🧮 Kalkulátor norem';
 }
 
 function renderOverall(totH,totC,totKs,workers,shift,effSh,pauseMin){
