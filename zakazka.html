@@ -822,8 +822,21 @@ ${d.poznamka ? `\n*Poznámka z nabídky: ${d.poznamka}*` : ''}`;
     try {
       setLoading(true, 'Vytváří se štítková karta…');
       const T_LIST_STITKY = '6a9816577a9904d965a8a1f2';
+      const T_STITKY_MEMBERS = ['637f6dd24161b5005273c0b4', '637f8efd088ca800a01b00a9', '699e9765cc617d1fb8cfaf58'];
+      const getSlozeniWithKod = cid => {
+        const rows = document.getElementById('slozeni-rows-'+cid);
+        if (!rows) return '';
+        return Array.from(rows.querySelectorAll('.slozeni-row')).map(row => {
+          const kod   = row.querySelector('.slozeni-kod-inp')?.value.trim();
+          const nazev = row.querySelector('.slozeni-nazev')?.value.trim();
+          const gram  = row.querySelector('.slozeni-gram')?.value.trim();
+          if (!nazev && !kod) return null;
+          const kodPart = kod ? `[${kod}]` : '';
+          return [kodPart, nazev, gram].filter(Boolean).join(' ');
+        }).filter(Boolean).join(', ');
+      };
       const stitkyLines = d.produkty.map((p, idx) => {
-        const slozeni = getSlozeniText('sp-'+idx);
+        const slozeni = getSlozeniWithKod('sp-'+idx);
         return `**${p.ks}× ${p.nazev}**` + (slozeni ? `\n📦 ${slozeni}` : '');
       });
       const stitkyDesc = `**Firma:** ${d.firma}\n**Termín:** ${fmt(termin)}\n\n` + stitkyLines.join('\n\n') +
@@ -833,6 +846,7 @@ ${d.poznamka ? `\n*Poznámka z nabídky: ${d.poznamka}*` : ''}`;
         name: stitkyTitle.length > 85 ? stitkyTitle.substring(0, 82) + '…' : stitkyTitle,
         desc: stitkyDesc,
         idList: T_LIST_STITKY,
+        idMembers: T_STITKY_MEMBERS,
         pos: 'top',
         ...(due ? { due } : {})
       });
