@@ -221,27 +221,27 @@ details summary:hover { background:var(--br-lt); }
 .print-page{display:none}
 @media print{body.printing>*:not(.print-page){display:none!important}.print-page{display:block!important}@page{margin:0;size:A4}}
 .pp-page{width:210mm;padding:10mm 12mm;font-family:Arial,sans-serif;box-sizing:border-box}
-.pp-ph{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:2.5px solid #f7ab31;padding-bottom:3mm;margin-bottom:4mm}
-.pp-ph-ti{font-size:16pt;font-weight:bold;color:#5c381f;line-height:1}
-.pp-ph-su{font-size:8pt;color:#7a5030;margin-top:2px}
-.pp-ph-lo{font-size:10pt;font-weight:bold;color:#83502e;opacity:.6}
+.pp-ph{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:2.5px solid #000;padding-bottom:3mm;margin-bottom:4mm}
+.pp-ph-ti{font-size:16pt;font-weight:bold;color:#000;line-height:1}
+.pp-ph-su{font-size:8pt;color:#555;margin-top:2px}
+.pp-ph-lo{font-size:10pt;font-weight:bold;color:#777}
 .pp-meta{display:grid;grid-template-columns:2fr 1fr 1fr;gap:5mm;margin-bottom:5mm}
 .pp-mf{border-bottom:1.2px solid #5c381f;padding-bottom:1.5mm}
 .pp-mf-l{font-size:6.5pt;font-weight:bold;text-transform:uppercase;letter-spacing:.5px;color:#7a5030;margin-bottom:2.5mm}
 .pp-mf-v{font-size:10pt;font-weight:bold;min-height:5mm;color:#2a1a0e}
 .pp-pb{margin-bottom:4mm}
-.pp-ph2{background:#5c381f;color:#fff;padding:3px 7px;font-size:9pt;font-weight:bold}
+.pp-ph2{background:#fff;color:#000;padding:3px 7px;font-size:9pt;font-weight:bold;border-left:3px solid #000;border-bottom:1px solid #bbb}
 .pp-pm{font-size:8pt;color:#7a5030;padding:2px 7px 3px;background:#f1e6da;border-bottom:1px solid #e0c9b0}
 table.pp-ops{width:100%;border-collapse:collapse;font-size:7.5pt}
 table.pp-ops thead th{background:#f8f2eb;color:#5c381f;padding:3px 6px;font-size:7pt;font-weight:bold;border-bottom:1px solid #e0c9b0;text-align:left}
 table.pp-ops thead th.r{text-align:right}
 table.pp-ops td{padding:3.5px 6px;border-bottom:.5px solid #eeddd0}
-table.pp-ops tr:nth-child(even) td{background:#fdf8f3}
+table.pp-ops tr:nth-child(even) td{background:#fff}
 table.pp-ops td.r{text-align:right;font-variant-numeric:tabular-nums}
 table.pp-ops td.b{font-weight:bold;color:#5c381f}
-.pp-pt{background:#f1e6da;padding:3px 7px;font-size:8pt;font-weight:bold;color:#5c381f;text-align:right;border-top:1.5px solid #f7ab31}
-.pp-gt{background:#5c381f;color:#fff;padding:5px 7px;font-size:10pt;font-weight:bold;text-align:right;margin-bottom:5mm}
-.pp-fh{background:#83502e;color:#fff;padding:3px 7px;font-size:7.5pt;font-weight:bold;text-transform:uppercase;letter-spacing:.5px;margin-top:4mm;margin-bottom:3mm}
+.pp-pt{background:#fff;padding:3px 7px;font-size:8pt;font-weight:bold;color:#000;text-align:right;border-top:1.5px solid #999}
+.pp-gt{background:#fff;color:#000;padding:5px 7px;font-size:10pt;font-weight:bold;text-align:right;margin-bottom:5mm;border-top:2px solid #000;border-bottom:2px solid #000}
+.pp-fh{background:#fff;color:#000;padding:3px 7px;font-size:7.5pt;font-weight:bold;text-transform:uppercase;letter-spacing:.5px;margin-top:4mm;margin-bottom:3mm;border-bottom:1.5px solid #999}
 .pp-fg{display:grid;grid-template-columns:repeat(4,1fr);gap:5mm;margin-bottom:4mm}
 .pp-ff-l{font-size:6.5pt;font-weight:bold;text-transform:uppercase;letter-spacing:.4px;color:#7a5030;margin-bottom:6mm}
 .pp-ff-li{border-bottom:1.2px solid #5c381f}
@@ -1490,7 +1490,7 @@ function execQT(){
   let grandH=0;
   const opsRows=_qtTpl.ops.map(o=>{
     const cnt=o.cnt||1; const h=qty*cnt/o.ksh; grandH+=h;
-    return `<tr><td>${o.name}</td><td class="r">${cnt>1?cnt:'—'}</td><td class="r">${o.ksh}</td><td class="r b">${fmtH(h/ws)}</td><td class="r">${czk(h*SAZBA)}</td></tr>`;
+    return `<tr><td>${o.name}</td><td class="r">${cnt>1?cnt:'—'}</td><td class="r">${o.ksh}</td><td class="r b">${fmtH(h/ws)}</td><td class="r">${czk(h*SAZBA)}</td><td class="r" style="border-bottom:1px solid #aaa"></td></tr>`;
   }).join('');
   let html=`<div class="pp-page">
 <div class="pp-ph">
@@ -1505,7 +1505,7 @@ function execQT(){
 <div class="pp-pb">
 <div class="pp-ph2">${_qtTpl.name} — ${qty.toLocaleString('cs-CZ')} ks</div>
 <table class="pp-ops">
-<thead><tr><th style="width:48%">Operace</th><th class="r" style="width:8%">×N</th><th class="r" style="width:13%">Ks/hod</th><th class="r" style="width:18%">Doporuč. čas</th><th class="r" style="width:13%">Kč práce</th></tr></thead>
+<thead><tr><th style="width:36%">Operace</th><th class="r" style="width:7%">×N</th><th class="r" style="width:10%">Ks/hod</th><th class="r" style="width:15%">Doporuč. čas</th><th class="r" style="width:12%">Kč práce</th><th class="r" style="width:20%">Skutečný čas</th></tr></thead>
 <tbody>${opsRows}</tbody>
 </table>
 <div class="pp-pt">Produkt celkem: ${fmtH(grandH/ws)} · ${czk(grandH*SAZBA)}</div>
@@ -1595,12 +1595,12 @@ function printOrder(){
     html+=`<div class="pp-pb">
 <div class="pp-ph2">${p.name||'(bez názvu)'} — ${(p.qty||0).toLocaleString('cs-CZ')} ks</div>
 <table class="pp-ops">
-<thead><tr><th style="width:48%">Operace</th><th class="r" style="width:8%">×N</th><th class="r" style="width:13%">Ks/hod</th><th class="r" style="width:18%">Doporuč. čas</th><th class="r" style="width:13%">Kč práce</th></tr></thead>
+<thead><tr><th style="width:36%">Operace</th><th class="r" style="width:7%">×N</th><th class="r" style="width:10%">Ks/hod</th><th class="r" style="width:15%">Doporuč. čas</th><th class="r" style="width:12%">Kč práce</th><th class="r" style="width:20%">Skutečný čas</th></tr></thead>
 <tbody>`;
     p.ops.filter(o=>o.ksh&&o.name).forEach(o=>{
       const cnt=o.cnt||1;
       const h=p.qty*cnt/o.ksh;
-      html+=`<tr><td>${o.name}</td><td class="r">${cnt>1?cnt:'—'}</td><td class="r">${o.ksh}</td><td class="r b">${fmtH(h/ws)}</td><td class="r">${czk(h*SAZBA)}</td></tr>`;
+      html+=`<tr><td>${o.name}</td><td class="r">${cnt>1?cnt:'—'}</td><td class="r">${o.ksh}</td><td class="r b">${fmtH(h/ws)}</td><td class="r">${czk(h*SAZBA)}</td><td class="r" style="border-bottom:1px solid #aaa"></td></tr>`;
     });
     html+=`</tbody></table>
 <div class="pp-pt">Produkt celkem: ${fmtH(pTotH/ws)} · ${czk(pTotH*SAZBA)}</div>
