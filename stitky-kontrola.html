@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Nutworld — Kontrola štítku</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bd:#5c381f;--br:#83502e;--kraft:#f1e6da;--acc:#da1668;--leaf:#6fa044;--amb:#f7ab31}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;font-size:14px}
+.topbar{background:var(--bd);padding:12px 24px;display:flex;align-items:center;gap:16px}
+.topbar-title{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:800;color:white}
+.topbar a{color:rgba(255,255,255,.6);font-size:12px;text-decoration:none}
+.topbar a:hover{color:white}
+.container{max-width:880px;margin:24px auto;padding:0 16px}
+.card{background:white;border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.card-title{font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700;color:var(--br);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px}
+.field{margin-bottom:14px}
+label{display:block;font-size:12px;font-weight:600;color:#666;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+input,textarea,select{width:100%;border:1.5px solid #d4c0a8;border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;background:white;color:#2a1a0e;transition:border-color .15s}
+input:focus,textarea:focus{outline:none;border-color:var(--br)}
+textarea{resize:vertical;min-height:130px;font-family:monospace;font-size:12px;line-height:1.5}
+.btn{background:var(--bd);color:white;border:none;border-radius:10px;padding:12px 28px;font-family:'Exo 2',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .15s}
+.btn:hover{background:var(--br)}
+.btn-sm{padding:7px 14px;font-size:12px;border-radius:8px}
+.btn-sec{background:white;color:var(--bd);border:2px solid var(--bd)}
+.hint{font-size:11px;color:#aaa;margin-top:4px}
+
+/* Produkt list */
+.prod-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.prod-item{display:flex;align-items:center;gap:10px;background:#f1e6da;border-radius:8px;padding:8px 12px}
+.prod-item-badge{background:var(--bd);color:white;font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;padding:2px 8px;border-radius:12px;white-space:nowrap}
+.prod-item-nazev{flex:1;font-size:13px;font-weight:600;color:var(--bd)}
+.prod-item-rm{background:none;border:none;color:#aaa;font-size:18px;cursor:pointer;line-height:1;padding:0 4px}
+.prod-item-rm:hover{color:var(--acc)}
+.prod-add-row{display:flex;gap:8px;align-items:flex-start}
+.prod-add-row .ac-wrap{flex:1}
+.ac-wrap{position:relative}
+.ac-drop{position:absolute;top:100%;left:0;right:0;background:white;border:1.5px solid var(--br);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.12);z-index:100;max-height:220px;overflow-y:auto;display:none}
+.ac-drop.open{display:block}
+.ac-item{padding:9px 12px;cursor:pointer;font-size:13px;border-bottom:1px solid #f0e8e0;display:flex;gap:8px;align-items:center}
+.ac-item:hover{background:#f1e6da}
+.ac-item:last-child{border-bottom:none}
+.ac-kod{font-weight:700;color:var(--bd);min-width:60px}
+.ac-nazev{color:#666;font-size:12px}
+
+/* PDF upload */
+.pdf-zone{border:2px dashed #c8a882;border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;background:#fdf9f5;position:relative}
+.pdf-zone:hover,.pdf-zone.drag-over{border-color:var(--br);background:#f5ede4}
+.pdf-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
+.pdf-zone-icon{font-size:28px;margin-bottom:6px}
+.pdf-zone-label{font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700;color:var(--br);margin-bottom:2px}
+.pdf-zone-hint{font-size:11px;color:#aaa}
+.tab-btns{display:flex;gap:6px;margin-bottom:12px}
+.tab-btn{border:1.5px solid #d4c0a8;border-radius:20px;padding:6px 16px;font-size:12px;background:white;cursor:pointer;font-family:'Exo 2',sans-serif;font-weight:600;color:#888}
+.tab-btn.active{background:var(--bd);color:white;border-color:var(--bd)}
+
+/* Výsledky */
+.result-section{margin-bottom:20px}
+.result-section-title{font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid #e8d8c8}
+.check-row{display:flex;gap:10px;align-items:flex-start;padding:7px 10px;border-radius:8px;margin-bottom:5px;font-size:13px}
+.check-row.ok{background:#f0faf0;border:1px solid #c3e6c3}
+.check-row.warn{background:#fff8e1;border:1px solid #ffe082}
+.check-row.err{background:#fdecea;border:1px solid #f5a5a0}
+.check-icon{font-size:15px;flex-shrink:0;margin-top:2px}
+.check-label{font-weight:600;color:#444;min-width:140px;flex-shrink:0;font-size:12px}
+.check-detail{color:#555;flex:1;line-height:1.5;font-size:12px}
+.found{color:#2e7d32;font-weight:600}
+.missing{color:#c62828;font-weight:600;text-decoration:underline dotted}
+
+/* Score */
+.score-bar{height:8px;border-radius:4px;background:#e8d8c8;margin:10px 0 18px;overflow:hidden}
+.score-fill{height:100%;border-radius:4px;transition:width .5s}
+.score-ok{background:var(--leaf)}
+.score-warn{background:var(--amb)}
+.score-err{background:var(--acc)}
+.score-num{font-family:'Exo 2',sans-serif;font-size:26px;font-weight:800}
+.score-label{font-size:13px;color:#888}
+
+.prod-section-header{font-family:'Exo 2',sans-serif;font-size:13px;font-weight:800;color:var(--bd);padding:8px 0 4px;border-bottom:2px solid var(--kraft);margin-bottom:12px;margin-top:8px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="/">← Rozcestník</a>
+  <div class="topbar-title">🔍 Kontrola štítku</div>
+</div>
+
+<div class="container">
+
+  <!-- Krok 1: Produkty -->
+  <div class="card">
+    <div class="card-title">1. Vyber produkty ze specifikace (max 10)</div>
+    <div class="prod-list" id="prod-list"></div>
+    <div class="prod-add-row">
+      <div class="ac-wrap">
+        <input type="text" id="prod-search" placeholder="Přidat produkt — zadej kód nebo název…" oninput="acSearch(this.value)" autocomplete="off"/>
+        <div class="ac-drop" id="ac-drop"></div>
+      </div>
+    </div>
+    <div class="hint" style="margin-top:6px">Pro dárkové krabičky přidej všechny produkty uvnitř. Data ze vstup_cz.csv.</div>
+  </div>
+
+  <!-- Krok 2: Štítek -->
+  <div class="card">
+    <div class="card-title">2. Vlož text štítku</div>
+    <div class="tab-btns">
+      <button class="tab-btn active" id="tab-text-btn" onclick="switchTab('text')">📝 Vložit text</button>
+      <button class="tab-btn" id="tab-pdf-btn" onclick="switchTab('pdf')">📄 Nahrát PDF</button>
+    </div>
+
+    <!-- Text tab -->
+    <div id="tab-text">
+      <div class="field">
+        <label>Text štítku</label>
+        <textarea id="label-text" placeholder="Zkopíruj celý text štítku — název, složení, alergeny, výživové hodnoty, stopy, země původu…"></textarea>
+      </div>
+    </div>
+
+    <!-- PDF tab -->
+    <div id="tab-pdf" style="display:none">
+      <div class="pdf-zone" id="pdf-zone" ondragover="e.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleDrop(event)">
+        <input type="file" accept=".pdf" onchange="handlePdfFile(this.files[0])"/>
+        <div class="pdf-zone-icon">📄</div>
+        <div class="pdf-zone-label">Klikni nebo přetáhni PDF</div>
+        <div class="pdf-zone-hint">Text se extrahuje automaticky</div>
+      </div>
+      <div id="pdf-status" style="display:none;margin-top:10px;font-size:12px;color:var(--leaf);font-weight:600"></div>
+      <div id="pdf-preview-wrap" style="display:none;margin-top:10px">
+        <label>Extrahovaný text (zkontroluj, oprav pokud třeba)</label>
+        <textarea id="pdf-text" style="min-height:100px"></textarea>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px;margin-top:12px">
+      <button class="btn" onclick="runCheck()">🔍 Zkontrolovat</button>
+      <button class="btn btn-sec" onclick="clearAll()">Vymazat vše</button>
+    </div>
+  </div>
+
+  <!-- Výsledky -->
+  <div id="result-card" style="display:none" class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+      <div class="card-title" style="margin-bottom:0">Výsledek kontroly</div>
+      <div>
+        <span class="score-num" id="score-num"></span>
+        <span class="score-label"> / 100</span>
+      </div>
+    </div>
+    <div class="score-bar"><div class="score-fill" id="score-fill"></div></div>
+    <div id="result-body"></div>
+  </div>
+
+</div>
+
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+let SPEC = null;
+let selectedProds = []; // [{kod, nazev, ...}]
+
+fetch('/vstup_spec.json').then(r => r.json()).then(d => { SPEC = d; });
+
+// ── Tab přepínání ──
+function switchTab(t) {
+  document.getElementById('tab-text').style.display = t === 'text' ? '' : 'none';
+  document.getElementById('tab-pdf').style.display  = t === 'pdf'  ? '' : 'none';
+  document.getElementById('tab-text-btn').classList.toggle('active', t === 'text');
+  document.getElementById('tab-pdf-btn').classList.toggle('active',  t === 'pdf');
+}
+
+// ── Autocomplete ──
+function acSearch(q) {
+  const drop = document.getElementById('ac-drop');
+  q = q.trim();
+  if (!q || !SPEC) { drop.classList.remove('open'); return; }
+  const ql = q.toLowerCase();
+  const selected = new Set(selectedProds.map(p => p.kod));
+  const hits = Object.values(SPEC).filter(p =>
+    !selected.has(p.kod) && (
+      p.kod.toLowerCase().startsWith(ql) ||
+      p.nazev.toLowerCase().includes(ql)
+    )
+  ).slice(0, 12);
+  if (!hits.length) { drop.classList.remove('open'); return; }
+  drop.innerHTML = hits.map(p =>
+    `<div class="ac-item" onclick="addProd('${p.kod}')">
+      <span class="ac-kod">${p.kod}</span>
+      <span class="ac-nazev">${p.nazev}</span>
+    </div>`
+  ).join('');
+  drop.classList.add('open');
+}
+
+function addProd(kod) {
+  const p = SPEC?.[kod];
+  if (!p || selectedProds.length >= 10) return;
+  if (selectedProds.find(x => x.kod === kod)) return;
+  selectedProds.push(p);
+  document.getElementById('prod-search').value = '';
+  document.getElementById('ac-drop').classList.remove('open');
+  renderProdList();
+  document.getElementById('result-card').style.display = 'none';
+}
+
+function removeProd(kod) {
+  selectedProds = selectedProds.filter(p => p.kod !== kod);
+  renderProdList();
+}
+
+function renderProdList() {
+  document.getElementById('prod-list').innerHTML = selectedProds.map(p =>
+    `<div class="prod-item">
+      <span class="prod-item-badge">${p.kod}</span>
+      <span class="prod-item-nazev">${p.nazev}</span>
+      <button class="prod-item-rm" onclick="removeProd('${p.kod}')" title="Odebrat">×</button>
+    </div>`
+  ).join('');
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.ac-wrap')) document.getElementById('ac-drop').classList.remove('open');
+});
+
+// ── PDF ──
+async function handlePdfFile(file) {
+  if (!file) return;
+  const status = document.getElementById('pdf-status');
+  status.textContent = '⏳ Extrahuji text z PDF…';
+  status.style.display = 'block';
+  try {
+    const buf = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+    let text = '';
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const content = await page.getTextContent();
+      text += content.items.map(it => it.str).join(' ') + '\n';
+    }
+    document.getElementById('pdf-text').value = text.trim();
+    document.getElementById('pdf-preview-wrap').style.display = 'block';
+    status.textContent = `✅ Extrahováno ${pdf.numPages} stran(a), ${text.length} znaků`;
+    status.style.color = 'var(--leaf)';
+  } catch(e) {
+    status.textContent = '❌ Nepodařilo se přečíst PDF: ' + e.message;
+    status.style.color = 'var(--acc)';
+  }
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('pdf-zone').classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file?.type === 'application/pdf') handlePdfFile(file);
+}
+
+// ── Kontrola ──
+function norm(s) {
+  return (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\s+/g,' ').trim();
+}
+
+function extractAllergens(slozeni) {
+  const matches = slozeni.match(/[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]{2,}[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽa-záčďéěíňóřšťúůýž]*/g) || [];
+  // Filtruj jen slova kde je alespoň polovina velká
+  return [...new Set(matches.filter(m => {
+    const upper = (m.match(/[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]/g)||[]).length;
+    return upper >= m.length * 0.6 && m.length >= 3;
+  }))];
+}
+
+function checkSlozeni(slozeni, labelText) {
+  const tokens = slozeni.split(/[,;()\[\]\/\s]+/).map(t => norm(t)).filter(t => t.length >= 4);
+  const nLabel = norm(labelText);
+  const missing = tokens.filter(t => !nLabel.includes(t));
+  return { found: tokens.length - missing.length, total: tokens.length,
+    missing: [...new Set(missing)].slice(0, 8),
+    pct: tokens.length > 0 ? Math.round((tokens.length - missing.length) / tokens.length * 100) : 100 };
+}
+
+function checkNutri(spec, labelText) {
+  const fields = [
+    { key: 'energie', label: 'Energie' },
+    { key: 'tuky', label: 'Tuky' },
+    { key: 'nasycene', label: 'Nasycené MK' },
+    { key: 'sacharidy', label: 'Sacharidy' },
+    { key: 'cukry', label: 'Cukry' },
+    { key: 'bilkoviny', label: 'Bílkoviny' },
+    { key: 'sul', label: 'Sůl' },
+  ];
+  return fields.map(f => {
+    const val = spec[f.key]; if (!val) return null;
+    const nums = val.match(/[\d]+[,\.]?[\d]*/g) || [];
+    const nLabel = norm(labelText);
+    const found = nums.some(n => nLabel.includes(n.replace(',','.')) || nLabel.includes(n));
+    return { label: f.label, val, found };
+  }).filter(Boolean);
+}
+
+function runCheck() {
+  if (!selectedProds.length) { alert('Nejdřív vyber aspoň jeden produkt.'); return; }
+
+  const isText = document.getElementById('tab-text').style.display !== 'none';
+  const labelText = isText
+    ? document.getElementById('label-text').value.trim()
+    : document.getElementById('pdf-text').value.trim();
+  if (!labelText) { alert('Vlož text štítku nebo nahraj PDF.'); return; }
+
+  let totalScore = 0, totalMax = 0;
+  let html = '';
+
+  for (const p of selectedProds) {
+    const rows = [];
+    let score = 0, maxScore = 0;
+
+    // 1. Název
+    const nazevOk = norm(labelText).includes(norm(p.nazev));
+    rows.push({ icon: nazevOk ? '✅' : '⚠️', cls: nazevOk ? 'ok' : 'warn', label: 'Název',
+      detail: nazevOk ? `<span class="found">${p.nazev}</span>` :
+        `<em>Nenalezen</em>: <span class="missing">${p.nazev}</span>` });
+    score += nazevOk ? 2 : 0; maxScore += 2;
+
+    // 2. Složení
+    if (p.slozeni) {
+      const ck = checkSlozeni(p.slozeni, labelText);
+      const cls = ck.pct >= 85 ? 'ok' : ck.pct >= 55 ? 'warn' : 'err';
+      let detail = `Shoda <strong>${ck.pct} %</strong> (${ck.found}/${ck.total} výrazů)`;
+      if (ck.missing.length)
+        detail += `<br>Chybějící: ${ck.missing.map(m => `<span class="missing">${m}</span>`).join(' · ')}`;
+      rows.push({ icon: ck.pct >= 85 ? '✅' : ck.pct >= 55 ? '⚠️' : '❌', cls, label: 'Složení', detail });
+      score += Math.round(ck.pct / 100 * 4); maxScore += 4;
+    }
+
+    // 3. Alergeny ze složení
+    if (p.slozeni) {
+      const allergens = extractAllergens(p.slozeni);
+      const nLabelUp = labelText.toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+      const ok = allergens.filter(a => nLabelUp.includes(a.normalize('NFD').replace(/[̀-ͯ]/g,'')));
+      const miss = allergens.filter(a => !nLabelUp.includes(a.normalize('NFD').replace(/[̀-ͯ]/g,'')));
+      if (allergens.length) {
+        const allOk = miss.length === 0;
+        rows.push({ icon: allOk ? '✅' : miss.length <= 1 ? '⚠️' : '❌',
+          cls: allOk ? 'ok' : miss.length <= 1 ? 'warn' : 'err', label: 'Alergeny',
+          detail: ok.map(a => `<span class="found">${a}</span>`).join(' ') +
+            (miss.length ? `<br>Chybí: ${miss.map(a => `<span class="missing">${a}</span>`).join(' ')}` : '') });
+        score += allOk ? 4 : Math.max(0, 4 - miss.length); maxScore += 4;
+      }
+    }
+
+    // 4. Stopy
+    if (p.stopy) {
+      const firstStopa = norm(p.stopy.split(',')[0]);
+      const stopyOk = norm(labelText).includes(firstStopa);
+      rows.push({ icon: stopyOk ? '✅' : '❌', cls: stopyOk ? 'ok' : 'err', label: 'Stopy',
+        detail: stopyOk ? `<span class="found">Nalezeny</span>` :
+          `<em>Chybí nebo nesedí</em> — spec: <span class="missing">${p.stopy}</span>` });
+      score += stopyOk ? 2 : 0; maxScore += 2;
+    }
+
+    // 5. Výživa
+    const nutri = checkNutri(p, labelText);
+    const nutriOkCount = nutri.filter(n => n.found).length;
+    if (nutri.length) {
+      const allNutriOk = nutriOkCount === nutri.length;
+      rows.push({ icon: allNutriOk ? '✅' : nutriOkCount >= nutri.length * 0.7 ? '⚠️' : '❌',
+        cls: allNutriOk ? 'ok' : nutriOkCount >= nutri.length * 0.7 ? 'warn' : 'err',
+        label: 'Výživ. hodnoty',
+        detail: nutri.map(n => n.found
+          ? `<span class="found">${n.label}: ${n.val}</span>`
+          : `${n.label}: <span class="missing">${n.val}</span>`
+        ).join(' · ') });
+      score += nutriOkCount; maxScore += nutri.length;
+    }
+
+    // 6. Země původu
+    if (p.zeme_puvodu) {
+      const zpOk = norm(labelText).includes(norm(p.zeme_puvodu));
+      rows.push({ icon: zpOk ? '✅' : '⚠️', cls: zpOk ? 'ok' : 'warn', label: 'Země původu',
+        detail: zpOk ? `<span class="found">${p.zeme_puvodu}</span>` :
+          `<em>Nenalezena</em>: <span class="missing">${p.zeme_puvodu}</span>` });
+      score += zpOk ? 1 : 0; maxScore += 1;
+    }
+
+    totalScore += score; totalMax += maxScore;
+
+    const pPct = maxScore > 0 ? Math.round(score / maxScore * 100) : 100;
+    const pColor = pPct >= 85 ? '#2e7d32' : pPct >= 60 ? '#e65100' : '#c62828';
+
+    if (selectedProds.length > 1) {
+      html += `<div class="prod-section-header">
+        ${p.kod} — ${p.nazev}
+        <span style="float:right;font-size:12px;color:${pColor}">${pPct} %</span>
+      </div>`;
+    }
+
+    html += rows.map(r => `<div class="check-row ${r.cls}">
+      <div class="check-icon">${r.icon}</div>
+      <div class="check-label">${r.label}</div>
+      <div class="check-detail">${r.detail}</div>
+    </div>`).join('');
+  }
+
+  const finalPct = totalMax > 0 ? Math.round(totalScore / totalMax * 100) : 100;
+  document.getElementById('score-num').textContent = finalPct;
+  const fill = document.getElementById('score-fill');
+  fill.style.width = finalPct + '%';
+  fill.className = 'score-fill ' + (finalPct >= 85 ? 'score-ok' : finalPct >= 60 ? 'score-warn' : 'score-err');
+
+  document.getElementById('result-body').innerHTML = html;
+  document.getElementById('result-card').style.display = 'block';
+  document.getElementById('result-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function clearAll() {
+  selectedProds = [];
+  renderProdList();
+  document.getElementById('prod-search').value = '';
+  document.getElementById('label-text').value = '';
+  document.getElementById('pdf-text').value = '';
+  document.getElementById('pdf-preview-wrap').style.display = 'none';
+  document.getElementById('pdf-status').style.display = 'none';
+  document.getElementById('result-card').style.display = 'none';
+}
+</script>
+</body>
+</html>
