@@ -1426,6 +1426,8 @@ let dkCurrent = null;
 let dkMarze = null; // null = auto (z DB), číslo = vlastní %
 let dkSlozeni = null; // složení existujícího dárku pro košík
 let dkCelkNakl = 0;
+let dkBaseMo = 0;
+let dkBaseVo = 0;
 
 function dkSearch(q) {
   const drop = document.getElementById('dk-drop');
@@ -1556,14 +1558,13 @@ function dkShow() {
   detail.style.display = 'block';
 
   // Předvyplnit pole "Přidat do kalkulace" a uložit složení pro košík
-  dkSlozeni = items.map(x => ({ kod: x.kod, nazev: x.nazev, gram: x.gram, obal: d.obal || '' }));
+  dkSlozeni  = items.map(x => ({ kod: x.kod, nazev: x.nazev, gram: x.gram, obal: d.obal || '' }));
   dkCelkNakl = celkNakl;
+  dkBaseMo   = Math.round(moExVat * 10) / 10;
+  dkBaseVo   = Math.round(voExVat * 10) / 10;
   const nazevEl = document.getElementById('d-kalk-nazev');
-  const moEl    = document.getElementById('d-kalk-mo');
-  const voEl    = document.getElementById('d-kalk-vo');
   if (nazevEl) nazevEl.value = d.nazev;
-  if (moEl)    moEl.value    = Math.round(moExVat * 10) / 10;
-  if (voEl)    voEl.value    = Math.round(voExVat * 10) / 10;
+  dkUpdateKalkFields();
   dShowKalkCards(true);
 }
 
@@ -1681,6 +1682,24 @@ function ndCalc() {
   } else { sumEl.style.display='none'; }
   const nsTotal=document.getElementById('ns-total'), nsVal=document.getElementById('ns-total-val');
   if(nsTotal&&nsVal){ nsTotal.style.display=rows.length?'':'none'; nsVal.textContent=ksTotal.toFixed(0)+' Kč'; }
+  dkUpdateKalkFields();
+}
+
+function dkUpdateKalkFields() {
+  if (dkBaseMo === 0) return;
+  const ndCostLive = Object.entries(_ndSel).reduce((s,[cat,optId])=>{
+    if(!optId) return s;
+    const def=ND_DEF[cat]?.[optId]; if(!def) return s;
+    let c=def.cena;
+    if(cat==='potisk'&&document.getElementById('nd-potisk-barveny')?.checked) c+=1;
+    return s+c;
+  }, 0);
+  const moEl = document.getElementById('d-kalk-mo');
+  const voEl = document.getElementById('d-kalk-vo');
+  const moNew = Math.round((dkBaseMo + ndCostLive) * 10) / 10;
+  const voNew = dkBaseMo > 0 ? Math.round(moNew * (dkBaseVo / dkBaseMo) * 10) / 10 : dkBaseVo;
+  if (moEl) moEl.value = moNew;
+  if (voEl) voEl.value = voNew;
 }
 
 function nsGetItems() {
