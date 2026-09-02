@@ -818,6 +818,28 @@ ${d.poznamka ? `\n*Poznámka z nabídky: ${d.poznamka}*` : ''}`;
       }
     }
 
+    // 4. Štítková karta — Tvorba štítků FIRMY
+    try {
+      setLoading(true, 'Vytváří se štítková karta…');
+      const T_LIST_STITKY = '6a9816577a9904d965a8a1f2';
+      const stitkyLines = d.produkty.map((p, idx) => {
+        const slozeni = getSlozeniText('sp-'+idx);
+        return `**${p.ks}× ${p.nazev}**` + (slozeni ? `\n📦 ${slozeni}` : '');
+      });
+      const stitkyDesc = `**Firma:** ${d.firma}\n**Termín:** ${fmt(termin)}\n\n` + stitkyLines.join('\n\n') +
+        `\n\n🔗 [Zakázka Trello](${card.url})`;
+      const stitkyTitle = `${d.firma} — ${d.produkty.map(p => p.nazev).join(', ')}`;
+      await tapi('POST', '/cards', {
+        name: stitkyTitle.length > 85 ? stitkyTitle.substring(0, 82) + '…' : stitkyTitle,
+        desc: stitkyDesc,
+        idList: T_LIST_STITKY,
+        pos: 'top',
+        ...(due ? { due } : {})
+      });
+    } catch(stitkyErr) {
+      console.warn('Štítková karta se nepodařilo vytvořit:', stitkyErr);
+    }
+
     setLoading(false);
     document.getElementById('trello-ok').style.display = 'block';
     document.getElementById('trello-link').href = card.url;
