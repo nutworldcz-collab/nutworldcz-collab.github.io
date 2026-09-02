@@ -1760,7 +1760,12 @@ function kalkAddItem() {
       .map(r => ({ kod: r.product.kod, nazev: r.product.nazev, gram: r.gramaz, obal: '' }));
   }
 
-  KALK_ITEMS.push({ nazev, ks, mo, vo, nakl, nadstavby, pripravy, slozeni });
+  // Přičíst nadstavby k ceně (bez DPH, Kč/ks)
+  const ndCost = nadstavby.reduce((s, n) => s + n.cena, 0);
+  const moFinal = Math.round((mo + ndCost) * 10) / 10;
+  const voFinal = mo > 0 ? Math.round(moFinal * (vo / mo)) : vo;
+
+  KALK_ITEMS.push({ nazev, ks, mo: moFinal, vo: voFinal, nakl, nadstavby, pripravy, slozeni });
   kalkRender();
   document.getElementById('d-kalk-nazev').value = '';
   document.getElementById('d-kalk-ks').value = '1';
