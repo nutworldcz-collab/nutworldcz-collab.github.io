@@ -111,7 +111,11 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
 .kosik-item{background:var(--kraft);border-radius:10px;padding:12px 16px;margin-bottom:8px}
 .kosik-item-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
 .kosik-item-nazev{font-family:'Exo 2',sans-serif;font-weight:700;font-size:14px;color:var(--bd);flex:1}
-.kosik-item-prices{display:flex;gap:14px;margin-top:6px;font-size:12px;color:#555;flex-wrap:wrap}
+.kosik-item-prices{display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap}
+.kosik-item-ks{font-size:12px;color:#888;white-space:nowrap}
+.kosik-item-mo{font-family:'Exo 2',sans-serif;font-weight:800;font-size:18px;color:var(--bd)}
+.kosik-item-mo-total{font-size:11px;color:#888;margin-top:1px}
+.kosik-item-vo{font-size:11px;color:#aaa;margin-left:4px}
 .kosik-item-ns{font-size:11px;color:#999;margin-top:3px;font-style:italic}
 .kosik-rm{background:none;border:none;cursor:pointer;color:#aaa;font-size:18px;line-height:1;padding:0}
 .kosik-rm:hover{color:var(--acc)}
@@ -702,9 +706,10 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
       <button onclick="kalkClear()" style="background:none;border:none;font-size:12px;color:#aaa;cursor:pointer;text-decoration:underline">Vymazat vše</button>
     </div>
     <div id="kosik-items"></div>
-    <div class="total-costs" style="margin-top:12px">
-      <div class="cost-row"><span>Celkem bez DPH</span><span id="kosik-mo-total" style="font-family:'Exo 2',sans-serif;font-weight:700;color:var(--bd)">—</span></div>
-      <span id="kosik-vo-total" style="display:none"></span>
+    <div style="background:white;border-radius:10px;padding:12px 16px;margin-top:12px;border:2px solid var(--bd)">
+      <div style="font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Celková MO cena (bez DPH)</div>
+      <div id="kosik-mo-total" style="font-family:'Exo 2',sans-serif;font-weight:800;font-size:22px;color:var(--bd)">—</div>
+      <div id="kosik-vo-total" style="font-size:11px;color:#aaa;margin-top:2px"></div>
     </div>
     <div style="display:flex;gap:10px;margin-top:16px">
       <button class="btn-kosik sec" id="btn-trello" onclick="kalkUlozit()">💾 Uložit na Trello</button>
@@ -1781,21 +1786,29 @@ function kalkRender() {
   document.getElementById('kosik-items').innerHTML = KALK_ITEMS.map((item, i) => {
     totMo += item.mo * item.ks;
     totVo += item.vo * item.ks;
+    const moS = item.mo.toLocaleString('cs');
+    const moTotS = (item.mo * item.ks).toLocaleString('cs');
+    const voS = item.vo ? item.vo.toLocaleString('cs') : null;
     return `<div class="kosik-item">
       <div class="kosik-item-header">
         <div class="kosik-item-nazev">${item.nazev}</div>
         <button class="kosik-rm" onclick="kalkRemove(${i})">×</button>
       </div>
       <div class="kosik-item-prices">
-        <span><strong>${item.ks} ks</strong></span>
-        <span>Bez DPH: <strong>${item.mo} Kč/ks</strong> → ${(item.mo*item.ks).toLocaleString('cs')} Kč</span>
+        <span class="kosik-item-ks">${item.ks} ks ×</span>
+        <div>
+          <div class="kosik-item-mo">${moS} Kč <span style="font-size:12px;font-weight:400;color:#83502e">bez DPH</span></div>
+          <div class="kosik-item-mo-total">celkem ${moTotS} Kč${voS ? ` · <span class="kosik-item-vo">VO ${voS} Kč/ks</span>` : ''}</div>
+        </div>
       </div>
-      ${item.nadstavby?.length ? `<div class="kosik-item-nd">${item.nadstavby.map(n=>'+ '+n.nazev).join(' · ')}</div>` : ''}
-      ${item.pripravy?.length ? `<div class="kosik-item-nd kosik-item-sluzba">SLUŽBA: ${item.pripravy.map(n=>n.nazev).join(', ')}</div>` : ''}
+      ${item.nadstavby?.length ? `<div class="kosik-item-nd" style="margin-top:4px;font-size:11px;color:var(--br)">${item.nadstavby.map(n=>'＋ '+n.nazev).join(' · ')}</div>` : ''}
+      ${item.pripravy?.length ? `<div class="kosik-item-nd kosik-item-sluzba" style="margin-top:3px;font-size:11px;color:var(--acc);font-weight:600">SLUŽBA: ${item.pripravy.map(n=>n.nazev).join(', ')}</div>` : ''}
     </div>`;
   }).join('');
   document.getElementById('kosik-mo-total').textContent = totMo.toLocaleString('cs') + ' Kč';
-  document.getElementById('kosik-vo-total').textContent = totVo.toLocaleString('cs') + ' Kč';
+  const voEl2 = document.getElementById('kosik-vo-total');
+  voEl2.textContent = totVo ? 'VO celkem: ' + totVo.toLocaleString('cs') + ' Kč' : '';
+  voEl2.style.display = totVo ? '' : 'none';
 }
 
 function kalkRemove(i) { KALK_ITEMS.splice(i, 1); kalkRender(); }
