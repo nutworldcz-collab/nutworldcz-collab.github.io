@@ -1419,6 +1419,8 @@ document.addEventListener('click', e => {
 let dkMatches = [];
 let dkCurrent = null;
 let dkMarze = null; // null = auto (z DB), číslo = vlastní %
+let dkSlozeni = null; // složení existujícího dárku pro košík
+let dkCelkNakl = 0;
 
 function dkSearch(q) {
   const drop = document.getElementById('dk-drop');
@@ -1468,7 +1470,7 @@ function dkShow() {
     const g = parseInt(gram) || 0;
     const prod = PRODUKTY.find(p => p.kod === (kod || '').trim());
     const nakup = prod ? Math.round(prod.kg_czk * g / 10) / 100 : null;
-    return { gram: g, nazev: prod ? prod.nazev : kod.trim(), nakup };
+    return { gram: g, kod: (kod||'').trim(), nazev: prod ? prod.nazev : (kod||'').trim(), nakup };
   });
   const totalGram = items.reduce((s, x) => s + x.gram, 0);
   const prodCost = items.reduce((s, x) => s + (x.nakup || 0), 0);
@@ -1485,7 +1487,7 @@ function dkShow() {
   }
   const moExVat = mo / dph;
   const voExVat = vo / dph;
-  const marze = celkNakl > 0 ? Math.round((moExVat - celkNakl) / moExVat * 100) : 0;
+  const marze = dkMarze !== null ? dkMarze : (celkNakl > 0 ? Math.round((moExVat - celkNakl) / moExVat * 100) : 0);
   const zisk = moExVat - celkNakl;
   const marzeColor = marze >= 45 ? '#2e7d32' : marze >= 35 ? '#f57c00' : '#c62828';
 
@@ -1547,6 +1549,17 @@ function dkShow() {
       </div>
     </div>`;
   detail.style.display = 'block';
+
+  // Předvyplnit pole "Přidat do kalkulace" a uložit složení pro košík
+  dkSlozeni = items.map(x => ({ kod: x.kod, nazev: x.nazev, gram: x.gram, obal: d.obal || '' }));
+  dkCelkNakl = celkNakl;
+  const nazevEl = document.getElementById('d-kalk-nazev');
+  const moEl    = document.getElementById('d-kalk-mo');
+  const voEl    = document.getElementById('d-kalk-vo');
+  if (nazevEl) nazevEl.value = d.nazev;
+  if (moEl)    moEl.value    = Math.round(moExVat * 10) / 10;
+  if (voEl)    voEl.value    = Math.round(voExVat * 10) / 10;
+  dShowKalkCards(true);
 }
 
 // ════════════════════════════════════════
@@ -1729,19 +1742,29 @@ function kalkAddItem() {
   const mo = parseFloat(document.getElementById('d-kalk-mo').value) || 0;
   const vo = parseFloat(document.getElementById('d-kalk-vo').value) || 0;
   if (!mo) { alert('Nejdřív spočítej dárek — pole Cena bez DPH se předvyplní automaticky.'); return; }
-  const naklEl = document.getElementById('dr-nakl');
-  const nakl = parseFloat(naklEl?.textContent) || 0;
   const nazev = document.getElementById('d-kalk-nazev').value.trim() || 'Dárek';
   const ks = parseInt(document.getElementById('d-kalk-ks').value) || 1;
   const _allNd = nsGetItems();
   const nadstavby = _allNd.filter(n => !n.sluzba);
   const pripravy  = _allNd.filter(n => n.sluzba);
-  const slozeni = dRows.filter(r => r && r.product && r.gramaz > 0)
-    .map(r => ({ kod: r.product.kod, nazev: r.product.nazev, gram: r.gramaz, obal: '' }));
+
+  // Existující dárek (dkSlozeni) nebo vlastní sestavení (dRows)
+  let nakl, slozeni;
+  if (dkSlozeni !== null) {
+    nakl    = dkCelkNakl;
+    slozeni = dkSlozeni;
+  } else {
+    const naklEl = document.getElementById('dr-nakl');
+    nakl    = parseFloat(naklEl?.textContent) || 0;
+    slozeni = dRows.filter(r => r && r.product && r.gramaz > 0)
+      .map(r => ({ kod: r.product.kod, nazev: r.product.nazev, gram: r.gramaz, obal: '' }));
+  }
+
   KALK_ITEMS.push({ nazev, ks, mo, vo, nakl, nadstavby, pripravy, slozeni });
   kalkRender();
   document.getElementById('d-kalk-nazev').value = '';
   document.getElementById('d-kalk-ks').value = '1';
+  dkSlozeni = null; // reset po přidání
 }
 
 function kalkRender() {
