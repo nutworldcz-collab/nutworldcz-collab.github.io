@@ -1,165 +1,202 @@
 {
-  "generated": "2026-09-07T21:35:20",
-  "total": 13,
+  "generated": "2026-09-08T12:00:36",
+  "total": 15,
   "spam_skipped": 0,
   "emails": [
     {
       "account": "Exchange",
-      "sender": "Autodoprava Špicin - Milena Machová <machova@spicin.cz>",
-      "subject": "Faktura 25332026 k objednávce: NL Bodegraven - CZ Hronov",
-      "date": "pondělí 7. září 2026 14:36:09",
+      "sender": "\"tercanka1@seznam.cz\" <tercanka1@seznam.cz>",
+      "subject": "Re: Re: Re: PRÁCE - NUT WORLD",
+      "date": "úterý 8. září 2026 11:38:00",
       "unread": true,
-      "preview": "Dobrý den",
-      "category": "dodavatel",
-      "sender_short": "Autodoprava Špicin - Milena Machová",
-      "sender_email": "machova@spicin.cz",
+      "preview": "Ano",
+      "category": "ostatni",
+      "sender_short": "tercanka1@seznam.cz",
+      "sender_email": "tercanka1@seznam.cz",
       "ai": {
-        "shrn": "Faktura od dopravce Špicin za přepravu zboží z Nizozemska do České republiky.",
+        "shrn": "Krátká potvrzovací odpověď na pracovní pozici. Kandidát souhlasí s nabídkou.",
         "tyka_se": false,
         "akce": null
       }
     },
     {
       "account": "Exchange",
-      "sender": "\"tercanka1@seznam.cz\" <tercanka1@seznam.cz>",
-      "subject": "Re: Re: PRÁCE - NUT WORLD",
-      "date": "pondělí 7. září 2026 14:22:08",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Balírna přesunul/a kartu Statutární město Třinec do sloupce Kompletuje se dárek - Dárkovna na nástěnce Firmy dárky + objednávky",
+      "date": "úterý 8. září 2026 11:31:08",
       "unread": true,
-      "preview": "Dobrý den",
+      "preview": "￼ Zde je nejnovější... ￼ Balírna přesunul(a) kartu Statutární město Třinec do sloupce Kompletuje se dárek - Dárkovna na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Hana Klofáčová <hanaklofacova9@gmail.com>",
+      "subject": "Re: Pracovní pozice",
+      "date": "úterý 8. září 2026 11:29:55",
+      "unread": false,
+      "preview": "Dobrý den, Určitě ano, V 8:00 s tím budu počítat. Kampak přesně mám dorazit ? Děkuji, S pozdravem a přáním hezkého dne, Hana Klofáčová Dne út 8. 9. 2026 11:28 uživatel Jan Vlček <jan.vlcek@nutworld.cz> napsal: Dobrý den, bylo by možné tedy v pátek třeba rovnou na osmou? Krásný den, S pozdravem a přá",
       "category": "ostatni",
-      "sender_short": "tercanka1@seznam.cz",
-      "sender_email": "tercanka1@seznam.cz",
+      "sender_short": "Hana Klofáčová",
+      "sender_email": "hanaklofacova9@gmail.com",
       "ai": {
-        "shrn": "Stručná odpověď na pracovní dotaz, bez konkrétního obsahu.",
-        "tyka_se": false,
-        "akce": null
+        "shrn": "Hana Klofáčová potvrzuje účast na schůzce v pátek v 8:00, ale potřebuje upřesnění místa.",
+        "tyka_se": true,
+        "akce": "Poslat Haně přesné místo a detaily pro pátek 8:00"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Petra Valsami <petra.valsami@avmc.cz>",
+      "subject": "RE: poptávka",
+      "date": "úterý 8. září 2026 11:26:47",
+      "unread": true,
+      "preview": "Dobrý den, Tak krabiček bychom si vzali 220 A pak",
+      "category": "b2b",
+      "sender_short": "Petra Valsami",
+      "sender_email": "petra.valsami@avmc.cz",
+      "ai": {
+        "shrn": "B2B poptávka od Petry Valsami na 220 krabiček, odpověď je nekompletní.",
+        "tyka_se": true,
+        "akce": "Zeptat se na kompletní parametry objednávky a poslat cenovou nabídku"
       }
     },
     {
       "account": "Exchange",
       "sender": "\"petruska.lencova@seznam.cz\" <petruska.lencova@seznam.cz>",
       "subject": "Re: PRÁCE-NUT WORLD",
-      "date": "pondělí 7. září 2026 14:20:47",
-      "unread": true,
-      "preview": "Všechno v pořádku a se vším souhlasím . Můžeme si tedy potvrdit termín ve čtvrtek v 9:00.",
+      "date": "úterý 8. září 2026 11:25:54",
+      "unread": false,
+      "preview": "Mohu jen poprosit kam se mám ve čtvrtek dostavit ? Děkuji Lencová",
       "category": "ostatni",
       "sender_short": "petruska.lencova@seznam.cz",
       "sender_email": "petruska.lencova@seznam.cz",
       "ai": {
-        "shrn": "Kandidátka potvrzuje souhlas s podmínkami a navrhuje potvrzení schůzky ve čtvrtek v 9:00.",
+        "shrn": "Petrúška Lencová se ptá na místo a čas schůzky na čtvrtek.",
         "tyka_se": true,
-        "akce": "Potvrdit či odmítnout schůzku ve čtvrtek v 9:00 s Petruskou Lencovou"
+        "akce": "Poslat Petrúšce přesné místo a čas schůzky na čtvrtek"
       }
     },
     {
       "account": "Exchange",
       "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Balírna přesunul/a kartu iMi objednávka do sloupce Připravují se komponenty - Balírna na nástěnce Firmy dárky + objednávky",
-      "date": "pondělí 7. září 2026 14:11:49",
+      "subject": "Martin Werner tě zmínil/a na kartě BMI střešní a hydroizolační systémy s.r.o. — 420 ks — 19.10.2026 na nástěnce Firmy dárky + objednávky",
+      "date": "úterý 8. září 2026 11:12:01",
       "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Balírna přesunul(a) kartu iMi objednávka do sloupce Připravují se komponenty - Balírna na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "preview": "￼ Zde je nejnovější... ￼ Martin Werner vás zmínil(a) na kartě BMI střešní a hydroizolační systémy s.r.o. — 420 ks — 19.10.2026 na nástěnce Firmy dárky + objednávky @board grafiku nechám zpracovat Fiory",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Renata Pošepná přesunul/a kartu iMi objednávka do sloupce Připravují - VERPET Náchod na nástěnce Firmy dárky + objednávky",
+      "date": "úterý 8. září 2026 10:50:16",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Renata Pošepná přesunul(a) kartu iMi objednávka do sloupce Připravují - VERPET Náchod na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
       "category": "b2b",
       "sender_short": "Trello",
       "sender_email": "do-not-reply@trello.com",
       "ai": {
-        "shrn": "Notifikace z Trella o přesunutí objednávky do stavu přípravy komponent.",
+        "shrn": "Trello notifikace o přesunu karty objednávky do sloupce přípravy. Automatická zpráva bez konání.",
         "tyka_se": false,
         "akce": null
       }
     },
     {
       "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Balírna přesunul/a kartu Hotel hilton do sloupce Připravují se komponenty - Balírna na nástěnce Firmy dárky + objednávky",
-      "date": "pondělí 7. září 2026 14:08:50",
+      "sender": "\"marekjenterky@seznam.cz\" <marekjenterky@seznam.cz>",
+      "subject": "Nutworld kariera",
+      "date": "úterý 8. září 2026 10:46:39",
       "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Balírna přesunul(a) kartu Hotel hilton do sloupce Připravují se komponenty - Balírna na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Na nástěnce Firmy dárky + objednávky máš 6 upozornění od poslední návštěvy 13:29 (7. září 2026)",
-      "date": "pondělí 7. září 2026 13:31:27",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Doprava NutWorld označil(a) kartu ALZA - EDI/2026/28 jako dokončenou Odpovědět e-mailem ￼ Doprava NutWorld přesunul(a) kartu ALZA - EDI/2026/28 do sloupce Firmy 2026 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem ￼ Doprava NutWorld označil(a) kartu REDA a EON objedn",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Exchange",
-      "sender": "Milena <chat-coXbU41TRcSFI@mg.smartsupp.com>",
-      "subject": "[Smartsupp] Nová zpráva od blazkova.mi@seznam.cz",
-      "date": "pondělí 7. září 2026 13:23:38",
-      "unread": true,
-      "preview": "￼ ￼ Máte novou zprávu www.nutworld.cz M Milena blazkova.mi@seznam.cz Odpovědět ￼ Chatbot: Můj první AI nákupní asistent avQx4J Sep 07",
+      "preview": "Dobrý den tady je Marek Fictum mužete mi poslat tedy více informaci o praci.Skušenosti se skladnickou prací mám, běžně jsem dělal vykládku a nakládku materialu a přesun materialu pomoci VZV. Tuto praci bych dělal zodpovědně a pracovitě",
       "category": "ostatni",
-      "sender_short": "Milena",
-      "sender_email": "chat-coXbU41TRcSFI@mg.smartsupp.com",
+      "sender_short": "marekjenterky@seznam.cz",
+      "sender_email": "marekjenterky@seznam.cz",
       "ai": {
-        "shrn": "Notifikace ze Smartsuppu o nové zprávě od zákazníka na webu Nutworld.cz.",
+        "shrn": "Marek Fictum se hlásí na pracovní pozici skladníka s relevantní zkušeností s manipulací a VZV.",
         "tyka_se": true,
-        "akce": "Přečíst a odpovědět na zprávu od zákazníka blazkova.mi@seznam.cz"
+        "akce": "Vyhodnotit kandidáta a poslat mu podrobnější informace o pozici a procesu"
       }
     },
     {
       "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 13:15 (7. září 2026)",
-      "date": "pondělí 7. září 2026 13:17:44",
+      "sender": "metaloBox <infocz@metalobox.com>",
+      "subject": "🍂  Podzimní pokles cen – ušetřete až 70 %!",
+      "date": "úterý 8. září 2026 10:38:08",
       "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Renata Pošepná připojil(a) přílohu IMG_20260907_130745.jpg ke kartě Marais na nástěnce Firmy dárky + objednávky Odpovědět e-mailem ￼ Renata Pošepná připojil(a) přílohu IMG_20260907_130813.jpg ke kartě Marais na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
+      "preview": "Zobrazit v prohlížeči ￼ Kontakt ￼ Vážený partnere, Náš podzimní výprodej je tady! Naše nová nabídka rozbalených",
+      "category": "ostatni",
+      "sender_short": "metaloBox",
+      "sender_email": "infocz@metalobox.com",
+      "ai": {
+        "shrn": "Marketingový email od MetaloBoxu na podzimní výprodej. Nepříslušný obsah.",
+        "tyka_se": false,
+        "akce": null
+      }
     },
     {
       "account": "Exchange",
-      "sender": "WEDOS <hosting@wedos.com>",
-      "subject": "Informace o nezaplacené službě [3126354411]",
-      "date": "pondělí 7. září 2026 13:16:16",
+      "sender": "Veronika Válek Víchová <veronika.valek-vichova@olympic-palace.cz>",
+      "subject": "Poptávka",
+      "date": "úterý 8. září 2026 10:25:34",
       "unread": true,
-      "preview": "",
-      "category": "ostatni",
-      "sender_short": "WEDOS",
-      "sender_email": "hosting@wedos.com",
+      "preview": "Dobrý den pane Vlčku, poptávám Vás ještě o cenu balení mini preclíků slaných jako varianta místo chipsů",
+      "category": "b2b",
+      "sender_short": "Veronika Válek Víchová",
+      "sender_email": "veronika.valek-vichova@olympic-palace.cz",
       "ai": {
-        "shrn": "Upozornění od WEDOSu na nezaplacenou službu (hosting).",
+        "shrn": "B2B poptávka od Veronika Válek Víchové na cenu balení mini preclíků jako náhrada za chipsy.",
         "tyka_se": true,
-        "akce": "Ověřit a zaplatit nezaplacenou službu u WEDOSu"
+        "akce": "Poslat cenovou nabídku na mini preclíky v požadovaném balení"
       }
     },
     {
       "account": "Google",
-      "sender": "Temu <temu@eu.temuemail.com>",
-      "subject": "Na vaše jméno je stále kredit 2 000 Kč!",
-      "date": "pondělí 7. září 2026 12:32:00",
+      "sender": "MP Toner <newsletter@mptoner.cz>",
+      "subject": "Cenové trháky! září 2026",
+      "date": "úterý 8. září 2026 11:16:54",
       "unread": true,
-      "preview": "@Honza Vl...",
+      "preview": "V případě",
       "category": "ostatni",
-      "sender_short": "Temu",
-      "sender_email": "temu@eu.temuemail.com",
+      "sender_short": "MP Toner",
+      "sender_email": "newsletter@mptoner.cz",
       "ai": {
-        "shrn": "Propagační email od Temu o nevyužitém kreditu 2000 Kč.",
+        "shrn": "Cenový newsletter od MP Toner s nekompletním obsahem. Spam.",
         "tyka_se": false,
         "akce": null
       }
     },
     {
       "account": "Google",
-      "sender": "Apple <no_reply@email.apple.com>",
-      "subject": "Vaše faktura od společnosti Apple",
-      "date": "pondělí 7. září 2026 8:47:48",
+      "sender": "GIGAPRINT | Tonery pro všechny tiskárny <info@gigaprint.cz>",
+      "subject": "🛻Doprava zdarma na výdejní místa PPL pokračuje! 🛻",
+      "date": "úterý 8. září 2026 9:05:13",
       "unread": true,
-      "preview": "￼ Faktura 6. září 2026 Pořadí:1-14418261250 ID objednávky:MX5XXNWD3N Dokument:828186712687 Účet Apple:vyziva.trenink@gmail.com ￼ iCloud iCloud+ s úložištěm 2 TB (Měsíční) Obnoví se 7. října 2026 249,00 Kč Včetně DPH v sazbě 21 %43,21 Kč Fakturace a platba Jan Vlček Bratří Čapků Červený Kostelec Česk",
-      "category": "dodavatel",
-      "sender_short": "Apple",
-      "sender_email": "no_reply@email.apple.com",
+      "preview": "Nezobrazuje se Vám e-mail správně? Prohlédněte si ho zde. ￼ Zákaznická linka: 800 203 100 Dotazy k objednávkám: 571 412 424 Pobočka Praha: 210 320 014 ￼ Doprava na výdejní místa PPL je stále ZDARMA! Máme pro vás dobrou zprávu – naši akci prodlužujeme až do 13. 9. 2026. Při nákupu náplní do tiskáren ",
+      "category": "ostatni",
+      "sender_short": "GIGAPRINT | Tonery pro všechny tiskárny",
+      "sender_email": "info@gigaprint.cz",
       "ai": {
-        "shrn": "Faktura od Apple za měsíční předplatné iCloud+ s úložištěm 2 TB.",
+        "shrn": "Promoce od GIGAPRINT na dopravu zdarma do PPL. Ireleventní pro e-shop s ořechy.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "Lucie | Fitlines Studio <info@fitlines.cz>",
+      "subject": "JÍDELNÍČKY NA MÍRU | Září 2026",
+      "date": "úterý 8. září 2026 9:00:28",
+      "unread": true,
+      "preview": "FITLiNES ⚡ STUDIO · ČERVENÝ KOSTELEC ✦ VÝŽIVA NA MÍRU Jídelníček, který skutečně funguje. Zhubnout bez hladovění je možné. Stačí jíst správně — přesně pro tvůj typ",
+      "category": "ostatni",
+      "sender_short": "Lucie | Fitlines Studio",
+      "sender_email": "info@fitlines.cz",
+      "ai": {
+        "shrn": "Marketing email od Fitlines Studio o nutriční poradenství. Nepříslušný obsah.",
         "tyka_se": false,
         "akce": null
       }
@@ -167,15 +204,15 @@
     {
       "account": "Google",
       "sender": "\"AliExpress.seller\" <promotion@aliexpress.com>",
-      "subject": "Our daily picks at US $15.00 off",
-      "date": "pondělí 7. září 2026 4:31:13",
+      "subject": "Our daily picks at US $4.00 off",
+      "date": "úterý 8. září 2026 3:04:32",
       "unread": true,
       "preview": "Collect coupons inside & shop now ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ Daily specials in our store ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ",
       "category": "ostatni",
       "sender_short": "AliExpress.seller",
       "sender_email": "promotion@aliexpress.com",
       "ai": {
-        "shrn": "Propagační email od AliExpress s denními výprodejovými nabídkami.",
+        "shrn": "Promoce od AliExpress s kupóny. Spam.",
         "tyka_se": false,
         "akce": null
       }
@@ -183,15 +220,15 @@
     {
       "account": "Google",
       "sender": "\"CrossFit\" <crossfit@mail.crossfit.com>",
-      "subject": "260907 Workout of the Day: Push Press",
-      "date": "pondělí 7. září 2026 2:32:23",
+      "subject": "260908 Workout of the Day: Bring it All Home",
+      "date": "úterý 8. září 2026 2:32:15",
       "unread": true,
-      "preview": "￼ ￼ ￼ MONDAY",
+      "preview": "￼ ￼ ￼ TUESDAY",
       "category": "ostatni",
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "Notifikace z CrossFitu s workout tipem na den.",
+        "shrn": "Newsletter od CrossFitu o cvičení Workout of the Day. Nepříslušný obsah.",
         "tyka_se": false,
         "akce": null
       }
