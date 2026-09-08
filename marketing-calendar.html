@@ -1,0 +1,478 @@
+<title>Marketingový kalendář 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #f0e8df;
+  --surface: #ffffff;
+  --kraft: #f1e6da;
+  --text: #2a1a0e;
+  --muted: #8a6a4a;
+  --bd: #5c381f;
+  --br: #83502e;
+  --amb: #f7ab31;
+  --acc: #da1668;
+  --leaf: #6fa044;
+  --teal: #1e7a8a;
+  --border: #ddd0c0;
+  --edit-bg: #fffbf5;
+  --edit-border: #c8a060;
+  --row-hover: #fdf6ef;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1a0d04; --surface: #251408; --kraft: #2e1a08;
+    --text: #f0e4d4; --muted: #a07850; --border: #3d2510;
+    --edit-bg: #301a08; --edit-border: #8a6030; --row-hover: #2e1808;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1a0d04; --surface: #251408; --kraft: #2e1a08;
+  --text: #f0e4d4; --muted: #a07850; --border: #3d2510;
+  --edit-bg: #301a08; --edit-border: #8a6030; --row-hover: #2e1808;
+}
+
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Source Sans 3', Arial, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; }
+
+/* ── Topbar ── */
+.topbar { background: var(--bd); padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.topbar-left { display: flex; align-items: center; gap: 14px; }
+.topbar-brand { font-family: 'Exo 2', sans-serif; font-size: 17px; font-weight: 800; color: white; }
+.topbar-title { font-family: 'Exo 2', sans-serif; font-size: 14px; font-weight: 600; color: rgba(255,255,255,.65); }
+.save-status { font-size: 11px; color: rgba(255,255,255,.5); font-weight: 600; transition: color .3s; }
+.save-status.saved { color: #a8e090; }
+
+/* ── Filters ── */
+.filters { display: flex; gap: 8px; align-items: center; padding: 12px 20px; background: var(--kraft); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+.filter-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-right: 4px; }
+.filter-btn { border: 1.5px solid var(--border); background: var(--surface); border-radius: 16px; padding: 4px 12px; font-size: 12px; font-family: 'Exo 2', sans-serif; font-weight: 600; color: var(--muted); cursor: pointer; transition: all .15s; }
+.filter-btn:hover { border-color: var(--br); color: var(--bd); }
+.filter-btn.active { background: var(--bd); color: white; border-color: var(--bd); }
+.filter-sep { width: 1px; height: 18px; background: var(--border); margin: 0 4px; }
+
+/* ── Table scroll wrapper ── */
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 20px; }
+
+/* ── Table ── */
+table { border-collapse: collapse; width: max-content; min-width: 100%; background: var(--surface); border-radius: 10px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,.08); }
+thead { background: var(--bd); }
+thead th { font-family: 'Exo 2', sans-serif; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,.7); padding: 12px 14px; text-align: left; white-space: nowrap; border-right: 1px solid rgba(255,255,255,.08); }
+thead th:last-child { border-right: none; }
+thead th.editable-col { color: var(--amb); }
+
+tbody tr { border-bottom: 1px solid var(--border); transition: background .12s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--row-hover); }
+tbody tr.past { opacity: .55; }
+tbody tr.active-now { background: #fffbf0; }
+tbody tr.active-now:hover { background: #fff7e8; }
+
+td { padding: 11px 14px; vertical-align: top; border-right: 1px solid var(--border); font-size: 13px; }
+td:last-child { border-right: none; }
+
+/* column widths */
+.col-kampan { min-width: 190px; max-width: 210px; }
+.col-obdobi { width: 130px; white-space: nowrap; }
+.col-skupina { width: 90px; }
+.col-typ { width: 110px; }
+.col-kanaly { min-width: 160px; max-width: 200px; font-size: 12px; color: var(--muted); }
+.col-produkty { min-width: 220px; max-width: 260px; }
+.col-stav { width: 130px; }
+.col-poznamky { min-width: 220px; max-width: 300px; }
+
+/* campaign name */
+.camp-name { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 13px; color: var(--bd); line-height: 1.3; }
+.camp-sdeleni { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+
+/* date range */
+.date-range { font-variant-numeric: tabular-nums; font-size: 12px; color: var(--text); }
+.date-days { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.date-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 8px; margin-top: 4px; }
+.date-badge.soon { background: #fff3cd; color: #7a5a00; }
+.date-badge.running { background: #d4edda; color: #1a5c2a; }
+
+/* skupin badge */
+.skupina-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 10px; white-space: nowrap; }
+.sg-b2c { background: #e8f0ff; color: #2a50a0; }
+.sg-b2b { background: #fff0e8; color: #8a4010; }
+.sg-both { background: #f0e8ff; color: #5a2090; }
+
+/* typ badge */
+.typ-badge { display: inline-block; font-family: 'Exo 2', sans-serif; font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 10px; }
+.typ-evergreen { background: #e8f5e0; color: #2d6010; border: 1px solid #a8d880; }
+.typ-hlavni { background: #fff5d8; color: #7a5000; border: 1px solid #f7c840; }
+.typ-tematicka { background: #fde8f0; color: #8a0040; border: 1px solid #f0a0c0; }
+.typ-prodejni { background: #e0f0f5; color: #0a5070; border: 1px solid #80c0d8; }
+.typ-produktova { background: #f1e6da; color: var(--bd); border: 1px solid var(--border); }
+
+/* editable cells */
+.editable-cell { min-height: 36px; padding: 6px 8px; border-radius: 6px; border: 1.5px solid transparent; cursor: text; transition: border-color .15s, background .15s; outline: none; line-height: 1.45; white-space: pre-wrap; word-break: break-word; }
+.editable-cell:hover { border-color: var(--edit-border); background: var(--edit-bg); }
+.editable-cell:focus { border-color: var(--br); background: var(--edit-bg); box-shadow: 0 0 0 3px rgba(131,80,46,.12); }
+.editable-cell:empty::before { content: attr(data-placeholder); color: var(--muted); font-style: italic; pointer-events: none; opacity: .6; }
+.editable-cell.has-content { color: var(--text); }
+
+/* stav select */
+.stav-select { appearance: none; -webkit-appearance: none; border: 1.5px solid var(--border); border-radius: 8px; padding: 5px 28px 5px 10px; font-family: 'Source Sans 3', sans-serif; font-size: 12px; font-weight: 600; background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238a6a4a'/%3E%3C/svg%3E") no-repeat right 8px center; cursor: pointer; width: 100%; color: var(--text); transition: border-color .15s; }
+.stav-select:focus { outline: none; border-color: var(--br); box-shadow: 0 0 0 3px rgba(131,80,46,.12); }
+.stav-plan { color: #666; }
+.stav-pripravujeme { color: var(--teal); }
+.stav-aktivni { color: var(--leaf); font-weight: 700; }
+.stav-hotovo { color: var(--bd); }
+.stav-pozastaveno { color: var(--acc); }
+
+/* legend */
+.legend { display: flex; gap: 16px; flex-wrap: wrap; padding: 12px 20px; font-size: 11px; color: var(--muted); align-items: center; border-top: 1px solid var(--border); }
+.legend-item { display: flex; align-items: center; gap: 5px; }
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+/* add button */
+.add-bar { padding: 12px 20px; display: flex; justify-content: flex-start; }
+.btn-add { background: var(--bd); color: white; border: none; border-radius: 10px; padding: 10px 20px; font-family: 'Exo 2', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 7px; transition: background .15s; }
+.btn-add:hover { background: var(--br); }
+
+/* delete btn on custom rows */
+.btn-del { background: none; border: none; color: #c0a090; font-size: 16px; cursor: pointer; padding: 0 4px; line-height: 1; transition: color .15s; vertical-align: middle; }
+.btn-del:hover { color: var(--acc); }
+
+/* modal */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 16px; }
+.modal-overlay[hidden] { display: none !important; }
+.modal { background: var(--surface); border-radius: 14px; padding: 28px 28px 24px; width: 100%; max-width: 560px; box-shadow: 0 20px 60px rgba(0,0,0,.25); max-height: 90vh; overflow-y: auto; }
+.modal-title { font-family: 'Exo 2', sans-serif; font-size: 16px; font-weight: 800; color: var(--bd); margin-bottom: 20px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.form-row.full { grid-template-columns: 1fr; }
+.form-field { display: flex; flex-direction: column; gap: 5px; }
+.form-field label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+.form-field input, .form-field select, .form-field textarea { border: 1.5px solid var(--border); border-radius: 8px; padding: 8px 11px; font-family: 'Source Sans 3', sans-serif; font-size: 13px; background: var(--surface); color: var(--text); transition: border-color .15s; }
+.form-field input:focus, .form-field select:focus, .form-field textarea:focus { outline: none; border-color: var(--br); box-shadow: 0 0 0 3px rgba(131,80,46,.1); }
+.form-field textarea { min-height: 70px; resize: vertical; font-size: 12px; }
+.modal-btns { display: flex; gap: 10px; margin-top: 20px; justify-content: flex-end; }
+.btn-save { background: var(--bd); color: white; border: none; border-radius: 9px; padding: 10px 24px; font-family: 'Exo 2', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: background .15s; }
+.btn-save:hover { background: var(--br); }
+.btn-cancel { background: none; border: 1.5px solid var(--border); border-radius: 9px; padding: 10px 20px; font-family: 'Exo 2', sans-serif; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; transition: all .15s; }
+.btn-cancel:hover { border-color: var(--br); color: var(--bd); }
+
+@media (max-width: 700px) {
+  .topbar { padding: 12px 16px; }
+  .table-wrap { padding: 12px; }
+  .filters { padding: 10px 12px; }
+  .form-row { grid-template-columns: 1fr; }
+}
+</style>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-brand">🐿 Nutworld</span>
+    <span class="topbar-title">Marketingový kalendář 2026</span>
+  </div>
+  <span class="save-status" id="save-status">Automatické ukládání</span>
+</div>
+
+<div class="filters">
+  <span class="filter-label">Typ</span>
+  <button class="filter-btn active" onclick="setFilter('typ','')">Vše</button>
+  <button class="filter-btn" onclick="setFilter('typ','Evergreen')">Evergreen</button>
+  <button class="filter-btn" onclick="setFilter('typ','Hlavní')">Hlavní</button>
+  <button class="filter-btn" onclick="setFilter('typ','Tematická')">Tematická</button>
+  <button class="filter-btn" onclick="setFilter('typ','Prodejní')">Prodejní</button>
+  <button class="filter-btn" onclick="setFilter('typ','Produktová')">Produktová</button>
+  <div class="filter-sep"></div>
+  <span class="filter-label">Stav</span>
+  <button class="filter-btn active" onclick="setFilter('stav','')">Vše</button>
+  <button class="filter-btn" onclick="setFilter('stav','Plán')">Plán</button>
+  <button class="filter-btn" onclick="setFilter('stav','Připravujeme')">Připravujeme</button>
+  <button class="filter-btn" onclick="setFilter('stav','Aktivní')">Aktivní</button>
+  <button class="filter-btn" onclick="setFilter('stav','Hotovo')">Hotovo</button>
+</div>
+
+<div class="table-wrap">
+  <table id="cal-table">
+    <thead>
+      <tr>
+        <th class="col-kampan">Kampaň</th>
+        <th class="col-obdobi">Období</th>
+        <th class="col-skupina">Skupina</th>
+        <th class="col-typ">Typ</th>
+        <th class="col-kanaly">Kanály</th>
+        <th class="col-produkty editable-col">✎ Produkty</th>
+        <th class="col-stav editable-col">✎ Stav</th>
+        <th class="col-poznamky editable-col">✎ Poznámky</th>
+      </tr>
+    </thead>
+    <tbody id="cal-body"></tbody>
+  </table>
+</div>
+
+<div class="add-bar">
+  <button class="btn-add" onclick="openModal()">➕ Přidat kampaň</button>
+</div>
+
+<div class="modal-overlay" id="modal" hidden>
+  <div class="modal">
+    <div class="modal-title">Nová kampaň</div>
+    <div class="form-row full"><div class="form-field">
+      <label>Název kampaně</label>
+      <input type="text" id="f-nazev" placeholder="např. Valentýn 2027"/>
+    </div></div>
+    <div class="form-row">
+      <div class="form-field"><label>Od</label><input type="date" id="f-od"/></div>
+      <div class="form-field"><label>Do</label><input type="date" id="f-do"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-field">
+        <label>Cílová skupina</label>
+        <select id="f-cilova">
+          <option value="B2C">B2C</option>
+          <option value="B2B">B2B</option>
+          <option value="B2B+B2C">B2B + B2C</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Typ</label>
+        <select id="f-typ">
+          <option>Tematická</option>
+          <option>Hlavní</option>
+          <option>Evergreen</option>
+          <option>Prodejní</option>
+          <option>Produktová</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row full"><div class="form-field">
+      <label>Kanály</label>
+      <input type="text" id="f-kanaly" placeholder="např. Meta + Google + emailing"/>
+    </div></div>
+    <div class="form-row full"><div class="form-field">
+      <label>Hlavní sdělení</label>
+      <textarea id="f-sdeleni" placeholder="Krátký popis nebo slogan kampaně…"></textarea>
+    </div></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Zrušit</button>
+      <button class="btn-save" onclick="addCampaign()">Přidat kampaň</button>
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <span class="legend-item"><span class="legend-dot" style="background:#f7ab31"></span> Hlavní kampaň</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#da1668"></span> Tematická</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#6fa044"></span> Evergreen</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#1e7a8a"></span> Prodejní</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#83502e"></span> Produktová</span>
+  <span style="margin-left:8px">· Buňky <strong>Produkty</strong>, <strong>Stav</strong> a <strong>Poznámky</strong> jsou editovatelné — klikni a piš</span>
+</div>
+
+<script>
+const TODAY = new Date('2026-09-08');
+
+const DATA = [
+  { id:1, nazev:'Narozeniny + svátky', od:'2026-09-10', do:'2026-12-31', cilova:'B2C', sdeleni:'Radost v každém balíčku · Křupavé dárky od srdce · Dárek, který nezůstane ležet ve skříni', kanaly:'Meta + Google', typ:'Evergreen' },
+  { id:2, nazev:'Děkovné dárky', od:'2026-09-10', do:'2026-12-31', cilova:'B2B+B2C', sdeleni:'Když nevíš, jak říci Děkuji · Děkuji, které je opravdu od srdce', kanaly:'Meta + Google', typ:'Evergreen' },
+  { id:3, nazev:'Halloween', od:'2026-09-20', do:'2026-10-20', cilova:'B2C', sdeleni:'Strašidelně dobrá koleda', kanaly:'Emailing + Meta + sítě', typ:'Tematická' },
+  { id:4, nazev:'Říjen je nový Black Friday', od:'2026-09-29', do:'2026-10-19', cilova:'B2C', sdeleni:'Nečekej na později, teď je ta pravá chvíle · Lepší teď než později · Předběhni čas i fronty', kanaly:'Meta + Google + sítě + emailing', typ:'Prodejní' },
+  { id:5, nazev:'Týden kávy', od:'2026-10-01', do:'2026-10-08', cilova:'B2C', sdeleni:'K dobré kávě nejvybranější ořech · Káva bez oříšků v čokoládě? Ne…!', kanaly:'Sítě + emailing', typ:'Tematická' },
+  { id:6, nazev:'Adventní kalendář', od:'2026-10-26', do:'2026-11-26', cilova:'B2B+B2C', sdeleni:'Otevři si každý den křupavé potěšení · S Nut World si čekání užiješ', kanaly:'Emailing + Meta + Google + sítě', typ:'Hlavní' },
+  { id:7, nazev:'Krabičky se stromečkem', od:'2026-11-01', do:'2026-11-20', cilova:'B2B+B2C', sdeleni:'Stromeček pod stromeček nebo k Mikuláši', kanaly:'Meta + Google + sítě', typ:'Produktová' },
+  { id:8, nazev:'Movember', od:'2026-11-01', do:'2026-11-30', cilova:'B2C', sdeleni:'Pro muže s knírem i bez', kanaly:'Emailing + Meta + Google + sítě', typ:'Tematická' },
+  { id:9, nazev:'Mikuláš', od:'2026-11-01', do:'2026-11-30', cilova:'B2B+B2C', sdeleni:'Po čertech dobrá koleda · Pro andílky i čertíky · Letos Mikuláš sype oříšky', kanaly:'Emailing + Meta + Google + sítě', typ:'Tematická' },
+  { id:10, nazev:'Ořechové Vánoce', od:'2026-11-09', do:'2026-12-15', cilova:'B2C', sdeleni:'Vánoce s Nut World budou vonné a křupavé · Provonáme vaše Vánoce radostí a chuťovými zážitky', kanaly:'Emailing + Meta + Google + sítě', typ:'Hlavní' },
+];
+
+const TYP_CLASS = { 'Evergreen':'evergreen', 'Hlavní':'hlavni', 'Tematická':'tematicka', 'Prodejní':'prodejni', 'Produktová':'produktova' };
+const STAV_CLASS = { 'Plán':'plan', 'Připravujeme':'pripravujeme', 'Aktivní':'aktivni', 'Hotovo':'hotovo', 'Pozastaveno':'pozastaveno' };
+
+let activeFilters = { typ: '', stav: '' };
+
+function loadCustom() { try { return JSON.parse(localStorage.getItem('nw_mkt_2026_custom') || '[]'); } catch { return []; } }
+function saveCustom(arr) { try { localStorage.setItem('nw_mkt_2026_custom', JSON.stringify(arr)); } catch {} }
+
+function openModal() { document.getElementById('modal').hidden = false; document.getElementById('f-nazev').focus(); }
+function closeModal() { document.getElementById('modal').hidden = true; ['f-nazev','f-od','f-do','f-kanaly','f-sdeleni'].forEach(id => document.getElementById(id).value = ''); }
+
+function addCampaign() {
+  const nazev = document.getElementById('f-nazev').value.trim();
+  const od = document.getElementById('f-od').value;
+  const doVal = document.getElementById('f-do').value;
+  if (!nazev || !od || !doVal) { alert('Vyplň alespoň název a datum.'); return; }
+  const custom = loadCustom();
+  custom.push({
+    id: 'c' + Date.now(),
+    nazev,
+    od,
+    do: doVal,
+    cilova: document.getElementById('f-cilova').value,
+    sdeleni: document.getElementById('f-sdeleni').value.trim(),
+    kanaly: document.getElementById('f-kanaly').value.trim(),
+    typ: document.getElementById('f-typ').value,
+    custom: true
+  });
+  saveCustom(custom);
+  closeModal();
+  render();
+}
+
+function deleteCampaign(id) {
+  if (!confirm('Smazat tuto kampaň?')) return;
+  saveCustom(loadCustom().filter(c => c.id !== id));
+  // also remove its saved data
+  try {
+    const saved = JSON.parse(localStorage.getItem('nw_mkt_2026') || '{}');
+    delete saved[id];
+    localStorage.setItem('nw_mkt_2026', JSON.stringify(saved));
+  } catch {}
+  render();
+}
+
+document.getElementById('modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+function parseDate(s) { const [y,m,d] = s.split('-').map(Number); return new Date(y,m-1,d); }
+
+function fmtDate(s) {
+  const d = parseDate(s);
+  return d.getDate() + '. ' + (d.getMonth()+1) + '.';
+}
+
+function daysBetween(a, b) { return Math.round((b - a) / 86400000); }
+
+function dateStatus(od, doDate) {
+  const start = parseDate(od), end = parseDate(doDate);
+  end.setHours(23,59,59);
+  if (TODAY > end) return 'past';
+  if (TODAY >= start) return 'running';
+  const daysUntil = daysBetween(TODAY, start);
+  if (daysUntil <= 21) return 'soon';
+  return 'upcoming';
+}
+
+function loadSaved() {
+  try { return JSON.parse(localStorage.getItem('nw_mkt_2026') || '{}'); }
+  catch { return {}; }
+}
+
+function save() {
+  const out = {};
+  document.querySelectorAll('[data-eid]').forEach(el => {
+    const [id, field] = el.dataset.eid.split('|');
+    if (!out[id]) out[id] = {};
+    out[id][field] = el.textContent;
+  });
+  document.querySelectorAll('select[data-eid]').forEach(el => {
+    const [id, field] = el.dataset.eid.split('|');
+    if (!out[id]) out[id] = {};
+    out[id][field] = el.value;
+    applyStavClass(el);
+  });
+  try {
+    localStorage.setItem('nw_mkt_2026', JSON.stringify(out));
+    const s = document.getElementById('save-status');
+    s.textContent = '✓ Uloženo';
+    s.classList.add('saved');
+    setTimeout(() => { s.textContent = 'Automatické ukládání'; s.classList.remove('saved'); }, 2000);
+  } catch {}
+}
+
+function applyStavClass(sel) {
+  sel.className = 'stav-select stav-' + (STAV_CLASS[sel.value] || 'plan');
+}
+
+function skupinaBadge(c) {
+  if (c === 'B2C') return `<span class="skupina-badge sg-b2c">B2C</span>`;
+  if (c === 'B2B') return `<span class="skupina-badge sg-b2b">B2B</span>`;
+  return `<span class="skupina-badge sg-b2b">B2B</span> <span class="skupina-badge sg-b2c">B2C</span>`;
+}
+
+function render() {
+  const saved = loadSaved();
+  const tbody = document.getElementById('cal-body');
+  tbody.innerHTML = '';
+  const fTyp = activeFilters.typ;
+  const fStav = activeFilters.stav;
+  const ALL = [...DATA, ...loadCustom()].sort((a,b) => a.od.localeCompare(b.od));
+
+  ALL.forEach(c => {
+    const sv = saved[c.id] || {};
+    const produkty = sv.produkty || '';
+    const stav = sv.stav || 'Plán';
+    const poznamky = sv.poznamky || '';
+
+    if (fTyp && c.typ !== fTyp) return;
+    if (fStav && stav !== fStav) return;
+
+    const ds = dateStatus(c.od, c.do);
+    const rowClass = ds === 'past' ? 'past' : ds === 'running' ? 'active-now' : '';
+    const daysUntil = ds === 'soon' ? daysBetween(TODAY, parseDate(c.od)) : 0;
+
+    let dateBadge = '';
+    if (ds === 'running') dateBadge = `<span class="date-badge running">▶ Probíhá</span>`;
+    else if (ds === 'soon') dateBadge = `<span class="date-badge soon">Za ${daysUntil} dní</span>`;
+
+    const tr = document.createElement('tr');
+    if (rowClass) tr.className = rowClass;
+    tr.dataset.typ = c.typ;
+    tr.dataset.id = c.id;
+
+    tr.innerHTML = `
+      <td class="col-kampan">
+        <div class="camp-name">${c.nazev}${c.custom ? ` <button class="btn-del" onclick="deleteCampaign('${c.id}')" title="Smazat kampaň">×</button>` : ''}</div>
+        <div class="camp-sdeleni">${c.sdeleni||''}</div>
+      </td>
+      <td class="col-obdobi">
+        <div class="date-range">${fmtDate(c.od)} – ${fmtDate(c.do)}</div>
+        ${dateBadge}
+      </td>
+      <td class="col-skupina">${skupinaBadge(c.cilova)}</td>
+      <td class="col-typ"><span class="typ-badge typ-${TYP_CLASS[c.typ]||'produktova'}">${c.typ}</span></td>
+      <td class="col-kanaly">${c.kanaly}</td>
+      <td class="col-produkty">
+        <div class="editable-cell ${produkty ? 'has-content' : ''}" contenteditable="true"
+             data-eid="${c.id}|produkty" data-placeholder="Zadej produkty…"
+             >${produkty}</div>
+      </td>
+      <td class="col-stav">
+        <select class="stav-select stav-${STAV_CLASS[stav]||'plan'}" data-eid="${c.id}|stav">
+          <option ${stav==='Plán'?'selected':''}>Plán</option>
+          <option ${stav==='Připravujeme'?'selected':''}>Připravujeme</option>
+          <option ${stav==='Aktivní'?'selected':''}>Aktivní</option>
+          <option ${stav==='Hotovo'?'selected':''}>Hotovo</option>
+          <option ${stav==='Pozastaveno'?'selected':''}>Pozastaveno</option>
+        </select>
+      </td>
+      <td class="col-poznamky">
+        <div class="editable-cell ${poznamky ? 'has-content' : ''}" contenteditable="true"
+             data-eid="${c.id}|poznamky" data-placeholder="Poznámky…"
+             >${poznamky}</div>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+
+  // bind events after render
+  document.querySelectorAll('[data-eid]').forEach(el => {
+    if (el.tagName === 'SELECT') {
+      el.addEventListener('change', save);
+    } else {
+      el.addEventListener('input', () => { el.classList.toggle('has-content', !!el.textContent.trim()); save(); });
+      el.addEventListener('keydown', e => { if (e.key === 'Tab') { e.preventDefault(); const cells = [...document.querySelectorAll('[data-eid]')]; const i = cells.indexOf(el); cells[(i+1)%cells.length]?.focus(); } });
+    }
+  });
+}
+
+function setFilter(key, val) {
+  activeFilters[key] = activeFilters[key] === val ? '' : val;
+  document.querySelectorAll(`.filters .filter-btn`).forEach(btn => {
+    const onclick = btn.getAttribute('onclick') || '';
+    const matches = onclick.includes(`'${key}'`) && onclick.includes(`'${val}'`);
+    const isAll = onclick.includes(`'${key}'`) && onclick.includes(`''`);
+    if (val === '') {
+      btn.classList.toggle('active', isAll);
+    } else {
+      if (matches) btn.classList.toggle('active', activeFilters[key] === val);
+      if (isAll) btn.classList.toggle('active', !activeFilters[key]);
+    }
+  });
+  render();
+}
+
+render();
+</script>
