@@ -1,18 +1,162 @@
 {
-  "generated": "2026-09-09T07:30:18",
-  "total": 2,
-  "spam_skipped": 0,
+  "generated": "2026-09-09T12:00:31",
+  "total": 11,
+  "spam_skipped": 1,
   "emails": [
     {
       "account": "Exchange",
       "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Renata Pošepná přesunul/a kartu Statutární město Třinec do sloupce Připravují - VERPET Náchod na nástěnce Firmy dárky + objednávky",
-      "date": "středa 9. září 2026 5:44:19",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 11:57 (9. září 2026)",
+      "date": "středa 9. září 2026 11:59:20",
       "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Renata Pošepná přesunul(a) kartu Statutární město Třinec do sloupce Připravují - VERPET Náchod na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "preview": "￼ Zde je nejnovější... ￼ Hamerník Tomáš vás přidal(a) na kartu Vilgain objednávka Datle Medjool na nástěnce Firmy dárky + objednávky Odpovědět e-mailem ￼ Hamerník Tomáš přidal(a) termín splnění na kartu Vilgain objednávka Datle Medjool na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podíve",
       "category": "sluzby",
       "sender_short": "Trello",
       "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Miloš  Dvořák <milos.dvorak@mekrs.cz>",
+      "subject": "RE: poptávka",
+      "date": "středa 9. září 2026 10:55:13",
+      "unread": true,
+      "preview": "Čau, Je to přesně jak píšeš všude jen neutrální éčko Miloš Dvořák výkonný ředitel Mekrs s.r.o.",
+      "category": "b2b",
+      "sender_short": "Miloš  Dvořák",
+      "sender_email": "milos.dvorak@mekrs.cz",
+      "ai": {
+        "shrn": "B2B poptávka od Mekrs s.r.o., odpověď na předchozí komunikaci ohledně nabídky.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "WEDOS OnLine <online@wedos.online>",
+      "subject": "Oznámení z monitoringu (2)",
+      "date": "středa 9. září 2026 10:49:54",
+      "unread": true,
+      "preview": "Zasíláme Vám denní přehled oznámení z monitoringu vašich domén (služba WEDOS EWM) ---[ 2026-09-08 15:51:15 ] chyba odpovědi: slinta.cz HTTP Dobrý den, u sledované služby slinta.cz HTTP jsme dne 2026-09-08 15:51:15 CEST zaznamenali krátkodobý problém. Technické informace: Cíl: http://slinta.cz/ Stav:",
+      "category": "ostatni",
+      "sender_short": "WEDOS OnLine",
+      "sender_email": "online@wedos.online",
+      "ai": {
+        "shrn": "Denní monitorovací zpráva od WEDOS o krátkodobém výpadku domény slinta.cz.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Tomáš Hamerník <tomas.hamernik@nutworld.cz>",
+      "subject": "FW: Energy mix - hledání dodavatele",
+      "date": "středa 9. září 2026 10:45:18",
+      "unread": false,
+      "preview": "Ahoj Honzo, rád bych tuto záležitost s Tebou konzultoval. Uměli bychom něco podobného? S ohledem na cenu",
+      "category": "tym",
+      "sender_short": "Tomáš Hamerník",
+      "sender_email": "tomas.hamernik@nutworld.cz",
+      "ai": {
+        "shrn": "Tomáš Hamerník žádá konzultaci ohledně projektu Energy mix a možnosti podobného produktu.",
+        "tyka_se": true,
+        "akce": "Konzultovat s Tomášem Hamerníkem ohledně možnosti vyrábět produkty typu Energy mix s ohledem na cenu"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Anežka Černá <anezka.cerna@labmediaservis.cz>",
+      "subject": "Labmediaservis - ořechy",
+      "date": "středa 9. září 2026 10:27:44",
+      "unread": true,
+      "preview": "Dobrý den pane Vlčku",
+      "category": "ostatni",
+      "sender_short": "Anežka Černá",
+      "sender_email": "anezka.cerna@labmediaservis.cz",
+      "ai": {
+        "shrn": "Anežka Černá z Labmediaservis se obrací na Jana Vlčka v záležitosti ořechů.",
+        "tyka_se": true,
+        "akce": "Přečíst si obsah a odpovědět Anežce Černé"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Jana Gemeranová <customer@envipak.sk>",
+      "subject": "Povinnosti zhotoviteľa  podľa nariadenia PPWR platné od 12.8.2026",
+      "date": "středa 9. září 2026 10:25:03",
+      "unread": false,
+      "preview": "￼ Vážený pán Vlček, srdečne Vás pozývame na online seminár spoločnosti ENVI - PAK",
+      "category": "ostatni",
+      "sender_short": "Jana Gemeranová",
+      "sender_email": "customer@envipak.sk",
+      "ai": {
+        "shrn": "Pozvánka od ENVI-PAK na online seminář o povinnostech zhotovitele podle nařízení PPWR od 12.8.2026.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Jana Nývltová tě přidal/a ke kartě para tiramisu - 2117v na nástěnce Ceník",
+      "date": "středa 9. září 2026 10:15:20",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová vás přidal(a) na kartu para tiramisu - 2117v na nástěnce Ceník Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "dodavatel",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com",
+      "ai": {
+        "shrn": "Trello notifikace - Jana Nývltová přidala Jana do karty produktu para tiramisu na nástěnce Ceník.",
+        "tyka_se": true,
+        "akce": "Zkontrolovat kartu na Trello a seznámit se s detaily produktu para tiramisu"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Větrovcová Kateřina <Katerina.Vetrovcova@colsys.cz>",
+      "subject": "RE: Vánoce 2026 - poptávka",
+      "date": "středa 9. září 2026 10:13:12",
+      "unread": true,
+      "preview": "Dobrý den",
+      "category": "b2b",
+      "sender_short": "Větrovcová Kateřina",
+      "sender_email": "Katerina.Vetrovcova@colsys.cz",
+      "ai": {
+        "shrn": "Odpověď od Kateřiny Větrovcové na vánočnímí poptávku pro rok 2026.",
+        "tyka_se": true,
+        "akce": "Přečíst si obsah a pokračovat v komunikaci s Kateřinou Větrovcovou"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "\"mokusa@seznam.cz\" <mokusa@seznam.cz>",
+      "subject": "Zpráva",
+      "date": "středa 9. září 2026 10:05:04",
+      "unread": true,
+      "preview": "Dobrý den. Předem mé zprávy bych se chtěla představit.Jmenuji se Irena Králová a bydlím ve Rtyni v Podkrkonoší. Hledám práci",
+      "category": "ostatni",
+      "sender_short": "mokusa@seznam.cz",
+      "sender_email": "mokusa@seznam.cz",
+      "ai": {
+        "shrn": "Irena Králová ze Rtyna v Podkrkonoší hledá práci a představuje se.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "\"AliExpress.seller\" <promotion@aliexpress.com>",
+      "subject": "Our daily picks at US $3.00 off",
+      "date": "středa 9. září 2026 9:02:32",
+      "unread": true,
+      "preview": "Collect coupons inside & shop now ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ Daily specials in our store ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ",
+      "category": "ostatni",
+      "sender_short": "AliExpress.seller",
+      "sender_email": "promotion@aliexpress.com",
+      "ai": {
+        "shrn": "Propagační email od AliExpress s denní nabídkou slev.",
+        "tyka_se": false,
+        "akce": null
+      }
     },
     {
       "account": "Google",
@@ -25,7 +169,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "CrossFit workout program s denním tréninkem. Nejedná se o obchodní záležitost týkající se Nutworld.cz.",
+        "shrn": "Email z CrossFitu s workout návrhem na daný den.",
         "tyka_se": false,
         "akce": null
       }
