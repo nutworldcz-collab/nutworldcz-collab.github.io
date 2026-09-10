@@ -209,33 +209,42 @@ const ARCHIVE_LISTS = new Set([
 // List names cache
 let LIST_NAMES = {};
 
-// Rep → color mapping
-const REP_COLORS = {
-  'jan vlček':             'var(--rep-jan)',
-  'jana nývltová':         'var(--rep-jana)',
-  'markéta costachová':    'var(--rep-marketa)',
-  'martin werner':         'var(--rep-martin)',
-  'renata pošepná':        'var(--rep-renata)',
+// Member ID → name + color
+// Priority for "who is the rep": Markéta > Tomáš > Martin > Jana > Renata > Jan
+// (Jan is tagged on nearly every card as owner — he's the fallback, not primary)
+const MEMBER_MAP = {
+  '637f6dd24161b5005273c0b4': { name: 'Jan Vlček',           color: '#83502e', priority: 99 },
+  '6540d11f0cfd371d93ed57e6': { name: 'Markéta Costachová',  color: '#c41060', priority: 1  },
+  '689c8d2e4106ec36f205e721': { name: 'Martin Werner',        color: '#1e5fa8', priority: 3  },
+  '68c94612e57edc4cd5ee0f05': { name: 'Tomáš Hamernák',       color: '#1e8a6e', priority: 2  },
+  '637f8efd088ca800a01b00a9': { name: 'Jana Nývltová',        color: '#5a9136', priority: 4  },
+  '65251d10aa96c771890181e4': { name: 'Renata Pošepná',       color: '#954242', priority: 5  },
 };
-const REP_COLORS_HEX = {
-  'jan vlček':             '#83502e',
-  'markéta costachová':    '#c41060',
-  'martin werner':         '#1e5fa8',
-  'tomáš hamernák':        '#1e8a6e',
-  'tomas hamernik':        '#1e8a6e',
-  'jana nývltová':         '#5a9136',
-  'renata pošepná':        '#954242',
-};
+// Non-exec members (balírna, doprava, nákup) — ignore for rep detection
+const IGNORE_MEMBERS = new Set([
+  '678e5051d29ebf26fbaecc96', // Balírna
+  '652525fd7e535e3209eccbaf', // Doprava NutWorld
+  '637f941aa6b49c0099ba1d48', // Nákup_Nutworld
+]);
+
+function repFromMembers(idMembers) {
+  let best = null;
+  for (const mid of (idMembers || [])) {
+    if (IGNORE_MEMBERS.has(mid)) continue;
+    const m = MEMBER_MAP[mid];
+    if (!m) continue;
+    if (!best || m.priority < best.priority) best = m;
+  }
+  return best || null;
+}
 
 function repColor(name) {
   if (!name) return '#9e9e9e';
   const key = name.toLowerCase().trim();
-  return REP_COLORS_HEX[key] || '#9e9e9e';
-}
-
-function repInitials(name) {
-  if (!name) return '—';
-  return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+  for (const m of Object.values(MEMBER_MAP)) {
+    if (m.name.toLowerCase() === key) return m.color;
+  }
+  return '#9e9e9e';
 }
 
 // List status → color
@@ -250,34 +259,39 @@ function listColor(listName) {
   return '#78909c';
 }
 
-// Parse card
+// Parse card — rep determined from members (no Rep text field used in practice)
 function parseCard(c) {
   const desc = c.desc || '';
   const lines = desc.split('\n');
 
-  let rep = null, firma = null;
+  let firma = null;
+  // Try Firma field from structured description (nabidky.html generated cards)
   for (const line of lines) {
-    const mRep = line.match(/\*\*Rep:\*\*\s*(.+)/);
-    if (mRep) rep = mRep[1].trim();
     const mFirma = line.match(/\*\*Firma:\*\*\s*(.+)/);
-    if (mFirma) firma = mFirma[1].trim();
+    if (mFirma) { firma = mFirma[1].trim(); break; }
   }
 
-  // Fallback firm name from card name
+  // Fallback: extract firm name from card title
   if (!firma) {
     let n = c.name;
     n = n.split(' — ')[0].split(' - ')[0];
-    n = n.replace(/ objednávka.*$/i, '').replace(/ obj\..*$/i, '').trim();
+    n = n.replace(/ objednávka.*$/i, '').replace(/ obj\..*$/i, '')
+         .replace(/ vzorky.*$/i, '').replace(/ do \d+\.\d+.*$/i, '').trim();
     firma = n;
   }
+
+  // Rep from members (primary = highest priority non-owner member)
+  const repMember = repFromMembers(c.idMembers || []);
+  const rep = repMember ? repMember.name : null;
+  const color = repMember ? repMember.color : '#9e9e9e';
 
   // Shorten firm name for chips
   let shortFirma = firma
     .replace(/ s\.r\.o\.?$/i,'').replace(/ a\.s\.?$/i,'').replace(/ spol\. s r\.o\.?$/i,'')
-    .replace(/, spol.*$/i,'').trim();
+    .replace(/, spol.*$/i,'').replace(/ akciová společnost.*$/i,'').trim();
   if (shortFirma.length > 20) shortFirma = shortFirma.slice(0,18) + '…';
 
-  return { rep, firma, shortFirma };
+  return { rep, firma, shortFirma, color };
 }
 
 // State
@@ -306,7 +320,7 @@ async function fetchCards() {
 
     // Fetch cards with due dates (filter=open + visible)
     const res = await fetch(
-      `https://api.trello.com/1/boards/${BOARD}/cards?key=${KEY}&token=${TOKEN}&fields=name,due,desc,idList,url&limit=1000`
+      `https://api.trello.com/1/boards/${BOARD}/cards?key=${KEY}&token=${TOKEN}&fields=name,due,desc,idList,idMembers,url&limit=1000`
     );
     const cards = await res.json();
     allCards = cards.filter(c =>
@@ -413,12 +427,12 @@ function makeCell(date, byDate, otherMonth, todayStr) {
     const MAX_CHIPS = 3;
     const shown = cards.slice(0, MAX_CHIPS);
     for (const c of shown) {
-      const { rep, shortFirma } = parseCard(c);
+      const { rep, firma, shortFirma, color } = parseCard(c);
       const chip = document.createElement('div');
       chip.className = 'chip';
-      chip.style.background = repColor(rep);
+      chip.style.background = color;
       chip.textContent = shortFirma;
-      chip.title = (parseCard(c).firma || c.name) + (rep ? ` (${rep})` : '');
+      chip.title = firma + (rep ? ` (${rep})` : '');
       chipsDiv.appendChild(chip);
     }
     if (cards.length > MAX_CHIPS) {
@@ -449,10 +463,12 @@ function renderStats(cards) {
 
   // Rep breakdown
   const repCount = {};
+  const repColorCache = {};
   for (const c of cards) {
-    const { rep } = parseCard(c);
+    const { rep, color } = parseCard(c);
     const key = rep || '—';
     repCount[key] = (repCount[key] || 0) + 1;
+    repColorCache[key] = color;
   }
 
   const mkStat = (label, val) => {
@@ -466,7 +482,8 @@ function renderStats(cards) {
   if (overdue) mkStat('⚠️ Po termínu', overdue);
   if (upcoming7) mkStat('📅 Příštích 7 dní', upcoming7);
   for (const [rep, cnt] of Object.entries(repCount).sort((a,b) => b[1]-a[1])) {
-    mkStat(`<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${repColor(rep === '—' ? null : rep)};margin-right:3px;vertical-align:middle"></span>${rep}`, cnt);
+    const col = repColorCache[rep] || '#9e9e9e';
+    mkStat(`<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${col};margin-right:3px;vertical-align:middle"></span>${rep}`, cnt);
   }
 }
 
@@ -483,7 +500,7 @@ function openModal(dateStr, cards) {
   }
 
   for (const c of cards) {
-    const { rep, firma } = parseCard(c);
+    const { rep, firma, color } = parseCard(c);
     const listName = LIST_NAMES[c.idList] || '—';
     const time = c.due ? new Date(c.due).toLocaleTimeString('cs-CZ', {hour:'2-digit',minute:'2-digit'}) : '';
 
@@ -492,10 +509,12 @@ function openModal(dateStr, cards) {
     el.href = c.url || '#';
     el.target = '_blank';
     el.rel = 'noopener';
+    el.style.borderLeftColor = color;
+    el.style.borderLeftWidth = '4px';
     el.innerHTML = `
       <div class="card-firma">${esc(firma)}</div>
       <div class="card-meta">
-        ${rep ? `<span class="card-rep" style="background:${repColor(rep)}">${esc(rep)}</span>` : ''}
+        ${rep ? `<span class="card-rep" style="background:${color}">${esc(rep)}</span>` : '<span class="card-status">bez rep</span>'}
         <span class="card-status" style="background:${listColor(listName)}22;color:${listColor(listName)};border:1px solid ${listColor(listName)}44">${esc(listName)}</span>
         ${time ? `<span class="card-time">⏰ ${time}</span>` : ''}
       </div>
