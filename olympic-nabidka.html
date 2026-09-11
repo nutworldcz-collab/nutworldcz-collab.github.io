@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Nabídka Olympic Palace · Nutworld</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}</style></head><body>
+<title>Nabídka — Olympic Palace | Nutworld</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:#b8aca0;font-family:'Segoe UI',system-ui,-apple-system,Arial,sans-serif;font-size:13px;color:#2a1a0e;padding:20px 0 40px}
+
+/* ── PRINT BUTTON ── */
+.print-bar{width:190mm;margin:0 auto 10px;display:flex;justify-content:flex-end}
+.btn-pdf{background:linear-gradient(135deg,#5c381f,#83502e);color:#fff;border:none;padding:9px 22px;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.3px}
+.btn-pdf:hover{background:#83502e}
+
+/* ══ A4 STRÁNKA — základ celého systému ══
+   clip-path: inset(0) = tvrdý ořez VŠEHO obsahu včetně <table>
+   overflow: hidden sám o sobě tabulky v Chrome-flexu neořezává */
+.a4-page{
+  width:190mm;
+  height:250mm;
+  overflow:hidden;
+  clip-path:inset(0);
+  background:white;
+  position:relative;
+  margin:0 auto 8mm;
+  filter:drop-shadow(0 3px 16px rgba(0,0,0,.28));
+}
+
+/* ── TISK ── */
+@media print{
+  body{background:white;padding:0}
+  .print-bar{display:none}
+  .a4-page{margin:0;filter:none;page-break-after:always;break-after:page}
+  .a4-page:last-of-type{page-break-after:avoid;break-after:avoid}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+}
+@page{size:A4 portrait;margin:10mm}
+
+/* ── HEADER ── */
+.doc-header{background:linear-gradient(135deg,#5c381f 0%,#83502e 100%);color:white;padding:18px 26px 14px;display:flex;justify-content:space-between;align-items:flex-start;flex-shrink:0}
+.dh-left .brand{font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:#f7ab31;margin-bottom:4px;font-weight:700}
+.dh-left .title{font-size:18px;font-weight:800;line-height:1.2;letter-spacing:-.2px}
+.dh-left .sub{font-size:10.5px;color:rgba(255,255,255,.65);margin-top:3px}
+.dh-right{text-align:right;font-size:9.5px;color:rgba(255,255,255,.6);line-height:1.8}
+.dh-right strong{color:white;font-size:10.5px;display:block;margin-bottom:1px}
+
+/* ── STRIPE ── */
+.stripe{height:3px;background:linear-gradient(90deg,#da1668,#f7ab31,#6fa044);flex-shrink:0}
+
+/* ── RECIPIENT ── */
+.recipient{padding:10px 26px;background:#faf7f3;border-bottom:1px solid #ede0d4;flex-shrink:0}
+.rec-label{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:#a08060;margin-bottom:2px}
+.rec-name{font-size:13px;font-weight:800;color:#5c381f}
+.rec-addr{font-size:10.5px;color:#7a6050;margin-top:1px}
+
+/* ── BODY ── */
+.doc-body{padding:14px 26px 42px;overflow:hidden}
+
+/* ── SECTION ── */
+.section{margin-bottom:14px}
+.sec-title{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#5c381f;border-left:3px solid #f7ab31;padding-left:8px;margin-bottom:8px}
+.sec-note{font-size:10.5px;color:#6a5040;background:#f9f4ee;border:1px solid #e5d5c0;border-radius:5px;padding:7px 11px;margin-bottom:8px;line-height:1.45}
+.sec-note strong{color:#5c381f}
+
+/* ── TABLE (velká balení / minibar) ── */
+table{width:100%;border-collapse:collapse;font-size:11px}
+thead th{background:#5c381f;color:white;padding:6px 10px;text-align:left;font-size:9px;text-transform:uppercase;letter-spacing:.7px;font-weight:600}
+thead th:not(:first-child){text-align:right}
+tbody td{padding:5.5px 10px;border-bottom:1px solid #f0e6da;vertical-align:middle}
+.per-kg{display:block;font-size:9px;color:#a08060;font-weight:400;margin-top:1px}
+tbody tr:nth-child(even){background:#faf7f2}
+tbody td:not(:first-child){text-align:right;font-variant-numeric:tabular-nums}
+.td-cat{background:#f1e6da!important;color:#5c381f;font-weight:800;font-size:9.5px;text-transform:uppercase;letter-spacing:.6px}
+.td-sub{color:#6a5040;font-size:10px}
+.td-orig{color:#a08060;font-size:10px}
+.td-price{font-weight:700;color:#5c381f}
+.td-vo{font-weight:800;color:#da1668}
+.td-empty{color:#c0a080;font-style:italic;font-size:10px}
+.tbl-note{font-size:9px;color:#a08060;margin-top:4px;text-align:right}
+
+/* ── MINIBAR ── */
+.mb-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px}
+.mb-card{border:1.5px solid #e0d0c0;border-radius:7px;overflow:hidden}
+.mb-head{background:linear-gradient(135deg,#5c381f,#83502e);color:white;padding:9px 13px}
+.mb-head .ct{font-size:12.5px;font-weight:800}
+.mb-head .cs{font-size:9.5px;color:rgba(255,255,255,.65);margin-top:2px}
+.mb-body{padding:8px 13px;background:#faf7f2}
+.mb-tag{display:inline-block;background:#f7ab31;color:#5c381f;font-size:8.5px;font-weight:800;padding:2px 7px;border-radius:9px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.mb-tag.green{background:#6fa044;color:white}
+ul.blist{list-style:none;margin-bottom:6px}
+ul.blist li{font-size:10px;color:#3a2010;padding:1.5px 0 1.5px 15px;position:relative;line-height:1.3}
+ul.blist li::before{content:'✓';position:absolute;left:0;color:#6fa044;font-weight:800;font-size:9.5px;top:2px}
+.mb-table{width:100%;border-collapse:collapse;font-size:10.5px}
+.mb-table thead th{background:#f1e6da;color:#5c381f;padding:4px 8px;font-size:9px;font-weight:800;text-align:left;text-transform:uppercase;letter-spacing:.5px}
+.mb-table thead th:not(:first-child){text-align:right}
+.mb-table tbody td{padding:4px 8px;border-bottom:1px solid #ede0d4;font-variant-numeric:tabular-nums}
+.mb-table tbody td:not(:first-child){text-align:right}
+.mb-table tbody tr:last-child td{border-bottom:none}
+.mo{color:#9a8070}
+.vo{font-weight:800;color:#da1668}
+.mb-note{font-size:9px;color:#6a8050;background:#f0f7ea;border:1px solid #b8d498;border-radius:4px;padding:4px 7px;margin-top:5px;line-height:1.35}
+.mb-note strong{color:#3d6020}
+
+/* ── VO CENÍK (strana 3) ── */
+.vc-section{margin-bottom:12px}
+.vc-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#b57a10;font-weight:700;margin-bottom:5px;padding-bottom:4px;border-bottom:2px solid #f7ab31;display:flex;align-items:center;gap:5px}
+.vc-label::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:#f7ab31;flex-shrink:0}
+.vc-table{width:100%;border-collapse:collapse;font-size:11px}
+.vc-table thead th{background:#5c381f;color:white;padding:6px 10px;font-size:9px;text-transform:uppercase;letter-spacing:.7px;font-weight:600;text-align:left}
+.vc-table thead th.r{text-align:right}
+.vc-table tbody td{padding:6px 10px;border-bottom:1px solid #f0e6da;vertical-align:middle}
+.vc-table tbody tr:last-child td{border-bottom:none}
+.vc-table tbody tr:nth-child(even){background:#faf7f2}
+.vc-table tbody td:not(:first-child){text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.vc-price{font-weight:800;color:#5c381f;font-size:12.5px}
+.vc-unit{font-size:9px;color:#a08060;margin-left:2px}
+.vc-perk{font-size:10.5px;color:#7a6050}
+.vc-perk-unit{font-size:9px;color:#a08060;margin-left:2px}
+.vc-tbl-wrap{border-radius:5px;border:1px solid #dfc9ae;overflow:hidden}
+.vc-info{background:#f9f4ee;border:1px solid #e5d5c0;border-radius:5px;padding:8px 12px;margin-top:10px;font-size:10.5px;color:#6a5040;line-height:1.45}
+.vc-info strong{color:#5c381f}
+
+/* ── FOOTER ── */
+.doc-footer{position:absolute;bottom:0;left:0;right:0;padding:8px 26px;border-top:1px solid #ede0d4;display:flex;justify-content:space-between;align-items:center;font-size:9px;color:#a08060;background:white}
+.doc-footer strong{color:#5c381f}
+</style>
+<style>
+.back-bar{width:190mm;margin:0 auto 6px;display:flex;align-items:center;gap:10px}
+.back{font-size:12px;font-weight:600;color:#83502e;text-decoration:none;display:flex;align-items:center;gap:4px}
+.back:hover{color:#5c381f}
+@media print{.back-bar{display:none}}
+</style>
+</head>
+<body>
+
+<div class="back-bar">
+  <a class="back" href="/firmy-ceniky.html">← Firmy</a>
+</div>
+<div class="print-bar">
+  <button class="btn-pdf" onclick="window.print()">⬇ Stáhnout / Tisknout PDF</button>
+</div>
+
+<!-- ══════════════════════════════════════════
+     STRANA 1 — VELKÁ BALENÍ
+     ══════════════════════════════════════════ -->
+<div class="a4-page">
+  <div class="doc-header">
+    <div class="dh-left">
+      <div class="brand">🐿 Nutworld s.r.o.</div>
+      <div class="title">Nabídka pro Luxury Spa Hotel<br>OLYMPIC PALACE</div>
+      <div class="sub">Sušené ovoce · Ořechy · Semínka · Minibar servis</div>
+    </div>
+    <div class="dh-right">
+      <strong>Nut World s.r.o.</strong>
+      Hvězdova 1716/2, 140 00 Praha<br>
+      IČO: 27517357<br>
+      nutworld.cz<br>
+      info@nutworld.cz<br>
+      Srpen 2026
+    </div>
+  </div>
+  <div class="stripe"></div>
+
+  <div class="recipient">
+    <div class="rec-label">Připraveno pro</div>
+    <div class="rec-name">Luxury Spa Hotel OLYMPIC PALACE</div>
+    <div class="rec-addr">Veronika Válek Víchová &nbsp;·&nbsp; Zámecký vrch 41, 360 01 Karlovy Vary</div>
+  </div>
+
+  <div class="doc-body">
+    <div class="section">
+      <div class="sec-title">Sušené ovoce &amp; ořechy — velkoobchodní ceny</div>
+      <div class="sec-note">
+        <strong>Flexibilní objednávky:</strong> Produkty lze objednat v <strong>balení po 3 kg</strong> (čerstvě baleno přímo u nás) nebo ve <strong>zvýhodněných originálních baleních</strong> od výrobce za nižší cenu za kg.
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width:42%">Produkt</th>
+            <th style="width:13%">Orig. bal.</th>
+            <th style="width:22%">VO orig. balení (Kč bez DPH)</th>
+            <th style="width:18%">VO 3 kg (Kč bez DPH)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="td-cat" colspan="4">Meruňky sušené</td></tr>
+          <tr>
+            <td>Meruňky č. 1 <span class="td-sub">— prémiové</span></td>
+            <td class="td-orig">5 kg</td>
+            <td class="td-price">1 517 Kč<span class="per-kg">303 Kč/kg</span></td>
+            <td class="td-vo">928 Kč<span class="per-kg">309 Kč/kg</span></td>
+          </tr>
+          <tr>
+            <td>Meruňky č. 2</td>
+            <td class="td-orig">10 kg</td>
+            <td class="td-price">2 847 Kč<span class="per-kg">285 Kč/kg</span></td>
+            <td class="td-vo">883 Kč<span class="per-kg">294 Kč/kg</span></td>
+          </tr>
+          <tr>
+            <td>Meruňky č. 4</td>
+            <td class="td-orig">12,5 kg</td>
+            <td class="td-price">3 365 Kč<span class="per-kg">269 Kč/kg</span></td>
+            <td class="td-vo">829 Kč<span class="per-kg">276 Kč/kg</span></td>
+          </tr>
+          <tr>
+            <td>Meruňky č. 8</td>
+            <td class="td-orig">12,5 kg</td>
+            <td class="td-price">2 544 Kč<span class="per-kg">204 Kč/kg</span></td>
+            <td class="td-vo">633 Kč<span class="per-kg">211 Kč/kg</span></td>
+          </tr>
+          <tr>
+            <td>Meruňky kostičky</td>
+            <td class="td-orig">12,5 kg</td>
+            <td class="td-price">1 829 Kč<span class="per-kg">146 Kč/kg</span></td>
+            <td class="td-vo">454 Kč<span class="per-kg">151 Kč/kg</span></td>
+          </tr>
+          <tr><td class="td-cat" colspan="4">Ořechy</td></tr>
+          <tr>
+            <td>Lísková jádra 13/15 natural</td>
+            <td class="td-orig">25 kg</td>
+            <td class="td-price">6 821 Kč<span class="per-kg">273 Kč/kg</span></td>
+            <td class="td-vo">847 Kč<span class="per-kg">282 Kč/kg</span></td>
+          </tr>
+          <tr>
+            <td>Lísková jádra loupaná 13/15</td>
+            <td class="td-orig">20 kg</td>
+            <td class="td-empty" colspan="2">Aktuálně vyprodáno — dodáme co nejdříve</td>
+          </tr>
+          <tr>
+            <td>Vlašská jádra půlky</td>
+            <td class="td-orig">10 kg</td>
+            <td class="td-price">1 812 Kč<span class="per-kg">181 Kč/kg</span></td>
+            <td class="td-vo">571 Kč<span class="per-kg">190 Kč/kg</span></td>
+          </tr>
+          <tr>
+            <td>Mandle loupané</td>
+            <td class="td-orig">25 kg</td>
+            <td class="td-price">5 928 Kč<span class="per-kg">237 Kč/kg</span></td>
+            <td class="td-vo">740 Kč<span class="per-kg">247 Kč/kg</span></td>
+          </tr>
+          <tr><td class="td-cat" colspan="4">Semínka</td></tr>
+          <tr>
+            <td>Chia semínka</td>
+            <td class="td-orig">25 kg</td>
+            <td class="td-price">2 169 Kč<span class="per-kg">87 Kč/kg</span></td>
+            <td class="td-vo">285 Kč<span class="per-kg">95 Kč/kg</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="tbl-note">Ceny v Kč bez DPH · DPH 12 % bude přidána na faktuře · Minimální objednávka 3 kg na produkt</div>
+      <div class="sec-note" style="margin-top:8px">
+        <strong>📋 Specifikace:</strong> Ke všem produktům máme úplnou dokumentaci — složení, alergeny, výživové hodnoty, původ a trvanlivost.
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <div><strong>🐿 Nutworld s.r.o.</strong> &nbsp;·&nbsp; Prémiové ořechy a sušené ovoce</div>
+    <div>1 / 3</div>
+    <div>nutworld.cz &nbsp;·&nbsp; info@nutworld.cz</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     STRANA 2 — MINIBAR
+     ══════════════════════════════════════════ -->
+<div class="a4-page">
+  <div class="doc-header">
+    <div class="dh-left">
+      <div class="brand">🐿 Nutworld s.r.o.</div>
+      <div class="title">Minibar ořechy 100 g</div>
+      <div class="sub">Prémiový minibar servis pro hosty 5★ hotelu</div>
+    </div>
+    <div class="dh-right">
+      <strong>OLYMPIC PALACE</strong>
+      Karlovy Vary<br>
+      Srpen 2026
+    </div>
+  </div>
+  <div class="stripe"></div>
+
+  <div class="doc-body">
+    <div class="section">
+      <div class="sec-title">Dvě varianty balení — vyberte co sedí vašemu hotelu</div>
+      <div style="font-size:9.5px;color:#a08060;margin-bottom:10px">* Pistácie pražené solené jsou baleny v 90 g, ostatní produkty 100 g.</div>
+
+      <div class="mb-grid">
+        <!-- EKO KELÍMEK -->
+        <div class="mb-card">
+          <div class="mb-head">
+            <div class="ct">🌿 EKO Kelímek 100 g</div>
+            <div class="cs">Prémiová volba pro luxusní hotel</div>
+          </div>
+          <div class="mb-body">
+            <div class="mb-tag">⭐ Prémiové</div>
+            <ul class="blist">
+              <li>Vlastní design kelímku</li>
+              <li>Oříšky lze nasypat přímo do kelímku</li>
+              <li>Vždy čerstvě baleno</li>
+              <li>Uzavíratelné víčkem — host si ho může vzít s sebou</li>
+              <li>Možnost vlastního brandu (private label)</li>
+              <li>Etiketa v angličtině na vyžádání</li>
+            </ul>
+            <table class="mb-table">
+              <thead><tr><th>Produkt</th><th>MO bez DPH</th><th>VO hotel bez DPH</th></tr></thead>
+              <tbody>
+                <tr><td>Pistácie pražené solené <span style="font-size:9px;color:#a08060">90 g *</span></td><td class="mo">71 Kč</td><td class="vo">53 Kč</td></tr>
+                <tr>
+                  <td>Mandle uzené
+                    <div class="mb-note"><strong>🌿 Nová receptura:</strong> Méně soli — chuť stejná, zdravější dle legislativy.</div>
+                  </td>
+                  <td class="mo">71 Kč</td><td class="vo">53 Kč</td>
+                </tr>
+                <tr><td>Kešu v mléčné čokoládě</td><td class="mo">71 Kč</td><td class="vo">53 Kč</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- DOYPACK -->
+        <div class="mb-card">
+          <div class="mb-head">
+            <div class="ct">📦 Doypack 100 g</div>
+            <div class="cs">Nejlepší poměr cena / objem</div>
+          </div>
+          <div class="mb-body">
+            <div class="mb-tag green">💰 Výhodné</div>
+            <ul class="blist">
+              <li>Nejlepší poměr cena / objem</li>
+              <li>Uzavíratelné na zip — praktické na cesty</li>
+              <li>Možnost vlastního brandu (private label)</li>
+              <li>Etiketa v angličtině na vyžádání</li>
+            </ul>
+            <table class="mb-table">
+              <thead><tr><th>Produkt</th><th>MO bez DPH</th><th>VO hotel bez DPH</th></tr></thead>
+              <tbody>
+                <tr><td>Pistácie pražené solené <span style="font-size:9px;color:#a08060">90 g *</span></td><td class="mo">71 Kč</td><td class="vo">40 Kč</td></tr>
+                <tr><td>Mandle uzené</td><td class="mo">62 Kč</td><td class="vo">35 Kč</td></tr>
+                <tr><td>Kešu v mléčné čokoládě</td><td class="mo">62 Kč</td><td class="vo">35 Kč</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec-note">
+        <strong>MO</strong> = maloobchodní cena (e-shop nutworld.cz) &nbsp;·&nbsp; <strong>VO hotel</strong> = velkoobchodní cena pro hotel &nbsp;·&nbsp; Ceny bez DPH, DPH 12 % na faktuře
+      </div>
+      <div class="sec-note" style="margin-top:8px;border-color:#6fa044;background:#f4f9f0">
+        <strong>🏷 Private label:</strong> Obě varianty lze potisknout logem hotelu OLYMPIC PALACE. Podmínky a minimální množství dohodou — <strong>info@nutworld.cz</strong>.
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <div><strong>🐿 Nutworld s.r.o.</strong> &nbsp;·&nbsp; Prémiové ořechy a sušené ovoce</div>
+    <div>2 / 3</div>
+    <div>nutworld.cz &nbsp;·&nbsp; info@nutworld.cz</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     STRANA 3 — VO CENÍK 3 KG
+     ══════════════════════════════════════════ -->
+<div class="a4-page">
+  <div class="doc-header">
+    <div class="dh-left">
+      <div class="brand">🐿 Nutworld s.r.o.</div>
+      <div class="title">Velkoobchodní ceník — balení 3 kg</div>
+      <div class="sub">Ořechy · Sušené ovoce · Semínka · Ceny bez DPH · DPH 12 % na faktuře</div>
+    </div>
+    <div class="dh-right">
+      <strong>OLYMPIC PALACE</strong>
+      Karlovy Vary<br>
+      Srpen 2026
+    </div>
+  </div>
+  <div class="stripe"></div>
+
+  <div class="recipient">
+    <div class="rec-label">Platnost ceníku</div>
+    <div class="rec-name">Srpen 2026</div>
+    <div class="rec-addr">Aktualizace vždy začátkem nového měsíce · Ceny potvrdíme před objednávkou</div>
+  </div>
+
+  <div class="doc-body">
+    <div class="vc-section">
+      <div class="vc-label">Ořechy &amp; mandle</div>
+      <div class="vc-tbl-wrap">
+        <table class="vc-table">
+          <thead>
+            <tr><th>Produkt</th><th class="r">Cena za 3 kg bez DPH</th><th class="r">vychází / 1 kg</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Mandle jádra pražená slaná</td>
+              <td><span class="vc-price">813 Kč</span><span class="vc-unit">bez DPH</span></td>
+              <td><span class="vc-perk">271 Kč</span><span class="vc-perk-unit">/ kg</span></td>
+            </tr>
+            <tr>
+              <td>Mandlové plátky</td>
+              <td><span class="vc-price">713 Kč</span><span class="vc-unit">bez DPH</span></td>
+              <td><span class="vc-perk">238 Kč</span><span class="vc-perk-unit">/ kg</span></td>
+            </tr>
+            <tr>
+              <td>Pistácie loupané</td>
+              <td><span class="vc-price">2 027 Kč</span><span class="vc-unit">bez DPH</span></td>
+              <td><span class="vc-perk">676 Kč</span><span class="vc-perk-unit">/ kg</span></td>
+            </tr>
+            <tr>
+              <td>Kešu v čokoládě — tří barev MIX</td>
+              <td><span class="vc-price">846 Kč</span><span class="vc-unit">bez DPH</span></td>
+              <td><span class="vc-perk">282 Kč</span><span class="vc-perk-unit">/ kg</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="vc-section">
+      <div class="vc-label">Sušené ovoce &amp; bobule</div>
+      <div class="vc-tbl-wrap">
+        <table class="vc-table">
+          <thead>
+            <tr><th>Produkt</th><th class="r">Cena za 3 kg bez DPH</th><th class="r">vychází / 1 kg</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Ananas plátky</td>
+              <td><span class="vc-price">377 Kč</span><span class="vc-unit">bez DPH</span></td>
+              <td><span class="vc-perk">126 Kč</span><span class="vc-perk-unit">/ kg</span></td>
+            </tr>
+            <tr>
+              <td>Papaya plátky</td>
+              <td><span class="vc-price">344 Kč</span><span class="vc-unit">bez DPH</span></td>
+              <td><span class="vc-perk">115 Kč</span><span class="vc-perk-unit">/ kg</span></td>
+            </tr>
+            <tr>
+              <td>Švestky bez pecky</td>
+              <td><span class="vc-price">323 Kč</span><span class="vc-unit">bez DPH</span></td>
+              <td><span class="vc-perk">108 Kč</span><span class="vc-perk-unit">/ kg</span></td>
+            </tr>
+            <tr>
+              <td>Klikva (brusinka) velkoplodá</td>
+              <td><span class="vc-price">377 Kč</span><span class="vc-unit">bez DPH</span></td>
+              <td><span class="vc-perk">126 Kč</span><span class="vc-perk-unit">/ kg</span></td>
+            </tr>
+            <tr>
+              <td>Rozinky sultánky</td>
+              <td><span class="vc-price">301 Kč</span><span class="vc-unit">bez DPH</span></td>
+              <td><span class="vc-perk">100 Kč</span><span class="vc-perk-unit">/ kg</span></td>
+            </tr>
+            <tr>
+              <td>Jablka kroužky</td>
+              <td><span class="vc-price">472 Kč</span><span class="vc-unit">bez DPH</span></td>
+              <td><span class="vc-perk">157 Kč</span><span class="vc-perk-unit">/ kg</span></td>
+            </tr>
+            <tr>
+              <td>Goji</td>
+              <td><span class="vc-price">671 Kč</span><span class="vc-unit">bez DPH</span></td>
+              <td><span class="vc-perk">224 Kč</span><span class="vc-perk-unit">/ kg</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="vc-section">
+      <div class="vc-label">Semínka</div>
+      <div class="vc-tbl-wrap">
+        <table class="vc-table">
+          <thead>
+            <tr><th>Produkt</th><th class="r">Cena za 3 kg bez DPH</th><th class="r">vychází / 1 kg</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Len hnědý</td>
+              <td><span class="vc-price">107 Kč</span><span class="vc-unit">bez DPH</span></td>
+              <td><span class="vc-perk">36 Kč</span><span class="vc-perk-unit">/ kg</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="vc-info">
+      <strong>Aktualizace ceníku</strong> — Ceny jsou aktualizovány vždy začátkem nového měsíce při aktualizaci ceníku dodavatelů. Aktuálně platné ceny potvrdíme před objednávkou na <strong>info@nutworld.cz</strong>.
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <div><strong>🐿 Nutworld s.r.o.</strong> &nbsp;·&nbsp; Prémiové ořechy a sušené ovoce</div>
+    <div>3 / 3</div>
+    <div>nutworld.cz &nbsp;·&nbsp; info@nutworld.cz</div>
+  </div>
+</div>
+
+</body>
+</html>
