@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>HU-FA Dental — Marže · Nutworld</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#f5ede3;--surface:#fff;--border:#e0ccb8;--brown-dark:#5c381f;--brown:#83502e;--amber:#f7ab31;--text:#2d1a0a;--text-soft:#7a5a3a;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;min-height:100vh}
+.topbar{background:var(--brown-dark);padding:14px 24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.back{color:rgba(255,255,255,.6);font-size:13px;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:5px}
+.back:hover{color:#fff}
+.topbar h1{font-family:'Exo 2',sans-serif;font-size:17px;font-weight:800;color:#fff;flex:1}
+.topbar .sub{font-size:11px;color:rgba(255,255,255,.45)}
+.marz-wrap{max-width:860px;margin:0 auto;padding:20px 24px 40px}
+.summary-bar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.sum-card{background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:12px 18px;flex:1;min-width:150px}
+.sum-card .val{font-family:'Exo 2',sans-serif;font-size:22px;font-weight:800;line-height:1}
+.sum-card .lbl{font-size:11px;color:var(--text-soft);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.sum-card.warn .val{color:#e65100}
+.sum-card.ok .val{color:#2e7d32}
+.marz-note{border-radius:8px;padding:10px 14px;font-size:13px;color:var(--text);margin-bottom:12px;border:1.5px solid}
+.marz-note.warn{background:#fff3e0;border-color:#e65100}
+.marz-note.info{background:#e8f5e9;border-color:#2e7d32}
+.marz-note strong{font-weight:800}
+.marz-title{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--brown);border-left:3px solid var(--amber);padding-left:8px;margin:22px 0 8px}
+.mt{width:100%;border-collapse:collapse;font-size:13px;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:4px}
+.mt thead th{background:var(--brown-dark);color:#fff;padding:9px 12px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.7px}
+.mt thead th.r{text-align:right}
+.mt tbody td{padding:8px 12px;border-bottom:1px solid #ede0d4;vertical-align:middle}
+.mt tbody tr:last-child td{border-bottom:none}
+.mt tbody tr:hover{background:#faf5f0}
+.mt td.r{text-align:right;font-variant-numeric:tabular-nums}
+.mt td.prod{font-weight:600;color:#3a2010}
+.mt td.kod{font-size:11px;color:#a08070;font-family:monospace}
+.m-ok{color:#2e7d32;font-weight:700}
+.m-low{color:#e65100;font-weight:700}
+.m-good{color:#1b5e20;font-weight:800}
+.m-na{color:#b0a090;font-style:italic;font-size:11px}
+.note-small{font-size:10px;color:#a08070}
+.badge-warn{display:inline-block;background:#e65100;color:#fff;font-size:10px;font-weight:800;padding:2px 6px;border-radius:4px;margin-left:6px;vertical-align:middle}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back" href="/firmy-ceniky.html">← Firmy</a>
+  <h1>HU-FA Dental — Přehled marží</h1>
+  <span class="sub">Interní · Září 2026</span>
+</div>
+
+<div class="marz-wrap">
+
+  <div class="summary-bar">
+    <div class="sum-card ok">
+      <div class="val">2</div>
+      <div class="lbl">Produkty</div>
+    </div>
+    <div class="sum-card warn">
+      <div class="val">NC doplnit</div>
+      <div class="lbl">Kódy HUFA/* v ceníku chybí</div>
+    </div>
+    <div class="sum-card ok">
+      <div class="val">16 128 Kč</div>
+      <div class="lbl">Faktura (s DPH · 120+120 ks)</div>
+    </div>
+  </div>
+
+  <div class="marz-note warn">
+    <strong>⚠️ NC neznámá — kódy HUFA/* nejsou v cenik.csv:</strong>
+    Fitness směs (HUFA/FS) a Pražená směs nesolená (HUFA/PS) jsou vlastní receptury zákazníka.
+    NC je nutné doplnit ze složení obou směsí (blended cena surovin + 20 Kč/kg míchání + obal).
+    Níže jsou odhady na základě nejbližších mixů z ceníku.
+  </div>
+
+  <div class="marz-note info">
+    <strong>ℹ️ Způsob výpočtu marže pro 200g balení:</strong>
+    marže = (prodej/ks − NC_surovina/ks − obal) / prodej/ks × 100<br>
+    NC_surovina/ks = kg_czk_blended × 0,200 kg · obal 200g: odhadnuto 10 Kč/ks (doypack)
+  </div>
+
+  <!-- PŘEHLED MARŽÍ -->
+  <div class="marz-title">Přehled marží dle prodejní ceny</div>
+  <table class="mt">
+    <thead>
+      <tr>
+        <th>Produkt</th>
+        <th>Kód</th>
+        <th class="r">Prodej / ks</th>
+        <th class="r">Prodej Kč/kg</th>
+        <th class="r">NC odhad Kč/kg</th>
+        <th class="r">NC / ks</th>
+        <th class="r">Obal / ks</th>
+        <th class="r">Marže (odhad)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="prod">
+          HU-FA Fitness směs
+          <span class="badge-warn">NC doplnit</span>
+        </td>
+        <td class="kod">HUFA/FS</td>
+        <td class="r">55,00 Kč</td>
+        <td class="r">275,00</td>
+        <td class="r">
+          <span class="m-na">~200 Kč</span>
+          <div class="note-small">odhad: směs ořechů a rozinek (3097) 180 + 20 míchání</div>
+        </td>
+        <td class="r"><span class="m-na">~40,00 Kč</span></td>
+        <td class="r">~10,00 Kč</td>
+        <td class="r m-ok">~9,1 %</td>
+      </tr>
+      <tr>
+        <td class="prod">
+          HU-FA Pražená směs nesolená
+          <span class="badge-warn">NC doplnit</span>
+        </td>
+        <td class="kod">HUFA/PS</td>
+        <td class="r">65,00 Kč</td>
+        <td class="r">325,00</td>
+        <td class="r">
+          <span class="m-na">~262 Kč</span>
+          <div class="note-small">odhad: směs ořechů pražená nesolená (3091) 242 + 20 míchání</div>
+        </td>
+        <td class="r"><span class="m-na">~52,40 Kč</span></td>
+        <td class="r">~10,00 Kč</td>
+        <td class="r m-low">~4,6 %</td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="font-size:11px;color:#a08070;margin:4px 0 0 2px">Odhady NC jsou orientační. Pro přesný výpočet je nutné doplnit složení směsí a blended NC z K2.</p>
+
+  <!-- TYPICKÁ OBJEDNÁVKA -->
+  <div class="marz-title">Typická objednávka (120 ks / druh)</div>
+  <table class="mt">
+    <thead>
+      <tr>
+        <th>Produkt</th>
+        <th class="r">120 ks bez DPH</th>
+        <th class="r">120 ks s DPH</th>
+        <th class="r">NC odhad / 120 ks</th>
+        <th class="r">Hrubý příspěvek</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="prod">HU-FA Fitness směs</td>
+        <td class="r">6 600,00 Kč</td>
+        <td class="r">7 392,00 Kč</td>
+        <td class="r"><span class="m-na">~6 000 Kč</span></td>
+        <td class="r m-ok">~600 Kč</td>
+      </tr>
+      <tr>
+        <td class="prod">HU-FA Pražená směs nesolená</td>
+        <td class="r">7 800,00 Kč</td>
+        <td class="r">8 736,00 Kč</td>
+        <td class="r"><span class="m-na">~7 488 Kč</span></td>
+        <td class="r m-low">~312 Kč</td>
+      </tr>
+      <tr style="background:#f1e6da;font-weight:700">
+        <td class="prod">Celkem</td>
+        <td class="r">14 400,00 Kč</td>
+        <td class="r">16 128,00 Kč</td>
+        <td class="r"><span class="m-na">~13 488 Kč</span></td>
+        <td class="r m-low">~912 Kč (~6,3 %)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- CO DOPLNIT -->
+  <div class="marz-title">Co je potřeba doplnit</div>
+  <table class="mt">
+    <thead>
+      <tr>
+        <th>Úkol</th>
+        <th>Popis</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="prod" style="width:220px">Složení Fitness směsi</td>
+        <td>Zjistit přesné složení HUFA/FS — jaké suroviny, v jakém poměru → blended NC</td>
+      </tr>
+      <tr>
+        <td class="prod">Složení Pražené směsi</td>
+        <td>Zjistit přesné složení HUFA/PS — jaké suroviny, v jakém poměru → blended NC</td>
+      </tr>
+      <tr>
+        <td class="prod">Typ a cena obalu 200g</td>
+        <td>Ověřit typ obalu (doypack / celofánek / jiný) a přesnou cenu za ks</td>
+      </tr>
+      <tr>
+        <td class="prod">Přecenění pokud NC blíže k odhadu</td>
+        <td>Pokud Pražená směs ~4,6 % → zvážit navýšení ceny na min. 70 Kč/ks (marže ~11 %)</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<script src="pin-guard.js"></script>
+</body>
+</html>

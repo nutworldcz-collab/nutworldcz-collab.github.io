@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>HU-FA Dental — Ceník · Nutworld</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2d1a0a;font-size:14px;line-height:1.5;min-height:100vh}
+.topbar{background:#5c381f;padding:14px 24px;display:flex;align-items:center;gap:12px}
+.back{color:rgba(255,255,255,.6);font-size:13px;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:5px}
+.back:hover{color:#fff}
+.topbar-title{font-family:'Exo 2',sans-serif;font-size:17px;font-weight:800;color:#fff;flex:1}
+.print-bar{background:#fff;border-bottom:1px solid #d4c0a8;padding:10px 24px;display:flex;align-items:center;gap:12px}
+.btn-pdf{background:#5c381f;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Source Sans 3',sans-serif}
+.btn-pdf:hover{background:#7a4e28}
+.print-note{font-size:11px;color:#a07850}
+.page-wrap{max-width:780px;margin:24px auto 40px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1)}
+.page-head{background:#5c381f;padding:28px 32px 22px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.ph-logo{font-family:'Exo 2',sans-serif;font-size:28px;font-weight:800;color:#fff;letter-spacing:-0.5px}
+.ph-logo span{color:#f7ab31}
+.ph-right{text-align:right}
+.ph-right h2{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:800;color:#fff}
+.ph-right p{font-size:12px;color:rgba(255,255,255,.6);margin-top:2px}
+.page-info{background:#f1e6da;padding:14px 32px;display:flex;gap:32px;flex-wrap:wrap;border-bottom:2px solid #d4c0a8}
+.pi-item .pi-label{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#a07850;font-weight:600}
+.pi-item .pi-val{font-size:13px;font-weight:600;color:#3a1f0a;margin-top:1px}
+.ct{width:100%;border-collapse:collapse}
+.ct thead tr{background:#3a1f0a}
+.ct thead th{padding:10px 16px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:rgba(255,255,255,.75)}
+.ct thead th.r{text-align:right}
+.ct tbody tr{border-bottom:1px solid #ede0d4}
+.ct tbody tr:last-child{border-bottom:none}
+.ct tbody tr:nth-child(even){background:#faf5f0}
+.ct tbody td{padding:10px 16px;vertical-align:middle}
+.ct td.r{text-align:right;font-variant-numeric:tabular-nums}
+.ct td.prod{font-weight:600;color:#3a1f0a;font-size:14px}
+.ct td.sub{font-size:12px;color:#8a6a4a}
+.ct td.fmt{font-size:12px;color:#7a5a3a;font-weight:600}
+.section-row td{background:#f1e6da!important;padding:7px 16px!important;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#83502e;border-top:2px solid #d4c0a8!important}
+.dph-col{color:#7a5a3a;font-size:12px}
+.brutto-col{font-weight:700;color:#3a1f0a}
+.total-row td{background:#3a1f0a!important;color:#fff!important;padding:10px 16px!important;font-weight:700}
+.total-row td.r{text-align:right}
+.page-foot{background:#f1e6da;border-top:2px solid #d4c0a8;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.pf-note{font-size:11px;color:#a07850;line-height:1.5}
+.pf-note strong{color:#5c381f}
+.pf-contact{text-align:right;font-size:11px;color:#a07850}
+.pf-contact strong{color:#5c381f;display:block;font-size:12px}
+@media print{
+  body{background:#fff}
+  .topbar,.print-bar{display:none}
+  .page-wrap{margin:0;border-radius:0;box-shadow:none;max-width:100%}
+  @page{margin:0;size:A4}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back" href="/firmy-ceniky.html">← Firmy</a>
+  <div class="topbar-title">HU-FA Dental — Ceník</div>
+</div>
+
+<div class="print-bar">
+  <button class="btn-pdf" onclick="window.print()">⬇ Stáhnout / Tisknout PDF</button>
+  <span class="print-note">Ceník je bez DPH · DPH 12 % je přičteno na faktuře</span>
+  <a style="margin-left:auto;font-size:12px;font-weight:600;color:#5c381f;text-decoration:none" href="/hufa-marze.html">📊 Přehled marží →</a>
+</div>
+
+<div class="page-wrap">
+
+  <div class="page-head">
+    <div>
+      <div class="ph-logo">🐿 NUT<span>WORLD</span></div>
+      <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:6px">Nut World s.r.o. · Hvězdova 1716/2b · 140 00 Praha 4</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.5)">IČO: 27517357 · info@nutworld.cz · +420 736 548 439</div>
+    </div>
+    <div class="ph-right">
+      <h2>HU-FA Dental a.s.</h2>
+      <p>Moravní 909 · 765 02 Otrokovice</p>
+      <p style="margin-top:8px;color:rgba(255,255,255,.4);font-size:11px">Individuální ceník · vlastní receptury HU-FA</p>
+    </div>
+  </div>
+
+  <div class="page-info">
+    <div class="pi-item"><div class="pi-label">Platnost od</div><div class="pi-val">Září 2026</div></div>
+    <div class="pi-item"><div class="pi-label">Splatnost</div><div class="pi-val">7 dní od vystavení</div></div>
+    <div class="pi-item"><div class="pi-label">Min. množství</div><div class="pi-val">120 ks / druh</div></div>
+    <div class="pi-item"><div class="pi-label">DPH</div><div class="pi-val">12 % snížená sazba · přičtena na faktuře</div></div>
+  </div>
+
+  <table class="ct">
+    <thead>
+      <tr>
+        <th>Produkt</th>
+        <th>Kód</th>
+        <th>Balení</th>
+        <th class="r">Cena / ks bez DPH</th>
+        <th class="r">DPH 12 %</th>
+        <th class="r">Cena / ks s DPH</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="section-row" colspan="6">Vlastní receptury HU-FA · balení 200 g</td></tr>
+      <tr>
+        <td class="prod">HU-FA Fitness směs<br><span class="sub">Vlastní receptura — originální složení HU-FA</span></td>
+        <td class="fmt">HUFA/FS</td>
+        <td class="fmt">200 g / ks</td>
+        <td class="r">55,00 Kč</td>
+        <td class="r dph-col">6,60 Kč</td>
+        <td class="r brutto-col">61,60 Kč</td>
+      </tr>
+      <tr>
+        <td class="prod">HU-FA Pražená směs nesolená<br><span class="sub">Vlastní receptura — originální složení HU-FA</span></td>
+        <td class="fmt">HUFA/PS</td>
+        <td class="fmt">200 g / ks</td>
+        <td class="r">65,00 Kč</td>
+        <td class="r dph-col">7,80 Kč</td>
+        <td class="r brutto-col">72,80 Kč</td>
+      </tr>
+      <tr class="total-row">
+        <td colspan="3"><strong>Typická objednávka 120 ks / druh</strong></td>
+        <td class="r">120 ks × (55 + 65) = 14 400 Kč</td>
+        <td class="r">1 728 Kč</td>
+        <td class="r">16 128 Kč</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-foot">
+    <div class="pf-note">
+      <strong>Podmínky</strong><br>
+      Ceny jsou bez DPH · DPH 12 % snížená sazba bude přičtena na faktuře.<br>
+      Minimální odběr: 120 ks / druh · Balení označena dle receptur HU-FA.<br>
+      Platnost ceníku: Září 2026 · Ceny se mohou změnit bez předchozího upozornění.
+    </div>
+    <div class="pf-contact">
+      <strong>Nutworld s.r.o.</strong>
+      info@nutworld.cz<br>
+      +420 736 548 439<br>
+      www.nutworld.cz
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
