@@ -22,10 +22,7 @@
   --day-past: #f9f7f4;
   --shadow: 0 2px 12px rgba(83,56,31,.10);
 
-  --rep-jan: #7b3a10;
-  --rep-marketa: #cc0a52;
-  --rep-martin: #1148b8;
-  --rep-tomas: #c86000;
+  --chip-bg: #83502e;
   --rep-none: #aaa;
 }
 
@@ -156,13 +153,7 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:var(--bg);color:var
 
   <div class="stats-bar" id="stats-bar"></div>
 
-  <div class="legend">
-    <span class="legend-item"><span class="legend-dot" style="background:var(--rep-jan)"></span>Jan Vlček</span>
-    <span class="legend-item"><span class="legend-dot" style="background:var(--rep-marketa)"></span>Markéta Costachová</span>
-    <span class="legend-item"><span class="legend-dot" style="background:var(--rep-martin)"></span>Martin Werner</span>
-    <span class="legend-item"><span class="legend-dot" style="background:var(--rep-tomas)"></span>Tomáš Hamernák</span>
-    <span class="legend-item"><span class="legend-dot" style="background:var(--rep-none)"></span>bez přiřazení</span>
-  </div>
+  <div id="stats-legend"></div>
 
   <div class="cal-grid" id="cal-grid">
     <div class="day-header">Po</div>
@@ -421,10 +412,9 @@ function makeCell(date, byDate, otherMonth, todayStr) {
     const MAX_CHIPS = 3;
     const shown = cards.slice(0, MAX_CHIPS);
     for (const c of shown) {
-      const { rep, firma, shortFirma, color } = parseCard(c);
+      const { rep, firma, shortFirma } = parseCard(c);
       const chip = document.createElement('div');
       chip.className = 'chip';
-      chip.style.background = color;
       chip.textContent = shortFirma;
       chip.title = firma + (rep ? ` (${rep})` : '');
       chipsDiv.appendChild(chip);
@@ -455,16 +445,6 @@ function renderStats(cards) {
     return diff >= 0 && diff <= 7;
   }).length;
 
-  // Rep breakdown
-  const repCount = {};
-  const repColorCache = {};
-  for (const c of cards) {
-    const { rep, color } = parseCard(c);
-    const key = rep || '—';
-    repCount[key] = (repCount[key] || 0) + 1;
-    repColorCache[key] = color;
-  }
-
   const mkStat = (label, val) => {
     const el = document.createElement('div');
     el.className = 'stat';
@@ -475,10 +455,6 @@ function renderStats(cards) {
   mkStat('Termíny v měsíci', total);
   if (overdue) mkStat('⚠️ Po termínu', overdue);
   if (upcoming7) mkStat('📅 Příštích 7 dní', upcoming7);
-  for (const [rep, cnt] of Object.entries(repCount).sort((a,b) => b[1]-a[1])) {
-    const col = repColorCache[rep] || '#9e9e9e';
-    mkStat(`<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${col};margin-right:3px;vertical-align:middle"></span>${rep}`, cnt);
-  }
 }
 
 function openModal(dateStr, cards) {
@@ -494,7 +470,7 @@ function openModal(dateStr, cards) {
   }
 
   for (const c of cards) {
-    const { rep, firma, color } = parseCard(c);
+    const { rep, firma } = parseCard(c);
     const listName = LIST_NAMES[c.idList] || '—';
     const time = c.due ? new Date(c.due).toLocaleTimeString('cs-CZ', {hour:'2-digit',minute:'2-digit'}) : '';
 
@@ -503,12 +479,10 @@ function openModal(dateStr, cards) {
     el.href = c.url || '#';
     el.target = '_blank';
     el.rel = 'noopener';
-    el.style.borderLeftColor = color;
-    el.style.borderLeftWidth = '4px';
     el.innerHTML = `
       <div class="card-firma">${esc(firma)}</div>
       <div class="card-meta">
-        ${rep ? `<span class="card-rep" style="background:${color}">${esc(rep)}</span>` : '<span class="card-status">bez rep</span>'}
+        ${rep ? `<span class="card-status">${esc(rep)}</span>` : ''}
         <span class="card-status" style="background:${listColor(listName)}22;color:${listColor(listName)};border:1px solid ${listColor(listName)}44">${esc(listName)}</span>
         ${time ? `<span class="card-time">⏰ ${time}</span>` : ''}
       </div>
