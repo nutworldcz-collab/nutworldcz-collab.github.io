@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Čajovna Jan Fišer — Marže · Nutworld</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f5ede3;--surface:#fff;--border:#e0ccb8;
+  --brown-dark:#5c381f;--brown:#83502e;--amber:#f7ab31;
+  --text:#2d1a0a;--text-soft:#7a5a3a;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;min-height:100vh}
+
+.topbar{background:var(--brown-dark);padding:14px 24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.back{color:rgba(255,255,255,.6);font-size:13px;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:5px}
+.back:hover{color:#fff}
+.topbar h1{font-family:'Exo 2',sans-serif;font-size:17px;font-weight:800;color:#fff;flex:1}
+.topbar .sub{font-size:11px;color:rgba(255,255,255,.45)}
+
+.marz-wrap{max-width:860px;margin:0 auto;padding:20px 24px 40px}
+
+.summary-bar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.sum-card{background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:12px 18px;flex:1;min-width:150px}
+.sum-card .val{font-family:'Exo 2',sans-serif;font-size:22px;font-weight:800;line-height:1}
+.sum-card .lbl{font-size:11px;color:var(--text-soft);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.sum-card.loss .val{color:#c62828}
+.sum-card.warn .val{color:#e65100}
+.sum-card.ok .val{color:#2e7d32}
+
+.marz-note{border-radius:8px;padding:10px 14px;font-size:13px;color:var(--text);margin-bottom:12px;border:1.5px solid}
+.marz-note.warn{background:#fff3e0;border-color:#e65100}
+.marz-note.loss{background:#ffebee;border-color:#c62828;color:#7a0000}
+.marz-note strong{font-weight:800}
+
+.marz-title{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--brown);border-left:3px solid var(--amber);padding-left:8px;margin:22px 0 8px}
+
+.mt{width:100%;border-collapse:collapse;font-size:13px;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:4px}
+.mt thead th{background:var(--brown-dark);color:#fff;padding:9px 12px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.7px}
+.mt thead th.r{text-align:right}
+.mt tbody td{padding:8px 12px;border-bottom:1px solid #ede0d4;vertical-align:middle}
+.mt tbody tr:last-child td{border-bottom:none}
+.mt tbody tr:hover{background:#faf5f0}
+.mt td.r{text-align:right;font-variant-numeric:tabular-nums}
+.mt td.prod{font-weight:600;color:#3a2010}
+.mt td.kod{font-size:11px;color:#a08070;font-family:monospace}
+
+.m-ok{color:#2e7d32;font-weight:700}
+.m-low{color:#e65100;font-weight:700}
+.m-loss{color:#c62828;font-weight:800}
+.m-good{color:#1b5e20;font-weight:800}
+.m-na{color:#b0a090;font-style:italic;font-size:11px}
+
+.note-small{font-size:11px;color:#a08070;margin-top:2px}
+.badge-loss{display:inline-block;background:#c62828;color:#fff;font-size:10px;font-weight:800;padding:2px 6px;border-radius:4px;margin-left:6px;vertical-align:middle}
+.badge-warn{display:inline-block;background:#e65100;color:#fff;font-size:10px;font-weight:800;padding:2px 6px;border-radius:4px;margin-left:6px;vertical-align:middle}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back" href="/firmy-ceniky.html">← Firmy</a>
+  <h1>Čajovna Jan Fišer — Přehled marží</h1>
+  <span class="sub">Interní · Září 2026 · Faktura 202600161</span>
+</div>
+
+<div class="marz-wrap">
+
+  <!-- SUMMARY -->
+  <div class="summary-bar">
+    <div class="sum-card loss">
+      <div class="val">2</div>
+      <div class="lbl">Produkty ve ztrátě</div>
+    </div>
+    <div class="sum-card warn">
+      <div class="val">3</div>
+      <div class="lbl">Nízká marže &lt;20 %</div>
+    </div>
+    <div class="sum-card ok">
+      <div class="val">3</div>
+      <div class="lbl">Marže OK ≥ 20 %</div>
+    </div>
+    <div class="sum-card ok">
+      <div class="val">14 049 Kč</div>
+      <div class="lbl">Faktura celkem (s DPH)</div>
+    </div>
+  </div>
+
+  <!-- KRITICKÁ UPOZORNĚNÍ -->
+  <div class="marz-note loss">
+    <strong>🚨 ZTRÁTA — Kešu Raffaello 4 kg (10262/4 K):</strong>
+    NC 299 Kč/kg, prodej bez DPH <strong>298,89 Kč/kg</strong> → marže −0,04 %. Prodáváme za méně než nakupujeme. Cenu je nutné ihned zvýšit — minimum ~340 Kč/kg (marže ~12 %).
+  </div>
+  <div class="marz-note loss">
+    <strong>⚠️ PRAVDĚPODOBNÁ ZTRÁTA — Maliny lyofilizované v čokoládě 3 kg (CAJ/2677/3):</strong>
+    Kód 2677 není v ceníku. Nejbližší produkt (920 — maliny lyofilizované v bílé čokoládě) má NC <strong>412 Kč/kg</strong>, prodej <strong>401,98 Kč/kg</strong> → ztráta −2,4 %. Nutné doplnit NC a přecenit.
+  </div>
+  <div class="marz-note warn">
+    <strong>⚠️ NÍZKÁ MARŽE — Tiramisu směs 3 kg (CAJ/2699/3):</strong>
+    NC 208,6 Kč/kg + 20 Kč míchání = 228,6 Kč/kg, prodej 264,58 Kč/kg → marže <strong>13,6 %</strong>. Minimální doporučená marže pro B2B je 20 %.
+  </div>
+  <div class="marz-note warn">
+    <strong>⚠️ NÍZKÁ MARŽE — Mandle Raffaello 4 kg (1988/4 K):</strong>
+    NC 289 Kč/kg, prodej 333,93 Kč/kg → marže <strong>13,5 %</strong>.
+  </div>
+
+  <!-- BULK 3 KG -->
+  <div class="marz-title">Bulk balení 3 kg (bez obalu)</div>
+  <table class="mt">
+    <thead>
+      <tr>
+        <th>Produkt</th>
+        <th>Kód</th>
+        <th class="r">NC Kč/kg</th>
+        <th class="r">Prodej Kč/kg</th>
+        <th class="r">Cena / 3 kg</th>
+        <th class="r">Marže</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="prod">Mandle v mléčné čokoládě a skořici</td>
+        <td class="kod">CAJ/1958/3</td>
+        <td class="r">215,00</td>
+        <td class="r">324,11</td>
+        <td class="r">972,32</td>
+        <td class="r m-ok">33,7 %</td>
+      </tr>
+      <tr>
+        <td class="prod">
+          Tiramisu směs — mandle, para, kešu
+          <span class="badge-warn">NÍZKÁ</span>
+        </td>
+        <td class="kod">CAJ/2699/3</td>
+        <td class="r">
+          228,60
+          <div class="note-small">208,60 + 20 míchání</div>
+        </td>
+        <td class="r">264,58</td>
+        <td class="r">793,75</td>
+        <td class="r m-low">13,6 %</td>
+      </tr>
+      <tr>
+        <td class="prod">
+          Maliny lyofilizované v bílé a hořké čokoládě
+          <span class="badge-loss">ZTRÁTA?</span>
+        </td>
+        <td class="kod">CAJ/2677/3</td>
+        <td class="r">
+          <span class="m-na">doplnit</span>
+          <div class="note-small">kód 2677 není v ceníku</div>
+          <div class="note-small">odhad ≥ 412 Kč/kg (kod 920)</div>
+        </td>
+        <td class="r">401,98</td>
+        <td class="r">1 205,93</td>
+        <td class="r m-loss">pravděpodobně &lt;0 %</td>
+      </tr>
+      <tr>
+        <td class="prod">Arašídy v těstičku s ďábelským kořením (Fire mix)</td>
+        <td class="kod">CAJ/3732/3</td>
+        <td class="r">127,50</td>
+        <td class="r">163,39</td>
+        <td class="r">490,18</td>
+        <td class="r m-ok">22,0 %</td>
+      </tr>
+      <tr>
+        <td class="prod">Arašídy Wasabi</td>
+        <td class="kod">354/3 K</td>
+        <td class="r">115,24</td>
+        <td class="r">148,51</td>
+        <td class="r">445,54</td>
+        <td class="r m-ok">22,4 %</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- BULK 4 KG -->
+  <div class="marz-title">Bulk balení 4 kg (bez obalu)</div>
+  <table class="mt">
+    <thead>
+      <tr>
+        <th>Produkt</th>
+        <th>Kód</th>
+        <th class="r">NC Kč/kg</th>
+        <th class="r">Prodej Kč/kg</th>
+        <th class="r">Cena / 4 kg</th>
+        <th class="r">Marže</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="prod">
+          Mandle v bílé čokoládě s kokosem — Raffaello
+          <span class="badge-warn">NÍZKÁ</span>
+        </td>
+        <td class="kod">1988/4 K</td>
+        <td class="r">289,00</td>
+        <td class="r">333,93</td>
+        <td class="r">1 335,71</td>
+        <td class="r m-low">13,5 %</td>
+      </tr>
+      <tr>
+        <td class="prod">
+          Kešu v bílé čokoládě s kokosem — Raffaello
+          <span class="badge-loss">ZTRÁTA</span>
+        </td>
+        <td class="kod">10262/4 K</td>
+        <td class="r">299,00</td>
+        <td class="r">298,89</td>
+        <td class="r">1 195,54</td>
+        <td class="r m-loss">−0,04 %</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- RETAIL 100g -->
+  <div class="marz-title">Retail balení 100 g (doypack, obal 8 Kč)</div>
+  <table class="mt">
+    <thead>
+      <tr>
+        <th>Produkt</th>
+        <th>Kód</th>
+        <th class="r">NC Kč/ks</th>
+        <th class="r">Obal Kč</th>
+        <th class="r">Celkem NC</th>
+        <th class="r">Prodej Kč/ks</th>
+        <th class="r">Marže</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="prod">Mandle pražené v medu a soli 100g</td>
+        <td class="kod">95/100</td>
+        <td class="r">
+          26,30
+          <div class="note-small">262,95 × 0,1 kg</div>
+        </td>
+        <td class="r">8,00</td>
+        <td class="r">34,30</td>
+        <td class="r">61,61</td>
+        <td class="r m-good">44,3 %</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- DOPORUČENÉ AKCE -->
+  <div class="marz-title">Doporučené akce</div>
+  <table class="mt">
+    <thead>
+      <tr>
+        <th>Produkt</th>
+        <th>Problém</th>
+        <th>Akce</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="prod">Kešu Raffaello 4 kg</td>
+        <td><span class="m-loss">Ztráta −0,04 %</span></td>
+        <td>Zvýšit cenu na min. <strong>340 Kč/kg → 1 360 Kč/4 kg bez DPH</strong> (marže ~13 %)</td>
+      </tr>
+      <tr>
+        <td class="prod">Maliny lyofilizované v čokoládě 3 kg</td>
+        <td><span class="m-loss">NC neznámá, pravděp. ztráta</span></td>
+        <td>Doplnit NC pro kód 2677 do ceníku a přecenit — prodej 401,98 Kč/kg je rizikový</td>
+      </tr>
+      <tr>
+        <td class="prod">Tiramisu směs 3 kg</td>
+        <td><span class="m-low">Marže 13,6 %</span></td>
+        <td>Zvýšit na ~320 Kč/3 kg (106,67 Kč/kg → marže ~21 %) nebo přijmout jako strategická cena</td>
+      </tr>
+      <tr>
+        <td class="prod">Mandle Raffaello 4 kg</td>
+        <td><span class="m-low">Marže 13,5 %</span></td>
+        <td>Zvýšit na min. 1 440 Kč/4 kg bez DPH (360 Kč/kg → marže ~19,7 %)</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<script src="pin-guard.js"></script>
+</body>
+</html>
