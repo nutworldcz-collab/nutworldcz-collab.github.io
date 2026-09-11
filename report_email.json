@@ -1,20 +1,176 @@
 {
-  "generated": "2026-09-11T07:30:34",
-  "total": 4,
+  "generated": "2026-09-11T12:00:43",
+  "total": 15,
   "spam_skipped": 0,
   "emails": [
     {
       "account": "Exchange",
-      "sender": "Bennon Newsletter <info@news.bennon.cz>",
-      "subject": "Kam vás zavedou? Objevte 4 outdoorové novinky BENNON",
-      "date": "pátek 11. září 2026 7:06:42",
-      "unread": true,
-      "preview": "Italský design. Připravený na české hory. 🥾 Online ￼ ￼ 🇮🇹 Když se italský design potká s outdoorem Nové outdoorové modely BENNON vznikaly v Itálii pod vedením italského designéra. Od prvních skic přes konstrukci až po finální podobu se při jejich vývoji spojily funkční požadavky",
+      "sender": "\"no.reply@ikea.com\" <no.reply@ikea.com>",
+      "subject": "Jednorázový kód pro přístup na účet IKEA.",
+      "date": "pátek 11. září 2026 11:11:26",
+      "unread": false,
+      "preview": "￼ Dobrý den, Požádali jste o jednorázový kód. 815819 Toto je váš jednorázový ověřovací kód",
       "category": "ostatni",
-      "sender_short": "Bennon Newsletter",
-      "sender_email": "info@news.bennon.cz",
+      "sender_short": "no.reply@ikea.com",
+      "sender_email": "no.reply@ikea.com",
       "ai": {
-        "shrn": "Marketingový email od Bennon o nových outdoorových produktech s italským designem.",
+        "shrn": "Jednorázový ověřovací kód od IKEA. Nejedná se o službu související s Nutworld.cz.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Miloš Kamitz <milos.kamitz@mekrs.cz>",
+      "subject": "RE: stehovaci popruhy",
+      "date": "pátek 11. září 2026 10:58:38",
+      "unread": true,
+      "preview": "Nemám s tím moc zkušenosti",
+      "category": "tym",
+      "sender_short": "Miloš Kamitz",
+      "sender_email": "milos.kamitz@mekrs.cz",
+      "ai": {
+        "shrn": "Miloš Kamitz reaguje, že nemá zkušenosti se stěhovacími popruhy. Jedná se o odpověď na předchozí dotaz.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Miloš Kamitz <milos.kamitz@mekrs.cz>",
+      "subject": "stehovaci popruhy",
+      "date": "pátek 11. září 2026 10:39:11",
+      "unread": false,
+      "preview": "Ahoj, nezkusil by si sehnat jeden nebo možná spíš dva páry stěhovacích popruhů na nošení regálů na stěhování? ￼",
+      "category": "tym",
+      "sender_short": "Miloš Kamitz",
+      "sender_email": "milos.kamitz@mekrs.cz",
+      "ai": {
+        "shrn": "Miloš Kamitz žádá Janu, zda by sehnal jeden nebo dva páry stěhovacích popruhů na nošení regálů.",
+        "tyka_se": true,
+        "akce": "Jan se rozhodne, zda Miloši s nákupem stěhovacích popruhů pomůže nebo je k dispozici."
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 10:20 (11. září 2026)",
+      "date": "pátek 11. září 2026 10:22:42",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová přesunul(a) kartu CZECH INN do sloupce Připravují se komponenty - Balírna na nástěnce Firmy dárky + objednávky Odpovědět e-mailem ￼ Jana Nývltová přesunul(a) kartu KARMELITSKÁ HOTEL s.r.o. do sloupce Připravují se komponenty - Balírna na nástěnce Firmy dárky + ",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 4 upozornění od poslední návštěvy 10:16 (11. září 2026)",
+      "date": "pátek 11. září 2026 10:18:33",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Doprava NutWorld okomentoval(a) kartu Statutární město Třinec na nástěnce Firmy dárky + objednávky @marketacostachova Markét prosím je možné uz odeslat?Máme nachystané na expedici Odpovědět e-mailem ￼ Doprava NutWorld vás zmínil(a) na kartě FÉNIX na nástěnce Firmy dárky + ob",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 10:14 (11. září 2026)",
+      "date": "pátek 11. září 2026 10:16:37",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Doprava NutWorld označil(a) kartu iMi objednávka jako dokončenou Odpovědět e-mailem ￼ Doprava NutWorld přesunul(a) kartu iMi objednávka do sloupce Firmy 2026 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "MERGADO Billing <billing@mergado.com>",
+      "subject": "Děkujeme za platbu faktury za Mergado / posíláme daňový doklad",
+      "date": "pátek 11. září 2026 10:02:10",
+      "unread": false,
+      "preview": "Dobrý den, děkuji vám za proplacení faktury. Potvrzuji přijetí platby a posílám daňový doklad. https://app.fakturoid.cz/mergado/p/f8Fqb3e38w/202626239 Reklamace fakturace a žádost o úpravu faktury je možná nejpozději do konce aktuálního měsíce. TIP: Potřebujete si prohlédnout starší faktury? V Merga",
+      "category": "ostatni",
+      "sender_short": "MERGADO Billing",
+      "sender_email": "billing@mergado.com",
+      "ai": {
+        "shrn": "Mergado potvrzuje platbu faktury a zasílá daňový doklad. Jedná se o potvrzení transakce pro službu Mergado.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Balírna přesunul/a kartu Čajovna u bílého draka do sloupce Připravují se komponenty - Balírna na nástěnce Firmy dárky + objednávky",
+      "date": "pátek 11. září 2026 9:27:43",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Balírna přesunul(a) kartu Čajovna u bílého draka do sloupce Připravují se komponenty - Balírna na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Martin Werner <martin.werner@nutworld.cz>",
+      "subject": "RE: Kalendar firem",
+      "date": "pátek 11. září 2026 9:16:26",
+      "unread": false,
+      "preview": "Ahojte všichni. Za mě je to super",
+      "category": "tym",
+      "sender_short": "Martin Werner",
+      "sender_email": "martin.werner@nutworld.cz",
+      "ai": {
+        "shrn": "Martin Werner vyjadřuje souhlas s firemním kalendářem. Jedná se o vnitřní tímový komentář.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "claudie.nutworld.cz@gmail.com",
+      "subject": "🔄 Opraveno · Denní stav automatizací · 11.9.",
+      "date": "pátek 11. září 2026 8:45:13",
+      "unread": false,
+      "preview": "DENNÍ ZDRAVOTNÍ REPORT · NUTWORLD 🔄 Opraveno 2× · jinak OK 11. 9. 2026",
+      "category": "ostatni",
+      "sender_short": "claudie.nutworld.cz@gmail.com",
+      "sender_email": "claudie.nutworld.cz@gmail.com",
+      "ai": {
+        "shrn": "Denní zpráva o stavu automatizací na Nutworld.cz. Systém je v pořádku, dvě chyby opraveny.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "Atomrat <news@e.atomrat.cz>",
+      "subject": "Podzimní vrstvení začíná",
+      "date": "pátek 11. září 2026 10:07:52",
+      "unread": true,
+      "preview": "￼ Zobrazit na webu Odhlásit eshop@atomrat.cz ￼ Bundy Kalhoty Vesty Mikiny Trička Sukně Kraťasy Šaty Milé atomové ženy, chladná rána a příjemná odpoledne už dávají jasně najevo",
+      "category": "ostatni",
+      "sender_short": "Atomrat",
+      "sender_email": "news@e.atomrat.cz",
+      "ai": {
+        "shrn": "Atomrat zasílá marketingový email o podzimní kolekci oblečení. Nejedná se o relevantní obsah pro Nutworld.cz.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "Lucie Vlčková <info@fitlines.cz>",
+      "subject": "Máme ve studiu nového trenéra — Jirku",
+      "date": "pátek 11. září 2026 9:00:10",
+      "unread": true,
+      "preview": "Ahoj, ve studiu máme posilu — nový osobní trenér Jirka. 💪 ￼ Jirka je strojní inženýr a trenér. Sportu se věnuje od dětství: • 15 let judo — licence závodníka",
+      "category": "ostatni",
+      "sender_short": "Lucie Vlčková",
+      "sender_email": "info@fitlines.cz",
+      "ai": {
+        "shrn": "Lucie Vlčková oznamuje nového trenéra v studiu FitLines. Jedná se o osobní komunikaci mimo Nutworld.cz.",
         "tyka_se": false,
         "akce": null
       }
@@ -30,7 +186,7 @@
       "sender_short": "Apple",
       "sender_email": "no_reply@email.apple.com",
       "ai": {
-        "shrn": "Faktura od Apple za YouTube Premium Family objednávku, kterou Jan Vlček zaplatil.",
+        "shrn": "Apple zasílá fakturu za YouTube Premium Family. Jedná se o osobní nákup na soukromý účet.",
         "tyka_se": false,
         "akce": null
       }
@@ -46,7 +202,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "Denní tréninkový program (Workout of the Day) od CrossFitu.",
+        "shrn": "CrossFit zasílá denní workout zprávu (Workout of the Day). Jedná se o marketingový email bez relevance pro Nutworld.cz.",
         "tyka_se": false,
         "akce": null
       }
@@ -62,7 +218,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "Vzdělávací obsah od CrossFitu o základních technikách trénování a cviků pro kouče.",
+        "shrn": "CrossFit zasílá vzdělávací obsah o coachingu a základních pohybech. Jedná se o edukační newsletter bez relevance pro Nutworld.cz.",
         "tyka_se": false,
         "akce": null
       }
