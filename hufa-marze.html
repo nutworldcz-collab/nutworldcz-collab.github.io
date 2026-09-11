@@ -14,16 +14,18 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:var(--bg);color:var
 .back:hover{color:#fff}
 .topbar h1{font-family:'Exo 2',sans-serif;font-size:17px;font-weight:800;color:#fff;flex:1}
 .topbar .sub{font-size:11px;color:rgba(255,255,255,.45)}
-.marz-wrap{max-width:860px;margin:0 auto;padding:20px 24px 40px}
+.marz-wrap{max-width:900px;margin:0 auto;padding:20px 24px 40px}
 .summary-bar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
 .sum-card{background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:12px 18px;flex:1;min-width:150px}
 .sum-card .val{font-family:'Exo 2',sans-serif;font-size:22px;font-weight:800;line-height:1}
 .sum-card .lbl{font-size:11px;color:var(--text-soft);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
 .sum-card.warn .val{color:#e65100}
 .sum-card.ok .val{color:#2e7d32}
+.sum-card.semi .val{color:#f57c00}
 .marz-note{border-radius:8px;padding:10px 14px;font-size:13px;color:var(--text);margin-bottom:12px;border:1.5px solid}
 .marz-note.warn{background:#fff3e0;border-color:#e65100}
 .marz-note.info{background:#e8f5e9;border-color:#2e7d32}
+.marz-note.ok{background:#f1f8e9;border-color:#558b2f}
 .marz-note strong{font-weight:800}
 .marz-title{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--brown);border-left:3px solid var(--amber);padding-left:8px;margin:22px 0 8px}
 .mt{width:100%;border-collapse:collapse;font-size:13px;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:4px}
@@ -38,9 +40,17 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:var(--bg);color:var
 .m-ok{color:#2e7d32;font-weight:700}
 .m-low{color:#e65100;font-weight:700}
 .m-good{color:#1b5e20;font-weight:800}
+.m-semi{color:#f57c00;font-weight:700}
 .m-na{color:#b0a090;font-style:italic;font-size:11px}
 .note-small{font-size:10px;color:#a08070}
 .badge-warn{display:inline-block;background:#e65100;color:#fff;font-size:10px;font-weight:800;padding:2px 6px;border-radius:4px;margin-left:6px;vertical-align:middle}
+.badge-ok{display:inline-block;background:#2e7d32;color:#fff;font-size:10px;font-weight:800;padding:2px 6px;border-radius:4px;margin-left:6px;vertical-align:middle}
+.badge-new{display:inline-block;background:#1565c0;color:#fff;font-size:10px;font-weight:800;padding:2px 6px;border-radius:4px;margin-left:6px;vertical-align:middle}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.compare-card{background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:12px 14px}
+.compare-card h4{font-family:'Exo 2',sans-serif;font-size:13px;font-weight:800;color:var(--brown-dark);margin-bottom:8px}
+.compare-match{background:#e8f5e9;border:1.5px solid #2e7d32;border-radius:8px;padding:10px 14px;font-size:13px;color:#1b5e20;font-weight:700;text-align:center;margin-bottom:4px}
+@media(max-width:640px){.compare-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -58,9 +68,13 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:var(--bg);color:var
       <div class="val">2</div>
       <div class="lbl">Produkty</div>
     </div>
+    <div class="sum-card ok">
+      <div class="val">~11–14 %</div>
+      <div class="lbl">Fitness směs (záleží na obalu)</div>
+    </div>
     <div class="sum-card warn">
       <div class="val">NC doplnit</div>
-      <div class="lbl">Kódy HUFA/* v ceníku chybí</div>
+      <div class="lbl">Pražená směs (složení neznámé)</div>
     </div>
     <div class="sum-card ok">
       <div class="val">16 128 Kč</div>
@@ -68,17 +82,15 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:var(--bg);color:var
     </div>
   </div>
 
-  <div class="marz-note warn">
-    <strong>⚠️ NC neznámá — kódy HUFA/* nejsou v cenik.csv:</strong>
-    Fitness směs (HUFA/FS) a Pražená směs nesolená (HUFA/PS) jsou vlastní receptury zákazníka.
-    NC je nutné doplnit ze složení obou směsí (blended cena surovin + 20 Kč/kg míchání + obal).
-    Níže jsou odhady na základě nejbližších mixů z ceníku.
+  <div class="marz-note ok">
+    <strong>✅ Fitness směs — NC vypočítána ze složení v K2:</strong>
+    Blended NC surovin: 177,96 Kč/kg · NC/ks surovina: 35,59 Kč · + 4,00 Kč míchání = 39,59 Kč bez obalu.<br>
+    Receptura je <strong>totožná</strong> s Nutworld 500g verzí (poměry identické — viz porovnání níže).
   </div>
 
-  <div class="marz-note info">
-    <strong>ℹ️ Způsob výpočtu marže pro 200g balení:</strong>
-    marže = (prodej/ks − NC_surovina/ks − obal) / prodej/ks × 100<br>
-    NC_surovina/ks = kg_czk_blended × 0,200 kg · obal 200g: odhadnuto 10 Kč/ks (doypack)
+  <div class="marz-note warn">
+    <strong>⚠️ Pražená směs nesolená (HUFA/PS) — NC stále neznámá:</strong>
+    Složení v K2 nebylo předloženo. NC je odhadnuta na základě nejbližšího mixu. Nutno doplnit.
   </div>
 
   <!-- PŘEHLED MARŽÍ -->
@@ -89,29 +101,35 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:var(--bg);color:var
         <th>Produkt</th>
         <th>Kód</th>
         <th class="r">Prodej / ks</th>
-        <th class="r">Prodej Kč/kg</th>
-        <th class="r">NC odhad Kč/kg</th>
-        <th class="r">NC / ks</th>
+        <th class="r">NC surovina</th>
+        <th class="r">Míchání</th>
         <th class="r">Obal / ks</th>
-        <th class="r">Marže (odhad)</th>
+        <th class="r">NC celkem</th>
+        <th class="r">Marže</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td class="prod">
           HU-FA Fitness směs
-          <span class="badge-warn">NC doplnit</span>
+          <span class="badge-ok">NC přesná</span>
         </td>
         <td class="kod">HUFA/FS</td>
         <td class="r">55,00 Kč</td>
-        <td class="r">275,00</td>
+        <td class="r">35,59 Kč</td>
+        <td class="r">4,00 Kč</td>
         <td class="r">
-          <span class="m-na">~200 Kč</span>
-          <div class="note-small">odhad: směs ořechů a rozinek (3097) 180 + 20 míchání</div>
+          8 Kč <span class="note-small">(optimum)</span><br>
+          <span class="note-small">nebo 10 Kč (doypack)</span>
         </td>
-        <td class="r"><span class="m-na">~40,00 Kč</span></td>
-        <td class="r">~10,00 Kč</td>
-        <td class="r m-ok">~9,1 %</td>
+        <td class="r">
+          47,59 Kč <span class="note-small">(8 Kč)</span><br>
+          <span class="note-small">49,59 Kč (10 Kč)</span>
+        </td>
+        <td class="r">
+          <span class="m-ok">13,5 %</span> <span class="note-small">(8 Kč obal)</span><br>
+          <span class="m-semi">9,8 %</span> <span class="note-small">(10 Kč obal)</span>
+        </td>
       </tr>
       <tr>
         <td class="prod">
@@ -120,18 +138,99 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:var(--bg);color:var
         </td>
         <td class="kod">HUFA/PS</td>
         <td class="r">65,00 Kč</td>
-        <td class="r">325,00</td>
-        <td class="r">
-          <span class="m-na">~262 Kč</span>
-          <div class="note-small">odhad: směs ořechů pražená nesolená (3091) 242 + 20 míchání</div>
-        </td>
         <td class="r"><span class="m-na">~52,40 Kč</span></td>
+        <td class="r"><span class="m-na">~4,00 Kč</span></td>
         <td class="r">~10,00 Kč</td>
-        <td class="r m-low">~4,6 %</td>
+        <td class="r"><span class="m-na">~62,40 Kč</span></td>
+        <td class="r m-low">~4,0 % (odhad)</td>
       </tr>
     </tbody>
   </table>
-  <p style="font-size:11px;color:#a08070;margin:4px 0 0 2px">Odhady NC jsou orientační. Pro přesný výpočet je nutné doplnit složení směsí a blended NC z K2.</p>
+  <p style="font-size:11px;color:#a08070;margin:4px 0 16px 2px">Vzorec: marže = (prodej − NC_surovina − míchání − obal) / prodej × 100. Míchání: 20 Kč/kg × 0,200 kg = 4,00 Kč/ks.</p>
+
+  <!-- FITNESS SMĚS — SLOŽENÍ -->
+  <div class="marz-title">Fitness směs — přesné složení a NC (z K2)</div>
+  <table class="mt">
+    <thead>
+      <tr>
+        <th>Kód</th>
+        <th>Surovina</th>
+        <th class="r">g / 200g ks</th>
+        <th class="r">% v mixu</th>
+        <th class="r">NC Kč/kg</th>
+        <th class="r">NC Kč/ks</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="kod">179V</td><td>Brusinky sušené</td><td class="r">36 g</td><td class="r">18,0 %</td><td class="r">128,00</td><td class="r">4,61</td></tr>
+      <tr><td class="kod">227V</td><td>Rozinky JUMBO</td><td class="r">30 g</td><td class="r">15,0 %</td><td class="r">85,00</td><td class="r">2,55</td></tr>
+      <tr><td class="kod">233V</td><td>Rozinky zlaté JUMBO</td><td class="r">26 g</td><td class="r">13,0 %</td><td class="r">129,00</td><td class="r">3,35</td></tr>
+      <tr><td class="kod">3076V</td><td>Třešně sušené</td><td class="r">26 g</td><td class="r">13,0 %</td><td class="r">185,00</td><td class="r">4,81</td></tr>
+      <tr><td class="kod">143V</td><td>Para ořechy</td><td class="r">18 g</td><td class="r">9,0 %</td><td class="r">379,00</td><td class="r">6,82</td></tr>
+      <tr><td class="kod">2486V</td><td>Mandle natural JUMBO</td><td class="r">18 g</td><td class="r">9,0 %</td><td class="r">190,09</td><td class="r">3,42</td></tr>
+      <tr><td class="kod">83V</td><td>Mandle loupané JUMBO</td><td class="r">16 g</td><td class="r">8,0 %</td><td class="r">215,72</td><td class="r">3,45</td></tr>
+      <tr><td class="kod">125V</td><td>Lískovce jádra</td><td class="r">16 g</td><td class="r">8,0 %</td><td class="r">235,00</td><td class="r">3,76</td></tr>
+      <tr><td class="kod">110V</td><td>Kešu natural ww320</td><td class="r">14 g</td><td class="r">7,0 %</td><td class="r">201,01</td><td class="r">2,81</td></tr>
+      <tr style="background:#f1e6da;font-weight:700">
+        <td colspan="2"><strong>CELKEM</strong></td>
+        <td class="r"><strong>200 g</strong></td>
+        <td class="r"><strong>100 %</strong></td>
+        <td class="r"><strong>177,96 Kč/kg</strong></td>
+        <td class="r"><strong>35,59 Kč</strong></td>
+      </tr>
+      <tr style="background:#f8f4ee">
+        <td colspan="5" style="font-size:12px;color:#83502e">+ Míchání (20 Kč/kg × 0,200 kg)</td>
+        <td class="r" style="font-size:12px;color:#83502e">+ 4,00 Kč</td>
+      </tr>
+      <tr style="background:#f8f4ee">
+        <td colspan="5" style="font-size:12px;color:#83502e"><strong>NC/ks surovina + míchání (bez obalu)</strong></td>
+        <td class="r" style="font-size:12px;font-weight:800;color:#3a2010">39,59 Kč</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- POROVNÁNÍ 200g vs 500g -->
+  <div class="marz-title">Porovnání: HU-FA 200g vs. Nutworld 500g — stejná receptura?</div>
+
+  <div class="compare-match">
+    ✅ ANO — receptura je TOTOŽNÁ · poměry identicky 1:2,5 u všech 9 složek · blended NC/kg = 177,96 Kč u obou
+  </div>
+
+  <div class="compare-grid">
+    <div class="compare-card">
+      <h4>HU-FA Fitness směs · 200g</h4>
+      <table style="width:100%;font-size:12px;border-collapse:collapse">
+        <tr style="color:#a08070;font-size:10px"><th align="left">Surovina</th><th align="right">g</th><th align="right">%</th></tr>
+        <tr><td>Brusinky</td><td align="right">36</td><td align="right">18 %</td></tr>
+        <tr><td>Rozinky JUMBO</td><td align="right">30</td><td align="right">15 %</td></tr>
+        <tr><td>Rozinky zlaté</td><td align="right">26</td><td align="right">13 %</td></tr>
+        <tr><td>Třešně</td><td align="right">26</td><td align="right">13 %</td></tr>
+        <tr><td>Para ořechy</td><td align="right">18</td><td align="right">9 %</td></tr>
+        <tr><td>Mandle natural</td><td align="right">18</td><td align="right">9 %</td></tr>
+        <tr><td>Mandle loupané</td><td align="right">16</td><td align="right">8 %</td></tr>
+        <tr><td>Lískovce</td><td align="right">16</td><td align="right">8 %</td></tr>
+        <tr><td>Kešu</td><td align="right">14</td><td align="right">7 %</td></tr>
+        <tr style="border-top:1.5px solid #e0ccb8;font-weight:700"><td><strong>Celkem</strong></td><td align="right"><strong>200 g</strong></td><td align="right"><strong>100 %</strong></td></tr>
+      </table>
+    </div>
+    <div class="compare-card">
+      <h4>Nutworld Fitness směs · 500g (shoptet)</h4>
+      <table style="width:100%;font-size:12px;border-collapse:collapse">
+        <tr style="color:#a08070;font-size:10px"><th align="left">Surovina</th><th align="right">g</th><th align="right">%</th></tr>
+        <tr><td>Brusinky</td><td align="right">90</td><td align="right">18 %</td></tr>
+        <tr><td>Rozinky JUMBO</td><td align="right">75</td><td align="right">15 %</td></tr>
+        <tr><td>Rozinky zlaté</td><td align="right">65</td><td align="right">13 %</td></tr>
+        <tr><td>Třešně</td><td align="right">65</td><td align="right">13 %</td></tr>
+        <tr><td>Para ořechy</td><td align="right">45</td><td align="right">9 %</td></tr>
+        <tr><td>Mandle natural</td><td align="right">45</td><td align="right">9 %</td></tr>
+        <tr><td>Mandle loupané</td><td align="right">40</td><td align="right">8 %</td></tr>
+        <tr><td>Lískovce</td><td align="right">40</td><td align="right">8 %</td></tr>
+        <tr><td>Kešu</td><td align="right">35</td><td align="right">7 %</td></tr>
+        <tr style="border-top:1.5px solid #e0ccb8;font-weight:700"><td><strong>Celkem</strong></td><td align="right"><strong>500 g</strong></td><td align="right"><strong>100 %</strong></td></tr>
+      </table>
+    </div>
+  </div>
+  <p style="font-size:11px;color:#a08070;margin:2px 0 0 2px">HU-FA 200g = Nutworld 500g × 0,4 (každá surovina přesně ×2,5). Blended NC/kg: 177,96 Kč u obou formátů.</p>
 
   <!-- TYPICKÁ OBJEDNÁVKA -->
   <div class="marz-title">Typická objednávka (120 ks / druh)</div>
@@ -141,8 +240,9 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:var(--bg);color:var
         <th>Produkt</th>
         <th class="r">120 ks bez DPH</th>
         <th class="r">120 ks s DPH</th>
-        <th class="r">NC odhad / 120 ks</th>
+        <th class="r">NC / 120 ks</th>
         <th class="r">Hrubý příspěvek</th>
+        <th class="r">Marže</th>
       </tr>
     </thead>
     <tbody>
@@ -150,8 +250,17 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:var(--bg);color:var
         <td class="prod">HU-FA Fitness směs</td>
         <td class="r">6 600,00 Kč</td>
         <td class="r">7 392,00 Kč</td>
-        <td class="r"><span class="m-na">~6 000 Kč</span></td>
-        <td class="r m-ok">~600 Kč</td>
+        <td class="r">
+          5 711 Kč <span class="note-small">(8 Kč obal)</span><br>
+          <span class="note-small">5 951 Kč (10 Kč obal)</span>
+        </td>
+        <td class="r">
+          <span class="m-ok">889 Kč</span> <span class="note-small">(8 Kč)</span><br>
+          <span class="m-semi">649 Kč</span> <span class="note-small">(10 Kč)</span>
+        </td>
+        <td class="r">
+          <span class="m-ok">13,5 %</span> / <span class="m-semi">9,8 %</span>
+        </td>
       </tr>
       <tr>
         <td class="prod">HU-FA Pražená směs nesolená</td>
@@ -159,42 +268,45 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:var(--bg);color:var
         <td class="r">8 736,00 Kč</td>
         <td class="r"><span class="m-na">~7 488 Kč</span></td>
         <td class="r m-low">~312 Kč</td>
+        <td class="r m-low">~4,0 % (odhad)</td>
       </tr>
       <tr style="background:#f1e6da;font-weight:700">
         <td class="prod">Celkem</td>
         <td class="r">14 400,00 Kč</td>
         <td class="r">16 128,00 Kč</td>
-        <td class="r"><span class="m-na">~13 488 Kč</span></td>
-        <td class="r m-low">~912 Kč (~6,3 %)</td>
+        <td class="r"><span class="m-na">~13 199–13 439 Kč</span></td>
+        <td class="r">961–1 201 Kč</td>
+        <td class="r m-semi">~6,7–8,3 %</td>
       </tr>
     </tbody>
   </table>
+  <p style="font-size:11px;color:#a08070;margin:4px 0 0 2px">Celková marže záleží na obalu FS a přesném složení PS. Pokud PS má nízkou marži, zvážit navýšení ceny.</p>
 
   <!-- CO DOPLNIT -->
-  <div class="marz-title">Co je potřeba doplnit</div>
+  <div class="marz-title">Co je ještě potřeba doplnit</div>
   <table class="mt">
     <thead>
       <tr>
+        <th>Produkt</th>
         <th>Úkol</th>
-        <th>Popis</th>
+        <th>Priorita</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td class="prod" style="width:220px">Složení Fitness směsi</td>
-        <td>Zjistit přesné složení HUFA/FS — jaké suroviny, v jakém poměru → blended NC</td>
+        <td class="prod" style="width:200px">Fitness směs — obal</td>
+        <td>Ověřit přesný typ a cenu obalu HU-FA branded 200g sáčku (8 nebo 10 Kč?)</td>
+        <td><span style="color:#f57c00;font-weight:700">Střední</span></td>
       </tr>
       <tr>
-        <td class="prod">Složení Pražené směsi</td>
-        <td>Zjistit přesné složení HUFA/PS — jaké suroviny, v jakém poměru → blended NC</td>
+        <td class="prod">Pražená směs — složení</td>
+        <td>Zjistit přesné složení HUFA/PS ze K2 — jaké suroviny, v jakém poměru → blended NC</td>
+        <td><span style="color:#e65100;font-weight:700">Vysoká</span></td>
       </tr>
       <tr>
-        <td class="prod">Typ a cena obalu 200g</td>
-        <td>Ověřit typ obalu (doypack / celofánek / jiný) a přesnou cenu za ks</td>
-      </tr>
-      <tr>
-        <td class="prod">Přecenění pokud NC blíže k odhadu</td>
-        <td>Pokud Pražená směs ~4,6 % → zvážit navýšení ceny na min. 70 Kč/ks (marže ~11 %)</td>
+        <td class="prod">Pražená směs — přecenění?</td>
+        <td>Pokud NC blíže k odhadu (~4 %) → zvážit navýšení na 70 Kč/ks (marže ~11 %)</td>
+        <td><span style="color:#e65100;font-weight:700">Vysoká</span></td>
       </tr>
     </tbody>
   </table>
