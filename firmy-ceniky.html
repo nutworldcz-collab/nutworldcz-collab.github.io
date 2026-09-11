@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Firmy — vlastní ceníky · Nutworld</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;min-height:100vh;padding:0}
+
+/* TOPBAR */
+.topbar{background:#5c381f;padding:14px 24px;display:flex;align-items:center;gap:12px;}
+.back{color:rgba(255,255,255,.6);font-size:13px;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .12s;}
+.back:hover{color:#fff;}
+.topbar-title{font-family:'Exo 2',sans-serif;font-size:17px;font-weight:800;color:#fff;flex:1;}
+.topbar-sub{font-size:11px;color:rgba(255,255,255,.45);}
+
+/* STATS */
+.statsbar{background:#fff;border-bottom:1px solid #d4c0a8;padding:12px 24px;display:flex;gap:24px;flex-wrap:wrap;}
+.stat .val{font-family:'Exo 2',sans-serif;font-size:22px;font-weight:700;color:#5c381f;line-height:1;}
+.stat .lbl{font-size:10px;color:#a07850;text-transform:uppercase;letter-spacing:.06em;}
+
+/* MAIN */
+.main{padding:24px;max-width:960px;margin:0 auto;}
+.section-label{font-family:'Exo 2',sans-serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:#a07850;margin-bottom:12px;}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+
+/* COMPANY CARD */
+.card{background:#fff;border:2px solid #d4c0a8;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(0,0,0,.07);}
+.card-head{background:#f1e6da;padding:14px 18px 12px;border-bottom:1px solid #d4c0a8;}
+.card-name{font-family:'Exo 2',sans-serif;font-size:17px;font-weight:800;color:#5c381f;line-height:1.2;}
+.card-loc{font-size:12px;color:#8a6a4a;margin-top:2px;}
+.card-body{padding:14px 18px;flex:1;display:flex;flex-direction:column;gap:10px;}
+.card-stats{display:flex;gap:16px;}
+.cs-n{font-family:'Exo 2',sans-serif;font-size:20px;font-weight:700;color:#5c381f;line-height:1;}
+.cs-l{font-size:11px;color:#a07850;}
+.formats{display:flex;gap:5px;flex-wrap:wrap;}
+.fmt{font-size:10px;font-weight:600;padding:2px 7px;border-radius:5px;background:#f1e6da;color:#83502e;border:1px solid #d4c0a8;}
+.status{display:flex;align-items:center;gap:7px;font-size:12px;color:#8a6a4a;}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.dot.ok{background:#2e7d32;}
+.dot.warn{background:#e65100;}
+.updated{font-size:10px;color:#a07850;margin-left:auto;}
+.card-footer{padding:10px 18px;border-top:1px solid #d4c0a8;display:flex;gap:8px;}
+.btn{flex:1;padding:8px 10px;border:none;border-radius:8px;font-family:'Source Sans 3',sans-serif;font-size:12px;font-weight:600;cursor:pointer;text-align:center;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:5px;}
+.btn.pri{background:#5c381f;color:#fff;}
+.btn.pri:hover{background:#7a4e28;}
+.btn.sec{background:#f1e6da;color:#5c381f;border:1px solid #d4c0a8;}
+.btn.sec:hover{background:#e8d5c0;}
+
+/* ADD CARD */
+.card.add{border:2px dashed #d4c0a8;background:transparent;cursor:pointer;align-items:center;justify-content:center;min-height:180px;transition:border-color .15s,background .15s;}
+.card.add:hover{border-color:#83502e;background:#fff;}
+.add-inner{display:flex;flex-direction:column;align-items:center;gap:8px;color:#b09070;padding:24px;}
+.add-icon{font-size:28px;opacity:.5;}
+.add-lbl{font-size:13px;font-weight:600;}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;}
+.overlay[hidden]{display:none!important;}
+.modal{background:#fff;border-radius:14px;padding:24px;max-width:400px;width:100%;box-shadow:0 8px 40px rgba(0,0,0,.2);}
+.modal h2{font-family:'Exo 2',sans-serif;font-size:16px;font-weight:800;color:#5c381f;margin-bottom:16px;}
+.form-row{margin-bottom:12px;}
+.form-row label{display:block;font-size:11px;font-weight:600;color:#8a6a4a;margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em;}
+.form-row input{width:100%;padding:8px 10px;border:1.5px solid #d4c0a8;border-radius:7px;font-size:13px;font-family:'Source Sans 3',sans-serif;}
+.modal-btns{display:flex;gap:8px;margin-top:16px;}
+
+.footer{text-align:center;font-size:11px;color:#b09070;padding:24px 0 32px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back" href="/index.html">← Rozcestník</a>
+  <div class="topbar-title">Firmy — vlastní ceníky</div>
+  <span class="topbar-sub" id="stat-updated">11.09.2026</span>
+</div>
+
+<div class="statsbar">
+  <div class="stat"><div class="val" id="stat-firmy">1</div><div class="lbl">Firem</div></div>
+  <div class="stat"><div class="val" id="stat-produkty">29</div><div class="lbl">Produktů</div></div>
+</div>
+
+<div class="main">
+  <div class="section-label">Aktivní firmy</div>
+  <div class="cards" id="cards-container">
+
+    <!-- NÁCHOD — builtin -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Město Náchod</div>
+        <div class="card-loc">Náchod, Královéhradecký kraj</div>
+      </div>
+      <div class="card-body">
+        <div class="card-stats">
+          <div><div class="cs-n">29</div><div class="cs-l">Produktů</div></div>
+          <div><div class="cs-n">4</div><div class="cs-l">Formátů</div></div>
+        </div>
+        <div class="formats">
+          <span class="fmt">Celofánek 180g</span>
+          <span class="fmt">Eko kelímek 100g</span>
+          <span class="fmt">Doypack 100g</span>
+          <span class="fmt">Doypack 50g</span>
+        </div>
+        <div class="status">
+          <span class="dot ok"></span>
+          <span>Ceník aktuální</span>
+          <span class="updated">11.09.2026</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a class="btn pri" href="https://claude.ai/code/artifact/a3ac048f-e6ad-4698-8dc9-088a052caaa8" target="_blank">📋 Ceník zákazníka</a>
+        <a class="btn sec" href="https://claude.ai/code/artifact/a3ac048f-e6ad-4698-8dc9-088a052caaa8" target="_blank">📊 Marže</a>
+      </div>
+    </div>
+
+    <!-- ADD -->
+    <div class="card add" onclick="showModal()">
+      <div class="add-inner">
+        <div class="add-icon">＋</div>
+        <div class="add-lbl">Přidat firmu</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer">nutworldcz-collab.github.io · Nutworld s.r.o.</div>
+
+<!-- MODAL -->
+<div class="overlay" id="modal" hidden>
+  <div class="modal">
+    <h2>Přidat firmu</h2>
+    <div class="form-row"><label>Název firmy</label><input id="f-nazev" type="text" placeholder="např. Firma s.r.o."/></div>
+    <div class="form-row"><label>Lokace</label><input id="f-lok" type="text" placeholder="např. Praha, Středočeský kraj"/></div>
+    <div class="form-row"><label>Odkaz na ceník (URL)</label><input id="f-url" type="text" placeholder="https://claude.ai/code/artifact/..."/></div>
+    <div class="form-row"><label>Počet produktů</label><input id="f-prod" type="text" placeholder="např. 20"/></div>
+    <div class="modal-btns">
+      <button class="btn pri" onclick="addFirma()" style="flex:2">Přidat</button>
+      <button class="btn sec" onclick="closeModal()" style="flex:1">Zrušit</button>
+    </div>
+  </div>
+</div>
+
+<script src="pin-guard.js"></script>
+<script>
+const KEY = 'firmy_ceniky_v1';
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||[];}catch{return[];}}
+function save(d){try{localStorage.setItem(KEY,JSON.stringify(d));}catch{}}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function showModal(){document.getElementById('modal').hidden=false;}
+function closeModal(){
+  document.getElementById('modal').hidden=true;
+  ['f-nazev','f-lok','f-url','f-prod'].forEach(id=>{document.getElementById(id).value='';});
+}
+
+function addFirma(){
+  const nazev=document.getElementById('f-nazev').value.trim();
+  const lok=document.getElementById('f-lok').value.trim();
+  const url=document.getElementById('f-url').value.trim();
+  const prod=document.getElementById('f-prod').value.trim()||'?';
+  if(!nazev)return;
+  const data=load();
+  data.push({nazev,lok,url,prod,updated:new Date().toLocaleDateString('cs-CZ')});
+  save(data);
+  closeModal();
+  render(data);
+  updateStats(data);
+}
+
+function removeFirma(nazev){
+  const data=load().filter(f=>f.nazev!==nazev);
+  save(data);render(data);updateStats(data);
+}
+
+function render(data){
+  document.querySelectorAll('.card.extra').forEach(c=>c.remove());
+  const container=document.getElementById('cards-container');
+  const addCard=container.querySelector('.card.add');
+  data.forEach(f=>{
+    const card=document.createElement('div');
+    card.className='card extra';
+    card.innerHTML=`
+      <div class="card-head">
+        <div class="card-name">${esc(f.nazev)}</div>
+        <div class="card-loc">${esc(f.lok)}</div>
+      </div>
+      <div class="card-body">
+        <div class="card-stats">
+          <div><div class="cs-n">${esc(f.prod)}</div><div class="cs-l">Produktů</div></div>
+        </div>
+        <div class="status">
+          <span class="dot warn"></span>
+          <span>Nová firma</span>
+          <span class="updated">Přidáno ${esc(f.updated)}</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        ${f.url?`<a class="btn pri" href="${esc(f.url)}" target="_blank">📋 Otevřít ceník</a>`:`<button class="btn pri" disabled style="opacity:.4">Ceník chybí</button>`}
+        <button class="btn sec" onclick="removeFirma('${esc(f.nazev)}')">Odebrat</button>
+      </div>`;
+    container.insertBefore(card,addCard);
+  });
+}
+
+function updateStats(data){
+  document.getElementById('stat-firmy').textContent=1+data.length;
+}
+
+// init
+const saved=load();
+if(saved.length){render(saved);updateStats(saved);}
+
+document.getElementById('modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
+</script>
+</body>
+</html>
