@@ -1,6 +1,103 @@
 {
-  "generated": "2026-09-14T12:02:04",
-  "total": 0,
-  "spam_skipped": 0,
-  "emails": []
+  "generated": "2026-09-14T17:01:01",
+  "total": 6,
+  "spam_skipped": 1,
+  "emails": [
+    {
+      "account": "Google",
+      "sender": "💚 Rohlik.cz <peckyzrohliku@rohlik.cz>",
+      "subject": "Už to u vás voní skořicí a jablky? 🥧",
+      "date": "pondělí 14. září 2026 12:25:27",
+      "unread": true,
+      "preview": "Nezobrazuje se newsletter správně? Prohlédněte si ho na webu. ￼ Znáte ten moment",
+      "category": "ostatni",
+      "sender_short": "💚 Rohlik.cz",
+      "sender_email": "peckyzrohliku@rohlik.cz",
+      "ai": {
+        "shrn": "Newsletter od Rohlik.cz s nabídkou sezónních produktů (skořice a jablka). Jedná se o marketingový email.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "Václav z Moje Obaly <novinky@mojeobaly.cz>",
+      "subject": "Ještě stihnete slevu až 20 % na balicí materiál",
+      "date": "pondělí 14. září 2026 10:40:15",
+      "unread": true,
+      "preview": "Akce jenom pro vás Online verze e-mailu ￼ Obalové materiály Kancelářské potřeby Hygiena a drogerie Gastro a Jednorázové obaly ￼ Zářijové akční zboží je tady Krásný den Jane, Zářijová akce právě běží – zvýhodněné ceny platí do 30. září. Hlavní hvězdou jsou tentokrát dřevěné bedýnky: všech 16 velikost",
+      "category": "ostatni",
+      "sender_short": "Václav z Moje Obaly",
+      "sender_email": "novinky@mojeobaly.cz",
+      "ai": {
+        "shrn": "Václav z Moje Obaly nabízí slevu až 20 % na balicí materiál do 30. září, včetně dřevěných bedýnek. Týká se potenciálního nákupu obalů pro Nutworld.cz.",
+        "tyka_se": true,
+        "akce": "Zvážit nákup balicího materiálu podle aktuálních potřeb Nutworld.cz"
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "\"Temu\" <temu@eu.temuemail.com>",
+      "subject": "V 14. zář 2026 jsme Vám poslali královskou odměnu!",
+      "date": "pondělí 14. září 2026 9:32:31",
+      "unread": true,
+      "preview": "Prosím přijměte",
+      "category": "ostatni",
+      "sender_short": "Temu",
+      "sender_email": "temu@eu.temuemail.com",
+      "ai": {
+        "shrn": "Temu oznamuje &quot;královskou odměnu&quot; s minimálním obsahem. Jedná se o spam/propagační email.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "Apple <no_reply@email.apple.com>",
+      "subject": "Zvýšení ceny vašeho předplatného",
+      "date": "pondělí 14. září 2026 9:15:27",
+      "unread": true,
+      "preview": "￼ Zvýšení ceny předplatného ￼ YouTube Youtube Premium Family Youtube Premium Family (1měsíční) Nová cena 599,00 Kč — Stará cena 509,00 Kč Začíná 11.10.2026 Dobrý den",
+      "category": "ostatni",
+      "sender_short": "Apple",
+      "sender_email": "no_reply@email.apple.com",
+      "ai": {
+        "shrn": "Apple informuje o zvýšení ceny YouTube Premium Family z 509 Kč na 599 Kč od 11.10.2026. Týká se Janovy osobní služby.",
+        "tyka_se": true,
+        "akce": "Rozhodnout, zda pokračovat s YouTube Premium Family nebo službu zrušit"
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "\"AliExpress.seller\" <promotion@aliexpress.com>",
+      "subject": "Our daily picks at US $3.00 off",
+      "date": "pondělí 14. září 2026 7:46:54",
+      "unread": true,
+      "preview": "Collect coupons inside & shop now ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ Daily specials in our store ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ",
+      "category": "ostatni",
+      "sender_short": "AliExpress.seller",
+      "sender_email": "promotion@aliexpress.com",
+      "ai": {
+        "shrn": "AliExpress nabízí denní speciály se slevou 3 USD a kupóny. Jedná se o standardní propagační email.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "\"CrossFit\" <crossfit@mail.crossfit.com>",
+      "subject": "260914 Workout of the Day: Run and Lift",
+      "date": "pondělí 14. září 2026 2:31:56",
+      "unread": true,
+      "preview": "￼ ￼ ￼ MONDAY",
+      "category": "ostatni",
+      "sender_short": "CrossFit",
+      "sender_email": "crossfit@mail.crossfit.com",
+      "ai": {
+        "shrn": "CrossFit posílá workout plánu na pondělí (Run and Lift). Jedná se o fitness newsletter.",
+        "tyka_se": false,
+        "akce": null
+      }
+    }
+  ]
 }
