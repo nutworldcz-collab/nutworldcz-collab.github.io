@@ -379,7 +379,7 @@ function parseComp(s) {
   const toks=rest.split(/\s+/);
   let gi=-1;
   for(let i=1;i<toks.length;i++){
-    if(/^\d+(?:[.,]\d+)?(?:g|kg|ml)?$/i.test(toks[i])){ gi=i; break; }
+    if(/^\d+(?:[.,]\d+)?(?:g|kg|ml)$/i.test(toks[i])){ gi=i; break; }
   }
   if(gi===-1) return {nazev:rest,gram:'',obal:'',kod};
   return {nazev:toks.slice(0,gi).join(' '),gram:toks[gi],obal:toks.slice(gi+1).join(' '),kod};
