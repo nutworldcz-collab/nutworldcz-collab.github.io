@@ -1,6 +1,39 @@
 {
-  "generated": "2026-09-14T05:25:19",
-  "total": 0,
-  "spam_skipped": 0,
-  "emails": []
+  "generated": "2026-09-14T07:32:15",
+  "total": 2,
+  "spam_skipped": 1,
+  "emails": [
+    {
+      "account": "Exchange",
+      "sender": "Jan Vlček <jan.vlcek@nutworld.cz>",
+      "subject": "Re: Výzva k platbě",
+      "date": "pondělí 14. září 2026 5:49:06",
+      "unread": true,
+      "preview": "Dobrý den, Děkujeme za info a objednávku rušíme 🙏 S pozdravem a přáním hezkého dne / Best regards Mgr. Jan Vlček Výkonný ředitel/jednatel Tel.: +420776138371 NutWorld s.r.o. www.nutworld.cz / www.nutworld.sk Address: Hvězdova 1716/2b",
+      "category": "tym",
+      "sender_short": "Jan Vlček",
+      "sender_email": "jan.vlcek@nutworld.cz",
+      "ai": {
+        "shrn": "Jan potvrzuje zrušení objednávky a děkuje za informaci.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "\"Jane.li\" <jane@milesports.com.cn>",
+      "subject": "Re:Re: Introduction of our Company with 9 years of experience in the industry",
+      "date": "pondělí 14. září 2026 4:36:41",
+      "unread": true,
+      "preview": "Hi jan.vlcek, I hope everything is going well for you. We noticed you read our introductory email. Thank you for your attention",
+      "category": "ostatni",
+      "sender_short": "Jane.li",
+      "sender_email": "jane@milesports.com.cn",
+      "ai": {
+        "shrn": "Společnost Mile Sports se děkuje za přečtení jejich představovacího emailu a snaží se navázat kontakt.",
+        "tyka_se": false,
+        "akce": null
+      }
+    }
+  ]
 }
