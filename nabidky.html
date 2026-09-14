@@ -421,6 +421,30 @@ function populateForm(data) {
     s2('cena', p.cena || '');
     s2('nakup', p.nakup || '');
     recalc(id);
+    if (p.slozeni && p.slozeni.length > 0) {
+      if (!document.getElementById('popis-row-'+id)) togglePopis(id);
+      const slozeniRows = document.getElementById('slozeni-rows-'+id);
+      if (slozeniRows) {
+        slozeniRows.innerHTML = '';
+        const _eq = s => String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;');
+        p.slozeni.forEach((item, si) => {
+          const div = document.createElement('div');
+          div.className = 'slozeni-row';
+          const gramVal = item.gram != null ? (String(item.gram).endsWith('g') ? item.gram : item.gram + 'g') : '';
+          div.innerHTML =
+            `<div class="slozeni-search-wrap">` +
+              `<input class="slozeni-kod-inp" id="slozeni-s-${id}-${si}" value="${_eq(item.kod)}" autocomplete="off"/>` +
+              `<div class="slozeni-ac-drop" id="slozeni-d-${id}-${si}"></div>` +
+            `</div>` +
+            `<input class="slozeni-nazev" id="slozeni-n-${id}-${si}" value="${_eq(item.nazev)}" placeholder="Název produktu"/>` +
+            `<input class="slozeni-gram" id="slozeni-g-${id}-${si}" value="${_eq(gramVal)}"/>` +
+            `<input class="slozeni-obal" id="slozeni-o-${id}-${si}" value="${_eq(item.obal)}" placeholder="Obal / balení"/>` +
+            `<button class="slozeni-rm" type="button" title="Odebrat" onclick="this.closest('.slozeni-row').remove()">✕</button>`;
+          slozeniRows.appendChild(div);
+          buildSlozeniAC(id, si);
+        });
+      }
+    }
   });
   recalcDoprava();
   _trelloCardId = data._cardId || null;
