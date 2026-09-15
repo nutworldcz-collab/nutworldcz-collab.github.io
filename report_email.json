@@ -1,6 +1,87 @@
 {
-  "generated": "2026-09-15T12:01:28",
-  "total": 0,
+  "generated": "2026-09-15T18:20:28",
+  "total": 5,
   "spam_skipped": 0,
-  "emails": []
+  "emails": [
+    {
+      "account": "Google",
+      "sender": "\"Samsung\" <no-reply@m1.email.samsung.com>",
+      "subject": "Získej nový Galaxy S26 FE s 15% slevou",
+      "date": "úterý 15. září 2026 11:43:01",
+      "unread": true,
+      "preview": "",
+      "category": "ostatni",
+      "sender_short": "Samsung",
+      "sender_email": "no-reply@m1.email.samsung.com",
+      "ai": {
+        "shrn": "Propagační email od Samsungu nabízející slevu na Galaxy S26 FE. Jedná se o marketingový obsah bez relevance pro Nutworld.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "Temu <temu@eu.temuemail.com>",
+      "subject": "V 15. zář 2026 jsme Vám poslali královskou odměnu!",
+      "date": "úterý 15. září 2026 11:32:41",
+      "unread": true,
+      "preview": "Prosím přijměte",
+      "category": "ostatni",
+      "sender_short": "Temu",
+      "sender_email": "temu@eu.temuemail.com",
+      "ai": {
+        "shrn": "Email od Temu s oznámením o poslané odměně. Nejedná se o relevantní komunikaci týkající se podnikání.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "Lucie Vlčková <info@fitlines.cz>",
+      "subject": "PROMĚNA IVČA | −14 kg | Září 2026",
+      "date": "úterý 15. září 2026 9:00:58",
+      "unread": true,
+      "preview": "FITLiNES ⚡ PŘÍBĚH KLIENTKY ✦ PROMĚNA ROKU −14 kg v 39 letech. Ivčin příběh",
+      "category": "ostatni",
+      "sender_short": "Lucie Vlčková",
+      "sender_email": "info@fitlines.cz",
+      "ai": {
+        "shrn": "Email od Lucie Vlčkové s příběhem klientky programu FITLiNES. Jedná se o obsah z fitnes aplikace bez vztahu k Nutworld.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "\"DJI\" <enews@e.dji.com>",
+      "subject": "Meet the All-New Osmo 360 II",
+      "date": "úterý 15. září 2026 8:21:15",
+      "unread": true,
+      "preview": "￼ Osmo 360 II 8K 360° Camera Shop Now Watch Video ￼ Exclusive Launch Offers[1] Valid from 08:00",
+      "category": "ostatni",
+      "sender_short": "DJI",
+      "sender_email": "enews@e.dji.com",
+      "ai": {
+        "shrn": "Propagační email od DJI představující kameru Osmo 360 II s exkluzivní nabídkou. Marketingový obsah bez relevance pro e-shop s ořechy.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "\"CrossFit\" <crossfit@mail.crossfit.com>",
+      "subject": "260915 Workout of the Day: Service Cup Workout 2",
+      "date": "úterý 15. září 2026 2:31:42",
+      "unread": true,
+      "preview": "￼ ￼ ￼ TUESDAY",
+      "category": "ostatni",
+      "sender_short": "CrossFit",
+      "sender_email": "crossfit@mail.crossfit.com",
+      "ai": {
+        "shrn": "Email od CrossFitu s cvičením dne. Jedná se o cvičební program bez souvislosti s běžným provozem Nutworld.",
+        "tyka_se": false,
+        "akce": null
+      }
+    }
+  ]
 }
