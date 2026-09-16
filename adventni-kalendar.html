@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Adventní kalendář 2026 — Výrobní manuál</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+:root {
+  --bg:        #f7f2eb;
+  --bg-alt:    #ede5d8;
+  --bg-card:   #ffffff;
+  --border:    #d6c9b4;
+  --text:      #2a1a0e;
+  --text-sub:  #6b5540;
+  --head:      #5c381f;
+  --accent:    #f7ab31;
+  --accent-dk: #c07820;
+  --new:       #da1668;
+  --c-natural:  #4a7c2f;
+  --c-choco:    #6b2f2f;
+  --c-karamel:  #9a6010;
+  --c-med:      #b87c00;
+  --c-slane:    #3a6080;
+  --c-lanyz:    #6a3a80;
+  --c-uzene:    #7a4828;
+  --c-bbq:      #b83020;
+  --c-premium:  #83502e;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1c1008; --bg-alt: #271608; --bg-card: #2e1d0a;
+    --border: #4a3018; --text: #f0e8d8; --text-sub: #b89a78;
+    --head: #e8c890; --accent: #f7ab31; --accent-dk: #e09820;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1c1008; --bg-alt: #271608; --bg-card: #2e1d0a;
+  --border: #4a3018; --text: #f0e8d8; --text-sub: #b89a78;
+  --head: #e8c890; --accent: #f7ab31; --accent-dk: #e09820;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* Topbar */
+.topbar { background: #5c381f; padding: 12px 24px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.topbar-title { font-family: 'Exo 2', sans-serif; font-size: 17px; font-weight: 800; color: white; }
+.topbar a { color: rgba(255,255,255,.6); font-size: 12px; text-decoration: none; }
+.topbar a:hover { color: white; }
+
+body {
+  font-family: 'Source Sans 3', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.5;
+  padding: 32px 24px 64px;
+}
+.page { max-width: 960px; margin: 0 auto; }
+
+.doc-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  border-bottom: 3px solid var(--accent); padding-bottom: 14px;
+  margin-bottom: 32px; gap: 16px; flex-wrap: wrap;
+}
+.doc-title { font-family: 'Exo 2', sans-serif; font-size: 26px; font-weight: 800; color: var(--head); text-wrap: balance; line-height: 1.2; }
+.doc-meta { font-size: 13px; color: var(--text-sub); text-align: right; line-height: 1.7; }
+.doc-meta strong { color: var(--text); }
+
+.section { margin-bottom: 36px; }
+.section-label { font-family: 'Exo 2', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-dk); margin-bottom: 10px; }
+
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin-bottom: 10px; }
+.tile { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+.tile-label { font-size: 11px; color: var(--text-sub); margin-bottom: 3px; line-height: 1.3; }
+.tile-value { font-family: 'Exo 2', sans-serif; font-size: 20px; font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; }
+.tile-value.big { font-size: 26px; color: var(--head); }
+.tile-value.accent { color: var(--accent-dk); }
+.tile-value.green { color: var(--c-natural); }
+.tile.highlight { background: var(--head); border-color: var(--head); }
+.tile.highlight .tile-label { color: rgba(255,255,255,0.65); }
+.tile.highlight .tile-value { color: #fff; }
+
+.cost-breakdown { background: var(--bg-alt); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; margin-top: 10px; }
+.cost-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; font-size: 13.5px; border-bottom: 1px solid var(--border); }
+.cost-row:last-child { border-bottom: none; font-weight: 600; font-size: 14px; }
+.cost-row span:last-child { font-family: 'Exo 2', sans-serif; font-variant-numeric: tabular-nums; font-weight: 600; }
+
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+thead th { background: var(--head); color: #fff; font-family: 'Exo 2', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 8px 10px; text-align: left; white-space: nowrap; }
+thead th:first-child { border-radius: 6px 0 0 0; }
+thead th:last-child { border-radius: 0 6px 0 0; }
+tbody tr:nth-child(even) { background: var(--bg-alt); }
+tbody tr:nth-child(odd)  { background: var(--bg-card); }
+tbody tr:hover { background: color-mix(in srgb, var(--accent) 12%, var(--bg-card)); }
+td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.slot-num { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 15px; color: var(--text-sub); font-variant-numeric: tabular-nums; width: 36px; }
+.slot-24 .slot-num { color: var(--accent-dk); }
+.slot-24 td { background: color-mix(in srgb, var(--accent) 15%, var(--bg-card)) !important; font-weight: 600; }
+.star { color: var(--accent-dk); }
+
+.chip { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 20px; white-space: nowrap; }
+.chip-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+.slot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; }
+.slot-grid .table-wrap { min-width: 0; }
+
+.queue-list { list-style: none; counter-reset: queue; }
+.queue-item { counter-increment: queue; display: flex; align-items: center; gap: 12px; padding: 8px 12px; border-bottom: 1px solid var(--border); font-size: 14px; }
+.queue-item:last-child { border-bottom: none; }
+.queue-item:nth-child(even) { background: var(--bg-alt); }
+.queue-item::before { content: counter(queue); font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 13px; color: var(--text-sub); min-width: 22px; text-align: right; font-variant-numeric: tabular-nums; }
+.queue-name { flex: 1; }
+.queue-separator { background: var(--bg-alt); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 5px 12px 5px 10px; font-family: 'Exo 2', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent-dk); }
+.queue-wrap { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+
+.note { font-size: 12px; color: var(--text-sub); margin-top: 8px; display: flex; align-items: flex-start; gap: 6px; }
+
+@media (max-width: 600px) {
+  .slot-grid { grid-template-columns: 1fr; }
+  .tiles { grid-template-columns: repeat(2, 1fr); }
+  .doc-meta { text-align: left; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-title">🎄 Adventní kalendář 2026</span>
+  <a href="/">← Rozcestník</a>
+  <a href="/vyroba.html">🏭 Výrobní plán</a>
+  <a href="/normy.html">📐 Normy</a>
+</div>
+
+<div class="page">
+
+  <div class="doc-header">
+    <div class="doc-title">Adventní kalendář 2026<br>Výrobní manuál</div>
+    <div class="doc-meta">
+      <strong>24 okének · 30 g / kus · 720 g celkem</strong><br>
+      Nutworld s.r.o. · interní dokument
+    </div>
+  </div>
+
+  <!-- KALKULACE -->
+  <div class="section">
+    <div class="section-label">01 · Kalkulace</div>
+    <div class="tiles">
+      <div class="tile"><div class="tile-label">Suroviny<br>(24 × 30 g)</div><div class="tile-value">154 Kč</div></div>
+      <div class="tile"><div class="tile-label">Obal + plnění + kompletace</div><div class="tile-value">120 Kč</div></div>
+      <div class="tile"><div class="tile-label">Etiketa + etiketování</div><div class="tile-value">7 Kč</div></div>
+      <div class="tile"><div class="tile-label">Obalový materiál (krabice)</div><div class="tile-value">150 Kč</div></div>
+      <div class="tile highlight"><div class="tile-label">Náklady celkem</div><div class="tile-value big">431 Kč</div></div>
+      <div class="tile"><div class="tile-label">MO cena s DPH</div><div class="tile-value accent">999 Kč</div></div>
+      <div class="tile"><div class="tile-label">VO cena</div><div class="tile-value">799 Kč</div></div>
+      <div class="tile"><div class="tile-label">Marže</div><div class="tile-value green">52 %</div></div>
+    </div>
+    <div class="cost-breakdown">
+      <div class="cost-row"><span>Obal sáček (24 × 1 Kč)</span><span>24 Kč</span></div>
+      <div class="cost-row"><span>Plnění sáčků (24 × 2 Kč)</span><span>48 Kč</span></div>
+      <div class="cost-row"><span>Kompletace (24 × 2 Kč)</span><span>48 Kč</span></div>
+      <div class="cost-row"><span>Etiketa velká (1 ×)</span><span>5 Kč</span></div>
+      <div class="cost-row"><span>Etiketování (1 ×)</span><span>2 Kč</span></div>
+      <div class="cost-row"><span>Obalový materiál</span><span>150 Kč</span></div>
+      <div class="cost-row"><span>Suroviny</span><span>154 Kč</span></div>
+      <div class="cost-row"><span>Celkem</span><span>431 Kč</span></div>
+    </div>
+  </div>
+
+  <!-- ROZLOŽENÍ OKÉNEK -->
+  <div class="section">
+    <div class="section-label">02 · Rozložení okének</div>
+    <div class="slot-grid">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Produkt</th><th>Skupina</th></tr></thead>
+          <tbody>
+            <tr><td class="slot-num">1</td><td>Lísková jádra v bílé čokoládě</td><td><span class="chip" style="background:color-mix(in srgb,var(--c-choco) 12%,transparent);color:var(--c-choco)"><span class="chip-dot" style="background:var(--c-choco)"></span>Čokoláda</span></td></tr>
+            <tr><td class="slot-num">2</td><td>Mix v medu a soli</td><td><span class="chip" style="background:color-mix(in srgb,var(--c-med) 15%,transparent);color:var(--c-med)"><span class="chip-dot" style="background:var(--c-med)"></span>Med+sůl</span></td></tr>
+            <tr><td class="slot-num">3</td><td>Arašídy v mléčné čokoládě</td><td><span class="chip" style="background:color-mix(in srgb,var(--c-choco) 12%,transparent);color:var(--c-choco)"><span class="chip-dot" style="background:var(--c-choco)"></span>Čokoláda</span></td></tr>
+            <tr><td class="slot-num">4</td><td>Kešu natural</td><td><span class="chip" style="background:color-mix(in srgb,var(--c-natural) 12%,transparent);color:var(--c-natural)"><span class="chip-dot" style="background:var(--c-natural)"></span>Natural</span></td></tr>
+            <tr><td class="slot-num">5</td><td>Brusinky v mléčné čokoládě</td><td><span class="chip" style="background:color-mix(in srgb,var(--c-choco) 12%,transparent);color:var(--c-choco)"><span class="chip-dot" style="background:var(--c-choco)"></span>Čokoláda</span></td></tr>
+            <tr><td class="slot-num">6</td><td>Mandle uzené</td><td><span class="chip" style="background:color-mix(in srgb,var(--c-uzene) 15%,transparent);color:var(--c-uzene)"><span class="chip-dot" style="background:var(--c-uzene)"></span>Uzené</span></td></tr>
+            <tr><td class="slot-num">7</td><td>Arašídy karamel vanilka</td><td><span class="chip" style="background:color-mix(in srgb,var(--c-karamel) 12%,transparent);color:var(--c-karamel)"><span class="chip-dot" style="background:var(--c-karamel)"></span>Karamel</span></td></tr>
+            <tr><td class="slot-num">8</td><td>Kešu s lanýžem</td><td><span class="chip" style="background:color-mix(in srgb,var(--c-lanyz) 12%,transparent);color:var(--c-lanyz)"><span class="chip-dot" style="background:var(--c-lanyz)"></span>Lanýž</span></td></tr>
+            <tr><td class="slot-num">9</td><td>Mandle v jogurtu</td><td><span class="chip" style="background:color-mix(in srgb,var(--c-choco) 12%,transparent);color:var(--c-choco)"><span class="chip-dot" style="background:var(--c-choco)"></span>Čokoláda</span></td></tr>
+            <tr><td class="slot-num">10</td><td>Mandle natural</td><td><span class="chip" style="background:color-mix(in srgb,var(--c-natural) 12%,transparent);color:var(--c-natural)"><span class="chip-dot" style="background:var(--c-natural)"></span>Natural</span></td></tr>
+            <tr><td class="slot-num">11</td><td>Kukuřice BBQ</td><td><span class="chip" style="background:color-mix(in srgb,var(--c-bbq) 12%,transparent);color:var(--c-bbq)"><span class="chip-dot" style="background:var(--c-bbq)"></span>BBQ</span></td></tr>
+            <tr><td class="slot-num">12</td><td>Arašídy solené</td><td><span class="chip" style="background:color-mix(in srgb,var(--c-slane) 12%,transparent);color:var(--c-slane)"><span class="chip-dot" style="background:var(--c-slane)"></span>Slaný</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Produkt</th><th>Skupina</th></tr></thead>
+          <tbody>
+            <tr><td class="slot-num">13</td><td>Arašídy karamel sezam</td><td><span class="chip" style="background:color-mix(in srgb,var(--c-karamel) 12%,transparent);color:var(--c-karamel)"><span class="chip-dot" style="background:var(--c-karamel)"></span>Karamel</span></td></tr>
+            <tr><td class="slot-num">14</td><td>Mandle solené</td><td><span class="chip" style="background:color-mix(in srgb,var(--c-slane) 12%,transparent);color:var(--c-slane)"><span class="chip-dot" style="background:var(--c-slane)"></span>Slaný</span></td></tr>
+            <tr><td class="slot-num">15</td><td>Mandle ve slaném karamelu</td><td><span class="chip" style="background:color-mix(in srgb,var(--c-choco) 12%,transparent);color:var(--c-choco)"><span class="chip-dot" style="background:var(--c-choco)"></span>Čokoláda</span></td></tr>
+            <tr><td class="slot-num">16</td><td>Kešu česnek rozmarýn</td><td><span class="chip" style="background:color-mix(in srgb,var(--c-slane) 12%,transparent);color:var(--c-slane)"><span class="chip-dot" style="background:var(--c-slane)"></span>Slaný</span></td></tr>
+            <tr><td class="slot-num">17</td><td>Mandle matcha</td><td><span class="chip" style="background:color-mix(in srgb,var(--c-choco) 12%,transparent);color:var(--c-choco)"><span class="chip-dot" style="background:var(--c-choco)"></span>Čokoláda</span></td></tr>
+            <tr><td class="slot-num">18</td><td>Kešu s chilli</td><td><span class="chip" style="background:color-mix(in srgb,var(--c-slane) 12%,transparent);color:var(--c-slane)"><span class="chip-dot" style="background:var(--c-slane)"></span>Slaný</span></td></tr>
+            <tr><td class="slot-num">19</td><td>Kešu tiramisu</td><td><span class="chip" style="background:color-mix(in srgb,var(--c-choco) 12%,transparent);color:var(--c-choco)"><span class="chip-dot" style="background:var(--c-choco)"></span>Čokoláda</span></td></tr>
+            <tr><td class="slot-num">20</td><td>Kešu solené</td><td><span class="chip" style="background:color-mix(in srgb,var(--c-slane) 12%,transparent);color:var(--c-slane)"><span class="chip-dot" style="background:var(--c-slane)"></span>Slaný</span></td></tr>
+            <tr><td class="slot-num">21</td><td>Želé banánové v mléčné čokoládě</td><td><span class="chip" style="background:color-mix(in srgb,var(--c-choco) 12%,transparent);color:var(--c-choco)"><span class="chip-dot" style="background:var(--c-choco)"></span>Čokoláda</span></td></tr>
+            <tr><td class="slot-num">22</td><td>Lísková jádra natural</td><td><span class="chip" style="background:color-mix(in srgb,var(--c-natural) 12%,transparent);color:var(--c-natural)"><span class="chip-dot" style="background:var(--c-natural)"></span>Natural</span></td></tr>
+            <tr><td class="slot-num">23</td><td>Arašídy v hořké čokoládě</td><td><span class="chip" style="background:color-mix(in srgb,var(--c-choco) 12%,transparent);color:var(--c-choco)"><span class="chip-dot" style="background:var(--c-choco)"></span>Čokoláda</span></td></tr>
+            <tr class="slot-24"><td class="slot-num">24</td><td><span class="star">★</span> Makadam solený</td><td><span class="chip" style="background:color-mix(in srgb,var(--c-premium) 15%,transparent);color:var(--c-premium)"><span class="chip-dot" style="background:var(--c-premium)"></span>Premium</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="note">⚠ 4 produkty (lísková v bílé, brusinky v čokoládě, kešu s lanýžem, mandle matcha) zatím nejsou v ceníku — nutno naskladnit před výrobou.</div>
+  </div>
+
+  <!-- VÝROBNÍ FRONTA -->
+  <div class="section">
+    <div class="section-label">03 · Výrobní fronta</div>
+    <div class="note" style="margin-bottom:10px">Pořadí plnění stroje. Přechod mezi skupinami = vyčištění zásobníku.</div>
+    <div class="queue-wrap">
+      <div class="queue-separator">Natural — zásobník čistý, bez alergenů z koatingu</div>
+      <ul class="queue-list">
+        <li class="queue-item"><span class="queue-name">Kešu natural</span><span class="chip" style="background:color-mix(in srgb,var(--c-natural) 12%,transparent);color:var(--c-natural);font-size:11px"><span class="chip-dot" style="background:var(--c-natural)"></span>Natural</span></li>
+        <li class="queue-item"><span class="queue-name">Mandle natural</span><span class="chip" style="background:color-mix(in srgb,var(--c-natural) 12%,transparent);color:var(--c-natural);font-size:11px"><span class="chip-dot" style="background:var(--c-natural)"></span>Natural</span></li>
+        <li class="queue-item"><span class="queue-name">Lísková jádra natural</span><span class="chip" style="background:color-mix(in srgb,var(--c-natural) 12%,transparent);color:var(--c-natural);font-size:11px"><span class="chip-dot" style="background:var(--c-natural)"></span>Natural</span></li>
+      </ul>
+      <div class="queue-separator">Čokoláda, jogurt &amp; matcha — poleva, vlhčí provoz</div>
+      <ul class="queue-list">
+        <li class="queue-item"><span class="queue-name">Arašídy v mléčné čokoládě</span><span class="chip" style="background:color-mix(in srgb,var(--c-choco) 12%,transparent);color:var(--c-choco);font-size:11px"><span class="chip-dot" style="background:var(--c-choco)"></span>Čokoláda</span></li>
+        <li class="queue-item"><span class="queue-name">Arašídy v hořké čokoládě</span><span class="chip" style="background:color-mix(in srgb,var(--c-choco) 12%,transparent);color:var(--c-choco);font-size:11px"><span class="chip-dot" style="background:var(--c-choco)"></span>Čokoláda</span></li>
+        <li class="queue-item"><span class="queue-name">Mandle v jogurtu</span><span class="chip" style="background:color-mix(in srgb,var(--c-choco) 12%,transparent);color:var(--c-choco);font-size:11px"><span class="chip-dot" style="background:var(--c-choco)"></span>Čokoláda</span></li>
+        <li class="queue-item"><span class="queue-name">Lísková jádra v bílé čokoládě</span><span class="chip" style="background:color-mix(in srgb,var(--c-choco) 12%,transparent);color:var(--c-choco);font-size:11px"><span class="chip-dot" style="background:var(--c-choco)"></span>Čokoláda</span></li>
+        <li class="queue-item"><span class="queue-name">Kešu tiramisu</span><span class="chip" style="background:color-mix(in srgb,var(--c-choco) 12%,transparent);color:var(--c-choco);font-size:11px"><span class="chip-dot" style="background:var(--c-choco)"></span>Čokoláda</span></li>
+        <li class="queue-item"><span class="queue-name">Brusinky v mléčné čokoládě</span><span class="chip" style="background:color-mix(in srgb,var(--c-choco) 12%,transparent);color:var(--c-choco);font-size:11px"><span class="chip-dot" style="background:var(--c-choco)"></span>Čokoláda</span></li>
+        <li class="queue-item"><span class="queue-name">Želé banánové v mléčné čokoládě</span><span class="chip" style="background:color-mix(in srgb,var(--c-choco) 12%,transparent);color:var(--c-choco);font-size:11px"><span class="chip-dot" style="background:var(--c-choco)"></span>Čokoláda</span></li>
+        <li class="queue-item"><span class="queue-name">Mandle matcha</span><span class="chip" style="background:color-mix(in srgb,var(--c-choco) 12%,transparent);color:var(--c-choco);font-size:11px"><span class="chip-dot" style="background:var(--c-choco)"></span>Čokoláda</span></li>
+        <li class="queue-item"><span class="queue-name">Mandle ve slaném karamelu</span><span class="chip" style="background:color-mix(in srgb,var(--c-choco) 12%,transparent);color:var(--c-choco);font-size:11px"><span class="chip-dot" style="background:var(--c-choco)"></span>Čokoláda</span></li>
+      </ul>
+      <div class="queue-separator">Karamelizované — lepivé, čistit před přechodem</div>
+      <ul class="queue-list">
+        <li class="queue-item"><span class="queue-name">Arašídy karamel vanilka</span><span class="chip" style="background:color-mix(in srgb,var(--c-karamel) 12%,transparent);color:var(--c-karamel);font-size:11px"><span class="chip-dot" style="background:var(--c-karamel)"></span>Karamel</span></li>
+        <li class="queue-item"><span class="queue-name">Arašídy karamel sezam</span><span class="chip" style="background:color-mix(in srgb,var(--c-karamel) 12%,transparent);color:var(--c-karamel);font-size:11px"><span class="chip-dot" style="background:var(--c-karamel)"></span>Karamel</span></li>
+      </ul>
+      <div class="queue-separator">Med a sůl — lepivé, ale sušší než karamel</div>
+      <ul class="queue-list">
+        <li class="queue-item"><span class="queue-name">Mix v medu a soli</span><span class="chip" style="background:color-mix(in srgb,var(--c-med) 15%,transparent);color:var(--c-med);font-size:11px"><span class="chip-dot" style="background:var(--c-med)"></span>Med+sůl</span></li>
+      </ul>
+      <div class="queue-separator">Slané — suchý provoz, snadný přechod</div>
+      <ul class="queue-list">
+        <li class="queue-item"><span class="queue-name">Arašídy solené</span><span class="chip" style="background:color-mix(in srgb,var(--c-slane) 12%,transparent);color:var(--c-slane);font-size:11px"><span class="chip-dot" style="background:var(--c-slane)"></span>Slaný</span></li>
+        <li class="queue-item"><span class="queue-name">Kešu solené</span><span class="chip" style="background:color-mix(in srgb,var(--c-slane) 12%,transparent);color:var(--c-slane);font-size:11px"><span class="chip-dot" style="background:var(--c-slane)"></span>Slaný</span></li>
+        <li class="queue-item"><span class="queue-name">Mandle solené</span><span class="chip" style="background:color-mix(in srgb,var(--c-slane) 12%,transparent);color:var(--c-slane);font-size:11px"><span class="chip-dot" style="background:var(--c-slane)"></span>Slaný</span></li>
+        <li class="queue-item"><span class="queue-name">Makadam solený <span style="font-size:11px;color:var(--accent-dk)">→ okénko 24</span></span><span class="chip" style="background:color-mix(in srgb,var(--c-slane) 12%,transparent);color:var(--c-slane);font-size:11px"><span class="chip-dot" style="background:var(--c-slane)"></span>Slaný</span></li>
+        <li class="queue-item"><span class="queue-name">Kešu s lanýžem</span><span class="chip" style="background:color-mix(in srgb,var(--c-lanyz) 12%,transparent);color:var(--c-lanyz);font-size:11px"><span class="chip-dot" style="background:var(--c-lanyz)"></span>Lanýž</span></li>
+        <li class="queue-item"><span class="queue-name">Kešu česnek rozmarýn</span><span class="chip" style="background:color-mix(in srgb,var(--c-slane) 12%,transparent);color:var(--c-slane);font-size:11px"><span class="chip-dot" style="background:var(--c-slane)"></span>Slaný</span></li>
+        <li class="queue-item"><span class="queue-name">Kešu s chilli</span><span class="chip" style="background:color-mix(in srgb,var(--c-slane) 12%,transparent);color:var(--c-slane);font-size:11px"><span class="chip-dot" style="background:var(--c-slane)"></span>Slaný</span></li>
+      </ul>
+      <div class="queue-separator">Speciality — každý jiný, čistit mezi produkty</div>
+      <ul class="queue-list">
+        <li class="queue-item"><span class="queue-name">Mandle uzené</span><span class="chip" style="background:color-mix(in srgb,var(--c-uzene) 15%,transparent);color:var(--c-uzene);font-size:11px"><span class="chip-dot" style="background:var(--c-uzene)"></span>Uzené</span></li>
+        <li class="queue-item"><span class="queue-name">Kukuřice BBQ</span><span class="chip" style="background:color-mix(in srgb,var(--c-bbq) 12%,transparent);color:var(--c-bbq);font-size:11px"><span class="chip-dot" style="background:var(--c-bbq)"></span>BBQ</span></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
