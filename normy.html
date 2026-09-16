@@ -300,6 +300,7 @@ table.pp-ops td.b{font-weight:bold;color:#5c381f}
     <button class="tpl-btn" style="border-color:#2d7a1a;color:#2d7a1a" onclick="addFromTemplate('vilgainKesuMed')">🌿 Kešu s medem 500g</button>
     <button class="tpl-btn" style="border-color:#2d7a1a;color:#2d7a1a" onclick="addFromTemplate('vilgainSmes1000')">🌿 Směs ořechů 1000g</button>
     <button class="tpl-btn" style="border-color:#2d7a1a;color:#2d7a1a" onclick="addFromTemplate('vilgainKesuBylinky')">🌿 Kešu bylinkové 500g</button>
+    <button class="tpl-btn" style="border-color:#2d7a1a;color:#2d7a1a" onclick="addFromTemplate('vilgainSeminkovaKesuMandle')">🌿 Semínk. směs s kešu a mandle 500g</button>
     <div class="tpl-sep"></div>
     <span class="tpl-lbl" style="color:#b85a00;font-weight:bold">Alza:</span>
     <button class="tpl-btn" style="border-color:#b85a00;color:#b85a00" onclick="addFromTemplate('alzaDoypack500')">🛒 Mix doypack 500g</button>
@@ -1025,6 +1026,8 @@ const NORM_OPTS = [
   ['🟢 Vilgain — plnění','Plnění Vilgain — kešu bylinkové',156],
   ['🟢 Vilgain — plnění','Plnění Vilgain — směs ořechů 1000g',158],
   ['🟢 Vilgain — lepení','Lepení štítku Vilgain (všechny produkty)',162],
+  ['🟢 Vilgain — lepení','Lepení štítku Vilgain — přesné (na míru)',113],
+  ['🟢 Vilgain — plnění+expedice','Plnění + tavení + vkládání do krabic — 500g (semínk. s kešu)',129],
   ['🟢 Vilgain — tavení+expedice','Tavení + vkládání do krabic — 500g (28ks/krab.)',509],
   ['🟢 Vilgain — tavení+expedice','Tavení + vkládání do krabic — 1000g (15ks/krab.)',450],
   ['🎁 Velikonoce','Papírový zajíček — razítkování',142],
@@ -1383,6 +1386,13 @@ const TEMPLATES = {
       {name:'Lepení štítku Vilgain (všechny produkty)', ksh:162},
       {name:'Plnění Vilgain — kešu bylinkové', ksh:156},
       {name:'Tavení + vkládání do krabic — 500g (28ks/krab.)', ksh:509},
+    ]
+  },
+  vilgainSeminkovaKesuMandle: {
+    name: 'Vilgain — Semínk. směs s kešu a mandlemi 500g',
+    ops: [
+      {name:'Lepení štítku Vilgain — přesné (na míru)', ksh:113},
+      {name:'Plnění + tavení + vkládání do krabic — 500g (semínk. s kešu)', ksh:129},
     ]
   },
   alzaDoypack500: {
