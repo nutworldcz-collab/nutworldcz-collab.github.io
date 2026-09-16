@@ -1401,8 +1401,11 @@ function dCalculate() {
   document.getElementById('dr-mo').textContent = mo + ' Kč';
   document.getElementById('dr-mo-bez').textContent = 'bez DPH: ' + Math.round(moExVat) + ' Kč';
   // Předvyplň editovatelná pole pro kalkulaci
-  const dkmo = document.getElementById('d-kalk-mo'); if (dkmo) dkmo.value = Math.round(moExVat * 10) / 10;
-  const dkvo = document.getElementById('d-kalk-vo'); if (dkvo) dkvo.value = voExVat;
+  dkBaseMo = Math.round(moExVat * 10) / 10;
+  dkBaseVo = voExVat;
+  const dkmo = document.getElementById('d-kalk-mo'); if (dkmo) dkmo.value = dkBaseMo;
+  const dkvo = document.getElementById('d-kalk-vo'); if (dkvo) dkvo.value = dkBaseVo;
+  dkUpdateKalkFields();
   document.getElementById('dr-vo').textContent = vo + ' Kč';
   document.getElementById('dr-vo-bez').textContent = 'bez DPH: ' + voExVat + ' Kč';
   document.getElementById('dr-marze').textContent = realMarze + ' %';
@@ -1785,10 +1788,9 @@ function kalkAddItem() {
       .map(r => ({ kod: r.product.kod, nazev: r.product.nazev, gram: r.gramaz, obal: '' }));
   }
 
-  // Přičíst nadstavby k ceně (bez DPH, Kč/ks)
-  const ndCost = nadstavby.reduce((s, n) => s + n.cena, 0);
-  const moFinal = Math.round((mo + ndCost) * 10) / 10;
-  const voFinal = mo > 0 ? Math.round(moFinal * (vo / mo)) : vo;
+  // d-kalk-mo/vo jsou již aktualizovány dkUpdateKalkFields (zahrnují nadstavby)
+  const moFinal = mo;
+  const voFinal = vo;
 
   KALK_ITEMS.push({ nazev, ks, mo: moFinal, vo: voFinal, nakl, nadstavby, pripravy, slozeni });
   kalkRender();
