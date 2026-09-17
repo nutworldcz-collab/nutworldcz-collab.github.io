@@ -1039,17 +1039,26 @@ input[type="text"]:focus { border-color: var(--brown); }
 <div class="add-overlay" id="sync-overlay" hidden>
   <div class="add-card" style="max-width:420px">
     <div class="modal-title" style="margin-bottom:6px">Synchronizace dat</div>
-    <div class="sync-info">Data jsou uložena v prohlížeči — telefon a PC nemají společná data. Vyexportuj na jednom zařízení, zkopíruj kód a importuj na druhém.</div>
-    <div class="f-label" style="margin-bottom:6px">1. Exportuj z tohoto zařízení</div>
-    <textarea class="sync-area" id="sync-export" readonly></textarea>
-    <div style="display:flex;gap:8px;margin-bottom:18px">
-      <button class="btn-sec" style="flex:1" onclick="copySyncData()">📋 Kopírovat</button>
+    <div class="sync-info">Pošli odkaz přes WhatsApp nebo SMS — druhé zařízení ho otevře a automaticky nabídne import.</div>
+
+    <div class="f-label" style="margin-bottom:8px">Odeslat na druhé zařízení</div>
+    <div style="display:flex;gap:8px;margin-bottom:20px">
+      <button class="btn-prim" style="flex:1;font-size:13px" onclick="shareSyncLink()">📤 Sdílet odkaz</button>
+      <button class="btn-sec" style="flex:1;font-size:13px" onclick="copySyncLink()">📋 Kopírovat odkaz</button>
     </div>
-    <div class="f-label" style="margin-bottom:6px">2. Vlož kód z druhého zařízení</div>
-    <textarea class="sync-area" id="sync-import" placeholder="Vlož sem exportovaný kód…"></textarea>
+
+    <div id="sync-link-wrap" hidden style="margin-bottom:16px">
+      <div class="f-label" style="margin-bottom:6px">Odkaz ke zkopírování</div>
+      <input id="sync-link-out" type="text" readonly style="font-size:11px;word-break:break-all" onclick="this.select()">
+    </div>
+
+    <div style="border-top:1px solid var(--border);padding-top:16px;margin-top:4px">
+      <div class="sync-info" style="margin-bottom:8px">Nebo importuj ručně — vlož kód z druhého zařízení:</div>
+      <textarea class="sync-area" id="sync-import" placeholder="Vlož sem exportovaný kód…"></textarea>
+    </div>
     <div class="modal-actions">
       <button class="btn-sec" onclick="closeSync()">Zavřít</button>
-      <button class="btn-prim" onclick="importSyncData()">⬇ Importovat</button>
+      <button class="btn-prim" onclick="importSyncData()">⬇ Importovat kód</button>
     </div>
   </div>
 </div>
@@ -1590,33 +1599,63 @@ function copyCSV() {
 }
 
 // ── SYNC ──
+function buildSyncLink() {
+  const json = JSON.stringify(db);
+  const b64 = btoa(unescape(encodeURIComponent(json)));
+  return location.origin + location.pathname + '#sync=' + b64;
+}
 function openSync() {
-  const json = JSON.stringify(db, null, 2);
-  document.getElementById('sync-export').value = json;
   document.getElementById('sync-import').value = '';
+  document.getElementById('sync-link-wrap').hidden = true;
   document.getElementById('sync-overlay').hidden = false;
 }
-function closeSync() { document.getElementById('sync-overlay').hidden = true; }
-function copySyncData() {
-  const el = document.getElementById('sync-export');
-  el.select();
-  try { document.execCommand('copy'); } catch { navigator.clipboard?.writeText(el.value); }
-  el.blur();
+function closeSync() {
+  document.getElementById('sync-overlay').hidden = true;
+  // clean URL hash if it was a sync link
+  if (location.hash.startsWith('#sync=')) history.replaceState(null,'',location.pathname);
+}
+function shareSyncLink() {
+  const url = buildSyncLink();
+  if (navigator.share) {
+    navigator.share({ title: 'Píchačky — data', url });
+  } else {
+    showSyncLink(url);
+  }
+}
+function copySyncLink() {
+  const url = buildSyncLink();
+  navigator.clipboard?.writeText(url).catch(() => {});
+  showSyncLink(url);
   const btn = event.currentTarget;
   const orig = btn.textContent;
   btn.textContent = '✓ Zkopírováno';
   setTimeout(() => btn.textContent = orig, 2000);
 }
+function showSyncLink(url) {
+  const inp = document.getElementById('sync-link-out');
+  inp.value = url;
+  document.getElementById('sync-link-wrap').hidden = false;
+  inp.select();
+}
 function importSyncData() {
   const raw = document.getElementById('sync-import').value.trim();
   if (!raw) { alert('Vlož exportovaný kód.'); return; }
   let parsed;
-  try { parsed = JSON.parse(raw); } catch { alert('Neplatný formát — vlož celý exportovaný kód.'); return; }
+  try { parsed = JSON.parse(raw); } catch { alert('Neplatný formát.'); return; }
   if (!parsed.people || !parsed.records || !parsed.pin) { alert('Data nemají správný formát.'); return; }
-  if (!confirm(`Import přepíše VŠECHNA stávající data (${db.people.length} osob, ${Object.keys(db.records).length} záznamů) daty z druhého zařízení. Pokračovat?`)) return;
-  db = parsed;
-  save();
-  closeSync();
-  goToDashboard();
+  if (!confirm(`Import přepíše stávající data (${db.people.length} osob). Pokračovat?`)) return;
+  db = parsed; save(); closeSync(); goToDashboard();
+}
+function checkSyncHash() {
+  if (!location.hash.startsWith('#sync=')) return;
+  try {
+    const b64 = location.hash.slice(6);
+    const json = decodeURIComponent(escape(atob(b64)));
+    const parsed = JSON.parse(json);
+    if (!parsed.people || !parsed.records || !parsed.pin) return;
+    // show import prompt after PIN unlock — store pending import
+    window._pendingSyncData = parsed;
+  } catch {}
+  history.replaceState(null, '', location.pathname);
 }
 </script>
