@@ -832,15 +832,53 @@ input[type="text"]:focus { border-color: var(--brown); }
   min-width: 110px; text-align: right;
 }
 
-@media (max-width: 520px) {
+/* ── SYNC MODAL ── */
+.sync-area {
+  width: 100%; min-height: 80px; max-height: 160px;
+  border: 2px solid var(--border); border-radius: 10px;
+  padding: 10px 12px; font-size: 12px; font-family: monospace;
+  background: var(--surface2); color: var(--text);
+  resize: vertical; margin-bottom: 12px;
+}
+.sync-info { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.5; }
+
+@media (max-width: 600px) {
+  /* ── APP HEADER ── */
+  .app-header { padding: 0 12px; gap: 6px; }
   .h-brand em { display: none; }
-  .month-label { min-width: 120px; font-size: 13px; }
-  .td-note { display: none; }
-  .tot-item { padding: 10px 16px 10px 0; }
-  .tot-item + .tot-item { padding-left: 16px; }
-  .tot-val { font-size: 18px; }
-  .dash-body { padding: 16px; }
-  .dash-cards { grid-template-columns: 1fr 1fr; }
+  .h-brand { font-size: 14px; }
+  .month-label { min-width: 90px; font-size: 12px; }
+  .month-nav button { width: 26px; height: 26px; font-size: 15px; }
+  .h-btn { padding: 5px 8px; font-size: 12px; }
+
+  /* ── TABS ── */
+  .person-tabs { padding: 0 8px; }
+  .p-tab { padding: 0 10px; font-size: 12px; height: 40px; }
+  .p-tab-del { padding: 0 4px 0 0; }
+
+  /* ── TABLE ── */
+  .td-note, th:last-child { display: none; }
+  table { min-width: 0; }
+  td, th { font-size: 12px; padding: 8px 6px; }
+
+  /* ── TOTALS ── */
+  .totals-bar { flex-wrap: wrap; gap: 0; padding: 0; }
+  .tot-item { padding: 10px 14px; flex: 1 1 45%; min-width: 0; border-right: none !important; }
+  .tot-item:nth-child(odd) { border-right: 1px solid var(--border) !important; }
+  .tot-val { font-size: 17px; }
+  .tot-label { font-size: 10px; }
+
+  /* ── DASHBOARD ── */
+  .dash-header { padding: 0 12px; gap: 8px; flex-wrap: wrap; height: auto; min-height: 56px; padding-top: 8px; padding-bottom: 8px; }
+  .dash-body { padding: 12px; }
+  .dash-cards { grid-template-columns: 1fr; }
+  .dash-group-sum { display: none; }
+  .dash-sum-people { display: none; }
+  #dash-month-lbl { min-width: 80px !important; font-size: 12px !important; }
+
+  /* ── MODALS ── */
+  .modal-card, .add-card { margin: 12px; padding: 18px 16px; }
+  .type-grid { grid-template-columns: 1fr 1fr; }
 }
 </style>
 
@@ -866,6 +904,7 @@ input[type="text"]:focus { border-color: var(--brown); }
       <button class="dash-hbtn" style="padding:7px 10px" onclick="chMonth(1)">›</button>
     </div>
     <button class="dash-hbtn" onclick="openAdd()">+ Přidat osobu</button>
+    <button class="dash-hbtn" onclick="openSync()" title="Synchronizace mezi zařízeními">⇄ Sync</button>
     <button class="dash-hbtn" onclick="lock()">🔒</button>
   </header>
   <div class="dash-body">
@@ -891,6 +930,7 @@ input[type="text"]:focus { border-color: var(--brown); }
     <div class="h-spacer"></div>
     <div class="h-actions">
       <button class="h-btn" onclick="doExport()">⬇ CSV</button>
+      <button class="h-btn" onclick="openSync()" title="Sync mezi zařízeními">⇄</button>
       <button class="h-btn" onclick="lock()">🔒</button>
     </div>
   </header>
@@ -991,6 +1031,25 @@ input[type="text"]:focus { border-color: var(--brown); }
     <div class="modal-actions">
       <button class="btn-sec" onclick="closeRate()">Zrušit</button>
       <button class="btn-prim" onclick="saveRate()">Uložit</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SYNC MODAL ═══════════════ -->
+<div class="add-overlay" id="sync-overlay" hidden>
+  <div class="add-card" style="max-width:420px">
+    <div class="modal-title" style="margin-bottom:6px">Synchronizace dat</div>
+    <div class="sync-info">Data jsou uložena v prohlížeči — telefon a PC nemají společná data. Vyexportuj na jednom zařízení, zkopíruj kód a importuj na druhém.</div>
+    <div class="f-label" style="margin-bottom:6px">1. Exportuj z tohoto zařízení</div>
+    <textarea class="sync-area" id="sync-export" readonly></textarea>
+    <div style="display:flex;gap:8px;margin-bottom:18px">
+      <button class="btn-sec" style="flex:1" onclick="copySyncData()">📋 Kopírovat</button>
+    </div>
+    <div class="f-label" style="margin-bottom:6px">2. Vlož kód z druhého zařízení</div>
+    <textarea class="sync-area" id="sync-import" placeholder="Vlož sem exportovaný kód…"></textarea>
+    <div class="modal-actions">
+      <button class="btn-sec" onclick="closeSync()">Zavřít</button>
+      <button class="btn-prim" onclick="importSyncData()">⬇ Importovat</button>
     </div>
   </div>
 </div>
@@ -1528,5 +1587,36 @@ function copyCSV() {
   const el = document.getElementById('csv-text');
   el.select();
   try { document.execCommand('copy'); } catch { navigator.clipboard?.writeText(el.value); }
+}
+
+// ── SYNC ──
+function openSync() {
+  const json = JSON.stringify(db, null, 2);
+  document.getElementById('sync-export').value = json;
+  document.getElementById('sync-import').value = '';
+  document.getElementById('sync-overlay').hidden = false;
+}
+function closeSync() { document.getElementById('sync-overlay').hidden = true; }
+function copySyncData() {
+  const el = document.getElementById('sync-export');
+  el.select();
+  try { document.execCommand('copy'); } catch { navigator.clipboard?.writeText(el.value); }
+  el.blur();
+  const btn = event.currentTarget;
+  const orig = btn.textContent;
+  btn.textContent = '✓ Zkopírováno';
+  setTimeout(() => btn.textContent = orig, 2000);
+}
+function importSyncData() {
+  const raw = document.getElementById('sync-import').value.trim();
+  if (!raw) { alert('Vlož exportovaný kód.'); return; }
+  let parsed;
+  try { parsed = JSON.parse(raw); } catch { alert('Neplatný formát — vlož celý exportovaný kód.'); return; }
+  if (!parsed.people || !parsed.records || !parsed.pin) { alert('Data nemají správný formát.'); return; }
+  if (!confirm(`Import přepíše VŠECHNA stávající data (${db.people.length} osob, ${Object.keys(db.records).length} záznamů) daty z druhého zařízení. Pokračovat?`)) return;
+  db = parsed;
+  save();
+  closeSync();
+  goToDashboard();
 }
 </script>
