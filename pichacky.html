@@ -618,7 +618,7 @@ input[type="text"]:focus { border-color: var(--brown); }
   <div class="pin-logo">🌰 Nutworld</div>
   <div class="pin-sub">PÍCHAČKY — ZADEJ PIN</div>
   <div class="pin-input-wrap">
-    <input class="pin-input" type="password" id="pin-input" placeholder="••••••" autocomplete="off" onkeydown="if(event.key==='Enter')psub()">
+    <input class="pin-input" type="password" id="pin-input" placeholder="••••••" autocomplete="new-password" onkeydown="if(event.key==='Enter')psub()">
     <button class="pin-submit" onclick="psub()">Odemknout</button>
   </div>
   <div class="pin-error" id="pin-err"></div>
@@ -846,7 +846,9 @@ function lock() {
 }
 // auto-focus PIN input on load
 window.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('pin-input').focus();
+  const pinInp = document.getElementById('pin-input');
+  pinInp.value = '';
+  pinInp.focus();
 });
 
 // ── HELPERS ──
