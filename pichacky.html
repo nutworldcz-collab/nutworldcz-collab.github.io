@@ -1,0 +1,1141 @@
+<title>Píchačky</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@300;400;600&display=swap">
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --bg:         #fdf8f4;
+  --surface:    #ffffff;
+  --surface2:   #f7f0ea;
+  --header:     #5c381f;
+  --header-fg:  #f1e6da;
+  --brown:      #83502e;
+  --brown-mid:  #a06237;
+  --amber:      #f7ab31;
+  --border:     #e2d5c8;
+  --text:       #2a1509;
+  --text-mid:   #5a3820;
+  --text-muted: #8c6045;
+  --shadow:     0 2px 12px rgba(83,50,46,.10);
+
+  /* day-type row colours */
+  --row-work:    #ffffff;
+  --row-weekend: #f5f0eb;
+  --row-holiday: #e8f4ff;
+  --row-sick:    #fff7e6;
+  --row-bank:    #f0eaff;
+
+  /* pill colours */
+  --pill-holiday-bg: #d6ecff; --pill-holiday-fg: #1a5fa8;
+  --pill-sick-bg:    #ffe4b2; --pill-sick-fg:    #8a4800;
+  --pill-bank-bg:    #e4d8ff; --pill-bank-fg:    #5b25b0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:         #1a0d05;
+    --surface:    #251208;
+    --surface2:   #2e180a;
+    --header:     #3d2010;
+    --header-fg:  #f1e6da;
+    --brown:      #c4855a;
+    --brown-mid:  #d4966a;
+    --amber:      #f7ab31;
+    --border:     #3d2515;
+    --text:       #f0e0d0;
+    --text-mid:   #c8a88a;
+    --text-muted: #8c6a50;
+    --shadow:     0 2px 12px rgba(0,0,0,.3);
+
+    --row-work:    #251208;
+    --row-weekend: #1e0e04;
+    --row-holiday: #0d1e33;
+    --row-sick:    #251800;
+    --row-bank:    #150d2a;
+
+    --pill-holiday-bg: #1a3a5c; --pill-holiday-fg: #7ec0ff;
+    --pill-sick-bg:    #3a2200; --pill-sick-fg:    #ffc060;
+    --pill-bank-bg:    #2a1a50; --pill-bank-fg:    #c4a0ff;
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#1a0d05; --surface:#251208; --surface2:#2e180a;
+  --header:#3d2010; --header-fg:#f1e6da;
+  --brown:#c4855a; --brown-mid:#d4966a; --amber:#f7ab31;
+  --border:#3d2515; --text:#f0e0d0; --text-mid:#c8a88a; --text-muted:#8c6a50;
+  --shadow:0 2px 12px rgba(0,0,0,.3);
+  --row-work:#251208; --row-weekend:#1e0e04; --row-holiday:#0d1e33;
+  --row-sick:#251800; --row-bank:#150d2a;
+  --pill-holiday-bg:#1a3a5c; --pill-holiday-fg:#7ec0ff;
+  --pill-sick-bg:#3a2200; --pill-sick-fg:#ffc060;
+  --pill-bank-bg:#2a1a50; --pill-bank-fg:#c4a0ff;
+}
+
+body {
+  font-family: 'Source Sans 3', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── PIN SCREEN ── */
+#pin-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 32px 16px;
+}
+.pin-logo {
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 800;
+  font-size: 26px;
+  color: var(--brown);
+  letter-spacing: -.5px;
+  margin-bottom: 4px;
+}
+.pin-sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  letter-spacing: .5px;
+  margin-bottom: 36px;
+}
+.pin-dots {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+.pin-dot {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: transparent;
+  transition: background .12s, border-color .12s;
+}
+.pin-dot.filled { background: var(--brown); border-color: var(--brown); }
+.pin-dot.shake { animation: shake .35s ease; }
+@keyframes shake {
+  0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}
+  40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}
+}
+.pin-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 68px);
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.pin-key {
+  height: 68px;
+  border-radius: 14px;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  font-family: 'Exo 2', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+  transition: background .1s, transform .08s;
+  display: flex; align-items: center; justify-content: center;
+}
+.pin-key:hover { background: var(--surface2); }
+.pin-key:active { transform: scale(.92); }
+.pin-key.action { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+.pin-error {
+  font-size: 13px;
+  color: #c0392b;
+  min-height: 20px;
+  text-align: center;
+}
+
+/* ── APP SHELL ── */
+#app { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+
+/* ── HEADER ── */
+.app-header {
+  background: var(--header);
+  color: var(--header-fg);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 20px;
+  height: 56px;
+}
+.h-brand {
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: -.3px;
+  white-space: nowrap;
+}
+.h-brand em {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  opacity: .65;
+  margin-left: 8px;
+  letter-spacing: .3px;
+}
+.h-spacer { flex: 1; }
+.month-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.month-nav button {
+  width: 30px; height: 30px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255,255,255,.12);
+  color: var(--header-fg);
+  font-size: 17px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .12s;
+}
+.month-nav button:hover { background: rgba(255,255,255,.22); }
+.month-label {
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  min-width: 150px;
+  text-align: center;
+  white-space: nowrap;
+}
+.h-actions { display: flex; gap: 6px; }
+.h-btn {
+  padding: 5px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.2);
+  background: transparent;
+  color: var(--header-fg);
+  font-size: 13px;
+  font-family: 'Source Sans 3', sans-serif;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .12s;
+}
+.h-btn:hover { background: rgba(255,255,255,.15); }
+
+/* ── PERSON TABS ── */
+.person-tabs {
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: stretch;
+  overflow-x: auto;
+  flex-shrink: 0;
+  scrollbar-width: none;
+  padding: 0 20px;
+}
+.person-tabs::-webkit-scrollbar { display: none; }
+.p-tab {
+  padding: 0 20px;
+  border: none;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  height: 44px;
+  display: flex; align-items: center;
+  transition: color .12s, border-color .12s;
+  letter-spacing: .2px;
+}
+.p-tab:hover:not(.active) { color: var(--text-mid); }
+.p-tab.active { color: var(--brown); border-bottom-color: var(--brown); }
+.p-tab-add {
+  padding: 0 14px;
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  color: var(--text-muted);
+  cursor: pointer;
+  height: 44px;
+  display: flex; align-items: center;
+  transition: color .12s;
+}
+.p-tab-add:hover { color: var(--brown); }
+
+/* ── TABLE AREA ── */
+.table-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  min-width: 560px;
+}
+thead th {
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 10px 10px 8px;
+  text-align: left;
+  border-bottom: 2px solid var(--border);
+  white-space: nowrap;
+  z-index: 2;
+}
+th.r { text-align: right; }
+tbody tr {
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: filter .08s;
+}
+tbody tr:hover { filter: brightness(.96); }
+tbody tr.type-work    { background: var(--row-work); }
+tbody tr.type-weekend { background: var(--row-weekend); }
+tbody tr.type-holiday { background: var(--row-holiday); }
+tbody tr.type-sick    { background: var(--row-sick); }
+tbody tr.type-bank    { background: var(--row-bank); }
+tbody tr.today-row {
+  box-shadow: inset 3px 0 0 var(--amber);
+}
+td {
+  padding: 8px 10px;
+  vertical-align: middle;
+}
+.td-num {
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  width: 30px;
+  color: var(--text-muted);
+}
+.td-num.today-num { color: var(--amber); }
+.td-dow {
+  width: 90px;
+  font-size: 13px;
+  color: var(--text-mid);
+}
+.td-dow .wknd { color: var(--text-muted); }
+.td-time {
+  font-family: 'Exo 2', sans-serif;
+  font-variant-numeric: tabular-nums;
+  font-size: 14px;
+  width: 80px;
+  color: var(--text);
+}
+.td-time.empty { color: var(--border); }
+.td-h {
+  font-family: 'Exo 2', sans-serif;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--brown);
+  text-align: right;
+  width: 70px;
+}
+.td-h.empty { color: var(--border); font-weight: 400; }
+.td-type { width: 90px; }
+.td-note {
+  color: var(--text-muted);
+  font-size: 13px;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pill {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'Exo 2', sans-serif;
+  letter-spacing: .2px;
+  white-space: nowrap;
+}
+.pill-holiday { background: var(--pill-holiday-bg); color: var(--pill-holiday-fg); }
+.pill-sick    { background: var(--pill-sick-bg);    color: var(--pill-sick-fg); }
+.pill-bank    { background: var(--pill-bank-bg);    color: var(--pill-bank-fg); }
+
+/* ── TOTALS ── */
+.totals-bar {
+  flex-shrink: 0;
+  background: var(--header);
+  color: var(--header-fg);
+  display: flex;
+  gap: 0;
+  padding: 0 20px;
+}
+.tot-item {
+  padding: 12px 24px 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.tot-item + .tot-item { border-left: 1px solid rgba(255,255,255,.12); padding-left: 24px; }
+.tot-label {
+  font-size: 10px;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  opacity: .65;
+}
+.tot-val {
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.3px;
+}
+
+/* ── MODAL OVERLAY ── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 0;
+}
+@media (min-width: 560px) {
+  .modal-overlay { align-items: center; padding: 20px; }
+}
+.modal-card {
+  background: var(--surface);
+  border-radius: 20px 20px 0 0;
+  padding: 24px 24px 40px;
+  width: 100%;
+  max-width: 460px;
+  animation: slide-up .22s ease;
+}
+@media (min-width: 560px) {
+  .modal-card { border-radius: 16px; padding: 28px; }
+}
+@keyframes slide-up {
+  from { transform: translateY(60px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+.modal-title {
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--brown);
+  margin-bottom: 4px;
+  text-wrap: balance;
+}
+.modal-sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 22px;
+}
+.time-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 10px;
+  align-items: end;
+  margin-bottom: 16px;
+}
+.time-sep {
+  font-size: 20px;
+  color: var(--text-muted);
+  padding-bottom: 10px;
+  text-align: center;
+}
+.f-label {
+  font-size: 11px;
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 600;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+input[type="time"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  background: var(--surface);
+  outline: none;
+  transition: border-color .12s;
+}
+input[type="time"]:focus { border-color: var(--brown); }
+.calc-display {
+  text-align: center;
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 800;
+  font-size: 32px;
+  color: var(--brown);
+  letter-spacing: -.5px;
+  margin-bottom: 20px;
+  min-height: 40px;
+}
+.calc-display small {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-left: 4px;
+}
+.type-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 16px;
+}
+.type-btn {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 2px solid var(--border);
+  background: transparent;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Exo 2', sans-serif;
+  color: var(--text-mid);
+  cursor: pointer;
+  transition: all .12s;
+}
+.type-btn.sel-work    { background:#e6f4e6; border-color:#2d7a2d; color:#1a5c1a; }
+.type-btn.sel-holiday { background:var(--pill-holiday-bg); border-color:var(--pill-holiday-fg); color:var(--pill-holiday-fg); }
+.type-btn.sel-sick    { background:var(--pill-sick-bg); border-color:var(--pill-sick-fg); color:var(--pill-sick-fg); }
+.type-btn.sel-bank    { background:var(--pill-bank-bg); border-color:var(--pill-bank-fg); color:var(--pill-bank-fg); }
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 15px;
+  color: var(--text);
+  background: var(--surface);
+  outline: none;
+  transition: border-color .12s;
+  margin-bottom: 20px;
+}
+input[type="text"]:focus { border-color: var(--brown); }
+::placeholder { color: var(--border); }
+.modal-actions {
+  display: flex;
+  gap: 10px;
+}
+.btn-prim {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  background: var(--brown);
+  color: #fff;
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background .12s;
+}
+.btn-prim:hover { background: var(--header); }
+.btn-sec {
+  padding: 12px 20px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: border-color .12s, color .12s;
+}
+.btn-sec:hover { border-color: var(--brown); color: var(--brown); }
+
+/* ── CSV MODAL ── */
+.csv-area {
+  width: 100%;
+  height: 200px;
+  font-family: monospace;
+  font-size: 12px;
+  padding: 10px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface2);
+  color: var(--text);
+  resize: none;
+  margin-bottom: 16px;
+}
+
+/* ── ADD PERSON ── */
+.add-card {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 24px;
+  width: 100%;
+  max-width: 360px;
+  animation: fade-in .18s ease;
+  margin: 20px;
+}
+@keyframes fade-in {
+  from { opacity:0; transform:scale(.96); }
+  to   { opacity:1; transform:scale(1); }
+}
+.add-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 520px) {
+  .h-brand em { display: none; }
+  .month-label { min-width: 120px; font-size: 13px; }
+  .td-note { display: none; }
+  .tot-item { padding: 10px 16px 10px 0; }
+  .tot-item + .tot-item { padding-left: 16px; }
+  .tot-val { font-size: 18px; }
+}
+</style>
+
+<!-- ═══════════════ PIN SCREEN ═══════════════ -->
+<div id="pin-screen">
+  <div class="pin-logo">🌰 Nutworld</div>
+  <div class="pin-sub">PÍCHAČKY — ZADEJ PIN</div>
+  <div class="pin-dots">
+    <div class="pin-dot" id="d0"></div>
+    <div class="pin-dot" id="d1"></div>
+    <div class="pin-dot" id="d2"></div>
+    <div class="pin-dot" id="d3"></div>
+  </div>
+  <div class="pin-keypad">
+    <button class="pin-key" onclick="pk('1')">1</button>
+    <button class="pin-key" onclick="pk('2')">2</button>
+    <button class="pin-key" onclick="pk('3')">3</button>
+    <button class="pin-key" onclick="pk('4')">4</button>
+    <button class="pin-key" onclick="pk('5')">5</button>
+    <button class="pin-key" onclick="pk('6')">6</button>
+    <button class="pin-key" onclick="pk('7')">7</button>
+    <button class="pin-key" onclick="pk('8')">8</button>
+    <button class="pin-key" onclick="pk('9')">9</button>
+    <button class="pin-key action" onclick="pdel()">⌫</button>
+    <button class="pin-key" onclick="pk('0')">0</button>
+    <button class="pin-key action" onclick="psub()">OK</button>
+  </div>
+  <div class="pin-error" id="pin-err"></div>
+</div>
+
+<!-- ═══════════════ APP ═══════════════ -->
+<div id="app" hidden>
+  <header class="app-header">
+    <div class="h-brand">🌰 Nutworld <em>Píchačky</em></div>
+    <div class="h-spacer"></div>
+    <div class="month-nav">
+      <button onclick="chMonth(-1)" title="Předchozí měsíc">‹</button>
+      <div class="month-label" id="month-lbl"></div>
+      <button onclick="chMonth(1)" title="Další měsíc">›</button>
+    </div>
+    <div class="h-spacer"></div>
+    <div class="h-actions">
+      <button class="h-btn" onclick="doExport()">⬇ CSV</button>
+      <button class="h-btn" onclick="lock()">🔒</button>
+    </div>
+  </header>
+
+  <div class="person-tabs" id="ptabs"></div>
+
+  <div class="table-area">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:36px">#</th>
+          <th>Den</th>
+          <th>Příchod</th>
+          <th>Odchod</th>
+          <th class="r">Hodin</th>
+          <th>Typ</th>
+          <th>Poznámka</th>
+        </tr>
+      </thead>
+      <tbody id="trows"></tbody>
+    </table>
+  </div>
+
+  <div class="totals-bar">
+    <div class="tot-item">
+      <span class="tot-label">Odpracováno</span>
+      <span class="tot-val" id="tot-h">—</span>
+    </div>
+    <div class="tot-item">
+      <span class="tot-label">Pracovních dní</span>
+      <span class="tot-val" id="tot-d">—</span>
+    </div>
+    <div class="tot-item">
+      <span class="tot-label">Průměr / den</span>
+      <span class="tot-val" id="tot-avg">—</span>
+    </div>
+    <div class="tot-item tot-pay" onclick="openRate()" title="Klikni pro nastavení sazby" style="cursor:pointer;margin-left:auto">
+      <span class="tot-label">Výplata <span id="tot-rate-lbl" style="opacity:.7"></span></span>
+      <span class="tot-val" id="tot-pay">—</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ DAY MODAL ═══════════════ -->
+<div class="modal-overlay" id="day-overlay" hidden onclick="if(event.target===this)closeDay()">
+  <div class="modal-card">
+    <div class="modal-title" id="m-title"></div>
+    <div class="modal-sub" id="m-sub"></div>
+    <div class="time-row">
+      <div>
+        <div class="f-label">Příchod</div>
+        <input type="time" id="m-from" oninput="updCalc()">
+      </div>
+      <div class="time-sep">→</div>
+      <div>
+        <div class="f-label">Odchod</div>
+        <input type="time" id="m-to" oninput="updCalc()">
+      </div>
+    </div>
+    <div class="calc-display" id="m-calc">—</div>
+    <div class="type-row" id="type-row"></div>
+    <div class="f-label" style="margin-bottom:6px">Poznámka</div>
+    <input type="text" id="m-note" placeholder="home office, sklad, výroba…">
+    <div class="modal-actions">
+      <button class="btn-sec" onclick="closeDay()">Zrušit</button>
+      <button class="btn-prim" onclick="saveDay()">Uložit</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ ADD PERSON MODAL ═══════════════ -->
+<div class="add-overlay" id="add-overlay" hidden>
+  <div class="add-card">
+    <div class="modal-title" style="margin-bottom:20px">Přidat osobu</div>
+    <div class="f-label" style="margin-bottom:6px">Jméno a příjmení</div>
+    <input type="text" id="new-name" placeholder="Jana Nývltová">
+    <div class="modal-actions">
+      <button class="btn-sec" onclick="closeAdd()">Zrušit</button>
+      <button class="btn-prim" onclick="addPerson()">Přidat</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ RATE MODAL ═══════════════ -->
+<div class="add-overlay" id="rate-overlay" hidden>
+  <div class="add-card">
+    <div class="modal-title" style="margin-bottom:4px" id="rate-person-name"></div>
+    <div class="modal-sub" style="margin-bottom:20px">Hodinová sazba</div>
+    <div class="f-label" style="margin-bottom:6px">Kč / hodina</div>
+    <input type="text" id="rate-input" placeholder="např. 250" inputmode="numeric">
+    <div class="modal-actions">
+      <button class="btn-sec" onclick="closeRate()">Zrušit</button>
+      <button class="btn-prim" onclick="saveRate()">Uložit</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ CSV MODAL (artifact fallback) ═══════════════ -->
+<div class="modal-overlay" id="csv-overlay" hidden onclick="if(event.target===this)closeCSV()">
+  <div class="modal-card">
+    <div class="modal-title" style="margin-bottom:4px">Export CSV</div>
+    <div class="modal-sub">Zkopíruj obsah a vlož do Excelu / Numbers</div>
+    <textarea class="csv-area" id="csv-text" readonly></textarea>
+    <div class="modal-actions">
+      <button class="btn-sec" onclick="closeCSV()">Zavřít</button>
+      <button class="btn-prim" onclick="copyCSV()">Kopírovat</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CONSTANTS ──
+const SK = 'nw_pichacky_v3';
+const MONTHS = ['Leden','Únor','Březen','Duben','Květen','Červen',
+                'Červenec','Srpen','Září','Říjen','Listopad','Prosinec'];
+const DAYS   = ['Neděle','Pondělí','Úterý','Středa','Čtvrtek','Pátek','Sobota'];
+const DAYS_S = ['Ne','Po','Út','St','Čt','Pá','So'];
+const TYPES  = {
+  work:    {label:'Práce',    emoji:'💼'},
+  holiday: {label:'Dovolená', emoji:'🏖'},
+  sick:    {label:'Nemoc',    emoji:'🤒'},
+  bank:    {label:'Svátek',   emoji:'🎉'},
+};
+
+// ── STORAGE ──
+function loadDB() {
+  try { return JSON.parse(localStorage.getItem(SK)) || mkDefault(); }
+  catch { return mkDefault(); }
+}
+function mkDefault() {
+  return {
+    pin: '1234',
+    people: [
+      {id:'jan',  name:'Jan Vlček',       rate: 250},
+      {id:'jana', name:'Jana Nývltová',   rate: 200},
+    ],
+    records: {}
+  };
+}
+function save() {
+  try { localStorage.setItem(SK, JSON.stringify(db)); } catch {}
+}
+
+// ── STATE ──
+let db = loadDB();
+let cur = { person: db.people[0]?.id, year: new Date().getFullYear(), month: new Date().getMonth() };
+let editDate = null, selType = 'work';
+
+// seed example data for preview if records are empty
+(function seedPreview() {
+  if (Object.keys(db.records).length) return;
+  const ex = [
+    ['jan','2026-09-01','08:00','16:30','work',''],
+    ['jan','2026-09-02','07:45','16:00','work',''],
+    ['jan','2026-09-03','08:00','16:30','work',''],
+    ['jan','2026-09-04','08:00','17:00','work',''],
+    ['jan','2026-09-07','08:00','16:30','work','sklad'],
+    ['jan','2026-09-08','','','holiday',''],
+    ['jan','2026-09-09','','','holiday',''],
+    ['jan','2026-09-10','08:00','16:00','work',''],
+    ['jan','2026-09-11','08:30','15:00','work',''],
+    ['jan','2026-09-14','08:00','16:30','work',''],
+    ['jan','2026-09-15','08:00','17:00','work','výroba'],
+    ['jan','2026-09-16','08:00','16:30','work',''],
+    ['jan','2026-09-17','09:00','17:30','work',''],
+    ['jana','2026-09-01','09:00','17:30','work',''],
+    ['jana','2026-09-02','09:00','17:00','work',''],
+    ['jana','2026-09-03','09:00','17:30','work','home office'],
+    ['jana','2026-09-04','09:00','17:00','work',''],
+    ['jana','2026-09-07','','','sick',''],
+    ['jana','2026-09-08','','','sick',''],
+    ['jana','2026-09-09','09:00','17:30','work',''],
+    ['jana','2026-09-10','09:00','17:00','work',''],
+    ['jana','2026-09-11','09:00','17:30','work',''],
+    ['jana','2026-09-14','09:00','17:00','work',''],
+    ['jana','2026-09-15','09:00','17:30','work',''],
+    ['jana','2026-09-16','09:00','17:00','work',''],
+    ['jana','2026-09-17','09:00','17:30','work',''],
+  ];
+  ex.forEach(([pid,date,from,to,type,note]) => {
+    db.records[`${pid}:${date}`] = {from,to,type,note};
+  });
+  save();
+})();
+
+// ── PIN ──
+let pin = '';
+function pk(d) {
+  if (pin.length >= 4) return;
+  pin += d;
+  updDots();
+  if (pin.length === 4) setTimeout(psub, 80);
+}
+function pdel() { pin = pin.slice(0,-1); updDots(); }
+function updDots() {
+  for (let i=0;i<4;i++) document.getElementById('d'+i).classList.toggle('filled', i<pin.length);
+}
+function psub() {
+  if (pin === db.pin) {
+    document.getElementById('pin-screen').hidden = true;
+    document.getElementById('app').hidden = false;
+    cur.person = db.people[0]?.id;
+    render();
+  } else {
+    document.getElementById('pin-err').textContent = 'Špatný PIN';
+    ['d0','d1','d2','d3'].forEach(id => {
+      const el = document.getElementById(id);
+      el.classList.add('shake');
+      setTimeout(() => el.classList.remove('shake'), 400);
+    });
+    pin = ''; updDots();
+    setTimeout(() => document.getElementById('pin-err').textContent = '', 2000);
+  }
+}
+function lock() {
+  document.getElementById('app').hidden = true;
+  document.getElementById('pin-screen').hidden = false;
+  pin = ''; updDots();
+}
+document.addEventListener('keydown', e => {
+  if (document.getElementById('pin-screen').hidden) return;
+  if (e.key>='0' && e.key<='9') pk(e.key);
+  if (e.key==='Backspace') pdel();
+  if (e.key==='Enter') psub();
+});
+
+// ── HELPERS ──
+function fmtDate(y,m,d) {
+  return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+}
+function calcMins(from, to) {
+  if (!from || !to) return null;
+  const [fh,fm] = from.split(':').map(Number);
+  const [th,tm] = to.split(':').map(Number);
+  let m = (th*60+tm)-(fh*60+fm);
+  if (m < 0) m += 1440;
+  return m;
+}
+function fmtMins(m) {
+  if (m === null || m < 0) return '—';
+  const h = Math.floor(m/60), min = m%60;
+  return min ? `${h}h ${min}m` : `${h}h`;
+}
+function todayStr() {
+  const t = new Date();
+  return fmtDate(t.getFullYear(), t.getMonth(), t.getDate());
+}
+
+// ── RENDER ──
+function render() {
+  renderTabs();
+  renderLabel();
+  renderTable();
+  renderTotals();
+}
+
+function renderLabel() {
+  document.getElementById('month-lbl').textContent = `${MONTHS[cur.month]} ${cur.year}`;
+}
+
+function chMonth(dir) {
+  cur.month += dir;
+  if (cur.month > 11) { cur.month=0; cur.year++; }
+  if (cur.month < 0)  { cur.month=11; cur.year--; }
+  render();
+}
+
+function renderTabs() {
+  const el = document.getElementById('ptabs');
+  el.innerHTML = '';
+  db.people.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = 'p-tab' + (p.id===cur.person?' active':'');
+    btn.textContent = p.name;
+    btn.onclick = () => { cur.person=p.id; render(); };
+    el.appendChild(btn);
+  });
+  const add = document.createElement('button');
+  add.className = 'p-tab-add';
+  add.title = 'Přidat osobu';
+  add.textContent = '+';
+  add.onclick = openAdd;
+  el.appendChild(add);
+}
+
+function renderTable() {
+  const tbody = document.getElementById('trows');
+  tbody.innerHTML = '';
+  const days = new Date(cur.year, cur.month+1, 0).getDate();
+  const ts = todayStr();
+
+  for (let d=1; d<=days; d++) {
+    const dt = fmtDate(cur.year, cur.month, d);
+    const dow = new Date(cur.year, cur.month, d).getDay();
+    const wknd = dow===0||dow===6;
+    const rec = db.records[`${cur.person}:${dt}`] || {};
+    const type = rec.type || (wknd ? 'weekend' : 'work');
+    const mins = calcMins(rec.from, rec.to);
+    const isToday = dt===ts;
+
+    const tr = document.createElement('tr');
+    tr.className = `type-${type}` + (isToday?' today-row':'');
+    tr.onclick = () => openDay(dt, d, dow);
+
+    const pillHTML = type==='holiday' ? `<span class="pill pill-holiday">Dovolená</span>`
+                   : type==='sick'    ? `<span class="pill pill-sick">Nemoc</span>`
+                   : type==='bank'    ? `<span class="pill pill-bank">Svátek</span>`
+                   : '';
+
+    tr.innerHTML = `
+      <td class="td-num${isToday?' today-num':''}">${d}</td>
+      <td class="td-dow"><span${wknd?' class="wknd"':''}>${DAYS[dow]}</span></td>
+      <td class="td-time${rec.from?'':' empty'}">${rec.from||'—'}</td>
+      <td class="td-time${rec.to?'':' empty'}">${rec.to||'—'}</td>
+      <td class="td-h${mins!==null?'':' empty'}">${mins!==null?fmtMins(mins):(wknd?'':'—')}</td>
+      <td class="td-type">${pillHTML}</td>
+      <td class="td-note">${rec.note||''}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+function renderTotals() {
+  const days = new Date(cur.year, cur.month+1, 0).getDate();
+  let totalMins=0, wDays=0;
+  for (let d=1;d<=days;d++) {
+    const rec = db.records[`${cur.person}:${fmtDate(cur.year,cur.month,d)}`]||{};
+    const m = calcMins(rec.from, rec.to);
+    if (m!==null && m>0) { totalMins+=m; wDays++; }
+  }
+  document.getElementById('tot-h').textContent   = totalMins>0 ? fmtMins(totalMins) : '—';
+  document.getElementById('tot-d').textContent   = wDays>0 ? `${wDays} dní` : '—';
+  document.getElementById('tot-avg').textContent = wDays>0 ? fmtMins(Math.round(totalMins/wDays)) : '—';
+
+  const person = db.people.find(p=>p.id===cur.person);
+  const rate = person?.rate || 0;
+  const payEl = document.getElementById('tot-pay');
+  const rateLbl = document.getElementById('tot-rate-lbl');
+  rateLbl.textContent = rate ? `· ${rate} Kč/h` : '· nastavit';
+  if (rate && totalMins > 0) {
+    const gross = Math.round((totalMins / 60) * rate);
+    payEl.textContent = gross.toLocaleString('cs-CZ') + ' Kč';
+  } else {
+    payEl.textContent = rate ? '—' : 'klikni ⚙';
+  }
+}
+
+// ── RATE MODAL ──
+function openRate() {
+  const person = db.people.find(p=>p.id===cur.person);
+  document.getElementById('rate-person-name').textContent = person?.name || '';
+  document.getElementById('rate-input').value = person?.rate || '';
+  document.getElementById('rate-overlay').hidden = false;
+  setTimeout(() => document.getElementById('rate-input').focus(), 100);
+}
+function closeRate() { document.getElementById('rate-overlay').hidden=true; }
+function saveRate() {
+  const val = parseInt(document.getElementById('rate-input').value, 10);
+  if (isNaN(val) || val < 0) { alert('Zadej platné číslo (Kč/h).'); return; }
+  const person = db.people.find(p=>p.id===cur.person);
+  if (person) person.rate = val;
+  save();
+  closeRate();
+  renderTotals();
+}
+
+// ── DAY MODAL ──
+function openDay(dt, d, dow) {
+  editDate = dt;
+  const rec = db.records[`${cur.person}:${dt}`]||{};
+  const wknd = dow===0||dow===6;
+  selType = rec.type || (wknd?'weekend':'work');
+  if (selType==='weekend') selType='work';
+
+  const person = db.people.find(p=>p.id===cur.person);
+  document.getElementById('m-title').textContent =
+    `${DAYS[dow]}, ${d}. ${MONTHS[cur.month].toLowerCase()} ${cur.year}`;
+  document.getElementById('m-sub').textContent = person?.name||'';
+  document.getElementById('m-from').value = rec.from||'';
+  document.getElementById('m-to').value   = rec.to||'';
+  document.getElementById('m-note').value = rec.note||'';
+
+  renderTypeButtons();
+  updCalc();
+  document.getElementById('day-overlay').hidden = false;
+}
+function closeDay() { document.getElementById('day-overlay').hidden = true; }
+
+function renderTypeButtons() {
+  const row = document.getElementById('type-row');
+  row.innerHTML = '';
+  Object.entries(TYPES).forEach(([k,v]) => {
+    const btn = document.createElement('button');
+    btn.className = 'type-btn' + (selType===k?` sel-${k}`:'');
+    btn.textContent = `${v.emoji} ${v.label}`;
+    btn.onclick = () => { selType=k; renderTypeButtons(); };
+    row.appendChild(btn);
+  });
+}
+
+function updCalc() {
+  const from = document.getElementById('m-from').value;
+  const to   = document.getElementById('m-to').value;
+  const mins = calcMins(from, to);
+  const el = document.getElementById('m-calc');
+  if (mins!==null) {
+    const h=Math.floor(mins/60), m=mins%60;
+    el.innerHTML = `${h}<small>h</small>${m?` ${m}<small>m</small>`:''}`;
+  } else {
+    el.innerHTML = '<small style="font-size:16px">zadej čas příchodu a odchodu</small>';
+  }
+}
+
+function saveDay() {
+  const from = document.getElementById('m-from').value;
+  const to   = document.getElementById('m-to').value;
+  const note = document.getElementById('m-note').value.trim();
+  const key  = `${cur.person}:${editDate}`;
+  if (!from && !to && !note && selType==='work') {
+    delete db.records[key];
+  } else {
+    db.records[key] = {from, to, type:selType, note};
+  }
+  save();
+  closeDay();
+  renderTable();
+  renderTotals();
+}
+
+// ── ADD PERSON ──
+function openAdd() { document.getElementById('new-name').value=''; document.getElementById('add-overlay').hidden=false; }
+function closeAdd() { document.getElementById('add-overlay').hidden=true; }
+function addPerson() {
+  const name = document.getElementById('new-name').value.trim();
+  if (!name) return;
+  const id = name.toLowerCase().replace(/[áäàâ]/g,'a').replace(/[čć]/g,'c').replace(/[ďd]/g,'d')
+    .replace(/[éěëè]/g,'e').replace(/[íïì]/g,'i').replace(/[ňn]/g,'n')
+    .replace(/[óöòô]/g,'o').replace(/[řr]/g,'r').replace(/[šs]/g,'s')
+    .replace(/[ťt]/g,'t').replace(/[úůüù]/g,'u').replace(/[ýÿ]/g,'y').replace(/[žz]/g,'z')
+    .replace(/[^a-z0-9]/g,'_').replace(/_+/g,'_').replace(/^_|_$/g,'');
+  if (db.people.find(p=>p.id===id)) { alert('Osoba s tímto jménem již existuje.'); return; }
+  db.people.push({id, name, rate: 0});
+  save();
+  closeAdd();
+  cur.person = id;
+  render();
+}
+
+// ── EXPORT CSV ──
+function doExport() {
+  const days  = new Date(cur.year, cur.month+1, 0).getDate();
+  const person = db.people.find(p=>p.id===cur.person);
+  let csv = `Píchačky — ${person?.name} — ${MONTHS[cur.month]} ${cur.year}\n`;
+  csv += `Datum;Den;Příchod;Odchod;Hodin;Typ;Poznámka\n`;
+  let total=0;
+  for (let d=1;d<=days;d++) {
+    const dt  = fmtDate(cur.year,cur.month,d);
+    const dow = new Date(cur.year,cur.month,d).getDay();
+    const rec = db.records[`${cur.person}:${dt}`]||{};
+    const m   = calcMins(rec.from, rec.to);
+    if (m) total+=m;
+    const typeLabel = {work:'Práce',holiday:'Dovolená',sick:'Nemoc',bank:'Svátek',weekend:'Víkend'}[rec.type||'work']||'';
+    csv += `${dt};${DAYS[dow]};${rec.from||''};${rec.to||''};${m?fmtMins(m):''};${typeLabel};${rec.note||''}\n`;
+  }
+  const rate = person?.rate || 0;
+  const pay  = rate ? Math.round((total/60)*rate) : 0;
+  csv += `\nCELKEM;;;; ${fmtMins(total)};;\n`;
+  if (rate) csv += `Sazba;${rate} Kč/h\nVýplata hrubá;${pay.toLocaleString('cs-CZ')} Kč\n`;
+
+  // try native download first
+  try {
+    const blob = new Blob(['﻿'+csv], {type:'text/csv;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href=url; a.download=`pichacky-${cur.person}-${cur.year}-${String(cur.month+1).padStart(2,'0')}.csv`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  } catch {
+    // fallback: show text in modal
+    document.getElementById('csv-text').value = csv;
+    document.getElementById('csv-overlay').hidden = false;
+  }
+}
+function closeCSV() { document.getElementById('csv-overlay').hidden=true; }
+function copyCSV() {
+  const el = document.getElementById('csv-text');
+  el.select();
+  try { document.execCommand('copy'); } catch { navigator.clipboard?.writeText(el.value); }
+}
+</script>
