@@ -116,10 +116,38 @@ td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: 
 
 .note { font-size: 12px; color: var(--text-sub); margin-top: 8px; display: flex; align-items: flex-start; gap: 6px; }
 
+/* Fill grid — physical box layout */
+.fill-grid-desc { font-size: 12px; color: var(--text-sub); margin-bottom: 8px; }
+.panel-badge { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+.panel-badge.l { background: #fef0d5; border: 1px solid #c8913a; color: #8a5a10; }
+.panel-badge.r { background: #fff8ee; border: 1px solid #e0c070; color: #9a7020; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .panel-badge.l { background: #3a2408; border-color: #8a5018; color: #e0a050; }
+  :root:not([data-theme="light"]) .panel-badge.r { background: #2e1c08; border-color: #7a6020; color: #d0a840; }
+}
+:root[data-theme="dark"] .panel-badge.l { background: #3a2408; border-color: #8a5018; color: #e0a050; }
+:root[data-theme="dark"] .panel-badge.r { background: #2e1c08; border-color: #7a6020; color: #d0a840; }
+
+.fill-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; margin-bottom: 16px; }
+.fill-cell { border-radius: 8px; padding: 8px 5px 7px; text-align: center; min-width: 0; }
+.fill-cell.pl { background: #fef0d5; border: 1.5px solid #c8913a; }
+.fill-cell.pr { background: #fff8ee; border: 1.5px solid #e0c070; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .fill-cell.pl { background: #3a2408; border-color: #8a5018; }
+  :root:not([data-theme="light"]) .fill-cell.pr { background: #2e1c08; border-color: #7a6020; }
+}
+:root[data-theme="dark"] .fill-cell.pl { background: #3a2408; border-color: #8a5018; }
+:root[data-theme="dark"] .fill-cell.pr { background: #2e1c08; border-color: #7a6020; }
+.fill-day { display: block; font-family: 'Exo 2', sans-serif; font-size: 19px; font-weight: 800; color: var(--head); line-height: 1; margin-bottom: 4px; }
+.fill-prod { display: block; font-size: 10px; color: var(--text); line-height: 1.3; }
+
 @media (max-width: 600px) {
   .slot-grid { grid-template-columns: 1fr; }
   .tiles { grid-template-columns: repeat(2, 1fr); }
   .doc-meta { text-align: left; }
+  .fill-grid { grid-template-columns: repeat(3, 1fr); }
+  .fill-day { font-size: 16px; }
+  .fill-prod { font-size: 9px; }
 }
 </style>
 </head>
@@ -170,6 +198,40 @@ td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: 
   <!-- ROZLOŽENÍ OKÉNEK -->
   <div class="section">
     <div class="section-label">02 · Rozložení okének</div>
+
+    <!-- Fyzická mřížka krabice — pořadí plnění zleva shora -->
+    <div class="fill-grid-desc">Fyzické rozložení krabice — plnit <strong>zleva shora →↓</strong> &nbsp;|&nbsp; <span class="panel-badge l">Levý panel</span> &nbsp; <span class="panel-badge r">Pravý panel</span></div>
+    <div class="fill-grid">
+      <!-- Řada 1 -->
+      <div class="fill-cell pl"><span class="fill-day">5</span><span class="fill-prod" style="color:var(--c-choco)">Brusinky<br>ml. čok.</span></div>
+      <div class="fill-cell pl"><span class="fill-day">2</span><span class="fill-prod" style="color:var(--c-med)">Mix<br>med+sůl</span></div>
+      <div class="fill-cell pl"><span class="fill-day">19</span><span class="fill-prod" style="color:var(--c-choco)">Kešu<br>tiramisu</span></div>
+      <div class="fill-cell pr"><span class="fill-day">20</span><span class="fill-prod" style="color:var(--c-slane)">Kešu<br>solené</span></div>
+      <div class="fill-cell pr"><span class="fill-day">17</span><span class="fill-prod" style="color:var(--c-choco)">Mandle<br>matcha</span></div>
+      <div class="fill-cell pr"><span class="fill-day">21</span><span class="fill-prod" style="color:var(--c-choco)">Želé<br>banánové</span></div>
+      <!-- Řada 2 -->
+      <div class="fill-cell pl"><span class="fill-day">11</span><span class="fill-prod" style="color:var(--c-bbq)">Kukuřice<br>BBQ</span></div>
+      <div class="fill-cell pl"><span class="fill-day">6</span><span class="fill-prod" style="color:var(--c-uzene)">Mandle<br>uzené</span></div>
+      <div class="fill-cell pl"><span class="fill-day">3</span><span class="fill-prod" style="color:var(--c-choco)">Arašídy<br>ml. čok.</span></div>
+      <div class="fill-cell pr"><span class="fill-day">13</span><span class="fill-prod" style="color:var(--c-karamel)">Arašídy<br>kar. sezam</span></div>
+      <div class="fill-cell pr"><span class="fill-day">22</span><span class="fill-prod" style="color:var(--c-natural)">Lísková<br>natural</span></div>
+      <div class="fill-cell pr"><span class="fill-day">1</span><span class="fill-prod" style="color:var(--c-choco)">Lísková<br>bílá čok.</span></div>
+      <!-- Řada 3 -->
+      <div class="fill-cell pl"><span class="fill-day">23</span><span class="fill-prod" style="color:var(--c-choco)">Arašídy<br>hořká čok.</span></div>
+      <div class="fill-cell pl"><span class="fill-day">15</span><span class="fill-prod" style="color:var(--c-choco)">Mandle<br>sl. karamel</span></div>
+      <div class="fill-cell pl"><span class="fill-day">8</span><span class="fill-prod" style="color:var(--c-lanyz)">Kešu<br>lanýž</span></div>
+      <div class="fill-cell pr" style="border-color:var(--accent-dk)"><span class="fill-day" style="color:var(--accent-dk)">24</span><span class="fill-prod" style="color:var(--c-premium)">★ Makadam<br>solený</span></div>
+      <div class="fill-cell pr"><span class="fill-day">12</span><span class="fill-prod" style="color:var(--c-slane)">Arašídy<br>solené</span></div>
+      <div class="fill-cell pr"><span class="fill-day">14</span><span class="fill-prod" style="color:var(--c-slane)">Mandle<br>solené</span></div>
+      <!-- Řada 4 -->
+      <div class="fill-cell pl"><span class="fill-day">7</span><span class="fill-prod" style="color:var(--c-karamel)">Arašídy<br>kar. vanilka</span></div>
+      <div class="fill-cell pl"><span class="fill-day">18</span><span class="fill-prod" style="color:var(--c-slane)">Kešu<br>s chilli</span></div>
+      <div class="fill-cell pl"><span class="fill-day">9</span><span class="fill-prod" style="color:var(--c-choco)">Mandle<br>v jogurtu</span></div>
+      <div class="fill-cell pr"><span class="fill-day">16</span><span class="fill-prod" style="color:var(--c-slane)">Kešu<br>česnek</span></div>
+      <div class="fill-cell pr"><span class="fill-day">4</span><span class="fill-prod" style="color:var(--c-natural)">Kešu<br>natural</span></div>
+      <div class="fill-cell pr"><span class="fill-day">10</span><span class="fill-prod" style="color:var(--c-natural)">Mandle<br>natural</span></div>
+    </div>
+
     <div class="slot-grid">
       <div class="table-wrap">
         <table>
