@@ -268,6 +268,20 @@ body {
   transition: color .12s;
 }
 .p-tab-add:hover { color: var(--brown); }
+.p-tab-del {
+  padding: 0 6px 0 2px;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  color: var(--text-muted);
+  cursor: pointer;
+  height: 44px;
+  display: flex; align-items: center;
+  opacity: 0;
+  transition: opacity .15s, color .12s;
+}
+div:has(.p-tab):hover .p-tab-del { opacity: 1; }
+.p-tab-del:hover { color: #c0392b; }
 
 /* ── TABLE AREA ── */
 .table-area {
@@ -749,7 +763,7 @@ input[type="text"]:focus { border-color: var(--brown); }
 
 <script>
 // ── CONSTANTS ──
-const SK = 'nw_pichacky_v3';
+const SK = 'nw_pichacky_v4';
 const MONTHS = ['Leden','Únor','Březen','Duben','Květen','Červen',
                 'Červenec','Srpen','Září','Říjen','Listopad','Prosinec'];
 const DAYS   = ['Neděle','Pondělí','Úterý','Středa','Čtvrtek','Pátek','Sobota'];
@@ -770,8 +784,6 @@ function mkDefault() {
   return {
     pin: 'jan1a',
     people: [
-      {id:'jan',  name:'Jan Vlček',       rate: 250},
-      {id:'jana', name:'Jana Nývltová',   rate: 200},
     ],
     records: {}
   };
@@ -784,43 +796,6 @@ function save() {
 let db = loadDB();
 let cur = { person: db.people[0]?.id, year: new Date().getFullYear(), month: new Date().getMonth() };
 let editDate = null, selType = 'work';
-
-// seed example data for preview if records are empty
-(function seedPreview() {
-  if (Object.keys(db.records).length) return;
-  const ex = [
-    ['jan','2026-09-01','08:00','16:30','work',''],
-    ['jan','2026-09-02','07:45','16:00','work',''],
-    ['jan','2026-09-03','08:00','16:30','work',''],
-    ['jan','2026-09-04','08:00','17:00','work',''],
-    ['jan','2026-09-07','08:00','16:30','work','sklad'],
-    ['jan','2026-09-08','','','holiday',''],
-    ['jan','2026-09-09','','','holiday',''],
-    ['jan','2026-09-10','08:00','16:00','work',''],
-    ['jan','2026-09-11','08:30','15:00','work',''],
-    ['jan','2026-09-14','08:00','16:30','work',''],
-    ['jan','2026-09-15','08:00','17:00','work','výroba'],
-    ['jan','2026-09-16','08:00','16:30','work',''],
-    ['jan','2026-09-17','09:00','17:30','work',''],
-    ['jana','2026-09-01','09:00','17:30','work',''],
-    ['jana','2026-09-02','09:00','17:00','work',''],
-    ['jana','2026-09-03','09:00','17:30','work','home office'],
-    ['jana','2026-09-04','09:00','17:00','work',''],
-    ['jana','2026-09-07','','','sick',''],
-    ['jana','2026-09-08','','','sick',''],
-    ['jana','2026-09-09','09:00','17:30','work',''],
-    ['jana','2026-09-10','09:00','17:00','work',''],
-    ['jana','2026-09-11','09:00','17:30','work',''],
-    ['jana','2026-09-14','09:00','17:00','work',''],
-    ['jana','2026-09-15','09:00','17:30','work',''],
-    ['jana','2026-09-16','09:00','17:00','work',''],
-    ['jana','2026-09-17','09:00','17:30','work',''],
-  ];
-  ex.forEach(([pid,date,from,to,type,note]) => {
-    db.records[`${pid}:${date}`] = {from,to,type,note};
-  });
-  save();
-})();
 
 // ── PIN ──
 function psub() {
@@ -896,11 +871,20 @@ function renderTabs() {
   const el = document.getElementById('ptabs');
   el.innerHTML = '';
   db.people.forEach(p => {
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'display:inline-flex;align-items:center;gap:0';
     const btn = document.createElement('button');
     btn.className = 'p-tab' + (p.id===cur.person?' active':'');
     btn.textContent = p.name;
     btn.onclick = () => { cur.person=p.id; render(); };
-    el.appendChild(btn);
+    const del = document.createElement('button');
+    del.className = 'p-tab-del';
+    del.title = 'Smazat osobu';
+    del.textContent = '×';
+    del.onclick = (e) => { e.stopPropagation(); deletePerson(p.id, p.name); };
+    wrap.appendChild(btn);
+    wrap.appendChild(del);
+    el.appendChild(wrap);
   });
   const add = document.createElement('button');
   add.className = 'p-tab-add';
@@ -1070,6 +1054,15 @@ function addPerson() {
   save();
   closeAdd();
   cur.person = id;
+  render();
+}
+
+function deletePerson(id, name) {
+  if (!confirm(`Smazat osobu „${name}" včetně všech záznamů docházky?`)) return;
+  db.people = db.people.filter(p => p.id !== id);
+  Object.keys(db.records).forEach(k => { if (k.startsWith(id+':')) delete db.records[k]; });
+  save();
+  cur.person = db.people[0]?.id;
   render();
 }
 
