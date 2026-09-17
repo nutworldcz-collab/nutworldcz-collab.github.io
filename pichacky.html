@@ -239,7 +239,7 @@ body {
 }
 .person-tabs::-webkit-scrollbar { display: none; }
 .p-tab {
-  padding: 0 20px;
+  padding: 0 16px 0 10px;
   border: none;
   border-bottom: 3px solid transparent;
   background: transparent;
@@ -250,12 +250,51 @@ body {
   cursor: pointer;
   white-space: nowrap;
   height: 44px;
-  display: flex; align-items: center;
+  display: flex; align-items: center; gap: 7px;
   transition: color .12s, border-color .12s;
   letter-spacing: .2px;
 }
 .p-tab:hover:not(.active) { color: var(--text-mid); }
 .p-tab.active { color: var(--brown); border-bottom-color: var(--brown); }
+.p-tab-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  flex-shrink: 0;
+  opacity: .75;
+}
+.p-tab.active .p-tab-dot { opacity: 1; }
+.p-type-sep {
+  width: 1px; height: 24px;
+  background: var(--border);
+  margin: 0 4px;
+  align-self: center;
+  flex-shrink: 0;
+}
+/* type colors */
+.dot-zamestnanec { background: #83502e; }
+.dot-agentura    { background: #f7ab31; }
+.dot-brigadnik   { background: #6fa044; }
+.dot-jine        { background: #7a8490; }
+/* type selector */
+.type-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  margin-bottom: 20px;
+}
+.type-opt {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 12px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-mid);
+  background: var(--surface);
+  transition: border-color .12s, color .12s;
+  user-select: none;
+}
+.type-opt input[type=radio] { display: none; }
+.type-opt:has(input:checked) { border-color: var(--brown); color: var(--brown-dark); }
+.type-opt-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 .p-tab-add {
   padding: 0 14px;
   border: none;
@@ -726,7 +765,14 @@ input[type="text"]:focus { border-color: var(--brown); }
   <div class="add-card">
     <div class="modal-title" style="margin-bottom:20px">Přidat osobu</div>
     <div class="f-label" style="margin-bottom:6px">Jméno a příjmení</div>
-    <input type="text" id="new-name" placeholder="Jana Nývltová">
+    <input type="text" id="new-name" placeholder="Jana Nývltová" style="margin-bottom:18px">
+    <div class="f-label" style="margin-bottom:8px">Typ</div>
+    <div class="type-grid">
+      <label class="type-opt"><input type="radio" name="new-type" value="zamestnanec" checked><span class="type-opt-dot dot-zamestnanec"></span>Zaměstnanec</label>
+      <label class="type-opt"><input type="radio" name="new-type" value="agentura"><span class="type-opt-dot dot-agentura"></span>Agentura</label>
+      <label class="type-opt"><input type="radio" name="new-type" value="brigadnik"><span class="type-opt-dot dot-brigadnik"></span>Brigádník</label>
+      <label class="type-opt"><input type="radio" name="new-type" value="jine"><span class="type-opt-dot dot-jine"></span>Jiné</label>
+    </div>
     <div class="modal-actions">
       <button class="btn-sec" onclick="closeAdd()">Zrušit</button>
       <button class="btn-prim" onclick="addPerson()">Přidat</button>
@@ -867,15 +913,33 @@ function chMonth(dir) {
   render();
 }
 
+const TYPE_ORDER = ['zamestnanec','agentura','brigadnik','jine'];
+
 function renderTabs() {
   const el = document.getElementById('ptabs');
   el.innerHTML = '';
-  db.people.forEach(p => {
+  const sorted = [...db.people].sort((a,b) => {
+    const ai = TYPE_ORDER.indexOf(a.type||'zamestnanec');
+    const bi = TYPE_ORDER.indexOf(b.type||'zamestnanec');
+    return ai !== bi ? ai - bi : a.name.localeCompare(b.name, 'cs');
+  });
+  let lastType = null;
+  sorted.forEach(p => {
+    const t = p.type || 'zamestnanec';
+    if (lastType !== null && t !== lastType) {
+      const sep = document.createElement('div');
+      sep.className = 'p-type-sep';
+      el.appendChild(sep);
+    }
+    lastType = t;
     const wrap = document.createElement('div');
     wrap.style.cssText = 'display:inline-flex;align-items:center;gap:0';
     const btn = document.createElement('button');
     btn.className = 'p-tab' + (p.id===cur.person?' active':'');
-    btn.textContent = p.name;
+    const dot = document.createElement('span');
+    dot.className = `p-tab-dot dot-${t}`;
+    btn.appendChild(dot);
+    btn.appendChild(document.createTextNode(p.name));
     btn.onclick = () => { cur.person=p.id; render(); };
     const del = document.createElement('button');
     del.className = 'p-tab-del';
@@ -1039,18 +1103,25 @@ function saveDay() {
 }
 
 // ── ADD PERSON ──
-function openAdd() { document.getElementById('new-name').value=''; document.getElementById('add-overlay').hidden=false; }
+function openAdd() {
+  document.getElementById('new-name').value='';
+  const def = document.querySelector('input[name="new-type"][value="zamestnanec"]');
+  if (def) def.checked = true;
+  document.getElementById('add-overlay').hidden=false;
+  setTimeout(()=>document.getElementById('new-name').focus(),50);
+}
 function closeAdd() { document.getElementById('add-overlay').hidden=true; }
 function addPerson() {
   const name = document.getElementById('new-name').value.trim();
   if (!name) return;
+  const type = document.querySelector('input[name="new-type"]:checked')?.value || 'zamestnanec';
   const id = name.toLowerCase().replace(/[áäàâ]/g,'a').replace(/[čć]/g,'c').replace(/[ďd]/g,'d')
     .replace(/[éěëè]/g,'e').replace(/[íïì]/g,'i').replace(/[ňn]/g,'n')
     .replace(/[óöòô]/g,'o').replace(/[řr]/g,'r').replace(/[šs]/g,'s')
     .replace(/[ťt]/g,'t').replace(/[úůüù]/g,'u').replace(/[ýÿ]/g,'y').replace(/[žz]/g,'z')
     .replace(/[^a-z0-9]/g,'_').replace(/_+/g,'_').replace(/^_|_$/g,'');
   if (db.people.find(p=>p.id===id)) { alert('Osoba s tímto jménem již existuje.'); return; }
-  db.people.push({id, name, rate: 0});
+  db.people.push({id, name, rate: 0, type});
   save();
   closeAdd();
   cur.person = id;
