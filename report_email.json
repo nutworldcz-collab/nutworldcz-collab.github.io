@@ -1,36 +1,127 @@
 {
-  "generated": "2026-09-17T08:25:02",
-  "total": 6,
-  "spam_skipped": 1,
+  "generated": "2026-09-17T14:04:19",
+  "total": 14,
+  "spam_skipped": 0,
   "emails": [
     {
       "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Hamerník Tomáš vložil/a komentář na kartu REDA objednávka velká krabice nejpozději do 13.10.2026 na nástěnce Firmy dárky + objednávky",
-      "date": "čtvrtek 17. září 2026 7:44:27",
-      "unread": false,
-      "preview": "￼ Zde je nejnovější... ￼ Hamerník Tomáš okomentoval(a) kartu REDA objednávka velká krabice nejpozději do 13.10.2026 na nástěnce Firmy dárky + objednávky @jananyvltova je to na našem výběru. S Redou nebyl domluven konkrétní druh sirupu ani druh srdíčka. Jen bych u sirupu asi doporučoval dát jen 1 dru",
-      "category": "b2b",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com",
+      "sender": "Šárka Deusová <sarka.deusova@mk-rako.cz>",
+      "subject": "Re: MK - vánoční dárky",
+      "date": "čtvrtek 17. září 2026 10:10:55",
+      "unread": true,
+      "preview": "",
+      "category": "ostatni",
+      "sender_short": "Šárka Deusová",
+      "sender_email": "sarka.deusova@mk-rako.cz",
       "ai": {
-        "shrn": "Tomáš Hamerník komentoval objednávku pro REDA a upozorňuje na nedomluvenost konkrétního druhu sirupu a srdíčka. Doporučuje zvolit pouze jeden druh sirupu.",
-        "tyka_se": true,
-        "akce": "Kontaktovat REDU a domluvit konkrétní druh sirupu a srdíčka"
+        "shrn": "Email od Šárky Deusové bez obsahu týkající se vánočních dárků.",
+        "tyka_se": false,
+        "akce": null
       }
     },
     {
       "account": "Exchange",
-      "sender": "Markéta Costachova <marketa.costachova@nutworld.cz>",
-      "subject": "cenová nabídka",
-      "date": "čtvrtek 17. září 2026 7:33:39",
+      "sender": "Anna Přenosilová <prenosilova@one1.eu>",
+      "subject": "RE: Uzené mandle - poptávka",
+      "date": "čtvrtek 17. září 2026 10:05:03",
       "unread": true,
-      "preview": "Ahoj, je rozjetá sezona",
-      "category": "dodavatel",
-      "sender_short": "Markéta Costachova",
-      "sender_email": "marketa.costachova@nutworld.cz",
+      "preview": "Dobrý den, prozatím děkuji za informaci. Příští týden bude kolegyně ještě projednávat a pak bych se ozvala s přesnějšími informacemi",
+      "category": "b2b",
+      "sender_short": "Anna Přenosilová",
+      "sender_email": "prenosilova@one1.eu",
       "ai": {
-        "shrn": "Markéta Costachova informuje, že je rozjetá sezona, pravděpodobně týkající se cenové nabídky.",
+        "shrn": "Anna Přenosilová potvrzuje příjem informací o uzených mandlích a slibuje následující týden přesnější podrobnosti.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "spol. s r.o. - obchodně výrobní služby\" <claudie.nutworld.cz@gmail.com>",
+      "sender": "[B2B POPTÁVKA] Vánoce (10–49 ks ks)",
+      "subject": "čtvrtek 17. září 2026 9:41:00",
+      "date": "false",
+      "unread": false,
+      "preview": "",
+      "category": "ostatni",
+      "sender_short": "[B2B POPTÁVKA] Vánoce (10–49 ks ks)",
+      "sender_email": "[B2B POPTÁVKA] Vánoce (10–49 ks ks)",
+      "ai": {
+        "shrn": "Automatická B2B poptávka na vánoční produkty (10–49 ks) bez obsahu.",
+        "tyka_se": true,
+        "akce": "Zkontrolovat a odpovědět na poptávku"
+      }
+    },
+    {
+      "account": "spol. s r.o. - obchodně výrobní služby\" <claudie.nutworld.cz@gmail.com>",
+      "sender": "[B2B POPTÁVKA] Vánoce (10–49 ks ks)",
+      "subject": "čtvrtek 17. září 2026 9:40:35",
+      "date": "false",
+      "unread": false,
+      "preview": "",
+      "category": "ostatni",
+      "sender_short": "[B2B POPTÁVKA] Vánoce (10–49 ks ks)",
+      "sender_email": "[B2B POPTÁVKA] Vánoce (10–49 ks ks)",
+      "ai": {
+        "shrn": "Automatická B2B poptávka na vánoční produkty (10–49 ks) bez obsahu.",
+        "tyka_se": true,
+        "akce": "Zkontrolovat a odpovědět na poptávku"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Ľubomíra Orlická <lubomira.orlicka@ekvia.sk>",
+      "subject": "Dopyt na vianočné darčeky pre zamestnancov",
+      "date": "čtvrtek 17. září 2026 9:39:34",
+      "unread": true,
+      "preview": "",
+      "category": "ostatni",
+      "sender_short": "Ľubomíra Orlická",
+      "sender_email": "lubomira.orlicka@ekvia.sk",
+      "ai": {
+        "shrn": "Ľubomíra Orlická z Rakouska poptává vánoční dárky pro zaměstnance bez dalšího obsahu.",
+        "tyka_se": true,
+        "akce": "Odpovědět na poptávku vánočních dárků"
+      }
+    },
+    {
+      "account": "spol. s r.o. - obchodně výrobní služby\" <claudie.nutworld.cz@gmail.com>",
+      "sender": "[B2B POPTÁVKA] Vánoce (10–49 ks ks)",
+      "subject": "čtvrtek 17. září 2026 9:37:54",
+      "date": "false",
+      "unread": false,
+      "preview": "",
+      "category": "ostatni",
+      "sender_short": "[B2B POPTÁVKA] Vánoce (10–49 ks ks)",
+      "sender_email": "[B2B POPTÁVKA] Vánoce (10–49 ks ks)",
+      "ai": {
+        "shrn": "Automatická B2B poptávka na vánoční produkty (10–49 ks) bez obsahu.",
+        "tyka_se": true,
+        "akce": "Zkontrolovat a odpovědět na poptávku"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Balírna přesunul/a kartu Náchod do sloupce Připravují se komponenty - Balírna na nástěnce Firmy dárky + objednávky",
+      "date": "čtvrtek 17. září 2026 9:32:27",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Balírna přesunul(a) kartu Náchod do sloupce Připravují se komponenty - Balírna na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Balírna přesunul/a kartu Arboeko objednávka do sloupce Hotovo - čeká na zabalení na nástěnce Firmy dárky + objednávky",
+      "date": "čtvrtek 17. září 2026 9:08:24",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Balírna přesunul(a) kartu Arboeko objednávka do sloupce Hotovo - čeká na zabalení na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "b2b",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com",
+      "ai": {
+        "shrn": "Notifikace z Trella o přesunu objednávky Arboeko do sloupce připraveno k zabalení.",
         "tyka_se": false,
         "akce": null
       }
@@ -38,28 +129,60 @@
     {
       "account": "Exchange",
       "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Renata Pošepná přesunul/a kartu IMI - 2504256 do sloupce Hotovo - čeká na zabalení na nástěnce Firmy dárky + objednávky",
-      "date": "čtvrtek 17. září 2026 7:22:23",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 3 upozornění od poslední návštěvy 8:59 (17. září 2026)",
+      "date": "čtvrtek 17. září 2026 9:01:36",
       "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Renata Pošepná přesunul(a) kartu IMI - 2504256 do sloupce Hotovo - čeká na zabalení na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "preview": "￼ Zde je nejnovější... ￼ Balírna přesunul(a) kartu ARRIOTT do sloupce Připravují se komponenty - Balírna na nástěnce Firmy dárky + objednávky Odpovědět e-mailem ￼ Balírna přesunul(a) kartu iMi objednávka do sloupce Hotovo - čeká na zabalení na nástěnce Firmy dárky + objednávky Odpovědět e-mailem ￼ B",
       "category": "sluzby",
       "sender_short": "Trello",
       "sender_email": "do-not-reply@trello.com"
     },
     {
       "account": "Exchange",
-      "sender": "Kristyna <Amendee12@seznam.cz>",
-      "subject": "Práce",
-      "date": "čtvrtek 17. září 2026 6:25:22",
+      "sender": "claudie.nutworld.cz@gmail.com",
+      "subject": "✅ OK · Denní stav automatizací · 17.9.",
+      "date": "čtvrtek 17. září 2026 8:45:11",
       "unread": true,
-      "preview": "Dobrý den Viděla jsem váš inzerát že sháníte kolegyni do svého týmu. Zajímalo by mě platové ohodnocení a zda je inzerát ještě platný? Práci mám ale uvažuji o změně",
+      "preview": "DENNÍ ZDRAVOTNÍ REPORT · NUTWORLD 🔄 Opraveno 1× · jinak OK 17. 9. 2026",
       "category": "ostatni",
-      "sender_short": "Kristyna",
-      "sender_email": "Amendee12@seznam.cz",
+      "sender_short": "claudie.nutworld.cz@gmail.com",
+      "sender_email": "claudie.nutworld.cz@gmail.com",
       "ai": {
-        "shrn": "Kristýna se hlásí na pracovní pozici a ptá se na plat a aktuálnost inzerátu.",
-        "tyka_se": true,
-        "akce": "Odpovědět uchazeči s informacemi o platovém ohodnocení a stavu inzerátu"
+        "shrn": "Denní automatický report o stavu automatizací Nutworld – vše OK, 1× opraveno.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "Atomrat <news@e.atomrat.cz>",
+      "subject": "Čas na teplejší vrstvy",
+      "date": "čtvrtek 17. září 2026 9:03:59",
+      "unread": true,
+      "preview": "￼ Zobrazit na webu Odhlásit eshop@atomrat.cz ￼ Bundy Kalhoty Vesty Mikiny Trička Sukně Kraťasy Šaty Milé atomové ženy, chladná rána už připomínají",
+      "category": "ostatni",
+      "sender_short": "Atomrat",
+      "sender_email": "news@e.atomrat.cz",
+      "ai": {
+        "shrn": "Marketingový email od Atomratu o podzimních kolekčních oděvů.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "Lucie Vlčková <info@fitlines.cz>",
+      "subject": "Nový kurz pro děti — start 1. října",
+      "date": "čtvrtek 17. září 2026 9:00:29",
+      "unread": true,
+      "preview": "Ahoj, od října otevíráme ve studiu nový kurz — Funkční trénink pro děti (6–12 let). ￼ Cílem dětských tréninků je získání základních pohybových návyků a sebevědomí. Znalost techniky běžných cviků a zlepšení fyzické kondice zábavnou formou. Průběh tréninku: 1. Warm up (různé poskoky",
+      "category": "ostatni",
+      "sender_short": "Lucie Vlčková",
+      "sender_email": "info@fitlines.cz",
+      "ai": {
+        "shrn": "Lucie Vlčková informuje o novém kurzu funkčního tréninku pro děti od října.",
+        "tyka_se": false,
+        "akce": null
       }
     },
     {
@@ -73,7 +196,7 @@
       "sender_short": "Apple",
       "sender_email": "no_reply@email.apple.com",
       "ai": {
-        "shrn": "Apple zasílá fakturu za měsíční předplatné CapCut (699 Kč), které se obnoví 17. října 2026.",
+        "shrn": "Faktura od Apple za měsíční předplatné CapCut v hodnotě 699 Kč.",
         "tyka_se": false,
         "akce": null
       }
@@ -89,7 +212,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "CrossFit posílá týdenní newsletter se zprávami a příběhy z komunity.",
+        "shrn": "Týdenní update z CrossFitu s obsahem komunity a příběhů.",
         "tyka_se": false,
         "akce": null
       }
