@@ -656,6 +656,143 @@ input[type="text"]:focus { border-color: var(--brown); }
   justify-content: center;
 }
 
+/* ── DASHBOARD ── */
+#dashboard {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: var(--bg);
+}
+.dash-header {
+  background: var(--header-bg);
+  padding: 0 24px;
+  height: 56px;
+  display: flex; align-items: center; gap: 16px;
+  flex-shrink: 0;
+}
+.dash-brand { color: #fff; font-family:'Exo 2',sans-serif; font-weight:700; font-size:16px; letter-spacing:.5px; }
+.dash-spacer { flex: 1; }
+.dash-hbtn {
+  background: rgba(255,255,255,.15); border: none; color: #fff;
+  padding: 7px 14px; border-radius: 8px; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: background .12s;
+}
+.dash-hbtn:hover { background: rgba(255,255,255,.25); }
+.dash-body {
+  flex: 1;
+  padding: 24px;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+}
+.dash-search-wrap {
+  position: relative;
+  margin-bottom: 28px;
+}
+.dash-search-icon {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  font-size: 16px; pointer-events: none; opacity: .5;
+}
+.dash-search {
+  width: 100%; padding: 12px 16px 12px 42px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  font-size: 15px;
+  color: var(--text);
+  outline: none;
+  transition: border-color .15s;
+}
+.dash-search:focus { border-color: var(--brown); }
+.dash-group { margin-bottom: 28px; }
+.dash-group-title {
+  display: flex; align-items: center; gap: 10px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.dash-group-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.dash-group-sum {
+  margin-left: auto;
+  font-size: 12px; font-weight: 600;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.dash-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+.dash-card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 20px 16px;
+  cursor: pointer;
+  transition: border-color .15s, transform .1s, box-shadow .15s;
+  position: relative;
+  overflow: hidden;
+}
+.dash-card:hover {
+  border-color: var(--brown-soft);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,.08);
+}
+.dash-card-stripe {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 4px;
+  border-radius: 12px 12px 0 0;
+}
+.stripe-zamestnanec { background: #83502e; }
+.stripe-agentura    { background: #f7ab31; }
+.stripe-brigadnik   { background: #6fa044; }
+.stripe-jine        { background: #7a8490; }
+.dash-card-name {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 15px; font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+  margin-top: 6px;
+}
+.dash-card-type {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--text-muted); font-weight: 600;
+  margin-bottom: 14px;
+}
+.dash-card-stats {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.dash-card-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: 13px; color: var(--text-mid);
+}
+.dash-card-num {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 15px; font-weight: 700;
+  color: var(--brown);
+  font-variant-numeric: tabular-nums;
+}
+.dash-card-add {
+  background: var(--surface2);
+  border: 2px dashed var(--border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  color: var(--text-muted);
+  font-size: 14px; font-weight: 600;
+  transition: border-color .15s, color .15s;
+}
+.dash-card-add:hover { border-color: var(--brown); color: var(--brown); }
+.dash-empty {
+  text-align: center; padding: 48px 24px;
+  color: var(--text-muted); font-size: 15px;
+}
+
 @media (max-width: 520px) {
   .h-brand em { display: none; }
   .month-label { min-width: 120px; font-size: 13px; }
@@ -663,6 +800,8 @@ input[type="text"]:focus { border-color: var(--brown); }
   .tot-item { padding: 10px 16px 10px 0; }
   .tot-item + .tot-item { padding-left: 16px; }
   .tot-val { font-size: 18px; }
+  .dash-body { padding: 16px; }
+  .dash-cards { grid-template-columns: 1fr 1fr; }
 }
 </style>
 
@@ -677,10 +816,33 @@ input[type="text"]:focus { border-color: var(--brown); }
   <div class="pin-error" id="pin-err"></div>
 </div>
 
-<!-- ═══════════════ APP ═══════════════ -->
+<!-- ═══════════════ DASHBOARD ═══════════════ -->
+<div id="dashboard" hidden>
+  <header class="dash-header">
+    <div class="dash-brand">🌰 Nutworld <em style="font-weight:400;opacity:.7">Píchačky</em></div>
+    <div class="dash-spacer"></div>
+    <div style="display:flex;align-items:center;gap:4px;margin-right:8px">
+      <button class="dash-hbtn" style="padding:7px 10px" onclick="chMonth(-1)">‹</button>
+      <span id="dash-month-lbl" style="color:#fff;font-size:13px;font-weight:600;min-width:110px;text-align:center"></span>
+      <button class="dash-hbtn" style="padding:7px 10px" onclick="chMonth(1)">›</button>
+    </div>
+    <button class="dash-hbtn" onclick="openAdd()">+ Přidat osobu</button>
+    <button class="dash-hbtn" onclick="lock()">🔒</button>
+  </header>
+  <div class="dash-body">
+    <div class="dash-search-wrap">
+      <span class="dash-search-icon">🔍</span>
+      <input class="dash-search" id="dash-search" type="search" placeholder="Hledat osobu nebo číslo…" oninput="renderDashboard()" autocomplete="off">
+    </div>
+    <div id="dash-content"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ APP (detail) ═══════════════ -->
 <div id="app" hidden>
   <header class="app-header">
-    <div class="h-brand">🌰 Nutworld <em>Píchačky</em></div>
+    <button class="h-btn" onclick="goToDashboard()" title="Zpět na přehled" style="margin-right:4px">← Přehled</button>
+    <div class="h-brand"><em>Píchačky</em></div>
     <div class="h-spacer"></div>
     <div class="month-nav">
       <button onclick="chMonth(-1)" title="Předchozí měsíc">‹</button>
@@ -848,9 +1010,7 @@ function psub() {
   const val = document.getElementById('pin-input').value;
   if (val === db.pin) {
     document.getElementById('pin-screen').hidden = true;
-    document.getElementById('app').hidden = false;
-    cur.person = db.people[0]?.id;
-    render();
+    goToDashboard();
   } else {
     document.getElementById('pin-err').textContent = 'Špatný PIN';
     const inp = document.getElementById('pin-input');
@@ -861,9 +1021,119 @@ function psub() {
 }
 function lock() {
   document.getElementById('app').hidden = true;
+  document.getElementById('dashboard').hidden = true;
   document.getElementById('pin-screen').hidden = false;
   document.getElementById('pin-input').value = '';
   setTimeout(() => document.getElementById('pin-input').focus(), 100);
+}
+function goToDashboard() {
+  document.getElementById('app').hidden = true;
+  document.getElementById('dashboard').hidden = false;
+  document.getElementById('dash-search').value = '';
+  renderDashboard();
+  setTimeout(() => document.getElementById('dash-search').focus(), 80);
+}
+function openDetail(personId) {
+  document.getElementById('dashboard').hidden = true;
+  document.getElementById('app').hidden = false;
+  cur.person = personId;
+  render();
+}
+
+// ── DASHBOARD ──
+const TYPE_LABELS = { zamestnanec:'Zaměstnanec', agentura:'Agentura', brigadnik:'Brigádník', jine:'Jiné' };
+
+function personMonthStats(pid) {
+  const y = cur.year, m = cur.month;
+  const days = new Date(y, m+1, 0).getDate();
+  let totalMins = 0, workDays = 0;
+  for (let d=1; d<=days; d++) {
+    const dt = fmtDate(y, m, d);
+    const rec = db.records[`${pid}:${dt}`];
+    if (!rec) continue;
+    const mins = calcMins(rec.from, rec.to);
+    if (mins > 0) { totalMins += mins; workDays++; }
+  }
+  return { totalMins, workDays };
+}
+
+function renderDashboard() {
+  const q = (document.getElementById('dash-search').value || '').toLowerCase().trim();
+  const cont = document.getElementById('dash-content');
+  const ym = `${MONTHS[cur.month]} ${cur.year}`;
+  const lbl = document.getElementById('dash-month-lbl');
+  if (lbl) lbl.textContent = ym;
+
+  if (!db.people.length) {
+    cont.innerHTML = `<div class="dash-empty">Zatím žádné osoby.<br>Přidej první kliknutím na <strong>+ Přidat osobu</strong>.</div>`;
+    return;
+  }
+
+  // filter by search
+  const filtered = q
+    ? db.people.filter(p => p.name.toLowerCase().includes(q) || String(p.rate).includes(q))
+    : db.people;
+
+  // group by type, sorted
+  const groups = {};
+  TYPE_ORDER.forEach(t => { groups[t] = []; });
+  filtered.forEach(p => { const t = p.type||'zamestnanec'; groups[t].push(p); });
+
+  let html = '';
+  let anyGroup = false;
+
+  TYPE_ORDER.forEach(type => {
+    const people = groups[type].sort((a,b) => a.name.localeCompare(b.name,'cs'));
+    if (!people.length) return;
+    anyGroup = true;
+
+    // group totals
+    let grpMins = 0, grpPay = 0;
+    people.forEach(p => {
+      const s = personMonthStats(p.id);
+      grpMins += s.totalMins;
+      grpPay += (s.totalMins/60) * (p.rate||0);
+    });
+    const grpH = Math.floor(grpMins/60), grpMin = grpMins%60;
+    const grpHStr = grpMins ? `${grpH}h ${grpMin.toString().padStart(2,'0')}m` : '—';
+    const grpPayStr = grpPay ? `${Math.round(grpPay).toLocaleString('cs-CZ')} Kč` : '';
+
+    html += `<div class="dash-group">
+      <div class="dash-group-title">
+        <span class="dash-group-dot dot-${type}"></span>
+        ${TYPE_LABELS[type]} (${people.length})
+        <span class="dash-group-sum">${grpHStr}${grpPayStr ? ' · '+grpPayStr : ''} — ${ym}</span>
+      </div>
+      <div class="dash-cards">`;
+
+    people.forEach(p => {
+      const { totalMins, workDays } = personMonthStats(p.id);
+      const h = Math.floor(totalMins/60), mn = totalMins%60;
+      const hStr = totalMins ? `${h}h ${mn.toString().padStart(2,'0')}m` : '0h 00m';
+      const pay = p.rate ? Math.round((totalMins/60)*p.rate) : null;
+      html += `<div class="dash-card" onclick="openDetail('${p.id}')">
+        <div class="dash-card-stripe stripe-${p.type||'zamestnanec'}"></div>
+        <div class="dash-card-name">${p.name}</div>
+        <div class="dash-card-type">${TYPE_LABELS[p.type||'zamestnanec']}</div>
+        <div class="dash-card-stats">
+          <div class="dash-card-row"><span>Odpracováno</span><span class="dash-card-num">${hStr}</span></div>
+          <div class="dash-card-row"><span>Pracovních dní</span><span class="dash-card-num">${workDays}</span></div>
+          ${pay !== null ? `<div class="dash-card-row"><span>Výplata</span><span class="dash-card-num">${pay.toLocaleString('cs-CZ')} Kč</span></div>` : ''}
+        </div>
+      </div>`;
+    });
+
+    html += `<div class="dash-card-add" onclick="openAdd()"><span style="font-size:20px;line-height:1">+</span> Přidat osobu</div>`;
+    html += `</div></div>`;
+  });
+
+  if (!anyGroup) {
+    html = `<div class="dash-empty">Žádná shoda pro „${q}"</div>`;
+  } else if (!q) {
+    // if no group exists yet, show add card in standalone row
+  }
+
+  cont.innerHTML = html;
 }
 // auto-focus PIN input on load
 window.addEventListener('DOMContentLoaded', () => {
@@ -910,7 +1180,8 @@ function chMonth(dir) {
   cur.month += dir;
   if (cur.month > 11) { cur.month=0; cur.year++; }
   if (cur.month < 0)  { cur.month=11; cur.year--; }
-  render();
+  if (!document.getElementById('dashboard').hidden) renderDashboard();
+  else render();
 }
 
 const TYPE_ORDER = ['zamestnanec','agentura','brigadnik','jine'];
@@ -1124,8 +1395,13 @@ function addPerson() {
   db.people.push({id, name, rate: 0, type});
   save();
   closeAdd();
-  cur.person = id;
-  render();
+  // if dashboard is visible, refresh it; else open detail
+  if (!document.getElementById('dashboard').hidden) {
+    renderDashboard();
+  } else {
+    cur.person = id;
+    render();
+  }
 }
 
 function deletePerson(id, name) {
@@ -1133,8 +1409,12 @@ function deletePerson(id, name) {
   db.people = db.people.filter(p => p.id !== id);
   Object.keys(db.records).forEach(k => { if (k.startsWith(id+':')) delete db.records[k]; });
   save();
-  cur.person = db.people[0]?.id;
-  render();
+  if (!document.getElementById('dashboard').hidden) {
+    renderDashboard();
+  } else {
+    cur.person = db.people[0]?.id;
+    if (cur.person) render(); else goToDashboard();
+  }
 }
 
 // ── EXPORT CSV ──
