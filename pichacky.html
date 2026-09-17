@@ -105,46 +105,49 @@ body {
   letter-spacing: .5px;
   margin-bottom: 36px;
 }
-.pin-dots {
+.pin-input-wrap {
   display: flex;
-  gap: 14px;
-  margin-bottom: 32px;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 220px;
+  margin-bottom: 8px;
 }
-.pin-dot {
-  width: 14px; height: 14px;
-  border-radius: 50%;
+.pin-input {
+  width: 100%;
+  padding: 12px 16px;
   border: 2px solid var(--border);
-  background: transparent;
-  transition: background .12s, border-color .12s;
+  border-radius: 12px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-align: center;
+  background: var(--surface);
+  color: var(--text);
+  outline: none;
+  transition: border-color .12s;
 }
-.pin-dot.filled { background: var(--brown); border-color: var(--brown); }
-.pin-dot.shake { animation: shake .35s ease; }
+.pin-input:focus { border-color: var(--brown); }
+.pin-input.shake { animation: shake .35s ease; border-color: #c0392b; }
 @keyframes shake {
   0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}
   40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}
 }
-.pin-keypad {
-  display: grid;
-  grid-template-columns: repeat(3, 68px);
-  gap: 10px;
-  margin-bottom: 12px;
-}
-.pin-key {
-  height: 68px;
-  border-radius: 14px;
-  border: 2px solid var(--border);
-  background: var(--surface);
+.pin-submit {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  background: var(--brown);
+  color: #fff;
   font-family: 'Exo 2', sans-serif;
-  font-size: 22px;
+  font-size: 15px;
   font-weight: 700;
-  color: var(--text);
   cursor: pointer;
-  transition: background .1s, transform .08s;
-  display: flex; align-items: center; justify-content: center;
+  transition: background .12s;
 }
-.pin-key:hover { background: var(--surface2); }
-.pin-key:active { transform: scale(.92); }
-.pin-key.action { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+.pin-submit:hover { background: var(--header); }
 .pin-error {
   font-size: 13px;
   color: #c0392b;
@@ -613,25 +616,9 @@ input[type="text"]:focus { border-color: var(--brown); }
 <div id="pin-screen">
   <div class="pin-logo">🌰 Nutworld</div>
   <div class="pin-sub">PÍCHAČKY — ZADEJ PIN</div>
-  <div class="pin-dots">
-    <div class="pin-dot" id="d0"></div>
-    <div class="pin-dot" id="d1"></div>
-    <div class="pin-dot" id="d2"></div>
-    <div class="pin-dot" id="d3"></div>
-  </div>
-  <div class="pin-keypad">
-    <button class="pin-key" onclick="pk('1')">1</button>
-    <button class="pin-key" onclick="pk('2')">2</button>
-    <button class="pin-key" onclick="pk('3')">3</button>
-    <button class="pin-key" onclick="pk('4')">4</button>
-    <button class="pin-key" onclick="pk('5')">5</button>
-    <button class="pin-key" onclick="pk('6')">6</button>
-    <button class="pin-key" onclick="pk('7')">7</button>
-    <button class="pin-key" onclick="pk('8')">8</button>
-    <button class="pin-key" onclick="pk('9')">9</button>
-    <button class="pin-key action" onclick="pdel()">⌫</button>
-    <button class="pin-key" onclick="pk('0')">0</button>
-    <button class="pin-key action" onclick="psub()">OK</button>
+  <div class="pin-input-wrap">
+    <input class="pin-input" type="password" id="pin-input" placeholder="••••••" autocomplete="off" onkeydown="if(event.key==='Enter')psub()">
+    <button class="pin-submit" onclick="psub()">Odemknout</button>
   </div>
   <div class="pin-error" id="pin-err"></div>
 </div>
@@ -780,7 +767,7 @@ function loadDB() {
 }
 function mkDefault() {
   return {
-    pin: '1234',
+    pin: 'jan1a',
     people: [
       {id:'jan',  name:'Jan Vlček',       rate: 250},
       {id:'jana', name:'Jana Nývltová',   rate: 200},
@@ -835,44 +822,30 @@ let editDate = null, selType = 'work';
 })();
 
 // ── PIN ──
-let pin = '';
-function pk(d) {
-  if (pin.length >= 4) return;
-  pin += d;
-  updDots();
-  if (pin.length === 4) setTimeout(psub, 80);
-}
-function pdel() { pin = pin.slice(0,-1); updDots(); }
-function updDots() {
-  for (let i=0;i<4;i++) document.getElementById('d'+i).classList.toggle('filled', i<pin.length);
-}
 function psub() {
-  if (pin === db.pin) {
+  const val = document.getElementById('pin-input').value;
+  if (val === db.pin) {
     document.getElementById('pin-screen').hidden = true;
     document.getElementById('app').hidden = false;
     cur.person = db.people[0]?.id;
     render();
   } else {
     document.getElementById('pin-err').textContent = 'Špatný PIN';
-    ['d0','d1','d2','d3'].forEach(id => {
-      const el = document.getElementById(id);
-      el.classList.add('shake');
-      setTimeout(() => el.classList.remove('shake'), 400);
-    });
-    pin = ''; updDots();
-    setTimeout(() => document.getElementById('pin-err').textContent = '', 2000);
+    const inp = document.getElementById('pin-input');
+    inp.classList.add('shake');
+    setTimeout(() => { inp.classList.remove('shake'); inp.value=''; inp.focus(); }, 400);
+    setTimeout(() => document.getElementById('pin-err').textContent = '', 2500);
   }
 }
 function lock() {
   document.getElementById('app').hidden = true;
   document.getElementById('pin-screen').hidden = false;
-  pin = ''; updDots();
+  document.getElementById('pin-input').value = '';
+  setTimeout(() => document.getElementById('pin-input').focus(), 100);
 }
-document.addEventListener('keydown', e => {
-  if (document.getElementById('pin-screen').hidden) return;
-  if (e.key>='0' && e.key<='9') pk(e.key);
-  if (e.key==='Backspace') pdel();
-  if (e.key==='Enter') psub();
+// auto-focus PIN input on load
+window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('pin-input').focus();
 });
 
 // ── HELPERS ──
