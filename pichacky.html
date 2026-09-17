@@ -792,6 +792,45 @@ input[type="text"]:focus { border-color: var(--brown); }
   text-align: center; padding: 48px 24px;
   color: var(--text-muted); font-size: 15px;
 }
+.dash-summary {
+  margin-top: 12px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.dash-sum-title {
+  padding: 14px 20px 12px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+}
+.dash-sum-row {
+  display: flex; align-items: center;
+  padding: 13px 20px;
+  border-bottom: 1px solid var(--border);
+  gap: 12px;
+}
+.dash-sum-row:last-child { border-bottom: none; }
+.dash-sum-row.total-row {
+  background: var(--surface2);
+  font-weight: 700;
+}
+.dash-sum-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.dash-sum-label { font-size: 14px; color: var(--text); flex: 1; }
+.dash-sum-people { font-size: 12px; color: var(--text-muted); min-width: 60px; }
+.dash-sum-val {
+  font-family: 'Exo 2', sans-serif; font-size: 15px; font-weight: 700;
+  color: var(--brown); font-variant-numeric: tabular-nums;
+  min-width: 90px; text-align: right;
+}
+.dash-sum-pay {
+  font-family: 'Exo 2', sans-serif; font-size: 14px; font-weight: 600;
+  color: var(--text-mid); font-variant-numeric: tabular-nums;
+  min-width: 110px; text-align: right;
+}
 
 @media (max-width: 520px) {
   .h-brand em { display: none; }
@@ -1081,19 +1120,23 @@ function renderDashboard() {
 
   let html = '';
   let anyGroup = false;
+  const summaryRows = []; // {type, count, totalMins, totalPay}
+  let grandMins = 0, grandPay = 0, grandCount = 0;
 
   TYPE_ORDER.forEach(type => {
     const people = groups[type].sort((a,b) => a.name.localeCompare(b.name,'cs'));
     if (!people.length) return;
     anyGroup = true;
 
-    // group totals
     let grpMins = 0, grpPay = 0;
     people.forEach(p => {
       const s = personMonthStats(p.id);
       grpMins += s.totalMins;
       grpPay += (s.totalMins/60) * (p.rate||0);
     });
+    summaryRows.push({ type, count: people.length, totalMins: grpMins, totalPay: grpPay });
+    grandMins += grpMins; grandPay += grpPay; grandCount += people.length;
+
     const grpH = Math.floor(grpMins/60), grpMin = grpMins%60;
     const grpHStr = grpMins ? `${grpH}h ${grpMin.toString().padStart(2,'0')}m` : '—';
     const grpPayStr = grpPay ? `${Math.round(grpPay).toLocaleString('cs-CZ')} Kč` : '';
@@ -1127,10 +1170,38 @@ function renderDashboard() {
     html += `</div></div>`;
   });
 
+  // ── SUMMARY TABLE ──
+  if (anyGroup && summaryRows.length > 0) {
+    const fmtH = m => { const h=Math.floor(m/60),mn=m%60; return m?`${h}h ${mn.toString().padStart(2,'0')}m`:'—'; };
+    const fmtPay = p => p ? `${Math.round(p).toLocaleString('cs-CZ')} Kč` : '—';
+
+    html += `<div class="dash-summary">
+      <div class="dash-sum-title">Souhrn — ${ym}</div>`;
+
+    summaryRows.forEach(r => {
+      html += `<div class="dash-sum-row">
+        <span class="dash-sum-dot dot-${r.type}"></span>
+        <span class="dash-sum-label">${TYPE_LABELS[r.type]}</span>
+        <span class="dash-sum-people">${r.count} ${r.count===1?'osoba':r.count<5?'osoby':'osob'}</span>
+        <span class="dash-sum-val">${fmtH(r.totalMins)}</span>
+        <span class="dash-sum-pay">${fmtPay(r.totalPay)}</span>
+      </div>`;
+    });
+
+    const ghH = Math.floor(grandMins/60), ghM = grandMins%60;
+    html += `<div class="dash-sum-row total-row">
+      <span class="dash-sum-dot" style="background:var(--brown)"></span>
+      <span class="dash-sum-label">Celkem</span>
+      <span class="dash-sum-people">${grandCount} ${grandCount===1?'osoba':grandCount<5?'osoby':'osob'}</span>
+      <span class="dash-sum-val">${fmtH(grandMins)}</span>
+      <span class="dash-sum-pay">${fmtPay(grandPay)}</span>
+    </div>`;
+
+    html += `</div>`;
+  }
+
   if (!anyGroup) {
     html = `<div class="dash-empty">Žádná shoda pro „${q}"</div>`;
-  } else if (!q) {
-    // if no group exists yet, show add card in standalone row
   }
 
   cont.innerHTML = html;
