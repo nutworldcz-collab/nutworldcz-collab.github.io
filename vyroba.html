@@ -162,6 +162,27 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .pfoot-lbl{font-size:11px;color:#b8860b}
 .pfoot-kg{font-size:12px;font-weight:700;color:var(--bd)}
 
+/* ═══ SMĚS icard ═══ */
+.icard.smes-icard{border-left:4px solid var(--amb)}
+.icard.smes-icard.all-done{border-left-color:var(--leaf)}
+.icard.smes-icard .ihdr{background:#fff8e1;border-color:var(--amb)}
+.smes-badge{display:inline-block;background:var(--amb);color:#5c3800;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:1px 7px;border-radius:3px;margin-left:8px;vertical-align:middle}
+.smes-firma-hdr{padding:8px 14px 4px;background:#faf7f3;border-bottom:1px solid #ede0d4;display:flex;align-items:center;gap:8px}
+.smes-firma-name{font-size:13px;font-weight:700;color:#333;flex:1}
+.smes-firma-ks{font-size:11px;color:#aaa}
+.smes-comp-row{display:flex;align-items:center;gap:8px;padding:5px 14px 5px 40px;border-bottom:1px solid #f5f0ea;font-size:12px;cursor:pointer;transition:background .1s}
+.smes-comp-row:hover{background:#faf7f3}
+.smes-comp-row.done{background:#f4fbf4}
+.smes-comp-check{width:16px;height:16px;border:2px solid #d4c0a8;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:white;transition:all .15s}
+.smes-comp-row.done .smes-comp-check{background:var(--leaf);border-color:var(--leaf)}
+.smes-comp-row.done .smes-comp-check::after{content:'✓';font-size:10px;font-weight:800;color:white}
+.smes-comp-name{flex:1;color:#555}
+.smes-comp-row.done .smes-comp-name{text-decoration:line-through;color:#ccc}
+.smes-comp-gram{font-size:11px;color:#aaa;white-space:nowrap}
+.smes-comp-kod{font-size:10px;color:#c8a87a;font-family:monospace;margin-left:4px}
+.smes-comp-kg{font-size:12px;font-weight:700;color:var(--br);white-space:nowrap;min-width:55px;text-align:right}
+.smes-comp-row.done .smes-comp-kg{color:#ccc}
+
 /* Poznámka inline ve Výrobě */
 .fnota-btn{background:none;border:none;cursor:pointer;font-size:13px;padding:0 2px;line-height:1;color:#ddd;flex-shrink:0;transition:color .15s}
 .fnota-btn:hover{color:var(--amb)}
@@ -672,14 +693,54 @@ function terminBadge(t){
 }
 
 /* ═══ VÝROBA VIEW ═══ */
+function buildSmesCard(smesName,usages){
+  let totalKg=0,totalDone=0,totalComp=0;
+  usages.forEach(u=>u.slozeni.forEach(s=>{
+    totalComp++; totalKg+=gramToKg(s.gram)*u.ks;
+    if(isDone(u.cardId,u.pi,s.ci)) totalDone++;
+  }));
+  const allDone=totalComp>0&&totalDone===totalComp;
+  const card=document.createElement('div');
+  card.className='icard smes-icard'+(allDone?' all-done':'');
+  card.innerHTML=`<div class="ihdr"><div class="iname-wrap"><div class="iname">${smesName}<span class="smes-badge">SMĚS</span></div></div><div class="itotal-kg">${fmtKg(totalKg)}</div></div>`;
+  [...usages].sort((a,b)=>terminSort(a.termin,b.termin)).forEach(u=>{
+    const uKg=u.slozeni.reduce((sum,s)=>sum+gramToKg(s.gram)*u.ks,0);
+    const fhdr=document.createElement('div');
+    fhdr.className='smes-firma-hdr';
+    fhdr.innerHTML=`<span class="smes-firma-name">${u.firma}</span>${terminBadge(u.termin)}<span class="smes-firma-ks">${u.ks} ks</span><span style="font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700;color:var(--br);min-width:55px;text-align:right">${fmtKg(uKg)}</span>`;
+    card.appendChild(fhdr);
+    u.slozeni.forEach(s=>{
+      const done=isDone(u.cardId,u.pi,s.ci);
+      const sKg=gramToKg(s.gram)*u.ks;
+      const row=document.createElement('div');
+      row.className='smes-comp-row'+(done?' done':'');
+      row.innerHTML=`<div class="smes-comp-check"></div><div class="smes-comp-name">${s.nazev}${s.kod?`<span class="smes-comp-kod">kód ${s.kod}</span>`:''}</div><span class="smes-comp-gram">${s.gram}×${u.ks}ks</span><div class="smes-comp-kg">${sKg?fmtKg(sKg):'—'}</div>`;
+      row.onclick=()=>toggle(u.cardId,u.pi,s.ci);
+      card.appendChild(row);
+    });
+    const foot=document.createElement('div');
+    foot.className='pack-foot';
+    foot.innerHTML=`<span class="pfoot-lbl">Celkem dávka</span><span class="pfoot-kg">${fmtKg(uKg)}</span>`;
+    card.appendChild(foot);
+  });
+  return card;
+}
+
 function renderVyroba(cards){
   const mc=document.getElementById('main-content');
 
   // ingMap: ingKey → { nazev, kod, byPack: Map(packKey → {gram, darek, kod, usages[]}) }
   const ingMap=new Map();
+  const smesMap=new Map();
   cards.forEach(card=>{
     card.produkty.forEach((prod,pi)=>{
       if(prod.isSluzba) return;
+      if(typeof SMES_DATA!=='undefined'&&SMES_DATA[prod.nazev.trim()]){
+        const key=prod.nazev.trim();
+        if(!smesMap.has(key)) smesMap.set(key,[]);
+        smesMap.get(key).push({cardId:card.id,firma:card.firma,ks:prod.ks,pi,termin:card.termin,slozeni:prod.slozeni.map((s,ci)=>({...s,ci}))});
+        return;
+      }
       prod.slozeni.forEach((s,ci)=>{
         // Rozlož dárek na základní produkty (darky-data.js)
         const DD = (typeof DARKY_DATA !== 'undefined') ? DARKY_DATA : null;
@@ -713,7 +774,7 @@ function renderVyroba(cards){
     });
   });
 
-  if(!ingMap.size){mc.innerHTML='<div class="empty-state">Žádné dílčí produkty.<br>Doplňte složení v zakázkách.</div>';return;}
+  if(!ingMap.size&&!smesMap.size){mc.innerHTML='<div class="empty-state">Žádné dílčí produkty.<br>Doplňte složení v zakázkách.</div>';return;}
 
   const q=document.getElementById('search').value.toLowerCase().trim();
   const sorted=[...ingMap.entries()]
@@ -828,6 +889,7 @@ function renderVyroba(cards){
     grid.appendChild(card);
   });
 
+  smesMap.forEach((usages,smesName)=>grid.insertBefore(buildSmesCard(smesName,usages),grid.firstChild));
   mc.innerHTML=''; mc.appendChild(grid);
 }
 
