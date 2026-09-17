@@ -1,20 +1,95 @@
 {
-  "generated": "2026-09-16T17:00:59",
-  "total": 1,
-  "spam_skipped": 0,
+  "generated": "2026-09-17T08:25:02",
+  "total": 6,
+  "spam_skipped": 1,
   "emails": [
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Hamerník Tomáš vložil/a komentář na kartu REDA objednávka velká krabice nejpozději do 13.10.2026 na nástěnce Firmy dárky + objednávky",
+      "date": "čtvrtek 17. září 2026 7:44:27",
+      "unread": false,
+      "preview": "￼ Zde je nejnovější... ￼ Hamerník Tomáš okomentoval(a) kartu REDA objednávka velká krabice nejpozději do 13.10.2026 na nástěnce Firmy dárky + objednávky @jananyvltova je to na našem výběru. S Redou nebyl domluven konkrétní druh sirupu ani druh srdíčka. Jen bych u sirupu asi doporučoval dát jen 1 dru",
+      "category": "b2b",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com",
+      "ai": {
+        "shrn": "Tomáš Hamerník komentoval objednávku pro REDA a upozorňuje na nedomluvenost konkrétního druhu sirupu a srdíčka. Doporučuje zvolit pouze jeden druh sirupu.",
+        "tyka_se": true,
+        "akce": "Kontaktovat REDU a domluvit konkrétní druh sirupu a srdíčka"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Markéta Costachova <marketa.costachova@nutworld.cz>",
+      "subject": "cenová nabídka",
+      "date": "čtvrtek 17. září 2026 7:33:39",
+      "unread": true,
+      "preview": "Ahoj, je rozjetá sezona",
+      "category": "dodavatel",
+      "sender_short": "Markéta Costachova",
+      "sender_email": "marketa.costachova@nutworld.cz",
+      "ai": {
+        "shrn": "Markéta Costachova informuje, že je rozjetá sezona, pravděpodobně týkající se cenové nabídky.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Renata Pošepná přesunul/a kartu IMI - 2504256 do sloupce Hotovo - čeká na zabalení na nástěnce Firmy dárky + objednávky",
+      "date": "čtvrtek 17. září 2026 7:22:23",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Renata Pošepná přesunul(a) kartu IMI - 2504256 do sloupce Hotovo - čeká na zabalení na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Kristyna <Amendee12@seznam.cz>",
+      "subject": "Práce",
+      "date": "čtvrtek 17. září 2026 6:25:22",
+      "unread": true,
+      "preview": "Dobrý den Viděla jsem váš inzerát že sháníte kolegyni do svého týmu. Zajímalo by mě platové ohodnocení a zda je inzerát ještě platný? Práci mám ale uvažuji o změně",
+      "category": "ostatni",
+      "sender_short": "Kristyna",
+      "sender_email": "Amendee12@seznam.cz",
+      "ai": {
+        "shrn": "Kristýna se hlásí na pracovní pozici a ptá se na plat a aktuálnost inzerátu.",
+        "tyka_se": true,
+        "akce": "Odpovědět uchazeči s informacemi o platovém ohodnocení a stavu inzerátu"
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "Apple <no_reply@email.apple.com>",
+      "subject": "Vaše faktura od společnosti Apple",
+      "date": "čtvrtek 17. září 2026 8:05:50",
+      "unread": true,
+      "preview": "￼ Faktura 16. září 2026 Pořadí:1-14492429220 ID objednávky:MX5XYSKSSG Dokument:792191714998 Účet Apple:vyziva.trenink@gmail.com ￼ CapCut: Photo & Video Editor Pro Monthly Subscription (Měsíční) Obnoví se 17. října 2026 699,00 Kč Včetně DPH v sazbě 21 %121,31 Kč Fakturace a platba Jan Vlček Bratří Ča",
+      "category": "dodavatel",
+      "sender_short": "Apple",
+      "sender_email": "no_reply@email.apple.com",
+      "ai": {
+        "shrn": "Apple zasílá fakturu za měsíční předplatné CapCut (699 Kč), které se obnoví 17. října 2026.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
     {
       "account": "Google",
       "sender": "\"CrossFit\" <crossfit@mail.crossfit.com>",
-      "subject": "260916 Workout of the Day: Service Cup Workout 3",
-      "date": "středa 16. září 2026 2:31:44",
+      "subject": "260917 Rest Day: Your Weekly CrossFit Updates",
+      "date": "čtvrtek 17. září 2026 2:03:30",
       "unread": true,
-      "preview": "￼ ￼ ￼ WEDNESDAY",
+      "preview": "￼ ￼ ￼ How CrossFit Forged This Firefighter COMMUNITY Laine Byg is a firefighter",
       "category": "ostatni",
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "Email z CrossFit platformy s dnešním cvičením (Service Cup Workout 3). Nejedná se o obchodní nebo personální záležitost týkající se Nutworld.cz.",
+        "shrn": "CrossFit posílá týdenní newsletter se zprávami a příběhy z komunity.",
         "tyka_se": false,
         "akce": null
       }
