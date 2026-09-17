@@ -1718,7 +1718,9 @@ function dkUpdateKalkFields() {
   const moEl = document.getElementById('d-kalk-mo');
   const voEl = document.getElementById('d-kalk-vo');
   const moNew = Math.round((dkBaseMo + ndCostLive) * 10) / 10;
-  const voNew = dkBaseMo > 0 ? Math.round(moNew * (dkBaseVo / dkBaseMo) * 10) / 10 : dkBaseVo;
+  const voFaktEl = document.getElementById('d-vo-fakt');
+  const voFakt = voFaktEl ? (parseFloat(voFaktEl.value) || 0.8) : 0.8;
+  const voNew = Math.round(moNew * voFakt * 10) / 10;
   if (moEl) moEl.value = moNew;
   if (voEl) voEl.value = voNew;
 }
@@ -1843,14 +1845,16 @@ function kalkRender() {
           <div class="kosik-item-mo-total">celkem ${moTotS} Kč${voS ? ` · <span class="kosik-item-vo">VO ${voS} Kč/ks</span>` : ''}</div>
         </div>
       </div>
-      ${item.nadstavby?.length ? `<div class="kosik-item-nd" style="margin-top:4px;font-size:11px;color:var(--br)">${item.nadstavby.map(n=>'＋ '+n.nazev).join(' · ')}</div>` : ''}
+      ${item.nadstavby?.length ? `<div class="kosik-item-nd" style="margin-top:4px;font-size:11px;color:var(--br)">${item.nadstavby.map(n=>`＋ ${n.nazev} <span style="color:#aaa">(+${n.cena.toLocaleString('cs')} Kč/ks)</span>`).join(' · ')}</div>` : ''}
       ${item.pripravy?.length ? `<div class="kosik-item-nd kosik-item-sluzba" style="margin-top:3px;font-size:11px;color:var(--acc);font-weight:600">SLUŽBA: ${item.pripravy.map(n=>n.nazev).join(', ')}</div>` : ''}
     </div>`;
   }).join('');
-  document.getElementById('kosik-mo-total').textContent = totMo.toLocaleString('cs') + ' Kč';
+  const totMoR = Math.round(totMo * 10) / 10;
+  const totVoR = Math.round(totVo * 10) / 10;
+  document.getElementById('kosik-mo-total').textContent = totMoR.toLocaleString('cs') + ' Kč';
   const voEl2 = document.getElementById('kosik-vo-total');
-  voEl2.textContent = totVo ? 'VO celkem: ' + totVo.toLocaleString('cs') + ' Kč' : '';
-  voEl2.style.display = totVo ? '' : 'none';
+  voEl2.textContent = totVoR ? 'VO celkem: ' + totVoR.toLocaleString('cs') + ' Kč' : '';
+  voEl2.style.display = totVoR ? '' : 'none';
   if (_eurMode) kalkRenderEur();
 }
 
