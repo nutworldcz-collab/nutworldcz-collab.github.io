@@ -696,6 +696,13 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
       </div>
       <button class="btn-kosik" id="btn-pridat" onclick="kalkAddItem()" style="margin-top:4px;opacity:.4;cursor:not-allowed" disabled>+ Přidat do kalkulace</button>
       <div class="hint" id="pridat-hint" style="margin-top:6px">👆 Nejdřív spočítej dárek výše</div>
+      <div id="dk-eur-live" hidden style="margin-top:8px;padding:8px 12px;background:#f6f0ea;border-radius:8px;font-size:12px;display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+        <span>🇸🇰 SK MO s DPH 23 %:</span>
+        <span id="dk-eur-mo" style="font-family:'Exo 2',sans-serif;font-weight:700;color:#5c381f">—</span>
+        <span style="color:#aaa">EUR &nbsp;·&nbsp; kurz</span>
+        <input id="dk-eur-kurz-live" type="number" value="25" min="20" max="35" step="0.1" oninput="dkSyncEurKurz()" style="width:52px;border:1px solid #c0b09a;border-radius:4px;padding:2px 6px;font-size:11px;text-align:center">
+        <span id="dk-eur-vo" style="color:#aaa;font-size:11px"></span>
+      </div>
     </div>
 
   </div><!-- /tab-darky -->
@@ -1723,6 +1730,32 @@ function dkUpdateKalkFields() {
   const voNew = Math.round(moNew * voFakt * 10) / 10;
   if (moEl) moEl.value = moNew;
   if (voEl) voEl.value = voNew;
+  dkUpdateEurLive(moNew, voNew);
+}
+
+function dkUpdateEurLive(mo, vo) {
+  const box = document.getElementById('dk-eur-live');
+  if (!box) return;
+  if (!mo) { box.hidden = true; return; }
+  const kurz = _eurKurz || 25;
+  const moEur = Math.round(mo * 1.23 / kurz * 10) / 10;
+  const voEur = vo ? Math.round(vo * 1.23 / kurz * 10) / 10 : 0;
+  const fmt = v => v.toLocaleString('cs', {minimumFractionDigits:0, maximumFractionDigits:1});
+  box.hidden = false;
+  const moSpan = document.getElementById('dk-eur-mo');
+  const voSpan = document.getElementById('dk-eur-vo');
+  if (moSpan) moSpan.textContent = fmt(moEur);
+  if (voSpan) voSpan.textContent = voEur ? '· VO: ' + fmt(voEur) + ' EUR' : '';
+}
+
+function dkSyncEurKurz() {
+  const v = parseFloat(document.getElementById('dk-eur-kurz-live')?.value) || 25;
+  _eurKurz = v;
+  const kurzEl = document.getElementById('eur-kurz');
+  if (kurzEl) kurzEl.value = v;
+  const mo = parseFloat(document.getElementById('d-kalk-mo')?.value) || 0;
+  const vo = parseFloat(document.getElementById('d-kalk-vo')?.value) || 0;
+  dkUpdateEurLive(mo, vo);
 }
 
 function nsGetItems() {
