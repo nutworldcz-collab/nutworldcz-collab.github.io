@@ -1,213 +1,52 @@
 {
-  "generated": "2026-09-17T17:00:36",
-  "total": 14,
-  "spam_skipped": 1,
+  "generated": "2026-09-18T07:33:17",
+  "total": 3,
+  "spam_skipped": 0,
   "emails": [
     {
-      "account": "Exchange",
-      "sender": "InfoNutWorld <info@nutworld.cz>",
-      "subject": "Fw: [NutWorld.cz] Kontaktní formulář",
-      "date": "čtvrtek 17. září 2026 16:54:25",
-      "unread": true,
-      "preview": "Zasláno z Outlooku pro Android From: Veronika Kavanová <info@nutworld.cz> Sent: Thursday",
-      "category": "tym",
-      "sender_short": "InfoNutWorld",
-      "sender_email": "info@nutworld.cz",
-      "ai": {
-        "shrn": "Interní přeposlaný email od Veroniky Kavanové z týmu NutWorld týkající se kontaktního formuláře.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "\"NOREPLY@dpd.cz\" <NOREPLY@dpd.cz>",
-      "subject": "Váš balíček DPD už je na cestě",
-      "date": "čtvrtek 17. září 2026 16:04:47",
-      "unread": true,
-      "preview": "￼ ￼ ￼ ￼ ￼ ￼ Dobrý den, ￼ ￼ Váš balíček č. 13289209065569 ze zahraničí od odesílatele P1GC shipper # 11WG3355 Vám vezeme na adresu (Havlickova 285/285 Havlickova",
-      "category": "zakaznik",
-      "sender_short": "NOREPLY@dpd.cz",
-      "sender_email": "NOREPLY@dpd.cz",
-      "ai": {
-        "shrn": "Notifikace od DPD o cestě balíčku číslo 13289209062639 ze zahraničí na adresu Havlickova.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "\"NOREPLY@dpd.cz\" <NOREPLY@dpd.cz>",
-      "subject": "Váš balíček DPD už je na cestě",
-      "date": "čtvrtek 17. září 2026 16:04:42",
-      "unread": true,
-      "preview": "￼ ￼ ￼ ￼ ￼ ￼ Dobrý den, ￼ ￼ Váš balíček č. 13289209062639 ze zahraničí od odesílatele P1GC shipper # 11WG3355 Vám vezeme na adresu (Havlickova 285/285 Havlickova",
-      "category": "zakaznik",
-      "sender_short": "NOREPLY@dpd.cz",
-      "sender_email": "NOREPLY@dpd.cz",
-      "ai": {
-        "shrn": "Notifikace od DPD o cestě balíčku číslo 13289209062639 ze zahraničí na adresu Havlickova.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Balírna přesunul/a kartu MARRIOTT do sloupce Hotovo - čeká na zabalení na nástěnce Firmy dárky + objednávky",
-      "date": "čtvrtek 17. září 2026 15:10:08",
-      "unread": false,
-      "preview": "￼ Zde je nejnovější... ￼ Balírna přesunul(a) kartu MARRIOTT do sloupce Hotovo - čeká na zabalení na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Exchange",
-      "sender": "Everbot <info@everbot.cz>",
-      "subject": "🎬 Záznam z AI dílny je ONLINE!",
-      "date": "čtvrtek 17. září 2026 15:01:50",
-      "unread": true,
-      "preview": "￼ Děkujeme",
-      "category": "ostatni",
-      "sender_short": "Everbot",
-      "sender_email": "info@everbot.cz",
-      "ai": {
-        "shrn": "Oznamovací email od Everbotu s odkazem na záznam z AI dílny.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Markéta Costachova <marketa.costachova@nutworld.cz>",
-      "subject": "Re: cenová nabídka",
-      "date": "čtvrtek 17. září 2026 14:58:47",
-      "unread": true,
-      "preview": "Ten party box co vidíš",
-      "category": "dodavatel",
-      "sender_short": "Markéta Costachova",
-      "sender_email": "marketa.costachova@nutworld.cz",
-      "ai": {
-        "shrn": "Email od Markéty Costachové týkající se cenové nabídky na party box.",
-        "tyka_se": true,
-        "akce": "Projít nabídku party boxu a rozhodnout se o ceně nebo podmínkách"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Ľubomíra Orlická <lubomira.orlicka@ekvia.sk>",
-      "subject": "Re: Dopyt na vianočné darčeky pre zamestnancov",
-      "date": "čtvrtek 17. září 2026 14:28:16",
-      "unread": true,
-      "preview": "Dobrý deň, Tak cena by sa mala pohybovať okolo 3-4eur",
-      "category": "ostatni",
-      "sender_short": "Ľubomíra Orlická",
-      "sender_email": "lubomira.orlicka@ekvia.sk",
-      "ai": {
-        "shrn": "Nabídka od Ľubomíry Orlické na vianočné darčeky pro zaměstnance s cenou 3-4 EUR.",
-        "tyka_se": true,
-        "akce": "Zhodnotit nabídku na vianočné darčeky a případně jednat o zakázce"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Česká spořitelna <ceskasporitelna@info.csas.cz>",
-      "subject": "Jsme tu pro Vás – pomůžeme Vám s rozvojem Vašeho podnikání",
-      "date": "čtvrtek 17. září 2026 14:16:37",
-      "unread": true,
-      "preview": "￼ ￼ Zobrazit na webu ￼ ￼ ￼ ￼ ￼ ￼ ￼ Jsme tu pro Vás",
-      "category": "ostatni",
-      "sender_short": "Česká spořitelna",
-      "sender_email": "ceskasporitelna@info.csas.cz",
-      "ai": {
-        "shrn": "Marketingový email od České spořitelny nabízející podporu rozvoje podnikání.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 13:53 (17. září 2026)",
-      "date": "čtvrtek 17. září 2026 13:56:33",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Hamerník Tomáš vás přidal(a) na kartu VILGAIN objednávka do 24.9. na nástěnce Firmy dárky + objednávky Odpovědět e-mailem ￼ Hamerník Tomáš přidal(a) termín splnění na kartu VILGAIN objednávka do 24.9. na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na ",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Exchange",
-      "sender": "PPL CZ <noreply@ppl.cz>",
-      "subject": "Informace o provozu PPL v sezóně 2026",
-      "date": "čtvrtek 17. září 2026 13:53:08",
-      "unread": true,
-      "preview": "￼ English version below Informace o provozu PPL v sezóně 2026 Čtvrtek 17. 9. 2026 Aktuální informace ￼ Vážení zákazníci, víme",
-      "category": "sluzby",
-      "sender_short": "PPL CZ",
-      "sender_email": "noreply@ppl.cz"
-    },
-    {
       "account": "Google",
-      "sender": "Atomrat <news@e.atomrat.cz>",
-      "subject": "Čas na teplejší vrstvy",
-      "date": "čtvrtek 17. září 2026 9:03:59",
+      "sender": "\"CrossFit\" <crossfit@mail.crossfit.com>",
+      "subject": "260918 Workout of the Day: Service Cup Workout 1",
+      "date": "pátek 18. září 2026 2:31:21",
       "unread": true,
-      "preview": "￼ Zobrazit na webu Odhlásit eshop@atomrat.cz ￼ Bundy Kalhoty Vesty Mikiny Trička Sukně Kraťasy Šaty Milé atomové ženy, chladná rána už připomínají",
+      "preview": "￼ ￼ ￼ FRIDAY",
       "category": "ostatni",
-      "sender_short": "Atomrat",
-      "sender_email": "news@e.atomrat.cz",
+      "sender_short": "CrossFit",
+      "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "Newsletterový email od Atomratu s nabídkou podzimního/zimního oblečení.",
+        "shrn": "CrossFit workout zpráva se cvičením na pátek. Není relevantní pro Nutworld.",
         "tyka_se": false,
         "akce": null
-      }
-    },
-    {
-      "account": "Google",
-      "sender": "Lucie Vlčková <info@fitlines.cz>",
-      "subject": "Nový kurz pro děti — start 1. října",
-      "date": "čtvrtek 17. září 2026 9:00:29",
-      "unread": true,
-      "preview": "Ahoj, od října otevíráme ve studiu nový kurz — Funkční trénink pro děti (6–12 let). ￼ Cílem dětských tréninků je získání základních pohybových návyků a sebevědomí. Znalost techniky běžných cviků a zlepšení fyzické kondice zábavnou formou. Průběh tréninku: 1. Warm up (různé poskoky",
-      "category": "ostatni",
-      "sender_short": "Lucie Vlčková",
-      "sender_email": "info@fitlines.cz",
-      "ai": {
-        "shrn": "Email od Lucie Vlčkové o novém kurzu Funkční trénink pro děti ve studiu od 1. října.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Google",
-      "sender": "Apple <no_reply@email.apple.com>",
-      "subject": "Vaše faktura od společnosti Apple",
-      "date": "čtvrtek 17. září 2026 8:05:50",
-      "unread": true,
-      "preview": "￼ Faktura 16. září 2026 Pořadí:1-14492429220 ID objednávky:MX5XYSKSSG Dokument:792191714998 Účet Apple:vyziva.trenink@gmail.com ￼ CapCut: Photo & Video Editor Pro Monthly Subscription (Měsíční) Obnoví se 17. října 2026 699,00 Kč Včetně DPH v sazbě 21 %121,31 Kč Fakturace a platba Jan Vlček Bratří Ča",
-      "category": "dodavatel",
-      "sender_short": "Apple",
-      "sender_email": "no_reply@email.apple.com",
-      "ai": {
-        "shrn": "Faktura od Apple za měsíční předplatné CapCut Photo &amp; Video Editor Pro ve výši 699 Kč.",
-        "tyka_se": true,
-        "akce": "Zkontrolovat fakturu a ověřit, zda je předplatné stále potřebné"
       }
     },
     {
       "account": "Google",
       "sender": "\"CrossFit\" <crossfit@mail.crossfit.com>",
-      "subject": "260917 Rest Day: Your Weekly CrossFit Updates",
-      "date": "čtvrtek 17. září 2026 2:03:30",
+      "subject": "The Professional Coach - The Supercoach Part 2 – Walk the Talk + In-Person Nutrition",
+      "date": "pátek 18. září 2026 1:03:53",
       "unread": true,
-      "preview": "￼ ￼ ￼ How CrossFit Forged This Firefighter COMMUNITY Laine Byg is a firefighter",
+      "preview": "￼ ￼ The Supercoach Part 2 – Walk the Talk: The Coach as the Living Proof of the CrossFit Methodology ￼ Your athletes size you up the moment they walk in",
       "category": "ostatni",
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "Newsletterový email od CrossFitu s týdenními aktualizacemi a příběhem hasiče.",
+        "shrn": "Vzdělávací obsah o CoachFitu a metodice. Není relevantní pro Nutworld.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "\"AliExpress.seller\" <promotion@aliexpress.com>",
+      "subject": "Our daily picks at US $3.00 off",
+      "date": "pátek 18. září 2026 0:33:26",
+      "unread": true,
+      "preview": "Collect coupons inside & shop now ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ Daily specials in our store ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ",
+      "category": "ostatni",
+      "sender_short": "AliExpress.seller",
+      "sender_email": "promotion@aliexpress.com",
+      "ai": {
+        "shrn": "Propagační email od AliExpress s nabídkou slev. Není relevantní pro Nutworld.",
         "tyka_se": false,
         "akce": null
       }
