@@ -116,6 +116,21 @@ td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: 
 
 .note { font-size: 12px; color: var(--text-sub); margin-top: 8px; display: flex; align-items: flex-start; gap: 6px; }
 
+/* Password gate */
+.pw-gate { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 28px 24px; text-align: center; }
+.pw-gate-icon { font-size: 32px; margin-bottom: 10px; }
+.pw-gate-title { font-family: 'Exo 2', sans-serif; font-size: 15px; font-weight: 700; color: var(--head); margin-bottom: 6px; }
+.pw-gate-sub { font-size: 13px; color: var(--text-sub); margin-bottom: 18px; }
+.pw-form { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.pw-input { font-family: 'Source Sans 3', sans-serif; font-size: 15px; padding: 8px 14px; border: 1.5px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); outline: none; letter-spacing: 2px; width: 160px; }
+.pw-input:focus { border-color: var(--accent); }
+.pw-btn { font-family: 'Exo 2', sans-serif; font-size: 13px; font-weight: 700; padding: 8px 18px; border: none; border-radius: 6px; background: var(--head); color: #fff; cursor: pointer; }
+.pw-btn:hover { background: var(--accent-dk); }
+.pw-error { font-size: 12px; color: var(--new); margin-top: 8px; display: none; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-6px)} 40%,80%{transform:translateX(6px)} }
+.pw-input.shake { animation: shake .35s ease; }
+.pw-hidden { display: none; }
+
 /* Fill grid — physical box layout */
 .fill-grid-desc { font-size: 12px; color: var(--text-sub); margin-bottom: 8px; }
 .panel-badge { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
@@ -170,34 +185,9 @@ td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: 
     </div>
   </div>
 
-  <!-- KALKULACE -->
-  <div class="section">
-    <div class="section-label">01 · Kalkulace</div>
-    <div class="tiles">
-      <div class="tile"><div class="tile-label">Suroviny<br>(24 × 30 g)</div><div class="tile-value">154 Kč</div></div>
-      <div class="tile"><div class="tile-label">Obal + plnění + kompletace</div><div class="tile-value">120 Kč</div></div>
-      <div class="tile"><div class="tile-label">Etiketa + etiketování</div><div class="tile-value">7 Kč</div></div>
-      <div class="tile"><div class="tile-label">Obalový materiál (krabice)</div><div class="tile-value">150 Kč</div></div>
-      <div class="tile highlight"><div class="tile-label">Náklady celkem</div><div class="tile-value big">431 Kč</div></div>
-      <div class="tile"><div class="tile-label">MO cena s DPH</div><div class="tile-value accent">999 Kč</div></div>
-      <div class="tile"><div class="tile-label">VO cena</div><div class="tile-value">799 Kč</div></div>
-      <div class="tile"><div class="tile-label">Marže</div><div class="tile-value green">52 %</div></div>
-    </div>
-    <div class="cost-breakdown">
-      <div class="cost-row"><span>Obal sáček (24 × 1 Kč)</span><span>24 Kč</span></div>
-      <div class="cost-row"><span>Plnění sáčků (24 × 2 Kč)</span><span>48 Kč</span></div>
-      <div class="cost-row"><span>Kompletace (24 × 2 Kč)</span><span>48 Kč</span></div>
-      <div class="cost-row"><span>Etiketa velká (1 ×)</span><span>5 Kč</span></div>
-      <div class="cost-row"><span>Etiketování (1 ×)</span><span>2 Kč</span></div>
-      <div class="cost-row"><span>Obalový materiál</span><span>150 Kč</span></div>
-      <div class="cost-row"><span>Suroviny</span><span>154 Kč</span></div>
-      <div class="cost-row"><span>Celkem</span><span>431 Kč</span></div>
-    </div>
-  </div>
-
   <!-- ROZLOŽENÍ OKÉNEK -->
   <div class="section">
-    <div class="section-label">02 · Rozložení okének</div>
+    <div class="section-label">01 · Rozložení okének</div>
 
     <!-- Fyzická mřížka krabice — pořadí plnění zleva shora -->
     <div class="fill-grid-desc">Fyzické rozložení krabice — plnit <strong>zleva shora →↓</strong> &nbsp;|&nbsp; <span class="panel-badge l">Levý panel</span> &nbsp; <span class="panel-badge r">Pravý panel</span></div>
@@ -277,7 +267,7 @@ td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: 
 
   <!-- VÝROBNÍ FRONTA -->
   <div class="section">
-    <div class="section-label">03 · Výrobní fronta</div>
+    <div class="section-label">02 · Výrobní fronta</div>
     <div class="note" style="margin-bottom:10px">Pořadí plnění stroje. Přechod mezi skupinami = vyčištění zásobníku.</div>
     <div class="queue-wrap">
       <div class="queue-separator">Natural — zásobník čistý, bez alergenů z koatingu</div>
@@ -325,6 +315,80 @@ td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: 
     </div>
   </div>
 
+  <!-- KALKULACE — chráněno heslem -->
+  <div class="section">
+    <div class="section-label">03 · Kalkulace</div>
+
+    <!-- Zámek -->
+    <div class="pw-gate" id="pw-gate">
+      <div class="pw-gate-icon">🔒</div>
+      <div class="pw-gate-title">Chráněný obsah</div>
+      <div class="pw-gate-sub">Kalkulace nákladů a marží — interní Nutworld</div>
+      <div class="pw-form">
+        <input class="pw-input" id="pw-input" type="password" placeholder="Heslo" autocomplete="off" maxlength="20"/>
+        <button class="pw-btn" onclick="checkPw()">Odemknout</button>
+      </div>
+      <div class="pw-error" id="pw-error">Nesprávné heslo</div>
+    </div>
+
+    <!-- Obsah kalkulace — skrytý dokud nezadáš heslo -->
+    <div class="pw-hidden" id="kalk-content">
+      <div class="tiles">
+        <div class="tile"><div class="tile-label">Suroviny<br>(24 × 30 g)</div><div class="tile-value">154 Kč</div></div>
+        <div class="tile"><div class="tile-label">Obal + plnění + kompletace</div><div class="tile-value">120 Kč</div></div>
+        <div class="tile"><div class="tile-label">Etiketa + etiketování</div><div class="tile-value">7 Kč</div></div>
+        <div class="tile"><div class="tile-label">Obalový materiál (krabice)</div><div class="tile-value">150 Kč</div></div>
+        <div class="tile highlight"><div class="tile-label">Náklady celkem</div><div class="tile-value big">431 Kč</div></div>
+        <div class="tile"><div class="tile-label">MO cena s DPH</div><div class="tile-value accent">999 Kč</div></div>
+        <div class="tile"><div class="tile-label">VO cena</div><div class="tile-value">799 Kč</div></div>
+        <div class="tile"><div class="tile-label">Marže</div><div class="tile-value green">52 %</div></div>
+      </div>
+      <div class="cost-breakdown">
+        <div class="cost-row"><span>Obal sáček (24 × 1 Kč)</span><span>24 Kč</span></div>
+        <div class="cost-row"><span>Plnění sáčků (24 × 2 Kč)</span><span>48 Kč</span></div>
+        <div class="cost-row"><span>Kompletace (24 × 2 Kč)</span><span>48 Kč</span></div>
+        <div class="cost-row"><span>Etiketa velká (1 ×)</span><span>5 Kč</span></div>
+        <div class="cost-row"><span>Etiketování (1 ×)</span><span>2 Kč</span></div>
+        <div class="cost-row"><span>Obalový materiál</span><span>150 Kč</span></div>
+        <div class="cost-row"><span>Suroviny</span><span>154 Kč</span></div>
+        <div class="cost-row"><span>Celkem</span><span>431 Kč</span></div>
+      </div>
+    </div>
+  </div>
+
 </div>
+
+<script>
+(function(){
+  // Pokud již odemčeno v této session, rovnou zobrazit
+  if (sessionStorage.getItem('nw_kalk') === '1') unlock();
+
+  document.getElementById('pw-input').addEventListener('keydown', function(e){
+    if (e.key === 'Enter') checkPw();
+  });
+})();
+
+function checkPw() {
+  var val = document.getElementById('pw-input').value;
+  if (val === 'NW2026') {
+    sessionStorage.setItem('nw_kalk', '1');
+    unlock();
+  } else {
+    var inp = document.getElementById('pw-input');
+    var err = document.getElementById('pw-error');
+    inp.classList.remove('shake');
+    void inp.offsetWidth; // reflow pro restart animace
+    inp.classList.add('shake');
+    err.style.display = 'block';
+    inp.value = '';
+    inp.focus();
+  }
+}
+
+function unlock() {
+  document.getElementById('pw-gate').style.display = 'none';
+  document.getElementById('kalk-content').classList.remove('pw-hidden');
+}
+</script>
 </body>
 </html>
