@@ -1,48 +1,43 @@
 {
-  "generated": "2026-09-19T08:30:16",
-  "period": "2026-09-12 – 2026-09-18",
+  "generated": "2026-09-21T09:02:45",
+  "period": "2026-09-14 – 2026-09-20",
   "channels": {
     "Meta CZ": {
-      "spend": 11743.0,
-      "revenue": 49411.0,
-      "pno": 23.8,
-      "conversions": 51.0,
-      "clicks": 2749,
-      "prev_spend": 10447.0,
-      "prev_pno": 19.1
+      "error": "HTTPSConnectionPool(host='graph.facebook.com', port=443): Max retries exceeded with url: /v21.0/act_1367393200144/insights?fields=spend%2Cimpressions%2Cclicks%2Cactions%2Caction_values&time_range=%7B%22since%22%3A+%222026-09-14%22%2C+%22until%22%3A+%222026-09-20%22%7D&level=account&access_token=EAATZCYSrDrLABSHZCaCwTDFnDaZBKm9MYS4DHtzz2bxvZAMD32mVmaerBphnYDvGQSqTK6BJjqkhmVsmNTZCCNjYi6fRGSMRJYQoRhPvZBbgZAWB7RYcPqmzDfgNkFbKauBFMsivYQZBKHLzTWRVTZA4DxVkPZC1WXX91aVo8FprqlASZBg8SZA3ax2eGaX57ZBX7owZDZD (Caused by NameResolutionError(\"HTTPSConnection(host='graph.facebook.com', port=443): Failed to resolve 'graph.facebook.com' ([Errno 8] nodename nor servname provided, or not known)\"))"
     },
     "Meta SK": {
-      "spend": 140.0,
-      "revenue": 1098.0,
-      "pno": 12.8,
-      "conversions": 10.0,
-      "clicks": 965,
-      "prev_spend": 109.0,
-      "prev_pno": 33.5
+      "spend": 185.0,
+      "revenue": 1319.0,
+      "pno": 14.1,
+      "conversions": 15.0,
+      "clicks": 1191,
+      "prev_spend": 92.0,
+      "prev_pno": 29.3
     },
     "Google CZ": {
-      "spend": 5710.0,
-      "revenue": 48077.0,
-      "pno": 11.9,
-      "conversions": 39.0,
-      "clicks": 787,
-      "prev_spend": 5745.0,
-      "prev_pno": 7.8
+      "spend": 5749.0,
+      "revenue": 46874.0,
+      "pno": 12.3,
+      "conversions": 42.5,
+      "clicks": 755,
+      "prev_spend": 5762.0,
+      "prev_pno": 7.9
     },
     "Google SK": {
-      "spend": 2967.0,
-      "revenue": 14070.0,
-      "pno": 21.1,
-      "conversions": 13.0,
-      "clicks": 310,
-      "prev_spend": 3313.0,
-      "prev_pno": 15.5
+      "spend": 2718.0,
+      "revenue": 15643.0,
+      "pno": 17.4,
+      "conversions": 10.0,
+      "clicks": 284,
+      "prev_spend": 3167.0,
+      "prev_pno": 13.4
     }
   },
   "anomalies": [
-    "✅ Žádné výrazné anomálie"
+    "⚠️ Meta CZ: chyba připojení",
+    "🟡 Meta SK: útrata +102% vs minulý týden"
   ],
   "priorities": [
-    "Nejlepší kanál: Google CZ (PNO 11.9%) — zvýšit budget?"
+    "Nejlepší kanál: Google CZ (PNO 12.3%) — zvýšit budget?"
   ]
 }
