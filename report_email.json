@@ -1,20 +1,36 @@
 {
-  "generated": "2026-09-21T12:00:44",
-  "total": 13,
+  "generated": "2026-09-21T17:01:00",
+  "total": 17,
   "spam_skipped": 0,
   "emails": [
     {
       "account": "Exchange",
-      "sender": "\"[123razitka.cz] Richard Orth\" <hotline@123razitka.cz>",
-      "subject": "Re: Detail objednávky č. 202621914 - [LMW-LMZKK-827]",
-      "date": "pondělí 21. září 2026 11:42:52",
+      "sender": "\"Pospíšilová.Veronika\" <veronika.pospisilova@absjets.com>",
+      "subject": "Re: Žádost o vzorky - vánoční objednávka 2026",
+      "date": "pondělí 21. září 2026 16:44:18",
       "unread": true,
-      "preview": "Dobrý den, bohužiaľ",
-      "category": "ostatni",
-      "sender_short": "[123razitka.cz] Richard Orth",
-      "sender_email": "hotline@123razitka.cz",
+      "preview": "Dobrý den pane Vlčku, děkuji moc za CN. Prosím u varianty - krabička v dvoubalení lze vyříznout pouze váš stromeček? Předpokládám",
+      "category": "b2b",
+      "sender_short": "Pospíšilová.Veronika",
+      "sender_email": "veronika.pospisilova@absjets.com",
       "ai": {
-        "shrn": "Žádost o návrh pečatidla v originálním programu nebo opravené PDF. Email je neúplný.",
+        "shrn": "B2B klient se ptá na možnost vlastního výřezu stromečku na variantě dvoubalení krabičky.",
+        "tyka_se": true,
+        "akce": "Odpovědět Veronice Pospíšilové o technických možnostech výřezu a potvrzení podmínek"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Radka Goderová <radka.goderova@mekrs.cz>",
+      "subject": "RE: ALZA špatná cena k opravě",
+      "date": "pondělí 21. září 2026 16:01:01",
+      "unread": false,
+      "preview": "Není zač 😊 jen po dovolené moc ….tak se omlouvám za zdržení ￼ MEKR'S GROUP s.r.o. Radka Goderová Hlavní účetní MEKR'S",
+      "category": "tym",
+      "sender_short": "Radka Goderová",
+      "sender_email": "radka.goderova@mekrs.cz",
+      "ai": {
+        "shrn": "Radka Goderová pokračuje v interní komunikaci.",
         "tyka_se": false,
         "akce": null
       }
@@ -22,119 +38,182 @@
     {
       "account": "Exchange",
       "sender": "Tomáš Hamerník <tomas.hamernik@nutworld.cz>",
-      "subject": "špatná fotka na webu",
-      "date": "pondělí 21. září 2026 11:35:41",
+      "subject": "RE: ALZA špatná cena k opravě",
+      "date": "pondělí 21. září 2026 15:58:01",
       "unread": false,
-      "preview": "Ahoj Pavlo, všiml jsem si",
+      "preview": "Dobrý den Radko, ještě jednou moc děkuji. Tomáš From: Radka Goderová <radka.goderova@mekrs.cz> Sent: Monday",
       "category": "tym",
       "sender_short": "Tomáš Hamerník",
       "sender_email": "tomas.hamernik@nutworld.cz",
       "ai": {
-        "shrn": "Interní zpráva od Tomáše Hamerníka o špatné fotce na webu. Obsah je neúplný.",
+        "shrn": "Tomáš Hamerník děkuje Radce za vyřešení problému s ALZA cenou.",
         "tyka_se": false,
         "akce": null
       }
     },
     {
       "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 10:41 (21. září 2026)",
-      "date": "pondělí 21. září 2026 10:43:23",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Doprava NutWorld označil(a) kartu EURO pool jako dokončenou Odpovědět e-mailem ￼ Doprava NutWorld přesunul(a) kartu EURO pool do sloupce Firmy 2026 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualiz",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 9:59 (21. září 2026)",
-      "date": "pondělí 21. září 2026 10:01:39",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Doprava NutWorld označil(a) kartu VILGAIN objednávka jako dokončenou Odpovědět e-mailem ￼ Doprava NutWorld přesunul(a) kartu VILGAIN objednávka do sloupce Firmy 2026 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou sp",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Na nástěnce Firmy dárky + objednávky máš 3 upozornění od poslední návštěvy 9:56 (21. září 2026)",
-      "date": "pondělí 21. září 2026 9:58:19",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Hamerník Tomáš vás přidal(a) na kartu iMi objednávka do 15.10.2026 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem ￼ Hamerník Tomáš přidal(a) termín splnění na kartu iMi objednávka do 15.10.2026 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem ￼ Hamerník Tomáš",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Jiřina Hamerníková připojil/a přílohu NW 2486-Mandle natural NW02 2026 09.docx ke kartě 2486/ Mandle natural na nástěnce Specifikace ořechy",
-      "date": "pondělí 21. září 2026 9:55:17",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Jiřina Hamerníková připojil(a) přílohu NW 2486-Mandle natural NW02 2026 09.docx ke kartě 2486/ Mandle natural na nástěnce Specifikace ořechy Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
-      "category": "dodavatel",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com",
-      "ai": {
-        "shrn": "Notifikace z Trella o připojení dokumentu ke kartě s mandlemi. Informativní oznámení.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "ALBI objednávka SK na Firmy dárky + objednávky má termín za 2 dny",
-      "date": "pondělí 21. září 2026 9:43:23",
-      "unread": true,
-      "preview": "￼ Termín je brzy... ALBI objednávka SK na nástěnce Firmy dárky + objednávky s termínem má termín za 2 dny Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
-      "category": "b2b",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com",
-      "ai": {
-        "shrn": "Upozornění z Trella na blížející se termín B2B objednávky ALBI pro SK za 2 dny.",
-        "tyka_se": true,
-        "akce": "Zkontrolovat status objednávky ALBI SK a zajistit splnění termínu"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Doprava NutWorld vložil/a komentář na kartu VILGAIN objednávka na nástěnce Firmy dárky + objednávky",
-      "date": "pondělí 21. září 2026 9:10:13",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Doprava NutWorld okomentoval(a) kartu VILGAIN objednávka na nástěnce Firmy dárky + objednávky @hamerniktomas Dobrý den,odchází dnes na třech paletach Geis,na adresu nového skladu v Kozomine Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Akt",
-      "category": "b2b",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com",
-      "ai": {
-        "shrn": "Notifikace od Dopravy NutWorld o odeslání VILGAIN objednávky na třech paletách přes Geis.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "\"[123razitka.cz] Richard Orth\" <hotline@123razitka.cz>",
-      "subject": "Detail objednávky č. 202621914",
-      "date": "pondělí 21. září 2026 8:52:21",
+      "sender": "Radka Goderová <radka.goderova@mekrs.cz>",
+      "subject": "RE: ALZA špatná cena k opravě",
+      "date": "pondělí 21. září 2026 15:57:12",
       "unread": false,
-      "preview": "Dobrý den , viete mi prosím poslať návrh pre pečatidlo v originál programe v ktorom ste to navrhovali ? Prípadne skúsiť ešte raz uložiť PDF nakoľko je pre otvorenie v grafickom programe poškodené. Ďakujem S pozdravem, Richard Orth 123razitka.cz powered by pandrlak advertising",
+      "preview": "Ještě jednou dobrý den",
+      "category": "tym",
+      "sender_short": "Radka Goderová",
+      "sender_email": "radka.goderova@mekrs.cz",
+      "ai": {
+        "shrn": "Radka Goderová pokračuje v interní komunikaci.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "MarketingNutWorld <marketing@nutworld.cz>",
+      "subject": "RE: Narozeniny a svátek",
+      "date": "pondělí 21. září 2026 15:36:38",
+      "unread": false,
+      "preview": "Dobrý den",
+      "category": "tym",
+      "sender_short": "MarketingNutWorld",
+      "sender_email": "marketing@nutworld.cz",
+      "ai": {
+        "shrn": "Marketing Nutworld zahajuje komunikaci o oslavách a svázcích.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "MarketingNutWorld <marketing@nutworld.cz>",
+      "subject": "RE: Etikety Hallowen",
+      "date": "pondělí 21. září 2026 15:34:50",
+      "unread": false,
+      "preview": "Dobrý den",
+      "category": "tym",
+      "sender_short": "MarketingNutWorld",
+      "sender_email": "marketing@nutworld.cz",
+      "ai": {
+        "shrn": "Marketing Nutworld komunikuje o etiketách na Halloween.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Radka Goderová <radka.goderova@mekrs.cz>",
+      "subject": "RE: žádost o zálohovou fakturu",
+      "date": "pondělí 21. září 2026 15:29:38",
+      "unread": false,
+      "preview": "Zdravím Tomáši",
+      "category": "tym",
+      "sender_short": "Radka Goderová",
+      "sender_email": "radka.goderova@mekrs.cz",
+      "ai": {
+        "shrn": "Radka Goderová řeší žádost o zálohovou fakturu.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "[123razitka.cz] Richard Orth <hotline@123razitka.cz>",
+      "subject": "Re: Detail objednávky č. 202621914 - [LMW-LMZKK-827]",
+      "date": "pondělí 21. září 2026 15:15:14",
+      "unread": false,
+      "preview": "Dobrý den, ďakujem",
       "category": "ostatni",
       "sender_short": "[123razitka.cz] Richard Orth",
       "sender_email": "hotline@123razitka.cz",
       "ai": {
-        "shrn": "Opakovaná žádost od 123razitka.cz o návrh pečatidla v originálním formátu nebo opravené PDF.",
+        "shrn": "Razítkovací služba 123razitka.cz potvrzuje detaily objednávky.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Markéta z ALORI <marketa@novinky.alori.cz>",
+      "subject": "kněžice",
+      "date": "pondělí 21. září 2026 14:52:48",
+      "unread": true,
+      "preview": "￼ Doprava zdarmanad 1 500 Kč ￼ Tipy a triky od Markéty DÍL 14 PODZIMNÍ HMYZ Proč se na podzim objeví hmyz, který jste celé léto neviděli. Slunéčka",
+      "category": "ostatni",
+      "sender_short": "Markéta z ALORI",
+      "sender_email": "marketa@novinky.alori.cz",
+      "ai": {
+        "shrn": "Newsletter z ALORI o podzimním hmyzu a tipech.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Zuzana Bauerova <Zuzana.Bauerova@sportmedia.sk>",
+      "subject": "bártrová spolupráca - Sportmedia/",
+      "date": "pondělí 21. září 2026 14:28:57",
+      "unread": false,
+      "preview": "Dobrý deň pán Vlček, Po nejakom čase si Vás dovoľujem opäť kontaktovať a rada by som sa opýtala na bártrovú spoluprácu? Mali by sme záujem o Vaše produkty (necháme si poradiť)",
+      "category": "ostatni",
+      "sender_short": "Zuzana Bauerova",
+      "sender_email": "Zuzana.Bauerova@sportmedia.sk",
+      "ai": {
+        "shrn": "Zuzana Bauerova z Sportmedia nabízí barter spolupráci a zájem o produkty Nutworld.",
         "tyka_se": true,
-        "akce": "Zaslat návrh pečatidla v původním programu nebo funkční PDF Richard Orthovi"
+        "akce": "Zvážit nabídku barter spolupráce od Sportmedia a odpovědět Zuzaně"
       }
     },
     {
       "account": "Google",
-      "sender": "\"AliExpress.seller\" <promotion@aliexpress.com>",
+      "sender": "Temu <temu@eu.temuemail.com>",
+      "subject": "Blahopřejeme! Byla vám zaslána nabídka! ❤️",
+      "date": "pondělí 21. září 2026 16:32:29",
+      "unread": true,
+      "preview": "Otevřete ji! ￼ U jakýchkoli položek uvedených v tomto e-mailu nebo v rámci této promoakce",
+      "category": "dodavatel",
+      "sender_short": "Temu",
+      "sender_email": "temu@eu.temuemail.com",
+      "ai": {
+        "shrn": "Temu zasílá propagační nabídku.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "\"Samsung\" <no-reply@m1.email.samsung.com>",
+      "subject": "Poslední šance využít slevy až 30 %⏳",
+      "date": "pondělí 21. září 2026 15:12:56",
+      "unread": true,
+      "preview": "￼￼ Samsung Flash Days už jen do dnešní půlnoci Zobrazit online verzi ￼ ￼ ￼ Využij poslední hodiny na nákup se slevou až 30 % Nepromeškej poslední šanci nakoupit za výhodnější ceny",
+      "category": "ostatni",
+      "sender_short": "Samsung",
+      "sender_email": "no-reply@m1.email.samsung.com",
+      "ai": {
+        "shrn": "Samsung propaguje akci Flash Days se slevami.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "\"SEVT.cz\" <marketing@mailing.sevt.cz>",
+      "subject": "🎨 UŠETŘETE 20 % na výtvarných potřebách APLI",
+      "date": "pondělí 21. září 2026 12:06:47",
+      "unread": true,
+      "preview": "Nezobrazuje se Vám e-mail správně? Přejděte na webovou verzi. ￼ Vše do školy a kanceláře na jednom místě ￼ Školní potřeby Výtvarné potřeby Kancelářské potřeby Hry a hračky Knihkupectví ￼ Výhodné sady kreativních potřeb ￼ APLI Velká sada - Pom-pom kuličky",
+      "category": "ostatni",
+      "sender_short": "SEVT.cz",
+      "sender_email": "marketing@mailing.sevt.cz",
+      "ai": {
+        "shrn": "SEVT.cz nabízí 20% slevu na výtvarné potřeby APLI.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "AliExpress.seller <promotion@aliexpress.com>",
       "subject": "🤑 Special CODE for you",
       "date": "pondělí 21. září 2026 11:33:18",
       "unread": true,
@@ -143,7 +222,7 @@
       "sender_short": "AliExpress.seller",
       "sender_email": "promotion@aliexpress.com",
       "ai": {
-        "shrn": "Promoce z AliExpress se slevovým kódem. Nerelevantní spam.",
+        "shrn": "AliExpress nabízí speciální kód a slevu.",
         "tyka_se": false,
         "akce": null
       }
@@ -159,7 +238,7 @@
       "sender_short": "Atomrat",
       "sender_email": "news@e.atomrat.cz",
       "ai": {
-        "shrn": "Newsletter z Atomrat o podzimní módě. Nerelevantní obsah.",
+        "shrn": "Atomrat propaguje podzimní oblečení a bundy.",
         "tyka_se": false,
         "akce": null
       }
@@ -175,7 +254,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "Email z CrossFit o Workout of the Day. Nerelevantní obsah.",
+        "shrn": "CrossFit posílá denní workout program Grace.",
         "tyka_se": false,
         "akce": null
       }
@@ -191,7 +270,7 @@
       "sender_short": "AliExpress.seller",
       "sender_email": "promotion@aliexpress.com",
       "ai": {
-        "shrn": "Další promoce z AliExpress na denní slevy. Nerelevantní spam.",
+        "shrn": "AliExpress nabízí denní akce se slevou 20 dolarů.",
         "tyka_se": false,
         "akce": null
       }
