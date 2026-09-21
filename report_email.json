@@ -1,100 +1,79 @@
 {
-  "generated": "2026-09-19T17:00:27",
-  "total": 6,
-  "spam_skipped": 2,
+  "generated": "2026-09-21T08:17:15",
+  "total": 5,
+  "spam_skipped": 0,
   "emails": [
     {
       "account": "Exchange",
-      "sender": "\"claudie.nutworld.cz@gmail.com\" <claudie.nutworld.cz@gmail.com>",
-      "subject": "✅ OK · Denní stav automatizací · 19.9.",
-      "date": "sobota 19. září 2026 8:45:11",
-      "unread": true,
-      "preview": "DENNÍ ZDRAVOTNÍ REPORT · NUTWORLD ✅ Vše v pořádku 19. 9. 2026",
-      "category": "ostatni",
-      "sender_short": "claudie.nutworld.cz@gmail.com",
-      "sender_email": "claudie.nutworld.cz@gmail.com",
-      "ai": {
-        "shrn": "Denní zdravotní report automatizací Nutworld — všechno je v pořádku.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
       "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "VILGAIN objednávka na Firmy dárky + objednávky má termín za 2 dny",
-      "date": "sobota 19. září 2026 8:44:15",
+      "subject": "Náchod na Firmy dárky + objednávky má termín za 2 dny",
+      "date": "pondělí 21. září 2026 5:19:18",
       "unread": true,
-      "preview": "￼ Termín je brzy... VILGAIN objednávka na nástěnce Firmy dárky + objednávky s termínem má termín za 2 dny Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
-      "category": "b2b",
+      "preview": "￼ Termín je brzy... Náchod na nástěnce Firmy dárky + objednávky s termínem má termín za 2 dny Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "sluzby",
       "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Tinify <support@tinify.com>",
+      "subject": "Your Web Pro subscription has expired",
+      "date": "pondělí 21. září 2026 4:05:12",
+      "unread": true,
+      "preview": "￼ Hi Jan Vlček, Thanks for using the Web Pro for the past year! Just a friendly reminder that your Web Pro subscription has ended. You won't be able to access the Web Pro features anymore. But don't worry! You can become a Web Pro user again and keep enjoying the advantages",
+      "category": "ostatni",
+      "sender_short": "Tinify",
+      "sender_email": "support@tinify.com",
       "ai": {
-        "shrn": "Upozornění na Trello o blížícím se termínu objednávky VILGAIN pro Firmy dárky — termín za 2 dny.",
+        "shrn": "Tinify Web Pro subscription vypršela a Jan již nemá přístup k funkcím. Nabízí se možnost obnovit předplatné.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Tinify <support@tinify.com>",
+      "subject": "Tinify payment failed",
+      "date": "pondělí 21. září 2026 2:10:50",
+      "unread": true,
+      "preview": "￼ Hi Jan Vlček, We are reaching out to you because our payment provider was unable to charge your payment method for $39.00 regarding Tinify Web Pro subscription (1 year). Your bank provided us with the following message: Your card number is incorrect. We're sorry to inform you that the renewal of t",
+      "category": "ostatni",
+      "sender_short": "Tinify",
+      "sender_email": "support@tinify.com",
+      "ai": {
+        "shrn": "Platba za Tinify Web Pro se nepodařila kvůli nesprávnému číslu karty. Vyžaduje se aktualizace platební metody.",
         "tyka_se": true,
-        "akce": "Zkontrolovat Trello kartu VILGAIN objednávky a zajistit splnění termínu"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Harmony Hotel <noreply@gomystay.com>",
-      "subject": "Co vše můžete podniknout v Harmony Hotel",
-      "date": "sobota 19. září 2026 8:08:13",
-      "unread": false,
-      "preview": "￼ Harmony Hotel ￼ ￼ ￼ ￼ Dobrý den",
-      "category": "ostatni",
-      "sender_short": "Harmony Hotel",
-      "sender_email": "noreply@gomystay.com",
-      "ai": {
-        "shrn": "Propagační email od Harmony Hotel o možnostech pobytu v hotelu.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "123razitka.cz <hotline@123razitka.cz>",
-      "subject": "Rekapitulace Vaší objednávky na www.123razitka.cz",
-      "date": "sobota 19. září 2026 6:51:52",
-      "unread": false,
-      "preview": "Dobrý den, na stránce https://www.123razitka.cz jsme zaregistrovali Vaši objednávku pod číslem 202621914. Celkem bylo objednáno 1 položka: Název položky Cena za kus s DPH Počet kusů Celková cena s DPH Pečetidlo 30mm s plastovou raznicí 579,60 Kč 1 579,60 Kč s DPH Doručení - Zásilkovna dobírka 82,65 ",
-      "category": "ostatni",
-      "sender_short": "123razitka.cz",
-      "sender_email": "hotline@123razitka.cz",
-      "ai": {
-        "shrn": "Potvrzení objednávky pečetidla 30mm od 123razitka.cz — objednáno s doručením přes Zásilkovnu.",
-        "tyka_se": false,
-        "akce": null
+        "akce": "Ověřit a aktualizovat údaje platební karty nebo zvolit jinou platební metodu"
       }
     },
     {
       "account": "Google",
-      "sender": "Temu <temu@eu.temuemail.com>",
-      "subject": "V 19. zář 2026 jsme Vám poslali královskou odměnu!",
-      "date": "sobota 19. září 2026 16:33:46",
+      "sender": "\"CrossFit\" <crossfit@mail.crossfit.com>",
+      "subject": "260921 Workout of the Day: Grace",
+      "date": "pondělí 21. září 2026 2:31:41",
       "unread": true,
-      "preview": "Prosím přijměte",
-      "category": "ostatni",
-      "sender_short": "Temu",
-      "sender_email": "temu@eu.temuemail.com",
-      "ai": {
-        "shrn": "Oznámení o královské odměně od Temu — spam/marketing email.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Google",
-      "sender": "CrossFit <crossfit@mail.crossfit.com>",
-      "subject": "260919 Workout of the Day: Service Cup Workout 4",
-      "date": "sobota 19. září 2026 2:30:50",
-      "unread": true,
-      "preview": "￼ ￼ ￼ SATURDAY",
+      "preview": "￼ ￼ ￼ MONDAY",
       "category": "ostatni",
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "Workout of the Day email z CrossFitu — denní tréninková sada na sobotu.",
+        "shrn": "CrossFit workout zpráva se cvičením na den. Nerelated k Nutworld.cz.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "\"AliExpress.seller\" <promotion@aliexpress.com>",
+      "subject": "Our daily picks at US $20.00 off",
+      "date": "pondělí 21. září 2026 0:20:37",
+      "unread": true,
+      "preview": "Collect coupons inside & shop now ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ Daily specials in our store ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ",
+      "category": "ostatni",
+      "sender_short": "AliExpress.seller",
+      "sender_email": "promotion@aliexpress.com",
+      "ai": {
+        "shrn": "Propagační email od AliExpress s nabídkou slev. Nerelated k Nutworld.cz.",
         "tyka_se": false,
         "akce": null
       }
