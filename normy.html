@@ -356,6 +356,7 @@ table.pp-ops td.b{font-weight:bold;color:#5c381f}
         <table><thead><tr><th>Gramáž</th><th>Ks/hod</th><th>Kč/ks</th><th class="add-col"></th></tr></thead><tbody>
           <tr><td class="gram">500 g</td><td class="ksh">63</td><td class="kcs">3,97 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Doypack Alza mix — 500g',63)">＋</button></td></tr>
           <tr><td class="gram">1 000 g</td><td class="ksh">152</td><td class="kcs">1,64 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Doypack Alza mix — 1000g',152)">＋</button></td></tr>
+          <tr><td class="gram" colspan="2" style="font-size:11px;color:#666">Plnění+tavení+krabice 1000g</td><td class="ksh">120</td><td class="kcs">2,08 Kč</td><td class="add-col"><button class="btn-plus" onclick="addToActive('Plnění + tavení + balení do krabice — Alza mix 1000g',120)">＋</button></td></tr>
         </tbody></table>
       </div>
       <div class="card">
@@ -961,6 +962,7 @@ const NORM_OPTS = [
   ['🏭 Balicí — stroje','Doypack standard — 1000g',154],
   ['🏭 Balicí — stroje','Doypack Alza mix — 500g',63],
   ['🏭 Balicí — stroje','Doypack Alza mix — 1000g',152],
+  ['🏭 Balicí — stroje','Plnění + tavení + balení do krabice — Alza mix 1000g',120],
   ['🏭 Balicí — stroje','Alza TUBUS — 450g',117],
   ['🏭 Balicí — stroje','Celofánek ručně — 200g',80],
   ['🏭 Balicí — stroje','Sklenička šestihran — 60g',130],
@@ -1407,8 +1409,7 @@ const TEMPLATES = {
   alzaDoypack1000: {
     name: 'Alza — Mix doypack 1000g',
     ops: [
-      {name:'Doypack Alza mix — 1000g', ksh:152},
-      {name:'Tavení sáčků', ksh:667},
+      {name:'Plnění + tavení + balení do krabice — Alza mix 1000g', ksh:120},
       {name:'Štítek legislativní — velký', ksh:150},
     ]
   },
