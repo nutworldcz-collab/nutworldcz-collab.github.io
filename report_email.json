@@ -1,22 +1,134 @@
 {
-  "generated": "2026-09-28T12:00:48",
-  "total": 9,
+  "generated": "2026-09-28T17:37:22",
+  "total": 11,
   "spam_skipped": 0,
   "emails": [
+    {
+      "account": "Exchange",
+      "sender": "Allegro <info@notifikace.allegro.cz>",
+      "subject": "Čas na nové pneumatiky🚗",
+      "date": "pondělí 28. září 2026 15:27:33",
+      "unread": true,
+      "preview": "￼ ￼ ￼ Dobrý den",
+      "category": "ostatni",
+      "sender_short": "Allegro",
+      "sender_email": "info@notifikace.allegro.cz",
+      "ai": {
+        "shrn": "Notifikace od Allegra o nových pneumatikách. Jedná se o marketingový email, který se netýká NutWorld.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Doprava NutWorld vložil/a komentář na kartu Vilgain objednávka 78315 na nástěnce Firmy dárky + objednávky",
+      "date": "pondělí 28. září 2026 15:18:53",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Doprava NutWorld okomentoval(a) kartu Vilgain objednávka 78315 na nástěnce Firmy dárky + objednávky @hamerniktomas tato objednávka je nachystaná",
+      "category": "b2b",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com",
+      "ai": {
+        "shrn": "Trello notifikace - opakovaná zpráva od Dopravy NutWorld o připravenosti objednávky Vilgain č. 78315.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "REDA objednávka medu 195g 50ks do 30.9. na Firmy dárky + objednávky má termín za 2 dny",
+      "date": "pondělí 28. září 2026 14:55:14",
+      "unread": true,
+      "preview": "￼ Termín je brzy... REDA objednávka medu 195g 50ks do 30.9. na nástěnce Firmy dárky + objednávky s termínem má termín za 2 dny Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "b2b",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com",
+      "ai": {
+        "shrn": "Trello upozornění na termín objednávky medu REDA (195g, 50ks) do 30.9. - zbývají 2 dny.",
+        "tyka_se": true,
+        "akce": "Zkontrolovat status objednávky medu REDA a zajistit dodání do termínu"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Pavlína Frýbortová <fryb@afproduction.cz>",
+      "subject": "poptávka sady č- 11351",
+      "date": "pondělí 28. září 2026 14:08:00",
+      "unread": true,
+      "preview": "Dobrý den",
+      "category": "b2b",
+      "sender_short": "Pavlína Frýbortová",
+      "sender_email": "fryb@afproduction.cz",
+      "ai": {
+        "shrn": "Poptávka od Pavlíny Frýbortové na sadu č. 11351. Vyžaduje zpracování a odpověď na nabídku.",
+        "tyka_se": true,
+        "akce": "Připravit cenovou nabídku a odpovědět Pavlíně Frýbortové"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Everbot <info@everbot.cz>",
+      "subject": "✨ Novinka v Everbotu: Nechte Auto-model vybrat to nejlepší pro vaši grafiku i videa",
+      "date": "pondělí 28. září 2026 14:02:33",
+      "unread": true,
+      "preview": "￼ ￼ Přidali jsme do sekcí AI Grafika a AI Video v Everbotu novou funkci Auto-model. Místo zdlouhavého vybírání a porovnávání desítek různých modelů vám teď Everbot sám doporučí ten nejvhodnější přesně podle vašeho zadání na pár kliknutí. • Konec složitého vybírání: Nevíte",
+      "category": "ostatni",
+      "sender_short": "Everbot",
+      "sender_email": "info@everbot.cz",
+      "ai": {
+        "shrn": "Everbot oznamuje novou funkci Auto-model pro AI grafiku a videa. Jedná se o informační email o produktu třetí strany.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Doprava NutWorld vložil/a komentář na kartu Vilgain objednávka 78315 na nástěnce Firmy dárky + objednávky",
+      "date": "pondělí 28. září 2026 13:45:22",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Doprava NutWorld okomentoval(a) kartu Vilgain objednávka 78315 na nástěnce Firmy dárky + objednávky @hamerniktomas tato objednávka je nachystaná",
+      "category": "b2b",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com",
+      "ai": {
+        "shrn": "Trello notifikace - opakovaná zpráva od Dopravy NutWorld o připravenosti objednávky Vilgain č. 78315.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "\"prouza.ddd@seznam.cz\" <prouza.ddd@seznam.cz>",
+      "subject": "Re: cenová nabídka DDD",
+      "date": "pondělí 28. září 2026 12:29:32",
+      "unread": true,
+      "preview": "Prosím,připravte si mapu areálu,Stačí úplně obyčejná pro zakreslení DDD plánku.Píši si 6.10. Děkuji Prouzová -- Deratizace,Dezinsekce,Dezinfekce-Miloslav Prouza Vrchoviny 26 Nové Město nad Metují 54901 tel.-777071600,739475016 web: www.prouza-hubitel.cz",
+      "category": "dodavatel",
+      "sender_short": "prouza.ddd@seznam.cz",
+      "sender_email": "prouza.ddd@seznam.cz",
+      "ai": {
+        "shrn": "Prouza potvrzuje, že instalaci lze provést v následujícím týdnu (úterý 6.10.). Jde o potvrzení termínu služby.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
     {
       "account": "Exchange",
       "sender": "Miuki Jayathilaka <miuki@expodmcc.com>",
       "subject": "RE: Coconut Products & Spices  from- Sri Lanka I Indonesia I Vietnam",
       "date": "pondělí 28. září 2026 11:58:45",
       "unread": true,
-      "preview": "Dear Sir, Good day to you ! I hope this email finds you well. We have an offer for a 1x20 FCL coconut flour at USD 0.78 per Kg FOB Colombo. Shipment : October Packing : 25kg paper bag Please check and confirm if you are interested. Thank you",
+      "preview": "",
       "category": "ostatni",
       "sender_short": "Miuki Jayathilaka",
       "sender_email": "miuki@expodmcc.com",
       "ai": {
-        "shrn": "Nabídka na nákup kokosové mouky z Srí Lanky, 1x20 FCL kontejner za 0,78 USD/kg, balení 25kg pytly, expedice v říjnu.",
+        "shrn": "Email od Miuki Jayathilaka s nabídkou kokosových produktů a koření ze Srí Lanky a Indonésie. Obsah není viditelný.",
         "tyka_se": true,
-        "akce": "Zvážit nákup kokosové mouky a potvrdit zájem nebo odmítnout nabídku"
+        "akce": "Zjistit detaily nabídky a vyhodnotit zájem o importované produkty"
       }
     },
     {
@@ -24,109 +136,29 @@
       "sender": "\"prouza.ddd@seznam.cz\" <prouza.ddd@seznam.cz>",
       "subject": "Re: cenová nabídka DDD",
       "date": "pondělí 28. září 2026 11:53:48",
-      "unread": true,
+      "unread": false,
       "preview": "Dobrý den, Tento týden již nemáme termín.Instalaci můžeme provést v následujícím týdnu (zatím to vidím na úterý 6.10) S pozdravem Prouzová -- Deratizace,Dezinsekce,Dezinfekce-Miloslav Prouza Vrchoviny 26 Nové Město nad Metují 54901 tel.-777071600,739475016 web: www.prouza-hubitel.cz",
       "category": "dodavatel",
       "sender_short": "prouza.ddd@seznam.cz",
       "sender_email": "prouza.ddd@seznam.cz",
       "ai": {
-        "shrn": "Potvrzení instalace deratizace/dezinsekce na úterý 6.10., původní termín není dostupný.",
+        "shrn": "Prouza potvrzuje, že instalaci lze provést v následujícím týdnu (úterý 6.10.). Jde o potvrzení termínu služby.",
         "tyka_se": false,
         "akce": null
       }
     },
     {
-      "account": "Exchange",
-      "sender": "\"Brožinová Marianna Mgr.\" <marianna.brozinova@metrostavsk.sk>",
-      "subject": "RE: Kornútkova krabička mix",
-      "date": "pondělí 28. září 2026 11:50:40",
+      "account": "Google",
+      "sender": "Uber <uber@uber.com>",
+      "subject": "Naše cesta k nulovým emisím",
+      "date": "pondělí 28. září 2026 14:53:57",
       "unread": true,
-      "preview": "Dobrý deň, nechám to na Vás - skúste mi niečo pekne vymyslieť. Moju predstavu približne poznáte. V cca +/- cene akej sme sa bavili. Akurát by som to potrebovala už tento týždeň mať u seba a ukázať to vedeniu. Vedeli by ste mi poslať. Ďakujem krasne. S pozdravom, Mgr. Marianna Brožinová Asistentka ve",
+      "preview": "",
       "category": "ostatni",
-      "sender_short": "Brožinová Marianna Mgr.",
-      "sender_email": "marianna.brozinova@metrostavsk.sk",
+      "sender_short": "Uber",
+      "sender_email": "uber@uber.com",
       "ai": {
-        "shrn": "Žádost o návrh designu Kornútkovej krabičky s příslušnou cenou, potřeba do konce týdne pro vedení.",
-        "tyka_se": true,
-        "akce": "Navrhnout design krabičky v daném rozpočtu a poslat do konce týdne"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Martin Werner <martin.werner@nutworld.cz>",
-      "subject": "FW: Bezlepkový sortiment pro Nutworld.cz",
-      "date": "pondělí 28. září 2026 11:45:52",
-      "unread": false,
-      "preview": "Mrkni 👌 ￼ Martin Werner Obchodní manager NutWorld s.r.o. ￼ +420734633424 ￼ martin.werner@nutworld.cz ￼ www.nutworld.cz / www.nutworld.sk ￼ Hvězdova 1716/2",
-      "category": "tym",
-      "sender_short": "Martin Werner",
-      "sender_email": "martin.werner@nutworld.cz",
-      "ai": {
-        "shrn": "Přeposlání emailu od Martina Wernera ohledně bezlepkového sortimentu pro Nutworld.cz.",
-        "tyka_se": true,
-        "akce": "Zhodnotit nabídnutý bezlepkový sortiment a rozhodnout o zájmu"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Paulina Wacławik <p.waclawik@derbyingredients.com>",
-      "subject": "Walnuts Monday offer",
-      "date": "pondělí 28. září 2026 10:29:57",
-      "unread": true,
-      "preview": "Good morning",
-      "category": "ostatni",
-      "sender_short": "Paulina Wacławik",
-      "sender_email": "p.waclawik@derbyingredients.com",
-      "ai": {
-        "shrn": "Úvodní email s nabídkou na vlašské oříšky s poznámkou 'Monday offer'.",
-        "tyka_se": true,
-        "akce": "Přečíst si plnou nabídku a rozhodnout o zájmu v případě relevantní ceny"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "\"info@nutworld.sk\" <info@nutworld.sk>",
-      "subject": "Fwd: ponuka krabičky - Vianoce",
-      "date": "pondělí 28. září 2026 9:02:46",
-      "unread": false,
-      "preview": "-------- Původní zpráva -------- Předmět: ponuka krabičky - Vianoce Datum: 2026-09-25 14:05 Odesílatel: Ľudmila Kňazeová <ludmila.knazeova@alexia.sk> Adresát: \"info@nutworld.sk\" <info@nutworld.sk> Dobrý deň, Videla som Vašu ponuku krabičiek a rada by som sa spýtala",
-      "category": "tym",
-      "sender_short": "info@nutworld.sk",
-      "sender_email": "info@nutworld.sk",
-      "ai": {
-        "shrn": "Přeposlané dotazy zákazníka na vánočné krabičky z Alexie s.r.o.",
-        "tyka_se": true,
-        "akce": "Odpovědět na dotaz ohledně nabídky vánočních krabiček"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Miloš Kamitz <milos.kamitz@mekrs.cz>",
-      "subject": "Re: Procesní evidování šarží skrze výrobu Nut",
-      "date": "pondělí 28. září 2026 5:48:55",
-      "unread": false,
-      "preview": "Dobry den, U me je zmena",
-      "category": "tym",
-      "sender_short": "Miloš Kamitz",
-      "sender_email": "milos.kamitz@mekrs.cz",
-      "ai": {
-        "shrn": "Email od Miloše Kamitze s hlášením změny v procesním evidování šarží, zpráva nekompletní.",
-        "tyka_se": true,
-        "akce": "Požádat o doplnění zprávy a vyjasnit detaily změny"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "\"Jane.li\" <jane@milesports.com.cn>",
-      "subject": "Re:Re:Re:Re: Introduction of our Company with 9 years of experience in the industry",
-      "date": "pondělí 28. září 2026 4:15:17",
-      "unread": false,
-      "preview": "Hi sef, I hope everything is going well for you. We noticed you read our introductory email. Thank you for your attention",
-      "category": "ostatni",
-      "sender_short": "Jane.li",
-      "sender_email": "jane@milesports.com.cn",
-      "ai": {
-        "shrn": "Follow-up email od potenciálního dodavatele (Mile Sports) s poděkováním za přečtení jejich představovacího emailu.",
+        "shrn": "Uber informuje o cestě k nulovým emisím. Jedná se o korporátní komunikaci třetí strany.",
         "tyka_se": false,
         "akce": null
       }
@@ -142,7 +174,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "Automatizovaný email CrossFit newsletteru s daily workout nabídkou, spam/marketing.",
+        "shrn": "CrossFit newsletter s Workout of the Day. Jedná se o marketing email bez vztahu k NutWorld.",
         "tyka_se": false,
         "akce": null
       }
