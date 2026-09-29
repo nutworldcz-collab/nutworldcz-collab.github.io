@@ -1,164 +1,36 @@
 {
-  "generated": "2026-09-28T17:37:22",
-  "total": 11,
+  "generated": "2026-09-29T07:30:30",
+  "total": 3,
   "spam_skipped": 0,
   "emails": [
     {
       "account": "Exchange",
-      "sender": "Allegro <info@notifikace.allegro.cz>",
-      "subject": "Čas na nové pneumatiky🚗",
-      "date": "pondělí 28. září 2026 15:27:33",
-      "unread": true,
-      "preview": "￼ ￼ ￼ Dobrý den",
-      "category": "ostatni",
-      "sender_short": "Allegro",
-      "sender_email": "info@notifikace.allegro.cz",
-      "ai": {
-        "shrn": "Notifikace od Allegra o nových pneumatikách. Jedná se o marketingový email, který se netýká NutWorld.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Doprava NutWorld vložil/a komentář na kartu Vilgain objednávka 78315 na nástěnce Firmy dárky + objednávky",
-      "date": "pondělí 28. září 2026 15:18:53",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Doprava NutWorld okomentoval(a) kartu Vilgain objednávka 78315 na nástěnce Firmy dárky + objednávky @hamerniktomas tato objednávka je nachystaná",
-      "category": "b2b",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com",
-      "ai": {
-        "shrn": "Trello notifikace - opakovaná zpráva od Dopravy NutWorld o připravenosti objednávky Vilgain č. 78315.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "REDA objednávka medu 195g 50ks do 30.9. na Firmy dárky + objednávky má termín za 2 dny",
-      "date": "pondělí 28. září 2026 14:55:14",
-      "unread": true,
-      "preview": "￼ Termín je brzy... REDA objednávka medu 195g 50ks do 30.9. na nástěnce Firmy dárky + objednávky s termínem má termín za 2 dny Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
-      "category": "b2b",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com",
-      "ai": {
-        "shrn": "Trello upozornění na termín objednávky medu REDA (195g, 50ks) do 30.9. - zbývají 2 dny.",
-        "tyka_se": true,
-        "akce": "Zkontrolovat status objednávky medu REDA a zajistit dodání do termínu"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Pavlína Frýbortová <fryb@afproduction.cz>",
-      "subject": "poptávka sady č- 11351",
-      "date": "pondělí 28. září 2026 14:08:00",
-      "unread": true,
-      "preview": "Dobrý den",
-      "category": "b2b",
-      "sender_short": "Pavlína Frýbortová",
-      "sender_email": "fryb@afproduction.cz",
-      "ai": {
-        "shrn": "Poptávka od Pavlíny Frýbortové na sadu č. 11351. Vyžaduje zpracování a odpověď na nabídku.",
-        "tyka_se": true,
-        "akce": "Připravit cenovou nabídku a odpovědět Pavlíně Frýbortové"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Everbot <info@everbot.cz>",
-      "subject": "✨ Novinka v Everbotu: Nechte Auto-model vybrat to nejlepší pro vaši grafiku i videa",
-      "date": "pondělí 28. září 2026 14:02:33",
-      "unread": true,
-      "preview": "￼ ￼ Přidali jsme do sekcí AI Grafika a AI Video v Everbotu novou funkci Auto-model. Místo zdlouhavého vybírání a porovnávání desítek různých modelů vám teď Everbot sám doporučí ten nejvhodnější přesně podle vašeho zadání na pár kliknutí. • Konec složitého vybírání: Nevíte",
-      "category": "ostatni",
-      "sender_short": "Everbot",
-      "sender_email": "info@everbot.cz",
-      "ai": {
-        "shrn": "Everbot oznamuje novou funkci Auto-model pro AI grafiku a videa. Jedná se o informační email o produktu třetí strany.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Doprava NutWorld vložil/a komentář na kartu Vilgain objednávka 78315 na nástěnce Firmy dárky + objednávky",
-      "date": "pondělí 28. září 2026 13:45:22",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Doprava NutWorld okomentoval(a) kartu Vilgain objednávka 78315 na nástěnce Firmy dárky + objednávky @hamerniktomas tato objednávka je nachystaná",
-      "category": "b2b",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com",
-      "ai": {
-        "shrn": "Trello notifikace - opakovaná zpráva od Dopravy NutWorld o připravenosti objednávky Vilgain č. 78315.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
       "sender": "\"prouza.ddd@seznam.cz\" <prouza.ddd@seznam.cz>",
       "subject": "Re: cenová nabídka DDD",
-      "date": "pondělí 28. září 2026 12:29:32",
+      "date": "úterý 29. září 2026 7:16:43",
       "unread": true,
-      "preview": "Prosím,připravte si mapu areálu,Stačí úplně obyčejná pro zakreslení DDD plánku.Píši si 6.10. Děkuji Prouzová -- Deratizace,Dezinsekce,Dezinfekce-Miloslav Prouza Vrchoviny 26 Nové Město nad Metují 54901 tel.-777071600,739475016 web: www.prouza-hubitel.cz",
+      "preview": "Dobrý den,stačí půdorys -- Deratizace,Dezinsekce,Dezinfekce-Miloslav Prouza Vrchoviny 26 Nové Město nad Metují 54901 tel.-777071600,739475016 web: www.prouza-hubitel.cz",
       "category": "dodavatel",
       "sender_short": "prouza.ddd@seznam.cz",
       "sender_email": "prouza.ddd@seznam.cz",
       "ai": {
-        "shrn": "Prouza potvrzuje, že instalaci lze provést v následujícím týdnu (úterý 6.10.). Jde o potvrzení termínu služby.",
+        "shrn": "Dodavatel Miloslav Prouza nabízí služby deratizace, dezinfekce a dezinfekce s informacemi o kontaktu a lokalitě.",
         "tyka_se": false,
         "akce": null
       }
     },
     {
       "account": "Exchange",
-      "sender": "Miuki Jayathilaka <miuki@expodmcc.com>",
-      "subject": "RE: Coconut Products & Spices  from- Sri Lanka I Indonesia I Vietnam",
-      "date": "pondělí 28. září 2026 11:58:45",
+      "sender": "Fusková Ladislava <ladislava.fuskova@mekrs.cz>",
+      "subject": "RE: Pracovní smlouvy a DOPP",
+      "date": "úterý 29. září 2026 7:07:25",
       "unread": true,
-      "preview": "",
-      "category": "ostatni",
-      "sender_short": "Miuki Jayathilaka",
-      "sender_email": "miuki@expodmcc.com",
+      "preview": "Dobrý en, Mockrát děkuji ￼ MEKR'S GROUP s.r.o. Ladislava Fusková personální a mzdová účetní MEKR'S",
+      "category": "tym",
+      "sender_short": "Fusková Ladislava",
+      "sender_email": "ladislava.fuskova@mekrs.cz",
       "ai": {
-        "shrn": "Email od Miuki Jayathilaka s nabídkou kokosových produktů a koření ze Srí Lanky a Indonésie. Obsah není viditelný.",
-        "tyka_se": true,
-        "akce": "Zjistit detaily nabídky a vyhodnotit zájem o importované produkty"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "\"prouza.ddd@seznam.cz\" <prouza.ddd@seznam.cz>",
-      "subject": "Re: cenová nabídka DDD",
-      "date": "pondělí 28. září 2026 11:53:48",
-      "unread": false,
-      "preview": "Dobrý den, Tento týden již nemáme termín.Instalaci můžeme provést v následujícím týdnu (zatím to vidím na úterý 6.10) S pozdravem Prouzová -- Deratizace,Dezinsekce,Dezinfekce-Miloslav Prouza Vrchoviny 26 Nové Město nad Metují 54901 tel.-777071600,739475016 web: www.prouza-hubitel.cz",
-      "category": "dodavatel",
-      "sender_short": "prouza.ddd@seznam.cz",
-      "sender_email": "prouza.ddd@seznam.cz",
-      "ai": {
-        "shrn": "Prouza potvrzuje, že instalaci lze provést v následujícím týdnu (úterý 6.10.). Jde o potvrzení termínu služby.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Google",
-      "sender": "Uber <uber@uber.com>",
-      "subject": "Naše cesta k nulovým emisím",
-      "date": "pondělí 28. září 2026 14:53:57",
-      "unread": true,
-      "preview": "",
-      "category": "ostatni",
-      "sender_short": "Uber",
-      "sender_email": "uber@uber.com",
-      "ai": {
-        "shrn": "Uber informuje o cestě k nulovým emisím. Jedná se o korporátní komunikaci třetí strany.",
+        "shrn": "Ladislava Fusková potvrzuje příjem zprávy o pracovních smlouvách a DOPP jako personální a mzdová účetní.",
         "tyka_se": false,
         "akce": null
       }
@@ -166,15 +38,15 @@
     {
       "account": "Google",
       "sender": "\"CrossFit\" <crossfit@mail.crossfit.com>",
-      "subject": "260928 Workout of the Day: Intervals",
-      "date": "pondělí 28. září 2026 2:31:22",
+      "subject": "260929 Workout of the Day: A Triplet",
+      "date": "úterý 29. září 2026 2:31:39",
       "unread": true,
-      "preview": "￼ ￼ ￼ MONDAY",
+      "preview": "￼ ￼ ￼ TUESDAY",
       "category": "ostatni",
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "CrossFit newsletter s Workout of the Day. Jedná se o marketing email bez vztahu k NutWorld.",
+        "shrn": "CrossFit email s denním tréninkovým plánem (Workout of the Day).",
         "tyka_se": false,
         "akce": null
       }
