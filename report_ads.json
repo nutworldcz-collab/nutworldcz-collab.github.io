@@ -1,49 +1,37 @@
 {
-  "generated": "2026-09-23T08:37:42",
-  "period": "2026-09-16 – 2026-09-22",
+  "generated": "2026-09-29T08:30:15",
+  "period": "2026-09-22 – 2026-09-28",
   "channels": {
     "Meta CZ": {
-      "spend": 12380.0,
-      "revenue": 35209.0,
-      "pno": 35.2,
-      "conversions": 38.0,
-      "clicks": 2798,
-      "prev_spend": 11323.0,
-      "prev_pno": 17.0
+      "error": "400 Client Error: Bad Request for url: https://graph.facebook.com/v21.0/act_1367393200144/insights?fields=spend%2Cimpressions%2Cclicks%2Cactions%2Caction_values&time_range=%7B%22since%22%3A+%222026-09-22%22%2C+%22until%22%3A+%222026-09-28%22%7D&level=account&access_token=EAATZCYSrDrLABSHZCaCwTDFnDaZBKm9MYS4DHtzz2bxvZAMD32mVmaerBphnYDvGQSqTK6BJjqkhmVsmNTZCCNjYi6fRGSMRJYQoRhPvZBbgZAWB7RYcPqmzDfgNkFbKauBFMsivYQZBKHLzTWRVTZA4DxVkPZC1WXX91aVo8FprqlASZBg8SZA3ax2eGaX57ZBX7owZDZD"
     },
     "Meta SK": {
-      "spend": 215.0,
-      "revenue": 1307.0,
-      "pno": 16.5,
-      "conversions": 16.0,
-      "clicks": 1365,
-      "prev_spend": 88.0,
-      "prev_pno": 16.1
+      "error": "400 Client Error: Bad Request for url: https://graph.facebook.com/v21.0/act_1306037980788341/insights?fields=spend%2Cimpressions%2Cclicks%2Cactions%2Caction_values&time_range=%7B%22since%22%3A+%222026-09-22%22%2C+%22until%22%3A+%222026-09-28%22%7D&level=account&access_token=EAATZCYSrDrLABSHZCaCwTDFnDaZBKm9MYS4DHtzz2bxvZAMD32mVmaerBphnYDvGQSqTK6BJjqkhmVsmNTZCCNjYi6fRGSMRJYQoRhPvZBbgZAWB7RYcPqmzDfgNkFbKauBFMsivYQZBKHLzTWRVTZA4DxVkPZC1WXX91aVo8FprqlASZBg8SZA3ax2eGaX57ZBX7owZDZD"
     },
     "Google CZ": {
-      "spend": 5748.0,
-      "revenue": 45374.0,
-      "pno": 12.7,
-      "conversions": 39.0,
-      "clicks": 821,
-      "prev_spend": 5719.0,
-      "prev_pno": 7.3
+      "spend": 5444.0,
+      "revenue": 72229.0,
+      "pno": 7.5,
+      "conversions": 49.9,
+      "clicks": 1070,
+      "prev_spend": 5728.0,
+      "prev_pno": 11.3
     },
     "Google SK": {
-      "spend": 3018.0,
-      "revenue": 25347.0,
-      "pno": 11.9,
-      "conversions": 13.8,
-      "clicks": 353,
-      "prev_spend": 3114.0,
-      "prev_pno": 13.1
+      "spend": 2952.0,
+      "revenue": 24390.0,
+      "pno": 12.1,
+      "conversions": 13.0,
+      "clicks": 373,
+      "prev_spend": 2990.0,
+      "prev_pno": 11.7
     }
   },
   "anomalies": [
-    "🟡 Meta CZ: PNO zhoršilo o 18.2pp vs minulý týden",
-    "🟡 Meta SK: útrata +145% vs minulý týden"
+    "⚠️ Meta CZ: chyba připojení",
+    "⚠️ Meta SK: chyba připojení"
   ],
   "priorities": [
-    "Nejlepší kanál: Google SK (PNO 11.9%) — zvýšit budget?"
+    "Nejlepší kanál: Google CZ (PNO 7.5%) — zvýšit budget?"
   ]
 }
