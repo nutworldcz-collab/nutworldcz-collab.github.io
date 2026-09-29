@@ -1,77 +1,27 @@
 {
-  "generated": "2026-09-26T03:03:39",
-  "date": "2026-09-25",
-  "total": 7,
+  "generated": "2026-09-29T03:11:32",
+  "date": "2026-09-28",
+  "total": 2,
   "notifications": [
     {
-      "type": "addedToCard",
-      "label": "Přidán/a na kartu",
-      "card": "objednávka REDA krabičky s termíne do 9.10.2026",
-      "card_url": "https://trello.com/c/L8SZP3Ij",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Hamerník Tomáš",
-      "comment": "",
-      "time": "2026-09-25T08:30:53.496Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "objednávka iMi na 7.10.2026",
-      "card_url": "https://trello.com/c/ejhX14A3",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Hamerník Tomáš",
-      "comment": "",
-      "time": "2026-09-25T08:28:32.491Z"
-    },
-    {
-      "type": "addedToCard",
-      "label": "Přidán/a na kartu",
-      "card": "objednávka iMi na 7.10.2026",
-      "card_url": "https://trello.com/c/ejhX14A3",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Hamerník Tomáš",
-      "comment": "",
-      "time": "2026-09-25T08:28:15.055Z"
-    },
-    {
-      "type": "mentionedOnCard",
-      "label": "Zmíněn/a v komentáři",
-      "card": "VILGAIN objednávka do 24.9.",
-      "card_url": "https://trello.com/c/6PxOdKQx",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Hamerník Tomáš",
-      "comment": "@card Domluvil jsem se s Vilgainem, že může dojít k drobné změně v termínu dodání, ale musím jim to zavolat min. 2 dny před dodáním. Je to důležité.\n\nProto bych rád požádal, aby na všechny dodávky do ",
-      "time": "2026-09-25T08:22:42.385Z"
-    },
-    {
-      "type": "mentionedOnCard",
-      "label": "Zmíněn/a v komentáři",
-      "card": "Vilgain objednávka 78114",
-      "card_url": "https://trello.com/c/u6anmKZA",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Hamerník Tomáš",
-      "comment": "@card Domluvil jsem se s Vilgainem, že může dojít k drobné změně v termínu dodání, ale musím jim to zavolat min. 2 dny před dodáním. Je to důležité.\n\nProto bych rád požádal, aby na všechny dodávky do ",
-      "time": "2026-09-25T08:22:00.328Z"
-    },
-    {
-      "type": "mentionedOnCard",
-      "label": "Zmíněn/a v komentáři",
+      "type": "commentCard",
+      "label": "Nový komentář",
       "card": "Vilgain objednávka 78315",
       "card_url": "https://trello.com/c/6Wyueg0S",
       "board": "Firmy dárky + objednávky",
-      "creator": "Hamerník Tomáš",
-      "comment": "@card Domluvil jsem se s Vilgainem, že může dojít k drobné změně v termínu dodání, ale musím jim to zavolat min. 2 dny před dodáním. Je to důležité.\n\nProto bych rád požádal, aby na všechny dodávky do ",
-      "time": "2026-09-25T08:21:21.124Z"
+      "creator": "Doprava NutWorld",
+      "comment": "@hamerniktomas tato objednávka je nachystaná, zítra se zkompletuje i druha š 300 kusy.Šly by tedy od nas ve středu, může se to tedy poslat?",
+      "time": "2026-09-28T13:16:59.358Z"
     },
     {
-      "type": "addedToCard",
-      "label": "Přidán/a na kartu",
-      "card": "Dám si kafe",
-      "card_url": "https://trello.com/c/71HR8kz8",
+      "type": "cardDueSoon",
+      "label": "Karta má brzy termín",
+      "card": "REDA objednávka medu 195g 50ks do 30.9.",
+      "card_url": "https://trello.com/c/A0hfGNTo",
       "board": "Firmy dárky + objednávky",
-      "creator": "Markéta Costachová",
+      "creator": "",
       "comment": "",
-      "time": "2026-09-25T05:28:47.932Z"
+      "time": "2026-09-28T12:53:03.269Z"
     }
   ]
 }
