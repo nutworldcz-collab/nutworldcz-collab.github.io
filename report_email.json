@@ -1,22 +1,102 @@
 {
-  "generated": "2026-10-01T12:00:30",
+  "generated": "2026-10-01T17:25:04",
   "total": 13,
-  "spam_skipped": 0,
+  "spam_skipped": 2,
   "emails": [
+    {
+      "account": "Exchange",
+      "sender": "Martina Frýdlová <martina.frydlova@guzu.cz>",
+      "subject": "RE: Dárky pro zaměstnance",
+      "date": "čtvrtek 1. října 2026 14:10:04",
+      "unread": true,
+      "preview": "Pane Vlčku, to je na nás moc divoké",
+      "category": "ostatni",
+      "sender_short": "Martina Frýdlová",
+      "sender_email": "martina.frydlova@guzu.cz",
+      "ai": {
+        "shrn": "Martina Frýdlová reaguje na nabídku darů pro zaměstnance jako na příliš ambiciózní návrh.",
+        "tyka_se": true,
+        "akce": "Zkontaktovat Martinu a upřesnit rozsah a cenu dárků pro zaměstnance"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Everbot <info@everbot.cz>",
+      "subject": "🎧 Novinka v Everbotu: AI dabing pro vaše videa a tvorba dialogů z textu",
+      "date": "čtvrtek 1. října 2026 13:40:34",
+      "unread": true,
+      "preview": "￼ ￼ Přidali jsme do sekce Audio v Everbotu dvě zbrusu nové funkce - AI Dabing a Text na dialog. Místo složitého překládání",
+      "category": "ostatni",
+      "sender_short": "Everbot",
+      "sender_email": "info@everbot.cz",
+      "ai": {
+        "shrn": "Everbot oznamuje nové AI funkce pro dabing a tvorbu dialogů.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Pavlína Frýbortová <fryb@afproduction.cz>",
+      "subject": "FW: poptávka sady č- 11351 - objednávka",
+      "date": "čtvrtek 1. října 2026 13:37:22",
+      "unread": true,
+      "preview": "Dobrý den",
+      "category": "b2b",
+      "sender_short": "Pavlína Frýbortová",
+      "sender_email": "fryb@afproduction.cz",
+      "ai": {
+        "shrn": "Pavlína Frýbortová předává poptávku na sadu č. 11351 k objednávce.",
+        "tyka_se": true,
+        "akce": "Přezkoumat poptávku sady č. 11351 a připravit nabídku"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Fusková Ladislava <ladislava.fuskova@mekrs.cz>",
+      "subject": "RE: Pracovní smlouvy a DOPP",
+      "date": "čtvrtek 1. října 2026 13:05:47",
+      "unread": true,
+      "preview": "Dobrý den, Posílám tedy DOPP Pavlína Fiedlerová p. Fiedlerová bude mít zdaněnou Dohodu – má ještě někde jinou jak píše p. Zubričanová bude mít také zdaněnou dohodu - má HPP jinde p. Klofáčová bude mít také zdaněnou dohodu - pracuje ještě jinde na HPP Kdyby něco piště :0)) ￼ MEKR'S GROUP s.r.o. Ladis",
+      "category": "tym",
+      "sender_short": "Fusková Ladislava",
+      "sender_email": "ladislava.fuskova@mekrs.cz",
+      "ai": {
+        "shrn": "Ladislava Fusková posílá DOPP a informace o daňovém zatřídění nových pracovníků.",
+        "tyka_se": true,
+        "akce": "Zkontrolovat a podepsat DOPP, ověřit daňové zatřídění zaměstnanců"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Markéta Costachova <marketa.costachova@nutworld.cz>",
+      "subject": "dotaz na poptávku",
+      "date": "čtvrtek 1. října 2026 12:46:47",
+      "unread": true,
+      "preview": "Ahojte, Martine",
+      "category": "tym",
+      "sender_short": "Markéta Costachova",
+      "sender_email": "marketa.costachova@nutworld.cz",
+      "ai": {
+        "shrn": "Markéta Costachova z týmu pokládá dotaz na poptávku.",
+        "tyka_se": true,
+        "akce": "Odepsat Markétě a upřesnit její dotaz na poptávku"
+      }
+    },
     {
       "account": "Exchange",
       "sender": "Petra Valsami <petra.valsami@avmc.cz>",
       "subject": "Re: poptávka",
       "date": "čtvrtek 1. října 2026 11:54:22",
-      "unread": true,
+      "unread": false,
       "preview": "Dobry den, Mohl byste prosím odpovědět na dotaz z tiskárny? Moc děkuji? Dobrý den, můžete mi upřesnit název firmy",
       "category": "b2b",
       "sender_short": "Petra Valsami",
       "sender_email": "petra.valsami@avmc.cz",
       "ai": {
-        "shrn": "Petra z tiskárny žádá odpověď na dotaz a upřesnění názvu firmy.",
+        "shrn": "Petra Valsami žádá odpověď na dotaz z tiskárny a upřesňuje název firmy.",
         "tyka_se": true,
-        "akce": "Odpovědět Petře s upřesněním názvu firmy a zodpovězením jejího dotazu"
+        "akce": "Odpovědět Petře na dotaz z tiskárny a upřesnit název firmy"
       }
     },
     {
@@ -30,121 +110,41 @@
       "sender_short": "Šárka Deusová",
       "sender_email": "sarka.deusova@mk-rako.cz",
       "ai": {
-        "shrn": "Šárka urguje náhled vánočních balíčků, obavy ze zkrácení času.",
+        "shrn": "Šárka Deusová urguje náhledy vánočních balíčků MK keramiky.",
         "tyka_se": true,
-        "akce": "Připravit a poslat Šárce náhledy vánočních balíčků co nejdříve"
+        "akce": "Připravit a poslat Šárce náhledy vánočních balíčků bez další prodlevy"
       }
     },
     {
-      "account": "Exchange",
-      "sender": "\"faktury@rtyne.net\" <faktury@rtyne.net>",
-      "subject": "Faktura za odebrané služby",
-      "date": "čtvrtek 1. října 2026 11:19:41",
+      "account": "Google",
+      "sender": "Temu <temu@eu-shop.temuemail.com>",
+      "subject": "Přidaná položka byla vyprodána",
+      "date": "čtvrtek 1. října 2026 15:32:40",
       "unread": true,
-      "preview": "Vážený pane Vlčku, právě Vám dorazila faktura za poskytované služby. V přiloženém souboru naleznete pravidelné vyúčtování služeb. Dbejte prosím zvýšené pozornosti na správné zadávání čísla účtu a variabilního symbolu. Při špatném zadání nebude platba přiřazena k Vašemu zákaznickému účtu. Veškeré daň",
-      "category": "dodavatel",
-      "sender_short": "faktury@rtyne.net",
-      "sender_email": "faktury@rtyne.net",
-      "ai": {
-        "shrn": "Faktura za poskytované služby s upozorněním na správné zadávání údajů.",
-        "tyka_se": true,
-        "akce": "Zkontrolovat fakturu, zaregistrovat ji v účetnictví a zaplatit"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Fusková Ladislava <ladislava.fuskova@mekrs.cz>",
-      "subject": "RE: Pracovní smlouvy a DOPP",
-      "date": "čtvrtek 1. října 2026 10:53:06",
-      "unread": true,
-      "preview": "Dobrý den p. Vlčku, Prosím všichni zaměstnanci co jsem připravovala smlouvy dne nastoupili ? Já jen",
-      "category": "tym",
-      "sender_short": "Fusková Ladislava",
-      "sender_email": "ladislava.fuskova@mekrs.cz",
-      "ai": {
-        "shrn": "Ladislava se ptá, zda všichni zaměstnanci se smlouvami nastoupili.",
-        "tyka_se": true,
-        "akce": "Ověřit si u Ladislavy status nástupů zaměstnanců a vyjasnit případné nejasnosti"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Tomáš Hamerník <tomas.hamernik@nutworld.cz>",
-      "subject": "POEX domluvená splatnost a limit",
-      "date": "čtvrtek 1. října 2026 10:42:04",
-      "unread": true,
-      "preview": "Ahoj Honzo",
-      "category": "tym",
-      "sender_short": "Tomáš Hamerník",
-      "sender_email": "tomas.hamernik@nutworld.cz",
-      "ai": {
-        "shrn": "Tomáš z týmu píše o POEX splatnosti a limitu, zpráva nekompletní.",
-        "tyka_se": true,
-        "akce": "Kontaktovat Tomáše a vyjasnit si podrobnosti ohledně POEX splatnosti a limitu"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Švanda Pavel <pavel.svanda@k2ol.cz>",
-      "subject": "Nutworld - evidence šarží dodavatele",
-      "date": "čtvrtek 1. října 2026 10:29:14",
-      "unread": true,
-      "preview": "Dobrý den",
+      "preview": "",
       "category": "ostatni",
-      "sender_short": "Švanda Pavel",
-      "sender_email": "pavel.svanda@k2ol.cz",
+      "sender_short": "Temu",
+      "sender_email": "temu@eu-shop.temuemail.com",
       "ai": {
-        "shrn": "Pavel informuje o evidenci šarží dodavatele, zpráva nekompletní.",
+        "shrn": "Temu oznámení o vyprodané položce z e-shopu.",
         "tyka_se": false,
         "akce": null
       }
     },
     {
-      "account": "Exchange",
-      "sender": "Seznam Peněženka <noreply@firma.seznam.cz>",
-      "subject": "Přehled plateb - Seznam.cz",
-      "date": "čtvrtek 1. října 2026 10:14:54",
+      "account": "Google",
+      "sender": "\"SEVT.cz\" <marketing@mailing.sevt.cz>",
+      "subject": "📅 Diáře a kalendáře na rok 2027 jsou tady",
+      "date": "čtvrtek 1. října 2026 13:55:09",
       "unread": true,
-      "preview": "￼ Hezký den. V příloze najdete přehled plateb a transakcí vašeho účtu HVlcek@seznam.cz za období 1. 9. 2026 - 1. 10. 2026. Zasílání přehledu plateb si můžete kdykoli upravit v Klientské zóně. Váš Seznam.cz V případě dotazů nás neváhejte kontaktovat na čísle +420 234 694 200 nebo e‑mailem: reklama@fi",
+      "preview": "Nezobrazuje se Vám e-mail správně? Přejděte na webovou verzi. ￼ Vše do školy a kanceláře na jednom místě ￼ Školní potřeby Výtvarné potřeby Kancelářské potřeby Hry a hračky Knihkupectví Motivové i klasické jednobarevné diáře Helma 365 ￼ Diář 2027 denní A5 Vario Lyra - Aura Lamino desky s h",
       "category": "ostatni",
-      "sender_short": "Seznam Peněženka",
-      "sender_email": "noreply@firma.seznam.cz",
+      "sender_short": "SEVT.cz",
+      "sender_email": "marketing@mailing.sevt.cz",
       "ai": {
-        "shrn": "Přehled plateb a transakcí ze Seznam Peněženky za září-říjen.",
+        "shrn": "SEVT.cz nabízí diáře a kalendáře na rok 2027.",
         "tyka_se": false,
         "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Allegro <info@notifikace.allegro.cz>",
-      "subject": "Oslavte s námi Mezinárodní den kávy ☕",
-      "date": "čtvrtek 1. října 2026 10:07:42",
-      "unread": true,
-      "preview": "￼ ￼ ￼ Dobrý den",
-      "category": "ostatni",
-      "sender_short": "Allegro",
-      "sender_email": "info@notifikace.allegro.cz",
-      "ai": {
-        "shrn": "Marketingový email Allegro k Mezinárodnímu dni kávy.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Martin Werner <martin.werner@nutworld.cz>",
-      "subject": "nabídky a Jáchym",
-      "date": "čtvrtek 1. října 2026 10:06:19",
-      "unread": true,
-      "preview": "Ahoj, prosím tě",
-      "category": "tym",
-      "sender_short": "Martin Werner",
-      "sender_email": "martin.werner@nutworld.cz",
-      "ai": {
-        "shrn": "Martin z týmu píše o nabídkách a Jáchymovi, zpráva nekompletní.",
-        "tyka_se": true,
-        "akce": "Kontaktovat Martina a zjistit podrobnosti o nabídkách a Jáchymovi"
       }
     },
     {
@@ -158,7 +158,7 @@
       "sender_short": "DJI",
       "sender_email": "enews@e.dji.com",
       "ai": {
-        "shrn": "Reklamní email DJI o podzimní slevě a cashback programu.",
+        "shrn": "DJI oznamuje podzimní slevovou akci s 5% zpět v kreditech.",
         "tyka_se": false,
         "akce": null
       }
@@ -174,7 +174,7 @@
       "sender_short": "GIGAPRINT | Tonery pro všechny tiskárny",
       "sender_email": "info@gigaprint.cz",
       "ai": {
-        "shrn": "Marketingový email Gigaprint o bezplatné dopravě Balíkovnou.",
+        "shrn": "Gigaprint propaguje bezplatnou dopravu Balíkovnou na tonery do tiskáren.",
         "tyka_se": false,
         "akce": null
       }
@@ -190,7 +190,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "Newsletterový email CrossFit o tréninkovém programu a komunitě.",
+        "shrn": "CrossFit posílá týdenní zpravodaj se story člena komunity.",
         "tyka_se": false,
         "akce": null
       }
@@ -206,7 +206,7 @@
       "sender_short": "AliExpress.seller",
       "sender_email": "promotion@aliexpress.com",
       "ai": {
-        "shrn": "Reklamní email AliExpress se slevami a speciálními nabídkami.",
+        "shrn": "AliExpress.seller propaguje denní speciální nabídky se slevami.",
         "tyka_se": false,
         "akce": null
       }
