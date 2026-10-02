@@ -1,212 +1,36 @@
 {
-  "generated": "2026-10-01T17:25:04",
-  "total": 13,
-  "spam_skipped": 2,
+  "generated": "2026-10-02T16:23:03",
+  "total": 2,
+  "spam_skipped": 0,
   "emails": [
     {
-      "account": "Exchange",
-      "sender": "Martina Frýdlová <martina.frydlova@guzu.cz>",
-      "subject": "RE: Dárky pro zaměstnance",
-      "date": "čtvrtek 1. října 2026 14:10:04",
-      "unread": true,
-      "preview": "Pane Vlčku, to je na nás moc divoké",
-      "category": "ostatni",
-      "sender_short": "Martina Frýdlová",
-      "sender_email": "martina.frydlova@guzu.cz",
-      "ai": {
-        "shrn": "Martina Frýdlová reaguje na nabídku darů pro zaměstnance jako na příliš ambiciózní návrh.",
-        "tyka_se": true,
-        "akce": "Zkontaktovat Martinu a upřesnit rozsah a cenu dárků pro zaměstnance"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Everbot <info@everbot.cz>",
-      "subject": "🎧 Novinka v Everbotu: AI dabing pro vaše videa a tvorba dialogů z textu",
-      "date": "čtvrtek 1. října 2026 13:40:34",
-      "unread": true,
-      "preview": "￼ ￼ Přidali jsme do sekce Audio v Everbotu dvě zbrusu nové funkce - AI Dabing a Text na dialog. Místo složitého překládání",
-      "category": "ostatni",
-      "sender_short": "Everbot",
-      "sender_email": "info@everbot.cz",
-      "ai": {
-        "shrn": "Everbot oznamuje nové AI funkce pro dabing a tvorbu dialogů.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Pavlína Frýbortová <fryb@afproduction.cz>",
-      "subject": "FW: poptávka sady č- 11351 - objednávka",
-      "date": "čtvrtek 1. října 2026 13:37:22",
-      "unread": true,
-      "preview": "Dobrý den",
-      "category": "b2b",
-      "sender_short": "Pavlína Frýbortová",
-      "sender_email": "fryb@afproduction.cz",
-      "ai": {
-        "shrn": "Pavlína Frýbortová předává poptávku na sadu č. 11351 k objednávce.",
-        "tyka_se": true,
-        "akce": "Přezkoumat poptávku sady č. 11351 a připravit nabídku"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Fusková Ladislava <ladislava.fuskova@mekrs.cz>",
-      "subject": "RE: Pracovní smlouvy a DOPP",
-      "date": "čtvrtek 1. října 2026 13:05:47",
-      "unread": true,
-      "preview": "Dobrý den, Posílám tedy DOPP Pavlína Fiedlerová p. Fiedlerová bude mít zdaněnou Dohodu – má ještě někde jinou jak píše p. Zubričanová bude mít také zdaněnou dohodu - má HPP jinde p. Klofáčová bude mít také zdaněnou dohodu - pracuje ještě jinde na HPP Kdyby něco piště :0)) ￼ MEKR'S GROUP s.r.o. Ladis",
-      "category": "tym",
-      "sender_short": "Fusková Ladislava",
-      "sender_email": "ladislava.fuskova@mekrs.cz",
-      "ai": {
-        "shrn": "Ladislava Fusková posílá DOPP a informace o daňovém zatřídění nových pracovníků.",
-        "tyka_se": true,
-        "akce": "Zkontrolovat a podepsat DOPP, ověřit daňové zatřídění zaměstnanců"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Markéta Costachova <marketa.costachova@nutworld.cz>",
-      "subject": "dotaz na poptávku",
-      "date": "čtvrtek 1. října 2026 12:46:47",
-      "unread": true,
-      "preview": "Ahojte, Martine",
-      "category": "tym",
-      "sender_short": "Markéta Costachova",
-      "sender_email": "marketa.costachova@nutworld.cz",
-      "ai": {
-        "shrn": "Markéta Costachova z týmu pokládá dotaz na poptávku.",
-        "tyka_se": true,
-        "akce": "Odepsat Markétě a upřesnit její dotaz na poptávku"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Petra Valsami <petra.valsami@avmc.cz>",
-      "subject": "Re: poptávka",
-      "date": "čtvrtek 1. října 2026 11:54:22",
-      "unread": false,
-      "preview": "Dobry den, Mohl byste prosím odpovědět na dotaz z tiskárny? Moc děkuji? Dobrý den, můžete mi upřesnit název firmy",
-      "category": "b2b",
-      "sender_short": "Petra Valsami",
-      "sender_email": "petra.valsami@avmc.cz",
-      "ai": {
-        "shrn": "Petra Valsami žádá odpověď na dotaz z tiskárny a upřesňuje název firmy.",
-        "tyka_se": true,
-        "akce": "Odpovědět Petře na dotaz z tiskárny a upřesnit název firmy"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Šárka Deusová <sarka.deusova@mk-rako.cz>",
-      "subject": "RE: vzorky MK keramika",
-      "date": "čtvrtek 1. října 2026 11:34:18",
-      "unread": false,
-      "preview": "Dobrý den, nezapomněl jste na mě s těmi náhledy vánočních balíčků prosím? Čas se nám krátí a začínám mít obavy",
-      "category": "ostatni",
-      "sender_short": "Šárka Deusová",
-      "sender_email": "sarka.deusova@mk-rako.cz",
-      "ai": {
-        "shrn": "Šárka Deusová urguje náhledy vánočních balíčků MK keramiky.",
-        "tyka_se": true,
-        "akce": "Připravit a poslat Šárce náhledy vánočních balíčků bez další prodlevy"
-      }
-    },
-    {
       "account": "Google",
-      "sender": "Temu <temu@eu-shop.temuemail.com>",
-      "subject": "Přidaná položka byla vyprodána",
-      "date": "čtvrtek 1. října 2026 15:32:40",
+      "sender": "CrossFit <crossfit@mail.crossfit.com>",
+      "subject": "261002 Workout of the Day: Packs a Punch",
+      "date": "pátek 2. října 2026 2:31:47",
       "unread": true,
-      "preview": "",
-      "category": "ostatni",
-      "sender_short": "Temu",
-      "sender_email": "temu@eu-shop.temuemail.com",
-      "ai": {
-        "shrn": "Temu oznámení o vyprodané položce z e-shopu.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Google",
-      "sender": "\"SEVT.cz\" <marketing@mailing.sevt.cz>",
-      "subject": "📅 Diáře a kalendáře na rok 2027 jsou tady",
-      "date": "čtvrtek 1. října 2026 13:55:09",
-      "unread": true,
-      "preview": "Nezobrazuje se Vám e-mail správně? Přejděte na webovou verzi. ￼ Vše do školy a kanceláře na jednom místě ￼ Školní potřeby Výtvarné potřeby Kancelářské potřeby Hry a hračky Knihkupectví Motivové i klasické jednobarevné diáře Helma 365 ￼ Diář 2027 denní A5 Vario Lyra - Aura Lamino desky s h",
-      "category": "ostatni",
-      "sender_short": "SEVT.cz",
-      "sender_email": "marketing@mailing.sevt.cz",
-      "ai": {
-        "shrn": "SEVT.cz nabízí diáře a kalendáře na rok 2027.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Google",
-      "sender": "\"DJI\" <enews@e.dji.com>",
-      "subject": "🍂 DJI Autumn Sale Is Live",
-      "date": "čtvrtek 1. října 2026 10:44:03",
-      "unread": true,
-      "preview": "￼ ￼ Perks at a Glance ￼ Earn 5% Back in DJI Credit Earn 5% back in DJI Credit on select products. ￼ Refer & Reward Share a product link with a friend. When they order",
-      "category": "ostatni",
-      "sender_short": "DJI",
-      "sender_email": "enews@e.dji.com",
-      "ai": {
-        "shrn": "DJI oznamuje podzimní slevovou akci s 5% zpět v kreditech.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Google",
-      "sender": "GIGAPRINT | Tonery pro všechny tiskárny <info@gigaprint.cz>",
-      "subject": "⛟ ⛟ DOPRAVA ZDARMA je tady! ⛟ ⛟",
-      "date": "čtvrtek 1. října 2026 10:18:11",
-      "unread": true,
-      "preview": "Nezobrazuje se Vám e-mail správně? Prohlédněte si ho zde. ￼ Zákaznická linka: 800 203 100 Dotazy k objednávkám: 571 412 424 Pobočka Praha: 210 320 014 ￼ Doprava Balíkovnou je nyní ZDARMA! Při nákupu náplní do tiskáren můžete využít bezplatné doručení Balíkovnou na výdejní místa",
-      "category": "ostatni",
-      "sender_short": "GIGAPRINT | Tonery pro všechny tiskárny",
-      "sender_email": "info@gigaprint.cz",
-      "ai": {
-        "shrn": "Gigaprint propaguje bezplatnou dopravu Balíkovnou na tonery do tiskáren.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Google",
-      "sender": "\"CrossFit\" <crossfit@mail.crossfit.com>",
-      "subject": "261001 Rest Day: Your Weekly CrossFit Updates",
-      "date": "čtvrtek 1. října 2026 2:11:15",
-      "unread": true,
-      "preview": "￼ ￼ ￼ Thiago Maas: Surviving the Unknown COMMUNITY Thiago Maas fell in love with CrossFit and opened CrossFit Pomerode in Brazil. For years",
+      "preview": "￼ ￼ ￼ FRIDAY",
       "category": "ostatni",
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "CrossFit posílá týdenní zpravodaj se story člena komunity.",
+        "shrn": "Denní crossfit workout zaslaný e-mailem. Jedná se o informační zprávu bez potřeby odpovědi.",
         "tyka_se": false,
         "akce": null
       }
     },
     {
       "account": "Google",
-      "sender": "\"AliExpress.seller\" <promotion@aliexpress.com>",
-      "subject": "Our daily picks at US $3.00 off",
-      "date": "čtvrtek 1. října 2026 0:36:32",
+      "sender": "CrossFit <crossfit@mail.crossfit.com>",
+      "subject": "The Professional Coach - What It Really Takes To Coach CrossFit Well",
+      "date": "pátek 2. října 2026 1:00:50",
       "unread": true,
-      "preview": "Collect coupons inside & shop now ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ Daily specials in our store ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ",
+      "preview": "￼ ￼ The Habit of Effectiveness: What It Really Takes To Coach CrossFit Well Over Time ￼ Effectiveness is not just about hitting your targets. It is about preserving the ability to keep hitting them. For CrossFit coaches",
       "category": "ostatni",
-      "sender_short": "AliExpress.seller",
-      "sender_email": "promotion@aliexpress.com",
+      "sender_short": "CrossFit",
+      "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "AliExpress.seller propaguje denní speciální nabídky se slevami.",
+        "shrn": "Vzdělávací článek o efektivitě v coaching crossfitu. Jde o informační obsah určený ke vzdělávání.",
         "tyka_se": false,
         "akce": null
       }
