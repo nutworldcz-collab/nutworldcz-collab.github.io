@@ -1,8 +1,88 @@
 {
-  "generated": "2026-10-04T08:24:20",
-  "total": 1,
+  "generated": "2026-10-04T12:00:25",
+  "total": 6,
   "spam_skipped": 0,
   "emails": [
+    {
+      "account": "Exchange",
+      "sender": "Jana Nývltová <jana.nyvltova@nutworld.cz>",
+      "subject": "Re: Vilgain - zpráva pro dodavatele - šarže",
+      "date": "neděle 4. října 2026 11:16:02",
+      "unread": true,
+      "preview": "No to by slo",
+      "category": "tym",
+      "sender_short": "Jana Nývltová",
+      "sender_email": "jana.nyvltova@nutworld.cz",
+      "ai": {
+        "shrn": "Jana Nývltová vyjadřuje svůj názor v diskusi o zprávě pro dodavatele Vilgain.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "FakturaceNutWorld <fakturace@nutworld.cz>",
+      "subject": "Re: Bery Jones - sáčky odpověď",
+      "date": "neděle 4. října 2026 10:54:22",
+      "unread": true,
+      "preview": "5000? Zasláno z Outlooku pro Android From: Jan Vlček <jan.vlcek@nutworld.cz> Sent: Sunday",
+      "category": "tym",
+      "sender_short": "FakturaceNutWorld",
+      "sender_email": "fakturace@nutworld.cz",
+      "ai": {
+        "shrn": "Potvrzení od fakturační osoby týkající se objednávky sáčků od Bery Jones s dotazem na množství 5000 kusů.",
+        "tyka_se": true,
+        "akce": "Potvrdit nebo upravit počet 5000 sáčků pro objednávku u Bery Jones"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Jana Nývltová <jana.nyvltova@nutworld.cz>",
+      "subject": "Re: Vilgain - zpráva pro dodavatele - šarže",
+      "date": "neděle 4. října 2026 10:49:38",
+      "unread": false,
+      "preview": "Ja si myslim",
+      "category": "tym",
+      "sender_short": "Jana Nývltová",
+      "sender_email": "jana.nyvltova@nutworld.cz",
+      "ai": {
+        "shrn": "Jana Nývltová vyjadřuje svůj názor v diskusi o zprávě pro dodavatele Vilgain.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Allegro <info@notifikace.allegro.cz>",
+      "subject": "DNES KONČÍME: Váš podzimní kupón expiruje 🚨",
+      "date": "neděle 4. října 2026 10:28:11",
+      "unread": true,
+      "preview": "￼ ￼ ￼ Dobrý den",
+      "category": "ostatni",
+      "sender_short": "Allegro",
+      "sender_email": "info@notifikace.allegro.cz",
+      "ai": {
+        "shrn": "Allegro notifikuje o vypršení podzimního kupónu - standardní promocionální email.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Letiště Praha <info@mailer.prg.aero>",
+      "subject": "Kam letos v zimě? Objevte nové destinace z Prahy (OS)",
+      "date": "neděle 4. října 2026 9:01:26",
+      "unread": true,
+      "preview": "Zobrazit webovou verzi ￼ Novinky z letiště ￼ Z Prahy za pravou zimou Zasněžené uličky",
+      "category": "ostatni",
+      "sender_short": "Letiště Praha",
+      "sender_email": "info@mailer.prg.aero",
+      "ai": {
+        "shrn": "Letiště Praha propaguje zimní destinace a novinky z letiště - standardní marketingový email.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
     {
       "account": "Google",
       "sender": "AliExpress <ae-mx-notify03@selections.aliexpress.com>",
@@ -14,7 +94,7 @@
       "sender_short": "AliExpress",
       "sender_email": "ae-mx-notify03@selections.aliexpress.com",
       "ai": {
-        "shrn": "Automatické notifikační email z AliExpress o nových produktech a slevách. Nejedná se o komunikaci vyžadující Janovo řešení.",
+        "shrn": "AliExpress nabízí nové produkty se slevami - standardní notifikace nových položek.",
         "tyka_se": false,
         "akce": null
       }
