@@ -9,6 +9,7 @@
     'morak72',   // Lucie Turková
     'jablon16',  // Renata Pošepná
     'ryba95',    // Rita Vozáková
+    'louka43',   // Simca
   ];
 
   const KEY = 'nw_access';
