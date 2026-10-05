@@ -80,8 +80,9 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 
 .firma-hdr{padding:14px 18px 12px;border-bottom:2px solid var(--kraft);display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
 .firma-name{font-family:'Exo 2',sans-serif;font-weight:800;font-size:16px;color:var(--bd)}
-.firma-meta{font-size:11px;color:#999;margin-top:3px}
-.firma-meta strong{color:#666}
+.firma-meta{font-size:13px;color:#555;margin-top:5px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.firma-meta strong{color:#1a1a1a;font-weight:800}
+.firma-meta .meta-val{font-size:14px;font-weight:800;color:#1a1a1a}
 .firma-hdr-right{text-align:right;flex-shrink:0}
 .firma-total-kg{font-family:'Exo 2',sans-serif;font-size:20px;font-weight:800;color:var(--br)}
 .firma-total-lbl{font-size:10px;color:#bbb;text-transform:uppercase;letter-spacing:.5px}
@@ -628,8 +629,8 @@ function buildFirmaCard(card){
     <div>
       <div class="firma-name">${firma}${url?` <a href="${url}" target="_blank" style="font-size:11px;font-weight:400;color:var(--br);text-decoration:none;margin-left:6px" title="Trello">🃏</a>`:''}</div>
       <div class="firma-meta">
-        ${termin?`<strong>Termín dodání:</strong> ${termin}&ensp;`:''}
-        <strong>Objednávka:</strong> ${totalKs} ks
+        ${termin?`<span><strong>Termín dodání:</strong> <span class="meta-val">${termin}</span></span>`:''}
+        <span><strong>Objednávka:</strong> <span class="meta-val">${totalKs} ks</span></span>
       </div>
       ${vtInfo.html?`<div>${vtInfo.html}</div>`:''}
       ${totalC?`
