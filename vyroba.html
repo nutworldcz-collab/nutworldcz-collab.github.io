@@ -50,6 +50,14 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 
 .firma-card{background:white;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);overflow:hidden}
 .firma-card.all-done{border-left:4px solid var(--leaf)}
+.firma-card.tv-urgent{border-left:5px solid #c0392b;background:#fff7f7}
+.firma-card.tv-urgent .firma-hdr{background:#fff0f0;border-bottom-color:#e8b0b0}
+.firma-card.tv-soon{border-left:5px solid #e67e22}
+.firma-card.tv-soon .firma-hdr{background:#fff8f0;border-bottom-color:#f0c888}
+.tv-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;border-radius:5px;padding:2px 8px;margin-top:5px}
+.tv-badge.urgent{background:#fde8ec;color:#c0392b}
+.tv-badge.soon{background:#fff3cd;color:#b45309}
+.tv-badge.normal{background:#f1e6da;color:#5c381f}
 
 .firma-hdr{padding:14px 18px 12px;border-bottom:2px solid var(--kraft);display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
 .firma-name{font-family:'Exo 2',sans-serif;font-weight:800;font-size:16px;color:var(--bd)}
@@ -541,7 +549,8 @@ function buildFirmaCard(card){
   const totalKs=produkty.filter(p=>!p.isSluzba).reduce((s,p)=>s+p.ks,0);
 
   const el=document.createElement('div');
-  el.className='firma-card'+(allDone?' all-done':'');
+  const vtInfo=vyrobniTerminInfo(termin);
+  el.className='firma-card'+(allDone?' all-done':'')+(!allDone&&vtInfo.cls?' '+vtInfo.cls:'');
 
   // Header
   const hdr=document.createElement('div');
@@ -550,9 +559,10 @@ function buildFirmaCard(card){
     <div>
       <div class="firma-name">${firma}${url?` <a href="${url}" target="_blank" style="font-size:11px;font-weight:400;color:var(--br);text-decoration:none;margin-left:6px" title="Trello">🃏</a>`:''}</div>
       <div class="firma-meta">
-        ${termin?`<strong>Termín:</strong> ${termin}&ensp;`:''}
+        ${termin?`<strong>Termín dodání:</strong> ${termin}&ensp;`:''}
         <strong>Objednávka:</strong> ${totalKs} ks
       </div>
+      ${vtInfo.html?`<div>${vtInfo.html}</div>`:''}
       ${totalC?`
       <div class="firma-progress" style="margin-top:8px">
         <div class="prog-bar"><div class="prog-fill${pct===100?' full':''}" style="width:${pct}%"></div></div>
@@ -673,6 +683,39 @@ function buildFirmaCard(card){
   }, 0);
 
   return el;
+}
+
+/* ── Termín výroby (14 prac. dní před dodáním) ── */
+function calcVyrobniTermin(terminStr){
+  if(!terminStr) return null;
+  const [d,m,y]=terminStr.split('.').map(Number);
+  let date=new Date(y,m-1,d);
+  let days=14;
+  while(days>0){
+    date.setDate(date.getDate()-1);
+    const dow=date.getDay();
+    if(dow!==0&&dow!==6) days--;
+  }
+  return date;
+}
+function vyrobniTerminInfo(terminStr){
+  const vt=calcVyrobniTermin(terminStr);
+  if(!vt) return {html:'',cls:''};
+  const today=new Date(); today.setHours(0,0,0,0);
+  const vtDay=new Date(vt); vtDay.setHours(0,0,0,0);
+  const diff=Math.round((vtDay-today)/86400000);
+  const dd=String(vt.getDate()).padStart(2,'0');
+  const mm=String(vt.getMonth()+1).padStart(2,'0');
+  const fmt=`${dd}.${mm}.${vt.getFullYear()}`;
+  if(diff<0){
+    return {html:`<span class="tv-badge urgent">🔴 Výroba: ${fmt} (${Math.abs(diff)} dní po!)</span>`,cls:'tv-urgent'};
+  } else if(diff===0){
+    return {html:`<span class="tv-badge urgent">🔴 Výroba: ${fmt} — DNES!</span>`,cls:'tv-urgent'};
+  } else if(diff<=5){
+    return {html:`<span class="tv-badge soon">🟠 Výroba: ${fmt} (za ${diff} dny)</span>`,cls:'tv-soon'};
+  } else {
+    return {html:`<span class="tv-badge normal">🟢 Výroba: ${fmt}</span>`,cls:''};
+  }
 }
 
 /* ── Termín helpers ── */
