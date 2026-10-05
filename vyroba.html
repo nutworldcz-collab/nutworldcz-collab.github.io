@@ -177,6 +177,12 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .fks{font-size:11px;color:#bbb;white-space:nowrap}
 .fkg{font-size:13px;font-weight:700;color:var(--br);white-space:nowrap;min-width:55px;text-align:right}
 .frow.done .fkg{color:#ccc}
+.frow.frow-urgent{background:#fff0f0;border-left:4px solid #c0392b}
+.frow.frow-urgent .ffirma{color:#8b1a1a;font-weight:800}
+.frow.frow-urgent .fkg{color:#c0392b}
+.frow.frow-soon{background:#fff8f0;border-left:4px solid #e67e22}
+.frow.frow-soon .ffirma{color:#7a3d00;font-weight:700}
+.frow.frow-soon .fkg{color:#e67e22}
 
 /* Patička pack-sekce */
 .pack-foot{padding:5px 14px;background:var(--amb-soft);border-top:1px solid #ede0d4;display:flex;justify-content:space-between;align-items:center}
@@ -930,22 +936,31 @@ function renderVyroba(cards){
       `;
       sect.appendChild(phdr);
 
-      // Seřadit firmy podle termínu (nejdřívější nahoře)
-      pack.usages.sort((a,b)=>terminSort(a.termin,b.termin));
+      // Seřadit firmy podle termínu výroby (nejurgentnejší nahoře)
+      pack.usages.sort((a,b)=>{
+        const vtA=calcVyrobniTermin(a.termin);
+        const vtB=calcVyrobniTermin(b.termin);
+        return (vtA?vtA.getTime():Infinity)-(vtB?vtB.getTime():Infinity);
+      });
       pack.usages.forEach(u=>{
         const done=isDone(u.cardId,u.pi,u.ci);
         const uKg=gramToKg(pack.gram)*u.ks;
-        const tb=terminBadge(u.termin);
+        const vi=vyrobniTerminInfo(u.termin);
         const nota=getNote(u.cardId);
         const nid=`vn-${u.cardId}`;
 
         const frow=document.createElement('div');
-        frow.className='frow'+(done?' done':'');
+        let frowCls='frow'+(done?' done':'');
+        if(!done){
+          if(vi.cls==='tv-urgent') frowCls+=' frow-urgent';
+          else if(vi.cls==='tv-soon') frowCls+=' frow-soon';
+        }
+        frow.className=frowCls;
         frow.innerHTML=`
           <div class="fcheck"></div>
           <div class="ffirma-wrap">
             <span class="ffirma">${u.firma}</span>
-            ${tb}
+            ${vi.html}
           </div>
           <div class="fks">${u.ks} ks</div>
           <div class="fkg">${fmtKg(uKg)}</div>
