@@ -1,8 +1,88 @@
 {
-  "generated": "2026-10-05T04:16:48",
-  "total": 2,
-  "spam_skipped": 0,
+  "generated": "2026-10-05T07:30:23",
+  "total": 7,
+  "spam_skipped": 1,
   "emails": [
+    {
+      "account": "Exchange",
+      "sender": "FakturaceNutWorld <fakturace@nutworld.cz>",
+      "subject": "FW: Vyhodnocení - 09/2026 - Nutworld.cz",
+      "date": "pondělí 5. října 2026 7:10:38",
+      "unread": true,
+      "preview": "Ing. Jana Nývltová Nut World s.r.o. ￼ Email: fakturace@nutworld.cz Website: www.nutworld.cz Phone: 736548439 Mobile: 603271202 Address:",
+      "category": "tym",
+      "sender_short": "FakturaceNutWorld",
+      "sender_email": "fakturace@nutworld.cz",
+      "ai": {
+        "shrn": "Vyhodnocení účetnictví za září 2026 od finanční části Nutworld.cz.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Tomáš Hamerník <tomas.hamernik@nutworld.cz>",
+      "subject": "dotaz ke kalkulátoru",
+      "date": "pondělí 5. října 2026 6:14:42",
+      "unread": true,
+      "preview": "Ahoj Honzo, dělám kalkulaci pro nového zákazníka v Praze a ten si vybral některé výrobky na našich www stránkách. Jednak chce • 3 Kg balení v bulku pro snídaňový program • Pak chce 50g doypacky U 50g doypacků: Když zadám do kalkulátoru Kešu pražené solené ww320 pro doypack 50g tak mi vypočítá: • Oba",
+      "category": "tym",
+      "sender_short": "Tomáš Hamerník",
+      "sender_email": "tomas.hamernik@nutworld.cz",
+      "ai": {
+        "shrn": "Tomáš žádá Janu o pomoc s kalkulací cen pro nového zákazníka v Praze - konkrétně s výpočtem pro 50g doypacky kešu v kalkulátoru.",
+        "tyka_se": true,
+        "akce": "Zkontrolovat kalkulator a vyjasnit Tomášovi správné ceny pro 50g doypacky"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Tomáš Hamerník <tomas.hamernik@nutworld.cz>",
+      "subject": "RE: Vilgain - zpráva pro dodavatele - šarže",
+      "date": "pondělí 5. října 2026 5:24:08",
+      "unread": true,
+      "preview": "To by bylo asi v tuto dobu nejlepší řešení. Prosím",
+      "category": "tym",
+      "sender_short": "Tomáš Hamerník",
+      "sender_email": "tomas.hamernik@nutworld.cz",
+      "ai": {
+        "shrn": "Potvrzení od Tomáše k řešení problému se šarží Vilgain od dodavatele.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Tomáš Hamerník <tomas.hamernik@nutworld.cz>",
+      "subject": "RE: kalkulace Vilgain Tubusy",
+      "date": "pondělí 5. října 2026 5:20:03",
+      "unread": true,
+      "preview": "Ahoj Honzo, Ty kalkulace a ceny za jednotlivý druh už jsou dané. S tím se nyní hnout nedá. Tak to bylo domluvené podle prostoru",
+      "category": "tym",
+      "sender_short": "Tomáš Hamerník",
+      "sender_email": "tomas.hamernik@nutworld.cz",
+      "ai": {
+        "shrn": "Krátké potvrzení od Tomáše o domluvené cenové strategii pro Vilgain tubusy.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Tomáš Hamerník <tomas.hamernik@nutworld.cz>",
+      "subject": "RE: kalkulace Vilgain Tubusy",
+      "date": "pondělí 5. října 2026 5:14:10",
+      "unread": true,
+      "preview": "Ahoj Honzo, Bylo to domlouvané tak",
+      "category": "tym",
+      "sender_short": "Tomáš Hamerník",
+      "sender_email": "tomas.hamernik@nutworld.cz",
+      "ai": {
+        "shrn": "Krátké potvrzení od Tomáše o domluvené cenové strategii pro Vilgain tubusy.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
     {
       "account": "Google",
       "sender": "\"CrossFit\" <crossfit@mail.crossfit.com>",
@@ -14,7 +94,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "Email z CrossFitu obsahující workout of the day. Není relevantní pro Nutworld.cz.",
+        "shrn": "Propagační email z CrossFit komunity s informací o WorkOut of the Day.",
         "tyka_se": false,
         "akce": null
       }
@@ -30,7 +110,7 @@
       "sender_short": "AliExpress",
       "sender_email": "aeug-member-benefits23@deals.aliexpress.com",
       "ai": {
-        "shrn": "Propagační email od AliExpress na wholesale festival se slevami. Možná inspirace pro nákup zboží, ale není urgentní obchodní záležitost.",
+        "shrn": "Marketingový email z AliExpress o slevách na wholesale produkty.",
         "tyka_se": false,
         "akce": null
       }
