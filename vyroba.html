@@ -57,10 +57,13 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .firma-card.tv-soon .firma-hdr{background:#ffe8c0;border-bottom:3px solid #e67e22}
 .firma-card.tv-soon .firma-name{color:#7a3d00}
 /* Hotovo banner */
-.hotovo-banner{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;background:#e8f5e9;border-top:2px solid #4caf50}
-.hotovo-banner-txt{font-size:13px;font-weight:700;color:#2e7d32}
-.hotovo-btn{background:#2e7d32;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;transition:background .15s}
-.hotovo-btn:hover{background:#1b5e20}
+.hotovo-banner{padding:12px 18px;background:#e8f5e9;border-top:2px solid #4caf50}
+.hotovo-banner-txt{font-size:12px;font-weight:700;color:#2e7d32;margin-bottom:8px}
+.hotovo-btns{display:flex;flex-wrap:wrap;gap:8px}
+.hotovo-btn{border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all .15s;white-space:nowrap}
+.hotovo-btn.darky{background:#da1668;color:#fff}.hotovo-btn.darky:hover{background:#b01050}
+.hotovo-btn.verpet{background:#e67e22;color:#fff}.hotovo-btn.verpet:hover{background:#c06010}
+.hotovo-btn.done{background:#2e7d32;color:#fff}.hotovo-btn.done:hover{background:#1b5e20}
 .hotovo-btn.loading{opacity:.6;pointer-events:none}
 .tv-badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:800;border-radius:6px;padding:4px 10px;margin-top:6px;letter-spacing:.3px}
 .tv-badge.urgent{background:#c0392b;color:#fff;box-shadow:0 2px 6px rgba(192,57,43,.4)}
@@ -767,8 +770,12 @@ function buildFirmaCard(card){
     const banner=document.createElement('div');
     banner.className='hotovo-banner';
     banner.innerHTML=`
-      <span class="hotovo-banner-txt">✅ Všechno připraveno!</span>
-      <button class="hotovo-btn" onclick="moveCardHotovo('${id}',this.closest('.firma-card'))">✅ Přesunout na balírnu →</button>
+      <div class="hotovo-banner-txt">✅ Výroba hotová — kam přesunout?</div>
+      <div class="hotovo-btns">
+        <button class="hotovo-btn darky" onclick="moveCard('${id}','darky',this)">🎁 Dárkovna</button>
+        <button class="hotovo-btn verpet" onclick="moveCard('${id}','verpet',this)">🏭 VERPET Náchod</button>
+        <button class="hotovo-btn done"   onclick="moveCard('${id}','hotovo',this)">✅ Hotovo → zabalení</button>
+      </div>
     `;
     el.appendChild(banner);
   }
@@ -789,31 +796,33 @@ function printCard(el){
   root.innerHTML='';
 }
 
-/* ── Přesunout kartu do Hotovo ── */
-const LIST_HOTOVO='637f8c3b82eb5700f4cba921'; // Hotovo - čeká na zabalení
-async function moveCardHotovo(cardId, elCard){
-  const btn=elCard.querySelector('.hotovo-btn');
-  if(btn){btn.classList.add('loading');btn.textContent='⏳ Přesouvám…';}
+/* ── Přesunout kartu do jiného listu ── */
+const LISTS_MOVE={
+  darky:  {id:'637f728014868400154d877b', label:'Kompletuje se dárek - Dárkovna'},
+  verpet: {id:'652e0f7e1c2a2030e892c7d0', label:'Připravují - VERPET Náchod'},
+  hotovo: {id:'637f8c3b82eb5700f4cba921', label:'Hotovo - čeká na zabalení'},
+};
+async function moveCard(cardId, dest, btn){
+  const info=LISTS_MOVE[dest];
+  if(!info) return;
+  btn.classList.add('loading');
+  btn.textContent='⏳ Přesouvám…';
+  const elCard=btn.closest('.firma-card');
   try{
     const r=await fetch(`https://api.trello.com/1/cards/${cardId}?key=${KEY}&token=${TOKEN}`,{
       method:'PUT',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({idList:LIST_HOTOVO})
+      body:JSON.stringify({idList:info.id})
     });
     if(!r.ok) throw new Error('HTTP '+r.status);
-    // Animace odebrání
     elCard.style.transition='opacity .4s,transform .4s';
     elCard.style.opacity='0';
     elCard.style.transform='scale(.96)';
-    setTimeout(()=>{
-      elCard.remove();
-      // Přepočítat statistiky
-      const remaining=document.querySelectorAll('.firma-card:not(.all-done)').length;
-      if(!remaining) render();
-    },420);
+    setTimeout(()=>elCard.remove(),420);
   } catch(e){
-    if(btn){btn.classList.remove('loading');btn.innerHTML='✅ Přesunout na balírnu';}
-    alert('Chyba při přesouvání: '+e.message);
+    btn.classList.remove('loading');
+    btn.textContent='⚠️ Chyba — zkus znovu';
+    alert('Chyba: '+e.message);
   }
 }
 
