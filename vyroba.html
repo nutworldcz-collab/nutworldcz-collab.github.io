@@ -1005,7 +1005,10 @@ function renderVyroba(cards){
           <div class="fcheck"></div>
           <div class="ffirma-wrap">
             <span class="ffirma">${u.firma}</span>
-            ${vi.html}
+            <span style="display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:3px">
+              ${vi.html}
+              ${u.termin?`<span style="display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:600;color:#888;background:#f5f0ea;border-radius:4px;padding:2px 7px;white-space:nowrap">📅 Dodání: ${u.termin}</span>`:''}
+            </span>
           </div>
           <div class="fks">${u.ks} ks</div>
           <div class="fkg">${fmtKg(uKg)}</div>
