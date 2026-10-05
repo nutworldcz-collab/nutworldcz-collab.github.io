@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Priority skladníka — Nutworld</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;900&family=Source+Sans+3:wght@400;600&display=swap"/>
+<style>
+  :root {
+    --bg:        #f9f5f0;
+    --surface:   #f1e6da;
+    --border:    #d9c4ae;
+    --text:      #3a2510;
+    --text-muted:#7a5c3e;
+    --brand:     #83502e;
+    --brand-dk:  #5c381f;
+    --p1:        #c0181a; --p1-light: #fff0f0; --p1-border: #f5b8b8;
+    --p2:        #b86d00; --p2-light: #fff8ec; --p2-border: #f5d79a;
+    --p3:        #4a8800; --p3-light: #f2fbe8; --p3-border: #b6dfa0;
+    --p4:        #3a72a0; --p4-light: #edf5fd; --p4-border: #a8cfe8;
+    --p5:        #5f5f5f; --p5-light: #f5f5f5; --p5-border: #d4d4d4;
+    --p6:        #7a4a00; --p6-light: #fdf6ec; --p6-border: #e8c98a;
+    --p7:        #1f6b55; --p7-light: #edfaf5; --p7-border: #90d5bc;
+    --p8:        #444;    --p8-light: #f4f4f4; --p8-border: #ccc;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Source Sans 3', Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    padding: 24px 16px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--brand);
+    text-decoration: none;
+    margin-bottom: 20px;
+    opacity: 0.8;
+  }
+  .back-link:hover { opacity: 1; }
+  .page-header { text-align: center; margin-bottom: 24px; }
+  .page-header .eyebrow {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 2.5px; text-transform: uppercase;
+    color: var(--brand); margin-bottom: 6px;
+  }
+  .page-header h1 {
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 900; font-size: 26px;
+    color: var(--brand-dk); line-height: 1.15;
+  }
+  .page-header .subtitle {
+    margin-top: 5px; color: var(--text-muted); font-size: 13.5px;
+  }
+  .legend {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    justify-content: center; margin-bottom: 20px;
+  }
+  .legend-badge {
+    border-radius: 8px; padding: 7px 14px;
+    font-size: 13px; color: var(--text);
+    border: 1.5px solid;
+  }
+  .priority-list { display: flex; flex-direction: column; gap: 10px; }
+  .card {
+    border-radius: 12px; border: 1.5px solid var(--border);
+    overflow: hidden; background: var(--surface);
+  }
+  .card-header {
+    display: flex; align-items: flex-start;
+    gap: 14px; padding: 14px 16px 12px;
+  }
+  .num-badge {
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 900; font-size: 24px;
+    line-height: 1; min-width: 32px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .card-title-block { flex: 1; }
+  .card-urgency {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    margin-bottom: 2px; opacity: 0.85;
+  }
+  .card-title {
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 700; font-size: 17px;
+    line-height: 1.2; color: var(--text);
+  }
+  .card-desc {
+    margin-top: 3px; font-size: 13px;
+    color: var(--text-muted); line-height: 1.45;
+  }
+  .card-body {
+    border-top: 1px solid var(--border);
+    padding: 10px 16px 13px 16px;
+  }
+  .task-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .task-list li {
+    display: flex; align-items: flex-start;
+    gap: 9px; font-size: 13.5px; line-height: 1.4;
+  }
+  .task-list li .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    flex-shrink: 0; margin-top: 5px;
+  }
+  .task-list li span { color: var(--text); }
+  .tag {
+    display: inline-block; font-size: 10px;
+    font-weight: 700; letter-spacing: 0.6px;
+    padding: 1px 5px; border-radius: 4px;
+    margin-left: 4px; vertical-align: middle;
+    position: relative; top: -1px; white-space: nowrap;
+    border: 1px solid;
+  }
+  .p1 .card-header { background: var(--p1-light); }
+  .p1 { border-color: var(--p1-border); }
+  .p1 .num-badge, .p1 .card-urgency { color: var(--p1); }
+  .p1 .task-list .dot { background: var(--p1); }
+  .p1 .card-body { border-color: var(--p1-border); }
+  .p2 .card-header { background: var(--p2-light); }
+  .p2 { border-color: var(--p2-border); }
+  .p2 .num-badge, .p2 .card-urgency { color: var(--p2); }
+  .p2 .task-list .dot { background: var(--p2); }
+  .p2 .card-body { border-color: var(--p2-border); }
+  .p3 .card-header { background: var(--p3-light); }
+  .p3 { border-color: var(--p3-border); }
+  .p3 .num-badge, .p3 .card-urgency { color: var(--p3); }
+  .p3 .task-list .dot { background: var(--p3); }
+  .p3 .card-body { border-color: var(--p3-border); }
+  .p4 .card-header { background: var(--p4-light); }
+  .p4 { border-color: var(--p4-border); }
+  .p4 .num-badge, .p4 .card-urgency { color: var(--p4); }
+  .p4 .task-list .dot { background: var(--p4); }
+  .p4 .card-body { border-color: var(--p4-border); }
+  .p5 .card-header { background: var(--p5-light); }
+  .p5 { border-color: var(--p5-border); }
+  .p5 .num-badge, .p5 .card-urgency { color: var(--p5); }
+  .p5 .task-list .dot { background: var(--p5); }
+  .p5 .card-body { border-color: var(--p5-border); }
+  .p6 .card-header { background: var(--p6-light); }
+  .p6 { border-color: var(--p6-border); }
+  .p6 .num-badge, .p6 .card-urgency { color: var(--p6); }
+  .p6 .task-list .dot { background: var(--p6); }
+  .p6 .card-body { border-color: var(--p6-border); }
+  .p7 .card-header { background: var(--p7-light); }
+  .p7 { border-color: var(--p7-border); }
+  .p7 .num-badge, .p7 .card-urgency { color: var(--p7); }
+  .p7 .task-list .dot { background: var(--p7); }
+  .p7 .card-body { border-color: var(--p7-border); }
+  .p8 .card-header { background: var(--p8-light); }
+  .p8 { border-color: var(--p8-border); }
+  .p8 .num-badge, .p8 .card-urgency { color: var(--p8); }
+  .p8 .task-list .dot { background: var(--p8); }
+  .p8 .card-body { border-color: var(--p8-border); }
+  .footer-note {
+    margin-top: 20px; padding: 11px 16px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; font-size: 13px;
+    color: var(--text-muted); text-align: center;
+  }
+  .footer-note strong { color: var(--brand); }
+</style>
+</head>
+<body>
+
+<a class="back-link" href="/">← Zpět na rozcestník</a>
+
+<div class="page-header">
+  <div class="eyebrow">Nutworld.cz — Provoz skladu</div>
+  <h1>Priority práce skladníka</h1>
+  <div class="subtitle">Řaď se podle čísel — čím nižší číslo, tím dřív to musí být hotové.</div>
+</div>
+
+<div class="legend">
+  <div class="legend-badge" style="background:var(--p1-light);border-color:var(--p1-border);">
+    <strong style="color:var(--p1);font-family:'Exo 2',sans-serif;">ZJ</strong> = hotové zboží na expedici
+  </div>
+  <div class="legend-badge" style="background:var(--p4-light);border-color:var(--p4-border);">
+    <strong style="color:var(--p4);font-family:'Exo 2',sans-serif;">DJ</strong> = polotovar na dárkovnu
+  </div>
+</div>
+
+<div class="priority-list">
+
+  <div class="card p1">
+    <div class="card-header">
+      <div class="num-badge">1</div>
+      <div class="card-title-block">
+        <div class="card-urgency">Ráno — než začne výroba</div>
+        <div class="card-title">Dofasování zboží na výrobu</div>
+        <div class="card-desc">Výroba nesmí stát kvůli chybějícímu materiálu. Tohle jde vždy jako první.</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <ul class="task-list">
+        <li><div class="dot"></div><span>Zkontrolovat, co výroba na dnešek potřebuje (suroviny, obaly, štítky)</span></li>
+        <li><div class="dot"></div><span>Dofasovat materiál ze skladu na výrobní pracoviště</span></li>
+        <li><div class="dot"></div><span>Chybí-li cokoliv, okamžitě nahlásit vedoucímu — ne až při výrobě</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card p2">
+    <div class="card-header">
+      <div class="num-badge">2</div>
+      <div class="card-title-block">
+        <div class="card-urgency">Při příjezdu dopravce — okamžitě, nesmí čekat</div>
+        <div class="card-title">Příjem nebo expedice zboží</div>
+        <div class="card-desc">Dopravce přijede buď vyzvednout zboží od nás, nebo ho přivézt. V obou případech musíš být připraven ihned — čekání není možné.</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <ul class="task-list">
+        <li><div class="dot"></div><span><strong>Jede pro zboží od nás:</strong> mít připravené zásilky <span class="tag" style="background:var(--p1-light);color:var(--p1);border-color:var(--p1-border);">ZJ</span> a předat dopravci s doklady</span></li>
+        <li><div class="dot"></div><span><strong>Jede k nám s dodávkou:</strong> okamžitě složit přivezené zboží, zkontrolovat neporušenost, podepsat doklady</span></li>
+        <li><div class="dot"></div><span>Přijaté zboží přesunout ze zóny příjmu — uvolnit místo pro další příjem</span></li>
+        <li><div class="dot"></div><span>Vždy podepsat a archivovat přepravní a dodací listy</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card p3">
+    <div class="card-header">
+      <div class="num-badge">3</div>
+      <div class="card-title-block">
+        <div class="card-urgency">Po příjmu — ještě tentýž den</div>
+        <div class="card-title">Příjem zboží do systému K2</div>
+        <div class="card-desc">Přijaté zboží fyzicky zkontrolovat a přenést do K2. Dokud není v systému, neexistuje.</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <ul class="task-list">
+        <li><div class="dot"></div><span>Porovnat přijaté zboží s dodacím listem (druh, množství, gramáž, šarže)</span></li>
+        <li><div class="dot"></div><span>Zkontrolovat datum trvanlivosti — neskladovat expirované zboží</span></li>
+        <li><div class="dot"></div><span>Zadat příjem do K2 — správná položka, množství, datum expirace</span></li>
+        <li><div class="dot"></div><span>Nesrovnalost oproti dodacímu listu? Okamžitě zapsat a nahlásit</span></li>
+        <li><div class="dot"></div><span>Po kontrole zboží donést dodací list nebo fakturu na <strong>nákup</strong> — ten potvrdí příjem</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card p4">
+    <div class="card-header">
+      <div class="num-badge">4</div>
+      <div class="card-title-block">
+        <div class="card-urgency">Po zadání do K2</div>
+        <div class="card-title">Přesun ZJ a DJ na správné místo</div>
+        <div class="card-desc">Hotové zásilky a polotovary se přesouvají tam, kde na ně čeká expedice nebo dárkovna.</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <ul class="task-list">
+        <li><div class="dot"></div><span>Hotové zboží na expedici <span class="tag" style="background:var(--p1-light);color:var(--p1);border-color:var(--p1-border);">ZJ</span> — přesunout na expediční sklad, seřadit k odvozu</span></li>
+        <li><div class="dot"></div><span>Polotovary <span class="tag" style="background:var(--p4-light);color:var(--p4);border-color:var(--p4-border);">DJ</span> — přesunout na dárkovnu k dalšímu zpracování</span></li>
+        <li><div class="dot"></div><span>Naskladněné suroviny uložit na správná místa dle FIFO (starší dopředu)</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card p5">
+    <div class="card-header">
+      <div class="num-badge">5</div>
+      <div class="card-title-block">
+        <div class="card-urgency">Průběžně celý den</div>
+        <div class="card-title">Logistika a pořádek skladu</div>
+        <div class="card-desc">Průchodnost skladu a připravenost materiálu — základ efektivní práce pro všechny.</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <ul class="task-list">
+        <li><div class="dot"></div><span>Palety v regálu — každá paleta na svém místě, stabilně uložená</span></li>
+        <li><div class="dot"></div><span>Prázdné palety připravené na <span class="tag" style="background:var(--p4-light);color:var(--p4);border-color:var(--p4-border);">DJ</span> a <span class="tag" style="background:var(--p1-light);color:var(--p1);border-color:var(--p1-border);">ZJ</span> — na vyhrazeném místě</span></li>
+        <li><div class="dot"></div><span>Přebytečné palety — pouze jedno místo, stohovatelné a uklizené</span></li>
+        <li><div class="dot"></div><span>Stohovatelné krabice — výhradně na svých pozicích, nic volně</span></li>
+        <li><div class="dot"></div><span>Průchody a uličky volné — žádné překážky</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card p6">
+    <div class="card-header">
+      <div class="num-badge">6</div>
+      <div class="card-title-block">
+        <div class="card-urgency">Dle potřeby</div>
+        <div class="card-title">Odebírání palet a krabic z expedičního skladu</div>
+        <div class="card-desc">Expediční sklad se průběžně vyprazdňuje — zajistit volné místo pro nové zásilky.</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <ul class="task-list">
+        <li><div class="dot"></div><span>Odebrat palety a krabice, které již byly expedovány nebo jsou prázdné</span></li>
+        <li><div class="dot"></div><span>Prázdné palety vrátit na vyhrazené místo, prázdné krabice roztřídit</span></li>
+        <li><div class="dot"></div><span>Udržovat expediční sklad přehledný — vždy víme, co tam je a co ne</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card p7">
+    <div class="card-header">
+      <div class="num-badge">7</div>
+      <div class="card-title-block">
+        <div class="card-urgency">Každý den — povinné</div>
+        <div class="card-title">Zápis teploty skladu</div>
+        <div class="card-desc">Legislativní povinnost. Chybějící záznam = problém při kontrole. Nesmí být přeskočeno.</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <ul class="task-list">
+        <li><div class="dot"></div><span>Odečíst teplotu z teploměru — zapsat datum, čas a hodnotu</span></li>
+        <li><div class="dot"></div><span>Teplota mimo rozsah? Okamžitě nahlásit — nečekat na konec dne</span></li>
+        <li><div class="dot"></div><span>Záznam uložit na správné místo (arch / systém dle pokynů vedoucího)</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card p8">
+    <div class="card-header">
+      <div class="num-badge">8</div>
+      <div class="card-title-block">
+        <div class="card-urgency">Konec dne — bez výjimky</div>
+        <div class="card-title">Čistota skladu</div>
+        <div class="card-desc">Den nekončí, dokud není sklad čistý. Čistý sklad = rychlý start zítra a dodržení hygienických norem.</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <ul class="task-list">
+        <li><div class="dot"></div><span>Znovu použitelné krabice — vyčistit a připravit na expedici</span></li>
+        <li><div class="dot"></div><span>Sběr plastů a papíru — roztřídit do správných kontejnerů</span></li>
+        <li><div class="dot"></div><span>Zamést podlahy po paletách a denním provozu</span></li>
+        <li><div class="dot"></div><span>Zkontrolovat celý sklad — na konci dne musí být vše čisté a uklizené</span></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-note">
+  <strong>Pravidlo:</strong> Výroba nikdy nečeká na sklad — dofasování je vždy první. Při pochybnostech o prioritě se zeptej vedoucího.
+</div>
+
+<script src="pin-guard.js"></script>
+</body>
+</html>
