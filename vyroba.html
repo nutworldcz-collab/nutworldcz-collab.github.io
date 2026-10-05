@@ -50,14 +50,27 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 
 .firma-card{background:white;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);overflow:hidden}
 .firma-card.all-done{border-left:4px solid var(--leaf)}
-.firma-card.tv-urgent{border-left:5px solid #c0392b;background:#fff7f7}
-.firma-card.tv-urgent .firma-hdr{background:#fff0f0;border-bottom-color:#e8b0b0}
-.firma-card.tv-soon{border-left:5px solid #e67e22}
-.firma-card.tv-soon .firma-hdr{background:#fff8f0;border-bottom-color:#f0c888}
-.tv-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;border-radius:5px;padding:2px 8px;margin-top:5px}
-.tv-badge.urgent{background:#fde8ec;color:#c0392b}
-.tv-badge.soon{background:#fff3cd;color:#b45309}
-.tv-badge.normal{background:#f1e6da;color:#5c381f}
+.firma-card.tv-urgent{border-left:8px solid #c0392b;background:#fff2f2;box-shadow:0 4px 16px rgba(192,57,43,.22)}
+.firma-card.tv-urgent .firma-hdr{background:#ffd6d6;border-bottom:3px solid #c0392b}
+.firma-card.tv-urgent .firma-name{color:#8b1a1a}
+.firma-card.tv-soon{border-left:8px solid #e67e22;background:#fffaf2;box-shadow:0 4px 14px rgba(230,126,34,.18)}
+.firma-card.tv-soon .firma-hdr{background:#ffe8c0;border-bottom:3px solid #e67e22}
+.firma-card.tv-soon .firma-name{color:#7a3d00}
+.tv-badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:800;border-radius:6px;padding:4px 10px;margin-top:6px;letter-spacing:.3px}
+.tv-badge.urgent{background:#c0392b;color:#fff;box-shadow:0 2px 6px rgba(192,57,43,.4)}
+.tv-badge.soon{background:#e67e22;color:#fff;box-shadow:0 2px 6px rgba(230,126,34,.35)}
+.tv-badge.normal{background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7}
+/* Filter bar */
+.tv-filter-bar{display:flex;gap:8px;flex-wrap:wrap;padding:0 0 14px}
+.tv-fbtn{border:2px solid transparent;border-radius:8px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s}
+.tv-fbtn.all{background:#f1e6da;color:#5c381f;border-color:#d4c0a8}
+.tv-fbtn.all.active{background:#5c381f;color:#fff;border-color:#5c381f}
+.tv-fbtn.urg{background:#fde8ec;color:#c0392b;border-color:#e8b0b0}
+.tv-fbtn.urg.active{background:#c0392b;color:#fff;border-color:#c0392b}
+.tv-fbtn.soon{background:#fff3cd;color:#b45309;border-color:#f0c888}
+.tv-fbtn.soon.active{background:#e67e22;color:#fff;border-color:#e67e22}
+.tv-fbtn.ok{background:#e8f5e9;color:#2e7d32;border-color:#a5d6a7}
+.tv-fbtn.ok.active{background:#2e7d32;color:#fff;border-color:#2e7d32}
 
 .firma-hdr{padding:14px 18px 12px;border-bottom:2px solid var(--kraft);display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
 .firma-name{font-family:'Exo 2',sans-serif;font-weight:800;font-size:16px;color:var(--bd)}
@@ -521,14 +534,56 @@ function updateSummary(cards){
 }
 
 /* ═══ FIRMY VIEW ═══ */
+let tvFilter='all';
 function renderFirmy(cards){
   const mc=document.getElementById('main-content');
   if(!cards.length){mc.innerHTML='<div class="empty-state">Žádné zakázky k zobrazení.</div>';return;}
+
+  // Seřadit podle termínu výroby (nejurgentnejší nahoře)
+  const sorted=[...cards].sort((a,b)=>{
+    const vtA=calcVyrobniTermin(a.termin);
+    const vtB=calcVyrobniTermin(b.termin);
+    const msA=vtA?vtA.getTime():Infinity;
+    const msB=vtB?vtB.getTime():Infinity;
+    return msA-msB;
+  });
+
+  // Spočítat počty pro filter
+  let cntUrg=0,cntSoon=0,cntOk=0;
+  sorted.forEach(c=>{
+    const vi=vyrobniTerminInfo(c.termin);
+    if(vi.cls==='tv-urgent') cntUrg++;
+    else if(vi.cls==='tv-soon') cntSoon++;
+    else cntOk++;
+  });
+
+  // Filter bar
+  const fbar=document.createElement('div');
+  fbar.className='tv-filter-bar';
+  fbar.innerHTML=`
+    <button class="tv-fbtn all${tvFilter==='all'?' active':''}" onclick="setTvFilter('all')">Vše (${sorted.length})</button>
+    ${cntUrg?`<button class="tv-fbtn urg${tvFilter==='urgent'?' active':''}" onclick="setTvFilter('urgent')">🔴 Urgentní (${cntUrg})</button>`:''}
+    ${cntSoon?`<button class="tv-fbtn soon${tvFilter==='soon'?' active':''}" onclick="setTvFilter('soon')">🟠 Brzy (${cntSoon})</button>`:''}
+    ${cntOk?`<button class="tv-fbtn ok${tvFilter==='ok'?' active':''}" onclick="setTvFilter('ok')">🟢 OK (${cntOk})</button>`:''}
+  `;
+
+  // Filtrovat
+  const filtered=tvFilter==='all'?sorted:sorted.filter(c=>{
+    const vi=vyrobniTerminInfo(c.termin);
+    if(tvFilter==='urgent') return vi.cls==='tv-urgent';
+    if(tvFilter==='soon') return vi.cls==='tv-soon';
+    if(tvFilter==='ok') return vi.cls==='';
+    return true;
+  });
+
   const list=document.createElement('div');
   list.className='firmy-list';
-  cards.forEach(card=>list.appendChild(buildFirmaCard(card)));
-  mc.innerHTML=''; mc.appendChild(list);
+  filtered.forEach(card=>list.appendChild(buildFirmaCard(card)));
+  mc.innerHTML='';
+  mc.appendChild(fbar);
+  mc.appendChild(list);
 }
+function setTvFilter(f){tvFilter=f;render();}
 
 function buildFirmaCard(card){
   const {id,firma,termin,produkty,url}=card;
