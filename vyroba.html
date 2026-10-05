@@ -281,6 +281,15 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .vz-empty a{color:var(--br);text-decoration:none;font-weight:700}
 .vz-empty a:hover{text-decoration:underline}
 
+/* Personalizace + Interní info box */
+.card-info-box{padding:10px 18px;display:flex;flex-direction:column;gap:6px;border-bottom:1px solid var(--kraft)}
+.card-info-section{display:flex;flex-direction:column;gap:2px}
+.card-info-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#888}
+.card-info-body{font-size:12px;color:#1a1a1a;line-height:1.5}
+.card-info-body strong{color:#5c381f}
+.card-info-interni{background:#fff8e8;border-left:3px solid var(--amb);border-radius:0 6px 6px 0;padding:6px 10px}
+.card-info-personal{background:#f0f7ff;border-left:3px solid #4a90d9;border-radius:0 6px 6px 0;padding:6px 10px}
+.card-info-volny{background:#fff3cd;border-left:3px solid #e67e22;border-radius:0 6px 6px 0;padding:6px 10px;font-size:12px;color:#7a3d00;font-weight:600}
 /* Tisk */
 .print-btn{background:none;border:1px solid #d4c0a8;border-radius:6px;padding:4px 9px;font-size:11px;color:#999;cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0}
 .print-btn:hover{background:#f1e6da;border-color:#a0622a;color:var(--bd)}
@@ -475,7 +484,35 @@ function parseCard(card){
     }
     if(cur) produkty.push(cur);
   }
-  return {id,firma,termin,idList,produkty,url};
+  // Personalizace sekce
+  const psect=desc.match(/##\s*✏️\s*Personalizace\n+([\s\S]*?)(?:\n##\s|$)/);
+  let personalizace='';
+  if(psect){
+    personalizace=psect[1].trim()
+      .replace(/\*\*([^*]+):\*\*/g,'<strong>$1:</strong>')
+      .replace(/\n/g,'<br>');
+  }
+  // Interní sekce
+  const isect=desc.match(/##\s*🔒\s*Interní\n+([\s\S]*?)(?:\n##\s|$)/);
+  let interni='';
+  if(isect){
+    interni=isect[1].trim()
+      .replace(/_([^_]+)_/g,'<em>$1</em>')
+      .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
+      .replace(/\n/g,'<br>');
+  }
+  // Volný text (instrukce mimo strukturu — před ## 🛒)
+  const bodyMatch=desc.match(/(?:^|\n)(?:Zakázka[^\n]*\n+|##[^\n]*\n+)*([\s\S]*?)(?=\n##\s*[🛒✏️🔒💰]|\n\*\*Termín)/);
+  let volnyText='';
+  if(bodyMatch){
+    volnyText=bodyMatch[1].trim()
+      .replace(/^\[.*?\]\(.*?\)\s*/gm,'') // odeber přílohy
+      .replace(/^\*\*Zakázka.*\*\*\s*/gm,'')
+      .trim();
+    if(volnyText.length<5) volnyText='';
+  }
+
+  return {id,firma,termin,idList,produkty,url,personalizace,interni,volnyText};
 }
 
 function process(){
@@ -659,6 +696,23 @@ function buildFirmaCard(card){
     </div>
   `;
   el.appendChild(hdr);
+
+  // Info box: personalizace + interní + volný text
+  const {personalizace='',interni='',volnyText=''}=card;
+  if(personalizace||interni||volnyText){
+    const box=document.createElement('div');
+    box.className='card-info-box';
+    if(volnyText){
+      box.innerHTML+=`<div class="card-info-volny">⚠️ ${volnyText}</div>`;
+    }
+    if(personalizace){
+      box.innerHTML+=`<div class="card-info-section"><div class="card-info-label">✏️ Personalizace</div><div class="card-info-body card-info-personal">${personalizace}</div></div>`;
+    }
+    if(interni){
+      box.innerHTML+=`<div class="card-info-section"><div class="card-info-label">🔒 Interní</div><div class="card-info-body card-info-interni">${interni}</div></div>`;
+    }
+    el.appendChild(box);
+  }
 
   // Dárkové produkty
   const darkyWrap=document.createElement('div');
