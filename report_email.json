@@ -1,91 +1,125 @@
 {
-  "generated": "2026-10-05T07:30:23",
-  "total": 7,
+  "generated": "2026-10-05T12:00:41",
+  "total": 11,
   "spam_skipped": 1,
   "emails": [
     {
       "account": "Exchange",
-      "sender": "FakturaceNutWorld <fakturace@nutworld.cz>",
-      "subject": "FW: Vyhodnocení - 09/2026 - Nutworld.cz",
-      "date": "pondělí 5. října 2026 7:10:38",
+      "sender": "Šárka Deusová <sarka.deusova@mk-rako.cz>",
+      "subject": "RE: vzorky MK keramika",
+      "date": "pondělí 5. října 2026 10:44:07",
       "unread": true,
-      "preview": "Ing. Jana Nývltová Nut World s.r.o. ￼ Email: fakturace@nutworld.cz Website: www.nutworld.cz Phone: 736548439 Mobile: 603271202 Address:",
-      "category": "tym",
-      "sender_short": "FakturaceNutWorld",
-      "sender_email": "fakturace@nutworld.cz",
+      "preview": "Dobrý den, děkuji za zaslání. Mohu poprosit ještě o následující úpravy? 1. Dárková krabice XXL – na nalepenou etiketu přidat logo pod text „Veselé Vánoce“ 2. dárková krabice XL+L – prosím o variantu s visačkou s tím",
+      "category": "ostatni",
+      "sender_short": "Šárka Deusová",
+      "sender_email": "sarka.deusova@mk-rako.cz",
       "ai": {
-        "shrn": "Vyhodnocení účetnictví za září 2026 od finanční části Nutworld.cz.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Tomáš Hamerník <tomas.hamernik@nutworld.cz>",
-      "subject": "dotaz ke kalkulátoru",
-      "date": "pondělí 5. října 2026 6:14:42",
-      "unread": true,
-      "preview": "Ahoj Honzo, dělám kalkulaci pro nového zákazníka v Praze a ten si vybral některé výrobky na našich www stránkách. Jednak chce • 3 Kg balení v bulku pro snídaňový program • Pak chce 50g doypacky U 50g doypacků: Když zadám do kalkulátoru Kešu pražené solené ww320 pro doypack 50g tak mi vypočítá: • Oba",
-      "category": "tym",
-      "sender_short": "Tomáš Hamerník",
-      "sender_email": "tomas.hamernik@nutworld.cz",
-      "ai": {
-        "shrn": "Tomáš žádá Janu o pomoc s kalkulací cen pro nového zákazníka v Praze - konkrétně s výpočtem pro 50g doypacky kešu v kalkulátoru.",
+        "shrn": "Šárka Deusová požaduje úpravy na darových krabicích MK keramiky — přidání loga na etiketu XXL krabice a variantu s visačkou pro XL+L.",
         "tyka_se": true,
-        "akce": "Zkontrolovat kalkulator a vyjasnit Tomášovi správné ceny pro 50g doypacky"
+        "akce": "Projít požadavky se Šárkou, schválit nebo upřesnit úpravy darových krabiček a sdělit termín realizace"
       }
     },
     {
       "account": "Exchange",
-      "sender": "Tomáš Hamerník <tomas.hamernik@nutworld.cz>",
-      "subject": "RE: Vilgain - zpráva pro dodavatele - šarže",
-      "date": "pondělí 5. října 2026 5:24:08",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 10:28 (5. října 2026)",
+      "date": "pondělí 5. října 2026 10:29:50",
       "unread": true,
-      "preview": "To by bylo asi v tuto dobu nejlepší řešení. Prosím",
-      "category": "tym",
-      "sender_short": "Tomáš Hamerník",
-      "sender_email": "tomas.hamernik@nutworld.cz",
+      "preview": "￼ Zde je nejnovější... ￼ Renata Pošepná přesunul(a) kartu ALZA - EDI/2026/36 do sloupce Připravují se komponenty - Balírna na nástěnce Firmy dárky + objednávky Odpovědět e-mailem Termín je brzy... IMI 2604617 na nástěnce Firmy dárky + objednávky s termínem má termín za 2 dny Odpovědět e-mailem 👀 Pod",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Renata Pošepná vložil/a komentář na kartu objednávka REDA krabičky s termíne do 9.10.2026 na nástěnce Firmy dárky + objednávky",
+      "date": "pondělí 5. října 2026 9:39:43",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Renata Pošepná okomentoval(a) kartu objednávka REDA krabičky s termíne do 9.10.2026 na nástěnce Firmy dárky + objednávky @hamerniktomas Prosím",
+      "category": "b2b",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com",
       "ai": {
-        "shrn": "Potvrzení od Tomáše k řešení problému se šarží Vilgain od dodavatele.",
-        "tyka_se": false,
-        "akce": null
+        "shrn": "Trello notifikace o komentáři od Renaty Pošepné na kartě objednávky REDA krabiček s termínem do 9.10.2026.",
+        "tyka_se": true,
+        "akce": "Zkontrolovat Trello kartu a přečíst si komentář Renaty Pošepné k objednávce"
       }
     },
     {
       "account": "Exchange",
-      "sender": "Tomáš Hamerník <tomas.hamernik@nutworld.cz>",
-      "subject": "RE: kalkulace Vilgain Tubusy",
-      "date": "pondělí 5. října 2026 5:20:03",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Jana Nývltová přesunul/a kartu EMEDIS - 800260032 do sloupce Je zadáno v k2 na nástěnce Firmy dárky + objednávky",
+      "date": "pondělí 5. října 2026 9:32:37",
       "unread": true,
-      "preview": "Ahoj Honzo, Ty kalkulace a ceny za jednotlivý druh už jsou dané. S tím se nyní hnout nedá. Tak to bylo domluvené podle prostoru",
-      "category": "tym",
-      "sender_short": "Tomáš Hamerník",
-      "sender_email": "tomas.hamernik@nutworld.cz",
+      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová přesunul(a) kartu EMEDIS - 800260032 do sloupce Je zadáno v k2 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 9:27 (5. října 2026)",
+      "date": "pondělí 5. října 2026 9:29:24",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová vás přidal(a) na kartu EMEDIS - 800260032 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem ￼ Jana Nývltová přidal(a) termín splnění na kartu EMEDIS - 800260032 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Renata Pošepná tě zmínil/a na kartě MK keramika na nástěnce Firmy dárky + objednávky",
+      "date": "pondělí 5. října 2026 8:57:51",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Renata Pošepná vás zmínil(a) na kartě MK keramika na nástěnce Firmy dárky + objednávky @card krabičky 2x50 gravír objednán Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 8:44 (5. října 2026)",
+      "date": "pondělí 5. října 2026 8:46:35",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová vás přidal(a) na kartu Náchod - Malé lázně na nástěnce Firmy dárky + objednávky Odpovědět e-mailem ￼ Jana Nývltová přidal(a) termín splnění na kartu Náchod - Malé lázně na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdro",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "claudie.nutworld.cz@gmail.com",
+      "subject": "⚠️ ZKONTROLUJ · Denní stav automatizací · 5.10.",
+      "date": "pondělí 5. října 2026 8:45:13",
+      "unread": true,
+      "preview": "DENNÍ ZDRAVOTNÍ REPORT · NUTWORLD ⚠️ Zkontroluj automatizace 5. 10. 2026",
+      "category": "ostatni",
+      "sender_short": "claudie.nutworld.cz@gmail.com",
+      "sender_email": "claudie.nutworld.cz@gmail.com",
       "ai": {
-        "shrn": "Krátké potvrzení od Tomáše o domluvené cenové strategii pro Vilgain tubusy.",
-        "tyka_se": false,
-        "akce": null
+        "shrn": "Automatizovaný denní report upozorňující na kontrolu stavu automatizací na Nutworld.cz ze 5.10.2026.",
+        "tyka_se": true,
+        "akce": "Zkontrolovat denní stav automatizací a ověřit, zda vše funguje správně"
       }
     },
     {
       "account": "Exchange",
-      "sender": "Tomáš Hamerník <tomas.hamernik@nutworld.cz>",
-      "subject": "RE: kalkulace Vilgain Tubusy",
-      "date": "pondělí 5. října 2026 5:14:10",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Renata Pošepná připojil/a přílohu obr%C3%A1zek (3).jpeg ke kartě Víno z kobylí na nástěnce Firmy dárky + objednávky",
+      "date": "pondělí 5. října 2026 8:20:31",
       "unread": true,
-      "preview": "Ahoj Honzo, Bylo to domlouvané tak",
-      "category": "tym",
-      "sender_short": "Tomáš Hamerník",
-      "sender_email": "tomas.hamernik@nutworld.cz",
-      "ai": {
-        "shrn": "Krátké potvrzení od Tomáše o domluvené cenové strategii pro Vilgain tubusy.",
-        "tyka_se": false,
-        "akce": null
-      }
+      "preview": "￼ Zde je nejnovější... ￼ Renata Pošepná připojil(a) přílohu obr%C3%A1zek (3).jpeg ke kartě Víno z kobylí na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
     },
     {
       "account": "Google",
-      "sender": "\"CrossFit\" <crossfit@mail.crossfit.com>",
+      "sender": "CrossFit <crossfit@mail.crossfit.com>",
       "subject": "261005 Workout of the Day: Fran",
       "date": "pondělí 5. října 2026 2:30:27",
       "unread": true,
@@ -94,7 +128,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "Propagační email z CrossFit komunity s informací o WorkOut of the Day.",
+        "shrn": "E-mail od CrossFitu s Workout of the Day — jedná se o spam nebo newsletter bez relevance k byznysu.",
         "tyka_se": false,
         "akce": null
       }
@@ -110,7 +144,7 @@
       "sender_short": "AliExpress",
       "sender_email": "aeug-member-benefits23@deals.aliexpress.com",
       "ai": {
-        "shrn": "Marketingový email z AliExpress o slevách na wholesale produkty.",
+        "shrn": "Propagační e-mail z AliExpress o Wholesale Festu se slevami — nevyžaduje Janovu akci.",
         "tyka_se": false,
         "akce": null
       }
