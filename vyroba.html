@@ -56,6 +56,12 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .firma-card.tv-soon{border-left:8px solid #e67e22;background:#fffaf2;box-shadow:0 4px 14px rgba(230,126,34,.18)}
 .firma-card.tv-soon .firma-hdr{background:#ffe8c0;border-bottom:3px solid #e67e22}
 .firma-card.tv-soon .firma-name{color:#7a3d00}
+/* Hotovo banner */
+.hotovo-banner{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;background:#e8f5e9;border-top:2px solid #4caf50}
+.hotovo-banner-txt{font-size:13px;font-weight:700;color:#2e7d32}
+.hotovo-btn{background:#2e7d32;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;transition:background .15s}
+.hotovo-btn:hover{background:#1b5e20}
+.hotovo-btn.loading{opacity:.6;pointer-events:none}
 .tv-badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:800;border-radius:6px;padding:4px 10px;margin-top:6px;letter-spacing:.3px}
 .tv-badge.urgent{background:#c0392b;color:#fff;box-shadow:0 2px 6px rgba(192,57,43,.4)}
 .tv-badge.soon{background:#e67e22;color:#fff;box-shadow:0 2px 6px rgba(230,126,34,.35)}
@@ -743,7 +749,46 @@ function buildFirmaCard(card){
     });
   }, 0);
 
+  // Hotovo banner — zobrazit jen když jsou všechny složky odškrtnuté
+  if(allDone && totalC>0){
+    const banner=document.createElement('div');
+    banner.className='hotovo-banner';
+    banner.innerHTML=`
+      <span class="hotovo-banner-txt">✅ Všechno připraveno!</span>
+      <button class="hotovo-btn" onclick="moveCardHotovo('${id}',this.closest('.firma-card'))">✅ Přesunout na balírnu →</button>
+    `;
+    el.appendChild(banner);
+  }
+
   return el;
+}
+
+/* ── Přesunout kartu do Hotovo ── */
+const LIST_HOTOVO='637f8c3b82eb5700f4cba921'; // Hotovo - čeká na zabalení
+async function moveCardHotovo(cardId, elCard){
+  const btn=elCard.querySelector('.hotovo-btn');
+  if(btn){btn.classList.add('loading');btn.textContent='⏳ Přesouvám…';}
+  try{
+    const r=await fetch(`https://api.trello.com/1/cards/${cardId}?key=${KEY}&token=${TOKEN}`,{
+      method:'PUT',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({idList:LIST_HOTOVO})
+    });
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    // Animace odebrání
+    elCard.style.transition='opacity .4s,transform .4s';
+    elCard.style.opacity='0';
+    elCard.style.transform='scale(.96)';
+    setTimeout(()=>{
+      elCard.remove();
+      // Přepočítat statistiky
+      const remaining=document.querySelectorAll('.firma-card:not(.all-done)').length;
+      if(!remaining) render();
+    },420);
+  } catch(e){
+    if(btn){btn.classList.remove('loading');btn.innerHTML='✅ Přesunout na balírnu';}
+    alert('Chyba při přesouvání: '+e.message);
+  }
 }
 
 /* ── Termín výroby (14 prac. dní před dodáním) ── */
