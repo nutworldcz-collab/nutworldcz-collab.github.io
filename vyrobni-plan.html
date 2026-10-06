@@ -536,7 +536,10 @@ function productMatches(p){
   if(filterKat && p.kat !== filterKat) return false;
   if(filterSearch){
     const q = filterSearch.toLowerCase();
-    return p.nazev.toLowerCase().includes(q) || p.kod.toLowerCase().includes(q);
+    if(p.nazev.toLowerCase().includes(q)) return true;
+    if(p.kod.toLowerCase().includes(q)) return true;
+    if(p.obsah.some(o => o.kod.toLowerCase().includes(q) || o.n.toLowerCase().includes(q))) return true;
+    return false;
   }
   return true;
 }
