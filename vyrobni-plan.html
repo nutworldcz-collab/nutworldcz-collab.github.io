@@ -439,10 +439,10 @@ const PRODUCTS = [
     obal: 'dárková krabička 4×80g',
     nazev: 'Sladká vánoční krabička',
     obsah: [
-      {kod:'107',  n:'Vlašské ořechy natural',          g:80},
-      {kod:'1964', n:'Mandle kešu mléčná čokoláda',    g:80},
-      {kod:'1955', n:'Mandle v hořké čokoládě',         g:80},
-      {kod:'1952', n:'Mandle ve slaném karamelu',       g:80},
+      {kod:'3978', n:'Slaný preclík v mléčné čokoládě', g:80},
+      {kod:'1964', n:'Mandle kešu mléčná čokoláda',     g:80},
+      {kod:'1955', n:'Mandle v hořké čokoládě',          g:80},
+      {kod:'1952', n:'Mandle ve slaném karamelu',        g:80},
     ],
     defaultKs: 5
   },
@@ -691,13 +691,13 @@ function renderProducts(){
         const tr = hi ? ' class="ing-match"' : '';
         if(o.ks !== undefined){
           rows += `<tr${tr}>
-            <td class="ing-n">${esc(o.n)}<span class="ing-kod">${esc(o.kod)}</span></td>
+            <td class="ing-n">${esc(o.n)}</td>
             <td class="ing-g">${o.ks} ks/krab.</td>
             <td class="ing-kg" style="font-variant-numeric:tabular-nums">${o.ks * ks} ks</td>
           </tr>`;
         } else {
           rows += `<tr${tr}>
-            <td class="ing-n">${esc(o.n)}<span class="ing-kod">${esc(o.kod)}</span></td>
+            <td class="ing-n">${esc(o.n)}</td>
             <td class="ing-g">${o.g} g/ks</td>
             <td class="ing-kg">${fmtKg(o.g * ks)}</td>
           </tr>`;
