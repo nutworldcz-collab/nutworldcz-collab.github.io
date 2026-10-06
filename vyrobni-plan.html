@@ -124,6 +124,9 @@ body{margin:0;font-family:"Source Sans 3",Arial,sans-serif;background:var(--bg);
 .ing-kod{font-size:.65rem;color:var(--dim);margin-left:4px}
 .ing-g{color:var(--dim);font-family:"Exo 2",sans-serif;font-size:.71rem;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
 .ing-kg{color:var(--brown);font-family:"Exo 2",sans-serif;font-weight:700;font-size:.79rem;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;width:66px}
+.ing-match td{background:#fff0f0!important;border-left:3px solid #da1668}
+.ing-match .ing-n{color:#b0003a;font-weight:700}
+.ing-match .ing-g,.ing-match .ing-kg{color:#b0003a}
 .prod-footer{display:flex;align-items:center;gap:6px;padding:6px 12px;background:var(--ch);border-top:1px solid var(--border)}
 .prod-total-lbl{font-size:.71rem;color:var(--muted);flex:1}
 .prod-total-kg{font-family:"Exo 2",sans-serif;font-weight:800;font-size:.85rem;color:var(--dark)}
@@ -633,14 +636,17 @@ function renderProducts(){
 
       let rows = '';
       p.obsah.forEach(o => {
+        const q = filterSearch.toLowerCase();
+        const hi = filterSearch && (o.kod.toLowerCase().includes(q) || o.n.toLowerCase().includes(q));
+        const tr = hi ? ' class="ing-match"' : '';
         if(o.ks !== undefined){
-          rows += `<tr>
+          rows += `<tr${tr}>
             <td class="ing-n">${esc(o.n)}<span class="ing-kod">${esc(o.kod)}</span></td>
             <td class="ing-g">${o.ks} ks/krab.</td>
             <td class="ing-kg" style="font-variant-numeric:tabular-nums">${o.ks * ks} ks</td>
           </tr>`;
         } else {
-          rows += `<tr>
+          rows += `<tr${tr}>
             <td class="ing-n">${esc(o.n)}<span class="ing-kod">${esc(o.kod)}</span></td>
             <td class="ing-g">${o.g} g/ks</td>
             <td class="ing-kg">${fmtKg(o.g * ks)}</td>
