@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Nutworld — Výrobní plán Vánoce</title>
+<script src="pin-guard.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --bg:#f5f0ea;--surface:#fff;--border:#e0cdb8;--ch:#f1e6da;
+  --text:#2a1a0a;--muted:#8a6a4a;--dim:#b89870;
+  --brown:#83502e;--dark:#5c381f;--amber:#f7ab31;
+}
+body{margin:0;font-family:"Source Sans 3",Arial,sans-serif;background:var(--bg);color:var(--text)}
+
+/* TOPBAR */
+.topbar{
+  background:var(--dark);padding:10px 18px;
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  position:sticky;top:0;z-index:100
+}
+.logo{font-family:"Exo 2",sans-serif;font-weight:800;font-size:.9rem;color:#f1e6da;white-space:nowrap;text-decoration:none}
+.logo span{color:var(--amber)}
+.topbar-r{margin-left:auto;display:flex;gap:7px;align-items:center}
+.btn{padding:5px 12px;border-radius:7px;border:none;cursor:pointer;font-family:"Exo 2",sans-serif;font-weight:700;font-size:.74rem;white-space:nowrap}
+.btn-print{background:var(--amber);color:var(--dark)}
+.btn-print:hover{background:#e09a20}
+.btn-reset{background:rgba(241,230,218,.15);color:rgba(241,230,218,.7)}
+.btn-reset:hover{background:rgba(241,230,218,.25)}
+.btn-back{background:transparent;color:rgba(241,230,218,.55);border:1px solid rgba(241,230,218,.25);font-size:.72rem}
+.btn-back:hover{color:#f1e6da;border-color:rgba(241,230,218,.5)}
+
+/* FILTER BAR */
+.filterbar{
+  background:var(--surface);border-bottom:1.5px solid var(--border);
+  padding:8px 18px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  position:sticky;top:42px;z-index:99
+}
+.search-wrap{position:relative;flex:1;min-width:160px;max-width:280px}
+.search-wrap input{
+  width:100%;border:1.5px solid var(--border);border-radius:8px;
+  padding:5px 10px 5px 28px;font-size:.78rem;font-family:inherit;
+  background:var(--bg);color:var(--text);outline:none
+}
+.search-wrap input:focus{border-color:var(--brown)}
+.search-wrap input::placeholder{color:var(--dim)}
+.search-icon{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:.75rem;color:var(--dim);pointer-events:none}
+.filter-pills{display:flex;gap:5px;flex-wrap:wrap}
+.fpill{
+  padding:4px 11px;border-radius:20px;border:1.5px solid var(--border);
+  background:transparent;font-size:.72rem;font-weight:700;cursor:pointer;
+  color:var(--muted);font-family:"Exo 2",sans-serif;transition:all .12s;white-space:nowrap
+}
+.fpill:hover:not(.active){background:var(--ch);color:var(--dark);border-color:var(--brown)}
+.fpill.active{background:var(--dark);border-color:var(--dark);color:#f1e6da}
+.fpill-all.active{background:var(--amber)!important;border-color:var(--amber)!important;color:var(--dark)!important}
+.filter-count{font-size:.7rem;color:var(--dim);font-family:"Exo 2",sans-serif;margin-left:4px;white-space:nowrap}
+
+/* MAIN */
+.main{max-width:980px;margin:0 auto;padding:16px}
+
+/* SECTION HEADER */
+.sec-hdr{
+  display:flex;align-items:center;gap:8px;
+  margin:28px 0 10px;padding-bottom:6px;
+  border-bottom:2px solid var(--border)
+}
+.sec-hdr:first-of-type{margin-top:0}
+.sec-title{font-family:"Exo 2",sans-serif;font-weight:800;font-size:.8rem;text-transform:uppercase;letter-spacing:1.2px;color:var(--dark)}
+.sec-badge{font-family:"Exo 2",sans-serif;font-size:.68rem;font-weight:700;background:var(--ch);color:var(--brown);border-radius:5px;padding:1px 7px;border:1px solid var(--border)}
+
+/* CATEGORY GROUP */
+.kat-section{margin-bottom:18px}
+.kat-hdr{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.kat-label{font-family:"Exo 2",sans-serif;font-weight:700;font-size:.75rem;text-transform:uppercase;letter-spacing:.8px;color:var(--muted)}
+.kat-badge{font-family:"Exo 2",sans-serif;font-size:.65rem;font-weight:700;background:transparent;color:var(--dim);border-radius:4px;padding:1px 6px;border:1px solid var(--border)}
+.kat-line{flex:1;height:1px;background:var(--border)}
+
+/* PRODUCT GRID */
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:10px}
+
+/* PRODUCT CARD */
+.prod-card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;overflow:hidden}
+.prod-hdr{padding:8px 12px 6px;background:var(--ch);border-bottom:1px solid var(--border)}
+.prod-hdr-top{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;margin-bottom:4px}
+.prod-kod{
+  font-family:"Exo 2",sans-serif;font-size:.66rem;font-weight:700;
+  color:var(--brown);background:var(--surface);
+  border:1px solid var(--border);border-radius:5px;
+  padding:1px 7px;white-space:nowrap;flex-shrink:0
+}
+.prod-obal{
+  font-size:.63rem;font-family:"Exo 2",sans-serif;font-weight:700;
+  background:var(--surface);color:var(--muted);
+  border:1px solid var(--border);border-radius:5px;
+  padding:1px 7px;white-space:nowrap;flex-shrink:0
+}
+.prod-nazev{font-size:.82rem;font-weight:600;color:var(--text);line-height:1.3;padding:0 2px}
+.ks-wrap{display:flex;align-items:center;gap:5px;flex-shrink:0}
+.ks-lbl{font-size:.7rem;color:var(--muted);font-family:"Exo 2",sans-serif}
+.ks-input{
+  width:58px;padding:3px 6px;border:2px solid var(--amber);border-radius:7px;
+  background:var(--amber);color:var(--dark);
+  font-family:"Exo 2",sans-serif;font-weight:800;font-size:.9rem;
+  text-align:center;outline:none;-moz-appearance:textfield
+}
+.ks-input::-webkit-outer-spin-button,.ks-input::-webkit-inner-spin-button{-webkit-appearance:none}
+.ks-input:focus{border-color:var(--brown);background:#ffc93a}
+.btn-card-print{
+  padding:3px 8px;border-radius:6px;border:1.5px solid var(--border);
+  background:transparent;cursor:pointer;font-size:.7rem;color:var(--dim);
+  font-family:"Exo 2",sans-serif;font-weight:700;flex-shrink:0
+}
+.btn-card-print:hover{background:var(--surface);color:var(--brown)}
+
+/* INGREDIENT TABLE */
+.ing-table{width:100%;border-collapse:collapse}
+.ing-table td{padding:5px 12px;font-size:.78rem;border-bottom:1px solid var(--border)}
+.ing-table tr:last-child td{border-bottom:none}
+.ing-n{color:var(--text);font-weight:500}
+.ing-kod{font-size:.65rem;color:var(--dim);margin-left:4px}
+.ing-g{color:var(--dim);font-family:"Exo 2",sans-serif;font-size:.71rem;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.ing-kg{color:var(--brown);font-family:"Exo 2",sans-serif;font-weight:700;font-size:.79rem;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;width:66px}
+.prod-footer{display:flex;align-items:center;gap:6px;padding:6px 12px;background:var(--ch);border-top:1px solid var(--border)}
+.prod-total-lbl{font-size:.71rem;color:var(--muted);flex:1}
+.prod-total-kg{font-family:"Exo 2",sans-serif;font-weight:800;font-size:.85rem;color:var(--dark)}
+
+/* NO RESULTS */
+.no-results{text-align:center;padding:32px 16px;color:var(--muted);font-size:.85rem}
+
+/* SUMMARY TABLE */
+.sum-wrap{overflow-x:auto}
+.sum-table{width:100%;border-collapse:collapse;min-width:400px}
+.sum-table th{font-family:"Exo 2",sans-serif;font-size:.69rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);padding:7px 12px;text-align:left;border-bottom:2px solid var(--border);background:var(--ch)}
+.sum-table th.r{text-align:right}
+.sum-table td{padding:6px 12px;font-size:.8rem;border-bottom:1px solid var(--border)}
+.sum-table tr:last-child td{border-bottom:none}
+.sum-table tbody tr:hover td{background:var(--ch)}
+.sum-n{font-weight:500;color:var(--text)}
+.sum-kodtag{font-family:"Exo 2",sans-serif;font-size:.65rem;color:var(--dim);margin-left:5px}
+.sum-bar-cell{width:100px;padding-right:6px!important}
+.sum-bar-track{height:5px;background:var(--ch);border-radius:3px;overflow:hidden}
+.sum-bar-fill{height:100%;border-radius:3px;background:var(--brown);opacity:.45}
+.sum-kat-kg{font-family:"Exo 2",sans-serif;font-size:.76rem;font-weight:600;text-align:right;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.sum-total{font-family:"Exo 2",sans-serif;font-weight:800;font-size:.88rem;text-align:right;color:var(--dark);white-space:nowrap;font-variant-numeric:tabular-nums}
+
+/* PRINT — all */
+@media print{
+  body{background:#fff}
+  .topbar,.filterbar,.btn,.btn-card-print{display:none!important}
+  .main{padding:0;max-width:100%}
+  .prod-card{border:1px solid #ccc;border-radius:0;break-inside:avoid;margin-bottom:6pt}
+  .prod-hdr,.prod-footer{background:#f0e8da}
+  .kat-section{break-inside:avoid}
+  .sum-table tbody tr:hover td{background:none}
+  .sum-bar-cell{display:none}
+  .sec-hdr{margin-top:10pt}
+}
+/* PRINT — single card */
+body.printing-card .topbar,
+body.printing-card .filterbar,
+body.printing-card .btn,
+body.printing-card .btn-card-print,
+body.printing-card #sum-section,
+body.printing-card #sum-section-table,
+body.printing-card .kat-hdr{display:none!important}
+body.printing-card .kat-section{margin:0}
+body.printing-card .prod-card:not(.card-printing){display:none!important}
+body.printing-card .prod-card.card-printing{border:1px solid #ccc;border-radius:0}
+@media(max-width:480px){.sum-bar-cell{display:none}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="logo" href="/">NutWorld <span>Výrobní plán</span></a>
+  <div class="topbar-r">
+    <a href="/" class="btn btn-back">← Zpět</a>
+    <button class="btn btn-reset" onclick="resetKs()">↺ Reset</button>
+    <button class="btn btn-print" onclick="window.print()">🖨 Vše</button>
+  </div>
+</div>
+
+<div class="filterbar">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input id="search-input" type="text" placeholder="Hledat název nebo kód…" oninput="onSearch(this.value)">
+  </div>
+  <div class="filter-pills" id="kat-pills"></div>
+  <span class="filter-count" id="filter-count"></span>
+</div>
+
+<div class="main">
+  <div class="sec-hdr">
+    <span class="sec-title">Produkty</span>
+    <span class="sec-badge" id="prod-count"></span>
+  </div>
+  <div id="kat-sections"></div>
+
+  <div class="sec-hdr" id="sum-section" style="margin-top:28px">
+    <span class="sec-title">Celková spotřeba surovin</span>
+    <span class="sec-badge" id="sum-count"></span>
+  </div>
+  <div class="sum-wrap" id="sum-section-table">
+    <table class="sum-table">
+      <thead id="sum-head"></thead>
+      <tbody id="sum-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────
+const CATEGORIES = [
+  { id: 'kombinovane', label: 'Kombinované'         },
+  { id: 'top10',       label: 'TOP 10'              },
+  { id: 'krab80',      label: 'Krabičky 4×80g'      },
+  { id: 'celofanek',   label: 'Celofánek & kelímek' },
+];
+
+const PRODUCTS = [
+  {
+    kod: '4571XDSLAN', kat: 'kombinovane',
+    obal: 'dárková krabička 4 druhy mix',
+    nazev: 'Krabička 4×150g SLANÁ DELUXE Valencie',
+    obsah: [
+      {kod:'3723', n:'Mandle chilli paprika Valencie DELUXE', g:150},
+      {kod:'3722', n:'Mandle lanýž Valencie DELUXE',          g:150},
+      {kod:'3721', n:'Mandle bylinky Valencie DELUXE',        g:150},
+      {kod:'3720', n:'Mandle solené Valencie DELUXE',         g:150},
+    ],
+    defaultKs: 1
+  },
+  {
+    kod: '4621XBLACK', kat: 'kombinovane',
+    obal: 'krabice s překvapením',
+    nazev: 'Černá krabice — MUŽI',
+    obsah: [
+      {kod:'89',    n:'Mandle uzené',                  g:50},
+      {kod:'9945',  n:'Mandle HOŘČICE',                g:50},
+      {kod:'NW-02', n:'Kukuřice med & hořčice',        g:50},
+      {kod:'2537',  n:'Kešu CHILLI',                   g:50},
+      {kod:'354',   n:'Arašídy Wasabi',                g:100},
+      {kod:'5364',  n:'Kešu česnek & rozmarýn',        g:50},
+      {kod:'4038',  n:'Mandle mléčná čokoláda',        g:50},
+      {kod:'4146',  n:'Arašídy karamel CHILLI',        g:50},
+      {kod:'134',   n:'Pistácie pražené solené JUMBO', g:40},
+      {kod:'10564', n:'Rýžové krekry BBQ',             g:20},
+    ],
+    defaultKs: 50
+  },
+  {
+    kod: '4621XRED', kat: 'kombinovane',
+    obal: 'krabice s překvapením',
+    nazev: 'Červená krabice — ŽENY',
+    obsah: [
+      {kod:'101',   n:'Mandle pražené solené JUMBO',   g:50},
+      {kod:'9601',  n:'Mandle karamel & vanilka',      g:50},
+      {kod:'5852',  n:'Mandle jahodový jogurt',        g:50},
+      {kod:'4794',  n:'Mix ořechů med & sůl',          g:50},
+      {kod:'134',   n:'Pistácie pražené solené JUMBO', g:40},
+      {kod:'NW-02', n:'Kukuřice med & hořčice',        g:40},
+      {kod:'5364',  n:'Kešu česnek & rozmarýn',        g:50},
+      {kod:'3111',  n:'Meruňky v jogurtu',             g:50},
+      {kod:'7564',  n:'Kokosové chipsy karamel & sůl', g:100},
+      {kod:'920',   n:'Maliny lyofilizované v čokoládě',g:35},
+    ],
+    defaultKs: 15
+  },
+  {
+    kod: '4565XMIXXE1', kat: 'kombinovane',
+    obal: 'dárková krabice výseková l',
+    nazev: 'Krabice MIX DRUHŮ L — Edice 1 (slaná)',
+    obsah: [
+      {kod:'7564',  n:'Kokosové chipsy karamel & sůl',        g:130},
+      {kod:'10161', n:'Rýžové krekry zahradní bylinky',       g:70},
+      {kod:'3993',  n:'Mandle EXCLUSIVE',                     g:100},
+      {kod:'4794',  n:'Mix ořechů med & sůl',                 g:180},
+      {kod:'5106',  n:'Máslo 330ml (Sklenice Twist)',         ks:1},
+      {kod:'101',   n:'Mandle pražené solené JUMBO',          g:180},
+    ],
+    defaultKs: 1
+  },
+  {
+    kod: '4565XMIXXE2', kat: 'kombinovane',
+    obal: 'dárková krabice výseková l',
+    nazev: 'Krabice MIX DRUHŮ L — Edice 2 (sladko-slaná)',
+    obsah: [
+      {kod:'170',   n:'Banánové chipsy',                      g:140},
+      {kod:'547',   n:'Kukuřice pražená med & hořčice',       g:140},
+      {kod:'9601',  n:'Mandle karamel & vanilka',             g:100},
+      {kod:'9604',  n:'Arašídy karamelizované se sezamem',    g:180},
+      {kod:'5106',  n:'Máslo 330ml (Sklenice Twist)',         ks:1},
+      {kod:'89',    n:'Mandle uzené',                         g:180},
+    ],
+    defaultKs: 1
+  },
+  {
+    kod: 'TOP10-EX', kat: 'top10',
+    obal: 'celofánek s mašličkou',
+    nazev: 'TOP 10 EXCLUSIVE mix 10×50g',
+    obsah: [
+      {kod:'5364',  n:'Kešu česnek & rozmarýn',           g:50},
+      {kod:'9945',  n:'Mandle HOŘČICE',                   g:50},
+      {kod:'95',    n:'Mandle v medu a soli',              g:50},
+      {kod:'9604',  n:'Arašídy karamel & sezam',          g:50},
+      {kod:'9601',  n:'Mandle karamel & vanilka',         g:50},
+      {kod:'5358',  n:'Kešu BBQ těstíčko',                g:50},
+      {kod:'3993',  n:'Mandle EXCLUSIVE',                 g:50},
+      {kod:'1952',  n:'Mandle ve slaném karamelu',        g:50},
+      {kod:'1988',  n:'Mandle Raffaello (bílá+kokos)',    g:50},
+      {kod:'4794',  n:'Mix ořechů med & sůl',             g:50},
+    ],
+    defaultKs: 6
+  },
+  {
+    kod: 'SKX486', kat: 'top10',
+    obal: 'celofánek s mašličkou',
+    nazev: 'TOP 10 slaný mix 10×50g',
+    obsah: [
+      {kod:'89',   n:'Mandle uzené',                      g:74},
+      {kod:'101',  n:'Mandle pražené solené JUMBO',       g:74},
+      {kod:'116',  n:'Kešu pražené solené ww320',         g:74},
+      {kod:'354',  n:'Arašídy Wasabi',                    g:60},
+      {kod:'95',   n:'Mandle v medu a soli',              g:50},
+      {kod:'134',  n:'Pistácie pražené solené JUMBO',     g:58},
+      {kod:'546',  n:'Kukuřice pražená barbecue',         g:50},
+      {kod:'3735', n:'Arašídy sýrovo-kečupová',           g:50},
+      {kod:'56',   n:'Arašídy pražené solené',            g:10},
+    ],
+    defaultKs: 1
+  },
+  {
+    kod: '1349', kat: 'top10',
+    obal: 'celofánek s mašličkou',
+    nazev: 'TOP 10 sladký výběr z mandlí 10×50g',
+    obsah: [
+      {kod:'1952',  n:'Mandle ve slaném karamelu',     g:50},
+      {kod:'107',   n:'Mandle v bílé čokoládě',        g:50},
+      {kod:'1955',  n:'Mandle v hořké čokoládě',       g:50},
+      {kod:'1970',  n:'Mandle v barevné krustě',       g:50},
+      {kod:'1964',  n:'Mandle TIRAMISU',               g:50},
+      {kod:'1958',  n:'Mandle mléčná čokoláda & skořice',g:50},
+      {kod:'1985',  n:'Mandle tří barev',              g:50},
+      {kod:'4212',  n:'Mandle JAHODA v bílé čokoládě', g:50},
+      {kod:'1988',  n:'Mandle Raffaello (bílá+kokos)', g:50},
+      {kod:'4038',  n:'Mandle mléčná čokoláda',        g:50},
+    ],
+    defaultKs: 10
+  },
+  // ── KRABIČKY 4×80g ────────────────────────────────────────────────────────
+  {
+    kod: '3520/V', kat: 'krab80',
+    obal: 'dárková krabička 4×80g',
+    nazev: 'Vánoční slaná krabička',
+    obsah: [
+      {kod:'101',  n:'Mandle pražené solené', g:80},
+      {kod:'89',   n:'Mandle uzené',          g:80},
+      {kod:'4794', n:'Mix ořechů med & sůl',  g:80},
+      {kod:'116',  n:'Kešu pražené solené',   g:80},
+    ],
+    defaultKs: 50
+  },
+  {
+    kod: '4707', kat: 'krab80',
+    obal: 'dárková krabička 4×80g',
+    nazev: 'Slaná průhledná krabička',
+    obsah: [
+      {kod:'89',   n:'Mandle uzené',                    g:80},
+      {kod:'101',  n:'Mandle pražené solené',           g:80},
+      {kod:'1964', n:'Mandle kešu mléčná čokoláda',    g:80},
+      {kod:'4038', n:'Kešu pražené solené',             g:80},
+    ],
+    defaultKs: 17
+  },
+  {
+    kod: '8555', kat: 'krab80',
+    obal: 'dárková krabička 4×80g',
+    nazev: 'Krabička SOB / narozeninový mix',
+    obsah: [
+      {kod:'89',   n:'Mandle uzené',                    g:80},
+      {kod:'101',  n:'Mandle pražené solené',           g:80},
+      {kod:'1952', n:'Mandle ve slaném karamelu',       g:80},
+      {kod:'9604', n:'Arašídy karamelizované se sezamem', g:80},
+    ],
+    defaultKs: 16
+  },
+  {
+    kod: '480XVXSTR', kat: 'krab80',
+    obal: 'dárková krabička 4×80g',
+    nazev: 'Krabička se stromečkem',
+    obsah: [
+      {kod:'89',   n:'Mandle uzené',                    g:80},
+      {kod:'9604', n:'Arašídy karamelizované se sezamem', g:80},
+      {kod:'547',  n:'Kukuřice pražená med & hořčice',  g:60},
+      {kod:'3111', n:'Meruňky v jogurtu',               g:80},
+    ],
+    defaultKs: 8
+  },
+  {
+    kod: '5268', kat: 'krab80',
+    obal: 'dárková krabička 4×80g',
+    nazev: 'Vánoční krabička různé gramáže',
+    obsah: [
+      {kod:'3978', n:'Tropická směs mini',              g:40},
+      {kod:'4794', n:'Mix ořechů med & sůl',            g:70},
+      {kod:'1964', n:'Mandle kešu mléčná čokoláda',    g:80},
+      {kod:'89',   n:'Mandle uzené',                    g:75},
+    ],
+    defaultKs: 7
+  },
+  {
+    kod: '3517/VAN', kat: 'krab80',
+    obal: 'dárková krabička 4×80g',
+    nazev: 'Sladká vánoční krabička',
+    obsah: [
+      {kod:'107',  n:'Vlašské ořechy natural',          g:80},
+      {kod:'1964', n:'Mandle kešu mléčná čokoláda',    g:80},
+      {kod:'1955', n:'Mandle v hořké čokoládě',         g:80},
+      {kod:'1952', n:'Mandle ve slaném karamelu',       g:80},
+    ],
+    defaultKs: 5
+  },
+  {
+    kod: '917N10', kat: 'krab80',
+    obal: 'dárková krabička 4×80g',
+    nazev: 'Mix k narozeninám',
+    obsah: [
+      {kod:'161',  n:'Vánoční slaný mix',               g:80},
+      {kod:'4896', n:'Směs mandlí v čokoládě',          g:80},
+      {kod:'1985', n:'Mandle tří barev',                g:80},
+      {kod:'4794', n:'Mix ořechů med & sůl',            g:80},
+    ],
+    defaultKs: 3
+  },
+  {
+    kod: '480XVXMAM', kat: 'krab80',
+    obal: 'dárková krabička 4×80g',
+    nazev: 'Pro maminku / učitelku',
+    obsah: [
+      {kod:'5852', n:'Mandle jahodový jogurt',          g:80},
+      {kod:'1964', n:'Mandle kešu mléčná čokoláda',    g:80},
+      {kod:'101',  n:'Mandle pražené solené',           g:80},
+      {kod:'4794', n:'Mix ořechů med & sůl',            g:80},
+    ],
+    defaultKs: 2
+  },
+  // ── CELOFÁNEK & KELÍMEK ───────────────────────────────────────────────────
+  {
+    kod: '5414', kat: 'celofanek',
+    obal: 'celofánek s mašličkou',
+    nazev: 'Vánoční slaný mix 180g',
+    obsah: [{kod:'161',  n:'Vánoční slaný mix',               g:180}],
+    defaultKs: 50
+  },
+  {
+    kod: '5413', kat: 'celofanek',
+    obal: 'celofánek s mašličkou',
+    nazev: 'Směs mandlí v čokoládě MIX BROWN 180g',
+    obsah: [{kod:'4896', n:'Směs mandlí v čokoládě',          g:180}],
+    defaultKs: 16
+  },
+  {
+    kod: '4794X01XN', kat: 'celofanek',
+    obal: 'celofánek s mašličkou',
+    nazev: 'Mix ořechů med & sůl 180g',
+    obsah: [{kod:'4794', n:'Mix ořechů med & sůl',            g:180}],
+    defaultKs: 14
+  },
+  {
+    kod: '1988X02XMIK', kat: 'celofanek',
+    obal: 'eko kelímek',
+    nazev: 'Mandle Raffaello 180g (Anděl)',
+    obsah: [{kod:'1988', n:'Mandle Raffaello (bílá+kokos)',   g:180}],
+    defaultKs: 5
+  },
+  {
+    kod: '89X02XMIK', kat: 'celofanek',
+    obal: 'eko kelímek',
+    nazev: 'Mandle uzené 180g (Čert)',
+    obsah: [{kod:'89',   n:'Mandle uzené',                    g:180}],
+    defaultKs: 3
+  },
+  {
+    kod: '56X01XN', kat: 'celofanek',
+    obal: 'celofánek s mašličkou',
+    nazev: 'Arašídy pražené solené 180g',
+    obsah: [{kod:'56',   n:'Arašídy pražené solené',          g:180}],
+    defaultKs: 2
+  },
+  {
+    kod: '5852X01XUCI', kat: 'celofanek',
+    obal: 'celofánek s mašličkou',
+    nazev: 'Mandle v jahodovém jogurtu 180g',
+    obsah: [{kod:'5852', n:'Mandle jahodový jogurt',          g:180}],
+    defaultKs: 1
+  },
+  {
+    kod: '917S10', kat: 'celofanek',
+    obal: 'celofánek s mašličkou',
+    nazev: 'Mandle tříbarevné 180g',
+    obsah: [{kod:'1985', n:'Mandle tří barev',                g:180}],
+    defaultKs: 1
+  },
+  {
+    kod: '9604X01XN', kat: 'celofanek',
+    obal: 'celofánek s mašličkou',
+    nazev: 'Arašídy karamelizované se sezamem 180g',
+    obsah: [{kod:'9604', n:'Arašídy karamelizované se sezamem', g:180}],
+    defaultKs: 1
+  },
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────────
+const ksState = {};
+PRODUCTS.forEach(p => { ksState[p.kod] = p.defaultKs; });
+
+let filterKat = null;
+let filterSearch = '';
+
+function productMatches(p){
+  if(filterKat && p.kat !== filterKat) return false;
+  if(filterSearch){
+    const q = filterSearch.toLowerCase();
+    return p.nazev.toLowerCase().includes(q) || p.kod.toLowerCase().includes(q);
+  }
+  return true;
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function fmtKg(g){
+  const v = g / 1000;
+  return v.toLocaleString('cs',{minimumFractionDigits: v < 10 ? 2 : 1, maximumFractionDigits:2}) + ' kg';
+}
+function plural(n){ return n===1?'produkt':n<5?'produkty':'produktů'; }
+
+// ── FILTER PILLS ──────────────────────────────────────────────────────────
+function renderPills(){
+  const container = document.getElementById('kat-pills');
+  let html = `<button class="fpill fpill-all${filterKat===null&&!filterSearch?' active':''}" onclick="setKat(null)">Vše</button>`;
+  CATEGORIES.forEach(k => {
+    html += `<button class="fpill${filterKat===k.id?' active':''}" onclick="setKat('${k.id}')">${esc(k.label)}</button>`;
+  });
+  container.innerHTML = html;
+}
+
+function setKat(id){
+  filterKat = id;
+  render();
+}
+
+function onSearch(val){
+  filterSearch = val.trim();
+  render();
+}
+
+// ── SUMMARY BUILD ─────────────────────────────────────────────────────────
+function buildSummary(){
+  const map = {};
+  const ksMap = {};
+  const activeKats = CATEGORIES.filter(k => PRODUCTS.some(p => p.kat === k.id && productMatches(p)));
+
+  PRODUCTS.filter(productMatches).forEach(p => {
+    const ks = ksState[p.kod];
+    p.obsah.forEach(o => {
+      const key = o.n.toLowerCase().trim();
+      if(o.ks !== undefined){
+        if(!ksMap[key]) ksMap[key] = {n: o.n, kody: new Set(), totalKs: 0, byKat: {}};
+        ksMap[key].kody.add(o.kod);
+        ksMap[key].totalKs += o.ks * ks;
+        ksMap[key].byKat[p.kat] = (ksMap[key].byKat[p.kat] || 0) + o.ks * ks;
+      } else {
+        if(!map[key]) map[key] = {n: o.n, kody: new Set(), totalG: 0, byKat: {}};
+        map[key].kody.add(o.kod);
+        map[key].totalG += o.g * ks;
+        map[key].byKat[p.kat] = (map[key].byKat[p.kat] || 0) + o.g * ks;
+      }
+    });
+  });
+  return {
+    grams: Object.values(map).sort((a,b) => b.totalG - a.totalG),
+    pieces: Object.values(ksMap).sort((a,b) => b.totalKs - a.totalKs),
+    activeKats
+  };
+}
+
+// ── RENDER PRODUCTS ───────────────────────────────────────────────────────
+function renderProducts(){
+  const container = document.getElementById('kat-sections');
+  container.innerHTML = '';
+  let totalVisible = 0;
+
+  CATEGORIES.forEach(kat => {
+    const prods = PRODUCTS.filter(p => p.kat === kat.id && productMatches(p));
+    if(!prods.length) return;
+    totalVisible += prods.length;
+
+    const sec = document.createElement('div');
+    sec.className = 'kat-section';
+    sec.innerHTML = `<div class="kat-hdr">
+      <span class="kat-label">${esc(kat.label)}</span>
+      <span class="kat-badge">${prods.length} ${plural(prods.length)}</span>
+      <div class="kat-line"></div>
+    </div>
+    <div class="prod-grid" id="grid-${kat.id}"></div>`;
+    container.appendChild(sec);
+
+    const grid = sec.querySelector('.prod-grid');
+    prods.forEach(p => {
+      const ks = ksState[p.kod];
+      const totalG = p.obsah.filter(o=>o.g!==undefined).reduce((s,o) => s + o.g * ks, 0);
+      const card = document.createElement('div');
+      card.className = 'prod-card';
+      card.dataset.kod = p.kod;
+
+      let rows = '';
+      p.obsah.forEach(o => {
+        if(o.ks !== undefined){
+          rows += `<tr>
+            <td class="ing-n">${esc(o.n)}<span class="ing-kod">${esc(o.kod)}</span></td>
+            <td class="ing-g">${o.ks} ks/krab.</td>
+            <td class="ing-kg" style="font-variant-numeric:tabular-nums">${o.ks * ks} ks</td>
+          </tr>`;
+        } else {
+          rows += `<tr>
+            <td class="ing-n">${esc(o.n)}<span class="ing-kod">${esc(o.kod)}</span></td>
+            <td class="ing-g">${o.g} g/ks</td>
+            <td class="ing-kg">${fmtKg(o.g * ks)}</td>
+          </tr>`;
+        }
+      });
+
+      card.innerHTML = `
+        <div class="prod-hdr">
+          <div class="prod-hdr-top">
+            <span class="prod-kod">${esc(p.kod)}</span>
+            ${p.obal ? `<span class="prod-obal">${esc(p.obal)}</span>` : ''}
+            <div style="flex:1"></div>
+            <div class="ks-wrap">
+              <input type="number" class="ks-input" min="0" max="99999" value="${ks}" data-kod="${esc(p.kod)}">
+              <span class="ks-lbl">ks</span>
+            </div>
+            <button class="btn-card-print" data-kod="${esc(p.kod)}">🖨</button>
+          </div>
+          <div class="prod-nazev">${esc(p.nazev)}</div>
+        </div>
+        <table class="ing-table"><tbody>${rows}</tbody></table>
+        <div class="prod-footer">
+          <span class="prod-total-lbl">Celkem surovin</span>
+          <span class="prod-total-kg">${fmtKg(totalG)}</span>
+        </div>`;
+
+      card.querySelector('.ks-input').addEventListener('input', function(){
+        const v = parseInt(this.value);
+        if(!isNaN(v) && v >= 0){ ksState[p.kod] = v; render(); }
+      });
+      card.querySelector('.btn-card-print').addEventListener('click', function(){
+        printCard(this.dataset.kod);
+      });
+
+      grid.appendChild(card);
+    });
+  });
+
+  if(!totalVisible){
+    container.innerHTML = '<div class="no-results">Žádné produkty neodpovídají filtru.</div>';
+  }
+
+  document.getElementById('prod-count').textContent = totalVisible + ' ' + plural(totalVisible);
+  const fc = document.getElementById('filter-count');
+  fc.textContent = (filterKat || filterSearch) ? `${totalVisible} z ${PRODUCTS.length}` : '';
+}
+
+// ── RENDER SUMMARY ────────────────────────────────────────────────────────
+function renderSummary(){
+  const {grams, pieces, activeKats} = buildSummary();
+  const maxG = grams[0]?.totalG || 1;
+  const multiKat = activeKats.length > 1;
+
+  let headHtml = '<tr><th>Surovina</th>';
+  if(multiKat) activeKats.forEach(k => {
+    headHtml += `<th class="r" style="width:100px">${esc(k.label)}</th>`;
+  });
+  headHtml += '<th class="sum-bar-cell"></th><th class="r" style="width:80px">Celkem</th></tr>';
+  document.getElementById('sum-head').innerHTML = headHtml;
+
+  let bodyHtml = '';
+  grams.forEach(row => {
+    const pct = Math.round(row.totalG / maxG * 100);
+    const kodStr = [...row.kody].join(', ');
+    bodyHtml += `<tr>
+      <td class="sum-n">${esc(row.n)}<span class="sum-kodtag">${esc(kodStr)}</span></td>`;
+    if(multiKat) activeKats.forEach(k => {
+      const g = row.byKat[k.id] || 0;
+      bodyHtml += `<td class="sum-kat-kg">${g ? fmtKg(g) : '<span style="color:var(--dim)">—</span>'}</td>`;
+    });
+    bodyHtml += `<td class="sum-bar-cell"><div class="sum-bar-track"><div class="sum-bar-fill" style="width:${pct}%"></div></div></td>
+      <td class="sum-total">${fmtKg(row.totalG)}</td></tr>`;
+  });
+
+  const grandTotal = grams.reduce((s,r) => s + r.totalG, 0);
+  bodyHtml += `<tr style="background:var(--ch)"><td class="sum-n" style="font-weight:700">Celkem surovin (g)</td>`;
+  if(multiKat) activeKats.forEach(() => { bodyHtml += '<td></td>'; });
+  bodyHtml += `<td class="sum-bar-cell"></td><td class="sum-total" style="font-size:.95rem">${fmtKg(grandTotal)}</td></tr>`;
+
+  if(pieces.length){
+    const extraCols = (multiKat ? activeKats.length : 0) + 2;
+    bodyHtml += `<tr><td class="sum-n" colspan="${1+extraCols}" style="padding-top:14px;font-size:.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:700">Kusy (ks)</td></tr>`;
+    pieces.forEach(row => {
+      const kodStr = [...row.kody].join(', ');
+      bodyHtml += `<tr>
+        <td class="sum-n">${esc(row.n)}<span class="sum-kodtag">${esc(kodStr)}</span></td>`;
+      if(multiKat) activeKats.forEach(k => {
+        const v = row.byKat[k.id] || 0;
+        bodyHtml += `<td class="sum-kat-kg">${v ? v+' ks' : '<span style="color:var(--dim)">—</span>'}</td>`;
+      });
+      bodyHtml += `<td class="sum-bar-cell"></td><td class="sum-total">${row.totalKs} ks</td></tr>`;
+    });
+  }
+
+  document.getElementById('sum-body').innerHTML = bodyHtml;
+  document.getElementById('sum-count').textContent = (grams.length + pieces.length) + ' surovin';
+}
+
+// ── PRINT SINGLE CARD ─────────────────────────────────────────────────────
+function printCard(kod){
+  document.querySelectorAll('.prod-card').forEach(c => {
+    c.classList.toggle('card-printing', c.dataset.kod === kod);
+  });
+  document.body.classList.add('printing-card');
+  window.print();
+  document.body.classList.remove('printing-card');
+  document.querySelectorAll('.prod-card').forEach(c => c.classList.remove('card-printing'));
+}
+
+// ── MAIN ──────────────────────────────────────────────────────────────────
+function render(){
+  renderPills();
+  renderProducts();
+  renderSummary();
+}
+function resetKs(){
+  PRODUCTS.forEach(p => { ksState[p.kod] = p.defaultKs; });
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
