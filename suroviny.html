@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Nutworld — Výroba: kde co je</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --bg:#faf7f3; --surface:#fff; --card-head:#f1e6da; --border:#e0cdb8;
+  --text:#2a1a0a; --muted:#8a6a4a; --dim:#b89a7a;
+  --brown:#83502e; --dark:#5c381f; --amber:#f7ab31; --green:#6fa044; --pink:#da1668;
+  --gram-bg:#e8f4df; --gram-text:#3d6b22;
+}
+body{margin:0;font-family:"Source Sans 3",system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* TOP BAR */
+.topbar{background:var(--dark);padding:11px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:100}
+.logo{font-family:"Exo 2",sans-serif;font-weight:800;font-size:1rem;color:#f1e6da;white-space:nowrap;text-decoration:none}
+.logo span{color:var(--amber)}
+.search-wrap{flex:1 1 180px;position:relative;min-width:140px}
+.search-wrap svg{position:absolute;left:9px;top:50%;transform:translateY(-50%);fill:#c09a6a;pointer-events:none}
+#search{width:100%;padding:7px 10px 7px 32px;border:none;border-radius:8px;background:rgba(255,255,255,.13);color:#f1e6da;font:inherit;font-size:.9rem;outline:none;caret-color:var(--amber)}
+#search::placeholder{color:rgba(241,230,218,.45)}
+#search:focus{background:rgba(255,255,255,.2)}
+.btns{display:flex;gap:5px;flex-shrink:0}
+.btn{padding:6px 13px;border-radius:7px;border:1.5px solid rgba(241,230,218,.3);background:transparent;color:#f1e6da;font:inherit;font-size:.8rem;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn:hover{background:rgba(255,255,255,.15);border-color:rgba(241,230,218,.6)}
+.count{font-size:.78rem;color:rgba(241,230,218,.5);white-space:nowrap}
+.count strong{color:var(--amber);font-variant-numeric:tabular-nums}
+.back{font-size:.78rem;color:rgba(241,230,218,.5);text-decoration:none;white-space:nowrap}
+.back:hover{color:#f1e6da}
+
+/* MAIN */
+.main{padding:18px 20px 48px;max-width:860px;margin:0 auto}
+
+/* KARTA SUROVINY */
+.ing-card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;margin-bottom:9px;overflow:hidden}
+.ing-card:hover{box-shadow:0 2px 10px rgba(131,80,46,.1)}
+.ing-head{display:flex;align-items:center;gap:9px;padding:12px 15px;background:var(--card-head);cursor:pointer;user-select:none;-webkit-user-select:none}
+.ing-code{font-family:"Exo 2",sans-serif;font-weight:700;font-size:.75rem;background:var(--brown);color:#fff;padding:2px 8px;border-radius:20px;flex-shrink:0;font-variant-numeric:tabular-nums}
+.ing-name{font-family:"Exo 2",sans-serif;font-weight:700;font-size:.97rem;color:var(--dark);flex:1;min-width:0}
+.ing-count{font-family:"Exo 2",sans-serif;font-weight:800;font-size:.88rem;color:var(--amber);background:rgba(247,171,49,.12);padding:2px 9px;border-radius:20px;flex-shrink:0;font-variant-numeric:tabular-nums}
+.ing-arrow{flex-shrink:0;color:var(--dim);font-size:1rem;transition:transform .2s}
+.ing-card.open .ing-arrow{transform:rotate(90deg)}
+.ing-body{display:none}
+.ing-card.open .ing-body{display:block}
+
+/* SKUPINY OBALŮ */
+.pkg-group{padding:0 15px 10px}
+.pkg-group+.pkg-group{border-top:1px solid var(--border);padding-top:9px}
+.pkg-label{display:inline-flex;align-items:center;gap:5px;font-family:"Exo 2",sans-serif;font-weight:600;font-size:.72rem;letter-spacing:.8px;text-transform:uppercase;color:#fff;padding:3px 9px;border-radius:4px;margin:9px 0 6px}
+.pkg-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.55);flex-shrink:0}
+
+/* ŘÁDEK PRODUKTU */
+.prod-row{display:flex;align-items:baseline;gap:7px;padding:4px 0;border-bottom:1px solid var(--border);font-size:.86rem}
+.prod-row:last-child{border-bottom:none}
+.prod-gram{font-family:"Exo 2",sans-serif;font-weight:700;font-size:.73rem;background:var(--gram-bg);color:var(--gram-text);padding:1px 6px;border-radius:4px;white-space:nowrap;flex-shrink:0;font-variant-numeric:tabular-nums}
+.prod-kod{font-family:"Exo 2",sans-serif;font-size:.76rem;font-weight:600;color:var(--muted);white-space:nowrap;flex-shrink:0;font-variant-numeric:tabular-nums}
+.prod-name{color:var(--text);flex:1;min-width:0}
+
+.empty{text-align:center;padding:60px 20px;color:var(--muted);font-family:"Exo 2",sans-serif;font-size:1.05rem}
+
+@media print{
+  .topbar{display:none}
+  .ing-body{display:block!important}
+  .ing-card{break-inside:avoid;box-shadow:none;border-color:#ccc}
+}
+@media(max-width:480px){
+  .topbar{gap:8px}
+  .btns .btn:last-child{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="logo" href="/">NutWorld <span>Výroba</span></a>
+  <div class="search-wrap">
+    <svg width="13" height="13" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/></svg>
+    <input id="search" type="search" placeholder="Hledat surovinu nebo kód…" autocomplete="off" spellcheck="false">
+  </div>
+  <div class="btns">
+    <button class="btn" id="btn-expand">Rozbalit vše</button>
+    <button class="btn" id="btn-collapse">Sbalit vše</button>
+  </div>
+  <div class="count" id="topbar-count"></div>
+  <a class="back" href="/">← Zpět</a>
+</div>
+
+<div class="main" id="list"></div>
+
+<script src="/darky-data.js"></script>
+<script src="/suroviny-nazvy.js"></script>
+<script>
+// Barvy typů obalů
+const PKG_COLORS = {
+  'adventní kalendář':'#7a5200','celofánek s mašličkou':'#4a7c2f','dárková kazetka':'#83502e',
+  'dárková krabice deluxe 3x sklenička':'#3a2a6e','dárková krabice s kelímky':'#2a5a8a',
+  'dárková krabice s pečetí':'#5a3a7e','dárková krabice výseková l':'#4a2a6e',
+  'dárková krabice výseková xl':'#3a1a5e','dárková krabička':'#6b4020',
+  'dárková krabička 2×50g':'#6b4020','dárková krabička 3x eko kelímek':'#3a6a30',
+  'dárková krabička 4 druhy mix':'#6b4020','dárková krabička 4× doypack s pečetí':'#7a4060',
+  'dárková krabička 4×80g':'#6b4020','dárková krabička 6×50g':'#6b4020',
+  'dárková krabička exclusive':'#4a2070','dárková krabička se skleničkou':'#4a3070',
+  'dárková ořechová krabice 3 druhy':'#5c381f','dárkový box 6× sklenička exclusive':'#3a1060',
+  'eko kelímek':'#3d7a2a','eko kelímek 3ks s pečetí':'#2d6a1a','krabice s překvapením':'#7a3a2a',
+  'kraft kelímek s celofánkem':'#8a5030','ořechový kornout':'#4a7020',
+  'sklenička deluxe':'#2a4a7a','sklenička exclusive':'#1a3a6a',
+  'sáček - zajíček':'#8a2a4a','sáček s knírem':'#8a5030',
+  'sáček s kolíčkem':'#6a6030','vánoční krabička':'#8a1a2a','vánoční sáček sob':'#8a1a2a',
+};
+
+function pkgColor(t){ return PKG_COLORS[t]||'#5c381f'; }
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// Sestavit index surovin z DARKY_DATA
+function buildIndex(){
+  const map = {}; // kod_suroviny → [{darek_kod, darek_nazev, gram, obal}]
+  Object.entries(DARKY_DATA).forEach(([dk, d])=>{
+    (d.obsah||[]).forEach(item=>{
+      const ks = item.kod;
+      if(!map[ks]) map[ks]=[];
+      map[ks].push({k:dk, n:d.nazev||dk, g:item.gram, o:d.obal||''});
+    });
+  });
+  // Seřadit suroviny podle počtu výskytů
+  const sorted = Object.entries(map).sort((a,b)=>b[1].length-a[1].length);
+  return sorted.map(([kod,ds])=>{
+    const nazev = (typeof NAZVY_SUROVIN!=='undefined'&&NAZVY_SUROVIN[kod])
+      ? NAZVY_SUROVIN[kod].toUpperCase() : `KOD ${kod}`;
+    // Seskupit podle obalu
+    const byObal = {};
+    ds.forEach(d=>{ if(!byObal[d.o]) byObal[d.o]=[]; byObal[d.o].push(d); });
+    const obaly = Object.entries(byObal).sort((a,b)=>a[0].localeCompare(b[0],['cs']));
+    return {kod, nazev, pocet:ds.length, obaly};
+  });
+}
+
+const DATA = buildIndex();
+const listEl = document.getElementById('list');
+const countEl = document.getElementById('topbar-count');
+let allCards = [];
+
+function render(filtered){
+  listEl.innerHTML='';
+  if(!filtered.length){ listEl.innerHTML='<div class="empty">Žádná surovina nenalezena</div>'; countEl.innerHTML='<strong>0</strong>'; return; }
+  countEl.innerHTML='<strong>'+filtered.length+'</strong> / '+DATA.length+' surovin';
+  allCards=[];
+  filtered.forEach(item=>{
+    const card=document.createElement('div');
+    card.className='ing-card';
+    const head=document.createElement('div');
+    head.className='ing-head';
+    head.innerHTML='<span class="ing-code">'+esc(item.kod)+'</span><span class="ing-name">'+esc(item.nazev)+'</span><span class="ing-count">'+item.pocet+'×</span><span class="ing-arrow">›</span>';
+    head.addEventListener('click',()=>card.classList.toggle('open'));
+    const body=document.createElement('div');
+    body.className='ing-body';
+    item.obaly.forEach(([obal,ds])=>{
+      const grp=document.createElement('div');
+      grp.className='pkg-group';
+      grp.innerHTML='<div class="pkg-label" style="background:'+pkgColor(obal)+'"><span class="pkg-dot"></span>'+esc(obal)+' ('+ds.length+')</div>';
+      ds.sort((a,b)=>(a.g-b.g)||a.n.localeCompare(b.n,'cs')).forEach(d=>{
+        const row=document.createElement('div');
+        row.className='prod-row';
+        row.innerHTML='<span class="prod-gram">'+esc(d.g)+'g</span><span class="prod-kod">'+esc(d.k)+'</span><span class="prod-name">'+esc(d.n)+'</span>';
+        grp.appendChild(row);
+      });
+      body.appendChild(grp);
+    });
+    card.appendChild(head);
+    card.appendChild(body);
+    listEl.appendChild(card);
+    allCards.push(card);
+  });
+}
+
+function filter(){
+  const q=document.getElementById('search').value.trim().toLowerCase();
+  render(q ? DATA.filter(x=>x.nazev.toLowerCase().includes(q)||x.kod.toLowerCase().includes(q)) : DATA);
+}
+
+document.getElementById('search').addEventListener('input',filter);
+document.getElementById('btn-expand').addEventListener('click',()=>allCards.forEach(c=>c.classList.add('open')));
+document.getElementById('btn-collapse').addEventListener('click',()=>allCards.forEach(c=>c.classList.remove('open')));
+
+render(DATA);
+</script>
+</body>
+</html>
