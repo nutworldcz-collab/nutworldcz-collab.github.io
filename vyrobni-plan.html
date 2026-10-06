@@ -31,6 +31,10 @@ body{margin:0;font-family:"Source Sans 3",Arial,sans-serif;background:var(--bg);
 .btn-reset:hover{background:rgba(241,230,218,.25)}
 .btn-back{background:transparent;color:rgba(241,230,218,.55);border:1px solid rgba(241,230,218,.25);font-size:.72rem}
 .btn-back:hover{color:#f1e6da;border-color:rgba(241,230,218,.5)}
+.btn-print-sel{background:#da1668;color:#fff;display:none}
+.btn-print-sel:hover{background:#b0004e}
+.btn-desel{background:rgba(218,22,104,.2);color:#da1668;border:1px solid rgba(218,22,104,.4);display:none}
+.btn-desel:hover{background:rgba(218,22,104,.35)}
 
 /* FILTER BAR */
 .filterbar{
@@ -83,6 +87,12 @@ body{margin:0;font-family:"Source Sans 3",Arial,sans-serif;background:var(--bg);
 
 /* PRODUCT CARD */
 .prod-card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;overflow:hidden}
+.prod-card.selected{border-color:#da1668;box-shadow:0 0 0 2px rgba(218,22,104,.2)}
+.prod-card.selected .prod-hdr{background:#fff0f5}
+.card-chk{
+  width:17px;height:17px;accent-color:#da1668;
+  cursor:pointer;flex-shrink:0;margin-right:2px
+}
 .prod-hdr{padding:8px 12px 6px;background:var(--ch);border-bottom:1px solid var(--border)}
 .prod-hdr-top{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;margin-bottom:4px}
 .prod-kod{
@@ -154,7 +164,7 @@ body{margin:0;font-family:"Source Sans 3",Arial,sans-serif;background:var(--bg);
 /* PRINT — all */
 @media print{
   body{background:#fff}
-  .topbar,.filterbar,.btn,.btn-card-print{display:none!important}
+  .topbar,.filterbar,.btn,.btn-card-print,.card-chk{display:none!important}
   .main{padding:0;max-width:100%}
   .prod-card{border:1px solid #ccc;border-radius:0;break-inside:avoid;margin-bottom:6pt}
   .prod-hdr,.prod-footer{background:#f0e8da}
@@ -168,6 +178,7 @@ body.printing-card .topbar,
 body.printing-card .filterbar,
 body.printing-card .btn,
 body.printing-card .btn-card-print,
+body.printing-card .card-chk,
 body.printing-card #sum-section,
 body.printing-card #sum-section-table,
 body.printing-card .kat-hdr,
@@ -195,6 +206,8 @@ body.printing-card .prod-card.card-printing .prod-footer{padding:8px 16px}
   <div class="topbar-r">
     <a href="/" class="btn btn-back">← Zpět</a>
     <button class="btn btn-reset" onclick="resetKs()">↺ Reset</button>
+    <button id="btn-desel" class="btn btn-desel" onclick="clearSelection()">✕ Zrušit výběr</button>
+    <button id="btn-print-sel" class="btn btn-print-sel" onclick="printSelected()">🖨 Vybrané (<span id="sel-count">0</span>)</button>
     <button class="btn btn-print" onclick="window.print()">🖨 Vše</button>
   </div>
 </div>
@@ -581,6 +594,7 @@ const PRODUCTS = [
 // ── STATE ─────────────────────────────────────────────────────────────────
 const ksState = {};
 PRODUCTS.forEach(p => { ksState[p.kod] = p.defaultKs; });
+const selectedKods = new Set();
 
 let filterKat = null;
 let filterSearch = '';
@@ -707,6 +721,7 @@ function renderProducts(){
       card.innerHTML = `
         <div class="prod-hdr">
           <div class="prod-hdr-top">
+            <input type="checkbox" class="card-chk" data-kod="${esc(p.kod)}">
             <span class="prod-kod">${esc(p.kod)}</span>
             <div style="flex:1"></div>
             <div class="ks-wrap">
@@ -730,6 +745,14 @@ function renderProducts(){
       });
       card.querySelector('.btn-card-print').addEventListener('click', function(){
         printCard(this.dataset.kod);
+      });
+      const chk = card.querySelector('.card-chk');
+      if(selectedKods.has(p.kod)) chk.checked = true;
+      chk.addEventListener('change', function(){
+        if(this.checked) selectedKods.add(p.kod);
+        else selectedKods.delete(p.kod);
+        card.classList.toggle('selected', this.checked);
+        updateSelectionUI();
       });
 
       grid.appendChild(card);
@@ -794,6 +817,29 @@ function renderSummary(){
 
   document.getElementById('sum-body').innerHTML = bodyHtml;
   document.getElementById('sum-count').textContent = (grams.length + pieces.length) + ' surovin';
+}
+
+// ── SELECTION ─────────────────────────────────────────────────────────────
+function updateSelectionUI(){
+  const n = selectedKods.size;
+  document.getElementById('sel-count').textContent = n;
+  document.getElementById('btn-print-sel').style.display = n ? '' : 'none';
+  document.getElementById('btn-desel').style.display = n ? '' : 'none';
+}
+function clearSelection(){
+  selectedKods.clear();
+  document.querySelectorAll('.card-chk').forEach(c => { c.checked = false; });
+  document.querySelectorAll('.prod-card').forEach(c => c.classList.remove('selected'));
+  updateSelectionUI();
+}
+function printSelected(){
+  document.querySelectorAll('.prod-card').forEach(c => {
+    c.classList.toggle('card-printing', selectedKods.has(c.dataset.kod));
+  });
+  document.body.classList.add('printing-card');
+  window.print();
+  document.body.classList.remove('printing-card');
+  document.querySelectorAll('.prod-card').forEach(c => c.classList.remove('card-printing'));
 }
 
 // ── PRINT SINGLE CARD ─────────────────────────────────────────────────────
