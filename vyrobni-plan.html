@@ -880,8 +880,8 @@ function renderSummary(){
 function updateSelectionUI(){
   const n = selectedKods.size;
   document.getElementById('sel-count').textContent = n;
-  document.getElementById('btn-print-sel').style.display = n ? '' : 'none';
-  document.getElementById('btn-desel').style.display = n ? '' : 'none';
+  document.getElementById('btn-print-sel').style.display = n ? 'inline-flex' : 'none';
+  document.getElementById('btn-desel').style.display = n ? 'inline-flex' : 'none';
 }
 function clearSelection(){
   selectedKods.clear();
