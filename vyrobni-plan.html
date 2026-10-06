@@ -215,16 +215,6 @@ body.printing-card .prod-card.card-printing .prod-footer{padding:8px 16px}
   </div>
   <div id="kat-sections"></div>
 
-  <div class="sec-hdr" id="sum-section" style="margin-top:28px">
-    <span class="sec-title">Celková spotřeba surovin</span>
-    <span class="sec-badge" id="sum-count"></span>
-  </div>
-  <div class="sum-wrap" id="sum-section-table">
-    <table class="sum-table">
-      <thead id="sum-head"></thead>
-      <tbody id="sum-body"></tbody>
-    </table>
-  </div>
 </div>
 
 <script>
@@ -762,7 +752,6 @@ function printCard(kod){
 function render(){
   renderPills();
   renderProducts();
-  renderSummary();
 }
 function resetKs(){
   PRODUCTS.forEach(p => { ksState[p.kod] = p.defaultKs; });
