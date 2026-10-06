@@ -255,7 +255,7 @@ body.printing-multi .prod-hdr{background:#f0e8da}
 const CATEGORIES = [
   { id: 'kombinovane', label: 'Kombinované'         },
   { id: 'top10',       label: 'TOP 10'              },
-  { id: 'krab80',      label: 'Krabičky 4×80g'      },
+  { id: 'krab80',      label: 'Polotovary 4×80g'     },
   { id: 'celofanek',   label: 'Celofánek & kelímek' },
 ];
 
@@ -406,102 +406,139 @@ const PRODUCTS = [
     ],
     defaultKs: 10
   },
-  // ── KRABIČKY 4×80g ────────────────────────────────────────────────────────
+  // ── POLOTOVARY 4×80g — jedna surovina = jedna karta ──────────────────────
   {
-    kod: '3520/V', kat: 'krab80',
-    obal: 'dárková krabička 4×80g',
-    nazev: 'Vánoční slaná krabička',
-    obsah: [
-      {kod:'101',  n:'Mandle pražené solené', g:80},
-      {kod:'89',   n:'Mandle uzené',          g:80},
-      {kod:'4794', n:'Mix ořechů med & sůl',  g:80},
-      {kod:'116',  n:'Kešu pražené solené',   g:80},
-    ],
-    defaultKs: 50
+    kod: 'POL-89', kat: 'krab80',
+    obal: 'celofánek plochý 80×158mm + tavit na pákové tavičce',
+    nazev: 'Mandle uzené',
+    obsah: [{kod:'89', n:'Mandle uzené', g:80}],
+    defaultKs: 1
   },
   {
-    kod: '4707', kat: 'krab80',
-    obal: 'dárková krabička 4×80g',
-    nazev: 'Slaná průhledná krabička',
-    obsah: [
-      {kod:'89',   n:'Mandle uzené',                    g:80},
-      {kod:'101',  n:'Mandle pražené solené',           g:80},
-      {kod:'1964', n:'Mandle kešu mléčná čokoláda',    g:80},
-      {kod:'4038', n:'Kešu pražené solené',             g:80},
-    ],
-    defaultKs: 17
+    kod: 'POL-101', kat: 'krab80',
+    obal: 'celofánek plochý 80×158mm + tavit na pákové tavičce',
+    nazev: 'Mandle pražené solené',
+    obsah: [{kod:'101', n:'Mandle pražené solené', g:80}],
+    defaultKs: 1
   },
   {
-    kod: '8555', kat: 'krab80',
-    obal: 'dárková krabička 4×80g',
-    nazev: 'Krabička SOB / narozeninový mix',
-    obsah: [
-      {kod:'89',   n:'Mandle uzené',                    g:80},
-      {kod:'101',  n:'Mandle pražené solené',           g:80},
-      {kod:'1952', n:'Mandle ve slaném karamelu',       g:80},
-      {kod:'9604', n:'Arašídy karamelizované se sezamem', g:80},
-    ],
-    defaultKs: 16
+    kod: 'POL-116', kat: 'krab80',
+    obal: 'celofánek plochý 80×158mm + tavit na pákové tavičce',
+    nazev: 'Kešu pražené solené',
+    obsah: [{kod:'116', n:'Kešu pražené solené', g:80}],
+    defaultKs: 1
   },
   {
-    kod: '480XVXSTR', kat: 'krab80',
-    obal: 'dárková krabička 4×80g',
-    nazev: 'Krabička se stromečkem',
-    obsah: [
-      {kod:'89',   n:'Mandle uzené',                    g:80},
-      {kod:'9604', n:'Arašídy karamelizované se sezamem', g:80},
-      {kod:'547',  n:'Kukuřice pražená med & hořčice',  g:60},
-      {kod:'3111', n:'Meruňky v jogurtu',               g:80},
-    ],
-    defaultKs: 8
+    kod: 'POL-4794', kat: 'krab80',
+    obal: 'celofánek plochý 80×158mm + tavit na pákové tavičce',
+    nazev: 'Mix ořechů med & sůl',
+    obsah: [{kod:'4794', n:'Mix ořechů med & sůl', g:80}],
+    defaultKs: 1
   },
   {
-    kod: '5268', kat: 'krab80',
-    obal: 'dárková krabička 4×80g',
-    nazev: 'Vánoční krabička různé gramáže',
-    obsah: [
-      {kod:'3978', n:'Tropická směs mini',              g:40},
-      {kod:'4794', n:'Mix ořechů med & sůl',            g:70},
-      {kod:'1964', n:'Mandle kešu mléčná čokoláda',    g:80},
-      {kod:'89',   n:'Mandle uzené',                    g:75},
-    ],
-    defaultKs: 7
+    kod: 'POL-1964', kat: 'krab80',
+    obal: 'celofánek plochý 80×158mm + tavit na pákové tavičce',
+    nazev: 'Mandle kešu mléčná čokoláda',
+    obsah: [{kod:'1964', n:'Mandle kešu mléčná čokoláda', g:80}],
+    defaultKs: 1
   },
   {
-    kod: '3517/VAN', kat: 'krab80',
-    obal: 'dárková krabička 4×80g',
-    nazev: 'Sladká vánoční krabička',
-    obsah: [
-      {kod:'3978', n:'Slaný preclík v mléčné čokoládě', g:80},
-      {kod:'1964', n:'Mandle kešu mléčná čokoláda',     g:80},
-      {kod:'1955', n:'Mandle v hořké čokoládě',          g:80},
-      {kod:'1952', n:'Mandle ve slaném karamelu',        g:80},
-    ],
-    defaultKs: 5
+    kod: 'POL-4038', kat: 'krab80',
+    obal: 'celofánek plochý 80×158mm + tavit na pákové tavičce',
+    nazev: 'Mandle mléčná čokoláda',
+    obsah: [{kod:'4038', n:'Mandle mléčná čokoláda', g:80}],
+    defaultKs: 1
   },
   {
-    kod: '917N10', kat: 'krab80',
-    obal: 'dárková krabička 4×80g',
-    nazev: 'Mix k narozeninám',
-    obsah: [
-      {kod:'161',  n:'Vánoční slaný mix',               g:80},
-      {kod:'4896', n:'Směs mandlí v čokoládě',          g:80},
-      {kod:'1985', n:'Mandle tří barev',                g:80},
-      {kod:'4794', n:'Mix ořechů med & sůl',            g:80},
-    ],
-    defaultKs: 3
+    kod: 'POL-9604', kat: 'krab80',
+    obal: 'celofánek plochý 80×158mm + tavit na pákové tavičce',
+    nazev: 'Arašídy karamelizované se sezamem',
+    obsah: [{kod:'9604', n:'Arašídy karamelizované se sezamem', g:80}],
+    defaultKs: 1
   },
   {
-    kod: '480XVXMAM', kat: 'krab80',
-    obal: 'dárková krabička 4×80g',
-    nazev: 'Pro maminku / učitelku',
-    obsah: [
-      {kod:'5852', n:'Mandle jahodový jogurt',          g:80},
-      {kod:'1964', n:'Mandle kešu mléčná čokoláda',    g:80},
-      {kod:'101',  n:'Mandle pražené solené',           g:80},
-      {kod:'4794', n:'Mix ořechů med & sůl',            g:80},
-    ],
-    defaultKs: 2
+    kod: 'POL-1952', kat: 'krab80',
+    obal: 'celofánek plochý 80×158mm + tavit na pákové tavičce',
+    nazev: 'Mandle ve slaném karamelu',
+    obsah: [{kod:'1952', n:'Mandle ve slaném karamelu', g:80}],
+    defaultKs: 1
+  },
+  {
+    kod: 'POL-547', kat: 'krab80',
+    obal: 'celofánek plochý 80×158mm + tavit na pákové tavičce',
+    nazev: 'Kukuřice pražená med & hořčice',
+    obsah: [{kod:'547', n:'Kukuřice pražená med & hořčice', g:60}],
+    defaultKs: 1
+  },
+  {
+    kod: 'POL-3111', kat: 'krab80',
+    obal: 'celofánek plochý 80×158mm + tavit na pákové tavičce',
+    nazev: 'Meruňky v jogurtu',
+    obsah: [{kod:'3111', n:'Meruňky v jogurtu', g:80}],
+    defaultKs: 1
+  },
+  {
+    kod: 'POL-1988', kat: 'krab80',
+    obal: 'celofánek plochý 80×158mm + tavit na pákové tavičce',
+    nazev: 'Mandle Raffaello',
+    obsah: [{kod:'1988', n:'Mandle Raffaello', g:80}],
+    defaultKs: 1
+  },
+  {
+    kod: 'POL-1955', kat: 'krab80',
+    obal: 'celofánek plochý 80×158mm + tavit na pákové tavičce',
+    nazev: 'Mandle v hořké čokoládě',
+    obsah: [{kod:'1955', n:'Mandle v hořké čokoládě', g:80}],
+    defaultKs: 1
+  },
+  {
+    kod: 'POL-5852', kat: 'krab80',
+    obal: 'celofánek plochý 80×158mm + tavit na pákové tavičce',
+    nazev: 'Mandle jahodový jogurt',
+    obsah: [{kod:'5852', n:'Mandle jahodový jogurt', g:80}],
+    defaultKs: 1
+  },
+  {
+    kod: 'POL-161', kat: 'krab80',
+    obal: 'celofánek plochý 80×158mm + tavit na pákové tavičce',
+    nazev: 'Vánoční slaný mix',
+    obsah: [{kod:'161', n:'Vánoční slaný mix', g:80}],
+    defaultKs: 1
+  },
+  {
+    kod: 'POL-4896', kat: 'krab80',
+    obal: 'celofánek plochý 80×158mm + tavit na pákové tavičce',
+    nazev: 'Směs mandlí v čokoládě',
+    obsah: [{kod:'4896', n:'Směs mandlí v čokoládě', g:80}],
+    defaultKs: 1
+  },
+  {
+    kod: 'POL-1985', kat: 'krab80',
+    obal: 'celofánek plochý 80×158mm + tavit na pákové tavičce',
+    nazev: 'Mandle tří barev',
+    obsah: [{kod:'1985', n:'Mandle tří barev', g:80}],
+    defaultKs: 1
+  },
+  {
+    kod: 'POL-3978P', kat: 'krab80',
+    obal: 'celofánek plochý 80×158mm + tavit na pákové tavičce',
+    nazev: 'Slaný preclík v mléčné čokoládě',
+    obsah: [{kod:'3978', n:'Slaný preclík v mléčné čokoládě', g:40}],
+    defaultKs: 1
+  },
+  {
+    kod: 'POL-3978T', kat: 'krab80',
+    obal: 'celofánek plochý 80×158mm + tavit na pákové tavičce',
+    nazev: 'Tropická směs mini',
+    obsah: [{kod:'3978T', n:'Tropická směs mini', g:40}],
+    defaultKs: 1
+  },
+  {
+    kod: 'POL-5055V', kat: 'krab80',
+    obal: '—',
+    nazev: 'Celofán plochý 80×158mm',
+    obsah: [{kod:'5055V', n:'Celofán plochý 80×158mm', ks:4}],
+    defaultKs: 1
   },
   // ── CELOFÁNEK & KELÍMEK ───────────────────────────────────────────────────
   {
