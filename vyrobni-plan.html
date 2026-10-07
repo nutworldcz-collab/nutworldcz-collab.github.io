@@ -871,7 +871,7 @@ function renderProducts(){
       let rows = '';
       p.obsah.forEach(o => {
         const q = filterSearch.toLowerCase();
-        const hi = filterSearch && (o.kod.toLowerCase().includes(q) || o.n.toLowerCase().includes(q));
+        const hi = filterSearch && (czMatch((o.kod||'').toLowerCase(), q) || czMatch((o.n||'').toLowerCase(), q));
         const tr = hi ? ' class="ing-match"' : '';
         if(o.ks !== undefined){
           rows += `<tr${tr}>
