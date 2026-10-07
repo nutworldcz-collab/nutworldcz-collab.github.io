@@ -258,6 +258,7 @@ const CATEGORIES = [
   { id: 'krab80',      label: 'Polotovary 4×80g'     },
   { id: 'celofanek',   label: 'Celofánek & kelímek' },
   { id: 'sacky',       label: 'Sáčky & kazetky'    },
+  { id: 'kazetky',    label: 'Dárková kazetka'    },
 ];
 
 const PRODUCTS = [
@@ -661,6 +662,22 @@ const PRODUCTS = [
     obal: 'sáček tavený na kontinuální tavičce',
     nazev: 'Mix ořechů med & sůl',
     obsah: [{kod:'4794', n:'Mix ořechů med & sůl', g:180}],
+    defaultKs: 1
+  },
+
+  // ── DÁRKOVÁ KAZETKA ───────────────────────────────────────────────────────
+  {
+    kod: 'KAZ-89', kat: 'kazetky',
+    obal: 'dárková kazetka 50g',
+    nazev: 'Mandle uzené',
+    obsah: [{kod:'89', n:'Mandle uzené', g:50}],
+    defaultKs: 1
+  },
+  {
+    kod: 'KAZ-4794', kat: 'kazetky',
+    obal: 'dárková kazetka 50g',
+    nazev: 'Mix ořechů med & sůl',
+    obsah: [{kod:'4794', n:'Mix ořechů med & sůl', g:50}],
     defaultKs: 1
   },
 ];
