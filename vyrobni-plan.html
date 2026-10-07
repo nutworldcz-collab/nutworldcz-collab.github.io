@@ -810,13 +810,13 @@ function renderProducts(){
           rows += `<tr${tr}>
             <td class="ing-n">${esc(o.n)}</td>
             <td class="ing-g">${o.ks} ks/krab.</td>
-            <td class="ing-kg" style="font-variant-numeric:tabular-nums">${o.ks * ks} ks</td>
+            <td class="ing-kg ing-kg-val" style="font-variant-numeric:tabular-nums">${o.ks * ks} ks</td>
           </tr>`;
         } else {
           rows += `<tr${tr}>
             <td class="ing-n">${esc(o.n)}</td>
             <td class="ing-g">${o.g} g/ks</td>
-            <td class="ing-kg">${fmtKg(o.g * ks)}</td>
+            <td class="ing-kg ing-kg-val">${fmtKg(o.g * ks)}</td>
           </tr>`;
         }
       });
@@ -844,7 +844,21 @@ function renderProducts(){
 
       card.querySelector('.ks-input').addEventListener('input', function(){
         const v = parseInt(this.value);
-        if(!isNaN(v) && v >= 0){ ksState[p.kod] = v; render(); }
+        if(!isNaN(v) && v >= 0){
+          ksState[p.kod] = v;
+          const cells = card.querySelectorAll('.ing-kg-val');
+          let totalG = 0;
+          p.obsah.forEach((o, i) => {
+            if(!cells[i]) return;
+            if(o.ks !== undefined){
+              cells[i].textContent = (o.ks * v) + ' ks';
+            } else {
+              cells[i].textContent = fmtKg(o.g * v);
+              totalG += o.g * v;
+            }
+          });
+          card.querySelector('.prod-total-kg').textContent = fmtKg(totalG);
+        }
       });
       card.querySelector('.btn-card-print').addEventListener('click', function(){
         printCard(this.dataset.kod);
