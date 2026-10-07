@@ -762,13 +762,20 @@ const selectedKods = new Set();
 let filterKat = null;
 let filterSearch = '';
 
+function czMatch(haystack, q){
+  if(haystack.includes(q)) return true;
+  // Czech morphology: strip suffix and try root (jahoda→jahod, jahodový matches)
+  if(q.length > 3 && 'aeiuyáéíúůýěšžčřďťň'.includes(q.slice(-1)))
+    return haystack.includes(q.slice(0,-1));
+  return false;
+}
 function productMatches(p){
   if(filterKat && p.kat !== filterKat) return false;
   if(filterSearch){
     const q = filterSearch.toLowerCase();
-    if(p.nazev.toLowerCase().includes(q)) return true;
+    if(czMatch(p.nazev.toLowerCase(), q)) return true;
     if(p.kod.toLowerCase().includes(q)) return true;
-    if(p.obsah.some(o => (o.kod||'').toLowerCase().includes(q) || (o.n||'').toLowerCase().includes(q))) return true;
+    if(p.obsah.some(o => czMatch((o.kod||'').toLowerCase(), q) || czMatch((o.n||'').toLowerCase(), q))) return true;
     return false;
   }
   return true;
