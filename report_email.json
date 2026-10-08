@@ -1,192 +1,132 @@
 {
-  "generated": "2026-10-07T12:00:43",
-  "total": 14,
-  "spam_skipped": 0,
+  "generated": "2026-10-08T07:30:31",
+  "total": 9,
+  "spam_skipped": 1,
   "emails": [
     {
       "account": "Exchange",
-      "sender": "Veronika Marethová <veronika.marethova@broumovsko.cz>",
-      "subject": "Poptávka - sýrárna",
-      "date": "středa 7. října 2026 11:31:43",
+      "sender": "Legislativa Nutworld <legislativa@nutworld.cz>",
+      "subject": "RE: Dotaz šatní skříňky - [PWB-BVVMP-552]",
+      "date": "čtvrtek 8. října 2026 7:25:36",
       "unread": true,
-      "preview": "Dobrý den, Obracím se opět na Vás s poptávkou oříšků a případně sušeného ovoce",
-      "category": "b2b",
-      "sender_short": "Veronika Marethová",
-      "sender_email": "veronika.marethova@broumovsko.cz",
-      "ai": {
-        "shrn": "B2B poptávka od sýrárny Broumovsko na nákup oříšků a sušeného ovoce. Jedná se o opakovaného zákazníka.",
-        "tyka_se": true,
-        "akce": "Připravit nabídku s cenami a dostupností požadovaných produktů"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "DPD – Váš balíkový přepravce <vasnazor@feedback.dpd.cz>",
-      "subject": "Jak jste byl/a spokojen/a s doručením dne 06/10/2026?",
-      "date": "středa 7. října 2026 11:13:13",
-      "unread": true,
-      "preview": "￼ ￼ Dobrý den, dne 06/10/2026 jste obdrželi zásilku doručenou společností DPD. Abychom pro Vás mohli naše služby zlepšovat",
-      "category": "zakaznik",
-      "sender_short": "DPD – Váš balíkový přepravce",
-      "sender_email": "vasnazor@feedback.dpd.cz",
-      "ai": {
-        "shrn": "Zpětná vazba od DPD na kvalitu služby doručení ze dne 06/10/2026. Automatický email na zlepšení služeb.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Petra Kozakova <Petra.Kozakova@arboeko.com>",
-      "subject": "Reklamace dodávky oříšků - slaný mix",
-      "date": "středa 7. října 2026 11:09:29",
-      "unread": true,
-      "preview": "Vážený pane Vlčku, navazuji na náš dnešní telefonický rozhovor ohledně reklamace naší poslední objednávky na 100 ks oříšků (dodávka z konce srpna - faktura č. 20260228 a 20260227). S vaší společností spolupracujeme dlouhodobě a toto je vůbec poprvé",
-      "category": "zakaznik",
-      "sender_short": "Petra Kozakova",
-      "sender_email": "Petra.Kozakova@arboeko.com",
-      "ai": {
-        "shrn": "Reklamace od dlouhodobého B2B zákazníka na 100 ks oříšků slaný mix z konce srpna. První reklamace v historii spolupráce.",
-        "tyka_se": true,
-        "akce": "Vyřešit reklamaci se zákazníkem, ověřit kvalitu dodávky a poskytnout náhradu"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 10:59 (7. října 2026)",
-      "date": "středa 7. října 2026 11:01:15",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Balírna přesunul(a) kartu IMI - 2604531 do sloupce Kompletuje se dárek - Dárkovna na nástěnce Firmy dárky + objednávky Odpovědět e-mailem ￼ Balírna přesunul(a) kartu IMI - 2604531 do sloupce Hotovo - čeká na zabalení na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 ",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Exchange",
-      "sender": "Rose Skrobankova <rosie.skrobankova@gmail.com>",
-      "subject": "",
-      "date": "středa 7. října 2026 10:51:07",
-      "unread": true,
-      "preview": "Dobrý den, ráda bych vás oslovila s nabídkou podpořit závod Orlický Oříšek. Jedná se o závod ve sportovní gymnastice",
-      "category": "ostatni",
-      "sender_short": "Rose Skrobankova",
-      "sender_email": "rosie.skrobankova@gmail.com",
-      "ai": {
-        "shrn": "Nabídka na sponzorství závodu Orlický Oříšek v sportovní gymnastice. Marketingová příležitost.",
-        "tyka_se": true,
-        "akce": "Rozhodnout o možnosti sponzorství a kontaktovat Rose Skrobanková"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "InfoNutWorld <info@nutworld.cz>",
-      "subject": "Fw: [NutWorld.cz] Kontaktní formulář",
-      "date": "středa 7. října 2026 10:44:56",
-      "unread": true,
-      "preview": "Zasláno z Outlooku pro Android From: Jana Jnaovská <info@nutworld.cz> Sent: Wednesday",
+      "preview": "Mám jí odpovědět",
       "category": "tym",
-      "sender_short": "InfoNutWorld",
-      "sender_email": "info@nutworld.cz",
+      "sender_short": "Legislativa Nutworld",
+      "sender_email": "legislativa@nutworld.cz",
       "ai": {
-        "shrn": "Vnitřní email týmu s přeposlaným kontaktním formulářem. Interní komunikace.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Martin Werner tě zmínil/a na kartě Securitas ČR s.r.o. na nástěnce Firmy dárky + objednávky",
-      "date": "středa 7. října 2026 10:37:54",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Martin Werner vás zmínil(a) na kartě Securitas ČR s.r.o. na nástěnce Firmy dárky + objednávky @board posunutý termín zakázky !! Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "objednávka REDA krabičky s termíne do 9.10.2026 na Firmy dárky + objednávky má termín za 2 dny",
-      "date": "středa 7. října 2026 10:29:57",
-      "unread": true,
-      "preview": "￼ Termín je brzy... objednávka REDA krabičky s termíne do 9.10.2026 na nástěnce Firmy dárky + objednávky s termínem má termín za 2 dny Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
-      "category": "b2b",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com",
-      "ai": {
-        "shrn": "Upozornění z Trella na urgentní B2B objednávku REDA krabiček s termínem do 9.10.2026. Termín za 2 dny.",
+        "shrn": "Interní email od legislativy týmu ohledně šatní skříňky. Vyžaduje Janovu odpověď.",
         "tyka_se": true,
-        "akce": "Urychleně zkontrolovat a zajistit expedici objednávky REDA krabiček"
+        "akce": "Odpovědět na dotaz ohledně šatní skříňky"
       }
     },
     {
       "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Martin Werner tě zmínil/a na kartě DEVINN s.r.o. — 151 ks — 27.10.2026 na nástěnce Firmy dárky + objednávky",
-      "date": "středa 7. října 2026 10:26:15",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Martin Werner vás zmínil(a) na kartě DEVINN s.r.o. — 151 ks — 27.10.2026 na nástěnce Firmy dárky + objednávky @board bude asi změna krabičky na zavřenou se stromečkem. Řeším to Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
+      "sender": "Tereza Tučná - B2B Partner <napistenam@b2bpartner.cz>",
+      "subject": "Re: Dotaz šatní skříňky - [PWB-BVVMP-552]",
+      "date": "čtvrtek 8. října 2026 7:22:54",
+      "unread": false,
+      "preview": "Dobrý den pane Vlčku, děkuji Vám za e-mail. Poprosím o zaslání kódů skříní",
+      "category": "ostatni",
+      "sender_short": "Tereza Tučná - B2B Partner",
+      "sender_email": "napistenam@b2bpartner.cz",
+      "ai": {
+        "shrn": "B2B partner Tereza Tučná požaduje zaslání kódů skříní.",
+        "tyka_se": true,
+        "akce": "Zaslat kódy skříní Tereze Tučné"
+      }
     },
     {
       "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Renata Pošepná přesunul/a kartu IMI - 2604753 do sloupce Hotovo - čeká na zabalení na nástěnce Firmy dárky + objednávky",
-      "date": "středa 7. října 2026 10:22:01",
+      "sender": "Radka Goderová <radka.goderova@mekrs.cz>",
+      "subject": "RE: Benzin",
+      "date": "čtvrtek 8. října 2026 5:52:15",
       "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Renata Pošepná přesunul(a) kartu IMI - 2604753 do sloupce Hotovo - čeká na zabalení na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Google",
-      "sender": "\"DJI\" <enews@e.dji.com>",
-      "subject": "Final countdown! DJI Autumn sale ends soon",
-      "date": "středa 7. října 2026 10:49:35",
-      "unread": true,
-      "preview": "￼ Only 2 Days Left! Time to bring home the gear on your wishlist. ￼ Irresistible Deals The standout offers of the DJI Autumn Sale. ￼ Earn 5% Back in DJI Credit Earn 5% back in DJI Credit on select products. ￼ Refer & Reward Share a product link with a friend. When they order",
-      "category": "ostatni",
-      "sender_short": "DJI",
-      "sender_email": "enews@e.dji.com",
+      "preview": "Děkuji 😊 ￼ MEKR'S GROUP s.r.o. Radka Goderová Hlavní účetní MEKR'S",
+      "category": "tym",
+      "sender_short": "Radka Goderová",
+      "sender_email": "radka.goderova@mekrs.cz",
       "ai": {
-        "shrn": "Marketingový email DJI na prodej drone vybavení. Nevztahuje se k Nutworld.",
+        "shrn": "Poděkovací email od účetní Radky Goderové týkající se benzínu.",
         "tyka_se": false,
         "akce": null
       }
     },
     {
-      "account": "Google",
-      "sender": "Atomrat <news@e.atomrat.cz>",
-      "subject": "Pestrý podzim",
-      "date": "středa 7. října 2026 8:39:33",
+      "account": "Exchange",
+      "sender": "Markéta Costachova <marketa.costachova@nutworld.cz>",
+      "subject": "RE: [B2B POPTÁVKA] poďakovanie+vianočné balíčky (50–199 ks ks)",
+      "date": "čtvrtek 8. října 2026 5:34:57",
       "unread": true,
-      "preview": "￼ Zobrazit na webu Odhlásit eshop@atomrat.cz ￼ Bundy Kalhoty Vesty Mikiny Trička Sukně Kraťasy Šaty Milé atomové ženy, podzim nemusí znamenat jen tlumené barvy a šedivé dny. Zářivý kabátek",
-      "category": "ostatni",
-      "sender_short": "Atomrat",
-      "sender_email": "news@e.atomrat.cz",
+      "preview": "Oslovím",
+      "category": "b2b",
+      "sender_short": "Markéta Costachova",
+      "sender_email": "marketa.costachova@nutworld.cz",
       "ai": {
-        "shrn": "Newsletterový email od Atomrat s podzimní kolekcí oblečení. Nevztahuje se k oboru.",
+        "shrn": "Interní email od Markéty Costachové o B2B poptávce na vánočné balíčky. Markéta se chystá oslovit zákazníka.",
         "tyka_se": false,
         "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "\"info@nutworld.sk\" <info@nutworld.sk>",
+      "subject": "Fwd: Dotaz k produktom",
+      "date": "čtvrtek 8. října 2026 4:26:54",
+      "unread": true,
+      "preview": "-------- Původní zpráva -------- Předmět: Dotaz k produktom Datum: 2026-10-07 15:35 Odesílatel: Ivana Šulganová <ivana.sulganova@albi.sk> Adresát: \"Nutworld.sk\" <info@nutworld.sk> Dobrý deň, prosím Vás o informácie k týmto produktom: * https://www.nutworld.sk/orechy-a-susene-plody/bananove-chipsy-v-",
+      "category": "tym",
+      "sender_short": "info@nutworld.sk",
+      "sender_email": "info@nutworld.sk",
+      "ai": {
+        "shrn": "Forwarded dotaz ze slovenské Nutworld.sk od Ivany Šulganové ohledně produktů (banánové chipsy).",
+        "tyka_se": true,
+        "akce": "Přeposlanou poptávku zadat týmu na odpověď nebo osobně odpovědět"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "\"info@nutworld.sk\" <info@nutworld.sk>",
+      "subject": "Fwd: [Nutworld.sk] Kontaktný formulár",
+      "date": "čtvrtek 8. října 2026 4:25:26",
+      "unread": true,
+      "preview": "-------- Původní zpráva -------- Předmět: [Nutworld.sk] Kontaktný formulár Datum: 2026-10-06 12:57 Odesílatel: Jana Šimová <info@nutworld.sk> Adresát: \"Nutworld.sk\" <info@nutworld.sk> Odpověď na: Jana Šimová <jana.simova@havi.com> SPRÁVA Z NUTWORLD.SK Meno: Jana Šimová Email: jana.simova@havi.com Sp",
+      "category": "tym",
+      "sender_short": "info@nutworld.sk",
+      "sender_email": "info@nutworld.sk",
+      "ai": {
+        "shrn": "Forwarded kontaktní formulář ze slovenské Nutworld.sk od Jany Šimové.",
+        "tyka_se": true,
+        "akce": "Vyřešit poptávku z kontaktního formuláře"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "\"info@nutworld.sk\" <info@nutworld.sk>",
+      "subject": "Fwd: MIX čokoládových mandlí BROWN v celofáne a poháriku 180g — VESELÉ VIANOCE - Nutworld.sk",
+      "date": "čtvrtek 8. října 2026 4:25:03",
+      "unread": true,
+      "preview": "-------- Původní zpráva -------- Předmět: FW: MIX čokoládových mandlí BROWN v celofáne a poháriku 180g — VESELÉ VIANOCE - Nutworld.sk Datum: 2026-10-06 10:40 Odesílatel: Silvia Drimajová <drimajova@vomet.sk> Adresát: \"info@nutworld.sk\" <info@nutworld.sk> Dobrý deň, Chcela by som informovať",
+      "category": "tym",
+      "sender_short": "info@nutworld.sk",
+      "sender_email": "info@nutworld.sk",
+      "ai": {
+        "shrn": "Forwarded dotaz ze slovenské Nutworld.sk od Silvie Drimajové ohledně čokoládových mandlí.",
+        "tyka_se": true,
+        "akce": "Zadat odpověď na poptávku ze slovenské stránky"
       }
     },
     {
       "account": "Google",
       "sender": "\"CrossFit\" <crossfit@mail.crossfit.com>",
-      "subject": "261007 Workout of the Day: Hang On",
-      "date": "středa 7. října 2026 2:32:12",
+      "subject": "261008 Rest Day: Your Weekly CrossFit Updates",
+      "date": "čtvrtek 8. října 2026 2:12:05",
       "unread": true,
-      "preview": "￼ ￼ ￼ WEDNESDAY",
+      "preview": "￼ ￼ ￼ A Step-By-Step Approach to Wall Walks TRAINING Seminar Staff Trainer Todd Widman (CF-L4) breaks down the wall walk from the ground up",
       "category": "ostatni",
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "Denní workout zpráva od CrossFitu. Informační email bez relevance.",
+        "shrn": "Zpravodaj CrossFitu s článkem o wall walks. Není relevantní pro Nutworld.",
         "tyka_se": false,
         "akce": null
       }
@@ -194,15 +134,15 @@
     {
       "account": "Google",
       "sender": "AliExpress <ae-mx-notify03@selections.aliexpress.com>",
-      "subject": "Something new just arrived",
-      "date": "středa 7. října 2026 0:33:21",
+      "subject": "Guess what just happened",
+      "date": "čtvrtek 8. října 2026 0:30:43",
       "unread": true,
-      "preview": "￼ -30% CZK67.38 -49% CZK82.55 -30% CZK282.25 -5% CZK69.39 -34% CZK3,722.18 Explore now ￼ CZK2,622.44 ￼ CZK3,190.44 -34% ￼ CZK249.82 -52% ￼ CZK3,752.52 ￼ CZK641.89 -33% ￼ CZK242.10 -52% ￼ CZK4,217.49 -93% ￼ CZK791.48 -50% ￼ CZK238.51 -92% ￼ CZK244.06 ￼ CZK99.18 -20% ￼ CZK125.01 -1% ￼ CZK572.51 -35% ￼",
+      "preview": "Now it's time to let you in ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ￼ New stock at great prices Today's top picks . -30% . CZK39.11 . -5% . CZK23.11 .",
       "category": "ostatni",
       "sender_short": "AliExpress",
       "sender_email": "ae-mx-notify03@selections.aliexpress.com",
       "ai": {
-        "shrn": "Slevový email od AliExpress na nové produkty. Nevztahuje se k Nutworld.",
+        "shrn": "Propagační email od AliExpressu s nabídkou produktů.",
         "tyka_se": false,
         "akce": null
       }
