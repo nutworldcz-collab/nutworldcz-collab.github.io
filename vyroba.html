@@ -1164,7 +1164,10 @@ function renderVyroba(cards){
     grid.appendChild(card);
   });
 
-  smesMap.forEach((usages,smesName)=>grid.insertBefore(buildSmesCard(smesName,usages),grid.firstChild));
+  smesMap.forEach((usages,smesName)=>{
+    if(q&&!smesName.toLowerCase().includes(q)&&!usages.some(u=>u.firma.toLowerCase().includes(q))) return;
+    grid.insertBefore(buildSmesCard(smesName,usages),grid.firstChild);
+  });
   mc.innerHTML=''; mc.appendChild(grid);
 }
 
