@@ -1,22 +1,87 @@
 {
-  "generated": "2026-10-11T16:54:10",
-  "total": 12,
+  "generated": "2026-10-11T17:00:30",
+  "total": 15,
   "spam_skipped": 0,
   "emails": [
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Jana Nývltová přesunul/a kartu FOREA - 2600012472 do sloupce Je zadáno v k2 na nástěnce Firmy dárky + objednávky",
+      "date": "neděle 11. října 2026 15:34:05",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová přesunul(a) kartu FOREA - 2600012472 do sloupce Je zadáno v k2 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 15:21 (11. října 2026)",
+      "date": "neděle 11. října 2026 15:23:29",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová vás přidal(a) na kartu FOREA - 2600012472 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem ￼ Jana Nývltová přidal(a) termín splnění na kartu FOREA - 2600012472 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Tomáš Hamerník <tomas.hamernik@nutworld.cz>",
+      "subject": "potvrzená objendávka na Tubus modrý Alzák",
+      "date": "neděle 11. října 2026 12:45:56",
+      "unread": true,
+      "preview": "Dobrý den Janí, v příloze posílám info a data k tubusům",
+      "category": "tym",
+      "sender_short": "Tomáš Hamerník",
+      "sender_email": "tomas.hamernik@nutworld.cz",
+      "ai": {
+        "shrn": "Tomáš potvrzuje objednávku na modré tubusy a posílá relevantní informace a data.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "katajirankova@seznam.cz",
+      "subject": "brigáda",
+      "date": "neděle 11. října 2026 12:21:22",
+      "unread": true,
+      "preview": "Dobrý den, Četla jsem váš inzerát",
+      "category": "ostatni",
+      "sender_short": "katajirankova@seznam.cz",
+      "sender_email": "katajirankova@seznam.cz",
+      "ai": {
+        "shrn": "Žena se hlásí na brigádu na základě zveřejněného inzerátu.",
+        "tyka_se": true,
+        "akce": "Zvážit kvalifikaci uchazeče a rozhodnout o přijetí či zamítnutí"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 12:00 (11. října 2026)",
+      "date": "neděle 11. října 2026 12:02:06",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Hamerník Tomáš okomentoval(a) kartu REDA objednávka Med 195g do 15.10.2026 na nástěnce Firmy dárky + objednávky @jananyvltova víme termín",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
     {
       "account": "Exchange",
       "sender": "InfoNutWorld <info@nutworld.cz>",
       "subject": "Fw: Dopyt na spoluprácu – lyofilizované ovocie pod vlastnou značkou",
       "date": "neděle 11. října 2026 11:54:24",
       "unread": true,
-      "preview": "",
+      "preview": "Zasláno z Outlooku pro Android From: Zdravé Automaty <zdraveautomaty@gmail.com> Sent: Sunday",
       "category": "tym",
       "sender_short": "InfoNutWorld",
       "sender_email": "info@nutworld.cz",
       "ai": {
-        "shrn": "Dotaz na spolupráci týkající se lyofilizovaného ovoce pod vlastní značkou. Vyžaduje Janovo posouzení a rozhodnutí o zájmu.",
+        "shrn": "Zástupcům Zdravých Automatů se zasílá dotaz na spolupráci týkající se lyofilizovaného ovoce pod vlastní značkou.",
         "tyka_se": true,
-        "akce": "Zvážit nabídku spolupráce a odpovědět na dotaz"
+        "akce": "Zhodnotit obchodní příležitost a rozhodnout o oslovení či odpovědi"
       }
     },
     {
@@ -52,7 +117,7 @@
       "sender_short": "Allegro",
       "sender_email": "info@notifikace.allegro.cz",
       "ai": {
-        "shrn": "Upozornění na expiraci slevového kupónu na Allegru. Není relevantní pro provoz Nutworld.cz.",
+        "shrn": "Notifikace od Allegra o konci aktuálního kupónu dnes o půlnoci.",
         "tyka_se": false,
         "akce": null
       }
@@ -69,83 +134,51 @@
       "sender_email": "do-not-reply@trello.com"
     },
     {
-      "account": "Exchange",
-      "sender": "Jana Nývltová <jana.nyvltova@nutworld.cz>",
-      "subject": "Re: ALZA Nedodané objednávky a termín",
-      "date": "neděle 11. října 2026 11:29:05",
+      "account": "Google",
+      "sender": "Temu <email@info.temuemail.com>",
+      "subject": "Proč platíte plnou cenu?",
+      "date": "neděle 11. října 2026 15:48:18",
       "unread": true,
-      "preview": "Dobry den",
-      "category": "tym",
-      "sender_short": "Jana Nývltová",
-      "sender_email": "jana.nyvltova@nutworld.cz",
-      "ai": {
-        "shrn": "Interní komunikace od Jana Nývltové ohledně nedodaných objednávek pro ALZU. Řeší se v týmu.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Hamerník Tomáš vložil/a komentář na kartu MEGA-CZ objednávka na nástěnce Firmy dárky + objednávky",
-      "date": "neděle 11. října 2026 11:20:26",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Hamerník Tomáš okomentoval(a) kartu MEGA-CZ objednávka na nástěnce Firmy dárky + objednávky @jananyvltova IČO 65200101 Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
-      "category": "b2b",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com",
-      "ai": {
-        "shrn": "Notifikace z Trella o komentáři Tomáše Hamerníka na kartu MEGA-CZ objednávky. Standardní týmová komunikace.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Hamerník Tomáš tě zmínil/a na kartě Hotel Ambassador Zlatá Husa objednávka 21.10.2026 na nástěnce Firmy dárky + objednávky",
-      "date": "neděle 11. října 2026 11:15:59",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Hamerník Tomáš vás zmínil(a) na kartě Hotel Ambassador Zlatá Husa objednávka 21.10.2026 na nástěnce Firmy dárky + objednávky @jananyvltova @wolf1988 balení 3 Kg může být bez loga",
-      "category": "b2b",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com",
-      "ai": {
-        "shrn": "Zmínění Jana ve Trello na kartě objednávky pro Hotel Ambassador Zlatá Husa. Poznámka o balení bez loga vyžaduje jeho potvrzení.",
-        "tyka_se": true,
-        "akce": "Potvrdit možnost balení 3 kg bez loga pro danou objednávku"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Tomáš Hamerník <tomas.hamernik@nutworld.cz>",
-      "subject": "FW: ALZA Nedodané objednávky a termín",
-      "date": "neděle 11. října 2026 11:10:06",
-      "unread": true,
-      "preview": "Dobrý den Janí, rád bych Vás požádal o termín",
-      "category": "tym",
-      "sender_short": "Tomáš Hamerník",
-      "sender_email": "tomas.hamernik@nutworld.cz",
-      "ai": {
-        "shrn": "Email od Tomáše Hamerníka s dotazem na termín týkající se nedodaných objednávek ALZY. Vyžaduje Janovu odpověď.",
-        "tyka_se": true,
-        "akce": "Ujasnit termín dodání ALZA objednávek a odpovědět Tomášovi"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Jakub Herak <herakjakub744@gmail.com>",
-      "subject": "Brigada",
-      "date": "neděle 11. října 2026 10:43:00",
-      "unread": true,
-      "preview": "Dobrý den měl bych velký zájem o brigádu pokud hledáte stále brigádníky Je mi 24 let sem z Trutnova a nebojím se manuální práce a tak dále děkuji z pozdravem Herák",
+      "preview": "Vaše peněženka vám poděkuje - ušetříte 570 Kč! 🙏💰 ￼ U jakýchkoli položek uvedených v tomto e-mailu nebo v rámci této promoakce",
       "category": "ostatni",
-      "sender_short": "Jakub Herak",
-      "sender_email": "herakjakub744@gmail.com",
+      "sender_short": "Temu",
+      "sender_email": "email@info.temuemail.com",
       "ai": {
-        "shrn": "Žádost o brigádu od Jakuba Heraka. Kandidát nabízí svou práci na pozici brigádníka.",
-        "tyka_se": true,
-        "akce": "Zhodnotit, zda Nutworld potřebuje brigádníka a odpovědět kandidátovi"
+        "shrn": "Marketingový email od Temu nabízející slevu 570 Kč na nákup.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "Temu <temu@eu.temuemail.com>",
+      "subject": "Vaše trpělivost se vyplatila.",
+      "date": "neděle 11. října 2026 13:33:28",
+      "unread": true,
+      "preview": "💰Poslali jsme vám nabídku kreditu 11. říj 2026! Prosím potvrďte ji Platí smluvní podmínky ￼ U jakýchkoli položek uvedených v tomto e-mailu nebo v rámci této promoakce",
+      "category": "ostatni",
+      "sender_short": "Temu",
+      "sender_email": "temu@eu.temuemail.com",
+      "ai": {
+        "shrn": "Email od Temu s nabídkou kreditu, která vyžaduje potvrzení.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "💚 Rohlik.cz <peckyzrohliku@rohlik.cz>",
+      "subject": "Šedá neděle chce pořádný oběd",
+      "date": "neděle 11. října 2026 12:07:02",
+      "unread": true,
+      "preview": "Nezobrazuje se newsletter správně? Prohlédněte si ho na webu. ￼ Venku šedo",
+      "category": "ostatni",
+      "sender_short": "💚 Rohlik.cz",
+      "sender_email": "peckyzrohliku@rohlik.cz",
+      "ai": {
+        "shrn": "Newsletter od Rohlik.cz s aktuálními nabídkami na potraviny.",
+        "tyka_se": false,
+        "akce": null
       }
     },
     {
@@ -159,7 +192,7 @@
       "sender_short": "SEVT.cz",
       "sender_email": "marketing@mailing.sevt.cz",
       "ai": {
-        "shrn": "Marketingový email od SEVT.cz s nabídkou školních a kancelářských potřeb. Není relevantní pro Nutworld.",
+        "shrn": "Marketingový email od SEVT.cz propagující kolekci Hello Kitty a školních potřeb.",
         "tyka_se": false,
         "akce": null
       }
@@ -175,7 +208,7 @@
       "sender_short": "Apple",
       "sender_email": "no_reply@email.apple.com",
       "ai": {
-        "shrn": "Faktura od Applu za YouTube Premium Family předplatné. Standardní dodavatelský doklad.",
+        "shrn": "Faktura od Apple za YouTube Premium Family za měsíc октябрь na účet Jana Vlčka.",
         "tyka_se": false,
         "akce": null
       }
