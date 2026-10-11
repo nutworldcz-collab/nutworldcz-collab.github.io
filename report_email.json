@@ -1,38 +1,167 @@
 {
-  "generated": "2026-10-11T07:30:29",
-  "total": 3,
+  "generated": "2026-10-11T16:54:10",
+  "total": 12,
   "spam_skipped": 0,
   "emails": [
     {
       "account": "Exchange",
-      "sender": "Tereza Frýdmanová <Tereza.Frydmanova@sobi.com>",
-      "subject": "Nepřečtené: Fwd: Krabičky se Sobem - 400 ks",
-      "date": "neděle 11. října 2026 6:07:00",
-      "unread": false,
-      "preview": "Your message To: Tereza Frýdmanová Subject: Re: Fwd: Krabičky se Sobem - 400 ks Sent: Thursday",
-      "category": "ostatni",
-      "sender_short": "Tereza Frýdmanová",
-      "sender_email": "Tereza.Frydmanova@sobi.com",
+      "sender": "InfoNutWorld <info@nutworld.cz>",
+      "subject": "Fw: Dopyt na spoluprácu – lyofilizované ovocie pod vlastnou značkou",
+      "date": "neděle 11. října 2026 11:54:24",
+      "unread": true,
+      "preview": "",
+      "category": "tym",
+      "sender_short": "InfoNutWorld",
+      "sender_email": "info@nutworld.cz",
       "ai": {
-        "shrn": "Zpráva od Terezy Frýdmanové týkající se objednávky krabiček se Sobem v množství 400 ks. Jedná se o přeposlanou komunikaci.",
+        "shrn": "Dotaz na spolupráci týkající se lyofilizovaného ovoce pod vlastní značkou. Vyžaduje Janovo posouzení a rozhodnutí o zájmu.",
         "tyka_se": true,
-        "akce": "Ověřit status objednávky krabiček, potvrdit množství a termín dodání"
+        "akce": "Zvážit nabídku spolupráce a odpovědět na dotaz"
       }
     },
     {
       "account": "Exchange",
-      "sender": "Bětka Tokarová <babetatokarova@gmail.com>",
-      "subject": "Brigáda",
-      "date": "neděle 11. října 2026 1:45:43",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Jana Nývltová tě zmínil/a na kartě AGRO CS a.s. — 300 ks — 21.10.2026 na nástěnce Firmy dárky + objednávky",
+      "date": "neděle 11. října 2026 11:39:57",
       "unread": true,
-      "preview": "Zdravím. Píšu ohledně brigády",
+      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová vás zmínil(a) na kartě AGRO CS a.s. — 300 ks — 21.10.2026 na nástěnce Firmy dárky + objednávky @wolf1988 ja to tak zadala",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Jana Nývltová vložil/a komentář na kartu ALZA - EDI/2026/39 na nástěnce Firmy dárky + objednávky",
+      "date": "neděle 11. října 2026 11:33:17",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová okomentoval(a) kartu ALZA - EDI/2026/39 na nástěnce Firmy dárky + objednávky @balirna2 tato má odcházet ve středu… již se po objednávkách ptají",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Allegro <info@notifikace.allegro.cz>",
+      "subject": "DNES O PŮLNOCI končí váš aktuální kupón 🚨",
+      "date": "neděle 11. října 2026 11:33:04",
+      "unread": true,
+      "preview": "￼ ￼ Dobrý den",
       "category": "ostatni",
-      "sender_short": "Bětka Tokarová",
-      "sender_email": "babetatokarova@gmail.com",
+      "sender_short": "Allegro",
+      "sender_email": "info@notifikace.allegro.cz",
       "ai": {
-        "shrn": "Bětka Tokarová se oznamuje ohledně možné brigády. Email neobsahuje další detaily.",
+        "shrn": "Upozornění na expiraci slevového kupónu na Allegru. Není relevantní pro provoz Nutworld.cz.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Jana Nývltová vložil/a komentář na kartu ALZA - EDI/2026/36 na nástěnce Firmy dárky + objednávky",
+      "date": "neděle 11. října 2026 11:29:43",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová okomentoval(a) kartu ALZA - EDI/2026/36 na nástěnce Firmy dárky + objednávky @balirna2 prosím v pondělí má být hotovo a ještě ani jedna položka není odvedená. Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nas",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Jana Nývltová <jana.nyvltova@nutworld.cz>",
+      "subject": "Re: ALZA Nedodané objednávky a termín",
+      "date": "neděle 11. října 2026 11:29:05",
+      "unread": true,
+      "preview": "Dobry den",
+      "category": "tym",
+      "sender_short": "Jana Nývltová",
+      "sender_email": "jana.nyvltova@nutworld.cz",
+      "ai": {
+        "shrn": "Interní komunikace od Jana Nývltové ohledně nedodaných objednávek pro ALZU. Řeší se v týmu.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Hamerník Tomáš vložil/a komentář na kartu MEGA-CZ objednávka na nástěnce Firmy dárky + objednávky",
+      "date": "neděle 11. října 2026 11:20:26",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Hamerník Tomáš okomentoval(a) kartu MEGA-CZ objednávka na nástěnce Firmy dárky + objednávky @jananyvltova IČO 65200101 Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "b2b",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com",
+      "ai": {
+        "shrn": "Notifikace z Trella o komentáři Tomáše Hamerníka na kartu MEGA-CZ objednávky. Standardní týmová komunikace.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Hamerník Tomáš tě zmínil/a na kartě Hotel Ambassador Zlatá Husa objednávka 21.10.2026 na nástěnce Firmy dárky + objednávky",
+      "date": "neděle 11. října 2026 11:15:59",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Hamerník Tomáš vás zmínil(a) na kartě Hotel Ambassador Zlatá Husa objednávka 21.10.2026 na nástěnce Firmy dárky + objednávky @jananyvltova @wolf1988 balení 3 Kg může být bez loga",
+      "category": "b2b",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com",
+      "ai": {
+        "shrn": "Zmínění Jana ve Trello na kartě objednávky pro Hotel Ambassador Zlatá Husa. Poznámka o balení bez loga vyžaduje jeho potvrzení.",
         "tyka_se": true,
-        "akce": "Kontaktovat Bětku pro upřesnění typu brigády, termínu a pracovní náplně"
+        "akce": "Potvrdit možnost balení 3 kg bez loga pro danou objednávku"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Tomáš Hamerník <tomas.hamernik@nutworld.cz>",
+      "subject": "FW: ALZA Nedodané objednávky a termín",
+      "date": "neděle 11. října 2026 11:10:06",
+      "unread": true,
+      "preview": "Dobrý den Janí, rád bych Vás požádal o termín",
+      "category": "tym",
+      "sender_short": "Tomáš Hamerník",
+      "sender_email": "tomas.hamernik@nutworld.cz",
+      "ai": {
+        "shrn": "Email od Tomáše Hamerníka s dotazem na termín týkající se nedodaných objednávek ALZY. Vyžaduje Janovu odpověď.",
+        "tyka_se": true,
+        "akce": "Ujasnit termín dodání ALZA objednávek a odpovědět Tomášovi"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Jakub Herak <herakjakub744@gmail.com>",
+      "subject": "Brigada",
+      "date": "neděle 11. října 2026 10:43:00",
+      "unread": true,
+      "preview": "Dobrý den měl bych velký zájem o brigádu pokud hledáte stále brigádníky Je mi 24 let sem z Trutnova a nebojím se manuální práce a tak dále děkuji z pozdravem Herák",
+      "category": "ostatni",
+      "sender_short": "Jakub Herak",
+      "sender_email": "herakjakub744@gmail.com",
+      "ai": {
+        "shrn": "Žádost o brigádu od Jakuba Heraka. Kandidát nabízí svou práci na pozici brigádníka.",
+        "tyka_se": true,
+        "akce": "Zhodnotit, zda Nutworld potřebuje brigádníka a odpovědět kandidátovi"
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "\"SEVT.cz\" <marketing@mailing.sevt.cz>",
+      "subject": "🎀 Objevte kolekci Hello Kitty a Kuromi",
+      "date": "neděle 11. října 2026 8:27:34",
+      "unread": true,
+      "preview": "Nezobrazuje se Vám e-mail správně? Přejděte na webovou verzi. ￼ Vše do školy a kanceláře na jednom místě ￼ Školní potřeby Výtvarné potřeby Kancelářské potřeby Hry a hračky Knihkupectví ￼ ￼ BAAGL Školní aktovka Zippy Plus Hello Kitty Sweet Leopard Vhodná pro děti od 1. třídy ZŠ. 2 970",
+      "category": "ostatni",
+      "sender_short": "SEVT.cz",
+      "sender_email": "marketing@mailing.sevt.cz",
+      "ai": {
+        "shrn": "Marketingový email od SEVT.cz s nabídkou školních a kancelářských potřeb. Není relevantní pro Nutworld.",
+        "tyka_se": false,
+        "akce": null
       }
     },
     {
@@ -46,7 +175,7 @@
       "sender_short": "Apple",
       "sender_email": "no_reply@email.apple.com",
       "ai": {
-        "shrn": "Faktura od Apple za YouTube Premium Family předplatné na účet vyziva.trenink@gmail.com. Měsíční platba 599 Kč s renováciou 11. listopadu.",
+        "shrn": "Faktura od Applu za YouTube Premium Family předplatné. Standardní dodavatelský doklad.",
         "tyka_se": false,
         "akce": null
       }
