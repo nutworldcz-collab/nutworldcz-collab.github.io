@@ -1,8 +1,120 @@
 {
-  "generated": "2026-10-10T07:30:19",
-  "total": 3,
-  "spam_skipped": 0,
+  "generated": "2026-10-11T05:00:06",
+  "total": 11,
+  "spam_skipped": 1,
   "emails": [
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "VILGAIN objednávka do 24.9. na Firmy dárky + objednávky má termín za 2 dny",
+      "date": "sobota 10. října 2026 13:56:05",
+      "unread": true,
+      "preview": "￼ Termín je brzy... VILGAIN objednávka do 24.9. na nástěnce Firmy dárky + objednávky s termínem má termín za 2 dny Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "b2b",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com",
+      "ai": {
+        "shrn": "Trello notifikace o blížícím termínu objednávky VILGAIN do 24.9. na nástěnce Firmy dárky + objednávky.",
+        "tyka_se": true,
+        "akce": "Zkontrolovat a potvrdit splnění objednávky VILGAIN do stanoveného termínu."
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "\"mlsvb@email.cz\" <mlsvb@email.cz>",
+      "subject": "Brigáda",
+      "date": "sobota 10. října 2026 13:40:37",
+      "unread": true,
+      "preview": "Dobrý den. kde brigáda na balení ořechů probíhá",
+      "category": "ostatni",
+      "sender_short": "mlsvb@email.cz",
+      "sender_email": "mlsvb@email.cz",
+      "ai": {
+        "shrn": "Dotaz na místo konání brigády na balení ořechů.",
+        "tyka_se": true,
+        "akce": "Odpovědět uchazeči s informací o lokalitě brigády nebo ji předat na HR."
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Allegro <info@notifikace.allegro.cz>",
+      "subject": "Tento produkt na Vás čeká 🛒 SVAŘOVAČ FÓLIÍ BALICÍ STROJ PRO BALENÍ REGULACE ČASU OCELOVÝ 300 mm",
+      "date": "sobota 10. října 2026 13:04:40",
+      "unread": true,
+      "preview": "￼ ￼ Dobrý den",
+      "category": "ostatni",
+      "sender_short": "Allegro",
+      "sender_email": "info@notifikace.allegro.cz",
+      "ai": {
+        "shrn": "Notifikace z Allegra o dostupnosti balicího stroje na svařování fólií.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Hipotels Hotels & Resorts <customer@hipotels.com>",
+      "subject": "October by the sea: choose your next getaway",
+      "date": "sobota 10. října 2026 12:19:41",
+      "unread": true,
+      "preview": "Advertisement – If you cannot read this email correctly",
+      "category": "ostatni",
+      "sender_short": "Hipotels Hotels & Resorts",
+      "sender_email": "customer@hipotels.com",
+      "ai": {
+        "shrn": "Propagační email hotelového řetězce na dovolenkový balíček.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Anna Huptychová <huptychovaanna@gmail.com>",
+      "subject": "Žádost o sponzorský dar maturitního plesu třídy PO4. a TPO4.",
+      "date": "sobota 10. října 2026 10:36:07",
+      "unread": true,
+      "preview": "Vážený pane řediteli, obracíme se na Vás jménem studentů maturitních ročníků PO4. a TPO4. ze střední školy ESOZ Chomutov Maturitní ples se uskuteční v sobotu 5. prosince v Městském divadle v Chomutově. Jelikož víme",
+      "category": "ostatni",
+      "sender_short": "Anna Huptychová",
+      "sender_email": "huptychovaanna@gmail.com",
+      "ai": {
+        "shrn": "Žádost o sponzorský dar na maturitní ples středoškolských tříd.",
+        "tyka_se": true,
+        "akce": "Rozhodnout o možnosti sponzorování dárkovým produktem nebo příspěvkem."
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "\"claudie.nutworld.cz@gmail.com\" <claudie.nutworld.cz@gmail.com>",
+      "subject": "✅ OK · Denní stav automatizací · 10.10.",
+      "date": "sobota 10. října 2026 8:45:15",
+      "unread": true,
+      "preview": "DENNÍ ZDRAVOTNÍ REPORT · NUTWORLD 🔄 Opraveno 1× · jinak OK 10. 10. 2026",
+      "category": "ostatni",
+      "sender_short": "claudie.nutworld.cz@gmail.com",
+      "sender_email": "claudie.nutworld.cz@gmail.com",
+      "ai": {
+        "shrn": "Denní report stavu automatizací e-shopu Nutworld s jednou opravou.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "\"Alza.cz\" <sluzebnicek@alza.cz>",
+      "subject": "Připraveno v AlzaBoxu / Obj. č. 1062014605",
+      "date": "sobota 10. října 2026 7:47:18",
+      "unread": true,
+      "preview": "￼ ￼ 1062014605 ￼ ￼ Přijďte si pro nákup do AlzaBoxu Vaše objednávka 1062014605 právě dorazila do AlzaBoxu - Červený Kostelec - Koubovka (Potraviny) na adrese Koubovka 387",
+      "category": "ostatni",
+      "sender_short": "Alza.cz",
+      "sender_email": "sluzebnicek@alza.cz",
+      "ai": {
+        "shrn": "Notifikace od Alzy o příjezdu objednávky do AlzaBoxu.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
     {
       "account": "Exchange",
       "sender": "Outlook <no-reply@outlook.mail.microsoft>",
@@ -14,9 +126,9 @@
       "sender_short": "Outlook",
       "sender_email": "no-reply@outlook.mail.microsoft",
       "ai": {
-        "shrn": "Jana Nývltová žádá Jana Vlčka, aby si založil logo pro Víno z Kobylí, které dostává pravidelné objednávky.",
+        "shrn": "Notifikace z Outlooku o připomínce loga Víno z Kobylí s prosdbou o jeho založení v systému.",
         "tyka_se": true,
-        "akce": "Zvážit založení loga pro Víno z Kobylí a integraci do Nutworld.cz"
+        "akce": "Založit logo Víno z Kobylí do systému Nutworld pro běžné objednávky."
       }
     },
     {
@@ -30,7 +142,23 @@
       "sender_short": "Alza.cz",
       "sender_email": "sluzebnicek@alza.cz",
       "ai": {
-        "shrn": "Alza.cz oznámila zpoždění objednávky č. 1062014605.",
+        "shrn": "Informace o zpoždění objednávky č. 1062014605 od Alzy.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "Temu <temu@eu.temuemail.com>",
+      "subject": "Vrácení vašeho kreditu 3 000 Kč čeká! 🥳",
+      "date": "sobota 10. října 2026 10:32:53",
+      "unread": true,
+      "preview": "Nakupujte chytřeji",
+      "category": "zakaznik",
+      "sender_short": "Temu",
+      "sender_email": "temu@eu.temuemail.com",
+      "ai": {
+        "shrn": "Propagační email z Temu o vrácení kreditu.",
         "tyka_se": false,
         "akce": null
       }
@@ -46,7 +174,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "CrossFit poslal denní workout plán se zaměřením na back squat.",
+        "shrn": "Email s denním cvičením z CrossFitu.",
         "tyka_se": false,
         "akce": null
       }
