@@ -953,8 +953,9 @@ function buildSmesCard(smesName,usages){
   [...usages].sort((a,b)=>terminSort(a.termin,b.termin)).forEach(u=>{
     const uKg=u.slozeni.reduce((sum,s)=>sum+gramToKg(s.gram)*u.ks,0);
     const fhdr=document.createElement('div');
-    fhdr.className='smes-firma-hdr';
-    fhdr.innerHTML=`<span class="smes-firma-name">${u.firma}</span>${terminBadge(u.termin)}<span class="smes-firma-ks">${u.ks} ks</span><span style="font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700;color:var(--br);min-width:55px;text-align:right">${fmtKg(uKg)}</span>`;
+    const vi=vyrobniTerminInfo(u.termin);
+    fhdr.className='smes-firma-hdr'+(vi.cls==='tv-urgent'?' frow-urgent':vi.cls==='tv-soon'?' frow-soon':'');
+    fhdr.innerHTML=`<span class="smes-firma-name">${u.firma}</span><span style="display:flex;flex-wrap:wrap;gap:4px;align-items:center">${vi.html}${terminBadge(u.termin)}</span><span class="smes-firma-ks">${u.ks} ks</span><span style="font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700;color:var(--br);min-width:55px;text-align:right">${fmtKg(uKg)}</span>`;
     card.appendChild(fhdr);
     u.slozeni.forEach(s=>{
       const done=isDone(u.cardId,u.pi,s.ci);
