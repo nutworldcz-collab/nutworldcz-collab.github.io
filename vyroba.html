@@ -130,6 +130,14 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 /* Servisní produkt (grafika, tisk…) */
 .sluzba-row{padding:7px 14px;font-size:12px;color:#bbb;display:flex;align-items:center;gap:8px;border-bottom:1px solid #f5f0ea;font-style:italic}
 .sluzba-row:last-child{border-bottom:none}
+/* Nabaleno */
+.hotovo-btn.nabaleno{background:#e8f5e9;color:#2e7d32;border:1.5px solid #81c784}
+.hotovo-btn.nabaleno:hover{background:#c8e6c9}
+.is-nabaleno{opacity:.7;border-left:4px solid #66bb6a!important;background:#f9fdf9!important}
+.is-nabaleno .firma-hdr{background:#f0fbf1!important}
+.nabaleno-section-hdr{font-size:13px;font-weight:700;color:#2e7d32;padding:14px 0 8px;border-top:2px solid #a5d6a7;margin-top:14px}
+.nabaleno-unmark-btn{margin:8px 18px 14px;padding:8px 14px;border:1.5px solid #81c784;border-radius:8px;background:#f1fbf2;color:#2e7d32;font-size:13px;font-weight:700;cursor:pointer;display:block;width:calc(100% - 36px);font-family:inherit}
+.nabaleno-unmark-btn:hover{background:#c8e6c9}
 
 /* Čas výroby — normy kalkulátor */
 .cas-wrap{border-top:1px solid #ede0d4;padding:10px 18px 14px}
@@ -438,6 +446,14 @@ function savePackTimes(){try{localStorage.setItem(PACK_TIME_KEY,JSON.stringify(p
 function loadPackTimes(){try{packTimeMap=JSON.parse(localStorage.getItem(PACK_TIME_KEY)||'{}');}catch(e){packTimeMap={};}}
 function getPackTime(pid){return packTimeMap[pid]||{norm:'',ksh:0,actual:''};}
 function setPackTime(pid,d){packTimeMap[pid]=d;savePackTimes();}
+const NABALENO_KEY='nw_nabaleno';
+let nabalenoSet=new Set();
+let showNabaleno=false;
+function loadNabaleno(){try{nabalenoSet=new Set(JSON.parse(localStorage.getItem(NABALENO_KEY)||'[]'));}catch(e){nabalenoSet=new Set();}}
+function saveNabaleno(){try{localStorage.setItem(NABALENO_KEY,JSON.stringify([...nabalenoSet]));}catch(e){}}
+function isNabaleno(id){return nabalenoSet.has(id);}
+function markNabaleno(id){nabalenoSet.add(id);saveNabaleno();render();}
+function unmarkNabaleno(id){nabalenoSet.delete(id);saveNabaleno();render();}
 
 const NORM_OPTS=[
   ['🏭 Balicí — stroje','Automatické kontinuální — 50g',755],
@@ -819,9 +835,40 @@ function renderFirmy(cards){
     return true;
   });
 
+  // Nabaleno toggle pill
+  const nabCnt=[...nabalenoSet].filter(id=>sorted.some(c=>c.id===id)).length;
+  if(nabCnt){
+    const nabBtn=document.createElement('button');
+    nabBtn.className='tv-fbtn'+(showNabaleno?' active':'');
+    nabBtn.textContent=`📦 Nabaleno (${nabCnt})`;
+    nabBtn.onclick=()=>{showNabaleno=!showNabaleno;render();};
+    fbar.appendChild(nabBtn);
+  }
+
   const list=document.createElement('div');
   list.className='firmy-list';
-  filtered.forEach(card=>list.appendChild(buildFirmaCard(card)));
+  filtered.filter(c=>!isNabaleno(c.id)).forEach(card=>list.appendChild(buildFirmaCard(card)));
+
+  // Nabaleno sekce
+  if(showNabaleno&&nabCnt){
+    const nabSec=document.createElement('div');
+    const nabHdr=document.createElement('div');
+    nabHdr.className='nabaleno-section-hdr';
+    nabHdr.textContent='📦 Nabaleno — pouze lokálně (klikni Vrátit zpět pro obnovení)';
+    nabSec.appendChild(nabHdr);
+    sorted.filter(c=>isNabaleno(c.id)).forEach(card=>{
+      const cardEl=buildFirmaCard(card);
+      cardEl.classList.add('is-nabaleno');
+      const revertBtn=document.createElement('button');
+      revertBtn.className='nabaleno-unmark-btn';
+      revertBtn.textContent='↩ Vrátit zpět do výroby';
+      revertBtn.onclick=(e)=>{e.stopPropagation();unmarkNabaleno(card.id);};
+      cardEl.appendChild(revertBtn);
+      nabSec.appendChild(cardEl);
+    });
+    list.appendChild(nabSec);
+  }
+
   mc.innerHTML='';
   mc.appendChild(fbar);
   mc.appendChild(list);
@@ -1009,6 +1056,7 @@ function buildFirmaCard(card){
         <button class="hotovo-btn darky" onclick="moveCard('${id}','darky',this)">🎁 Dárkovna</button>
         <button class="hotovo-btn verpet" onclick="moveCard('${id}','verpet',this)">🏭 VERPET Náchod</button>
         <button class="hotovo-btn done"   onclick="moveCard('${id}','hotovo',this)">✅ Hotovo → zabalení</button>
+        <button class="hotovo-btn nabaleno" onclick="event.stopPropagation();markNabaleno('${id}')">📦 Nabaleno — schovat</button>
       </div>
     `;
     el.appendChild(banner);
@@ -1570,6 +1618,7 @@ loadProg();
 loadNotes();
 loadCas();
 loadPackTimes();
+loadNabaleno();
 loadData();
 </script>
 </body>
