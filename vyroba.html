@@ -1003,13 +1003,78 @@ function buildFirmaCard(card){
       }
     }
 
+    // Per-product time row (not for services)
+    if(!prod.isSluzba){
+      const ptKey=`firma_${id}_${pi}`;
+      const ptData=getPackTime(ptKey);
+      const ptRow=document.createElement('div');
+      ptRow.className='pack-time';
+
+      const ptSel=document.createElement('select');
+      ptSel.className='pack-time-sel';
+      ptSel.innerHTML=buildNormSelHtml(ptData.norm);
+
+      const ptRes=document.createElement('span');
+      ptRes.className='pack-time-result';
+
+      const ptKsh=document.createElement('span');
+      ptKsh.className='pack-time-ksh';
+
+      const ptLbl=document.createElement('span');
+      ptLbl.className='pack-time-lbl';
+      ptLbl.textContent='✏️ Skutečnost:';
+
+      const ptActual=document.createElement('input');
+      ptActual.className='pack-time-actual';
+      ptActual.type='text';
+      ptActual.placeholder='napr. 45 min';
+      ptActual.value=ptData.actual||'';
+
+      const prodKs=prod.ks;
+      function updateFirmaPtResult(){
+        const d=getPackTime(ptKey);
+        if(d.ksh&&prodKs){
+          ptRes.textContent=fmtTime(prodKs/d.ksh*60);
+          ptKsh.textContent=`${prodKs} ks / ${d.ksh} ks/h`;
+        } else {
+          ptRes.textContent='—';
+          ptKsh.textContent='';
+        }
+      }
+      updateFirmaPtResult();
+
+      ptSel.onchange=()=>{
+        const val=ptSel.value;
+        const d=getPackTime(ptKey);
+        if(val&&val!=='custom'){
+          const parts=val.split('|');
+          d.norm=parts[0];
+          d.ksh=parseFloat(parts[1])||0;
+        } else {
+          d.norm='';d.ksh=0;
+        }
+        setPackTime(ptKey,d);
+        updateFirmaPtResult();
+      };
+
+      ptActual.onchange=()=>{
+        const d=getPackTime(ptKey);
+        d.actual=ptActual.value;
+        setPackTime(ptKey,d);
+      };
+
+      ptRow.appendChild(ptSel);
+      ptRow.appendChild(ptRes);
+      ptRow.appendChild(ptKsh);
+      ptRow.appendChild(ptLbl);
+      ptRow.appendChild(ptActual);
+      block.appendChild(ptRow);
+    }
+
     darkyWrap.appendChild(block);
   });
 
   el.appendChild(darkyWrap);
-
-  // Čas výroby
-  el.appendChild(buildCasCalc(id, totalKs));
 
   // Poznámky
   const nota = getNote(id);
