@@ -179,6 +179,9 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .vyroba-grid.hide-done .icard.smes-icard.all-done{display:none}
 .btn-hide-done{font-size:12px;padding:5px 12px;border:1.5px solid #c8976a;border-radius:20px;background:#fff;color:#5c381f;cursor:pointer;transition:background .15s}
 .btn-hide-done.active{background:#e8f5e9;border-color:var(--leaf);color:#2e7d32}
+.btn-backup{font-size:12px;padding:5px 12px;border:1.5px solid #b8b0a8;border-radius:20px;background:#fff;color:#666;cursor:pointer;transition:background .15s;white-space:nowrap}
+.btn-backup:hover{background:#f1e6da;border-color:#a0622a;color:var(--bd)}
+.btn-backup.restored{background:#e8f5e9;border-color:var(--leaf);color:#2e7d32}
 
 /* Karta suroviny */
 .icard{background:white;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);overflow:hidden}
@@ -370,6 +373,10 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
       <button id="btn-vzorky" class="view-btn"        onclick="setView('vzorky')">🧪 Vzorky</button>
     </div>
     <div class="list-filters" id="list-filters"></div>
+    <button class="btn-backup" onclick="exportBackup()" title="Stáhnout zálohu poznámek, norem a checkboxů">💾 Záloha</button>
+    <label class="btn-backup" title="Obnovit ze zálohy" style="display:inline-flex;align-items:center;gap:4px">
+      📥 Obnovit <input type="file" accept=".json" style="display:none" onchange="importBackup(this)">
+    </label>
   </div>
 
   <div class="summary" id="summary" style="display:none">
@@ -1677,6 +1684,51 @@ function renderVzorky(){
 
   mc.innerHTML='';
   mc.appendChild(wrap);
+}
+
+// ═══ ZÁLOHA DAT ═══
+const BACKUP_KEYS=[PROG_KEY,NOTA_KEY,CAS_KEY,PACK_TIME_KEY,NABALENO_KEY];
+
+function exportBackup(){
+  const data={};
+  BACKUP_KEYS.forEach(k=>{
+    const v=localStorage.getItem(k);
+    if(v) data[k]=JSON.parse(v);
+  });
+  const ts=new Date().toISOString().slice(0,10);
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`vyroba-zaloha-${ts}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function importBackup(input){
+  const file=input.files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      let count=0;
+      BACKUP_KEYS.forEach(k=>{
+        if(data[k]!==undefined){
+          localStorage.setItem(k,JSON.stringify(data[k]));
+          count++;
+        }
+      });
+      if(count===0){alert('Soubor neobsahuje žádná Výrobní data.');return;}
+      // Reload in-memory state and re-render
+      loadProg();loadNotes();loadCas();loadPackTimes();loadNabaleno();
+      render();
+      // Flash the button green briefly
+      const btn=input.closest('.btn-backup');
+      if(btn){btn.classList.add('restored');btn.textContent='✅ Obnoveno';setTimeout(()=>{btn.classList.remove('restored');btn.innerHTML='📥 Obnovit <input type="file" accept=".json" style="display:none" onchange="importBackup(this)">';},2500);}
+    }catch(err){alert('Chyba při načítání zálohy: '+err.message);}
+    input.value='';
+  };
+  reader.readAsText(file);
 }
 
 loadProg();
