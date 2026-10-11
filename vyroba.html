@@ -179,6 +179,12 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .vyroba-grid.hide-done .icard.smes-icard.all-done{display:none}
 .btn-hide-done{font-size:12px;padding:5px 12px;border:1.5px solid #c8976a;border-radius:20px;background:#fff;color:#5c381f;cursor:pointer;transition:background .15s}
 .btn-hide-done.active{background:#e8f5e9;border-color:var(--leaf);color:#2e7d32}
+.firma-status-bar{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap}
+.fstatus-chip{font-size:11px;padding:3px 10px;border-radius:12px;border:1.5px solid #ddd;background:#f9f6f2;color:#aaa;cursor:pointer;transition:all .15s;user-select:none;white-space:nowrap}
+.fstatus-chip:hover{border-color:#c8976a;color:#5c381f}
+.fstatus-chip.active.zadano{background:#fff8e1;border-color:#f7ab31;color:#7a5200;font-weight:700}
+.fstatus-chip.active.vyrabi{background:#e3f2fd;border-color:#42a5f5;color:#0d47a1;font-weight:700}
+.fstatus-chip.active.hotovo-stav{background:#e8f5e9;border-color:#66bb6a;color:#1b5e20;font-weight:700}
 .btn-backup{font-size:12px;padding:5px 12px;border:1.5px solid #b8b0a8;border-radius:20px;background:#fff;color:#666;cursor:pointer;transition:background .15s;white-space:nowrap}
 .btn-backup:hover{background:#f1e6da;border-color:#a0622a;color:var(--bd)}
 .btn-backup.restored{background:#e8f5e9;border-color:var(--leaf);color:#2e7d32}
@@ -405,10 +411,11 @@ const SMES_DATA = {
   "Směs v celofánku s mašličkou Mekrs 200 g": true,
   "Směs v celofánku s mašličkou Mekrs 200g": true,
 };
-const CACHE_KEY = 'nw_vyroba_cache';
-const PROG_KEY  = 'nw_vyroba_progress';
-const NOTA_KEY  = 'nw_vyroba_notes';
-const CAS_KEY   = 'nw_vyroba_cas';
+const CACHE_KEY       = 'nw_vyroba_cache';
+const PROG_KEY        = 'nw_vyroba_progress';
+const NOTA_KEY        = 'nw_vyroba_notes';
+const CAS_KEY         = 'nw_vyroba_cas';
+const FIRMA_STATUS_KEY= 'nw_firma_status';
 const EXCL = ['archiv','storno','hotov','dokončen','faktura','firmy 20','rok 202','nabídky','markét','vzorky 20','průvodky'];
 
 let allLists = [], allCards = [], parsedCards = [];
@@ -455,6 +462,13 @@ function savePackTimes(){try{localStorage.setItem(PACK_TIME_KEY,JSON.stringify(p
 function loadPackTimes(){try{packTimeMap=JSON.parse(localStorage.getItem(PACK_TIME_KEY)||'{}');}catch(e){packTimeMap={};}}
 function getPackTime(pid){return packTimeMap[pid]||{norm:'',ksh:0,actual:''};}
 function setPackTime(pid,d){packTimeMap[pid]=d;savePackTimes();}
+/* ── Interní stav firmy ── */
+let firmaStatusMap={};
+function saveFirmaStatus(){try{localStorage.setItem(FIRMA_STATUS_KEY,JSON.stringify(firmaStatusMap));}catch(e){}}
+function loadFirmaStatus(){try{firmaStatusMap=JSON.parse(localStorage.getItem(FIRMA_STATUS_KEY)||'{}');}catch(e){firmaStatusMap={};}}
+function getFirmaStatus(id){return firmaStatusMap[id]||{zadano:false,vyrabi:false};}
+function setFirmaStatus(id,key,val){const s=getFirmaStatus(id);s[key]=val;firmaStatusMap[id]=s;saveFirmaStatus();}
+
 const NABALENO_KEY='nw_nabaleno';
 let nabalenoSet=new Set();
 let showNabaleno=false;
@@ -922,6 +936,7 @@ function buildFirmaCard(card){
         <div class="prog-bar"><div class="prog-fill${pct===100?' full':''}" style="width:${pct}%"></div></div>
         <span class="prog-txt">${doneC}/${totalC}</span>
       </div>`:''}
+      <div class="firma-status-bar" id="fsbar-${id}"></div>
     </div>
     <div class="firma-hdr-right" style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
       ${totalKg?`<div><div class="firma-total-kg">${fmtKg(totalKg)}</div><div class="firma-total-lbl">celkem surovin</div></div>`:''}
@@ -932,6 +947,29 @@ function buildFirmaCard(card){
     </div>
   `;
   el.appendChild(hdr);
+
+  // Interní stavové čipky
+  (function(){
+    const bar=el.querySelector(`#fsbar-${id}`);
+    if(!bar) return;
+    const CHIPS=[
+      {key:'zadano',  label:'📋 Zadáno do výroby', cls:'zadano'},
+      {key:'vyrabi',  label:'⚙️ Vyrábí se',         cls:'vyrabi'},
+      {key:'hotovo2', label:'✅ Hotovo',             cls:'hotovo-stav'},
+    ];
+    function rebuildChips(){
+      const st=getFirmaStatus(id);
+      bar.innerHTML='';
+      CHIPS.forEach(({key,label,cls})=>{
+        const chip=document.createElement('button');
+        chip.className='fstatus-chip'+(st[key]?' active '+cls:'');
+        chip.textContent=label;
+        chip.onclick=(e)=>{e.stopPropagation();setFirmaStatus(id,key,!st[key]);rebuildChips();};
+        bar.appendChild(chip);
+      });
+    }
+    rebuildChips();
+  })();
 
   // Info box: personalizace + interní + volný text
   const {personalizace='',interni='',volnyText=''}=card;
@@ -1635,7 +1673,7 @@ function renderVzorky(){
 }
 
 // ═══ ZÁLOHA DAT ═══
-const BACKUP_KEYS=[PROG_KEY,NOTA_KEY,CAS_KEY,PACK_TIME_KEY,NABALENO_KEY];
+const BACKUP_KEYS=[PROG_KEY,NOTA_KEY,CAS_KEY,PACK_TIME_KEY,NABALENO_KEY,FIRMA_STATUS_KEY];
 
 function exportBackup(){
   const data={};
@@ -1668,7 +1706,7 @@ function importBackup(input){
       });
       if(count===0){alert('Soubor neobsahuje žádná Výrobní data.');return;}
       // Reload in-memory state and re-render
-      loadProg();loadNotes();loadCas();loadPackTimes();loadNabaleno();
+      loadProg();loadNotes();loadCas();loadPackTimes();loadNabaleno();loadFirmaStatus();
       render();
       // Flash the button green briefly
       const btn=input.closest('.btn-backup');
@@ -1684,6 +1722,7 @@ loadNotes();
 loadCas();
 loadPackTimes();
 loadNabaleno();
+loadFirmaStatus();
 loadData();
 </script>
 </body>
