@@ -225,6 +225,16 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .pack-foot{padding:5px 14px;background:var(--amb-soft);border-top:1px solid #ede0d4;display:flex;justify-content:space-between;align-items:center}
 .pfoot-lbl{font-size:11px;color:#b8860b}
 .pfoot-kg{font-size:12px;font-weight:700;color:var(--bd)}
+/* Čas pack-sekce */
+.pack-time{display:flex;align-items:center;gap:6px;padding:6px 14px 8px;background:#fdf9f6;flex-wrap:wrap;border-top:1px dashed #e8ddd4}
+.pack-time-sel{font-size:11px;font-family:inherit;border:1.5px solid #d4c0a8;border-radius:5px;padding:3px 6px;background:#faf7f3;color:#333;cursor:pointer;flex:1;min-width:140px;max-width:220px}
+.pack-time-sel:focus{outline:none;border-color:var(--br)}
+.pack-time-result{font-size:12px;font-weight:700;color:#5c381f;white-space:nowrap;min-width:55px}
+.pack-time-ksh{font-size:11px;color:#aaa;white-space:nowrap}
+.pack-time-actual{font-size:12px;font-family:inherit;border:1.5px solid #d4c0a8;border-radius:5px;padding:3px 7px;width:90px;background:#faf7f3}
+.pack-time-actual:focus{outline:none;border-color:var(--br)}
+.pack-time-lbl{font-size:11px;color:#aaa;white-space:nowrap;flex-shrink:0}
+@media print{.pack-time{border-top:1.5px solid #f7ab31;background:#fff9ed}.pack-time-sel,.pack-time-actual{display:none}}
 
 /* ═══ SMĚS icard ═══ */
 .icard.smes-icard{border-left:4px solid var(--amb)}
@@ -422,6 +432,12 @@ function saveCas(){try{localStorage.setItem(CAS_KEY,JSON.stringify(casMap));}cat
 function loadCas(){try{casMap=JSON.parse(localStorage.getItem(CAS_KEY)||'{}');}catch(e){casMap={};}}
 function getCas(cardId){const d=casMap[cardId];return(d&&d.ops)?d:{ops:[]};}
 function setCas(cardId,data){casMap[cardId]=data;saveCas();}
+const PACK_TIME_KEY='nw_pack_times';
+let packTimeMap={};
+function savePackTimes(){try{localStorage.setItem(PACK_TIME_KEY,JSON.stringify(packTimeMap));}catch(e){}}
+function loadPackTimes(){try{packTimeMap=JSON.parse(localStorage.getItem(PACK_TIME_KEY)||'{}');}catch(e){packTimeMap={};}}
+function getPackTime(pid){return packTimeMap[pid]||{norm:'',ksh:0,actual:''};}
+function setPackTime(pid,d){packTimeMap[pid]=d;savePackTimes();}
 
 const NORM_OPTS=[
   ['🏭 Balicí — stroje','Automatické kontinuální — 50g',755],
@@ -482,24 +498,26 @@ const NORM_OPTS=[
   ['🔧 Čištění','Průběžné čištění — špinivé ořechy (po 100ks)',1500],
 ];
 
+function fmtTime(mins){if(!mins||mins<=0)return '—';const h=Math.floor(mins/60),m=Math.round(mins%60);return h?(m?`${h} h ${m} min`:`${h} h`):`${m} min`;}
+function buildNormSelHtml(curName){
+  const cats=[...new Set(NORM_OPTS.map(n=>n[0]))];
+  let h='<option value="">— vybrat z norem —</option>';
+  cats.forEach(cat=>{
+    const opts=NORM_OPTS.filter(n=>n[0]===cat);
+    h+=`<optgroup label="${cat}">`;
+    opts.forEach(([,name,ksh])=>{h+=`<option value="${name}|${ksh}"${curName===name?' selected':''}>${name} · ${ksh} ks/h</option>`;});
+    h+='</optgroup>';
+  });
+  h+=`<option value="custom"${curName==='custom'?' selected':''}>✏️ Vlastní…</option>`;
+  return h;
+}
+
 function buildCasCalc(cardId,defaultKs){
-  function fmtTime(mins){if(!mins||mins<=0)return '—';const h=Math.floor(mins/60),m=Math.round(mins%60);return h?(m?`${h} h ${m} min`:`${h} h`):`${m} min`;}
   function calcOpMins(op){return(op.ksh&&op.ks)?(op.ks/op.ksh*60):0;}
   function getTotalMins(){return(getCas(cardId).ops||[]).reduce((s,op)=>s+calcOpMins(op),0);}
   function updateBanner(){const b=document.getElementById('cas-print-'+cardId);if(!b)return;const m=getTotalMins();b.textContent=m>0?'⏱ Odhadovaný čas výroby: '+fmtTime(m):'';}
   function updateTotal(){const t=document.getElementById('cas-total-'+cardId);if(!t)return;const m=getTotalMins();t.textContent=m>0?'⏱ Celkem: '+fmtTime(m):'';updateBanner();}
-  function buildSelHtml(curName){
-    const cats=[...new Set(NORM_OPTS.map(n=>n[0]))];
-    let h='<option value="">— vybrat z norem —</option>';
-    cats.forEach(cat=>{
-      const opts=NORM_OPTS.filter(n=>n[0]===cat);
-      h+=`<optgroup label="${cat}">`;
-      opts.forEach(([,name,ksh])=>{h+=`<option value="${name}|${ksh}"${curName===name?' selected':''}>${name} · ${ksh} ks/h</option>`;});
-      h+='</optgroup>';
-    });
-    h+=`<option value="custom"${curName==='custom'?' selected':''}>✏️ Vlastní…</option>`;
-    return h;
-  }
+  function buildSelHtml(curName){return buildNormSelHtml(curName);}
   function rebuildRows(){
     const rowsEl=document.getElementById('cas-rows-'+cardId);
     if(!rowsEl) return;
@@ -1311,6 +1329,35 @@ function renderVyroba(cards){
       foot.innerHTML=`<span class="pfoot-lbl">Celkem ${pack.gram||''}</span><span class="pfoot-kg">${fmtKg(packKg)}</span>`;
       sect.appendChild(foot);
 
+      // Čas výroby — predikce + skutečnost
+      const totalPackKs=pack.usages.reduce((s,u)=>s+u.ks,0);
+      const ptId=(ing.kod||ing.nazev.slice(0,12))+'__'+pack.gram+'__'+(pack.darek||'').slice(0,20);
+      const ptData=getPackTime(ptId);
+      const ptRow=document.createElement('div');
+      ptRow.className='pack-time';
+      const ptSel=document.createElement('select'); ptSel.className='pack-time-sel'; ptSel.innerHTML=buildNormSelHtml(ptData.norm);
+      const ptRes=document.createElement('span'); ptRes.className='pack-time-result';
+      const ptKsh=document.createElement('span'); ptKsh.className='pack-time-ksh';
+      const ptLbl=document.createElement('span'); ptLbl.className='pack-time-lbl'; ptLbl.textContent='✏️ Skutečnost:';
+      const ptActual=document.createElement('input'); ptActual.type='text'; ptActual.className='pack-time-actual'; ptActual.placeholder='napr. 45 min'; ptActual.value=ptData.actual||'';
+      function ptUpd(){
+        const d=getPackTime(ptId); const m=d.ksh>0?(totalPackKs/d.ksh*60):0;
+        ptRes.textContent=m>0?fmtTime(m):'—';
+        ptKsh.textContent=d.ksh?(totalPackKs+' ks / '+d.ksh+' ks/h'):'';
+      }
+      ptUpd();
+      ptSel.addEventListener('change',()=>{
+        const val=ptSel.value; const d=getPackTime(ptId);
+        if(val&&val!=='custom'){const parts=val.split('|');d.norm=parts[0];d.ksh=parseInt(parts[1])||0;}
+        else if(val==='custom'){d.norm='custom';d.ksh=0;}
+        else{d.norm='';d.ksh=0;}
+        setPackTime(ptId,d); ptUpd();
+      });
+      ptActual.addEventListener('input',()=>{const d=getPackTime(ptId);d.actual=ptActual.value;setPackTime(ptId,d);});
+      ptRow.appendChild(ptSel); ptRow.appendChild(ptRes); ptRow.appendChild(ptKsh);
+      ptRow.appendChild(ptLbl); ptRow.appendChild(ptActual);
+      sect.appendChild(ptRow);
+
       card.appendChild(sect);
     });
 
@@ -1522,6 +1569,7 @@ function renderVzorky(){
 loadProg();
 loadNotes();
 loadCas();
+loadPackTimes();
 loadData();
 </script>
 </body>
