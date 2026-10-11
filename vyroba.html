@@ -1015,88 +1015,9 @@ function buildFirmaCard(card){
       }
     }
 
-    // Per-product time row (not for services)
+    // Per-product multi-op time calculator (not for services)
     if(!prod.isSluzba){
-      const ptKey=`firma_${id}_${pi}`;
-      const ptData=getPackTime(ptKey);
-      const ptRow=document.createElement('div');
-      ptRow.className='pack-time';
-
-      const ptSel=document.createElement('select');
-      ptSel.className='pack-time-sel';
-      ptSel.innerHTML=buildNormSelHtml(ptData.norm);
-
-      const ptRes=document.createElement('span');
-      ptRes.className='pack-time-result';
-
-      const ptKsInput=document.createElement('input');
-      ptKsInput.type='number';
-      ptKsInput.min='1';
-      ptKsInput.style.cssText='width:60px;font-size:12px;border:1.5px solid #ddd;border-radius:6px;padding:3px 6px;text-align:right;color:#5c381f;font-weight:700;font-family:inherit';
-      ptKsInput.title='Počet ks (upravitelné)';
-      ptKsInput.value=ptData.ksOverride||prod.ks;
-
-      const ptKsh=document.createElement('span');
-      ptKsh.className='pack-time-ksh';
-
-      const ptLbl=document.createElement('span');
-      ptLbl.className='pack-time-lbl';
-      ptLbl.textContent='✏️ Skutečnost:';
-
-      const ptActual=document.createElement('input');
-      ptActual.className='pack-time-actual';
-      ptActual.type='text';
-      ptActual.placeholder='napr. 45 min';
-      ptActual.value=ptData.actual||'';
-
-      function getFirmaKs(){return parseInt(ptKsInput.value)||prod.ks;}
-      function updateFirmaPtResult(){
-        const d=getPackTime(ptKey);
-        const ks=getFirmaKs();
-        if(d.ksh&&ks){
-          ptRes.textContent=fmtTime(ks/d.ksh*60);
-          ptKsh.textContent=`ks / ${d.ksh} ks/h`;
-        } else {
-          ptRes.textContent='—';
-          ptKsh.textContent='';
-        }
-      }
-      updateFirmaPtResult();
-
-      ptSel.onchange=()=>{
-        const val=ptSel.value;
-        const d=getPackTime(ptKey);
-        if(val&&val!=='custom'){
-          const parts=val.split('|');
-          d.norm=parts[0];
-          d.ksh=parseFloat(parts[1])||0;
-        } else {
-          d.norm='';d.ksh=0;
-        }
-        setPackTime(ptKey,d);
-        updateFirmaPtResult();
-      };
-
-      ptKsInput.oninput=()=>{
-        const d=getPackTime(ptKey);
-        d.ksOverride=parseInt(ptKsInput.value)||0;
-        setPackTime(ptKey,d);
-        updateFirmaPtResult();
-      };
-
-      ptActual.onchange=()=>{
-        const d=getPackTime(ptKey);
-        d.actual=ptActual.value;
-        setPackTime(ptKey,d);
-      };
-
-      ptRow.appendChild(ptSel);
-      ptRow.appendChild(ptKsInput);
-      ptRow.appendChild(ptRes);
-      ptRow.appendChild(ptKsh);
-      ptRow.appendChild(ptLbl);
-      ptRow.appendChild(ptActual);
-      block.appendChild(ptRow);
+      block.appendChild(buildCasCalc(`${id}_p${pi}`, prod.ks));
     }
 
     darkyWrap.appendChild(block);
