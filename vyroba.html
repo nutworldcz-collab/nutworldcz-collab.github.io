@@ -131,15 +131,26 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .sluzba-row{padding:7px 14px;font-size:12px;color:#bbb;display:flex;align-items:center;gap:8px;border-bottom:1px solid #f5f0ea;font-style:italic}
 .sluzba-row:last-child{border-bottom:none}
 
-/* Čas výroby */
-.cas-bar{display:flex;align-items:center;gap:8px;padding:8px 18px;border-top:1px solid #ede0d4;font-size:12px;color:#888;flex-wrap:wrap}
-.cas-bar label{font-size:12px;color:#888;white-space:nowrap}
-.cas-sel{font-size:13px;font-family:inherit;border:1.5px solid #d4c0a8;border-radius:6px;padding:4px 8px;background:#faf7f3;color:#333;cursor:pointer}
-.cas-sel:focus{outline:none;border-color:var(--br)}
-.cas-custom{font-size:13px;font-family:inherit;border:1.5px solid #d4c0a8;border-radius:6px;padding:4px 8px;width:90px;background:#faf7f3}
-.cas-custom:focus{outline:none;border-color:var(--br)}
+/* Čas výroby — normy kalkulátor */
+.cas-wrap{border-top:1px solid #ede0d4;padding:10px 18px 14px}
+.cas-hdr{font-size:11px;font-weight:700;color:var(--br);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.cas-rows{display:flex;flex-direction:column;gap:6px}
+.cas-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.cas-row-sel{font-size:12px;font-family:inherit;border:1.5px solid #d4c0a8;border-radius:6px;padding:4px 7px;background:#faf7f3;color:#333;cursor:pointer;flex:1;min-width:160px}
+.cas-row-sel:focus{outline:none;border-color:var(--br)}
+.cas-row-ks{font-size:13px;font-family:inherit;border:1.5px solid #d4c0a8;border-radius:6px;padding:4px 7px;width:70px;background:#faf7f3;text-align:right}
+.cas-row-ks:focus{outline:none;border-color:var(--br)}
+.cas-row-result{font-size:13px;font-weight:700;color:#5c381f;white-space:nowrap;min-width:70px}
+.cas-row-ksh{font-size:11px;color:#aaa;white-space:nowrap}
+.cas-row-del{border:none;background:none;color:#ccc;cursor:pointer;font-size:15px;padding:0 3px;line-height:1;flex-shrink:0}
+.cas-row-del:hover{color:#da1668}
+.cas-custom-name{font-size:12px;font-family:inherit;border:1.5px solid #d4c0a8;border-radius:6px;padding:4px 7px;width:110px;background:#faf7f3}
+.cas-custom-ksh{font-size:12px;font-family:inherit;border:1.5px solid #d4c0a8;border-radius:6px;padding:4px 7px;width:58px;background:#faf7f3;text-align:right}
+.cas-add{font-size:11px;color:var(--br);border:1.5px dashed #d4c0a8;border-radius:6px;padding:4px 11px;background:none;cursor:pointer;font-family:inherit;margin-top:6px;display:block}
+.cas-add:hover{border-color:var(--br);background:#faf7f3}
+.cas-total{font-size:13px;font-weight:700;color:#5c381f;margin-top:8px;text-align:right;border-top:1px solid #f5f0ea;padding-top:6px}
 .cas-print-banner{display:none;padding:10px 18px;background:#fff9ed;border-top:2px solid #f7ab31;font-size:15px;font-weight:700;color:#5c381f}
-@media print{.cas-print-banner{display:block!important}.cas-bar{display:none!important}}
+@media print{.cas-print-banner{display:block!important}.cas-wrap{display:none!important}}
 
 /* Poznámky per firma */
 .nota-bar{padding:8px 18px;border-top:1px solid var(--kraft);display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;transition:background .1s}
@@ -409,8 +420,131 @@ function setNote(cardId, val) { notes[cardId] = val; saveNotes(); }
 let casMap={};
 function saveCas(){try{localStorage.setItem(CAS_KEY,JSON.stringify(casMap));}catch(e){}}
 function loadCas(){try{casMap=JSON.parse(localStorage.getItem(CAS_KEY)||'{}');}catch(e){casMap={};}}
-function getCas(cardId){return casMap[cardId]||{val:'',custom:''};}
-function setCas(cardId,val,custom){casMap[cardId]={val,custom};saveCas();}
+function getCas(cardId){const d=casMap[cardId];return(d&&d.ops)?d:{ops:[]};}
+function setCas(cardId,data){casMap[cardId]=data;saveCas();}
+
+const NORM_OPTS=[
+  ['🏭 Balicí — stroje','Automatické kontinuální — 50g',755],
+  ['🏭 Balicí — stroje','Automatické kontinuální — 100g',690],
+  ['🏭 Balicí — stroje','Celofán poloautomat — 80g',122],
+  ['🏭 Balicí — stroje','Celofán poloautomat — 180g',103],
+  ['🏭 Balicí — stroje','Celofán poloautomat — 200g',102],
+  ['🏭 Balicí — stroje','Doypack standard — 50g',154],
+  ['🏭 Balicí — stroje','Doypack standard — 100g',162],
+  ['🏭 Balicí — stroje','Doypack standard — 200g',143],
+  ['🏭 Balicí — stroje','Doypack standard — 500g',143],
+  ['🏭 Balicí — stroje','Doypack standard — 1000g',154],
+  ['🏭 Balicí — stroje','Doypack Alza mix — 500g',63],
+  ['🏭 Balicí — stroje','Doypack Alza mix — 1000g',152],
+  ['🏭 Balicí — stroje','Alza TUBUS — 450g',117],
+  ['🏭 Balicí — stroje','Celofánek ručně — 200g',80],
+  ['🏭 Balicí — stroje','Sklenička šestihran — 60g',130],
+  ['🏭 Balicí — celofánky','Celofán — 100g (bez etikety)',207],
+  ['🏭 Balicí — celofánky','Celofán tavení — kontinuální 100g',462],
+  ['🏭 Balicí — celofánky','Balení + tavení — 180g',103],
+  ['🏭 Balicí — celofánky','Balení + tavení — 80g',122],
+  ['🏭 Balicí — celofánky','Balení — 80g',122],
+  ['🏭 Balicí — celofánky','Stojací celofánek — bez štítku',130],
+  ['🏭 Balicí — celofánky','Stojací celofánek — s logem',120],
+  ['🏭 Balicí — celofánky','Tavení sáčků',667],
+  ['🎁 Dárkové kompletace','Eko kelímek — komplet',60],
+  ['🎁 Dárkové kompletace','Eko kelímek — jen štítky',200],
+  ['🎁 Dárkové kompletace','Kazetka — komplet',60],
+  ['🎁 Dárkové kompletace','Sklenička Exclusive — komplet',70],
+  ['🎁 Dárkové kompletace','Kornout — komplet',75],
+  ['🎁 Dárkové kompletace','Celofán + kelímek s mašlí',60],
+  ['🎁 Dárkové kompletace','Vázání přes roh',120],
+  ['🎁 Dárkové kompletace','Krabička 2×50g',60],
+  ['🎁 Dárkové kompletace','4×80 se senem',30],
+  ['🎁 Dárkové kompletace','Dárková krabice 3×200 doypack',30],
+  ['🎁 Štítky','Štítek přední designový — malý',300],
+  ['🎁 Štítky','Štítek legislativní — malý',300],
+  ['🎁 Štítky','Štítek přední designový — střední',200],
+  ['🎁 Štítky','Štítek legislativní — střední',200],
+  ['🎁 Štítky','Štítek přední designový — velký',150],
+  ['🎁 Štítky','Štítek legislativní — velký',150],
+  ['🎁 Vázání','Vázání jutou — malé',130],
+  ['🎁 Vázání','Vázání mašlí — malé',80],
+  ['🎁 Vázání','Vázání jutou — střední 2×50',120],
+  ['🎁 Vázání','Vázání mašlí — střední',70],
+  ['🎁 Skládání krabic','Skládání — krabička 2×50',375],
+  ['🎁 Skládání krabic','Skládání — 4×80 průhledná',200],
+  ['🎁 Skládání krabic','Skládání — Exclusive průhledná',200],
+  ['🎁 Skládání krabic','Skládání — odnoska jedno okno',120],
+  ['🎁 Skládání krabic','Skládání — bonboniera 2 řady',40],
+  ['🎁 Ostatní dárkové','Lepení štítků — stroj',600],
+  ['🎁 Ostatní dárkové','Lepení přední+zadní štítek (100g)',171],
+  ['🎁 Ostatní dárkové','Razítkování sáčků 50g',200],
+  ['🎁 Ostatní dárkové','Lepení předního štítku — vel. sáčky',400],
+  ['🎁 Ostatní dárkové','Lepení kazetky',200],
+  ['🔬 Odvozené','Vložení do eko kelímku + víčko',150],
+  ['🔬 Odvozené','Plnění 4 sáčků + seno (4×80)',86],
+  ['🔧 Čištění','Průběžné čištění — špinivé ořechy (po 100ks)',1500],
+];
+
+function buildCasCalc(cardId,defaultKs){
+  function fmtTime(mins){if(!mins||mins<=0)return '—';const h=Math.floor(mins/60),m=Math.round(mins%60);return h?(m?`${h} h ${m} min`:`${h} h`):`${m} min`;}
+  function calcOpMins(op){return(op.ksh&&op.ks)?(op.ks/op.ksh*60):0;}
+  function getTotalMins(){return(getCas(cardId).ops||[]).reduce((s,op)=>s+calcOpMins(op),0);}
+  function updateBanner(){const b=document.getElementById('cas-print-'+cardId);if(!b)return;const m=getTotalMins();b.textContent=m>0?'⏱ Odhadovaný čas výroby: '+fmtTime(m):'';}
+  function updateTotal(){const t=document.getElementById('cas-total-'+cardId);if(!t)return;const m=getTotalMins();t.textContent=m>0?'⏱ Celkem: '+fmtTime(m):'';updateBanner();}
+  function buildSelHtml(curName){
+    const cats=[...new Set(NORM_OPTS.map(n=>n[0]))];
+    let h='<option value="">— vybrat z norem —</option>';
+    cats.forEach(cat=>{
+      const opts=NORM_OPTS.filter(n=>n[0]===cat);
+      h+=`<optgroup label="${cat}">`;
+      opts.forEach(([,name,ksh])=>{h+=`<option value="${name}|${ksh}"${curName===name?' selected':''}>${name} · ${ksh} ks/h</option>`;});
+      h+='</optgroup>';
+    });
+    h+=`<option value="custom"${curName==='custom'?' selected':''}>✏️ Vlastní…</option>`;
+    return h;
+  }
+  function rebuildRows(){
+    const rowsEl=document.getElementById('cas-rows-'+cardId);
+    if(!rowsEl) return;
+    rowsEl.innerHTML='';
+    const ops=(getCas(cardId).ops||[]);
+    ops.forEach((op,idx)=>{
+      const row=document.createElement('div'); row.className='cas-row';
+      const sel=document.createElement('select'); sel.className='cas-row-sel'; sel.innerHTML=buildSelHtml(op.name);
+      const ksInp=document.createElement('input'); ksInp.type='number'; ksInp.className='cas-row-ks'; ksInp.min='1'; ksInp.max='99999'; ksInp.value=op.ks||defaultKs||''; ksInp.placeholder='ks';
+      const resEl=document.createElement('span'); resEl.className='cas-row-result';
+      const kshEl=document.createElement('span'); kshEl.className='cas-row-ksh';
+      const delBtn=document.createElement('button'); delBtn.className='cas-row-del'; delBtn.textContent='×'; delBtn.title='Odebrat';
+      const cName=document.createElement('input'); cName.type='text'; cName.className='cas-custom-name'; cName.placeholder='Název'; cName.value=op.customName||'';
+      const cKsh=document.createElement('input'); cKsh.type='number'; cKsh.className='cas-custom-ksh'; cKsh.placeholder='ks/h'; cKsh.min='1'; cKsh.value=op.ksh||'';
+      const isC=op.name==='custom';
+      cName.style.display=isC?'':'none'; cKsh.style.display=isC?'':'none'; kshEl.style.display=isC?'none':'';
+      function updRow(){const d=getCas(cardId);const o=d.ops[idx];if(!o)return;const m=calcOpMins(o);resEl.textContent=m>0?fmtTime(m):'—';kshEl.textContent=o.ksh?(o.ksh+' ks/h'):'';updateTotal();}
+      const m0=calcOpMins(op); resEl.textContent=m0>0?fmtTime(m0):'—'; kshEl.textContent=op.ksh?(op.ksh+' ks/h'):'';
+      sel.addEventListener('change',()=>{
+        const d=getCas(cardId); const val=sel.value;
+        if(val==='custom'){d.ops[idx]={...d.ops[idx],name:'custom',ksh:parseInt(cKsh.value)||0};cName.style.display='';cKsh.style.display='';kshEl.style.display='none';}
+        else if(val){const parts=val.split('|');const name=parts[0];d.ops[idx]={...d.ops[idx],name,ksh:parseInt(parts[1])||0,customName:''};cName.style.display='none';cKsh.style.display='none';kshEl.style.display='';}
+        else{d.ops[idx]={...d.ops[idx],name:'',ksh:0};cName.style.display='none';cKsh.style.display='none';kshEl.style.display='';}
+        setCas(cardId,d); updRow();
+      });
+      ksInp.addEventListener('input',()=>{const d=getCas(cardId);d.ops[idx].ks=parseInt(ksInp.value)||0;setCas(cardId,d);updRow();});
+      cName.addEventListener('input',()=>{const d=getCas(cardId);d.ops[idx].customName=cName.value;setCas(cardId,d);});
+      cKsh.addEventListener('input',()=>{const d=getCas(cardId);d.ops[idx].ksh=parseInt(cKsh.value)||0;setCas(cardId,d);updRow();});
+      delBtn.addEventListener('click',()=>{const d=getCas(cardId);d.ops.splice(idx,1);setCas(cardId,d);rebuildRows();});
+      row.appendChild(sel); row.appendChild(cName); row.appendChild(cKsh); row.appendChild(ksInp); row.appendChild(resEl); row.appendChild(kshEl); row.appendChild(delBtn);
+      rowsEl.appendChild(row);
+    });
+    updateTotal();
+  }
+  const wrap=document.createElement('div'); wrap.className='cas-wrap';
+  const hdr=document.createElement('div'); hdr.className='cas-hdr'; hdr.textContent='⏱ Čas výroby';
+  const rowsEl=document.createElement('div'); rowsEl.className='cas-rows'; rowsEl.id='cas-rows-'+cardId;
+  const addBtn=document.createElement('button'); addBtn.className='cas-add'; addBtn.textContent='+ Přidat operaci';
+  addBtn.addEventListener('click',()=>{const d=getCas(cardId);d.ops=d.ops||[];d.ops.push({name:'',ksh:0,ks:defaultKs||0,customName:''});setCas(cardId,d);rebuildRows();});
+  const totalEl=document.createElement('div'); totalEl.className='cas-total'; totalEl.id='cas-total-'+cardId;
+  const banner=document.createElement('div'); banner.className='cas-print-banner'; banner.id='cas-print-'+cardId;
+  wrap.appendChild(hdr); wrap.appendChild(rowsEl); wrap.appendChild(addBtn); wrap.appendChild(totalEl); wrap.appendChild(banner);
+  rebuildRows();
+  return wrap;
+}
 function toggleNota(cardId) {
   const body = document.getElementById('nota-body-'+cardId);
   const tog  = document.getElementById('nota-tog-'+cardId);
@@ -810,37 +944,7 @@ function buildFirmaCard(card){
   el.appendChild(darkyWrap);
 
   // Čas výroby
-  const casData = getCas(id);
-  const CAS_OPTS = ['','15 min','30 min','45 min','1 hod','1,5 hod','2 hod','2,5 hod','3 hod','4 hod','vlastní'];
-  const casBar = document.createElement('div');
-  casBar.className = 'cas-bar';
-  casBar.innerHTML = `
-    <label for="cas-sel-${id}">⏱ Čas výroby:</label>
-    <select class="cas-sel" id="cas-sel-${id}">
-      ${CAS_OPTS.map(o=>`<option value="${o}"${o===casData.val?' selected':''}>${o||'— vybrat —'}</option>`).join('')}
-    </select>
-    <input class="cas-custom" id="cas-custom-${id}" type="text" placeholder="vlastní…" value="${casData.custom||''}" style="display:${casData.val==='vlastní'?'':'none'}">
-  `;
-  el.appendChild(casBar);
-  const casPrintVal = casData.val==='vlastní'?(casData.custom||''):casData.val;
-  const casBanner = document.createElement('div');
-  casBanner.className = 'cas-print-banner';
-  casBanner.id = 'cas-print-'+id;
-  casBanner.textContent = casPrintVal ? '⏱ Odhadovaný čas výroby: '+casPrintVal : '';
-  el.appendChild(casBanner);
-  setTimeout(()=>{
-    const sel=document.getElementById('cas-sel-'+id);
-    const inp=document.getElementById('cas-custom-'+id);
-    const bann=document.getElementById('cas-print-'+id);
-    const upd=()=>{const v=sel.value==='vlastní'?(inp?.value||''):sel.value;if(bann)bann.textContent=v?'⏱ Odhadovaný čas výroby: '+v:'';};
-    if(sel) sel.addEventListener('change',()=>{
-      const isC=sel.value==='vlastní';
-      if(inp) inp.style.display=isC?'':'none';
-      setCas(id,sel.value,inp?.value||'');
-      upd();
-    });
-    if(inp) inp.addEventListener('input',()=>{setCas(id,sel.value,inp.value);upd();});
-  },0);
+  el.appendChild(buildCasCalc(id, totalKs));
 
   // Poznámky
   const nota = getNote(id);
