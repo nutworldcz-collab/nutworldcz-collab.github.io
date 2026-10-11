@@ -131,6 +131,16 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .sluzba-row{padding:7px 14px;font-size:12px;color:#bbb;display:flex;align-items:center;gap:8px;border-bottom:1px solid #f5f0ea;font-style:italic}
 .sluzba-row:last-child{border-bottom:none}
 
+/* Čas výroby */
+.cas-bar{display:flex;align-items:center;gap:8px;padding:8px 18px;border-top:1px solid #ede0d4;font-size:12px;color:#888;flex-wrap:wrap}
+.cas-bar label{font-size:12px;color:#888;white-space:nowrap}
+.cas-sel{font-size:13px;font-family:inherit;border:1.5px solid #d4c0a8;border-radius:6px;padding:4px 8px;background:#faf7f3;color:#333;cursor:pointer}
+.cas-sel:focus{outline:none;border-color:var(--br)}
+.cas-custom{font-size:13px;font-family:inherit;border:1.5px solid #d4c0a8;border-radius:6px;padding:4px 8px;width:90px;background:#faf7f3}
+.cas-custom:focus{outline:none;border-color:var(--br)}
+.cas-print-banner{display:none;padding:10px 18px;background:#fff9ed;border-top:2px solid #f7ab31;font-size:15px;font-weight:700;color:#5c381f}
+@media print{.cas-print-banner{display:block!important}.cas-bar{display:none!important}}
+
 /* Poznámky per firma */
 .nota-bar{padding:8px 18px;border-top:1px solid var(--kraft);display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;transition:background .1s}
 .nota-bar:hover{background:#faf7f3}
@@ -360,6 +370,7 @@ const SMES_DATA = {
 const CACHE_KEY = 'nw_vyroba_cache';
 const PROG_KEY  = 'nw_vyroba_progress';
 const NOTA_KEY  = 'nw_vyroba_notes';
+const CAS_KEY   = 'nw_vyroba_cas';
 const EXCL = ['archiv','storno','hotov','dokončen','faktura','firmy 20','rok 202','nabídky','markét','vzorky 20','průvodky'];
 
 let allLists = [], allCards = [], parsedCards = [];
@@ -395,6 +406,11 @@ function saveNotes() { try { localStorage.setItem(NOTA_KEY, JSON.stringify(notes
 function loadNotes() { try { notes = JSON.parse(localStorage.getItem(NOTA_KEY)||'{}'); } catch(e){ notes={}; } }
 function getNote(cardId) { return notes[cardId]||''; }
 function setNote(cardId, val) { notes[cardId] = val; saveNotes(); }
+let casMap={};
+function saveCas(){try{localStorage.setItem(CAS_KEY,JSON.stringify(casMap));}catch(e){}}
+function loadCas(){try{casMap=JSON.parse(localStorage.getItem(CAS_KEY)||'{}');}catch(e){casMap={};}}
+function getCas(cardId){return casMap[cardId]||{val:'',custom:''};}
+function setCas(cardId,val,custom){casMap[cardId]={val,custom};saveCas();}
 function toggleNota(cardId) {
   const body = document.getElementById('nota-body-'+cardId);
   const tog  = document.getElementById('nota-tog-'+cardId);
@@ -792,6 +808,39 @@ function buildFirmaCard(card){
   });
 
   el.appendChild(darkyWrap);
+
+  // Čas výroby
+  const casData = getCas(id);
+  const CAS_OPTS = ['','15 min','30 min','45 min','1 hod','1,5 hod','2 hod','2,5 hod','3 hod','4 hod','vlastní'];
+  const casBar = document.createElement('div');
+  casBar.className = 'cas-bar';
+  casBar.innerHTML = `
+    <label for="cas-sel-${id}">⏱ Čas výroby:</label>
+    <select class="cas-sel" id="cas-sel-${id}">
+      ${CAS_OPTS.map(o=>`<option value="${o}"${o===casData.val?' selected':''}>${o||'— vybrat —'}</option>`).join('')}
+    </select>
+    <input class="cas-custom" id="cas-custom-${id}" type="text" placeholder="vlastní…" value="${casData.custom||''}" style="display:${casData.val==='vlastní'?'':'none'}">
+  `;
+  el.appendChild(casBar);
+  const casPrintVal = casData.val==='vlastní'?(casData.custom||''):casData.val;
+  const casBanner = document.createElement('div');
+  casBanner.className = 'cas-print-banner';
+  casBanner.id = 'cas-print-'+id;
+  casBanner.textContent = casPrintVal ? '⏱ Odhadovaný čas výroby: '+casPrintVal : '';
+  el.appendChild(casBanner);
+  setTimeout(()=>{
+    const sel=document.getElementById('cas-sel-'+id);
+    const inp=document.getElementById('cas-custom-'+id);
+    const bann=document.getElementById('cas-print-'+id);
+    const upd=()=>{const v=sel.value==='vlastní'?(inp?.value||''):sel.value;if(bann)bann.textContent=v?'⏱ Odhadovaný čas výroby: '+v:'';};
+    if(sel) sel.addEventListener('change',()=>{
+      const isC=sel.value==='vlastní';
+      if(inp) inp.style.display=isC?'':'none';
+      setCas(id,sel.value,inp?.value||'');
+      upd();
+    });
+    if(inp) inp.addEventListener('input',()=>{setCas(id,sel.value,inp.value);upd();});
+  },0);
 
   // Poznámky
   const nota = getNote(id);
@@ -1368,6 +1417,7 @@ function renderVzorky(){
 
 loadProg();
 loadNotes();
+loadCas();
 loadData();
 </script>
 </body>
