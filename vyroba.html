@@ -343,7 +343,9 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
   body>*:not(#print-root){display:none!important}
   #print-root{display:block!important;position:static!important;padding:0!important}
-  #print-root .print-btn,.nota-bar,.nota-body,.hotovo-banner,.tv-filter-bar,.firma-progress{display:none!important}
+  #print-root .print-btn,.hotovo-banner,.tv-filter-bar,.firma-progress{display:none!important}
+  #print-root .nota-bar{display:none!important}
+  #print-root .nota-body{display:block!important;padding:8px 18px 12px;border-top:2px solid #f7ab31;background:#fffbf4;font-size:13px;color:#5c381f;white-space:pre-wrap}
   .firma-card,icard{box-shadow:none!important;border-radius:0!important;page-break-inside:avoid}
 }
 </style>
@@ -1147,7 +1149,13 @@ function printCard(el){
   root.innerHTML='';
   const clone=el.cloneNode(true);
   // Skrýt tlačítka
-  clone.querySelectorAll('.print-btn,.nota-bar,.nota-body,.hotovo-banner').forEach(n=>n.remove());
+  clone.querySelectorAll('.print-btn,.nota-bar,.hotovo-banner').forEach(n=>n.remove());
+  // Show nota-body in print even if collapsed
+  clone.querySelectorAll('.nota-body').forEach(n=>{
+    const txt=n.querySelector('textarea')?.value||'';
+    if(txt){n.innerHTML=`<div style="font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">📝 Poznámka</div><div style="white-space:pre-wrap;font-size:13px;color:#5c381f">${txt.replace(/</g,'&lt;')}</div>`;n.classList.add('open');}
+    else n.remove();
+  });
   root.appendChild(clone);
   window.print();
   root.innerHTML='';
