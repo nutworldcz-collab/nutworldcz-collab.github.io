@@ -923,7 +923,10 @@ function buildFirmaCard(card){
     </div>
     <div class="firma-hdr-right" style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
       ${totalKg?`<div><div class="firma-total-kg">${fmtKg(totalKg)}</div><div class="firma-total-lbl">celkem surovin</div></div>`:''}
-      <button class="print-btn" onclick="event.stopPropagation();printCard(this.closest('.firma-card'))">🖨 Tisk</button>
+      <div style="display:flex;gap:5px;align-items:center">
+        <button class="print-btn" onclick="event.stopPropagation();printCard(this.closest('.firma-card'))">🖨 Tisk</button>
+        <button class="hotovo-btn nabaleno" style="font-size:11px;padding:4px 9px;border-radius:6px" onclick="event.stopPropagation();markNabaleno('${id}')" title="Schovat jako zabaleno">📦 Zabaleno</button>
+      </div>
     </div>
   `;
   el.appendChild(hdr);
