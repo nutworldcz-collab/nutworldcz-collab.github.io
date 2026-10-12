@@ -80,6 +80,8 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .tv-fbtn.soon.active{background:#e67e22;color:#fff;border-color:#e67e22}
 .tv-fbtn.ok{background:#e8f5e9;color:#2e7d32;border-color:#a5d6a7}
 .tv-fbtn.ok.active{background:#2e7d32;color:#fff;border-color:#2e7d32}
+.tv-fbtn.nab{background:#f1fbf2;color:#2e7d32;border-color:#81c784;margin-left:auto}
+.tv-fbtn.nab.active{background:#2e7d32;color:#fff;border-color:#2e7d32}
 
 .firma-hdr{padding:14px 18px 12px;border-bottom:2px solid var(--kraft);display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
 .firma-name{font-family:'Exo 2',sans-serif;font-weight:800;font-size:16px;color:var(--bd)}
@@ -873,8 +875,8 @@ function renderFirmy(cards){
   const nabCnt=[...nabalenoSet].filter(id=>sorted.some(c=>c.id===id)).length;
   if(nabCnt){
     const nabBtn=document.createElement('button');
-    nabBtn.className='tv-fbtn'+(showNabaleno?' active':'');
-    nabBtn.textContent=`📦 Nabaleno (${nabCnt})`;
+    nabBtn.className='tv-fbtn nab'+(showNabaleno?' active':'');
+    nabBtn.textContent=`📦 Zabaleno (${nabCnt})`;
     nabBtn.onclick=()=>{showNabaleno=!showNabaleno;render();};
     fbar.appendChild(nabBtn);
   }
