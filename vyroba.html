@@ -158,7 +158,7 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .cas-add:hover{border-color:var(--br);background:#faf7f3}
 .cas-total{font-size:13px;font-weight:700;color:#5c381f;margin-top:8px;text-align:right;border-top:1px solid #f5f0ea;padding-top:6px}
 .cas-print-banner{display:none;padding:10px 18px;background:#fff9ed;border-top:2px solid #f7ab31;font-size:15px;font-weight:700;color:#5c381f}
-@media print{.cas-print-banner{display:block!important}.cas-wrap{display:none!important}}
+@media print{.cas-print-banner{display:block!important}.cas-hdr,.cas-rows,.cas-add,.cas-total{display:none!important}}
 
 /* Poznámky per firma */
 .nota-bar{padding:8px 18px;border-top:1px solid var(--kraft);display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;transition:background .1s}
@@ -554,7 +554,18 @@ function buildNormSelHtml(curName){
 function buildCasCalc(cardId,defaultKs){
   function calcOpMins(op){return(op.ksh&&op.ks)?(op.ks/op.ksh*60):0;}
   function getTotalMins(){return(getCas(cardId).ops||[]).reduce((s,op)=>s+calcOpMins(op),0);}
-  function updateBanner(){const b=document.getElementById('cas-print-'+cardId);if(!b)return;const m=getTotalMins();b.textContent=m>0?'⏱ Odhadovaný čas výroby: '+fmtTime(m):'';}
+  function updateBanner(){
+    const b=document.getElementById('cas-print-'+cardId);if(!b)return;
+    const ops=(getCas(cardId).ops||[]).filter(op=>op.name&&op.ksh&&op.ks);
+    const m=getTotalMins();
+    if(m<=0){b.innerHTML='';return;}
+    const rows=ops.map(op=>{
+      const label=op.name==='custom'?(op.customName||'Vlastní'):op.name;
+      const mins=calcOpMins(op);
+      return `<div style="font-size:12px;font-weight:400;margin-top:3px;color:#5c381f">• ${label}: ${op.ks} ks × ${op.ksh} ks/h → ${fmtTime(mins)}</div>`;
+    }).join('');
+    b.innerHTML=`⏱ Čas výroby: ${fmtTime(m)}${rows}`;
+  }
   function updateTotal(){const t=document.getElementById('cas-total-'+cardId);if(!t)return;const m=getTotalMins();t.textContent=m>0?'⏱ Celkem: '+fmtTime(m):'';updateBanner();}
   function buildSelHtml(curName){return buildNormSelHtml(curName);}
   function rebuildRows(){
