@@ -1824,7 +1824,11 @@ function kalkAddProdItem() {
   const nazev = document.getElementById('p-kalk-nazev').value.trim() || (pProduct?.nazev || 'Produkt');
   const kod = pProduct?.kod || '';
   const ks = parseInt(document.getElementById('p-kalk-ks').value) || 1;
-  KALK_ITEMS.push({ nazev, kod, ks, mo: finalBezDPH, vo, nakl, nadstavby: [] });
+  const _ptyp = document.getElementById('p-potisk-typ')?.value;
+  const pripravy = (_ptyp === 'logo' || _ptyp === 'celo' || (_ptyp === 'vlastni' && potisk > 0))
+    ? [{ nazev: 'Tisková příprava', cena: 450, sluzba: true }]
+    : [];
+  KALK_ITEMS.push({ nazev, kod, ks, mo: finalBezDPH, vo, nakl, nadstavby: [], pripravy });
   kalkRender();
   document.getElementById('p-kalk-nazev').value = '';
   document.getElementById('p-kalk-ks').value = '1';
