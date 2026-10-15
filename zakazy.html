@@ -77,6 +77,9 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .action-btn.trello{background:#f1e6da;color:var(--bd)}
 .action-btn.zakazka{background:var(--bd);color:white}
 .action-btn.disabled{opacity:.35;pointer-events:none}
+.action-btn.zabaleno-btn{background:#e8f5e9;color:#2e7d32;border:2px solid #2e7d32}
+.action-btn.zabaleno-btn.done{background:#2e7d32;color:white}
+.zakaz-card.je-zabaleno{border-left-width:5px}
 
 @media(max-width:550px){
   .z-actions{display:grid}
@@ -221,25 +224,27 @@ function buildFilters() {
     btn.onclick = function(){ setFilter(l.id, this); };
     row.appendChild(btn);
   });
-  // Smart filter: Zabaleno (label na kartě)
+  // Smart filter: Zabaleno (interní localStorage příznak)
   const zCnt = allCards.filter(c => isZabaleno(c)).length;
-  if (zCnt > 0) {
-    const zBtn = document.createElement('button');
-    zBtn.className = 'filter-btn';
-    zBtn.dataset.list = 'zabaleno';
-    zBtn.textContent = '📦 Zabaleno (' + zCnt + ')';
-    zBtn.onclick = function(){ setFilter('zabaleno', this); };
-    zBtn.style.borderColor = '#2e7d32';
-    zBtn.style.color = '#2e7d32';
-    row.appendChild(zBtn);
-  }
+  const zBtn = document.createElement('button');
+  zBtn.className = 'filter-btn' + (activeFilter === 'zabaleno' ? ' active' : '');
+  zBtn.dataset.list = 'zabaleno';
+  zBtn.textContent = '📦 Zabaleno (' + zCnt + ')';
+  zBtn.onclick = function(){ setFilter('zabaleno', this); };
+  if (activeFilter !== 'zabaleno') { zBtn.style.borderColor = '#2e7d32'; zBtn.style.color = '#2e7d32'; }
+  row.appendChild(zBtn);
 }
 
 function isZabaleno(card) {
-  const labels = card.labels || [];
-  if (labels.some(l => (l.name || '').toLowerCase().includes('zabal'))) return true;
-  const desc = (card.desc || '').toLowerCase();
-  return desc.includes('zabaleno: ✓') || desc.includes('zabaleno: ano') || desc.includes('✅ zabaleno');
+  try { return localStorage.getItem('zabaleno_' + card.id) === 'true'; } catch(e) { return false; }
+}
+
+function toggleZabaleno(cardId, event) {
+  event.stopPropagation();
+  const current = localStorage.getItem('zabaleno_' + cardId) === 'true';
+  try { localStorage.setItem('zabaleno_' + cardId, current ? 'false' : 'true'); } catch(e) {}
+  buildFilters();
+  renderCards();
 }
 
 function setFilter(listId, el) {
@@ -410,7 +415,7 @@ function renderCards() {
     const due = dueLabel(card.due);
 
     return `
-    <div class="zakaz-card" style="border-left-color:${clr.border}" onclick="window.open('${card.url}','_blank')">
+    <div class="zakaz-card${isZabaleno(card)?' je-zabaleno':''}" style="border-left-color:${isZabaleno(card)?'#2e7d32':clr.border}" onclick="window.open('${card.url}','_blank')">
       <div class="z-header">
         <div class="z-firma">${esc(p.firma)}</div>
       </div>
@@ -439,6 +444,7 @@ function renderCards() {
         <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
           ${due ? `<span class="z-due${due.overdue?' overdue':''}">📅 ${due.text}</span>` : ''}
           ${p.zakazkaUrl ? `<a class="z-link" href="${p.zakazkaUrl}" onclick="event.stopPropagation()" target="_blank">Formulář →</a>` : ''}
+          <button onclick="toggleZabaleno('${card.id}',event)" style="background:${isZabaleno(card)?'#2e7d32':'transparent'};color:${isZabaleno(card)?'white':'#2e7d32'};border:1.5px solid #2e7d32;border-radius:20px;padding:2px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit">${isZabaleno(card)?'✅ Zabaleno':'📦 Zabalit'}</button>
         </div>
       </div>
     </div>`;
