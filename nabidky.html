@@ -112,6 +112,21 @@ table.pt input.inp-cena{width:100px;text-align:right}
 /* ── PRINT ── */
 @media print{body{background:white}.shell{display:block;padding:0}#form-panel{display:none}#preview-wrap{position:static}.preview-actions{display:none}#preview-frame{min-height:100vh}}
 
+/* ── ARCHIV TAB ── */
+.tab-bar{display:flex;gap:0;background:#f1e6da;border-bottom:2px solid #d4c0a8}
+.tab-btn{padding:10px 22px;background:none;border:none;border-bottom:3px solid transparent;margin-bottom:-2px;font-family:'Exo 2',sans-serif;font-weight:700;font-size:13px;color:#83502e;cursor:pointer;letter-spacing:.3px;transition:background .12s}
+.tab-btn.active{color:#5c381f;border-bottom-color:#5c381f;background:white}
+.tab-btn:hover:not(.active){background:#ede0d4}
+#archiv-panel{display:none;max-width:960px;margin:0 auto;padding:20px 16px}
+.archiv-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.archiv-search{flex:1;min-width:200px;border:1.5px solid #d4c0a8;border-radius:8px;padding:8px 12px;font-size:13px;font-family:inherit;background:white}
+.archiv-select{border:1.5px solid #d4c0a8;border-radius:8px;padding:8px 12px;font-size:13px;font-family:inherit;background:white;color:#444;cursor:pointer}
+.archiv-row{background:white;border-radius:10px;padding:14px 18px;margin-bottom:9px;box-shadow:0 2px 8px rgba(0,0,0,.07);display:flex;align-items:center;gap:14px;border-left:4px solid #ccc}
+.ar-firma{font-family:'Exo 2',sans-serif;font-weight:800;font-size:15px;color:#5c381f;flex:1;min-width:0}
+.ar-meta{font-size:11px;color:#bbb;margin-top:2px}
+.ar-rep{border-radius:20px;padding:3px 12px;font-size:12px;font-weight:700;white-space:nowrap}
+.ar-total{font-family:'Exo 2',sans-serif;font-weight:800;font-size:15px;color:#5c381f;white-space:nowrap}
+.ar-btn{border:none;border-radius:8px;padding:7px 14px;font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-block}
 </style>
 </head>
 <body>
@@ -120,6 +135,10 @@ table.pt input.inp-cena{width:100px;text-align:right}
   <h1>🐿 Nutworld</h1>
   <span style="color:var(--amb);font-family:'Exo 2',sans-serif;font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase">Generátor nabídek</span>
   <button onclick="toggleLoadSection()" style="margin-left:auto;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.35);color:white;font-family:'Exo 2',sans-serif;font-weight:600;font-size:12px;padding:7px 16px;border-radius:20px;cursor:pointer;letter-spacing:.5px">📂 Načíst nabídku</button>
+</div>
+<div class="tab-bar">
+  <button class="tab-btn active" id="tab-form" onclick="switchTab('form')">📋 Nová nabídka</button>
+  <button class="tab-btn" id="tab-archiv" onclick="switchTab('archiv')">📚 Archiv zakázek <span id="archiv-cnt" style="font-weight:400;opacity:.7"></span></button>
 </div>
 
 <div id="load-section" style="display:none;background:#fff8f0;border-bottom:2px solid #d4c0a8;padding:13px 24px">
@@ -261,6 +280,19 @@ table.pt input.inp-cena{width:100px;text-align:right}
     </div>
   </div>
 </div>
+
+<!-- ── ARCHIV ZAKÁZEK ── -->
+<div id="archiv-panel">
+  <div class="archiv-toolbar">
+    <input class="archiv-search" id="archiv-search" placeholder="🔍 Hledat firmu…" oninput="renderArchiv()"/>
+    <select class="archiv-select" id="archiv-rep-filter" onchange="renderArchiv()">
+      <option value="">Všichni OZ</option>
+    </select>
+    <button onclick="if(confirm('Opravdu smazat celý archiv zakázek z tohoto prohlížeče?')){clearArchiv()}" style="background:none;border:1.5px solid #d4c0a8;color:#888;border-radius:8px;padding:7px 12px;font-size:12px;cursor:pointer;font-family:inherit">🗑 Vymazat archiv</button>
+  </div>
+  <div id="archiv-list"></div>
+</div>
+
 </div>
 
 <script src="/partneri-data.js"></script>
@@ -829,6 +861,9 @@ async function createLink() {
   const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
   const url = 'https://nutworldcz-collab.github.io/zakazka.html#' + encoded;
 
+  // Uložit do archivu
+  saveToArchiv(data, cislo, url);
+
   // Zkopíruj do schránky
   navigator.clipboard.writeText(url).then(() => {
     document.getElementById('link-copied').style.display = 'block';
@@ -1138,6 +1173,147 @@ function resetPreview() {
 // Načti nabídku z URL hashe (pro editaci) nebo přidej první prázdný řádek
 loadFromHash();
 if (rowCount === 0) addRow();
+
+// ══════════════════════════════════════════════
+//  ARCHIV ZAKÁZEK — localStorage
+// ══════════════════════════════════════════════
+const ARCHIV_KEY = 'nw_archiv_zakazky';
+const REP_COLORS = ['#1565c0','#2e7d32','#6a1b9a','#b71c1c','#e65100','#00695c','#4527a0','#4a148c','#1b5e20','#bf360c'];
+const _repColorMap = {};
+let _repColorIdx = 0;
+
+function repColor(key) {
+  const k = (key || 'unknown').toLowerCase().trim();
+  if (!_repColorMap[k]) { _repColorMap[k] = REP_COLORS[_repColorIdx % REP_COLORS.length]; _repColorIdx++; }
+  return _repColorMap[k];
+}
+
+function archivLoad() {
+  try { return JSON.parse(localStorage.getItem(ARCHIV_KEY) || '[]'); } catch(e) { return []; }
+}
+
+function archivSave(entries) {
+  try { localStorage.setItem(ARCHIV_KEY, JSON.stringify(entries)); } catch(e) {}
+}
+
+function saveToArchiv(data, cislo, url) {
+  const entries = archivLoad();
+  const dph = data.trh === 'SK' ? 0.23 : 0.12;
+  const totalBez = data.produkty.reduce((s,p) => s + (p.ks||1) * (p.cena||0), 0);
+  entries.unshift({
+    id: cislo + '_' + Date.now(),
+    cislo,
+    firma: data.firma,
+    repName:  data.repName  || '—',
+    repEmail: data.repEmail || '',
+    datum:    new Date().toISOString(),
+    trh:      data.trh || 'CZ',
+    totalBez,
+    totalSDph: totalBez * (1 + dph),
+    url,
+    data
+  });
+  archivSave(entries);
+  updateArchivCount();
+}
+
+function updateArchivCount() {
+  const cnt = archivLoad().length;
+  const el = document.getElementById('archiv-cnt');
+  if (el) el.textContent = cnt ? '(' + cnt + ')' : '';
+}
+
+function clearArchiv() {
+  localStorage.removeItem(ARCHIV_KEY);
+  updateArchivCount();
+  renderArchiv();
+}
+
+function switchTab(tab) {
+  const toArchiv = tab === 'archiv';
+  document.getElementById('form-panel').style.display    = toArchiv ? 'none' : '';
+  document.getElementById('preview-wrap').style.display  = toArchiv ? 'none' : '';
+  document.getElementById('archiv-panel').style.display  = toArchiv ? '' : 'none';
+  if (!toArchiv) document.getElementById('load-section').style.display = 'none';
+  document.getElementById('tab-form').classList.toggle('active', !toArchiv);
+  document.getElementById('tab-archiv').classList.toggle('active', toArchiv);
+  if (toArchiv) renderArchiv();
+}
+
+function renderArchiv() {
+  const entries = archivLoad();
+  const q   = (document.getElementById('archiv-search').value || '').toLowerCase();
+  const repF = document.getElementById('archiv-rep-filter').value;
+
+  // Naplň rep filtr
+  const reps = [...new Map(entries.map(e => [e.repEmail || e.repName, e.repName])).entries()];
+  const sel = document.getElementById('archiv-rep-filter');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">Všichni OZ</option>';
+  reps.forEach(([key, name]) => {
+    sel.innerHTML += `<option value="${escH(key)}" ${cur===key?'selected':''}>${escH(name)}</option>`;
+  });
+
+  updateArchivCount();
+
+  let list = entries;
+  if (q)    list = list.filter(e => e.firma.toLowerCase().includes(q));
+  if (repF) list = list.filter(e => (e.repEmail||e.repName) === repF);
+
+  const el = document.getElementById('archiv-list');
+  if (list.length === 0) {
+    el.innerHTML = '<div style="text-align:center;color:#bbb;padding:60px 0;font-size:14px">' +
+      (entries.length === 0 ? '📭 Archiv je prázdný. Zakázky se sem ukládají automaticky při kliknutí na <strong>Zkopírovat odkaz zakázky</strong>.' : '🔍 Žádné výsledky.') +
+      '</div>';
+    return;
+  }
+
+  el.innerHTML = list.map(e => {
+    const clr   = repColor(e.repEmail || e.repName);
+    const d     = new Date(e.datum);
+    const dStr  = d.getDate() + '. ' + (d.getMonth()+1) + '. ' + d.getFullYear();
+    const cur   = e.trh === 'SK' ? 'EUR' : 'Kč';
+    const total = e.totalSDph ? Math.round(e.totalSDph).toLocaleString('cs-CZ') : '—';
+    const pCnt  = e.data?.produkty?.length || 0;
+    return `
+    <div class="archiv-row" style="border-left-color:${clr}">
+      <div style="flex:1;min-width:0">
+        <div class="ar-firma">${escH(e.firma)}</div>
+        <div class="ar-meta">${escH(e.cislo)} · ${dStr} · ${pCnt} položek</div>
+      </div>
+      <div class="ar-rep" style="background:${clr}22;color:${clr}">${escH(e.repName)}</div>
+      <div class="ar-total">${total} ${cur}</div>
+      <div style="display:flex;gap:8px;flex-shrink:0">
+        <a class="ar-btn" href="${e.url}" target="_blank" style="background:#f1e6da;color:#83502e">📋 Zobrazit</a>
+        <button class="ar-btn" onclick="loadFromArchiv('${escH(e.id)}')" style="background:#5c381f;color:white">✏️ Upravit</button>
+        <button class="ar-btn" onclick="deleteFromArchiv('${escH(e.id)}')" style="background:none;border:1.5px solid #e0cfc4;color:#aaa" title="Smazat">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function escH(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+function loadFromArchiv(id) {
+  const entry = archivLoad().find(e => e.id === id);
+  if (!entry) return;
+  populateForm(entry.data);
+  window._savedCislo = entry.cislo;
+  window._trelloCardId = entry.data._cardId || null;
+  switchTab('form');
+  window.scrollTo(0, 0);
+}
+
+function deleteFromArchiv(id) {
+  if (!confirm('Smazat tuto zakázku z archivu?')) return;
+  archivSave(archivLoad().filter(e => e.id !== id));
+  renderArchiv();
+}
+
+// ── Init ──
+updateArchivCount();
 </script>
 <script src="pin-guard.js"></script>
 </body></html>
