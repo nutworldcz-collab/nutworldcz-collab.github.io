@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Podmínky spolupráce s agenturou</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&family=Source+Sans+3:wght@400;600&display=swap">
+
+<style>
+  /* Layout: card-based checklist document, section-per-topic */
+  :root {
+    --bg: #faf7f4;
+    --surface: #f1e6da;
+    --surface-2: #ffffff;
+    --fg: #2c1a0e;
+    --fg-muted: #6b4a2f;
+    --border: #d6c4b0;
+    --accent: #83502e;
+    --accent-dark: #5c381f;
+    --accent-amber: #f7ab31;
+    --accent-pink: #da1668;
+    --ok: #4a7c2f;
+    --ok-bg: #eef5e8;
+    --warn: #b8860b;
+    --warn-bg: #fef9e7;
+    --danger: #c0392b;
+    --danger-bg: #fdf0ed;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1a0f08;
+      --surface: #2a1a0f;
+      --surface-2: #231508;
+      --fg: #f0e4d4;
+      --fg-muted: #b8936a;
+      --border: #4a3020;
+      --accent: #c07840;
+      --accent-dark: #e0a060;
+      --accent-amber: #f7ab31;
+      --ok: #7abf50;
+      --ok-bg: #1a2e10;
+      --warn: #e0b040;
+      --warn-bg: #2a2208;
+      --danger: #e06050;
+      --danger-bg: #2a1010;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1a0f08;
+    --surface: #2a1a0f;
+    --surface-2: #231508;
+    --fg: #f0e4d4;
+    --fg-muted: #b8936a;
+    --border: #4a3020;
+    --accent: #c07840;
+    --accent-dark: #e0a060;
+    --accent-amber: #f7ab31;
+    --ok: #7abf50;
+    --ok-bg: #1a2e10;
+    --warn: #e0b040;
+    --warn-bg: #2a2208;
+    --danger: #e06050;
+    --danger-bg: #2a1010;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Source Sans 3', Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    margin: 0;
+    padding-inline: 16px;
+    padding-block: 32px;
+  }
+
+  .wrapper {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .doc-header {
+    background: linear-gradient(135deg, #5c381f 0%, #83502e 55%, #a0622a 100%);
+    border-radius: 14px;
+    padding: 32px 36px;
+    color: #fff;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .doc-header::after {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: rgba(247,171,49,.12);
+  }
+  .doc-header-label {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--accent-amber);
+    margin-bottom: 8px;
+  }
+  .doc-header h1 {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 10px;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+  .doc-header p {
+    margin: 0;
+    opacity: .85;
+    font-size: 14px;
+    max-width: 560px;
+  }
+
+  /* Info box */
+  .info-box {
+    background: var(--warn-bg);
+    border: 1.5px solid var(--accent-amber);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 14px;
+    margin-bottom: 28px;
+    color: var(--fg);
+  }
+  .info-box strong { color: var(--warn); }
+
+  /* Section */
+  .section {
+    margin-bottom: 28px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .section-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+  }
+  .section h2 {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    margin: 0;
+    color: var(--accent-dark);
+  }
+
+  /* Cards */
+  .card {
+    background: var(--surface-2);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 10px;
+  }
+  .card-title {
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 6px;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title .icon {
+    font-size: 16px;
+  }
+  .card p {
+    margin: 0;
+    color: var(--fg);
+    font-size: 14px;
+  }
+  .card ul {
+    margin: 6px 0 0;
+    padding-left: 20px;
+    font-size: 14px;
+  }
+  .card ul li {
+    margin-bottom: 3px;
+  }
+
+  /* Badge tags */
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 600;
+    letter-spacing: .5px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .badge-required {
+    background: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid var(--danger);
+  }
+  .badge-recommended {
+    background: var(--ok-bg);
+    color: var(--ok);
+    border: 1px solid var(--ok);
+  }
+  .badge-info {
+    background: var(--warn-bg);
+    color: var(--warn);
+    border: 1px solid var(--warn);
+  }
+
+  /* Checklist */
+  .checklist-title {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin-bottom: 6px;
+    font-size: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: background .15s;
+    user-select: none;
+  }
+  .check-item:hover { background: var(--surface-2); }
+  .check-item.done { opacity: .55; text-decoration: line-through; }
+  .check-item input[type=checkbox] {
+    width: 16px; height: 16px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 2px;
+    cursor: pointer;
+  }
+  .check-text { flex: 1; min-width: 0; }
+
+  .divider {
+    border: none;
+    border-top: 1.5px solid var(--border);
+    margin: 32px 0;
+  }
+
+  .footer-note {
+    font-size: 12px;
+    color: var(--fg-muted);
+    text-align: center;
+    margin-top: 24px;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <div class="doc-header">
+    <div class="doc-header-label">Nutworld · Interní dokument</div>
+    <h1>Podmínky spolupráce s agenturou (úkolová práce)</h1>
+    <p>Přehled toho, co musí Nutworld splňovat, aby spolupráce s externe najatou agenturou byla právně a daňově v pořádku.</p>
+  </div>
+
+  <div class="info-box">
+    <strong>Kde to platí:</strong> Toto jsou podmínky pro B2B spolupráci, kdy agentura fakturuje za odvedené úkoly/díla (smlouva o dílo nebo o poskytování služeb). Platí pro CZ i SK stranu.
+  </div>
+
+  <!-- 1. Smlouva -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <h2>Písemná smlouva <span class="badge badge-required">Povinné</span></h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">📄</span> Smlouva o dílo / o poskytování služeb</div>
+      <p>Musí být uzavřena před zahájením práce. Ústní dohoda nestačí — bez smlouvy nejde vymáhat výstupy ani kontrolovat náklady.</p>
+      <ul>
+        <li>Přesná definice rozsahu prací (co přesně agentura dělá)</li>
+        <li>Termíny — deadline na každý úkol nebo etapu</li>
+        <li>Cena a způsob fakturace (za úkol, měsíčně, milestone)</li>
+        <li>Způsob předání výstupů a akceptace</li>
+        <li>Co se stane při nedodání nebo vadném plnění</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🏢</span> Ověření agentury</div>
+      <p>Před podpisem zkontrolovat:</p>
+      <ul>
+        <li>IČO v živnostenském rejstříku nebo obchodním rejstříku (justice.cz)</li>
+        <li>DIČ a plátcovství DPH (pokud agentura DPH uplatňuje)</li>
+        <li>Že má platné oprávnění k podnikání v daném oboru</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 2. GDPR -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <h2>GDPR — ochrana osobních údajů <span class="badge badge-required">Povinné</span></h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🔒</span> Smlouva o zpracování osobních údajů (DPA)</div>
+      <p>Pokud agentura přistupuje k jakýmkoli zákaznickým datům Nutworld (emaily, objednávky, analytika, CRM), musí být podepsána DPA (Data Processing Agreement) dle GDPR čl. 28.</p>
+      <ul>
+        <li>Co smí s daty dělat a co nesmí</li>
+        <li>Kde a jak data ukládá</li>
+        <li>Jak je zabezpečí</li>
+        <li>Co se stane s daty po ukončení spolupráce (smazání, vrácení)</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">📋</span> Záznamy o zpracování</div>
+      <p>Nutworld musí mít ve svém záznamu zpracovatelských činností (ROPA) evidovanou agenturu jako zpracovatele. Pokud ROPA neexistuje, je to problém — GDPR ho ukládá každé firmě.</p>
+    </div>
+  </div>
+
+  <!-- 3. Autorská práva -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <h2>Autorská práva a duševní vlastnictví <span class="badge badge-required">Povinné</span></h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">©️</span> Kdo vlastní výstupy?</div>
+      <p>Ze zákona patří dílo (texty, grafika, reklamy, kód, fotky) autorovi — tedy agentuře — pokud smlouva neříká jinak. Bez explicitního postoupení práv může agentura klidně zakázat Nutworld výstupy používat.</p>
+      <ul>
+        <li>Ve smlouvě musí stát, že agentura <strong>převádí majetková práva</strong> nebo poskytuje <strong>výhradní licenci</strong> na všechny vytvořené materiály</li>
+        <li>Platí to pro: texty, vizuály, bannery, videa, fotky, skripty, kód</li>
+        <li>Licence by měla být časově a územně neomezená</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🔑</span> Přístupy a účty</div>
+      <p>Vše, co agentura vytvoří nebo spravuje, musí být přístupné Nutworld kdykoli — účty v Meta, Google, Canva, nástrojích atd. musí být vedeny na Nutworld email, ne na email agentury.</p>
+    </div>
+  </div>
+
+  <!-- 4. Daně -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <h2>Daně a fakturace <span class="badge badge-required">Povinné</span></h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🧾</span> Náležitosti faktury</div>
+      <p>Každá faktura od agentury musí splňovat zákonné náležitosti dle §29 zákona o DPH:</p>
+      <ul>
+        <li>Číslo faktury, datum vystavení, datum zdanitelného plnění</li>
+        <li>IČO a DIČ obou stran</li>
+        <li>Přesný popis plnění (co bylo odvedeno)</li>
+        <li>Základ daně, sazba DPH, výše DPH, celkem</li>
+        <li>Způsob a termín platby</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🇸🇰</span> Zahraniční agentura / SK</div>
+      <p>Pokud agentura sídlí v jiné zemi EU, může se uplatňovat <strong>reverse charge</strong> (přenesená daňová povinnost). Nutworld pak odvádí DPH sama. Nutworld musí mít registraci k DPH pro toto plnění a podat souhrnné hlášení.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">📊</span> Kontrolní hlášení</div>
+      <p>Faktury od agentury nad 10 000 Kč bez DPH musí Nutworld uvést v kontrolním hlášení sekce B2 (přijatá zdanitelná plnění od plátce DPH). Zajistit, že účetnictví tohle správně zaznamenává.</p>
+    </div>
+  </div>
+
+  <!-- 5. BOZP -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <h2>BOZP — pokud pracují u vás na místě <span class="badge badge-info">Pokud relevantní</span></h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">⛑️</span> Bezpečnost práce na provozovně</div>
+      <p>Pokud lidé z agentury fyzicky pracují na provozovně nebo skladu Nutworld, platí povinnosti provozovatele:</p>
+      <ul>
+        <li>Seznámit je s riziky pracoviště a interními pravidly BOZP</li>
+        <li>Zajistit jim bezpečné pracovní podmínky</li>
+        <li>Vést záznam o proškolení (BOZP vstupní školení)</li>
+        <li>Mít platné záznamy o hodnocení rizik pracoviště</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 6. NDA a mlčenlivost -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <h2>Mlčenlivost a obchodní tajemství <span class="badge badge-recommended">Doporučeno</span></h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🤫</span> NDA (Non-Disclosure Agreement)</div>
+      <p>Agentura vidí interní data: ceny, dodavatele, marže, zákazníky, strategie. Bez NDA může tyto informace teoreticky sdílet nebo využít jinde.</p>
+      <ul>
+        <li>Doložka o mlčenlivosti přímo ve smlouvě, nebo samostatná NDA</li>
+        <li>Platnost minimálně 3 roky po ukončení spolupráce</li>
+        <li>Smluvní pokuta za porušení (motivace k dodržení)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 7. Ukončení -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <h2>Podmínky ukončení spolupráce <span class="badge badge-recommended">Doporučeno</span></h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🚪</span> Exit klauzule</div>
+      <ul>
+        <li>Výpovědní lhůta (30–60 dní je standard)</li>
+        <li>Co se stane s rozdělanými zakázkami a nevyfakturovanou prací</li>
+        <li>Předání dat, přístupů a výstupů po ukončení</li>
+        <li>Zákaz konkurence (pokud to agentura dělá i pro konkurenty)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 8. Pojištění -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <h2>Pojištění odpovědnosti <span class="badge badge-recommended">Doporučeno</span></h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🛡️</span> Pojistka agentury</div>
+      <p>Požadovat, aby agentura měla platné pojištění odpovědnosti za škodu způsobenou při podnikatelské činnosti. Pokud agentura způsobí Nutworld škodu (špatná reklama, únik dat, zmeškané termíny s finančním dopadem), pojistka to pokryje.</p>
+      <ul>
+        <li>Nechat předložit certifikát/potvrzení o pojistné smlouvě</li>
+        <li>Minimální limit krytí: ideálně 500 000–1 000 000 Kč</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Checklist -->
+  <div class="section">
+    <div class="checklist-title">
+      ✅ Praktický kontrolní seznam — před spuštěním spolupráce
+    </div>
+
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Podepsaná písemná smlouva (rozsah, cena, termíny, výstupy)</div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Ověřeno IČO agentury v OR/živnostenském rejstříku</div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Ve smlouvě je převod autorských práv nebo výhradní licence na výstupy</div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Podepsána DPA (smlouva o zpracování dat) pokud agentura přistupuje k zákaznickým datům</div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Doložka o mlčenlivosti / NDA součástí smlouvy</div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Faktury agentury mají všechny zákonné náležitosti (zkontrolovat první fakturu)</div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Faktury správně zaúčtovány + zahrnuty v kontrolním hlášení (u plátce DPH)</div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Všechny přístupy (Meta, Google, nástroje) vedeny na Nutworld email, ne agenturní</div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Agentura předložila pojistný certifikát odpovědnosti (pokud jde o větší zakázku)</div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">BOZP školení — pokud lidé z agentury přicházejí na provozovnu</div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Agentura přidána do záznamu zpracovatelů (ROPA) v rámci GDPR</div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Exit klauzule — jasné podmínky ukončení spolupráce a předání výstupů</div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">
+    Nutworld s.r.o. · Interní dokument · Aktuální k říjnu 2026 · Konzultuj s právníkem před podpisem smluv větší hodnoty.
+  </div>
+
+</div>
+
+<script>
+  function toggle(item) {
+    const cb = item.querySelector('input[type=checkbox]');
+    cb.checked = !cb.checked;
+    item.classList.toggle('done', cb.checked);
+  }
+</script>
+
+<script src="pin-guard.js"></script>
+</body>
+</html>

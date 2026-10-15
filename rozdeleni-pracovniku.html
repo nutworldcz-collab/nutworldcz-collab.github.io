@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>HPP vs. agentura — organizace</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&family=Source+Sans+3:wght@400;600&display=swap">
+
+<style>
+  :root {
+    --bg: #faf7f4; --surface: #f1e6da; --surface-2: #ffffff;
+    --fg: #2c1a0e; --fg-muted: #6b4a2f; --border: #d6c4b0;
+    --accent: #83502e; --accent-dark: #5c381f; --accent-amber: #f7ab31;
+    --ok: #3a7a22; --ok-bg: #ecf7e6; --ok-border: #8bc06a;
+    --warn: #a07010; --warn-bg: #fef9e7; --warn-border: #e0b040;
+    --danger: #c0392b; --danger-bg: #fdf0ed; --danger-border: #e07060;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1a0f08; --surface: #2a1a0f; --surface-2: #231508;
+      --fg: #f0e4d4; --fg-muted: #b8936a; --border: #4a3020;
+      --accent: #c07840; --accent-dark: #e0a060;
+      --ok: #7abf50; --ok-bg: #1a2e10; --ok-border: #4a8030;
+      --warn: #e0b040; --warn-bg: #2a2208; --warn-border: #806020;
+      --danger: #e06050; --danger-bg: #2a1010; --danger-border: #804040;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1a0f08; --surface: #2a1a0f; --surface-2: #231508;
+    --fg: #f0e4d4; --fg-muted: #b8936a; --border: #4a3020;
+    --accent: #c07840; --accent-dark: #e0a060;
+    --ok: #7abf50; --ok-bg: #1a2e10; --ok-border: #4a8030;
+    --warn: #e0b040; --warn-bg: #2a2208; --warn-border: #806020;
+    --danger: #e06050; --danger-bg: #2a1010; --danger-border: #804040;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--fg);
+    font-family: 'Source Sans 3', Arial, sans-serif;
+    font-size: 15px; line-height: 1.65;
+    margin: 0; padding-inline: 16px; padding-block: 32px;
+  }
+  .wrapper { max-width: 820px; margin: 0 auto; }
+
+  .doc-header {
+    background: linear-gradient(135deg, #5c381f 0%, #83502e 55%, #a0622a 100%);
+    border-radius: 14px; padding: 28px 34px; color: #fff;
+    margin-bottom: 24px; position: relative; overflow: hidden;
+  }
+  .doc-header::after {
+    content: ''; position: absolute; top: -30px; right: -30px;
+    width: 150px; height: 150px; border-radius: 50%;
+    background: rgba(247,171,49,.12);
+  }
+  .doc-header-label {
+    font-family: 'Exo 2', sans-serif; font-size: 11px;
+    letter-spacing: 2.5px; text-transform: uppercase;
+    color: var(--accent-amber); margin-bottom: 7px;
+  }
+  .doc-header h1 {
+    font-family: 'Exo 2', sans-serif; font-size: 24px; font-weight: 700;
+    margin: 0 0 8px; line-height: 1.2; text-wrap: balance;
+  }
+  .doc-header p { margin: 0; opacity: .85; font-size: 14px; max-width: 560px; }
+
+  .alert {
+    border-radius: 10px; padding: 14px 18px; font-size: 14px;
+    margin-bottom: 20px; display: flex; gap: 12px; align-items: flex-start;
+  }
+  .alert-icon { font-size: 20px; flex-shrink: 0; line-height: 1.3; }
+  .alert-body { flex: 1; min-width: 0; }
+  .alert-body strong { display: block; margin-bottom: 3px; font-family: 'Exo 2', sans-serif; font-size: 14px; }
+  .alert-ok   { background: var(--ok-bg);   border: 1.5px solid var(--ok-border);   }
+  .alert-ok   strong { color: var(--ok); }
+  .alert-warn { background: var(--warn-bg); border: 1.5px solid var(--warn-border); }
+  .alert-warn strong { color: var(--warn); }
+  .alert-danger { background: var(--danger-bg); border: 1.5px solid var(--danger-border); }
+  .alert-danger strong { color: var(--danger); }
+
+  /* Two-col layout for big compare */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 580px) { .two-col { grid-template-columns: 1fr; } }
+
+  .col-card {
+    border-radius: 12px; padding: 18px 20px;
+    border: 1.5px solid var(--border);
+  }
+  .col-card.ok-card   { background: var(--ok-bg);   border-color: var(--ok-border); }
+  .col-card.nope-card { background: var(--danger-bg); border-color: var(--danger-border); }
+
+  .col-card-title {
+    font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 14px;
+    margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+  }
+  .ok-card   .col-card-title { color: var(--ok); }
+  .nope-card .col-card-title { color: var(--danger); }
+
+  .col-card ul { margin: 0; padding-left: 18px; font-size: 13.5px; }
+  .col-card ul li { margin-bottom: 5px; }
+
+  /* Section */
+  .section { margin-bottom: 28px; }
+  .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .section-icon {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: var(--surface); border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .section h2 {
+    font-family: 'Exo 2', sans-serif; font-size: 16px; font-weight: 700;
+    margin: 0 0 2px; color: var(--accent-dark);
+  }
+  .section h2 .sub {
+    font-size: 12px; font-weight: 400; color: var(--fg-muted); display: block; margin-top: 1px;
+  }
+
+  .rule-list { display: flex; flex-direction: column; gap: 8px; }
+  .rule {
+    display: flex; gap: 12px; align-items: flex-start;
+    background: var(--surface-2); border: 1.5px solid var(--border);
+    border-radius: 10px; padding: 12px 16px;
+  }
+  .rule-icon { font-size: 18px; flex-shrink: 0; line-height: 1.5; }
+  .rule-body { flex: 1; min-width: 0; }
+  .rule-title {
+    font-family: 'Exo 2', sans-serif; font-weight: 600; font-size: 14px;
+    margin-bottom: 3px; color: var(--fg);
+  }
+  .rule-desc { font-size: 13.5px; color: var(--fg-muted); margin: 0; }
+  .rule-desc strong { color: var(--fg); }
+
+  /* Svarcsystem box */
+  .svarc-box {
+    background: var(--danger-bg); border: 2px solid var(--danger-border);
+    border-radius: 12px; padding: 18px 20px; margin-bottom: 24px;
+  }
+  .svarc-title {
+    font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 15px;
+    color: var(--danger); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+  }
+  .svarc-list { margin: 0; padding-left: 20px; font-size: 13.5px; }
+  .svarc-list li { margin-bottom: 5px; }
+  .svarc-fine {
+    margin-top: 12px; font-size: 13px; font-family: 'Exo 2', sans-serif;
+    font-weight: 600; color: var(--danger);
+    background: rgba(192,57,43,.08); border-radius: 6px; padding: 8px 12px;
+    border: 1px solid var(--danger-border);
+  }
+
+  hr.divider { border: none; border-top: 1.5px solid var(--border); margin: 28px 0; }
+
+  /* Checklist */
+  .cl-title {
+    font-family: 'Exo 2', sans-serif; font-size: 16px; font-weight: 700;
+    color: var(--accent-dark); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .check-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 10px 14px; border-radius: 8px; margin-bottom: 6px;
+    font-size: 14px; background: var(--surface); border: 1px solid var(--border);
+    cursor: pointer; user-select: none; transition: background .12s;
+  }
+  .check-item:hover { background: var(--surface-2); }
+  .check-item.done { opacity: .5; text-decoration: line-through; }
+  .check-item input[type=checkbox] {
+    width: 16px; height: 16px; accent-color: var(--accent);
+    flex-shrink: 0; margin-top: 2px; cursor: pointer;
+  }
+  .check-text { flex: 1; min-width: 0; }
+  .check-meta { font-size: 12px; color: var(--fg-muted); display: block; margin-top: 1px; }
+
+  .footer-note { font-size: 12px; color: var(--fg-muted); text-align: center; margin-top: 20px; }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <div class="doc-header">
+    <div class="doc-header-label">Nutworld · B2B agentura — úkolová práce</div>
+    <h1>HPP vs. agentura na úkoly — jak to správně nastavit</h1>
+    <p>Smlouva typu B (B2B smlouva o dílo / o službách) — agentura není zaměstnanecká, fakturuje za odvedené úkoly. Jiná pravidla než u agenturního zaměstnávání.</p>
+  </div>
+
+  <div class="alert alert-ok">
+    <div class="alert-icon">✅</div>
+    <div class="alert-body">
+      <strong>Co to znamená pro Nutworld</strong>
+      Agentura není tvůj zaměstnanec — je to dodavatel. Nemusíš jim zajišťovat přestávky, šatnu ani rovné podmínky jako HPP. Řídíš <em>výstup</em> (co mají dodat), ne <em>proces</em> (jak a kdy to dělají).
+    </div>
+  </div>
+
+  <!-- Švarcsystém — největší riziko -->
+  <div class="svarc-box">
+    <div class="svarc-title">⚠️ Největší riziko: Švarcsystém</div>
+    <p style="font-size:14px; margin: 0 0 10px;">I když máš B2B smlouvu, inspektorát práce může celou spolupráci překlasifikovat na zaměstnání — pokud v praxi vypadá jako práce zaměstnanců. Tyhle věci nesmíš dělat:</p>
+    <ul class="svarc-list">
+      <li>Říkat jim <strong>kdy přesně mají přijít a odejít</strong> (pevná pracovní doba)</li>
+      <li>Přikazovat <strong>jak přesně mají práci dělat</strong> (proces, ne výsledek)</li>
+      <li>Mít je <strong>výhradně jen pro Nutworld</strong> — bez jiných klientů</li>
+      <li>Dávat jim <strong>firemní vybavení jako zaměstnancům</strong> (uniforme, přidělené nářadí trvale)</li>
+      <li>Platit <strong>pevnou měsíční odměnu bez ohledu na odvedené úkoly</strong></li>
+      <li>Zařazovat je do <strong>organizační struktury</strong> (šéf→podřízený vztah)</li>
+    </ul>
+    <div class="svarc-fine">Pokuta za Švarcsystém: až 10 000 000 Kč. Odvod zpětných daní a pojistného za celé období.</div>
+  </div>
+
+  <!-- Co smíš vs. nesmíš -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">⚖️</div>
+      <h2>Co smíš řídit a co ne</h2>
+    </div>
+
+    <div class="two-col">
+      <div class="col-card ok-card">
+        <div class="col-card-title">✅ Smíš řídit (výsledek)</div>
+        <ul>
+          <li>Co mají dodat — popis úkolu, rozsah</li>
+          <li>Deadline — do kdy musí být hotovo</li>
+          <li>Kvalitu výstupu — standardy, kontrola</li>
+          <li>Místo dodání (kde přebíráš zboží / výsledek)</li>
+          <li>Bezpečnostní pravidla tvé provozovny</li>
+          <li>Přístup do prostor (jen kam potřebují)</li>
+        </ul>
+      </div>
+      <div class="col-card nope-card">
+        <div class="col-card-title">❌ Nesmíš řídit (proces)</div>
+        <ul>
+          <li>Přesnou pracovní dobu (příchod/odchod)</li>
+          <li>Přestávky — kdy a jak dlouho</li>
+          <li>Jak přesně mají práci provádět</li>
+          <li>Koho mají nasadit (agentura rozhoduje)</li>
+          <li>Čerpání volna nebo absence</li>
+          <li>Osobní hodnocení jejich pracovníků</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Přestávky -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🍽️</div>
+      <h2>Přestávky na oběd — co platí u B2B</h2>
+    </div>
+
+    <div class="rule-list">
+      <div class="rule">
+        <div class="rule-icon">📋</div>
+        <div class="rule-body">
+          <div class="rule-title">Přestávky si řeší agentura, ne Nutworld</div>
+          <p class="rule-desc">Na B2B dodavatele se nevztahuje §88 zákoníku práce (přestávky na jídlo a oddech). To je povinnost zaměstnavatele vůči zaměstnanci — a zaměstnavatelem agentury je agentura, ne Nutworld.</p>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-icon">✅</div>
+        <div class="rule-body">
+          <div class="rule-title">Co ale smíš udělat</div>
+          <p class="rule-desc">Ve smlouvě nebo provozním řádu <strong>nabídnout</strong> možnost využít kuchyňku nebo jídelnu v určenou dobu. Není to povinnost, ale dobrý zvyk — a neříkáš tím kdy mají přestávku, ale kdy mají přístup do prostor.</p>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-icon">🔑</div>
+        <div class="rule-body">
+          <div class="rule-title">Přístup do prostor — prakticky</div>
+          <p class="rule-desc">Můžeš definovat <strong>okno přístupu</strong> (např. „pracovníci agentury mohou využívat kuchyňku 11:30–13:30") — to je organizační provozní pravidlo provozovny, ne nařizování přestávky. Ve smlouvě nebo provozním řádu agentury.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Zóny -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">📐</div>
+      <h2>Pracovní zóny — oddělení HPP a agentury</h2>
+    </div>
+    <div class="rule-list">
+      <div class="rule">
+        <div class="rule-icon">✅</div>
+        <div class="rule-body">
+          <div class="rule-title">Vyhradit agentuře konkrétní pracovní prostor</div>
+          <p class="rule-desc">Je zcela v pořádku říct: <strong>„Agentura pracuje v sekci A skladu, HPP v sekci B."</strong> Jde o organizaci provozu, ne diskriminaci. Stačí to popsat v provozním řádu nebo přímo ve smlouvě s agenturou.</p>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-icon">✅</div>
+        <div class="rule-body">
+          <div class="rule-title">Jiný vstup nebo čas vstupu do provozovny</div>
+          <p class="rule-desc">Agentura může chodit jiným vchodem, v jiný čas (např. ráno 7:00, HPP 8:00). Opět — jde o logistiku. Definuj to v provozním řádu a předej agentuře jako podmínku vstupu.</p>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-icon">✅</div>
+        <div class="rule-body">
+          <div class="rule-title">Oddělená evidence vstupu</div>
+          <p class="rule-desc">Doporučeno vést <strong>knihu návštěv nebo docházkový sešit</strong> pro agenturu odděleně od HPP — kvůli BOZP i fakturaci (kolik hodin bylo odpracováno). Agentura může mít vlastní podpisový arch.</p>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-icon">❌</div>
+        <div class="rule-body">
+          <div class="rule-title">Zakázat jim WC nebo pitný režim</div>
+          <p class="rule-desc">I B2B dodavatel pracující na tvé provozovně musí mít přístup k základním hygienickým podmínkám — WC a pitná voda jsou minimum. To vyplývá z BOZP povinností provozovatele prostor, ne ze zákoníku práce.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Co Nutworld stále musí -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">⛑️</div>
+      <h2>Co Nutworld stále musí zajistit
+        <span class="sub">I u B2B — jako provozovatel prostor</span>
+      </h2>
+    </div>
+    <div class="rule-list">
+      <div class="rule">
+        <div class="rule-icon">📋</div>
+        <div class="rule-body">
+          <div class="rule-title">Informovat o rizicích pracoviště (BOZP)</div>
+          <p class="rule-desc">Jako provozovatel prostor musíš každého, kdo u tebe pracuje (i dodavatele), <strong>seznámit s riziky</strong> pracoviště a bezpečnostními pravidly. Zapsat, podepsat. Nestačí jen ústně.</p>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-icon">🧯</div>
+        <div class="rule-body">
+          <div class="rule-title">Funkční bezpečnostní vybavení</div>
+          <p class="rule-desc">Hasicí přístroje, lékárnička, únikové cesty — to platí pro celý prostor bez ohledu na to, kdo v něm je. BOZP pravidla se vztahují na provozovnu, ne na typ smlouvy.</p>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-icon">🤝</div>
+        <div class="rule-body">
+          <div class="rule-title">Koordinace s agenturou při současné práci</div>
+          <p class="rule-desc">Pokud HPP a agentura pracují ve stejný čas ve stejném prostoru, musíš zajistit <strong>koordinaci BOZP</strong> — kdo komu velí při evakuaci, jak se nekříží nebezpečné operace. Obvykle stačí 1 strana ve smlouvě s agenturou.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Checklist -->
+  <div class="section">
+    <div class="cl-title">✅ Praktický checklist — B2B agentura na provozovně</div>
+
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Smlouva říká: platíme za výsledek/úkol, ne za odpracované hodiny jako zaměstnancům
+        <span class="check-meta">Ochrana před klasifikací jako Švarcsystém</span>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Agentura má jiné klienty (nebo to alespoň smlouva nevylučuje)
+        <span class="check-meta">Výlučnost = příznak závislé práce</span>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Pracovní prostor agentury definován v provozním řádu nebo ve smlouvě
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Čas přístupu do prostor definován jako provozní pravidlo (ne jako "pracovní doba")
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Agentura informována o rizicích pracoviště (BOZP vstupní seznámení, podpis)
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">WC a pitná voda dostupné i pro pracovníky agentury
+        <span class="check-meta">Základní hygienické minimum pro každého v prostoru</span>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Evidence vstupu agentury vedena odděleně (kniha návštěv nebo podpisový arch)
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Faktury agentury jsou za konkrétní úkoly / výkony — ne paušál za přítomnost
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Nutworld nepřikazuje agenturu koho přesně nasadí na jakou práci
+        <span class="check-meta">To rozhoduje agentura — ty jen schvaluješ rozsah úkolu</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    Nutworld s.r.o. · Interní dokument · Říjen 2026 · Pro konkrétní smlouvu doporučujeme právní konzultaci (pracovní právo + daňové hledisko).
+  </div>
+
+</div>
+
+<script>
+  function toggle(item) {
+    const cb = item.querySelector('input[type=checkbox]');
+    cb.checked = !cb.checked;
+    item.classList.toggle('done', cb.checked);
+  }
+</script>
+
+<script src="pin-guard.js"></script>
+</body>
+</html>

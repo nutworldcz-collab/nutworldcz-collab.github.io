@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Agentura & firma — kompletní přehled</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&family=Source+Sans+3:wght@400;600&display=swap">
+
+<style>
+  :root {
+    --bg: #faf7f4; --surface: #f1e6da; --surface-2: #ffffff;
+    --fg: #2c1a0e; --fg-muted: #6b4a2f; --border: #d6c4b0;
+    --accent: #83502e; --accent-dark: #5c381f; --accent-amber: #f7ab31;
+    --ok: #3a7a22; --ok-bg: #ecf7e6; --ok-border: #8bc06a;
+    --warn: #a07010; --warn-bg: #fef9e7; --warn-border: #e0b040;
+    --danger: #c0392b; --danger-bg: #fdf0ed; --danger-border: #e07060;
+    --info: #1a6fa8; --info-bg: #eaf4fc; --info-border: #70b8e8;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1a0f08; --surface: #2a1a0f; --surface-2: #231508;
+      --fg: #f0e4d4; --fg-muted: #b8936a; --border: #4a3020;
+      --accent: #c07840; --accent-dark: #e0a060;
+      --ok: #7abf50; --ok-bg: #1a2e10; --ok-border: #4a8030;
+      --warn: #e0b040; --warn-bg: #2a2208; --warn-border: #806020;
+      --danger: #e06050; --danger-bg: #2a1010; --danger-border: #804040;
+      --info: #60b0e8; --info-bg: #102030; --info-border: #205080;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1a0f08; --surface: #2a1a0f; --surface-2: #231508;
+    --fg: #f0e4d4; --fg-muted: #b8936a; --border: #4a3020;
+    --accent: #c07840; --accent-dark: #e0a060;
+    --ok: #7abf50; --ok-bg: #1a2e10; --ok-border: #4a8030;
+    --warn: #e0b040; --warn-bg: #2a2208; --warn-border: #806020;
+    --danger: #e06050; --danger-bg: #2a1010; --danger-border: #804040;
+    --info: #60b0e8; --info-bg: #102030; --info-border: #205080;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--fg);
+    font-family: 'Source Sans 3', Arial, sans-serif;
+    font-size: 15px; line-height: 1.65;
+    margin: 0; padding-inline: 16px; padding-block: 32px;
+  }
+  .wrapper { max-width: 840px; margin: 0 auto; }
+
+  /* Header */
+  .doc-header {
+    background: linear-gradient(135deg, #5c381f 0%, #83502e 55%, #a0622a 100%);
+    border-radius: 14px; padding: 28px 34px; color: #fff;
+    margin-bottom: 24px; position: relative; overflow: hidden;
+  }
+  .doc-header::after {
+    content: ''; position: absolute; top: -30px; right: -30px;
+    width: 160px; height: 160px; border-radius: 50%;
+    background: rgba(247,171,49,.12);
+  }
+  .doc-header-label {
+    font-family: 'Exo 2', sans-serif; font-size: 11px;
+    letter-spacing: 2.5px; text-transform: uppercase;
+    color: var(--accent-amber); margin-bottom: 7px;
+  }
+  .doc-header h1 {
+    font-family: 'Exo 2', sans-serif; font-size: 24px; font-weight: 700;
+    margin: 0 0 8px; line-height: 1.2; text-wrap: balance;
+  }
+  .doc-header p { margin: 0; opacity: .85; font-size: 14px; max-width: 560px; }
+
+  /* Nav pills */
+  .nav-pills {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px;
+  }
+  .nav-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 20px; padding: 5px 14px; font-size: 13px;
+    font-family: 'Exo 2', sans-serif; font-weight: 600;
+    color: var(--accent); text-decoration: none; cursor: pointer;
+    transition: background .12s;
+  }
+  .nav-pill:hover { background: var(--surface-2); }
+
+  /* Alert */
+  .alert {
+    border-radius: 10px; padding: 13px 16px; font-size: 14px;
+    margin-bottom: 16px; display: flex; gap: 11px; align-items: flex-start;
+  }
+  .alert-icon { font-size: 18px; flex-shrink: 0; line-height: 1.4; }
+  .alert-body { flex: 1; min-width: 0; }
+  .alert-body strong { display: block; font-family: 'Exo 2', sans-serif; font-size: 13.5px; margin-bottom: 2px; }
+  .a-ok     { background: var(--ok-bg);     border: 1.5px solid var(--ok-border);     }
+  .a-ok     strong { color: var(--ok); }
+  .a-warn   { background: var(--warn-bg);   border: 1.5px solid var(--warn-border);   }
+  .a-warn   strong { color: var(--warn); }
+  .a-danger { background: var(--danger-bg); border: 1.5px solid var(--danger-border); }
+  .a-danger strong { color: var(--danger); }
+  .a-info   { background: var(--info-bg);   border: 1.5px solid var(--info-border);   }
+  .a-info   strong { color: var(--info); }
+
+  /* Section */
+  .section { margin-bottom: 32px; scroll-margin-top: 16px; }
+  .section-header {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
+    padding-bottom: 10px; border-bottom: 2px solid var(--border);
+  }
+  .section-num {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 13px;
+    flex-shrink: 0; font-variant-numeric: tabular-nums;
+  }
+  .section h2 {
+    font-family: 'Exo 2', sans-serif; font-size: 17px; font-weight: 700;
+    margin: 0; color: var(--accent-dark);
+  }
+
+  /* Cards */
+  .cards { display: flex; flex-direction: column; gap: 8px; }
+  .card {
+    background: var(--surface-2); border: 1.5px solid var(--border);
+    border-radius: 10px; padding: 13px 16px;
+  }
+  .card-head {
+    display: flex; align-items: flex-start; gap: 10px; margin-bottom: 4px;
+  }
+  .card-icon { font-size: 17px; flex-shrink: 0; line-height: 1.4; }
+  .card-title {
+    font-family: 'Exo 2', sans-serif; font-weight: 600; font-size: 14px;
+    color: var(--fg); flex: 1; min-width: 0;
+  }
+  .card p { margin: 0; font-size: 13.5px; color: var(--fg-muted); padding-left: 27px; }
+  .card p strong { color: var(--fg); }
+  .card ul { margin: 4px 0 0; padding-left: 44px; font-size: 13.5px; color: var(--fg-muted); }
+  .card ul li { margin-bottom: 3px; }
+  .card ul li strong { color: var(--fg); }
+
+  /* Badge */
+  .badge {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    font-family: 'Exo 2', sans-serif; padding: 1px 7px;
+    border-radius: 20px; margin-left: 6px; vertical-align: middle; white-space: nowrap;
+  }
+  .b-req  { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-border); }
+  .b-rec  { background: var(--warn-bg);   color: var(--warn);   border: 1px solid var(--warn-border); }
+  .b-ok   { background: var(--ok-bg);     color: var(--ok);     border: 1px solid var(--ok-border); }
+  .b-info { background: var(--info-bg);   color: var(--info);   border: 1px solid var(--info-border); }
+
+  /* Two-col */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; }
+  @media (max-width: 560px) { .two-col { grid-template-columns: 1fr; } }
+  .half-card { border-radius: 10px; padding: 14px 16px; border: 1.5px solid var(--border); font-size: 13.5px; }
+  .half-ok   { background: var(--ok-bg);   border-color: var(--ok-border); }
+  .half-nope { background: var(--danger-bg); border-color: var(--danger-border); }
+  .half-title { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 13px; margin-bottom: 8px; }
+  .half-ok   .half-title { color: var(--ok); }
+  .half-nope .half-title { color: var(--danger); }
+  .half-card ul { margin: 0; padding-left: 16px; }
+  .half-card ul li { margin-bottom: 4px; }
+
+  /* Orgány tabulka */
+  .insp-grid { display: flex; flex-direction: column; gap: 8px; }
+  .insp-row {
+    display: grid; grid-template-columns: 160px 1fr;
+    gap: 0; border-radius: 10px; overflow: hidden;
+    border: 1.5px solid var(--border);
+  }
+  @media (max-width: 500px) { .insp-row { grid-template-columns: 1fr; } }
+  .insp-who {
+    background: var(--surface); padding: 12px 14px;
+    font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 13px;
+    color: var(--accent); display: flex; align-items: center; gap: 8px;
+    border-right: 1.5px solid var(--border);
+  }
+  @media (max-width: 500px) { .insp-who { border-right: none; border-bottom: 1.5px solid var(--border); } }
+  .insp-what { background: var(--surface-2); padding: 12px 14px; font-size: 13.5px; }
+  .insp-what ul { margin: 4px 0 0; padding-left: 16px; }
+  .insp-what ul li { margin-bottom: 2px; }
+
+  /* Checklist */
+  .cl-title {
+    font-family: 'Exo 2', sans-serif; font-size: 16px; font-weight: 700;
+    color: var(--accent-dark); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .check-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 10px 14px; border-radius: 8px; margin-bottom: 6px;
+    font-size: 14px; background: var(--surface); border: 1px solid var(--border);
+    cursor: pointer; user-select: none; transition: background .12s;
+  }
+  .check-item:hover { background: var(--surface-2); }
+  .check-item.done { opacity: .45; text-decoration: line-through; }
+  .check-item input[type=checkbox] {
+    width: 16px; height: 16px; accent-color: var(--accent);
+    flex-shrink: 0; margin-top: 2px; cursor: pointer;
+  }
+  .check-text { flex: 1; min-width: 0; }
+  .check-cat { font-size: 11px; color: var(--accent); font-family: 'Exo 2', sans-serif; font-weight: 700; letter-spacing: .5px; display: block; margin-bottom: 1px; text-transform: uppercase; }
+  .check-meta { font-size: 12px; color: var(--fg-muted); display: block; margin-top: 1px; }
+
+  hr.divider { border: none; border-top: 1.5px solid var(--border); margin: 28px 0; }
+  .footer-note { font-size: 12px; color: var(--fg-muted); text-align: center; margin-top: 20px; }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <div class="doc-header">
+    <div class="doc-header-label">Nutworld · B2B agentura — kompletní přehled</div>
+    <h1>Vše co potřebuješ vědět o spolupráci s agenturou</h1>
+    <p>Smlouva na úkoly (B2B) — co Nutworld musí, co nesmí, jak se chránit před kontrolou a jak celou spolupráci správně nastavit.</p>
+  </div>
+
+  <nav class="nav-pills" aria-label="Sekce">
+    <a class="nav-pill" href="#smlouva">📄 Smlouva</a>
+    <a class="nav-pill" href="#svarc">⚠️ Švarcsystém</a>
+    <a class="nav-pill" href="#dan">🧾 Daně</a>
+    <a class="nav-pill" href="#gdpr">🔒 GDPR</a>
+    <a class="nav-pill" href="#ip">©️ Výstupy</a>
+    <a class="nav-pill" href="#bozp">⛑️ BOZP</a>
+    <a class="nav-pill" href="#organizace">📐 Organizace</a>
+    <a class="nav-pill" href="#kontroly">🔍 Kontroly</a>
+    <a class="nav-pill" href="#ukonceni">🚪 Ukončení</a>
+    <a class="nav-pill" href="#checklist">✅ Checklist</a>
+  </nav>
+
+  <!-- 1. SMLOUVA -->
+  <div class="section" id="smlouva">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <h2>Smlouva — základ všeho</h2>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-head"><div class="card-icon">📄</div><div class="card-title">Typ smlouvy <span class="badge b-req">Povinné</span></div></div>
+        <p>Smlouva o dílo (§2586 OZ) nebo smlouva o poskytování služeb. Musí být <strong>písemná</strong>, uzavřená před zahájením práce. Určuje typ plnění: <strong>výsledek (dílo), ne přítomnost.</strong></p>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-icon">📋</div><div class="card-title">Co musí smlouva obsahovat</div></div>
+        <ul>
+          <li><strong>Přesný popis díla / úkolu</strong> — co konkrétně se dodává</li>
+          <li><strong>Cena nebo způsob výpočtu</strong> — za úkol, za kus, za výstup (ne pevná měsíční odměna jako mzda)</li>
+          <li><strong>Termín nebo způsob určení termínu</strong></li>
+          <li><strong>Předání a akceptace</strong> — kdo přejímá, jak se kontroluje kvalita</li>
+          <li><strong>Odpovědnost za vady</strong> — co se stane když agentura nedodá nebo dodá špatně</li>
+          <li><strong>Mlčenlivost</strong> — agentura vidí tvoje ceny, dodavatele, procesy</li>
+          <li><strong>Autorská práva</strong> — kdo vlastní výstupy (viz sekce 5)</li>
+          <li><strong>Podmínky vstupu na provozovnu</strong> — BOZP, přístupová pravidla</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-icon">🏢</div><div class="card-title">Ověření agentury před podpisem</div></div>
+        <ul>
+          <li>IČO v živnostenském nebo obchodním rejstříku (justice.cz / rzp.cz)</li>
+          <li>DIČ a plátcovství DPH (pokud fakturuje s DPH)</li>
+          <li>Platné oprávnění k podnikání v daném oboru</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. ŠVARCSYSTÉM -->
+  <div class="section" id="svarc">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <h2>Švarcsystém — největší riziko</h2>
+    </div>
+
+    <div class="alert a-danger">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-body">
+        <strong>Pokuta až 10 000 000 Kč</strong>
+        Pokud inspektorát práce (SÚIP) rozhodne, že spolupráce je fakticky zaměstnanecký poměr, přijde zpětný odvod daní a pojistného za celé období + pokuta. Firma i agentura ručí solidárně.
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="half-card half-ok">
+        <div class="half-title">✅ Takhle to musí vypadat (B2B)</div>
+        <ul>
+          <li>Platíš za výsledek / odvedený úkol</li>
+          <li>Agentura rozhoduje <em>jak</em> práci organizuje</li>
+          <li>Agentura může mít i jiné klienty</li>
+          <li>Agentura nese odpovědnost za vady díla</li>
+          <li>Agentura používá vlastní vybavení (nebo si ho smluvně půjčuje)</li>
+          <li>Pracuje na základě objednávky, ne podle docházky</li>
+        </ul>
+      </div>
+      <div class="half-card half-nope">
+        <div class="half-title">❌ Tohle nesmíš dělat</div>
+        <ul>
+          <li>Říkat kdy přesně mají přijít a odejít</li>
+          <li>Přikazovat <em>jak</em> mají práci provádět (postup)</li>
+          <li>Platit pevnou měsíční odměnu bez ohledu na výkon</li>
+          <li>Zařadit je do org. struktury (přímý nadřízený)</li>
+          <li>Vyžadovat výlučnost (jen pro Nutworld)</li>
+          <li>Osobně hodnotit jednotlivé pracovníky agentury</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="alert a-info">
+      <div class="alert-icon">💡</div>
+      <div class="alert-body">
+        <strong>Zlaté pravidlo</strong>
+        Říkej co mají dodat a do kdy — ne jak to mají dělat a kdo to má dělat. Veškerá operativa (kdo, kdy, jak) je na agentuře.
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. DANĚ -->
+  <div class="section" id="dan">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <h2>Daně, odvody a fakturace</h2>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-head"><div class="card-icon">😮‍💨</div><div class="card-title">Co Nutworld neplatí <span class="badge b-ok">Výhoda B2B</span></div></div>
+        <p>Za B2B dodavatele <strong>neplatíš sociální ani zdravotní pojištění</strong>, neřešíš zálohy na daň, nemáš mzdovou agendu. To všechno je na agentuře.</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-icon">🧾</div><div class="card-title">Náležitosti faktury <span class="badge b-req">Povinné</span></div></div>
+        <ul>
+          <li>Číslo faktury, datum vystavení, datum zdanitelného plnění</li>
+          <li>IČO + DIČ agentury i Nutworld</li>
+          <li><strong>Přesný popis plnění</strong> — co bylo odvedeno (ne „práce říjen")</li>
+          <li>Základ daně, sazba DPH, výše DPH, celkem</li>
+          <li>Způsob a termín platby</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-icon">📊</div><div class="card-title">Kontrolní hlášení DPH</div></div>
+        <p>Faktury od agentury nad 10 000 Kč bez DPH musíš uvést v kontrolním hlášení (sekce B2). Zajistit, že účetnictví tohle zachytí — jinak pokuta od FÚ.</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-icon">🇸🇰</div><div class="card-title">Zahraniční agentura</div></div>
+        <p>Pokud agentura sídlí v jiné zemi EU — uplatní se <strong>reverse charge</strong> (přenesená daňová povinnost). DPH odvádí Nutworld. Nutworld musí být registrován k DPH pro tato plnění a podat souhrnné hlášení.</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-icon">📁</div><div class="card-title">Archivace dokladů</div></div>
+        <p>Faktury a smlouvy archivovat <strong>10 let</strong> (daňové doklady). Při kontrole FÚ musíš prokázat, že plnění skutečně proběhlo — ideálně předávací protokoly, fotky výstupu nebo podepsané akceptace.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. GDPR -->
+  <div class="section" id="gdpr">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <h2>GDPR — ochrana dat</h2>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-head"><div class="card-icon">🔒</div><div class="card-title">Smlouva o zpracování dat (DPA) <span class="badge b-req">Povinné pokud vidí zákaznická data</span></div></div>
+        <p>Pokud agentura přistupuje k jakýmkoli osobním údajům zákazníků Nutworld (emaily, objednávky, analytika, Shoptet, Meta Ads audiences), musí být podepsána DPA dle GDPR čl. 28.</p>
+        <ul>
+          <li>Co smí s daty dělat (jen to co je nutné pro zakázku)</li>
+          <li>Kde data ukládá a jak je chrání</li>
+          <li>Co se stane s daty po ukončení (smazání do X dní)</li>
+          <li>Povinnost hlásit bezpečnostní incident do 72 hod</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-icon">📋</div><div class="card-title">Záznam zpracování (ROPA)</div></div>
+        <p>Nutworld musí mít agenturní firmu <strong>evidovanou v záznamu zpracovatelských činností</strong> jako zpracovatele. Pokud ROPA neexistuje, je to samo o sobě problém — GDPR ho ukládá každé firmě nad 250 lidí, a dobrovolně ho doporučuje všem ostatním.</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-icon">🙅</div><div class="card-title">Co agentura nesmí</div></div>
+        <ul>
+          <li>Sdílet zákaznická data s třetími stranami bez souhlasu Nutworld</li>
+          <li>Používat data pro vlastní marketingové účely</li>
+          <li>Uchovávat data déle, než je nutné pro zakázku</li>
+          <li>Předávat data mimo EU bez odpovídající ochrany</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. IP / Autorská práva -->
+  <div class="section" id="ip">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <h2>Autorská práva — kdo vlastní výstupy</h2>
+    </div>
+
+    <div class="alert a-warn">
+      <div class="alert-icon">©️</div>
+      <div class="alert-body">
+        <strong>Výchozí stav ze zákona: výstupy patří agentuře</strong>
+        Texty, grafiky, fotky, videa, reklamy, kód — bez výslovného ujednání ve smlouvě jsou autorsky chráněny a patří tomu, kdo je vytvořil. Agentura ti může zakázat je používat.
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-head"><div class="card-icon">📝</div><div class="card-title">Co musí být ve smlouvě <span class="badge b-req">Povinné</span></div></div>
+        <ul>
+          <li>Agentura <strong>převádí veškerá majetková práva</strong> na Nutworld ke všem výstupům zakázky, nebo</li>
+          <li>Poskytuje <strong>výhradní, časově a územně neomezenou licenci</strong> na jejich použití</li>
+          <li>Platí pro: texty, vizuály, bannery, videa, fotky, kód, návrhy</li>
+          <li>Práva přechází <strong>zaplacením faktury</strong> (nebo při předání — upřesnit ve smlouvě)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-icon">🔑</div><div class="card-title">Přístupy a účty <span class="badge b-req">Povinné</span></div></div>
+        <p>Vše co agentura spravuje nebo vytváří musí být přístupné Nutworld kdykoliv. <strong>Všechny účty musí být vedeny na email Nutworld</strong> — ne na email agentury. Pokud agentura odejde, přístupy zůstávají tobě.</p>
+        <ul>
+          <li>Meta Business Manager — admin přístup pro Nutworld</li>
+          <li>Google Ads — vlastník účtu Nutworld</li>
+          <li>Canva, nástroje, platformy — přihlášení přes Nutworld email</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. BOZP -->
+  <div class="section" id="bozp">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <h2>BOZP — co musí Nutworld zajistit</h2>
+    </div>
+
+    <div class="alert a-info">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-body">
+        <strong>Provozovatel prostor odpovídá za bezpečnost — bez ohledu na typ smlouvy</strong>
+        I když jde o B2B, každý kdo pracuje na tvé provozovně má právo na bezpečné pracovní prostředí. To zajišťuješ ty jako majitel/provozovatel.
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-head"><div class="card-icon">📋</div><div class="card-title">Vstupní seznámení s riziky <span class="badge b-req">Povinné</span></div></div>
+        <p>Před prvním vstupem na provozovnu musí každý pracovník agentury projít <strong>BOZP seznámením</strong> — rizika pracoviště, únikové cesty, hasicí přístroje, lékárnička, pravidla hygieny. <strong>Zapsat do knihy, podepsat.</strong></p>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-icon">🤝</div><div class="card-title">Koordinace BOZP při souběžné práci</div></div>
+        <p>Pokud HPP a agentura pracují ve stejný čas ve stejném prostoru, musí být smluvně určena <strong>koordinace BOZP</strong> — kdo velí při evakuaci, jak se nekříží operace. Stačí jedna věta ve smlouvě.</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-icon">🧤</div><div class="card-title">OOPP a hygienické podmínky</div></div>
+        <p>I B2B dodavatel musí mít přístup k <strong>WC, pitné vodě a umyvadlu na mytí rukou</strong>. Pokud charakter práce vyžaduje OOPP (rukavice, čepice v potravinářském provozu) — domluvit ve smlouvě kdo hradí a kdo zajišťuje.</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-icon">📸</div><div class="card-title">Úrazová kniha</div></div>
+        <p>Pokud se pracovníkovi agentury stane úraz na tvé provozovně, musíš ho <strong>zapsat do knihy úrazů</strong> — jako u vlastního zaměstnance. Zodpovědnost provozovatele prostor.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. ORGANIZACE -->
+  <div class="section" id="organizace">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <h2>Organizace práce na provozovně</h2>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-head"><div class="card-icon">📐</div><div class="card-title">Vymezení pracovní zóny</div></div>
+        <p>Definuj agentuře <strong>konkrétní prostor</strong> kde pracuje — sekce skladu, linka, místnost. Zapsat do provozního řádu nebo přílohy smlouvy. Jde o organizaci provozu, ne diskriminaci.</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-icon">🕐</div><div class="card-title">Čas přístupu do prostor</div></div>
+        <p>Smíš určit <strong>okno přístupu</strong> (např. „možnost vstupu 6:00–18:00") jako provozní pravidlo. Nesmíš přikazovat přesnou pracovní dobu — to je švarcsystém. Formulace: „přístup do prostor je možný v době X–Y", ne „pracovní doba je X–Y".</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-icon">📒</div><div class="card-title">Evidence vstupu</div></div>
+        <p>Veď <strong>knihu příchodů</strong> nebo podpisový arch pro agenturu — oddělený od HPP docházky. Slouží pro BOZP (kdo byl na místě při incidentu) a pro kontrolu fakturace (kolik dní/úkolů bylo odvedeno).</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-icon">🍽️</div><div class="card-title">Kuchyňka / zázemí</div></div>
+        <p>Nemusíš zajišťovat přestávky — ale smíš nabídnout přístup ke kuchyňce jako provozní pravidlo. Např. ve smlouvě: <strong>„pracovníci agentury mohou využívat kuchyňku v době 11:30–13:30"</strong>. To je tvé pravidlo pro prostor, ne nařizování přestávky.</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-icon">🔐</div><div class="card-title">Přístup do systémů a dat</div></div>
+        <p>Agentura dostane přístup pouze do toho, co <strong>nutně potřebuje pro svou zakázku</strong>. Každý přístup logovat — kdo, kam, od kdy do kdy. Po ukončení spolupráce přístupy ihned zrušit.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. KONTROLY -->
+  <div class="section" id="kontroly">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <h2>Kontrolní orgány — kdo může přijít a co hledá</h2>
+    </div>
+    <div class="insp-grid">
+      <div class="insp-row">
+        <div class="insp-who">⚖️ SÚIP<br><span style="font-size:11px;font-weight:400;color:var(--fg-muted)">Inspektorát práce</span></div>
+        <div class="insp-what">Hledá <strong>Švarcsystém</strong> — zda B2B nevypadá jako zaměstnanecký poměr. Ptá se: Kdo dává pokyny? Je pevná pracovní doba? Je výlučná spolupráce? Má pravidelnou odměnu bez ohledu na výkon?
+          <ul>
+            <li>Mít k dispozici: smlouvu s agenturou, objednávky, předávací protokoly</li>
+            <li>Prokázat, že platíš za výsledek, ne za čas</li>
+          </ul>
+        </div>
+      </div>
+      <div class="insp-row">
+        <div class="insp-who">💰 Finanční úřad</div>
+        <div class="insp-what">Kontroluje <strong>daňové doklady</strong> — náležitosti faktur, kontrolní hlášení, DPH. Může zpochybnit náklady pokud faktury neobsahují přesný popis plnění.
+          <ul>
+            <li>Mít: faktury se správnými náležitostmi, podepsané smlouvy, doklady o skutečném plnění</li>
+          </ul>
+        </div>
+      </div>
+      <div class="insp-row">
+        <div class="insp-who">🏥 KHS<br><span style="font-size:11px;font-weight:400;color:var(--fg-muted)">Krajská hygienická stanice</span></div>
+        <div class="insp-what">Kontroluje <strong>hygienické podmínky</strong> na potravinářské provozovně — platí pro všechny v prostoru, včetně agentury.
+          <ul>
+            <li>Mít: označené umyvadlo, mýdlo, ručníky, zdravotní průkazy pracovníků v kontaktu s potravinami</li>
+          </ul>
+        </div>
+      </div>
+      <div class="insp-row">
+        <div class="insp-who">⛑️ OIP<br><span style="font-size:11px;font-weight:400;color:var(--fg-muted)">Oblastní inspektorát práce</span></div>
+        <div class="insp-what">Kontroluje <strong>BOZP</strong> — záznamy o školení, kniha úrazů, bezpečnostní značení, hasicí přístroje, evakuační plán.
+          <ul>
+            <li>Mít: podepsaná školení i pro agenturu, platné revize HP, aktuální evakuační plán</li>
+          </ul>
+        </div>
+      </div>
+      <div class="insp-row">
+        <div class="insp-who">🔒 ÚOOÚ<br><span style="font-size:11px;font-weight:400;color:var(--fg-muted)">Ochrana osobních dat</span></div>
+        <div class="insp-what">Kontroluje <strong>GDPR</strong> — zda máš podepsané DPA se všemi zpracovateli dat (včetně agentur přistupujících k zákaznickým datům).
+          <ul>
+            <li>Mít: DPA smlouvy, ROPA, záznam komu byl udělen přístup k jakým datům</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. UKONČENÍ -->
+  <div class="section" id="ukonceni">
+    <div class="section-header">
+      <div class="section-num">9</div>
+      <h2>Ukončení spolupráce</h2>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-head"><div class="card-icon">📄</div><div class="card-title">Co musí být ve smlouvě <span class="badge b-req">Povinné</span></div></div>
+        <ul>
+          <li><strong>Výpovědní lhůta</strong> — 30–60 dní je standard u B2B</li>
+          <li>Co se stane s rozestavěnými zakázkami a nevyfakturovanou prací</li>
+          <li>Do kdy musí agentura předat všechny výstupy, podklady a přístupy</li>
+          <li>Smluvní pokuta za nedodání při ukončení</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-icon">🔑</div><div class="card-title">Exit checklist — co si vyžádat</div></div>
+        <ul>
+          <li>Předání všech hesel, přihlašovacích údajů (Meta, Google, nástroje)</li>
+          <li>Export všech dat, reportů, analytiky</li>
+          <li>Zdrojové soubory — grafiky, videa, texty (editable formáty)</li>
+          <li>Dokumentace procesů, šablon, playbooks</li>
+          <li>Vymazání zákaznických dat agentury (potvrzení písemně)</li>
+          <li>Zrušení všech přístupů do systémů Nutworld</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-icon">🚫</div><div class="card-title">Zákaz konkurence <span class="badge b-rec">Doporučeno</span></div></div>
+        <p>Pokud agentura pracuje i pro přímé konkurenty Nutworld, zvažit klauzuli o zákazu souběžné spolupráce s konkurentem. Nebo alespoň NDA o nepředávání interních informací.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- MASTER CHECKLIST -->
+  <div class="section" id="checklist">
+    <div class="cl-title">✅ Master checklist — celá spolupráce v pořádku?</div>
+
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">
+        <span class="check-cat">Smlouva</span>
+        Podepsaná smlouva před zahájením — obsahuje popis díla, cenu za výsledek, termíny, akceptaci
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">
+        <span class="check-cat">Smlouva</span>
+        Převod autorských práv na výstupy (texty, grafiky, videa, kód)
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">
+        <span class="check-cat">Smlouva</span>
+        Doložka o mlčenlivosti / NDA — platná min. 3 roky po ukončení
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">
+        <span class="check-cat">Smlouva</span>
+        Výpovědní podmínky a exit checklist jsou součástí smlouvy
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">
+        <span class="check-cat">Švarcsystém</span>
+        Platíme za výsledek/úkol — ne za přítomnost nebo odpracované hodiny
+        <span class="check-meta">Faktury musí popisovat konkrétní výstupy</span>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">
+        <span class="check-cat">Švarcsystém</span>
+        Agentura rozhoduje kdo a jak pracuje — my zadáváme jen co a do kdy
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">
+        <span class="check-cat">Daně</span>
+        Faktury mají všechny zákonné náležitosti (ověřit první fakturu)
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">
+        <span class="check-cat">Daně</span>
+        Faktury zahrnuty v kontrolním hlášení DPH (nad 10 000 Kč bez DPH)
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">
+        <span class="check-cat">GDPR</span>
+        DPA podepsána — pokud agentura přistupuje k zákaznickým datům
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">
+        <span class="check-cat">GDPR</span>
+        Agentura evidována v záznamu zpracovatelů (ROPA)
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">
+        <span class="check-cat">Přístupy</span>
+        Všechny účty (Meta, Google, nástroje) vedeny na Nutworld email — ne agenturní
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">
+        <span class="check-cat">BOZP</span>
+        Vstupní BOZP seznámení — každý pracovník agentury podepsal před prvním vstupem
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">
+        <span class="check-cat">BOZP</span>
+        Zdravotní průkazy pro práci s potravinami (pokud se dotýkají produktů)
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">
+        <span class="check-cat">Organizace</span>
+        Pracovní zóna agentury definována v provozním řádu nebo příloze smlouvy
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">
+        <span class="check-cat">Organizace</span>
+        Evidence vstupu agentury vedena odděleně od HPP docházky
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">
+        <span class="check-cat">Pojištění</span>
+        Agentura předložila certifikát pojištění odpovědnosti (u větší zakázky)
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    Nutworld s.r.o. · Interní dokument · Říjen 2026 · Pro konkrétní smlouvy doporučujeme právní konzultaci (pracovní právo + daňové hledisko).
+  </div>
+
+</div>
+
+<script>
+  function toggle(item) {
+    const cb = item.querySelector('input[type=checkbox]');
+    cb.checked = !cb.checked;
+    item.classList.toggle('done', cb.checked);
+  }
+</script>
+
+<script src="pin-guard.js"></script>
+</body>
+</html>

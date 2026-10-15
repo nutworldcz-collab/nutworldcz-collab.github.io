@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Vnitřní řád — k podpisu</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600&display=swap">
+
+<style>
+  :root {
+    --bg: #faf7f4; --surface: #f1e6da; --surface-2: #ffffff;
+    --fg: #2c1a0e; --fg-muted: #6b4a2f; --border: #d6c4b0;
+    --accent: #83502e; --accent-dark: #5c381f; --amber: #f7ab31;
+    --ok: #3a7a22; --ok-bg: #ecf7e6; --ok-border: #8bc06a;
+    --danger: #c0392b; --danger-bg: #fdf0ed; --danger-border: #e07060;
+    --warn: #a07010; --warn-bg: #fef9e7; --warn-border: #e0b040;
+    --info: #1a6fa8; --info-bg: #eaf4fc; --info-border: #70b8e8;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1a0f08; --surface: #2a1a0f; --surface-2: #231508;
+      --fg: #f0e4d4; --fg-muted: #b8936a; --border: #4a3020;
+      --accent: #c07840; --accent-dark: #e0a060; --amber: #f7ab31;
+      --ok: #7abf50; --ok-bg: #1a2e10; --ok-border: #4a8030;
+      --danger: #e06050; --danger-bg: #2a1010; --danger-border: #804040;
+      --warn: #e0b040; --warn-bg: #2a2208; --warn-border: #806020;
+      --info: #60b0e8; --info-bg: #102030; --info-border: #205080;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1a0f08; --surface: #2a1a0f; --surface-2: #231508;
+    --fg: #f0e4d4; --fg-muted: #b8936a; --border: #4a3020;
+    --accent: #c07840; --accent-dark: #e0a060; --amber: #f7ab31;
+    --ok: #7abf50; --ok-bg: #1a2e10; --ok-border: #4a8030;
+    --danger: #e06050; --danger-bg: #2a1010; --danger-border: #804040;
+    --warn: #e0b040; --warn-bg: #2a2208; --warn-border: #806020;
+    --info: #60b0e8; --info-bg: #102030; --info-border: #205080;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--fg);
+    font-family: 'Source Sans 3', Arial, sans-serif;
+    font-size: 15px; line-height: 1.65;
+    margin: 0; padding-inline: 16px; padding-block: 28px;
+  }
+  .wrapper { max-width: 820px; margin: 0 auto; }
+
+  /* Tab switcher */
+  .switcher {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px; margin-bottom: 24px;
+  }
+  @media (max-width: 540px) { .switcher { grid-template-columns: 1fr; } }
+  .sw-btn {
+    padding: 14px 20px; border-radius: 12px;
+    border: 2px solid var(--border);
+    background: var(--surface); cursor: pointer;
+    transition: all .15s; text-align: left;
+  }
+  .sw-btn:hover { background: var(--surface-2); }
+  .sw-btn.active-hpp { background: var(--ok-bg); border-color: var(--ok); }
+  .sw-btn.active-dpp { background: var(--warn-bg); border-color: var(--warn); }
+  .sw-btn.active-ag  { background: var(--info-bg); border-color: var(--info); }
+  .sw-label {
+    font-family: 'Exo 2', sans-serif; font-weight: 800; font-size: 15px;
+    display: block; margin-bottom: 2px;
+  }
+  .sw-btn.active-hpp .sw-label { color: var(--ok); }
+  .sw-btn.active-dpp .sw-label { color: var(--warn); }
+  .sw-btn.active-ag  .sw-label { color: var(--info); }
+  .sw-sub { font-size: 12px; color: var(--fg-muted); display: block; }
+
+  /* Doc panels */
+  .doc-panel { display: none; }
+  .doc-panel.active { display: block; }
+
+  /* Document itself */
+  .doc {
+    background: var(--surface-2);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  /* Doc top bar */
+  .doc-bar-hpp { background: linear-gradient(135deg, #2d5a1b 0%, #4a7c2f 60%, #6fa044 100%); }
+  .doc-bar-dpp { background: linear-gradient(135deg, #7a5200 0%, #b8860b 60%, #c9982e 100%); }
+  .doc-bar-ag  { background: linear-gradient(135deg, #0d3d6b 0%, #1a6fa8 60%, #3090c8 100%); }
+  .doc-bar {
+    padding: 22px 28px; color: #fff; position: relative; overflow: hidden;
+  }
+  .doc-bar::after {
+    content: ''; position: absolute; top: -24px; right: -24px;
+    width: 120px; height: 120px; border-radius: 50%;
+    background: rgba(255,255,255,.1);
+  }
+  .doc-bar-eyebrow {
+    font-family: 'Exo 2', sans-serif; font-size: 10px;
+    letter-spacing: 2.5px; text-transform: uppercase;
+    opacity: .75; margin-bottom: 5px;
+  }
+  .doc-bar h1 {
+    font-family: 'Exo 2', sans-serif; font-size: 20px; font-weight: 800;
+    margin: 0 0 4px; line-height: 1.2; text-wrap: balance;
+  }
+  .doc-bar p { margin: 0; font-size: 13px; opacity: .85; max-width: 540px; }
+  .doc-bar-meta {
+    position: absolute; top: 18px; right: 28px;
+    font-size: 11px; opacity: .75; text-align: right; line-height: 1.7;
+  }
+
+  /* Doc body */
+  .doc-body { padding: 24px 28px; }
+  @media (max-width: 540px) { .doc-body { padding: 18px 16px; } .doc-bar { padding: 20px 18px; } }
+
+  /* Warning box */
+  .doc-warn {
+    border-radius: 9px; padding: 12px 16px; margin-bottom: 20px;
+    font-size: 13.5px; display: flex; gap: 10px;
+    background: var(--danger-bg); border: 1.5px solid var(--danger-border);
+  }
+  .doc-warn-icon { font-size: 18px; flex-shrink: 0; line-height: 1.4; }
+  .doc-warn p { margin: 0; }
+  .doc-warn strong { color: var(--danger); }
+
+  .doc-info {
+    border-radius: 9px; padding: 12px 16px; margin-bottom: 20px;
+    font-size: 13.5px; background: var(--info-bg); border: 1.5px solid var(--info-border);
+  }
+  .doc-info strong { color: var(--info); font-family: 'Exo 2', sans-serif; }
+
+  /* Rules */
+  .rules-section { margin-bottom: 22px; }
+  .rules-section-title {
+    font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 13px;
+    text-transform: uppercase; letter-spacing: 1px; color: var(--fg-muted);
+    margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1.5px solid var(--border);
+  }
+  .rules-section-title.hpp-color { color: var(--ok); border-color: var(--ok-border); }
+  .rules-section-title.dpp-color { color: var(--warn); border-color: var(--warn-border); }
+  .rules-section-title.ag-color  { color: var(--info); border-color: var(--info-border); }
+
+  .rule-item {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 10px 0; border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .rule-item:last-child { border-bottom: none; }
+  .rule-n {
+    width: 24px; height: 24px; border-radius: 6px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Exo 2', sans-serif; font-weight: 800; font-size: 12px;
+    margin-top: 1px; font-variant-numeric: tabular-nums;
+  }
+  .rn-hpp  { background: var(--ok-bg); color: var(--ok); border: 1.5px solid var(--ok-border); }
+  .rn-dpp  { background: var(--warn-bg); color: var(--warn); border: 1.5px solid var(--warn-border); }
+  .rn-ag   { background: var(--info-bg); color: var(--info); border: 1.5px solid var(--info-border); }
+  .rn-warn { background: var(--danger-bg); color: var(--danger); border: 1.5px solid var(--danger-border); }
+  .rule-text { flex: 1; min-width: 0; }
+  .rule-text strong { color: var(--fg); }
+  .rule-text em { color: var(--fg-muted); font-style: normal; font-size: 12.5px; display: block; margin-top: 2px; }
+
+  /* Signature block */
+  .sign-block {
+    margin-top: 24px; border-top: 2px solid var(--border); padding-top: 20px;
+  }
+  .sign-block-title {
+    font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 14px;
+    color: var(--accent); margin-bottom: 14px;
+  }
+  .sign-fields {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  }
+  @media (max-width: 500px) { .sign-fields { grid-template-columns: 1fr; } }
+  .sign-field label {
+    display: block; font-size: 11px; font-family: 'Exo 2', sans-serif;
+    font-weight: 700; letter-spacing: .8px; text-transform: uppercase;
+    color: var(--fg-muted); margin-bottom: 5px;
+  }
+  .sign-field input, .sign-field select {
+    width: 100%; padding: 8px 10px;
+    border: 1.5px solid var(--border); border-radius: 7px;
+    background: var(--bg); color: var(--fg);
+    font-family: 'Source Sans 3', sans-serif; font-size: 14px;
+    outline: none; transition: border-color .15s;
+  }
+  .sign-field input:focus, .sign-field select:focus { border-color: var(--accent); }
+  .sign-line-full { grid-column: 1 / -1; }
+  .sign-underline {
+    border: none; border-bottom: 1.5px solid var(--border);
+    width: 100%; height: 36px; display: block;
+    background: transparent; margin-bottom: 4px;
+  }
+  .sign-caption { font-size: 11px; color: var(--fg-muted); font-style: italic; }
+
+  .confirm-box {
+    grid-column: 1 / -1; margin-top: 6px;
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 8px; padding: 12px 14px; font-size: 13px;
+    font-style: italic; color: var(--fg-muted); line-height: 1.5;
+  }
+  .confirm-box strong { color: var(--fg); font-style: normal; }
+
+  .sign-btn-row {
+    grid-column: 1 / -1; display: flex; justify-content: flex-end; margin-top: 10px; gap: 10px;
+  }
+  .btn-primary {
+    background: var(--accent); color: #fff; border: none;
+    border-radius: 8px; padding: 10px 22px;
+    font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 14px;
+    cursor: pointer; transition: background .15s;
+  }
+  .btn-primary:hover { background: var(--accent-dark); }
+  .btn-secondary {
+    background: var(--surface); color: var(--fg); border: 1.5px solid var(--border);
+    border-radius: 8px; padding: 10px 18px;
+    font-family: 'Exo 2', sans-serif; font-weight: 600; font-size: 14px;
+    cursor: pointer; transition: background .15s;
+  }
+  .btn-secondary:hover { background: var(--surface-2); }
+
+  /* Entries */
+  .entries-section { margin-top: 24px; }
+  .entries-title {
+    font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 14px;
+    color: var(--fg-muted); margin-bottom: 10px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .entries-count {
+    background: var(--accent); color: #fff;
+    border-radius: 20px; padding: 2px 10px;
+    font-size: 12px; font-variant-numeric: tabular-nums;
+  }
+  .entry-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 12px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 8px;
+    margin-bottom: 6px; font-size: 13px; flex-wrap: wrap;
+  }
+  .entry-name { font-weight: 600; flex: 1; min-width: 120px; }
+  .entry-date { color: var(--fg-muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+  .entry-del {
+    background: none; border: none; cursor: pointer;
+    color: var(--fg-muted); font-size: 14px; padding: 0 2px;
+    line-height: 1; flex-shrink: 0;
+  }
+  .entry-del:hover { color: var(--danger); }
+  .no-entries { font-size: 13px; color: var(--fg-muted); padding: 8px 0; }
+
+  hr.div { border: none; border-top: 1.5px solid var(--border); margin: 22px 0; }
+  .footer-note { font-size: 12px; color: var(--fg-muted); text-align: center; margin-top: 28px; }
+
+  /* Print mode */
+  .print-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 10px; padding: 10px 16px; margin-bottom: 16px; gap: 12px;
+  }
+  .print-bar-label { font-size: 13px; color: var(--fg-muted); }
+  .btn-print {
+    background: var(--accent-dark); color: #fff; border: none;
+    border-radius: 8px; padding: 8px 18px;
+    font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 13px;
+    cursor: pointer; white-space: nowrap;
+  }
+  .btn-print:hover { opacity: .88; }
+
+  body.print-mode .switcher { display: none; }
+  body.print-mode .print-bar { display: none; }
+  body.print-mode .sign-btn-row { display: none; }
+  body.print-mode .entries-section { display: none; }
+
+  body.print-mode .sign-field input,
+  body.print-mode .sign-field select {
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1.5px solid var(--border) !important;
+    border-radius: 0 !important;
+    padding: 6px 2px !important;
+    color: var(--fg) !important;
+  }
+  body.print-mode .sign-field input[value="Seyacon"],
+  body.print-mode .sign-field input[id="ag-koord"] {
+    color: var(--fg-muted) !important;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <!-- Print bar -->
+  <div class="print-bar">
+    <span class="print-bar-label" id="print-label">Interaktivní verze — evidence podpisů a ukládání záznamů</span>
+    <button class="btn-print" onclick="togglePrint()">🖨️ Připravit k tisku</button>
+  </div>
+
+  <!-- Switcher -->
+  <div class="switcher">
+    <button class="sw-btn active-hpp" onclick="show('hpp')">
+      <span class="sw-label">🟢 HPP</span>
+      <span class="sw-sub">Hlavní pracovní poměr — vnitřní řád k podpisu</span>
+    </button>
+    <button class="sw-btn" onclick="show('dpp')">
+      <span class="sw-label">🟡 DPP / DPČ</span>
+      <span class="sw-sub">Dohody o pracích — vnitřní řád k podpisu</span>
+    </button>
+    <button class="sw-btn" onclick="show('ag')">
+      <span class="sw-label">🔵 Agentura</span>
+      <span class="sw-sub">Pracovníci agentury — pravidla vstupu a spolupráce</span>
+    </button>
+  </div>
+
+  <!-- =================== HPP DOKUMENT =================== -->
+  <div class="doc-panel active" id="panel-hpp">
+    <div class="doc">
+      <div class="doc-bar doc-bar-hpp">
+        <div class="doc-bar-eyebrow">Nutworld s.r.o. · Vnitřní řád pracoviště</div>
+        <h1>Prohlášení o seznámení s pravidly pracoviště</h1>
+        <p>Pro kmenové zaměstnance — hlavní pracovní poměr (HPP)</p>
+        <div class="doc-bar-meta">Verze 1.0<br>Říjen 2026</div>
+      </div>
+
+      <div class="doc-body">
+
+        <div class="rules-section">
+          <div class="rules-section-title hpp-color">I. Vstup a pohyb na pracovišti</div>
+          <div class="rule-item">
+            <div class="rule-n rn-hpp">1</div>
+            <div class="rule-text">Zaměstnanec se při každém příchodu zapíše do knihy docházky a při odchodu zapíše čas odchodu.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-hpp">2</div>
+            <div class="rule-text">Zaměstnanec se pohybuje pouze v prostorech určených pro svou pracovní pozici. Vstup do jiných zón je možný pouze z pracovního důvodu a se souhlasem vedoucího.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-hpp">3</div>
+            <div class="rule-text">Cizí osoby a návštěvy mohou vstoupit na pracoviště pouze s doprovodem zaměstnance Nutworld s.r.o.</div>
+          </div>
+        </div>
+
+        <div class="rules-section">
+          <div class="rules-section-title hpp-color">II. Bezpečnost a ochrana zdraví při práci (BOZP)</div>
+          <div class="rule-item">
+            <div class="rule-n rn-hpp">4</div>
+            <div class="rule-text">Zaměstnanec absolvoval vstupní školení BOZP a PO (požární ochrana) a byl seznámen s riziky svého pracoviště. Toto potvrzuje podpisem na konci tohoto dokumentu.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-hpp">5</div>
+            <div class="rule-text">Zaměstnanec je povinen používat přidělené osobní ochranné pracovní prostředky (OOPP) — zejm. pracovní oděv, pokrývku hlavy a pracovní obuv v prostorech k tomu určených.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-hpp">6</div>
+            <div class="rule-text">Každý pracovní úraz nebo mimořádná situace musí být okamžitě hlášena nadřízenému a zaznamenána v knize úrazů. Lékárnička se nachází na označeném místě v prostoru pracoviště.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-hpp">7</div>
+            <div class="rule-text">Únikové cesty, nouzové východy a hasicí přístroje musí být vždy volně přístupné — zaměstnanec je nesmí blokovat ani zakrývat.</div>
+          </div>
+        </div>
+
+        <div class="rules-section">
+          <div class="rules-section-title hpp-color">III. Hygiena — potravinářský provoz</div>
+          <div class="rule-item">
+            <div class="rule-n rn-hpp">8</div>
+            <div class="rule-text">Zaměstnanec manipulující s potravinami nebo obalem musí mít platný zdravotní průkaz pracovníka v potravinářství.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-hpp">9</div>
+            <div class="rule-text">Před vstupem do výrobního a balícího prostoru je povinné umýt si ruce mýdlem (min. 20 s) a nasadit čistý pracovní oděv a pokrývku hlavy.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-hpp">10</div>
+            <div class="rule-text">Ve výrobním a balícím prostoru je zakázáno: konzumovat jídlo a pití, používat kosmetiku (lak na nehty, umělé nehty), nosit šperky a volné vlasy.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-hpp">11</div>
+            <div class="rule-text">Zaměstnanec je povinen před nástupem na pracoviště nahlásit vedoucímu průjmové onemocnění, zvracení, žloutenku nebo hnisavá poranění. V takovém případě nesmí manipulovat s potravinami.</div>
+          </div>
+        </div>
+
+        <div class="rules-section">
+          <div class="rules-section-title hpp-color">IV. Ochrana majetku, dat a mlčenlivost</div>
+          <div class="rule-item">
+            <div class="rule-n rn-hpp">12</div>
+            <div class="rule-text">Zaměstnanec je povinen chránit majetek a vybavení zaměstnavatele před poškozením, ztrátou nebo zneužitím.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-hpp">13</div>
+            <div class="rule-text">Zaměstnanec nesdílí přístupová hesla, interní data, ceníky, informace o zákaznících ani obchodní procesy s třetími osobami — ani s pracovníky agentury. Povinnost mlčenlivosti trvá i po skončení pracovního poměru.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-hpp">14</div>
+            <div class="rule-text">Fotografování a natáčení na pracovišti je bez souhlasu vedení zakázáno.</div>
+          </div>
+        </div>
+
+        <div class="rules-section">
+          <div class="rules-section-title hpp-color">V. Absolutní zákazy</div>
+          <div class="rule-item">
+            <div class="rule-n rn-warn">!</div>
+            <div class="rule-text">
+              <strong>Na pracovišti je přísně zakázáno:</strong> vstupovat pod vlivem alkoholu nebo omamných látek, konzumovat alkohol, krást nebo přivlastňovat si majetek, šikanovat nebo obtěžovat kolegy, porušovat pravidla požární ochrany.
+              <em>Porušení těchto zákazů je důvodem k okamžitému rozvázání pracovního poměru.</em>
+            </div>
+          </div>
+        </div>
+
+        <div class="rules-section">
+          <div class="rules-section-title hpp-color">VI. Spolupráce s pracovníky agentury</div>
+          <div class="rule-item">
+            <div class="rule-n rn-hpp">15</div>
+            <div class="rule-text">
+              Zaměstnanci Nutworld s.r.o. nejsou nadřízenými pracovníků agentury. Pracovní pokyny pracovníkům agentury předává výhradně pověřená kontaktní osoba a výhradně formou písemné objednávky nebo předávacího protokolu (co dodat, do kdy, v jaké kvalitě).
+              <em>Zaměstnanec nesmí pracovníkům agentury přikazovat jak a kdy pracovat.</em>
+            </div>
+          </div>
+        </div>
+
+        <hr class="div">
+
+        <div class="sign-block">
+          <div class="sign-block-title">Podpis — potvrzení seznámení s vnitřním řádem (HPP)</div>
+          <div class="sign-fields">
+            <div class="sign-field">
+              <label>Jméno a příjmení</label>
+              <input type="text" id="hpp-name" placeholder="">
+            </div>
+            <div class="sign-field">
+              <label>Pracovní pozice</label>
+              <input type="text" id="hpp-role" placeholder="">
+            </div>
+            <div class="sign-field">
+              <label>Datum</label>
+              <input type="date" id="hpp-date">
+            </div>
+            <div class="sign-field">
+              <label>Typ úvazku</label>
+              <select id="hpp-type">
+                <option value="HPP">HPP — hlavní pracovní poměr</option>
+              </select>
+            </div>
+            <div class="sign-line-full">
+              <div class="confirm-box">
+                Prohlašuji, že jsem byl/a řádně seznámen/a s Vnitřním řádem pracoviště Nutworld s.r.o., rozumím jeho obsahu a zavazuji se jej dodržovat po celou dobu trvání pracovněprávního vztahu.
+              </div>
+            </div>
+            <div class="sign-field sign-line-full">
+              <label>Vlastnoruční podpis zaměstnance</label>
+              <div class="sign-underline"></div>
+              <div class="sign-caption">Podpisem potvrzuji pravdivost a srozumění s výše uvedeným</div>
+            </div>
+            <div class="sign-btn-row">
+              <button class="btn-secondary" onclick="clearForm('hpp')">Vymazat</button>
+              <button class="btn-primary" onclick="saveEntry('hpp')">Uložit záznam</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="entries-section">
+          <div class="entries-title">
+            Záznamy — podpisy HPP
+            <span class="entries-count" id="hpp-count">0</span>
+          </div>
+          <div id="hpp-entries"><div class="no-entries">Zatím žádné záznamy.</div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- =================== DPP DOKUMENT =================== -->
+  <div class="doc-panel" id="panel-dpp">
+    <div class="doc">
+      <div class="doc-bar doc-bar-dpp">
+        <div class="doc-bar-eyebrow">Nutworld s.r.o. · Vnitřní řád pracoviště</div>
+        <h1>Prohlášení o seznámení s pravidly pracoviště</h1>
+        <p>Pro pracovníky na dohodu — DPP (dohoda o provedení práce) / DPČ (dohoda o pracovní činnosti)</p>
+        <div class="doc-bar-meta">Verze 1.0<br>Říjen 2026</div>
+      </div>
+
+      <div class="doc-body">
+
+        <div class="rules-section">
+          <div class="rules-section-title dpp-color">I. Vstup a pohyb na pracovišti</div>
+          <div class="rule-item">
+            <div class="rule-n rn-dpp">1</div>
+            <div class="rule-text">Při každém příchodu se zapište do knihy docházky a při odchodu doplňte čas odchodu.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-dpp">2</div>
+            <div class="rule-text">Pohybujte se pouze v prostorech určených pro svou pracovní pozici. Vstup do jiných zón je možný pouze z pracovního důvodu a se souhlasem vedoucího.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-dpp">3</div>
+            <div class="rule-text">Cizí osoby a návštěvy mohou vstoupit na pracoviště pouze s doprovodem zaměstnance Nutworld s.r.o.</div>
+          </div>
+        </div>
+
+        <div class="rules-section">
+          <div class="rules-section-title dpp-color">II. Bezpečnost a ochrana zdraví při práci (BOZP)</div>
+          <div class="rule-item">
+            <div class="rule-n rn-dpp">4</div>
+            <div class="rule-text">Absolvoval/a jsem vstupní školení BOZP a PO (požární ochrana) a byl/a jsem seznámen/a s riziky pracoviště. Toto potvrzuji podpisem na konci tohoto dokumentu.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-dpp">5</div>
+            <div class="rule-text">Jsem povinen/povinna používat přidělené osobní ochranné pracovní prostředky (OOPP) — zejm. pracovní oděv, pokrývku hlavy a pracovní obuv v prostorech k tomu určených.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-dpp">6</div>
+            <div class="rule-text">Každý pracovní úraz nebo mimořádná situace musí být okamžitě hlášena nadřízenému a zaznamenána v knize úrazů. Lékárnička se nachází na označeném místě v prostoru pracoviště.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-dpp">7</div>
+            <div class="rule-text">Únikové cesty, nouzové východy a hasicí přístroje musí být vždy volně přístupné — nesmím je blokovat ani zakrývat.</div>
+          </div>
+        </div>
+
+        <div class="rules-section">
+          <div class="rules-section-title dpp-color">III. Hygiena — potravinářský provoz</div>
+          <div class="rule-item">
+            <div class="rule-n rn-dpp">8</div>
+            <div class="rule-text">Pokud manipuluji s potravinami nebo obalem, musím mít platný zdravotní průkaz pracovníka v potravinářství.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-dpp">9</div>
+            <div class="rule-text">Před vstupem do výrobního a balícího prostoru je povinné umýt si ruce mýdlem (min. 20 s) a nasadit čistý pracovní oděv a pokrývku hlavy.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-dpp">10</div>
+            <div class="rule-text">Ve výrobním a balícím prostoru je zakázáno: konzumovat jídlo a pití, používat kosmetiku (lak na nehty, umělé nehty), nosit šperky a volné vlasy.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-dpp">11</div>
+            <div class="rule-text">Před nástupem na pracoviště nahlásím vedoucímu průjmové onemocnění, zvracení, žloutenku nebo hnisavá poranění. V takovém případě nesmím manipulovat s potravinami.</div>
+          </div>
+        </div>
+
+        <div class="rules-section">
+          <div class="rules-section-title dpp-color">IV. Ochrana majetku, dat a mlčenlivost</div>
+          <div class="rule-item">
+            <div class="rule-n rn-dpp">12</div>
+            <div class="rule-text">Jsem povinen/povinna chránit majetek a vybavení zaměstnavatele před poškozením, ztrátou nebo zneužitím.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-dpp">13</div>
+            <div class="rule-text">Nesdílím přístupová hesla, interní data, ceníky, informace o zákaznících ani obchodní procesy s třetími osobami. Povinnost mlčenlivosti trvá i po skončení dohody.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-dpp">14</div>
+            <div class="rule-text">Fotografování a natáčení na pracovišti je bez souhlasu vedení zakázáno.</div>
+          </div>
+        </div>
+
+        <div class="rules-section">
+          <div class="rules-section-title dpp-color">V. Absolutní zákazy</div>
+          <div class="rule-item">
+            <div class="rule-n rn-warn">!</div>
+            <div class="rule-text">
+              <strong>Na pracovišti je přísně zakázáno:</strong> vstupovat pod vlivem alkoholu nebo omamných látek, konzumovat alkohol, krást nebo přivlastňovat si majetek, šikanovat nebo obtěžovat kolegy, porušovat pravidla požární ochrany.
+              <em>Porušení těchto zákazů je důvodem k okamžitému ukončení dohody.</em>
+            </div>
+          </div>
+        </div>
+
+        <hr class="div">
+
+        <div class="sign-block">
+          <div class="sign-block-title">Podpis — potvrzení seznámení s vnitřním řádem (DPP / DPČ)</div>
+          <div class="sign-fields">
+            <div class="sign-field">
+              <label>Jméno a příjmení</label>
+              <input type="text" id="dpp-name" placeholder="">
+            </div>
+            <div class="sign-field">
+              <label>Druh prací / popis</label>
+              <input type="text" id="dpp-role" placeholder="">
+            </div>
+            <div class="sign-field">
+              <label>Datum</label>
+              <input type="date" id="dpp-date">
+            </div>
+            <div class="sign-field">
+              <label>Typ dohody</label>
+              <select id="dpp-type">
+                <option value="DPP">DPP — dohoda o provedení práce</option>
+                <option value="DPČ">DPČ — dohoda o pracovní činnosti</option>
+              </select>
+            </div>
+            <div class="sign-line-full">
+              <div class="confirm-box">
+                Prohlašuji, že jsem byl/a řádně seznámen/a s Vnitřním řádem pracoviště Nutworld s.r.o., rozumím jeho obsahu a zavazuji se jej dodržovat po celou dobu trvání uzavřené dohody.
+              </div>
+            </div>
+            <div class="sign-field sign-line-full">
+              <label>Vlastnoruční podpis</label>
+              <div class="sign-underline"></div>
+              <div class="sign-caption">Podpisem potvrzuji pravdivost a srozumění s výše uvedeným</div>
+            </div>
+            <div class="sign-btn-row">
+              <button class="btn-secondary" onclick="clearForm('dpp')">Vymazat</button>
+              <button class="btn-primary" onclick="saveEntry('dpp')">Uložit záznam</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="entries-section">
+          <div class="entries-title">
+            Záznamy — podpisy DPP / DPČ
+            <span class="entries-count" id="dpp-count">0</span>
+          </div>
+          <div id="dpp-entries"><div class="no-entries">Zatím žádné záznamy.</div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- =================== AGENTURA DOKUMENT =================== -->
+  <div class="doc-panel" id="panel-ag">
+    <div class="doc">
+      <div class="doc-bar doc-bar-ag">
+        <div class="doc-bar-eyebrow">Nutworld s.r.o. · Pravidla vstupu a spolupráce</div>
+        <h1>Pravidla pro pracovníky agentury na provozovně Nutworld</h1>
+        <p>Tento dokument stanovuje podmínky vstupu a pohybu na provozovně. Netvoří pracovní smlouvu ani dohodu o pracovní činnosti.</p>
+        <div class="doc-bar-meta">Verze 1.0<br>Říjen 2026</div>
+      </div>
+
+      <div class="doc-body">
+
+        <div class="doc-warn">
+          <div class="doc-warn-icon">⚖️</div>
+          <div>
+            <p><strong>Důležité upozornění — přečtěte si před podpisem:</strong><br>
+            Nutworld s.r.o. <strong>není vaším zaměstnavatelem ani nadřízeným.</strong> Váš zaměstnavatel je agentura, jejíž jméno je uvedeno níže. Veškeré záležitosti týkající se vaší pracovní smlouvy, mzdy, pracovní doby, přestávek a dovolené řeší výhradně vaše agentura.</p>
+          </div>
+        </div>
+
+        <div class="doc-info">
+          <strong>Agentura (váš zaměstnavatel):</strong> <span id="ag-firma-display">Seyacon</span><br>
+          <strong>Kontaktní osoba agentury (váš koordinátor):</strong> <span id="ag-koord-display">pan Toman</span>
+        </div>
+
+        <div class="rules-section">
+          <div class="rules-section-title ag-color">I. Vztah mezi agenturou a Nutworld s.r.o.</div>
+          <div class="rule-item">
+            <div class="rule-n rn-ag">1</div>
+            <div class="rule-text"><strong>Vaším zaměstnavatelem a nadřízeným je výhradně agentura.</strong> Nutworld s.r.o. není vaším zaměstnavatelem, nevede vaši mzdovou agendu a nerozhoduje o vašem pracovním poměru.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-ag">2</div>
+            <div class="rule-text"><strong>Pracujete úkolově dle zadání vašeho koordinátora agentury.</strong> Konkrétní úkoly, jejich rozsah a pořadí vám přiděluje koordinátor vaší agentury — nikoliv zaměstnanci Nutworld s.r.o.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-ag">3</div>
+            <div class="rule-text"><strong>Vaší pracovní dobu, přestávky na jídlo a odpočinek, rozvržení směn a veškeré záležitosti s tím spojené určuje výhradně vaše agentura</strong> — v souladu s vaší pracovní smlouvou. Nutworld s.r.o. tyto záležitosti neurčuje ani do nich nezasahuje.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-ag">4</div>
+            <div class="rule-text">
+              Zaměstnanci Nutworld s.r.o. nejsou oprávněni vám dávat závazné pracovní pokyny. Výjimkou jsou <strong>bezpečnostní a provozní pravidla provozovny</strong> (BOZP, hygiena, pohyb v prostorech), která jsou závazná pro každého v prostoru.
+              <em>Dotazy k pracovním podmínkám, mzdě nebo úkolům směřujte vždy na koordinátora vaší agentury.</em>
+            </div>
+          </div>
+        </div>
+
+        <div class="rules-section">
+          <div class="rules-section-title ag-color">II. Vstup, pohyb a identifikace</div>
+          <div class="rule-item">
+            <div class="rule-n rn-ag">5</div>
+            <div class="rule-text"><strong>Povinná identifikace:</strong> každý pracovník agentury musí být po celou dobu přítomnosti na provozovně viditelně označen jako pracovník agentury — visačkou, vestou nebo jiným označením dohodnutým s agenturou. Bez označení není vstup povolen.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-ag">6</div>
+            <div class="rule-text"><strong>Okno přístupu do prostor:</strong> pracovníci agentury mohou vstoupit na provozovnu v době <strong>6:00–18:00</strong>. Mimo toto okno pouze po předchozí domluvě s kontaktní osobou Nutworld.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-ag">7</div>
+            <div class="rule-text">Při každém příchodu zapište jméno, čas příchodu a název agentury do <strong>knihy příchodů agentury</strong> (oddělená od HPP docházky). Při odchodu doplňte čas odchodu.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-ag">8</div>
+            <div class="rule-text"><strong>Vyhrazená pracovní zóna:</strong> pohybujte se výhradně ve Vám přidělené Zóně AG (označena na podlaze a tabulkami) a ve sdílených prostorech. Vstup do Zóny HPP (sklad, kancelář, serverovna) je bez výslovného souhlasu zakázán.</div>
+          </div>
+        </div>
+
+        <div class="rules-section">
+          <div class="rules-section-title ag-color">III. Sdílené prostory — vyhrazené časové úseky</div>
+          <div class="rule-item">
+            <div class="rule-n rn-ag">9</div>
+            <div class="rule-text">
+              <strong>Kuchyňka:</strong> pracovníci agentury mohou využívat kuchyňku v době <strong>10:30–12:00</strong>. Mimo tyto časy je kuchyňka vyhrazena kmenovým zaměstnancům.
+              <em>Čas v kuchyňce je provozním pravidlem prostoru — přestávky si v rámci tohoto okna organizuje vaše agentura dle vlastního uvážení.</em>
+            </div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-ag">10</div>
+            <div class="rule-text"><strong>Šatna:</strong> pracovníkům agentury jsou přiděleny skříňky v sekci označené „AGENTURA". Za cennosti Nutworld s.r.o. neodpovídá.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-ag">11</div>
+            <div class="rule-text"><strong>WC:</strong> WC je volně přístupné. Udržujte čistotu a pořádek.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-ag">12</div>
+            <div class="rule-text">Po skončení přítomnosti ukliďte své pracovní místo, odneste odpad a zanechte prostor v čistém stavu.</div>
+          </div>
+        </div>
+
+        <div class="rules-section">
+          <div class="rules-section-title ag-color">IV. BOZP a hygiena — platí pro všechny v prostoru</div>
+          <div class="rule-item">
+            <div class="rule-n rn-ag">13</div>
+            <div class="rule-text">Absolvoval/a jsem BOZP vstupní seznámení s riziky tohoto pracoviště (požár, únik, bezpečnost strojů a materiálu). Toto potvrzuji podpisem tohoto dokumentu.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-ag">14</div>
+            <div class="rule-text">V prostoru balení a výroby jsou povinné: <strong>čistý pracovní oděv a pokrývka hlavy.</strong> Ve výrobním prostoru je zakázáno: jíst, pít, nosit šperky, používat lak na nehty nebo umělé nehty.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-ag">15</div>
+            <div class="rule-text">Před vstupem do výrobního prostoru povinné mytí rukou. Umyvadlo se nachází na označeném místě.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-ag">16</div>
+            <div class="rule-text">
+              Pracovní úraz na provozovně je nutné okamžitě hlásit kontaktní osobě Nutworld. Ta zapíše incident do knihy úrazů.
+              <em>Kontaktní osoba Nutworld pro agenturu: <strong>pan Toman, tel. 774 367 135</strong></em>
+            </div>
+          </div>
+        </div>
+
+        <div class="rules-section">
+          <div class="rules-section-title ag-color">V. Smluvní vztah — potvrzení</div>
+          <div class="rule-item">
+            <div class="rule-n rn-ag">17</div>
+            <div class="rule-text">
+              <strong>Mám uzavřenou platnou pracovní smlouvu nebo dohodu s agenturou</strong> (uvedenou níže jako můj zaměstnavatel). Tato smlouva upravuje mé pracovní podmínky, mzdu, pracovní dobu a veškerá práva a povinnosti vyplývající z mého pracovního poměru.
+              <em>Nutworld s.r.o. není účastníkem mé pracovní smlouvy a nevstupuje do tohoto smluvního vztahu.</em>
+            </div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-ag">18</div>
+            <div class="rule-text">Beru na vědomí, že výkon práce na provozovně Nutworld s.r.o. probíhá na základě <strong>smluvního vztahu mezi mou agenturou a Nutworld s.r.o.</strong> (smlouva o poskytování služeb / smlouva o dílo). Nejsem účastníkem tohoto B2B smluvního vztahu.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-ag">19</div>
+            <div class="rule-text">V případě jakýchkoli dotazů nebo sporů týkajících se mého pracovního poměru, odměňování nebo pracovních podmínek se obracím výhradně na <strong>svou agenturu</strong>. Nutworld s.r.o. tyto dotazy nevyřizuje.</div>
+          </div>
+        </div>
+
+        <div class="rules-section">
+          <div class="rules-section-title ag-color">VI. Ochrana dat, systémů a majetku</div>
+          <div class="rule-item">
+            <div class="rule-n rn-warn">!</div>
+            <div class="rule-text"><strong>Přístup do systémů a počítačů Nutworld s.r.o. je bez písemného oprávnění zakázán.</strong> Ceny, zákaznická data, dodavatelé, procesy a obchodní informace jsou přísně důvěrné — jejich sdílení třetím osobám je porušením smluvní mlčenlivosti.</div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-n rn-warn">!</div>
+            <div class="rule-text"><strong>Fotografování a natáčení na provozovně je zakázáno</strong> bez výslovného souhlasu vedení Nutworld s.r.o. (platí i pro sociální sítě).</div>
+          </div>
+        </div>
+
+        <div class="rules-section">
+          <div class="rules-section-title ag-color">VII. Absolutní zákazy</div>
+          <div class="rule-item">
+            <div class="rule-n rn-warn">!</div>
+            <div class="rule-text">
+              <strong>Na provozovně je přísně zakázáno:</strong> vstupovat pod vlivem alkoholu nebo omamných látek, konzumovat alkohol, krást nebo přivlastňovat si zboží a materiál, šikanovat nebo obtěžovat kohokoliv v prostoru.
+              <em>Porušení těchto zákazů vede k okamžitému zákazu vstupu a předání věci právnímu zástupci. Agentura bude neprodleně informována.</em>
+            </div>
+          </div>
+        </div>
+
+        <hr class="div">
+
+        <div class="sign-block">
+          <div class="sign-block-title">Podpis — potvrzení přečtení a srozumění s pravidly</div>
+          <div class="sign-fields">
+            <div class="sign-field">
+              <label>Jméno a příjmení pracovníka</label>
+              <input type="text" id="ag-name" placeholder="">
+            </div>
+            <div class="sign-field">
+              <label>Název agentury (zaměstnavatel)</label>
+              <input type="text" id="ag-firma" value="Seyacon" oninput="document.getElementById('ag-firma-display').textContent=this.value||'__________________________'">
+            </div>
+            <div class="sign-field">
+              <label>Jméno koordinátora agentury</label>
+              <input type="text" id="ag-koord" value="pan Toman" oninput="document.getElementById('ag-koord-display').textContent=this.value||'__________________________'">
+            </div>
+            <div class="sign-field">
+              <label>Datum</label>
+              <input type="date" id="ag-date">
+            </div>
+            <div class="sign-line-full">
+              <div class="confirm-box">
+                Prohlašuji, že jsem byl/a seznámen/a s Pravidly pro pracovníky agentury na provozovně Nutworld s.r.o. a zavazuji se je dodržovat. Dále prohlašuji, že:<br><br>
+                ✔ Mám uzavřenou platnou pracovní smlouvu nebo dohodu se svou <strong>agenturou</strong> jako svým zaměstnavatelem.<br>
+                ✔ Beru na vědomí, že <strong>Nutworld s.r.o. není mým zaměstnavatelem</strong> a není účastníkem mé pracovní smlouvy.<br>
+                ✔ Veškeré záležitosti týkající se mé mzdy, pracovní doby, přestávek a pracovního poměru řeším výhradně se svou agenturou.<br>
+                ✔ Pokyny k výkonu práce přijímám od <strong>koordinátora své agentury</strong>, nikoliv od zaměstnanců Nutworld s.r.o.
+              </div>
+            </div>
+            <div class="sign-field sign-line-full">
+              <label>Vlastnoruční podpis pracovníka agentury</label>
+              <div class="sign-underline"></div>
+              <div class="sign-caption">Podpisem potvrzuji pravdivost a srozumění s výše uvedeným</div>
+            </div>
+            <div class="sign-btn-row">
+              <button class="btn-secondary" onclick="clearForm('ag')">Vymazat</button>
+              <button class="btn-primary" onclick="saveEntry('ag')">Uložit záznam</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="entries-section">
+          <div class="entries-title">
+            Záznamy — podpisy pracovníků agentury
+            <span class="entries-count" id="ag-count">0</span>
+          </div>
+          <div id="ag-entries"><div class="no-entries">Zatím žádné záznamy.</div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    Nutworld s.r.o. · Vnitřní řád k podpisu · Verze 1.0 · Říjen 2026 · Záznamy se ukládají lokálně v tomto prohlížeči — pro archivaci vytisknout nebo exportovat.
+  </div>
+
+</div>
+
+<script>
+  let isPrint = false;
+
+  function togglePrint() {
+    isPrint = !isPrint;
+    document.body.classList.toggle('print-mode', isPrint);
+    const btn = document.querySelector('.btn-print');
+    const lbl = document.getElementById('print-label');
+    if (isPrint) {
+      btn.textContent = '✏️ Zpět na interaktivní';
+      lbl.textContent = 'Verze k tisku — pouze tento dokument, pole prázdná pro ruční vyplnění';
+      document.getElementById('hpp-name').value = '';
+      document.getElementById('hpp-role').value = '';
+      document.getElementById('hpp-date').value = '';
+      document.getElementById('dpp-name').value = '';
+      document.getElementById('dpp-role').value = '';
+      document.getElementById('dpp-date').value = '';
+      document.getElementById('ag-name').value  = '';
+      document.getElementById('ag-date').value  = '';
+    } else {
+      btn.textContent = '🖨️ Připravit k tisku';
+      lbl.textContent = 'Interaktivní verze — evidence podpisů a ukládání záznamů';
+      document.getElementById('ag-firma').value = 'Seyacon';
+      document.getElementById('ag-koord').value = 'pan Toman';
+      document.getElementById('ag-firma-display').textContent = 'Seyacon';
+      document.getElementById('ag-koord-display').textContent = 'pan Toman';
+      try {
+        const today = new Date().toISOString().slice(0,10);
+        document.getElementById('hpp-date').value = today;
+        document.getElementById('dpp-date').value = today;
+        document.getElementById('ag-date').value  = today;
+      } catch(e) {}
+    }
+  }
+
+  const SW = document.querySelectorAll('.sw-btn');
+
+  function show(panel) {
+    document.querySelectorAll('.doc-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + panel).classList.add('active');
+    SW[0].className = 'sw-btn' + (panel === 'hpp' ? ' active-hpp' : '');
+    SW[1].className = 'sw-btn' + (panel === 'dpp' ? ' active-dpp' : '');
+    SW[2].className = 'sw-btn' + (panel === 'ag'  ? ' active-ag'  : '');
+  }
+
+  // Set today's date on all date fields
+  try {
+    const today = new Date().toISOString().slice(0,10);
+    document.getElementById('hpp-date').value = today;
+    document.getElementById('dpp-date').value = today;
+    document.getElementById('ag-date').value  = today;
+  } catch(e) {}
+
+  // Storage helpers
+  function load(key) {
+    try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) { return []; }
+  }
+  function save(key, arr) {
+    try { localStorage.setItem(key, JSON.stringify(arr.slice(0,300))); } catch(e) {}
+  }
+
+  let hppEntries = load('vr_hpp');
+  let dppEntries = load('vr_dpp');
+  let agEntries  = load('vr_ag');
+  renderAll();
+
+  function saveEntry(type) {
+    if (type === 'hpp') {
+      const name = document.getElementById('hpp-name').value.trim();
+      if (!name) { document.getElementById('hpp-name').focus(); return; }
+      const role = document.getElementById('hpp-role').value.trim();
+      const date = document.getElementById('hpp-date').value;
+      hppEntries.unshift({ name, role, date, uv: 'HPP', ts: Date.now() });
+      save('vr_hpp', hppEntries);
+      clearForm('hpp');
+    } else if (type === 'dpp') {
+      const name = document.getElementById('dpp-name').value.trim();
+      if (!name) { document.getElementById('dpp-name').focus(); return; }
+      const role = document.getElementById('dpp-role').value.trim();
+      const date = document.getElementById('dpp-date').value;
+      const uv   = document.getElementById('dpp-type').value;
+      dppEntries.unshift({ name, role, date, uv, ts: Date.now() });
+      save('vr_dpp', dppEntries);
+      clearForm('dpp');
+    } else {
+      const name  = document.getElementById('ag-name').value.trim();
+      if (!name) { document.getElementById('ag-name').focus(); return; }
+      const firma = document.getElementById('ag-firma').value.trim();
+      const koord = document.getElementById('ag-koord').value.trim();
+      const date  = document.getElementById('ag-date').value;
+      agEntries.unshift({ name, firma, koord, date, ts: Date.now() });
+      save('vr_ag', agEntries);
+      clearForm('ag');
+    }
+    renderAll();
+  }
+
+  function clearForm(type) {
+    if (type === 'hpp') {
+      document.getElementById('hpp-name').value = '';
+      document.getElementById('hpp-role').value = '';
+    } else if (type === 'dpp') {
+      document.getElementById('dpp-name').value = '';
+      document.getElementById('dpp-role').value = '';
+    } else {
+      document.getElementById('ag-name').value  = '';
+      document.getElementById('ag-firma').value = '';
+      document.getElementById('ag-koord').value = '';
+      document.getElementById('ag-firma-display').textContent = '__________________________';
+      document.getElementById('ag-koord-display').textContent = '__________________________';
+    }
+  }
+
+  function removeEntry(type, i) {
+    if (type === 'hpp')      { hppEntries.splice(i,1); save('vr_hpp', hppEntries); }
+    else if (type === 'dpp') { dppEntries.splice(i,1); save('vr_dpp', dppEntries); }
+    else                     { agEntries.splice(i,1);  save('vr_ag',  agEntries);  }
+    renderAll();
+  }
+
+  function renderAll() {
+    renderList('hpp-entries', hppEntries, 'hpp');
+    renderList('dpp-entries', dppEntries, 'dpp');
+    renderList('ag-entries',  agEntries,  'ag');
+    document.getElementById('hpp-count').textContent = hppEntries.length;
+    document.getElementById('dpp-count').textContent = dppEntries.length;
+    document.getElementById('ag-count').textContent  = agEntries.length;
+  }
+
+  function renderList(elId, arr, type) {
+    const el = document.getElementById(elId);
+    if (!el) return;
+    if (!arr.length) { el.innerHTML = '<div class="no-entries">Zatím žádné záznamy.</div>'; return; }
+    const badgeStyle = {
+      hpp: 'background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok-border)',
+      dpp: 'background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn-border)',
+      ag:  'background:var(--info-bg);color:var(--info);border:1px solid var(--info-border)',
+    };
+    const badgeLabel = e => type === 'ag' ? 'AGENTURA' : (e.uv || type.toUpperCase());
+    el.innerHTML = arr.map((e,i) => `
+      <div class="entry-row">
+        <span style="font-size:11px;${badgeStyle[type]};border-radius:20px;padding:1px 8px;font-family:'Exo 2',sans-serif;font-weight:700;white-space:nowrap;">${badgeLabel(e)}</span>
+        <span class="entry-name">${e.name}</span>
+        <span style="color:var(--fg-muted);font-size:12px;">${e.firma||e.role||''}</span>
+        <span class="entry-date">${e.date||''}</span>
+        <button class="entry-del" onclick="removeEntry('${type}',${i})" title="Smazat">✕</button>
+      </div>`).join('');
+  }
+</script>
+
+<script src="pin-guard.js"></script>
+</body>
+</html>

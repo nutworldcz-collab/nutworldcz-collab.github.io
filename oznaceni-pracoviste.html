@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Označení pracoviště</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&family=Source+Sans+3:wght@400;600&display=swap">
+
+<style>
+  :root {
+    --bg: #faf7f4;
+    --surface: #f1e6da;
+    --surface-2: #ffffff;
+    --fg: #2c1a0e;
+    --fg-muted: #6b4a2f;
+    --border: #d6c4b0;
+    --accent: #83502e;
+    --accent-dark: #5c381f;
+    --accent-amber: #f7ab31;
+    --ok: #4a7c2f;
+    --ok-bg: #eef5e8;
+    --ok-border: #8bc06a;
+    --warn: #a07010;
+    --warn-bg: #fef9e7;
+    --warn-border: #f7ab31;
+    --danger: #c0392b;
+    --danger-bg: #fdf0ed;
+    --danger-border: #e07060;
+    --info: #1a6fa8;
+    --info-bg: #eaf4fc;
+    --info-border: #70b8e8;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1a0f08;
+      --surface: #2a1a0f;
+      --surface-2: #231508;
+      --fg: #f0e4d4;
+      --fg-muted: #b8936a;
+      --border: #4a3020;
+      --accent: #c07840;
+      --accent-dark: #e0a060;
+      --ok: #7abf50;
+      --ok-bg: #1a2e10;
+      --ok-border: #4a8030;
+      --warn: #e0b040;
+      --warn-bg: #2a2208;
+      --warn-border: #806020;
+      --danger: #e06050;
+      --danger-bg: #2a1010;
+      --danger-border: #804040;
+      --info: #60b0e8;
+      --info-bg: #102030;
+      --info-border: #205080;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1a0f08; --surface: #2a1a0f; --surface-2: #231508;
+    --fg: #f0e4d4; --fg-muted: #b8936a; --border: #4a3020;
+    --accent: #c07840; --accent-dark: #e0a060;
+    --ok: #7abf50; --ok-bg: #1a2e10; --ok-border: #4a8030;
+    --warn: #e0b040; --warn-bg: #2a2208; --warn-border: #806020;
+    --danger: #e06050; --danger-bg: #2a1010; --danger-border: #804040;
+    --info: #60b0e8; --info-bg: #102030; --info-border: #205080;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Source Sans 3', Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    margin: 0;
+    padding-inline: 16px;
+    padding-block: 32px;
+  }
+
+  .wrapper { max-width: 820px; margin: 0 auto; }
+
+  .doc-header {
+    background: linear-gradient(135deg, #5c381f 0%, #83502e 55%, #a0622a 100%);
+    border-radius: 14px;
+    padding: 28px 34px;
+    color: #fff;
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .doc-header::after {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    background: rgba(247,171,49,.12);
+  }
+  .doc-header-label {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--accent-amber);
+    margin-bottom: 7px;
+  }
+  .doc-header h1 {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+  .doc-header p { margin: 0; opacity: .85; font-size: 14px; max-width: 540px; }
+
+  /* Law tag */
+  .law-ref {
+    display: inline-block;
+    font-size: 11px;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: var(--info-bg);
+    color: var(--info);
+    border: 1px solid var(--info-border);
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  /* Section */
+  .section { margin-bottom: 28px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .section-icon {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .section h2 {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 1px;
+    color: var(--accent-dark);
+  }
+  .section h2 .sub {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--fg-muted);
+    display: block;
+    margin-top: 1px;
+  }
+
+  /* Item rows */
+  .item-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: var(--surface-2);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+  }
+  .item-left { flex-shrink: 0; padding-top: 2px; }
+  .item-dot {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'Exo 2', sans-serif;
+    font-variant-numeric: tabular-nums;
+  }
+  .dot-red   { background: #e03020; color: #fff; }
+  .dot-green { background: #4a8c2a; color: #fff; }
+  .dot-blue  { background: #1a6fa8; color: #fff; }
+  .dot-yellow{ background: #c09000; color: #fff; }
+  .dot-brown { background: var(--accent); color: #fff; }
+
+  .item-body { flex: 1; min-width: 0; }
+  .item-title {
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 2px;
+    color: var(--fg);
+  }
+  .item-desc { font-size: 13px; color: var(--fg-muted); margin: 0; }
+  .item-desc strong { color: var(--fg); }
+
+  .badge {
+    display: inline-block;
+    font-size: 10px;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 700;
+    letter-spacing: .3px;
+    padding: 1px 7px;
+    border-radius: 20px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .b-required { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-border); }
+  .b-food     { background: var(--ok-bg);     color: var(--ok);     border: 1px solid var(--ok-border); }
+  .b-rec      { background: var(--warn-bg);   color: var(--warn);   border: 1px solid var(--warn-border); }
+
+  /* Sign legend */
+  .legend {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    font-size: 13px;
+  }
+  .legend-title {
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 10px;
+    color: var(--accent);
+  }
+  .legend-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 8px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .legend-dot {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .ld-red    { background: #e03020; }
+  .ld-green  { background: #4a8c2a; }
+  .ld-blue   { background: #1a6fa8; }
+  .ld-yellow { background: #c09000; }
+
+  /* Checklist */
+  .cl-title {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin-bottom: 6px;
+    font-size: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+    transition: background .12s;
+  }
+  .check-item:hover { background: var(--surface-2); }
+  .check-item.done { opacity: .5; text-decoration: line-through; }
+  .check-item input[type=checkbox] {
+    width: 16px; height: 16px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 2px;
+    cursor: pointer;
+  }
+  .check-text { flex: 1; min-width: 0; }
+  .check-meta { font-size: 12px; color: var(--fg-muted); display: block; margin-top: 1px; }
+
+  hr.divider { border: none; border-top: 1.5px solid var(--border); margin: 28px 0; }
+
+  .footer-note { font-size: 12px; color: var(--fg-muted); text-align: center; margin-top: 20px; }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <div class="doc-header">
+    <div class="doc-header-label">Nutworld · BOZP & Živnostenský zákon</div>
+    <h1>Označení pracoviště — co musí být fyzicky na místě</h1>
+    <p>Přehled povinného a doporučeného označení provozovny / skladu / balírny. Platí pro každou provozovnu kde pracují zaměstnanci nebo agentura.</p>
+  </div>
+
+  <div class="legend">
+    <div class="legend-title">Barvy bezpečnostních značek (ČSN EN ISO 7010)</div>
+    <div class="legend-grid">
+      <div class="legend-item"><div class="legend-dot ld-red"></div> Červená — zákaz / hasicí technika</div>
+      <div class="legend-item"><div class="legend-dot ld-green"></div> Zelená — únik / záchrana / lékárnička</div>
+      <div class="legend-item"><div class="legend-dot ld-blue"></div> Modrá — příkaz (musíš nosit, dělat)</div>
+      <div class="legend-item"><div class="legend-dot ld-yellow"></div> Žlutá — varování / nebezpečí</div>
+    </div>
+  </div>
+
+  <!-- 1. Vstup / označení provozovny -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🏢</div>
+      <h2>Označení provozovny na vstupu
+        <span class="sub">Živnostenský zákon §17 — povinné pro každou provozovnu</span>
+      </h2>
+    </div>
+    <div class="item-list">
+      <div class="item">
+        <div class="item-left"><div class="item-dot dot-brown">!</div></div>
+        <div class="item-body">
+          <div class="item-title">Obchodní firma + IČO <span class="badge b-required">Povinné</span></div>
+          <p class="item-desc">Na dveřích nebo štítku u vstupu musí být viditelně: <strong>Nutworld s.r.o.</strong> a IČO. Stačí tabulka nebo samolepka — musí být čitelná zvenku i při zavřených dveřích.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-left"><div class="item-dot dot-brown">!</div></div>
+        <div class="item-body">
+          <div class="item-title">Provozní doba <span class="badge b-required">Povinné</span></div>
+          <p class="item-desc">Pokud do provozovny vstupují zákazníci nebo spolupracovníci, musí být viditelně uvedena provozní/pracovní doba.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-left"><div class="item-dot dot-red">Z</div></div>
+        <div class="item-body">
+          <div class="item-title">Zákaz vstupu nepovolaným osobám <span class="badge b-required">Povinné</span></div>
+          <p class="item-desc">Červená zákazová značka na vstupu do skladu / výroby. Platí zejména pro zákazníky a cizí osoby.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Únikové cesty -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🚪</div>
+      <h2>Únikové cesty a nouzové východy
+        <span class="sub">NV č. 101/2005 Sb. + zákon 133/1985 Sb. (požární ochrana)</span>
+      </h2>
+    </div>
+    <div class="item-list">
+      <div class="item">
+        <div class="item-left"><div class="item-dot dot-green">↑</div></div>
+        <div class="item-body">
+          <div class="item-title">Značení únikových cest po celé trase <span class="badge b-required">Povinné</span></div>
+          <p class="item-desc">Zelené šipky s panáčkem (ISO 7010 E001/E002) musí vést od každého pracovního místa k nouzovému východu. Nesmí být zakryté regály, paletami ani zbožím.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-left"><div class="item-dot dot-green">E</div></div>
+        <div class="item-body">
+          <div class="item-title">Nouzový východ — označení dveří <span class="badge b-required">Povinné</span></div>
+          <p class="item-desc">Zelená značka „Nouzový východ" (běžící panáček) přímo nad nebo na dveřích úniku. Musí svítit nebo být retroreflexní — viditelné i bez elektřiny.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-left"><div class="item-dot dot-green">📋</div></div>
+        <div class="item-body">
+          <div class="item-title">Evakuační plán <span class="badge b-required">Povinné</span></div>
+          <p class="item-desc">Schéma budovy s vyznačenými únikovými cestami, místem sboru a umístěním hasicích přístrojů. Musí viset na <strong>viditelném místě</strong> (chodba, kuchyňka, vstupní hala). Minimálně 1× ročně aktualizovat.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Požární ochrana -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🧯</div>
+      <h2>Požární ochrana
+        <span class="sub">Zákon č. 133/1985 Sb. + vyhláška 246/2001 Sb.</span>
+      </h2>
+    </div>
+    <div class="item-list">
+      <div class="item">
+        <div class="item-left"><div class="item-dot dot-red">HP</div></div>
+        <div class="item-body">
+          <div class="item-title">Označení hasicích přístrojů <span class="badge b-required">Povinné</span></div>
+          <p class="item-desc">Červená značka „Hasicí přístroj" nad každým přístrojem — musí být viditelná i při plném skladu. HP nesmí být ničím zakrytý ani blokovaný (volný prostor min. 1 m před ním).</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-left"><div class="item-dot dot-red">HP</div></div>
+        <div class="item-body">
+          <div class="item-title">Revize HP <span class="badge b-required">Povinné</span></div>
+          <p class="item-desc">Každý hasicí přístroj musí mít platnou revizní štítku (<strong>1× ročně kontrola, každých 5 let tlaková zkouška</strong>). Bez platné revize je to jako mít ho vůbec.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-left"><div class="item-dot dot-red">⚠</div></div>
+        <div class="item-body">
+          <div class="item-title">Požární řád a požární poplachová směrnice <span class="badge b-required">Povinné</span></div>
+          <p class="item-desc">Dokument co dělat při požáru — musí viset vedle evakuačního plánu. Obsahuje: co dělat, kam volat (150 HZS, 155 ZZS, 112), kdo je požární preventista firmy.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. BOZP na pracovišti -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">⛑️</div>
+      <h2>BOZP — bezpečnost na pracovišti
+        <span class="sub">Zákon č. 262/2006 Sb. (zákoník práce) + NV 101/2005 Sb.</span>
+      </h2>
+    </div>
+    <div class="item-list">
+      <div class="item">
+        <div class="item-left"><div class="item-dot dot-green">+</div></div>
+        <div class="item-body">
+          <div class="item-title">Lékárnička — označení a umístění <span class="badge b-required">Povinné</span></div>
+          <p class="item-desc">Zelená značka s bílým křížem musí být viditelná. Lékárnička nesmí být zamčená. Musí být doplněná (platné zásoby) a mít přiložený <strong>sešit úrazů</strong> pro záznam drobných úrazů.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-left"><div class="item-dot dot-blue">P</div></div>
+        <div class="item-body">
+          <div class="item-title">Příkazové značky — OOPP <span class="badge b-required">Povinné</span></div>
+          <p class="item-desc">Modrá kulatá značka kdekoliv, kde se musí nosit ochranné pomůcky. Pro Nutworld typicky: <strong>rukavice při balení, rouška/čepice ve výrobním prostoru, pracovní obuv ve skladu.</strong></p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-left"><div class="item-dot dot-yellow">⚡</div></div>
+        <div class="item-body">
+          <div class="item-title">Elektrické rozvaděče a nebezpečná místa <span class="badge b-required">Povinné</span></div>
+          <p class="item-desc">Žlutá výstražná značka „Nebezpečí úrazu elektrickým proudem" na rozvaděčích. Rozvaděč musí být označen a viditelně přístupný (ne zastavěný zbožím).</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-left"><div class="item-dot dot-brown">📞</div></div>
+        <div class="item-body">
+          <div class="item-title">Nouzové telefonní čísla <span class="badge b-required">Povinné</span></div>
+          <p class="item-desc">Na viditelném místě (nejlépe u lékárničky nebo kuchyňce): <strong>150 — hasiči, 155 — záchranná, 158 — policie, 112 — tísňová</strong>. Přidat i číslo na odpovědnou osobu firmy.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Potravinářský provoz -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🥜</div>
+      <h2>Potravinářský provoz — hygienická označení
+        <span class="sub">Nařízení ES 852/2004 (hygiena potravin) + zákon 110/1997 Sb.</span>
+      </h2>
+    </div>
+    <div class="item-list">
+      <div class="item">
+        <div class="item-left"><div class="item-dot dot-blue">🙌</div></div>
+        <div class="item-body">
+          <div class="item-title">Označení místa pro mytí rukou <span class="badge b-food">Potraviny</span></div>
+          <p class="item-desc">Umyvadlo pro hygienu rukou musí být <strong>viditelně označeno</strong> a u něj musí být: mýdlo, papírové ručníky (nebo sušič), postup mytí rukou (plakát). NE společné s mycím dřezem pro nářadí.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-left"><div class="item-dot dot-blue">🚫</div></div>
+        <div class="item-body">
+          <div class="item-title">Zákaz vstupu s jídlem, kouřením, šperky <span class="badge b-food">Potraviny</span></div>
+          <p class="item-desc">Na vstupu do výrobního / balícího prostoru: zákazové značky — <strong>zákaz kouření, zákaz vstupu s jídlem a pitím, povinnost nasadit pokrývku hlavy</strong> a čisté oblečení.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-left"><div class="item-dot dot-yellow">⚠</div></div>
+        <div class="item-body">
+          <div class="item-title">Označení alergenů v prostoru <span class="badge b-food">Potraviny</span></div>
+          <p class="item-desc">Pokud v jednom prostoru pracujete s více produkty s různými alergeny, musí být <strong>jasně odděleny a označeny</strong> zóny/police/nádoby — minimálně barevným štítkem nebo tabulkou s názvem alergenu.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-left"><div class="item-dot dot-yellow">🌡</div></div>
+        <div class="item-body">
+          <div class="item-title">Skladovací podmínky — teplotní označení <span class="badge b-food">Potraviny</span></div>
+          <p class="item-desc">Každá zóna skladu musí mít viditelně uvedenou <strong>požadovanou teplotu a vlhkost</strong> (např. „Suchý sklad: 15–18 °C, max. 60 % RH"). Teplota se musí pravidelně měřit a zapisovat.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Doporučené -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">💡</div>
+      <h2>Doporučené (není povinné, ale chrání firmu)
+      </h2>
+    </div>
+    <div class="item-list">
+      <div class="item">
+        <div class="item-left"><div class="item-dot dot-brown">📷</div></div>
+        <div class="item-body">
+          <div class="item-title">Oznámení o kamerovém systému <span class="badge b-rec">Doporučeno</span></div>
+          <p class="item-desc">Pokud máš kamery, musí být na vstupech cedule: <strong>„Prostor je monitorován kamerovým systémem"</strong> + kdo je správce dat (Nutworld s.r.o. + kontakt). Povinnost ze zákona o ochraně osobních údajů (GDPR).</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-left"><div class="item-dot dot-brown">⚖</div></div>
+        <div class="item-body">
+          <div class="item-title">Váhy — ověření metrologické <span class="badge b-rec">Doporučeno</span></div>
+          <p class="item-desc">Pokud vážíte zboží pro zákazníky, musí být váhy úředně ověřeny (ČMI nebo autorizované pracoviště). Na váze musí být platná <strong>metrologická nálepka</strong>.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-left"><div class="item-dot dot-brown">🪧</div></div>
+        <div class="item-body">
+          <div class="item-title">Interní pracovní řád — viditelné vyvěšení <span class="badge b-rec">Doporučeno</span></div>
+          <p class="item-desc">Pracovní řád (pokud ho firma má) musí být dostupný všem — stačí nástěnka nebo šanon na přístupném místě. Ochrana pro firmu při řešení sporů.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Checklist -->
+  <div class="section">
+    <div class="cl-title">✅ Checklist — přejít provozovnu a odškrtnout</div>
+
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Tabulka na vstupu: Nutworld s.r.o. + IČO + provozní doba
+        <span class="check-meta">Živnostenský zákon §17</span>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Evakuační plán vyvěšen na viditelném místě (chodba / vstup)
+        <span class="check-meta">NV 101/2005 Sb.</span>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Zelené šipky po celé trase úniku až k nouzovému východu
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Nouzový východ označen zelenou značkou (viditelná i bez světla)
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Hasicí přístroje označeny červenou značkou, volně přístupné, platná revize
+        <span class="check-meta">Revize 1× ročně, tlaková zkouška každých 5 let</span>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Požární řád a poplachová směrnice vyvěšeny
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Lékárnička označena, odemčena, doplněna, sešit úrazů přiložen
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Nouzová čísla (150/155/158/112) vyvěšena u lékárničky
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Rozvaděče označeny výstražnou žlutou značkou, volně přístupné
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Modrá příkazová značka u míst kde jsou povinné OOPP (rukavice, čepice…)
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Umyvadlo pro hygienu rukou: označeno, mýdlo, papírové ručníky, postup mytí
+        <span class="check-meta">Potravinářský provoz</span>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Vstup do balícího prostoru: zákaz kouření, pokrývka hlavy, zákaz jídla
+        <span class="check-meta">Potravinářský provoz</span>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Police/zóny s alergeny označeny a odděleny od ostatního zboží
+        <span class="check-meta">Potravinářský provoz</span>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Teplotní požadavky v každé skladové zóně viditelně uvedeny
+        <span class="check-meta">Potravinářský provoz</span>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <input type="checkbox">
+      <div class="check-text">Cedule o kamerovém systému na vstupu (pokud jsou kamery)
+        <span class="check-meta">GDPR</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    Nutworld s.r.o. · Interní dokument · Říjen 2026 · Při pochybnostech konzultuj BOZP technika nebo KHS.
+  </div>
+
+</div>
+
+<script>
+  function toggle(item) {
+    const cb = item.querySelector('input[type=checkbox]');
+    cb.checked = !cb.checked;
+    item.classList.toggle('done', cb.checked);
+  }
+</script>
+
+<script src="pin-guard.js"></script>
+</body>
+</html>
