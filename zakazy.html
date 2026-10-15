@@ -221,6 +221,25 @@ function buildFilters() {
     btn.onclick = function(){ setFilter(l.id, this); };
     row.appendChild(btn);
   });
+  // Smart filter: Zabaleno (label na kartě)
+  const zCnt = allCards.filter(c => isZabaleno(c)).length;
+  if (zCnt > 0) {
+    const zBtn = document.createElement('button');
+    zBtn.className = 'filter-btn';
+    zBtn.dataset.list = 'zabaleno';
+    zBtn.textContent = '📦 Zabaleno (' + zCnt + ')';
+    zBtn.onclick = function(){ setFilter('zabaleno', this); };
+    zBtn.style.borderColor = '#2e7d32';
+    zBtn.style.color = '#2e7d32';
+    row.appendChild(zBtn);
+  }
+}
+
+function isZabaleno(card) {
+  const labels = card.labels || [];
+  if (labels.some(l => (l.name || '').toLowerCase().includes('zabal'))) return true;
+  const desc = (card.desc || '').toLowerCase();
+  return desc.includes('zabaleno: ✓') || desc.includes('zabaleno: ano') || desc.includes('✅ zabaleno');
 }
 
 function setFilter(listId, el) {
@@ -327,7 +346,8 @@ function renderCards() {
   const q = (document.getElementById('search').value || '').toLowerCase();
   let cards = allCards;
 
-  if (activeFilter !== 'all') cards = cards.filter(c => c.idList === activeFilter);
+  if (activeFilter === 'zabaleno') cards = cards.filter(c => isZabaleno(c));
+  else if (activeFilter !== 'all') cards = cards.filter(c => c.idList === activeFilter);
   if (q) cards = cards.filter(c => c.name.toLowerCase().includes(q));
 
   // Řazení
