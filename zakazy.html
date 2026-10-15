@@ -253,9 +253,25 @@ function isZabaleno(card) {
 function toggleZabaleno(cardId, event) {
   event.stopPropagation();
   const current = localStorage.getItem('zabaleno_' + cardId) === 'true';
-  try { localStorage.setItem('zabaleno_' + cardId, current ? 'false' : 'true'); } catch(e) {}
+  const newVal = !current;
+  try { localStorage.setItem('zabaleno_' + cardId, newVal ? 'true' : 'false'); } catch(e) {}
+
+  // Aktualizuj tlačítko a kartu in-place (sort nepřeskočí)
+  const btn = event.target.closest ? event.target.closest('button') : event.target;
+  const cardEl = btn && btn.closest ? btn.closest('.zakaz-card') : null;
+  if (btn) {
+    btn.style.background = newVal ? '#2e7d32' : 'white';
+    btn.style.color = newVal ? 'white' : '#666';
+    btn.style.borderColor = newVal ? '#2e7d32' : '#ccc';
+    btn.textContent = newVal ? '✅ Zabaleno — klikni pro zrušení' : '📦 Označit jako zabaleno';
+  }
+  if (cardEl) {
+    cardEl.style.borderLeftColor = newVal ? '#2e7d32' : '';
+    cardEl.classList.toggle('je-zabaleno', newVal);
+  }
+
   buildFilters();
-  renderCards();
+  if (activeFilter === 'zabaleno') renderCards();
 }
 
 function setFilter(listId, el) {
@@ -410,6 +426,11 @@ function renderCards() {
     document.getElementById('s-due').textContent = dueCount;
   }
 
+  // Zabaleno filtr: vždy seřadit podle firmy A–Z
+  if (activeFilter === 'zabaleno') {
+    cards = [...cards].sort((a, b) => a.name.localeCompare(b.name, 'cs'));
+  }
+
   if (cards.length === 0) {
     document.getElementById('main-content').innerHTML = `
       <div class="state-box">
@@ -418,6 +439,10 @@ function renderCards() {
       </div>`;
     return;
   }
+
+  const zabalenoBanner = activeFilter === 'zabaleno'
+    ? `<div style="background:#e8f5e9;border:1.5px solid #2e7d32;border-radius:8px;padding:10px 16px;margin-bottom:12px;font-weight:700;color:#2e7d32;font-size:13px">✅ Zobrazeno ${cards.length} zabalených zakázek — klikni na kartu pro otevření v Trellu</div>`
+    : '';
 
   const html = cards.map(card => {
     const p = parseCard(card);
@@ -463,7 +488,7 @@ function renderCards() {
     </div>`;
   }).join('');
 
-  document.getElementById('main-content').innerHTML = `<div class="cards-grid">${html}</div>`;
+  document.getElementById('main-content').innerHTML = zabalenoBanner + `<div class="cards-grid">${html}</div>`;
 }
 
 function esc(s) {
