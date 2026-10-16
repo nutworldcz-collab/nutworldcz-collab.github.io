@@ -1,48 +1,39 @@
 {
-  "generated": "2026-10-15T08:30:15",
-  "period": "2026-10-08 – 2026-10-14",
+  "generated": "2026-10-16T09:12:23",
+  "period": "2026-10-09 – 2026-10-15",
   "channels": {
     "Meta CZ": {
-      "spend": 19162.0,
-      "revenue": 93179.0,
-      "pno": 20.6,
-      "conversions": 93.0,
-      "clicks": 5047,
-      "prev_spend": 18909.0,
-      "prev_pno": 24.8
+      "error": "HTTPSConnectionPool(host='graph.facebook.com', port=443): Read timed out. (read timeout=30)"
     },
     "Meta SK": {
-      "spend": 270.0,
-      "revenue": 2544.0,
-      "pno": 10.6,
-      "conversions": 28.0,
-      "clicks": 2178,
-      "prev_spend": 279.0,
-      "prev_pno": 14.9
+      "error": "('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))"
     },
     "Google CZ": {
-      "spend": 5613.0,
-      "revenue": 53143.0,
-      "pno": 10.6,
-      "conversions": 43.0,
-      "clicks": 1837,
-      "prev_spend": 6082.0,
-      "prev_pno": 6.4
+      "spend": 5645.0,
+      "revenue": 61397.0,
+      "pno": 9.2,
+      "conversions": 46.0,
+      "clicks": 1832,
+      "prev_spend": 6011.0,
+      "prev_pno": 7.7
     },
     "Google SK": {
-      "spend": 3190.0,
-      "revenue": 10925.0,
-      "pno": 29.2,
-      "conversions": 8.0,
-      "clicks": 411,
-      "prev_spend": 3158.0,
-      "prev_pno": 10.8
+      "spend": 3188.0,
+      "revenue": 4780.0,
+      "pno": 66.7,
+      "conversions": 7.0,
+      "clicks": 406,
+      "prev_spend": 3215.0,
+      "prev_pno": 18.8
     }
   },
   "anomalies": [
-    "🟡 Google SK: PNO zhoršilo o 18.4pp vs minulý týden"
+    "⚠️ Meta CZ: chyba připojení",
+    "⚠️ Meta SK: chyba připojení",
+    "🔴 Google SK: PNO 66.7% — nad break-even (40%)",
+    "🟡 Google SK: PNO zhoršilo o 47.9pp vs minulý týden"
   ],
   "priorities": [
-    "Nejlepší kanál: Google CZ (PNO 10.6%) — zvýšit budget?"
+    "Zkontrolovat kampaně Google SK — PNO 66.7%"
   ]
 }
