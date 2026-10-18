@@ -1,6 +1,50 @@
 {
-  "generated": "2026-10-18T07:44:14",
-  "total": 0,
+  "generated": "2026-10-18T12:00:24",
+  "total": 3,
   "spam_skipped": 0,
-  "emails": []
+  "emails": [
+    {
+      "account": "Exchange",
+      "sender": "Allegro <info@notifikace.allegro.cz>",
+      "subject": "DNES O PŮLNOCI končí Allegro Days i váš kupón 🚨",
+      "date": "neděle 18. října 2026 10:26:52",
+      "unread": true,
+      "preview": "￼ ￼ Dobrý den",
+      "category": "ostatni",
+      "sender_short": "Allegro",
+      "sender_email": "info@notifikace.allegro.cz",
+      "ai": {
+        "shrn": "Notifikace od Allegro o končícím kupónu a Allegro Days. Nemá vztah k činnosti Nutworld.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 3 upozornění od poslední návštěvy 9:15 (18. října 2026)",
+      "date": "neděle 18. října 2026 9:17:48",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Renata Pošepná připojil(a) přílohu IMG_20261017_070915.jpg ke kartě MEKRS",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "InfoNutWorld <info@nutworld.cz>",
+      "subject": "Fw: Dárek 🎁 jako poděkování za Váš nákup",
+      "date": "neděle 18. října 2026 8:21:01",
+      "unread": false,
+      "preview": "Zasláno z Outlooku pro Android From: michalajandova@seznam.cz <michalajandova@seznam.cz> Sent: Sunday",
+      "category": "tym",
+      "sender_short": "InfoNutWorld",
+      "sender_email": "info@nutworld.cz",
+      "ai": {
+        "shrn": "Interní email od zákaznice Michaely Jandové s děkovným dopisem za nákup. Vyžaduje zvážení, zda a jak reagovat.",
+        "tyka_se": true,
+        "akce": "Zvážit odpověď zákaznici a případně poděkování za feedback"
+      }
+    }
+  ]
 }
