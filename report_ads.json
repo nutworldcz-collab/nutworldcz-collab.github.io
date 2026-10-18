@@ -1,49 +1,49 @@
 {
-  "generated": "2026-10-17T08:35:46",
-  "period": "2026-10-10 – 2026-10-16",
+  "generated": "2026-10-18T08:59:56",
+  "period": "2026-10-11 – 2026-10-17",
   "channels": {
     "Meta CZ": {
-      "spend": 19988.0,
-      "revenue": 121284.0,
-      "pno": 16.5,
-      "conversions": 111.0,
-      "clicks": 5227,
-      "prev_spend": 18772.0,
-      "prev_pno": 24.9
+      "spend": 20488.0,
+      "revenue": 128201.0,
+      "pno": 16.0,
+      "conversions": 117.0,
+      "clicks": 5400,
+      "prev_spend": 18673.0,
+      "prev_pno": 25.0
     },
     "Meta SK": {
-      "spend": 250.0,
-      "revenue": 1262.0,
-      "pno": 19.8,
+      "spend": 240.0,
+      "revenue": 1487.0,
+      "pno": 16.1,
       "conversions": 20.0,
-      "clicks": 2018,
-      "prev_spend": 279.0,
-      "prev_pno": 10.2
+      "clicks": 1988,
+      "prev_spend": 280.0,
+      "prev_pno": 11.7
     },
     "Google CZ": {
-      "spend": 5601.0,
-      "revenue": 56819.0,
-      "pno": 9.9,
-      "conversions": 47.0,
-      "clicks": 1779,
-      "prev_spend": 5895.0,
-      "prev_pno": 7.9
+      "spend": 5576.0,
+      "revenue": 50915.0,
+      "pno": 11.0,
+      "conversions": 41.3,
+      "clicks": 1620,
+      "prev_spend": 5839.0,
+      "prev_pno": 7.8
     },
     "Google SK": {
-      "spend": 3234.0,
-      "revenue": 5650.0,
-      "pno": 57.2,
-      "conversions": 8.0,
-      "clicks": 385,
-      "prev_spend": 3221.0,
-      "prev_pno": 19.4
+      "spend": 3331.0,
+      "revenue": 5698.0,
+      "pno": 58.5,
+      "conversions": 9.0,
+      "clicks": 369,
+      "prev_spend": 3237.0,
+      "prev_pno": 22.4
     }
   },
   "anomalies": [
-    "🔴 Google SK: PNO 57.2% — nad break-even (40%)",
-    "🟡 Google SK: PNO zhoršilo o 37.9pp vs minulý týden"
+    "🔴 Google SK: PNO 58.5% — nad break-even (40%)",
+    "🟡 Google SK: PNO zhoršilo o 36.1pp vs minulý týden"
   ],
   "priorities": [
-    "Zkontrolovat kampaně Google SK — PNO 57.2%"
+    "Zkontrolovat kampaně Google SK — PNO 58.5%"
   ]
 }
