@@ -1,0 +1,1930 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>HACCP Plán — Nut World s.r.o.</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* Layout: printable A4-style HACCP document */
+:root {
+  --bg: #ffffff;
+  --bg-soft: #f8f5f1;
+  --fg: #111111;
+  --fg-mid: #444444;
+  --fg-muted: #777777;
+  --border: #cccccc;
+  --border-light: #e5e5e5;
+  --accent: #83502e;
+  --accent-dk: #5c381f;
+  --accent-soft: #f1e6da;
+  --ccp: #b91c1c;
+  --ccp-bg: #fef2f2;
+  --ccp-border: #fca5a5;
+  --oprp: #1e40af;
+  --oprp-bg: #eff6ff;
+  --oprp-border: #93c5fd;
+  --prp: #166534;
+  --prp-bg: #f0fdf4;
+  --prp-border: #86efac;
+  --sig-yes: #b91c1c;
+  --sig-no: #166534;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1a1008; --bg-soft: #231508; --fg: #ede0d0; --fg-mid: #c0a888;
+    --fg-muted: #9a8070; --border: #4a3020; --border-light: #382010;
+    --accent: #c97840; --accent-dk: #e09860; --accent-soft: #3a2010;
+    --ccp: #f87171; --ccp-bg: #2a0808; --ccp-border: #7f1d1d;
+    --oprp: #93c5fd; --oprp-bg: #0a1428; --oprp-border: #1e3a8a;
+    --prp: #86efac; --prp-bg: #022810; --prp-border: #14532d;
+    --sig-yes: #f87171; --sig-no: #86efac;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1a1008; --bg-soft: #231508; --fg: #ede0d0; --fg-mid: #c0a888;
+  --fg-muted: #9a8070; --border: #4a3020; --border-light: #382010;
+  --accent: #c97840; --accent-dk: #e09860; --accent-soft: #3a2010;
+  --ccp: #f87171; --ccp-bg: #2a0808; --ccp-border: #7f1d1d;
+  --oprp: #93c5fd; --oprp-bg: #0a1428; --oprp-border: #1e3a8a;
+  --prp: #86efac; --prp-bg: #022810; --prp-border: #14532d;
+  --sig-yes: #f87171; --sig-no: #86efac;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+
+body {
+  font-family: 'Source Sans 3', Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  background: var(--bg);
+  color: var(--fg);
+  padding-inline: 20px;
+  padding-block: 20px;
+}
+
+/* Screen-only nav */
+.screen-nav {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  background: var(--accent-dk);
+  border-radius: 8px;
+  padding: 9px 14px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px 8px;
+  margin-bottom: 24px;
+  z-index: 100;
+}
+.screen-nav span {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(241,230,218,0.7);
+  margin-right: 4px;
+}
+.screen-nav a {
+  font-size: 11.5px;
+  color: #f1e6da;
+  text-decoration: none;
+  padding: 3px 9px;
+  border-radius: 4px;
+  border: 1px solid rgba(241,230,218,0.2);
+  opacity: 0.85;
+  transition: opacity 0.12s, background 0.12s;
+}
+.screen-nav a:hover { opacity: 1; background: rgba(241,230,218,0.12) }
+
+/* Document */
+.doc-wrap { max-width: 900px; margin-inline: auto }
+
+/* Cover page */
+.cover {
+  border: 2px solid var(--accent);
+  border-radius: 4px;
+  padding: 36px 40px;
+  margin-bottom: 32px;
+  text-align: center;
+}
+.cover-logo {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 24px;
+}
+.cover h1 {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--fg);
+  margin-bottom: 6px;
+  text-wrap: balance;
+}
+.cover-sub {
+  font-size: 15px;
+  color: var(--fg-mid);
+  margin-bottom: 28px;
+}
+.cover-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 24px;
+  text-align: left;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+  margin-top: 4px;
+}
+.cm-label { font-size: 11px; color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.8px }
+.cm-val { font-size: 14px; color: var(--fg); font-weight: 600; border-bottom: 1px solid var(--border); padding-bottom: 4px; min-height: 26px }
+.cm-line { font-size: 11px; color: var(--fg-muted); margin-top: 2px }
+
+/* Sections */
+.section {
+  margin-bottom: 32px;
+  page-break-inside: avoid;
+}
+.sec-hd {
+  background: var(--accent-soft);
+  border-left: 4px solid var(--accent);
+  padding: 10px 16px;
+  margin-bottom: 14px;
+  border-radius: 0 4px 4px 0;
+}
+.sec-num {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1px;
+}
+.sec-title {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--accent-dk);
+  text-wrap: balance;
+}
+
+/* Body text */
+p { margin-bottom: 10px }
+ul, ol { margin-left: 20px; margin-bottom: 10px }
+li { margin-bottom: 3px }
+strong { color: var(--fg) }
+
+h3 {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--fg);
+  margin-bottom: 6px;
+  margin-top: 16px;
+}
+
+/* Tables */
+.tbl-wrap { overflow-x: auto; margin-bottom: 16px }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  min-width: 540px;
+}
+th {
+  background: var(--bg-soft);
+  color: var(--fg-mid);
+  font-family: 'Exo 2', sans-serif;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  padding: 8px 10px;
+  text-align: left;
+  border: 1px solid var(--border);
+  font-weight: 700;
+}
+td {
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.5;
+}
+tr:nth-child(even) td { background: var(--bg-soft) }
+
+/* CCP badges */
+.badge {
+  display: inline-block;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.badge-ccp { background: var(--ccp-bg); color: var(--ccp); border: 1px solid var(--ccp-border) }
+.badge-oprp { background: var(--oprp-bg); color: var(--oprp); border: 1px solid var(--oprp-border) }
+.badge-prp { background: var(--prp-bg); color: var(--prp); border: 1px solid var(--prp-border) }
+.sig-yes { font-weight: 700; color: var(--sig-yes) }
+.sig-no { font-weight: 700; color: var(--sig-no) }
+
+/* Flow diagram */
+.flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin: 16px auto;
+  max-width: 380px;
+}
+.flow-step {
+  width: 100%;
+  border: 1.5px solid var(--border);
+  border-radius: 4px;
+  padding: 9px 16px;
+  background: var(--bg);
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fg);
+  position: relative;
+}
+.flow-step.has-ccp { border-color: var(--ccp); background: var(--ccp-bg) }
+.flow-step.has-oprp { border-color: var(--oprp); background: var(--oprp-bg) }
+.flow-num {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--fg-muted);
+  display: block;
+  margin-bottom: 1px;
+}
+.flow-arrow {
+  font-size: 18px;
+  color: var(--fg-muted);
+  line-height: 1.1;
+  display: block;
+  padding: 2px 0;
+}
+.flow-badge {
+  position: absolute;
+  right: -80px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Exo 2', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.flow-badge.ccp { background: var(--ccp-bg); color: var(--ccp); border: 1px solid var(--ccp-border) }
+.flow-badge.oprp { background: var(--oprp-bg); color: var(--oprp); border: 1px solid var(--oprp-border) }
+
+/* Boxes */
+.info-box {
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+.rule-box {
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  padding: 10px 14px;
+  border-radius: 0 4px 4px 0;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+.ccp-box {
+  background: var(--ccp-bg);
+  border: 1.5px solid var(--ccp-border);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  page-break-inside: avoid;
+}
+.ccp-box-title {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--ccp);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Legend */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+/* Sign row */
+.sign-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  margin-top: 16px;
+}
+.sign-field { border-top: 1px solid var(--border); padding-top: 6px }
+.sign-label { font-size: 11px; color: var(--fg-muted) }
+
+/* Print styles */
+@media print {
+  .screen-nav { display: none }
+  body { padding-inline: 0; padding-block: 0; font-size: 11px }
+  .doc-wrap { max-width: 100% }
+  .cover { border: 1.5px solid #83502e; page-break-after: always; margin-bottom: 0 }
+  .section { margin-bottom: 20px }
+  .sec-hd { padding: 7px 12px; margin-bottom: 10px }
+  .sec-title { font-size: 14px }
+  th { font-size: 9px; padding: 5px 7px }
+  td { font-size: 10px; padding: 5px 7px }
+  .flow-badge { display: none }
+  h3 { font-size: 11px }
+  .tbl-wrap { overflow-x: visible }
+  table { min-width: unset }
+  .ccp-box { page-break-inside: avoid }
+  .section { page-break-inside: avoid }
+}
+
+@media (max-width: 480px) {
+  .cover-meta { grid-template-columns: 1fr }
+  .sign-row { grid-template-columns: 1fr }
+  .flow-badge { display: none }
+}
+</style>
+</head>
+<body>
+
+<nav class="screen-nav">
+  <span>HACCP</span>
+  <a href="#tym">Tým</a>
+  <a href="#produkt">Produkt</a>
+  <a href="#diagram">Diagram</a>
+  <a href="#analyza">Analýza</a>
+  <a href="#ccp">CCP</a>
+  <a href="#overovani">Ověřování</a>
+  <a href="#zaznamy">Záznamy</a>
+  <a href="#krizovy">Krizový plán</a>
+  <a href="#prilohy">Přílohy 1–8</a>
+  <a href="#decision-tree">P9 Strom</a>
+  <a href="#alergen-matice">P10 Alergeny</a>
+  <a href="#sledovatelnost">P11 Traceability</a>
+  <a href="#schema">P12 Schéma</a>
+  <a href="#kalibrace">P13 Kalibrace</a>
+</nav>
+
+<div class="doc-wrap">
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-logo">Nut World s.r.o.</div>
+  <h1>HACCP PLÁN</h1>
+  <p class="cover-sub">Analýza nebezpečí a kritické kontrolní body<br>Přebalování trvanlivých potravin</p>
+  <div class="cover-meta">
+    <div>
+      <div class="cm-label">Sídlo společnosti</div>
+      <div class="cm-val">Nut World s.r.o., Hvězdova 1716/2b, Praha 4, 140 00</div>
+      <div class="cm-line">IČO: 27517357</div>
+    </div>
+    <div>
+      <div class="cm-label">Provozovna</div>
+      <div class="cm-val">IDA 825, Rtyně v Podkrkonoší</div>
+      <div class="cm-line">Přebalování suchých trvanlivých potravin</div>
+    </div>
+    <div>
+      <div class="cm-label">Verze dokumentu</div>
+      <div class="cm-val">1.0</div>
+    </div>
+    <div>
+      <div class="cm-label">Datum vydání</div>
+      <div class="cm-val"></div>
+    </div>
+    <div>
+      <div class="cm-label">Zpracoval</div>
+      <div class="cm-val"></div>
+    </div>
+    <div>
+      <div class="cm-label">Schválil</div>
+      <div class="cm-val"></div>
+    </div>
+    <div style="grid-column: 1 / -1">
+      <div class="cm-label">Podpis</div>
+      <div class="cm-val"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 1. HACCP TÝM -->
+<div class="section" id="tym">
+  <div class="sec-hd">
+    <div class="sec-num">Sekce 1</div>
+    <div class="sec-title">HACCP tým</div>
+  </div>
+  <p>HACCP tým je zodpovědný za sestavení, implementaci, udržování a přezkoumání HACCP plánu.</p>
+  <div class="tbl-wrap">
+    <table>
+      <tr>
+        <th>Jméno a příjmení</th>
+        <th>Pozice</th>
+        <th>Odpovědnost v HACCP</th>
+        <th>Vzdělání / odbornost</th>
+      </tr>
+      <tr>
+        <td></td>
+        <td>Vedoucí provozu / Jednatel</td>
+        <td>Vedoucí HACCP týmu, schválení plánu, přezkoumání</td>
+        <td>Školení HACCP, potravinářská legislativa</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>Vedoucí výroby / balírny</td>
+        <td>Implementace CCP, monitoring, nápravná opatření</td>
+        <td>Hygiena potravin, alergeny</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>Vedoucí skladu</td>
+        <td>Vstupní kontrola, skladování, sledovatelnost</td>
+        <td>Příjem surovin, K2 systém</td>
+      </tr>
+    </table>
+  </div>
+  <div class="info-box">
+    <strong>Přezkoumání HACCP plánu:</strong> Minimálně 1× ročně nebo při každé změně sortimentu, procesu, zařízení nebo prostoru. Záznamy o přezkoumání jsou součástí přílohy tohoto dokumentu.
+  </div>
+</div>
+
+<!-- 2. POPIS VÝROBKU -->
+<div class="section" id="produkt">
+  <div class="sec-hd">
+    <div class="sec-num">Sekce 2</div>
+    <div class="sec-title">Popis výrobku a zamýšlené použití</div>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr>
+        <th>Parametr</th>
+        <th>Popis</th>
+      </tr>
+      <tr>
+        <td><strong>Typ provozovny</strong></td>
+        <td>Přebalovna trvanlivých suchých potravin — bez výroby surovin, bez tepelného zpracování</td>
+      </tr>
+      <tr>
+        <td><strong>Hlavní skupiny produktů</strong></td>
+        <td>Ořechy a oříšky (mandle, kešu, vlašské, lískovce, pekan, pistácie, para ořechy, makadamie), arašídy, semena (dýňová, slunečnicová, sezam, chia aj.), sušené ovoce, lyofilizované ovoce, čokoládové výrobky, dárková balení a mixované produkty</td>
+      </tr>
+      <tr>
+        <td><strong>Původ surovin</strong></td>
+        <td>Nakupováno od schválených dodavatelů (hlavní dodavatelé s certifikací IFS Food nebo srovnatelnou)</td>
+      </tr>
+      <tr>
+        <td><strong>Způsob zpracování</strong></td>
+        <td>Příjem → skladování v originálních obalech → přebalení do spotřebitelských balení → označení etiketou → expedice</td>
+      </tr>
+      <tr>
+        <td><strong>Balení</strong></td>
+        <td>Spotřebitelská balení (sáčky, kelímky, skleničky, dárkové krabičky) — uzavřená, označená dle EU 1169/2011</td>
+      </tr>
+      <tr>
+        <td><strong>Trvanlivost</strong></td>
+        <td>Dle DMT dodavatele — produkty nejsou tepelně zpracovávány, trvanlivost se nemění</td>
+      </tr>
+      <tr>
+        <td><strong>Skladovací podmínky</strong></td>
+        <td>Suché, tmavé prostředí, max. 22 °C, max. 70 % rel. vlhkost (čokoládové výrobky max. 20 °C)</td>
+      </tr>
+      <tr>
+        <td><strong>Zamýšlené použití</strong></td>
+        <td>Přímá spotřeba bez dalšího tepelného zpracování</td>
+      </tr>
+      <tr>
+        <td><strong>Cílová skupina</strong></td>
+        <td>Široká veřejnost — B2C zákazníci, B2B firmy. Výrobky nejsou speciálně určeny pro alergiky ani pro kojeneckou výživu.</td>
+      </tr>
+      <tr>
+        <td><strong>Zranitelné skupiny</strong></td>
+        <td>Osoby s alergií na ořechy, arašídy, sezam, mléko, sóju nebo siřičitany — deklarace alergenů na etiketě je kritická</td>
+      </tr>
+      <tr>
+        <td><strong>Distribuce</strong></td>
+        <td>E-shop (B2C), přímý odběr, B2B dodávky — prostřednictvím smluvních přepravců</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- 3. DIAGRAM TOKU -->
+<div class="section" id="diagram">
+  <div class="sec-hd">
+    <div class="sec-num">Sekce 3</div>
+    <div class="sec-title">Diagram toku výroby</div>
+  </div>
+  <p>Každý krok byl ověřen přímým pozorováním na provozovně IDA 825, Rtyně v Podkrkonoší, a odpovídá Provoznímu a hygienickému manuálu Nut World s.r.o. v. 1. Přebalovna je rozdělena na <strong>balírnu</strong> a <strong>dárkovnu</strong> — dvě oddělené místnosti přístupné výhradně z čisté zóny.</p>
+
+  <div style="display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;margin-top:12px">
+    <div class="flow" style="flex:0 0 280px">
+      <div class="flow-step">
+        <span class="flow-num">Krok 1</span>
+        Příjem suroviny od dodavatele
+      </div>
+      <span class="flow-arrow">↓</span>
+      <div class="flow-step has-oprp" style="position:relative">
+        <span class="flow-num">Krok 2</span>
+        Vstupní kontrola (množství, šarže, DMT, obaly)
+        <span class="flow-badge oprp">OPRP 1</span>
+      </div>
+      <span class="flow-arrow">↓</span>
+      <div class="flow-step" style="border-style:dashed;position:relative">
+        <span class="flow-num">Větvení</span>
+        Zboží v pořádku? → Ano ↓ / Ne → Karanténa
+      </div>
+      <span class="flow-arrow">↓</span>
+      <div class="flow-step">
+        <span class="flow-num">Krok 3</span>
+        Naskladnění — sklad surovin (K2)
+      </div>
+      <span class="flow-arrow">↓</span>
+      <div class="flow-step">
+        <span class="flow-num">Krok 4</span>
+        Výdej suroviny do balírny (K2)
+      </div>
+      <span class="flow-arrow">↓</span>
+      <div class="flow-step has-oprp" style="position:relative">
+        <span class="flow-num">Krok 5</span>
+        Otevření obalu — vizuální kontrola suroviny
+        <span class="flow-badge oprp">OPRP 2</span>
+      </div>
+      <span class="flow-arrow">↓</span>
+      <div class="flow-step has-ccp" style="position:relative">
+        <span class="flow-num">Krok 6</span>
+        Vážení a plnění — changeover, příprava kbelíku
+        <span class="flow-badge ccp">CCP 1</span>
+      </div>
+      <span class="flow-arrow">↓</span>
+      <div class="flow-step">
+        <span class="flow-num">Krok 7</span>
+        Uzavření obalu — kontinuální tavicí svářečka
+      </div>
+      <span class="flow-arrow">↓</span>
+      <div class="flow-step has-oprp" style="position:relative">
+        <span class="flow-num">Krok 8</span>
+        Kontrola svaru / výrobku — odvedení v K2
+        <span class="flow-badge oprp">OPRP 3</span>
+      </div>
+      <span class="flow-arrow">↓</span>
+      <div class="flow-step">
+        <span class="flow-num">Krok 9</span>
+        Sklad hotových výrobků (neetiketováno)
+      </div>
+      <span class="flow-arrow">↓</span>
+      <div class="flow-step" style="border-style:dashed">
+        <span class="flow-num">Větvení</span>
+        Balírna → Expedice (etiketa systém) &nbsp;|&nbsp; Dárkový → Dárkovna (etiketa tam)
+      </div>
+      <span class="flow-arrow">↓</span>
+      <div class="flow-step has-ccp has-oprp" style="position:relative;border-color:var(--ccp)">
+        <span class="flow-num">Krok 10A — Dárkovna (DJ zakázky)</span>
+        Kompletace + tisk etikety vlastní tiskárnou dárkovny
+        <span class="flow-badge ccp" style="top:30%">CCP 2</span>
+        <span class="flow-badge oprp" style="top:70%">OPRP 4</span>
+      </div>
+      <span class="flow-arrow">↓</span>
+      <div class="flow-step has-ccp" style="position:relative">
+        <span class="flow-num">Krok 10B — Expedice (balírna produkty)</span>
+        K2/Shoptet automaticky generuje a tiskne etiketu při vychystání
+        <span class="flow-badge ccp">CCP 2</span>
+      </div>
+      <span class="flow-arrow">↓</span>
+      <div class="flow-step">
+        <span class="flow-num">Krok 11</span>
+        Předání dopravci — kontrola počtu zásilek
+      </div>
+    </div>
+    <div style="flex:1;min-width:200px">
+      <h3>Legenda</h3>
+      <div class="legend">
+        <span class="badge badge-ccp">CCP</span>
+        <span style="font-size:12px;color:var(--fg-mid)">Kritický kontrolní bod</span>
+      </div>
+      <div class="legend">
+        <span class="badge badge-oprp">OPRP</span>
+        <span style="font-size:12px;color:var(--fg-mid)">Operační PRP</span>
+      </div>
+      <div class="legend">
+        <span class="badge badge-prp">PRP</span>
+        <span style="font-size:12px;color:var(--fg-mid)">Prerekvizitní program</span>
+      </div>
+      <div class="info-box" style="margin-top:16px">
+        <strong>Předpokladové programy (PRP)</strong> platné pro celý provoz:
+        <ul style="margin-top:6px">
+          <li><strong>Schválení dodavatelé</strong> — IFS Food nebo srovnatelná certifikace; CoA na vyžádání</li>
+          <li><strong>Hygiena pracovníků</strong> — vstupní protokol: přezutí (botník u vchodu) → šatna (2. patro) → pracovní oděv → vnitřní schodiště → čistá zóna → mytí rukou → pracoviště. Opakované mytí rukou po wc, odchodu z čisté zóny i po manipulaci s odpadem.</li>
+          <li><strong>Barevně označená manipulační technika</strong> — 2 elektrické paletové vozíky: <em>červená stuha = sklad</em>, <em>zelená stuha = balírna</em>. Záměna vozíků zakázána.</li>
+          <li><strong>Pracovní kbelíky a pomůcky</strong> — surovina se z otevřeného pytle přenáší do potravinářského kbelíku označeného názvem, šarží a DMT. Otevřený pytel nenechávat volně v balírně.</li>
+          <li><strong>Úklid a sanitace</strong> — úklidový plán s prostorem, frekvencí, odpovědnou osobou a kontrolou. Čisticí prostředky skladovány odděleně od potravin.</li>
+          <li><strong>Ochrana před škůdci (Rentokil)</strong> — záchytné/monitorovací stanice na potravinářské moly, elektrický lapač molů přímo na balírně, záchytné stanice na hlodavce. Sítě proti hmyzu na větracích oknech. Pravidelný servis dle smlouvy s Rentokil. Nález → oddělení zboží → vedoucí → Rentokil.</li>
+          <li><strong>Skladovací podmínky</strong> — max. 22 °C, max. 70 % rel. vlhkost; čokoládové výrobky max. 20 °C. FIFO. Neshodné zboží zóna <em>„NESHODNÉ ZBOŽÍ – NEPOUŽÍVAT"</em>, zboží po DMT zóna <em>„ZBOŽÍ PO DMT – NEPOUŽÍVAT"</em>.</li>
+          <li><strong>Sledovatelnost v K2</strong> — každý pohyb evidován: příjem → sklad → výrobní příkaz → ZJ/DJ označení → odvedení výrobku → expedice. Pracovníci přihlášeni osobním kódem → dohledatelnost.</li>
+          <li><strong>Školení pracovníků</strong> — při nástupu + 1× ročně (alergeny, hygiena, CCP)</li>
+          <li><strong>Údržba zařízení</strong> — pravidelná kontrola kontinuální tavicí svářečky a vah; porucha → výroba se přeruší do obnovení</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. ANALÝZA NEBEZPEČÍ -->
+<div class="section" id="analyza">
+  <div class="sec-hd">
+    <div class="sec-num">Sekce 4</div>
+    <div class="sec-title">Analýza nebezpečí</div>
+  </div>
+  <p style="margin-bottom:10px">Typy nebezpečí: <strong>B</strong> = Biologické · <strong>C</strong> = Chemické · <strong>F</strong> = Fyzikální · <strong>A</strong> = Alergen<br>
+  Pravděpodobnost / Závažnost: <strong>N</strong> = Nízká · <strong>S</strong> = Střední · <strong>V</strong> = Vysoká</p>
+  <div class="tbl-wrap">
+    <table>
+      <tr>
+        <th style="min-width:100px">Krok procesu</th>
+        <th>Typ</th>
+        <th style="min-width:160px">Nebezpečí</th>
+        <th>Pravd.</th>
+        <th>Závažnost</th>
+        <th>Výz.?</th>
+        <th style="min-width:140px">Preventivní opatření / Kontrolní bod</th>
+      </tr>
+      <!-- Krok 1-2 -->
+      <tr>
+        <td rowspan="4"><strong>1–2. Příjem a vstupní kontrola</strong></td>
+        <td>B</td>
+        <td>Patogeny, plíseň ze špatného transportu nebo skladování u dodavatele</td>
+        <td>N</td><td>S</td>
+        <td class="sig-no">NE</td>
+        <td><span class="badge badge-prp">PRP</span> Schválení dodavatelé (IFS), vstupní kontrola obalů</td>
+      </tr>
+      <tr>
+        <td>C</td>
+        <td>Pesticidy, mykotoxiny nad limitem EU</td>
+        <td>N</td><td>V</td>
+        <td class="sig-no">NE</td>
+        <td><span class="badge badge-prp">PRP</span> IFS cert. dodavatele, specifikace, CoA na vyžádání</td>
+      </tr>
+      <tr>
+        <td>F</td>
+        <td>Cizí tělesa v dodávce (kov, sklo, dřevo) z výroby dodavatele</td>
+        <td>N</td><td>S</td>
+        <td class="sig-no">NE</td>
+        <td><span class="badge badge-prp">PRP</span> IFS certifikace dodavatele zahrnuje HACCP kontrolu cizích těles</td>
+      </tr>
+      <tr>
+        <td>A</td>
+        <td>Chybná identifikace alergenu při příjmu — záměna produktu nebo neúplná specifikace</td>
+        <td>N</td><td>V</td>
+        <td class="sig-yes">ANO</td>
+        <td><span class="badge badge-oprp">OPRP 1</span> Kontrola specifikace, identifikace dle K2 při každém příjmu</td>
+      </tr>
+      <!-- Krok 3 -->
+      <tr>
+        <td rowspan="3"><strong>3. Skladování surovin</strong></td>
+        <td>B</td>
+        <td>Růst plísní vlivem nevhodné teploty nebo vlhkosti</td>
+        <td>N</td><td>S</td>
+        <td class="sig-no">NE</td>
+        <td><span class="badge badge-prp">PRP</span> Monitoring teploty/vlhkosti, max. 22 °C / 70 %, FIFO</td>
+      </tr>
+      <tr>
+        <td>F</td>
+        <td>Kontaminace škůdci (hlodavci, hmyz)</td>
+        <td>N</td><td>V</td>
+        <td class="sig-no">NE</td>
+        <td><span class="badge badge-prp">PRP</span> Rentokil — záchytné stanice, elektrický lapač, pravidelný servis</td>
+      </tr>
+      <tr>
+        <td>A</td>
+        <td>Záměna různých alergenních surovin při naskladnění nebo výdeji</td>
+        <td>N</td><td>V</td>
+        <td class="sig-no">NE</td>
+        <td><span class="badge badge-prp">PRP</span> K2 systém — každá surovina na přidělené pozici, označení interní etiketou</td>
+      </tr>
+      <!-- Krok 4-5 -->
+      <tr>
+        <td rowspan="4"><strong>4–5. Výdej do balírny, otevření obalu, kontrola suroviny</strong></td>
+        <td>B</td>
+        <td>Mikrobiální kontaminace z prostředí (pracovníci, povrchy)</td>
+        <td>N</td><td>N</td>
+        <td class="sig-no">NE</td>
+        <td><span class="badge badge-prp">PRP</span> Vstupní protokol (přezutí → šatna → oděv → čistá zóna → mytí rukou), pravidelný úklid</td>
+      </tr>
+      <tr>
+        <td>A</td>
+        <td>Záměna alergenní suroviny při převozu — použití vozíku se špatnou stuhou (červená=sklad / zelená=balírna)</td>
+        <td>N</td><td>S</td>
+        <td class="sig-no">NE</td>
+        <td><span class="badge badge-prp">PRP</span> Barevně označené elektrické paletové vozíky — červená stuha pouze sklad, zelená stuha pouze balírna. Záměna zakázána.</td>
+      </tr>
+      <tr>
+        <td>F</td>
+        <td>Fyzikální kontaminace ze suroviny (kamínky, kůra) odhalitelná při kontrole</td>
+        <td>S</td><td>N</td>
+        <td class="sig-yes">ANO</td>
+        <td><span class="badge badge-oprp">OPRP 2</span> Vizuální kontrola suroviny při otevření obalu — nález → vedoucí</td>
+      </tr>
+      <tr>
+        <td>A</td>
+        <td>Záměna suroviny — otevření špatného pytle, použití jiné suroviny než v K2 výrobním příkazu</td>
+        <td>N</td><td>V</td>
+        <td class="sig-no">NE</td>
+        <td><span class="badge badge-prp">PRP</span> Pracovník ověří název, kód a šarži suroviny dle výrobního příkazu K2 před otevřením. Surovina přesunuta do kbelíku označeného názvem, šarží a DMT.</td>
+      </tr>
+      <!-- Krok 6 -->
+      <tr>
+        <td rowspan="2"><strong>6. Vážení a plnění</strong></td>
+        <td>A</td>
+        <td>Křížová kontaminace alergenů — zbytky předchozí suroviny na váze, pracovní ploše nebo zařízení</td>
+        <td>S</td><td>V</td>
+        <td class="sig-yes">ANO</td>
+        <td><span class="badge badge-ccp">CCP 1</span> Changeover postup před každou změnou alergenní skupiny</td>
+      </tr>
+      <tr>
+        <td>C</td>
+        <td>Zbytky čisticích prostředků po úklidu</td>
+        <td>N</td><td>S</td>
+        <td class="sig-no">NE</td>
+        <td><span class="badge badge-prp">PRP</span> Schválené čisticí prostředky, vizuální ověření před výrobou</td>
+      </tr>
+      <!-- Krok 7 -->
+      <tr>
+        <td><strong>7. Uzavření obalu (tavicí svářečka)</strong></td>
+        <td>F</td>
+        <td>Neúplný svar — neostrý nebo otevřený obal z kontinuální tavicí svářečky</td>
+        <td>N</td><td>S</td>
+        <td class="sig-no">NE</td>
+        <td><span class="badge badge-prp">PRP</span> Vizuální kontrola svaru pracovníkem; výpadek el. energie → výroba se přeruší do obnovení provozu svářečky</td>
+      </tr>
+      <!-- byl Krok 8 "Označení etiketou" — přesunut na Krok 11 (Expedice) -->
+      <!-- Krok 8 -->
+      <tr>
+        <td><strong>8. Kontrola svaru a odvedení v K2</strong></td>
+        <td>F</td>
+        <td>Neuzavřený nebo poškozený svar z tavicí svářečky</td>
+        <td>N</td><td>N</td>
+        <td class="sig-yes">ANO</td>
+        <td><span class="badge badge-oprp">OPRP 3</span> Vizuální kontrola svaru; vadný kus vyřazen a zapsán do K2 jako ztráta</td>
+      </tr>
+      <!-- Krok 9-10 -->
+      <tr>
+        <td rowspan="2"><strong>9–10. Sklad hotových výrobků, dárkovna</strong></td>
+        <td>A</td>
+        <td>Záměna výrobků při kompletaci dárkové krabičky — vložení špatného produktu (DJ zakázka)</td>
+        <td>N</td><td>V</td>
+        <td class="sig-yes">ANO</td>
+        <td><span class="badge badge-oprp">OPRP 4</span> Kontrola obsahu dárkového balení dle DJ zakázkového listu v K2; do dárkovny vstupují výhradně uzavřené hotové výrobky (žádné otevřené suroviny)</td>
+      </tr>
+      <tr>
+        <td>A</td>
+        <td>Záměna produktu ve skladu — čtečka vychystá špatný kód</td>
+        <td>N</td><td>S</td>
+        <td class="sig-no">NE</td>
+        <td><span class="badge badge-prp">PRP</span> K2 čtečka ověřuje kód výrobku při vychystání; vizuální kontrola pracovníkem expedice</td>
+      </tr>
+      <!-- Kroky 10A/10B — CCP 2 etiketování -->
+      <tr>
+        <td rowspan="2"><strong>10A. Dárkovna — tisk etikety<br>10B. Expedice — automatický tisk</strong></td>
+        <td>A</td>
+        <td>Špatná etiketa — chybná deklarace alergenů; záměna etikety (dárkovna vlastní tiskárna / expedice systém K2+Shoptet)</td>
+        <td>N</td><td>V</td>
+        <td class="sig-yes">ANO</td>
+        <td><span class="badge badge-ccp">CCP 2</span> Ověření shody etikety s produktem před nalepením; systémová generace z K2 specifikace dle kódu výrobku</td>
+      </tr>
+      <tr>
+        <td>A</td>
+        <td>Záměna zásilky — expedice odešle špatný produkt</td>
+        <td>N</td><td>V</td>
+        <td class="sig-no">NE</td>
+        <td><span class="badge badge-prp">PRP</span> K2 čtečka + Shoptet systémová kontrola, vizuální kontrola pracovníkem + kontrola počtu zásilek při předání dopravci</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- 5. HACCP KONTROLNÍ TABULKA — CCP -->
+<div class="section" id="ccp">
+  <div class="sec-hd">
+    <div class="sec-num">Sekce 5</div>
+    <div class="sec-title">HACCP kontrolní tabulka — Kritické kontrolní body</div>
+  </div>
+  <p style="margin-bottom:16px">Na základě analýzy nebezpečí byly identifikovány <strong>2 kritické kontrolní body (CCP)</strong> a <strong>4 operační PRP (OPRP)</strong>.</p>
+
+  <!-- CCP 1 -->
+  <div class="ccp-box">
+    <div class="ccp-box-title">CCP 1 — Křížová kontaminace alergenů při přebalování</div>
+    <div class="tbl-wrap">
+      <table>
+        <tr>
+          <th>Parametr</th>
+          <th>Popis</th>
+        </tr>
+        <tr>
+          <td><strong>Krok procesu</strong></td>
+          <td>Krok 6 — Vážení a plnění spotřebitelského obalu (a přechod mezi produkty různých alergenních skupin)</td>
+        </tr>
+        <tr>
+          <td><strong>Nebezpečí</strong></td>
+          <td>Křížová kontaminace alergenů — přenos zbytků předchozí suroviny (ořechy, arašídy, sezam) na nový produkt přes pracovní plochu, váhu, pracovní kbelík, kontinuální tavicí svářečku nebo ruční pomůcky. Sekundárně: záměna vozíku (červená/zelená stuha) při přesunu suroviny.</td>
+        </tr>
+        <tr>
+          <td><strong>Kritický limit</strong></td>
+          <td>Žádné viditelné zbytky předchozí alergenní suroviny na pracovní ploše, váze a pomůckách před zahájením výroby nového produktu. Changeover postup byl proveden a vizuálně potvrzen.</td>
+        </tr>
+        <tr>
+          <td><strong>Monitoring — Co</strong></td>
+          <td>Vizuální kontrola pracoviště, váhy a pomůcek po provedeném changeover postupu</td>
+        </tr>
+        <tr>
+          <td><strong>Monitoring — Jak</strong></td>
+          <td>Pracovník vizuálně zkontroluje tyto kontaktní plochy a pomůcky: <strong>pracovní plocha, váha, pracovní kbelík, kontinuální tavicí svářečka (vodící žlab a čelisti), veškeré pomůcky</strong>. Při pochybnosti plochy znovu otře, případně vymění kbelík.</td>
+        </tr>
+        <tr>
+          <td><strong>Monitoring — Jak často</strong></td>
+          <td>Při každém přechodu na produkt jiné alergenní skupiny</td>
+        </tr>
+        <tr>
+          <td><strong>Monitoring — Kdo</strong></td>
+          <td>Pracovník balírny; potvrzení vedoucím výroby při zahájení směny nebo při složitějším přechodu</td>
+        </tr>
+        <tr>
+          <td><strong>Nápravné opatření</strong></td>
+          <td>
+            Pokud je na pracovišti nalezena zbytková surovina:<br>
+            1. Přerušit výrobu.<br>
+            2. Opakovat changeover postup (vyčistit, otřít, zkontrolovat).<br>
+            3. Výrobky vyrobené před zjištěním neshody — posoudit vedoucím výroby. Pokud nelze vyloučit kontaminaci, produkt zablokovat v K2 a nevyexpedovat do vyřešení.<br>
+            4. Zaznamená se do formuláře neshody.
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Ověřování (Verifikace)</strong></td>
+          <td>
+            Vedoucí výroby: namátková kontrola provedeného changeover 1× za 2 týdny.<br>
+            Vedoucí HACCP týmu: přezkoumání záznamů 1× za 3 měsíce.<br>
+            Roční audit: prověrka celého postupu.
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Záznamy</strong></td>
+          <td>Formulář výroby v K2 (pracovník + produkt + čas) · Formulář neshody při odchylce</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- CCP 2 -->
+  <div class="ccp-box">
+    <div class="ccp-box-title">CCP 2 — Správnost etikety při expedici (deklarace alergenů)</div>
+    <div class="tbl-wrap">
+      <table>
+        <tr>
+          <th>Parametr</th>
+          <th>Popis</th>
+        </tr>
+        <tr>
+          <td><strong>Krok procesu</strong></td>
+          <td>
+            <strong>Krok 10A — Dárkovna (DJ zakázky):</strong> dárkovna tiskne etiketu vlastní tiskárnou a lepí ji před uzavřením dárkového balení.<br>
+            <strong>Krok 10B — Expedice (balírna produkty):</strong> K2/Shoptet systém automaticky generuje a tiskne etiketu při vychystání zásilky. Produkty z balírny jdou do skladu a expedice <em>bez etikety</em> — etiketa se přidává až zde.
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Nebezpečí</strong></td>
+          <td>Špatná etiketa — chybná nebo chybějící deklarace alergenů, záměna etikety mezi produkty při expedici. Zákazník s alergií nemůže rozpoznat nebezpečný produkt.</td>
+        </tr>
+        <tr>
+          <td><strong>Kritický limit</strong></td>
+          <td>Etiketa 100% odpovídá produktu v zásilce — správný název výrobku, složení, zvýrazněné alergeny a text stop alergenů. Jakákoli neshoda = kritická odchylka. Etiketa musí být vygenerována ze správného K2 kódu.</td>
+        </tr>
+        <tr>
+          <td><strong>Monitoring — Co</strong></td>
+          <td>Vizuální ověření shody vytisknuté etikety s fyzickým výrobkem (název produktu, alergenní skupina)</td>
+        </tr>
+        <tr>
+          <td><strong>Monitoring — Jak</strong></td>
+          <td>
+            <strong>Dárkovna:</strong> pracovník před nalepením ověří, že etiketa odpovídá produktu vloženému do dárkového balení (název + alergenní skupina). Etiketa se tiskne z K2 dle kódu.<br>
+            <strong>Expedice (balírna prod.):</strong> pracovník ověří shodu vytisknuté etikety s fyzickým produktem — název a typ suroviny. Klíčové: kód skenovaný při vychystání musí odpovídat fyzickému produktu.
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Monitoring — Jak často</strong></td>
+          <td>Dárkovna: při každé kompletaci. Expedice: každá zásilka + vedoucí namátkově hloubkově minimálně 1× za směnu.</td>
+        </tr>
+        <tr>
+          <td><strong>Monitoring — Kdo</strong></td>
+          <td>Pracovník dárkovny (DJ zakázky) · Pracovník expedice (balírna produkty) · Vedoucí provozu (namátkově)</td>
+        </tr>
+        <tr>
+          <td><strong>Nápravné opatření</strong></td>
+          <td>
+            Pokud je zjištěna neshoda etikety:<br>
+            1. Okamžitě zastavit etiketování dané šarže.<br>
+            2. Informovat vedoucího provozu.<br>
+            3. Identifikovat a zablokovat v K2 všechny výrobky označené špatnou etiketou.<br>
+            4. Pokud byly výrobky již expedovány — spustit postup stažení zboží (recall) dle přílohy.<br>
+            5. Zjistit příčinu (chyba v K2 specifikaci? záměna produktu při vychystání?) a zdokumentovat.<br>
+            6. Opravit specifikaci v K2 a znovu etiketovat až po schválení vedoucím.
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Ověřování (Verifikace)</strong></td>
+          <td>
+            Vedoucí provozu: namátková kontrola shody etikety na expedované zásilce s K2 — 1× týdně.<br>
+            Vedoucí HACCP týmu: přezkoumání evidence neshod při etiketování 1× za 3 měsíce.<br>
+            Roční audit: prověrka celého procesu etiketování a systémové generace etiket.
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Záznamy</strong></td>
+          <td>Specifikace produktu v K2 · Evidence expedice (K2 + Shoptet) · Formulář neshody při odchylce · Evidence recall (při stažení)</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- OPRP přehled -->
+  <h3 style="margin-top:20px">Operační PRP (OPRP) — přehled</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr>
+        <th>OPRP</th>
+        <th>Krok</th>
+        <th>Nebezpečí</th>
+        <th>Limit / Kritérium</th>
+        <th>Monitoring</th>
+        <th>Nápravné opatření</th>
+      </tr>
+      <tr>
+        <td><span class="badge badge-oprp">OPRP 1</span></td>
+        <td>Krok 1–2, Příjem</td>
+        <td>A — chybná identifikace alergenu při příjmu</td>
+        <td>Shoda: dodací list = K2 specifikace = fyzická surovina. Žádná odchylka.</td>
+        <td>Kontrola při každém příjmu pracovníkem skladu</td>
+        <td>Neshoda → karanténa → nákupní oddělení → rozhodnutí o uvolnění</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-oprp">OPRP 2</span></td>
+        <td>Krok 5, Otevření obalu</td>
+        <td>F — cizí tělesa v surovině viditelná při otevření</td>
+        <td>Žádné viditelné cizí těleso. Surovina odpovídá očekávané barvě a stavu.</td>
+        <td>Vizuální kontrola při každém otevření obalu</td>
+        <td>Nález → vedoucí → posouzení → karanténa suroviny → formulář neshody</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-oprp">OPRP 3</span></td>
+        <td>Krok 8, Kontrola svaru</td>
+        <td>F — neuzavřený svar z tavicí svářečky</td>
+        <td>Svar pevný, nepropustný, bez viditelného poškození obalu</td>
+        <td>Vizuální kontrola každého kusu při odvedení výroby v K2</td>
+        <td>Vadný kus → vyřadit, neodvádět v K2, zaznamenat ztrátu</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-oprp">OPRP 4</span></td>
+        <td>Krok 10, Dárkovna (DJ zakázky)</td>
+        <td>A — záměna výrobku v dárkovém balení</td>
+        <td>Obsah dárkového balení 100% odpovídá DJ zakázkovému listu v K2; pouze uzavřené hotové výrobky (žádné otevřené suroviny)</td>
+        <td>Kontrola obsahu dle K2 zakázkového listu při každé kompletaci</td>
+        <td>Záměna → rozbalit, znovu složit správně, zaznamenat neshodu v K2</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- 6. OVĚŘOVÁNÍ -->
+<div class="section" id="overovani">
+  <div class="sec-hd">
+    <div class="sec-num">Sekce 6</div>
+    <div class="sec-title">Ověřování, validace a přezkoumání HACCP plánu</div>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr>
+        <th>Činnost</th>
+        <th>Frekvence</th>
+        <th>Kdo</th>
+        <th>Záznam</th>
+      </tr>
+      <tr>
+        <td>Namátková kontrola CCP 1 (changeover)</td>
+        <td>1× za 2 týdny</td>
+        <td>Vedoucí výroby</td>
+        <td>Formulář interní kontroly (Příloha 11)</td>
+      </tr>
+      <tr>
+        <td>Namátková kontrola CCP 2 (etikety)</td>
+        <td>1× týdně</td>
+        <td>Vedoucí výroby</td>
+        <td>Formulář interní kontroly</td>
+      </tr>
+      <tr>
+        <td>Přezkoumání záznamů neshod a CCP</td>
+        <td>1× za 3 měsíce</td>
+        <td>Vedoucí HACCP týmu</td>
+        <td>Zápis z přezkoumání</td>
+      </tr>
+      <tr>
+        <td>Interní audit provozu (dle Přílohy 11)</td>
+        <td>1× měsíčně</td>
+        <td>Vedoucí výroby + vedoucí HACCP</td>
+        <td>Formulář měsíční kontroly (Příloha 11)</td>
+      </tr>
+      <tr>
+        <td>Plné přezkoumání HACCP plánu</td>
+        <td>1× ročně nebo při změně produktu / procesu / prostoru</td>
+        <td>Celý HACCP tým</td>
+        <td>Zápis z přezkoumání HACCP, nová verze plánu</td>
+      </tr>
+      <tr>
+        <td>Školení pracovníků (alergeny, hygiena, CCP)</td>
+        <td>Při nástupu + 1× ročně</td>
+        <td>Vedoucí provozu</td>
+        <td>Prezenční listina školení</td>
+      </tr>
+      <tr>
+        <td>Prověrka dodavatelů a specifikací alergenů</td>
+        <td>Při každé změně nebo 1× ročně</td>
+        <td>Nákupní oddělení</td>
+        <td>Aktualizace specifikací v K2</td>
+      </tr>
+    </table>
+  </div>
+
+  <h3>Spouštěče mimořádného přezkoumání</h3>
+  <p>HACCP plán se přezkoumá mimo roční cyklus v těchto situacích:</p>
+  <ul>
+    <li>zavedení nové skupiny produktů nebo nového alergenu do sortimentu,</li>
+    <li>změna procesu, zařízení nebo výrobního prostoru,</li>
+    <li>výskyt zákaznické reklamace týkající se alergenů nebo cizích těles,</li>
+    <li>výsledek externího auditu nebo dozorového orgánu,</li>
+    <li>opakované neshody na CCP 1 nebo CCP 2.</li>
+  </ul>
+</div>
+
+<!-- 7. ZÁZNAMY -->
+<div class="section" id="zaznamy">
+  <div class="sec-hd">
+    <div class="sec-num">Sekce 7</div>
+    <div class="sec-title">Záznamy a dokumentace</div>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr>
+        <th>Záznam</th>
+        <th>Kde je veden</th>
+        <th>Kdo odpovídá</th>
+        <th>Doba archivace</th>
+      </tr>
+      <tr>
+        <td>Evidence příjmu surovin (dodací listy, šarže, DMT)</td>
+        <td>K2 + papírové dodací listy</td>
+        <td>Vedoucí skladu</td>
+        <td>3 roky</td>
+      </tr>
+      <tr>
+        <td>Specifikace produktů dodavatelů (vč. alergenů)</td>
+        <td>K2 + archiv nákupního oddělení</td>
+        <td>Nákup</td>
+        <td>Po dobu platnosti + 2 roky</td>
+      </tr>
+      <tr>
+        <td>Evidence výroby (pracovník, produkt, čas, šarže)</td>
+        <td>K2</td>
+        <td>Vedoucí výroby</td>
+        <td>3 roky</td>
+      </tr>
+      <tr>
+        <td>Formulář neshody (CCP i OPRP odchylky)</td>
+        <td>Papírový formulář + archiv</td>
+        <td>Vedoucí výroby</td>
+        <td>3 roky</td>
+      </tr>
+      <tr>
+        <td>Formulář měsíční interní kontroly (Příloha 11)</td>
+        <td>Papírový formulář + archiv</td>
+        <td>Vedoucí provozu</td>
+        <td>3 roky</td>
+      </tr>
+      <tr>
+        <td>Prezenční listiny školení pracovníků</td>
+        <td>Archiv</td>
+        <td>Vedoucí provozu</td>
+        <td>5 let</td>
+      </tr>
+      <tr>
+        <td>Evidence stížností zákazníků a reklamací</td>
+        <td>K2 / e-mail / Trello</td>
+        <td>Vedoucí provozu</td>
+        <td>3 roky</td>
+      </tr>
+      <tr>
+        <td>Zápisy z přezkoumání HACCP plánu</td>
+        <td>Archiv</td>
+        <td>Vedoucí HACCP týmu</td>
+        <td>5 let</td>
+      </tr>
+      <tr>
+        <td>Zprávy Rentokil (deratizace, monitoring škůdců)</td>
+        <td>Archiv</td>
+        <td>Vedoucí provozu</td>
+        <td>3 roky</td>
+      </tr>
+      <tr>
+        <td>Protokol o schválení kvality vody (KHS)</td>
+        <td>Archiv</td>
+        <td>Vedoucí provozu</td>
+        <td>Po dobu platnosti</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="rule-box">
+    <strong>Záznamy v K2 jsou primárním zdrojem dohledatelnosti.</strong> Papírové formuláře se vedou tam, kde K2 nestačí zachytit fyzické rozhodnutí nebo výsledek kontroly. Duplicitní záznam téhož v K2 i na papíře se nevytváří.
+  </div>
+
+  <!-- Signatures -->
+  <h3 style="margin-top:20px">Schválení dokumentu</h3>
+  <div class="sign-row">
+    <div class="sign-field">
+      <div class="sign-label">Zpracoval / datum</div>
+      <div style="height:36px"></div>
+    </div>
+    <div class="sign-field">
+      <div class="sign-label">Schválil / datum</div>
+      <div style="height:36px"></div>
+    </div>
+    <div class="sign-field">
+      <div class="sign-label">Podpis</div>
+      <div style="height:36px"></div>
+    </div>
+  </div>
+  <p style="font-size:11px;color:var(--fg-muted);margin-top:12px">
+    Verze 1.0 · Nut World s.r.o. · IČO 27517357 · Provozovna IDA 825, Rtyně v Podkrkonoší
+  </p>
+</div>
+
+
+<!-- 8. KRIZOVÝ PLÁN / RECALL -->
+<div class="section" id="krizovy">
+  <div class="sec-hd">
+    <div class="sec-num">Sekce 8</div>
+    <div class="sec-title">Krizový plán — stažení výrobku (Recall / Withdrawal)</div>
+  </div>
+
+  <h3>8.1 Spouštěče krizového plánu</h3>
+  <p>Krizový plán se aktivuje při výskytu <strong>alespoň jedné</strong> z následujících situací:</p>
+  <ul>
+    <li>Zjištění chybné etikety na expedovaném výrobku (zejm. chybějící nebo nesprávná deklarace alergenů)</li>
+    <li>Zákaznická alergická reakce nebo jiná závažná zdravotní újma spojená s výrobkem</li>
+    <li>Nález překračující legislativní limit (pesticidy, mykotoxiny, cizí tělesa) — interně nebo ze strany dodavatele</li>
+    <li>Upozornění SZPI, SVS nebo jiného dozorového orgánu</li>
+    <li>Výskyt škůdce v bezprostředním kontaktu s potravinami (zjištěno Rentokil nebo vlastní kontrolou)</li>
+    <li>Opakovaná nebo závažná neshoda na CCP 1 (křížová kontaminace alergenů)</li>
+    <li>Závažná neshoda na CCP 2 (chybná etiketa — výrobky byly expedovány)</li>
+  </ul>
+
+  <h3>8.2 Komunikační řetězec — kdo volá komu</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Krok</th><th>Kdo zjistí / informuje</th><th>Koho</th><th>Do kdy</th></tr>
+      <tr>
+        <td>1</td>
+        <td>Jakýkoliv pracovník</td>
+        <td>Vedoucí provozu (jednatel)</td>
+        <td>Okamžitě — bez zbytečného odkladu</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Vedoucí provozu</td>
+        <td>Vedoucí HACCP týmu (pokud jiná osoba)</td>
+        <td>Do 30 minut od zjištění</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Vedoucí provozu</td>
+        <td>SZPI (Státní zemědělská a potravinářská inspekce) — povinné hlášení</td>
+        <td>Do 24 hodin od potvrzení bezpečnostního rizika</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>Vedoucí provozu</td>
+        <td>Dotčení zákazníci (e-mail, Shoptet, B2B kontakty)</td>
+        <td>Souběžně se SZPI hlášením</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>Vedoucí provozu</td>
+        <td>Dodavatel dotčené suroviny (pokud jde o problém na straně dodavatele)</td>
+        <td>Do 24 hodin</td>
+      </tr>
+    </table>
+  </div>
+
+  <h3>8.3 Postup stažení výrobku (Recall)</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>#</th><th>Krok</th><th>Odpovědný</th><th>Nástroj</th></tr>
+      <tr>
+        <td>1</td>
+        <td><strong>Identifikace rozsahu:</strong> Zjistit, které šarže, produkty a zákazníci jsou dotčeni. Použít K2 — dohledat výrobní záznamy dle šarže suroviny nebo data výroby.</td>
+        <td>Vedoucí výroby + vedoucí skladu</td>
+        <td>K2 — výrobní záznamy, evidence výdeje</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><strong>Blokace skladu:</strong> Veškeré dotčené produkty fyzicky oddělit do zóny NESHODNÉ ZBOŽÍ – NEPOUŽÍVAT a zablokovat v K2. Zastavit expedici těchto produktů.</td>
+        <td>Vedoucí skladu</td>
+        <td>K2 blokace + fyzické označení regálu</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><strong>Notifikace zákazníků:</strong> Kontaktovat zákazníky, kteří dotčené produkty obdrželi. B2C — e-mail přes Shoptet. B2B — přímý kontakt. Sdělit: co, proč, jak vrátit nebo zlikvidovat.</td>
+        <td>Vedoucí provozu</td>
+        <td>Shoptet e-mail, B2B kontakty z K2</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><strong>Hlášení SZPI:</strong> Vyplnit hlášení na portálu SZPI (www.szpi.gov.cz / RASFF). Uvést: název výrobku, šarže, datum výroby, popis rizika, rozsah distribuce.</td>
+        <td>Vedoucí provozu (jednatel)</td>
+        <td>Portál SZPI, e-mail dozorového orgánu</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><strong>Stažení vrácených produktů:</strong> Veškeré vrácené produkty přijmout, oddělit a evidovat. Nesmí zpět do oběhu bez posouzení vedoucím HACCP týmu.</td>
+        <td>Vedoucí skladu</td>
+        <td>K2 — evidence vráceného zboží</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td><strong>Analýza příčiny (Root Cause Analysis):</strong> Zjistit co selhalo, kde a proč. Zdokumentovat. Přijmout nápravné opatření — update CCP/OPRP postupu pokud nutné.</td>
+        <td>Celý HACCP tým</td>
+        <td>Formulář neshody + zápis z mimořádného přezkoumání HACCP</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td><strong>Likvidace stažených produktů:</strong> Dle rozhodnutí vedoucího provozu — odpis v K2, vhodný způsob likvidace (dle množství viz §18 Provozního manuálu).</td>
+        <td>Vedoucí provozu</td>
+        <td>K2 odpis</td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td><strong>Uzavření krizové situace:</strong> Potvrdit se SZPI uzavření případu. Aktualizovat HACCP plán pokud je nutné. Archivovat veškerou dokumentaci po dobu min. 5 let.</td>
+        <td>Vedoucí HACCP týmu</td>
+        <td>Archiv + K2</td>
+      </tr>
+    </table>
+  </div>
+
+  <h3>8.4 Rozdíl: Recall vs. Withdrawal</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Typ</th><th>Kdy</th><th>Co to znamená</th></tr>
+      <tr>
+        <td><strong>Recall (stažení z trhu)</strong></td>
+        <td>Výrobek již u zákazníků — bezpečnostní riziko</td>
+        <td>Aktivní kontaktování zákazníků, povinné hlášení SZPI, veřejná komunikace pokud nařízena</td>
+      </tr>
+      <tr>
+        <td><strong>Withdrawal (stažení z distribuce)</strong></td>
+        <td>Výrobek ještě u nás ve skladu nebo v distribuci — nestihl zákazníky</td>
+        <td>Interní blokace v K2, zastavení expedice, SZPI hlášení pokud je bezpečnostní riziko</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="rule-box">
+    <strong>Zlaté pravidlo:</strong> Při pochybnostech volíme Recall, ne Withdrawal. Ochrana zákazníka má přednost před reputačním rizikem.
+  </div>
+
+  <h3>8.5 Testování postupu</h3>
+  <p>Jednou ročně (v rámci přezkoumání HACCP) provést <strong>simulaci Recall</strong> — prověřit, zda dokážeme dohledat v K2 všechny výrobky z vybrané šarže suroviny a identifikovat zákazníky, kteří je obdrželi. Výsledek simulace se zaznamená.</p>
+</div>
+
+<!-- 9. PŘÍLOHY -->
+<div class="section" id="prilohy">
+  <div class="sec-hd">
+    <div class="sec-num">Sekce 9</div>
+    <div class="sec-title">Přílohy — formuláře a záznamy</div>
+  </div>
+  <p style="margin-bottom:16px">Přílohy jsou pracovní formuláře k vytištění. Vyplněné formuláře se archivují dle doby archivace v Sekci 7.</p>
+
+  <!-- P1: Alergeny -->
+  <h3 id="p1" style="margin-top:24px">Příloha 1 — 14 hlavních alergenů dle EU 1169/2011, Příloha II</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>#</th><th>Alergen</th><th>Příklady</th><th>Přítomno v Nutworld sortimentu</th></tr>
+      <tr><td>1</td><td><strong>Obiloviny obsahující lepek</strong></td><td>pšenice, žito, ječmen, oves, špalda, kamut</td><td>Stopy (sdílená linka / koření)</td></tr>
+      <tr><td>2</td><td><strong>Korýši</strong></td><td>krevety, krabi, humři</td><td><span class="sig-yes">ANO — v ochucených produktech (mořské plody)</span></td></tr>
+      <tr><td>3</td><td><strong>Vejce</strong></td><td>vejce a vaječné produkty</td><td>Stopy (sdílená linka)</td></tr>
+      <tr><td>4</td><td><strong>Ryby</strong></td><td>všechny druhy ryb</td><td>Ne</td></tr>
+      <tr><td>5</td><td><strong>Arašídy</strong></td><td>arašídy, arašídová másla</td><td><span class="sig-yes">ANO — v sortimentu</span></td></tr>
+      <tr><td>6</td><td><strong>Sójové boby</strong></td><td>sója, sójová mouka, sójový olej</td><td><span class="sig-yes">ANO — součást polev zpracovaných ořechů</span></td></tr>
+      <tr><td>7</td><td><strong>Mléko</strong></td><td>mléko, sýry, jogurt, máslo</td><td><span class="sig-yes">ANO — čokoládové a mléčné polevy</span></td></tr>
+      <tr><td>8</td><td><strong>Skořápkové plody (ořechy)</strong></td><td>mandle, lískovce, vlašské, kešu, pekan, para, pistácie, makadamie</td><td><span class="sig-yes">ANO — hlavní sortiment</span></td></tr>
+      <tr><td>9</td><td><strong>Celer</strong></td><td>celer a výrobky z celeru</td><td><span class="sig-yes">ANO — v kořeních na ochucených ořeších</span></td></tr>
+      <tr><td>10</td><td><strong>Hořčice</strong></td><td>hořčice, hořčičný olej, hořčičné semínko</td><td><span class="sig-yes">ANO — hořčičné semínko v kořeních</span></td></tr>
+      <tr><td>11</td><td><strong>Sezamová semena</strong></td><td>sezam, tahini, sezamový olej</td><td><span class="sig-yes">ANO — v sortimentu</span></td></tr>
+      <tr><td>12</td><td><strong>Oxid siřičitý a siřičitany</strong></td><td>E220–E228, sušené ovoce</td><td><span class="sig-yes">ANO — sušené ovoce</span></td></tr>
+      <tr><td>13</td><td><strong>Vlčí bob (lupin)</strong></td><td>lupinová mouka</td><td>Ne</td></tr>
+      <tr><td>14</td><td><strong>Měkkýši</strong></td><td>mušle, ústřice, slimáci</td><td><span class="sig-yes">ANO — v ochucených produktech (mořské plody)</span></td></tr>
+    </table>
+  </div>
+  <div class="info-box" style="font-size:12px">
+    <strong>Alergeny přítomné v sortimentu Nutworld:</strong> č. 2, 5, 6, 7, 8, 9, 10, 11, 12, 14 — tj. 10 z 14 hlavních alergenů.<br>
+    Alergeny č. 5, 8, 11 (arašídy, ořechy, sezam) jsou přítomny ve výrobě souběžně jako suroviny — proto je CCP 1 (křížová kontaminace při changeover) kritickým bodem.<br>
+    Alergeny č. 6, 7, 9, 10 (sója, mléko, celer, hořčice) se vyskytují jako součásti polev a koření u zpracovaných ořechů — pocházejí od dodavatele, jsou deklarovány ve specifikaci produktu v K2.<br>
+    Na etiketě každého produktu: složení se <u>zvýrazněnými alergeny</u> + text „Může obsahovat stopy …" dle specifikace v K2.
+  </div>
+
+  <!-- P2: Příjem zboží -->
+  <h3 id="p2" style="margin-top:28px; page-break-before:always">Příloha 2 — Formulář příjmu zboží (vstupní kontrola)</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr>
+        <th colspan="6" style="background:var(--accent-soft);color:var(--accent-dk);font-size:12px">FORMULÁŘ PŘÍJMU ZBOŽÍ — Nut World s.r.o.</th>
+      </tr>
+      <tr><th>Datum</th><th>Dodavatel</th><th>Produkt / kód</th><th>Šarže</th><th>DMT</th><th>Stav obalů</th></tr>
+      <tr><td style="height:28px"></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td style="height:28px"></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td style="height:28px"></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td style="height:28px"></td><td></td><td></td><td></td><td></td><td></td></tr>
+    </table>
+  </div>
+  <div class="tbl-wrap" style="margin-top:8px">
+    <table>
+      <tr><th>Neshoda (popis)</th><th>Přijato / Odmítnuto / Karanténa</th><th>Podpis pracovníka</th><th>Zapsáno do K2</th></tr>
+      <tr><td style="height:28px"></td><td></td><td></td><td>☐ ANO</td></tr>
+      <tr><td style="height:28px"></td><td></td><td></td><td>☐ ANO</td></tr>
+      <tr><td style="height:28px"></td><td></td><td></td><td>☐ ANO</td></tr>
+      <tr><td style="height:28px"></td><td></td><td></td><td>☐ ANO</td></tr>
+    </table>
+  </div>
+
+  <!-- P3: Changeover / CCP1 -->
+  <h3 id="p3" style="margin-top:28px; page-break-before:always">Příloha 3 — Záznam changeover (CCP 1) — přechod alergenní skupiny</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr>
+        <th colspan="6" style="background:var(--ccp-bg);color:var(--ccp);font-size:12px">CCP 1 — CHANGEOVER ZÁZNAM — Nut World s.r.o.</th>
+      </tr>
+      <tr><th>Datum</th><th>Čas</th><th>Předchozí produkt (alergen)</th><th>Nový produkt (alergen)</th><th>Pracovník</th><th>Potvrzení vedoucího</th></tr>
+      <tr><td style="height:28px"></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td style="height:28px"></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td style="height:28px"></td><td></td><td></td><td></td><td></td><td></td></tr>
+    </table>
+  </div>
+  <div class="tbl-wrap" style="margin-top:8px">
+    <table>
+      <tr>
+        <th>Kontrolní checklist changeover</th>
+        <th>OK ☐</th>
+      </tr>
+      <tr><td>Pracovní plocha otřena a vizuálně čistá</td><td>☐</td></tr>
+      <tr><td>Váha očištěna (miska, displej, okolí)</td><td>☐</td></tr>
+      <tr><td>Kbelík vyměněn nebo vyčištěn</td><td>☐</td></tr>
+      <tr><td>Kontinuální tavicí svářečka (žlab + čelisti) bez zbytků</td><td>☐</td></tr>
+      <tr><td>Veškeré pomůcky (lžíce, lopatky) vyčištěny nebo vyměněny</td><td>☐</td></tr>
+      <tr><td>Zbytky předchozí suroviny odstraněny z prostoru</td><td>☐</td></tr>
+    </table>
+  </div>
+  <p style="font-size:11px;margin-top:6px;color:var(--fg-muted)">Při nesplnění jakéhokoli bodu → opakovat čištění → teprve pak spustit výrobu nového produktu.</p>
+
+  <!-- P4: CCP2 etiketa -->
+  <h3 id="p4" style="margin-top:28px; page-break-before:always">Příloha 4 — Kontrola etikety (CCP 2)</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr>
+        <th colspan="7" style="background:var(--ccp-bg);color:var(--ccp);font-size:12px">CCP 2 — KONTROLA ETIKETY — Nut World s.r.o.</th>
+      </tr>
+      <tr><th>Datum</th><th>Místo (Dárkovna / Expedice)</th><th>Produkt / kód K2</th><th>Etiketa odpovídá produktu</th><th>Alergeny správné</th><th>Shoda K2 specifikace</th><th>Pracovník</th></tr>
+      <tr><td style="height:28px"></td><td></td><td></td><td>☐ ANO ☐ NE</td><td>☐ ANO ☐ NE</td><td>☐ ANO ☐ NE</td><td></td></tr>
+      <tr><td style="height:28px"></td><td></td><td></td><td>☐ ANO ☐ NE</td><td>☐ ANO ☐ NE</td><td>☐ ANO ☐ NE</td><td></td></tr>
+      <tr><td style="height:28px"></td><td></td><td></td><td>☐ ANO ☐ NE</td><td>☐ ANO ☐ NE</td><td>☐ ANO ☐ NE</td><td></td></tr>
+      <tr><td style="height:28px"></td><td></td><td></td><td>☐ ANO ☐ NE</td><td>☐ ANO ☐ NE</td><td>☐ ANO ☐ NE</td><td></td></tr>
+    </table>
+  </div>
+  <p style="font-size:11px;margin-top:6px;color:var(--fg-muted)">Jakékoli NE → okamžitě zastavit etiketování → informovat vedoucího → formulář neshody (P5).</p>
+
+  <!-- P5: Neshoda -->
+  <h3 id="p5" style="margin-top:28px; page-break-before:always">Příloha 5 — Formulář neshody (CCP / OPRP odchylka)</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr>
+        <th colspan="2" style="background:var(--ccp-bg);color:var(--ccp);font-size:12px">FORMULÁŘ NESHODY — Nut World s.r.o.</th>
+      </tr>
+      <tr><td style="width:35%"><strong>Datum a čas zjištění</strong></td><td style="height:26px"></td></tr>
+      <tr><td><strong>Zjistil (jméno)</strong></td><td></td></tr>
+      <tr><td><strong>Dotčený CCP / OPRP</strong></td><td>☐ CCP 1 &nbsp; ☐ CCP 2 &nbsp; ☐ OPRP 1 &nbsp; ☐ OPRP 2 &nbsp; ☐ OPRP 3 &nbsp; ☐ OPRP 4 &nbsp; ☐ Jiné</td></tr>
+      <tr><td><strong>Popis neshody</strong></td><td style="height:52px"></td></tr>
+      <tr><td><strong>Dotčený produkt / šarže</strong></td><td></td></tr>
+      <tr><td><strong>Množství dotčeného zboží</strong></td><td></td></tr>
+      <tr><td><strong>Byly výrobky expedovány?</strong></td><td>☐ ANO → aktivovat Recall postup (Sekce 8) &nbsp;&nbsp; ☐ NE</td></tr>
+      <tr><td><strong>Okamžité opatření</strong></td><td style="height:52px"></td></tr>
+      <tr><td><strong>Příčina neshody (Root Cause)</strong></td><td style="height:52px"></td></tr>
+      <tr><td><strong>Nápravné opatření (dlouhodobé)</strong></td><td style="height:52px"></td></tr>
+      <tr><td><strong>Uzavřel vedoucí / datum</strong></td><td></td></tr>
+      <tr><td><strong>Zapsáno do K2</strong></td><td>☐ ANO &nbsp;&nbsp; ☐ NE (důvod: ___________)</td></tr>
+    </table>
+  </div>
+
+  <!-- P6: Měsíční kontrola -->
+  <h3 id="p6" style="margin-top:28px; page-break-before:always">Příloha 6 — Formulář měsíční interní kontroly provozu</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr>
+        <th colspan="3" style="background:var(--accent-soft);color:var(--accent-dk);font-size:12px">MĚSÍČNÍ INTERNÍ KONTROLA — Nut World s.r.o. &nbsp;|&nbsp; Měsíc / rok: ___________</th>
+      </tr>
+      <tr><th style="min-width:280px">Kontrolní bod</th><th>Výsledek</th><th>Poznámka / neshoda</th></tr>
+      <tr><td>Čistota a pořádek na pracovištích (balírna, dárkovna, sklad)</td><td>☐ OK ☐ NOK</td><td></td></tr>
+      <tr><td>Stav obalů surovin (žádné otevřené pytle volně v prostoru)</td><td>☐ OK ☐ NOK</td><td></td></tr>
+      <tr><td>Označení kbelíků (název, šarže, DMT)</td><td>☐ OK ☐ NOK</td><td></td></tr>
+      <tr><td>Fyzická kontrola zóny NESHODNÉ ZBOŽÍ – NEPOUŽÍVAT</td><td>☐ OK ☐ NOK</td><td></td></tr>
+      <tr><td>Fyzická kontrola zóny ZBOŽÍ PO DMT – NEPOUŽÍVAT</td><td>☐ OK ☐ NOK</td><td></td></tr>
+      <tr><td>Stav monitorovacích stanic škůdců (Rentokil) — nález / bez nálezu</td><td>☐ OK ☐ NOK</td><td></td></tr>
+      <tr><td>Stav ochranných sítek na větracích oknech</td><td>☐ OK ☐ NOK</td><td></td></tr>
+      <tr><td>Barevné stuhy na elektrických vozících (červená = sklad, zelená = balírna)</td><td>☐ OK ☐ NOK</td><td></td></tr>
+      <tr><td>Funkčnost kontinuální tavicí svářečky (vizuální kontrola svaru)</td><td>☐ OK ☐ NOK</td><td></td></tr>
+      <tr><td>Funkčnost vah (kalibrace, čistota)</td><td>☐ OK ☐ NOK</td><td></td></tr>
+      <tr><td>Dodržování vstupního hygienického protokolu pracovníky</td><td>☐ OK ☐ NOK</td><td></td></tr>
+      <tr><td>Evidence výroby v K2 — namátková kontrola záznamu pracovníků</td><td>☐ OK ☐ NOK</td><td></td></tr>
+      <tr><td>Archiv: formuláře neshod, changeover záznamy — kompletní</td><td>☐ OK ☐ NOK</td><td></td></tr>
+      <tr><td>Platnost specifikací alergenů dodavatelů v K2</td><td>☐ OK ☐ NOK</td><td></td></tr>
+    </table>
+  </div>
+  <div class="sign-row" style="margin-top:14px">
+    <div class="sign-field"><div class="sign-label">Kontrolu provedl / datum</div><div style="height:32px"></div></div>
+    <div class="sign-field"><div class="sign-label">Schválil vedoucí / datum</div><div style="height:32px"></div></div>
+    <div class="sign-field"><div class="sign-label">Neshody předány k řešení</div><div style="height:32px"></div></div>
+  </div>
+
+  <!-- P7: Školení -->
+  <h3 id="p7" style="margin-top:28px; page-break-before:always">Příloha 7 — Prezenční listina školení pracovníků</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr>
+        <th colspan="4" style="background:var(--accent-soft);color:var(--accent-dk);font-size:12px">PREZENČNÍ LISTINA ŠKOLENÍ — Nut World s.r.o.</th>
+      </tr>
+      <tr>
+        <td colspan="2"><strong>Téma školení:</strong> ☐ HACCP základy &nbsp; ☐ Alergeny &nbsp; ☐ Hygiena pracovníků &nbsp; ☐ CCP postupy &nbsp; ☐ Recall postup &nbsp; ☐ Jiné: _______</td>
+        <td><strong>Datum:</strong></td>
+        <td><strong>Lektor:</strong></td>
+      </tr>
+      <tr><th>#</th><th>Jméno a příjmení</th><th>Pozice</th><th>Podpis</th></tr>
+      <tr><td>1</td><td style="height:26px"></td><td></td><td></td></tr>
+      <tr><td>2</td><td style="height:26px"></td><td></td><td></td></tr>
+      <tr><td>3</td><td style="height:26px"></td><td></td><td></td></tr>
+      <tr><td>4</td><td style="height:26px"></td><td></td><td></td></tr>
+      <tr><td>5</td><td style="height:26px"></td><td></td><td></td></tr>
+      <tr><td>6</td><td style="height:26px"></td><td></td><td></td></tr>
+    </table>
+  </div>
+  <p style="font-size:11px;margin-top:6px;color:var(--fg-muted)">Prezenční listina se archivuje 5 let. Nový pracovník prochází školením před zahájením samostatné práce v čisté zóně.</p>
+
+  <!-- P8: Zápis přezkoumání -->
+  <h3 id="p8" style="margin-top:28px; page-break-before:always">Příloha 8 — Zápis z přezkoumání HACCP plánu</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr>
+        <th colspan="2" style="background:var(--accent-soft);color:var(--accent-dk);font-size:12px">ZÁPIS Z PŘEZKOUMÁNÍ HACCP — Nut World s.r.o.</th>
+      </tr>
+      <tr><td style="width:35%"><strong>Datum přezkoumání</strong></td><td style="height:26px"></td></tr>
+      <tr><td><strong>Typ přezkoumání</strong></td><td>☐ Roční plánované &nbsp; ☐ Mimořádné — důvod: _______________</td></tr>
+      <tr><td><strong>Přítomni (HACCP tým)</strong></td><td style="height:40px"></td></tr>
+      <tr><td><strong>Změny sortimentu od posledního přezkoumání</strong></td><td style="height:40px"></td></tr>
+      <tr><td><strong>Změny procesu nebo zařízení</strong></td><td style="height:40px"></td></tr>
+      <tr><td><strong>Neshody na CCP / OPRP za období</strong></td><td style="height:40px"></td></tr>
+      <tr><td><strong>Zákaznické stížnosti (alergen / jakost)</strong></td><td style="height:40px"></td></tr>
+      <tr><td><strong>Výsledky Recall simulace</strong></td><td style="height:40px"></td></tr>
+      <tr><td><strong>Závěr: HACCP plán zůstává platný / vyžaduje aktualizaci</strong></td><td>☐ Platný bez změn &nbsp; ☐ Vyžaduje změny — viz příloha</td></tr>
+      <tr><td><strong>Nová verze HACCP plánu</strong></td><td>Verze: _______&nbsp; Datum vydání: _______</td></tr>
+    </table>
+  </div>
+  <div class="sign-row" style="margin-top:14px">
+    <div class="sign-field"><div class="sign-label">Vedoucí HACCP týmu / podpis</div><div style="height:32px"></div></div>
+    <div class="sign-field"><div class="sign-label">Schválil jednatel / podpis</div><div style="height:32px"></div></div>
+    <div class="sign-field"><div class="sign-label">Datum schválení</div><div style="height:32px"></div></div>
+  </div>
+</div>
+
+<!-- PŘÍLOHA 9: ROZHODOVACÍ STROM -->
+<div class="section" id="decision-tree" style="page-break-before:always">
+  <div class="sec-hd">
+    <div class="sec-num">Příloha 9</div>
+    <div class="sec-title">Rozhodovací strom — určení CCP (Codex Alimentarius)</div>
+  </div>
+  <p style="margin-bottom:14px">Rozhodovací strom byl aplikován na každé <strong>významné nebezpečí</strong> identifikované v analýze (Sekce 4). Ukazuje, proč je dané opatření klasifikováno jako CCP, OPRP nebo PRP.</p>
+
+  <div class="info-box" style="margin-bottom:18px">
+    <strong>Otázky rozhodovacího stromu (Q1–Q4):</strong><br>
+    <strong>Q1:</strong> Existuje preventivní opatření pro toto nebezpečí? → Ne = upravit proces nebo PRP; Ano → Q2<br>
+    <strong>Q2:</strong> Je tento krok navržen speciálně pro eliminaci nebo snížení nebezpečí na přijatelnou úroveň? → Ano = CCP; Ne → Q3<br>
+    <strong>Q3:</strong> Mohlo by dojít ke kontaminaci nebo nárůstu nebezpečí nad přijatelnou úroveň? → Ne = není CCP; Ano → Q4<br>
+    <strong>Q4:</strong> Eliminuje nebo sníží pozdější krok nebezpečí na přijatelnou úroveň? → Ano = není CCP (OPRP/PRP); Ne = <strong>CCP</strong>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr>
+        <th style="min-width:140px">Krok / Nebezpečí</th>
+        <th>Typ</th>
+        <th style="min-width:50px;text-align:center">Q1</th>
+        <th style="min-width:50px;text-align:center">Q2</th>
+        <th style="min-width:50px;text-align:center">Q3</th>
+        <th style="min-width:50px;text-align:center">Q4</th>
+        <th>Výsledek</th>
+        <th style="min-width:160px">Odůvodnění</th>
+      </tr>
+      <!-- CCP 1 -->
+      <tr style="background:var(--ccp-bg)">
+        <td><strong>Krok 6 — Vážení/plnění</strong><br>Křížová kontaminace alergenů při changeover</td>
+        <td>A</td>
+        <td style="text-align:center">ANO</td>
+        <td style="text-align:center">ANO</td>
+        <td style="text-align:center">—</td>
+        <td style="text-align:center">—</td>
+        <td><span class="badge badge-ccp">CCP 1</span></td>
+        <td>Changeover postup je navržen přímo pro eliminaci křížové kontaminace. Žádný pozdější krok kontaminaci neodstraní — výrobek jde přímo k zákazníkovi bez tepelného zpracování.</td>
+      </tr>
+      <!-- CCP 2 -->
+      <tr style="background:var(--ccp-bg)">
+        <td><strong>Krok 10A/10B — Etiketování</strong><br>Chybná deklarace alergenů na etiketě</td>
+        <td>A</td>
+        <td style="text-align:center">ANO</td>
+        <td style="text-align:center">ANO</td>
+        <td style="text-align:center">—</td>
+        <td style="text-align:center">—</td>
+        <td><span class="badge badge-ccp">CCP 2</span></td>
+        <td>Kontrola etikety je navržena přímo pro eliminaci rizika chybné alergenové informace. Žádný pozdější krok chybu neodhalí — zákazník s alergií nemá jinou ochranu.</td>
+      </tr>
+      <!-- OPRP 1 -->
+      <tr style="background:var(--oprp-bg)">
+        <td><strong>Krok 1–2 — Příjem</strong><br>Chybná identifikace alergenu při příjmu</td>
+        <td>A</td>
+        <td style="text-align:center">ANO</td>
+        <td style="text-align:center">NE</td>
+        <td style="text-align:center">ANO</td>
+        <td style="text-align:center">ANO</td>
+        <td><span class="badge badge-oprp">OPRP 1</span></td>
+        <td>Příjem není navržen výhradně pro kontrolu alergenů. Pozdější krok (K2 evidence + changeover CCP 1) nebezpečí sníží — ale jen pokud je surovina správně zaevidována. Proto OPRP, ne CCP.</td>
+      </tr>
+      <!-- OPRP 2 -->
+      <tr style="background:var(--oprp-bg)">
+        <td><strong>Krok 5 — Otevření obalu</strong><br>Cizí tělesa v surovině</td>
+        <td>F</td>
+        <td style="text-align:center">ANO</td>
+        <td style="text-align:center">NE</td>
+        <td style="text-align:center">ANO</td>
+        <td style="text-align:center">ANO</td>
+        <td><span class="badge badge-oprp">OPRP 2</span></td>
+        <td>IFS dodavatelé mají vlastní HACCP pro cizí tělesa. Vizuální kontrola při otevření je doplňková — není navržena výhradně pro eliminaci. Závažnost středně-nízká pro suché produkty.</td>
+      </tr>
+      <!-- OPRP 3 -->
+      <tr style="background:var(--oprp-bg)">
+        <td><strong>Krok 8 — Kontrola svaru</strong><br>Neuzavřený obal</td>
+        <td>F</td>
+        <td style="text-align:center">ANO</td>
+        <td style="text-align:center">NE</td>
+        <td style="text-align:center">ANO</td>
+        <td style="text-align:center">ANO</td>
+        <td><span class="badge badge-oprp">OPRP 3</span></td>
+        <td>Vadný svar je viditelný a opravitelný. Pozdější kontrola při expedici vadný kus zachytí. Není CCP protože nebezpečí lze eliminovat i v pozdějším kroku.</td>
+      </tr>
+      <!-- OPRP 4 -->
+      <tr style="background:var(--oprp-bg)">
+        <td><strong>Krok 10 — Dárkovna</strong><br>Záměna produktu v dárkovém balení</td>
+        <td>A</td>
+        <td style="text-align:center">ANO</td>
+        <td style="text-align:center">NE</td>
+        <td style="text-align:center">ANO</td>
+        <td style="text-align:center">NE</td>
+        <td><span class="badge badge-oprp">OPRP 4</span></td>
+        <td>Záměna výrobku v dárkové krabičce by nebyla odhalena pozdějším krokem — etiketa je na krabičce, ne na obsahu. Proto blízko CCP, ale produkt je uzavřený a etiketovaný ještě v dárkové — kontrola je proveditelná před uzavřením.</td>
+      </tr>
+      <!-- PRP examples -->
+      <tr style="background:var(--prp-bg)">
+        <td><strong>Krok 3 — Skladování</strong><br>Růst plísní / škůdci</td>
+        <td>B/F</td>
+        <td style="text-align:center">ANO</td>
+        <td style="text-align:center">NE</td>
+        <td style="text-align:center">NE</td>
+        <td style="text-align:center">—</td>
+        <td><span class="badge badge-prp">PRP</span></td>
+        <td>Pravděpodobnost nárůstu na přijatelné úrovni při správném skladování (max. 22 °C, 70 % RH, FIFO, Rentokil). Nebezpečí není při běžném provozu významné — řeší se preventivním PRP programem.</td>
+      </tr>
+      <tr style="background:var(--prp-bg)">
+        <td><strong>Kroky 1–12 — Celý provoz</strong><br>Mikrobiální kontaminace z prostředí / pracovníků</td>
+        <td>B</td>
+        <td style="text-align:center">ANO</td>
+        <td style="text-align:center">NE</td>
+        <td style="text-align:center">NE</td>
+        <td style="text-align:center">—</td>
+        <td><span class="badge badge-prp">PRP</span></td>
+        <td>Suché produkty nejsou prostředím pro rychlý mikrobiální růst. IFS dodavatelé kontrolují na vstupu. Hygienický protokol pracovníků a sanitace provozu jsou dostačujícím preventivním opatřením.</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- PŘÍLOHA 10: ALERGENOVÁ MATICE -->
+<div class="section" id="alergen-matice" style="page-break-before:always">
+  <div class="sec-hd">
+    <div class="sec-num">Příloha 10</div>
+    <div class="sec-title">Alergenová matice — křížová kontaminace v provozu</div>
+  </div>
+  <p style="margin-bottom:10px">Matice ukazuje, které alergeny se ve výrobě zpracovávají a jaký je risk křížové kontaminace při přechodu na jiný produkt. Podklad pro CCP 1 changeover rozhodování.</p>
+  <div class="info-box" style="margin-bottom:14px;font-size:12px">
+    <strong>Legenda:</strong>
+    <span style="background:var(--ccp-bg);color:var(--ccp);padding:1px 7px;border-radius:3px;border:1px solid var(--ccp-border);margin:0 4px">VYSOKÝ</span> — nutný plný changeover (čištění + vizuální kontrola před výrobou)&nbsp;&nbsp;
+    <span style="background:#fef9c3;color:#854d0e;padding:1px 7px;border-radius:3px;border:1px solid #fde047;margin:0 4px">STŘEDNÍ</span> — standardní čištění + zvýšená pozornost&nbsp;&nbsp;
+    <span style="background:var(--prp-bg);color:var(--prp);padding:1px 7px;border-radius:3px;border:1px solid var(--prp-border);margin:0 4px">NÍZKÝ</span> — standardní rutina
+  </div>
+  <div class="tbl-wrap">
+    <table style="font-size:11.5px">
+      <tr>
+        <th style="min-width:130px">Z produktu ↓ / Na produkt →</th>
+        <th style="text-align:center">Ořechy (skořáp.)</th>
+        <th style="text-align:center">Arašídy</th>
+        <th style="text-align:center">Sezam</th>
+        <th style="text-align:center">Sušené ovoce (bez alergenů)</th>
+        <th style="text-align:center">Čokoládové / s polevou</th>
+        <th style="text-align:center">Ochucené ořechy (s kořením)</th>
+      </tr>
+      <tr>
+        <td><strong>Ořechy (skořápkové)</strong></td>
+        <td style="text-align:center;background:var(--prp-bg);color:var(--prp)">NÍZKÝ¹</td>
+        <td style="text-align:center;background:var(--ccp-bg);color:var(--ccp)">VYSOKÝ</td>
+        <td style="text-align:center;background:var(--ccp-bg);color:var(--ccp)">VYSOKÝ</td>
+        <td style="text-align:center;background:var(--ccp-bg);color:var(--ccp)">VYSOKÝ</td>
+        <td style="text-align:center;background:#fef9c3;color:#854d0e">STŘEDNÍ</td>
+        <td style="text-align:center;background:var(--prp-bg);color:var(--prp)">NÍZKÝ¹</td>
+      </tr>
+      <tr>
+        <td><strong>Arašídy</strong></td>
+        <td style="text-align:center;background:var(--ccp-bg);color:var(--ccp)">VYSOKÝ</td>
+        <td style="text-align:center;background:var(--prp-bg);color:var(--prp)">NÍZKÝ</td>
+        <td style="text-align:center;background:var(--ccp-bg);color:var(--ccp)">VYSOKÝ</td>
+        <td style="text-align:center;background:var(--ccp-bg);color:var(--ccp)">VYSOKÝ</td>
+        <td style="text-align:center;background:var(--ccp-bg);color:var(--ccp)">VYSOKÝ</td>
+        <td style="text-align:center;background:var(--ccp-bg);color:var(--ccp)">VYSOKÝ</td>
+      </tr>
+      <tr>
+        <td><strong>Sezam</strong></td>
+        <td style="text-align:center;background:var(--ccp-bg);color:var(--ccp)">VYSOKÝ</td>
+        <td style="text-align:center;background:var(--ccp-bg);color:var(--ccp)">VYSOKÝ</td>
+        <td style="text-align:center;background:var(--prp-bg);color:var(--prp)">NÍZKÝ</td>
+        <td style="text-align:center;background:var(--ccp-bg);color:var(--ccp)">VYSOKÝ</td>
+        <td style="text-align:center;background:var(--ccp-bg);color:var(--ccp)">VYSOKÝ</td>
+        <td style="text-align:center;background:var(--ccp-bg);color:var(--ccp)">VYSOKÝ</td>
+      </tr>
+      <tr>
+        <td><strong>Sušené ovoce (bez alergenů)</strong></td>
+        <td style="text-align:center;background:var(--ccp-bg);color:var(--ccp)">VYSOKÝ</td>
+        <td style="text-align:center;background:var(--ccp-bg);color:var(--ccp)">VYSOKÝ</td>
+        <td style="text-align:center;background:var(--ccp-bg);color:var(--ccp)">VYSOKÝ</td>
+        <td style="text-align:center;background:var(--prp-bg);color:var(--prp)">NÍZKÝ</td>
+        <td style="text-align:center;background:#fef9c3;color:#854d0e">STŘEDNÍ</td>
+        <td style="text-align:center;background:#fef9c3;color:#854d0e">STŘEDNÍ</td>
+      </tr>
+      <tr>
+        <td><strong>Čokoládové / s polevou</strong></td>
+        <td style="text-align:center;background:#fef9c3;color:#854d0e">STŘEDNÍ</td>
+        <td style="text-align:center;background:var(--ccp-bg);color:var(--ccp)">VYSOKÝ</td>
+        <td style="text-align:center;background:var(--ccp-bg);color:var(--ccp)">VYSOKÝ</td>
+        <td style="text-align:center;background:var(--ccp-bg);color:var(--ccp)">VYSOKÝ</td>
+        <td style="text-align:center;background:var(--prp-bg);color:var(--prp)">NÍZKÝ</td>
+        <td style="text-align:center;background:#fef9c3;color:#854d0e">STŘEDNÍ</td>
+      </tr>
+      <tr>
+        <td><strong>Ochucené ořechy (s kořením)</strong></td>
+        <td style="text-align:center;background:var(--ccp-bg);color:var(--ccp)">VYSOKÝ</td>
+        <td style="text-align:center;background:var(--ccp-bg);color:var(--ccp)">VYSOKÝ</td>
+        <td style="text-align:center;background:var(--ccp-bg);color:var(--ccp)">VYSOKÝ</td>
+        <td style="text-align:center;background:var(--ccp-bg);color:var(--ccp)">VYSOKÝ</td>
+        <td style="text-align:center;background:#fef9c3;color:#854d0e">STŘEDNÍ</td>
+        <td style="text-align:center;background:var(--prp-bg);color:var(--prp)">NÍZKÝ¹</td>
+      </tr>
+    </table>
+  </div>
+  <p style="font-size:11px;color:var(--fg-muted);margin-top:8px">¹ NÍZKÝ = přechod v rámci stejné alergenní skupiny (např. mandle → kešu). Stále nutné standardní čištění, ale není potřeba plný changeover protokol.</p>
+
+  <div class="rule-box" style="margin-top:14px">
+    <strong>Praktické pravidlo changeover:</strong> Přechod VŽDY vyžaduje plný CCP 1 changeover protokol (Příloha 3), pokud cílový produkt má <em>přísnější</em> alergenový profil než předchozí — tj. cílový produkt neobsahuje alergen, který předchozí produkt obsahoval. Přechod v rámci stejné skupiny nebo na produkt se širším alergenním profilem = standardní čištění.
+  </div>
+
+  <h3 style="margin-top:20px">Alergeny přítomné v provozu — souhrn</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Alergen</th><th>Zdroj v Nutworld</th><th>Riziko přenosu</th><th>Opatření</th></tr>
+      <tr><td><strong>Skořápkové ořechy (#8)</strong></td><td>Hlavní surovina — mandle, kešu, vlašské, lískovce, pekan, para, pistácie, makadamie</td><td style="color:var(--ccp)"><strong>VYSOKÉ</strong></td><td>CCP 1 — changeover</td></tr>
+      <tr><td><strong>Arašídy (#5)</strong></td><td>Hlavní surovina — arašídy všechny druhy</td><td style="color:var(--ccp)"><strong>VYSOKÉ</strong></td><td>CCP 1 — changeover</td></tr>
+      <tr><td><strong>Sezam (#11)</strong></td><td>Surovina i součást koření</td><td style="color:var(--ccp)"><strong>VYSOKÉ</strong></td><td>CCP 1 — changeover</td></tr>
+      <tr><td><strong>Mléko (#7)</strong></td><td>Čokoládové a mléčné polevy</td><td style="color:#854d0e">střední</td><td>Changeover + deklarace na etiketě</td></tr>
+      <tr><td><strong>Sója (#6)</strong></td><td>Součást polev zpracovaných ořechů</td><td style="color:#854d0e">střední</td><td>Deklarace dodavatele v K2 + etiketa</td></tr>
+      <tr><td><strong>Celer (#9)</strong></td><td>V kořeních na ochucených ořeších</td><td style="color:#854d0e">střední</td><td>Deklarace dodavatele v K2 + etiketa</td></tr>
+      <tr><td><strong>Hořčice (#10)</strong></td><td>Hořčičné semínko v kořeních</td><td style="color:#854d0e">střední</td><td>Deklarace dodavatele v K2 + etiketa</td></tr>
+      <tr><td><strong>Siřičitany (#12)</strong></td><td>Sušené ovoce</td><td style="color:var(--prp)">nízké</td><td>Deklarace na etiketě</td></tr>
+      <tr><td><strong>Mořské plody (#2, #14)</strong></td><td>Součást koření / ochucovadel u spec. produktů</td><td style="color:#854d0e">střední</td><td>Deklarace dodavatele v K2 + etiketa</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- PŘÍLOHA 11: SLEDOVATELNOST -->
+<div class="section" id="sledovatelnost" style="page-break-before:always">
+  <div class="sec-hd">
+    <div class="sec-num">Příloha 11</div>
+    <div class="sec-title">Postup sledovatelnosti (Traceability) — EU 178/2002</div>
+  </div>
+  <p style="margin-bottom:12px">EU 178/2002 ukládá povinnost dohledat dodavatele (1 krok zpět) i zákazníky (1 krok vpřed) pro jakýkoli produkt. Systémem sledovatelnosti je <strong>K2 ERP</strong>.</p>
+
+  <h3>Cíl</h3>
+  <p>Identifikovat a izolovat dotčené výrobky do <strong>4 hodin</strong> od zjištění problému (IFS Food požadavek). Dohledat: která šarže suroviny → které výrobky → kteří zákazníci.</p>
+
+  <h3>Klíčové vazby v K2</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Vazba</th><th>Co je evidováno</th><th>Kde v K2</th></tr>
+      <tr><td><strong>Dodavatel → Surovina</strong></td><td>Název dodavatele, datum příjmu, číslo dodacího listu, šarže, DMT</td><td>Evidence příjmu zboží</td></tr>
+      <tr><td><strong>Surovina → Výroba</strong></td><td>Výrobní příkaz, šarže suroviny, datum a čas výroby, pracovník (osobní kód K2)</td><td>Výrobní záznamy K2</td></tr>
+      <tr><td><strong>Výroba → Hotový výrobek</strong></td><td>Kód produktu, šarže výrobku, DMT, množství, skladová lokace</td><td>Sklad hotových výrobků K2</td></tr>
+      <tr><td><strong>Hotový výrobek → Zákazník</strong></td><td>Číslo objednávky, zákazník, datum expedice, přepravce, číslo zásilky</td><td>Expedice K2 + Shoptet</td></tr>
+    </table>
+  </div>
+
+  <h3>Postup dohledání při incidentu</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>#</th><th>Akce</th><th>V K2</th><th>Do kdy</th></tr>
+      <tr><td>1</td><td>Identifikovat šarži problémové suroviny nebo výrobku</td><td>Evidence příjmu / výrobní záznamy</td><td>Do 30 min</td></tr>
+      <tr><td>2</td><td>Dohledat všechny výrobky vyrobené z dané šarže suroviny</td><td>Výrobní záznamy — filtr dle šarže suroviny</td><td>Do 1 hod</td></tr>
+      <tr><td>3</td><td>Zkontrolovat, kolik kusů je stále na skladě → fyzicky oddělit</td><td>Stav skladu K2 → blokace</td><td>Do 1 hod</td></tr>
+      <tr><td>4</td><td>Dohledat zákazníky, kteří dotčené výrobky obdrželi</td><td>Expedice K2 + Shoptet — filtr dle kódu produktu + datum</td><td>Do 2 hod</td></tr>
+      <tr><td>5</td><td>Předat seznam zákazníků vedoucímu provozu → aktivovat Recall (Sekce 8)</td><td>Export ze Shoptetu / K2</td><td>Do 4 hod</td></tr>
+    </table>
+  </div>
+
+  <h3>Testování sledovatelnosti</h3>
+  <p>1× ročně (v rámci přezkoumání HACCP) provést test: vybrat náhodnou šarži suroviny a ověřit, zda lze do 4 hodin dohledat všechny výrobky a zákazníky. Výsledek zaznamenat v Příloze 8 (Zápis z přezkoumání HACCP).</p>
+
+  <div class="rule-box">
+    <strong>Klíčový princip:</strong> Žádný pohyb (příjem → výroba → expedice) se neprovádí mimo K2. Evidence je podmínkou pohybu — bez záznamu v K2 se zboží nepřesouvá.
+  </div>
+</div>
+
+<!-- PŘÍLOHA 12: SCHÉMA PROVOZOVNY -->
+<div class="section" id="schema" style="page-break-before:always">
+  <div class="sec-hd">
+    <div class="sec-num">Příloha 12</div>
+    <div class="sec-title">Schéma provozovny IDA 825 — Rtyně v Podkrkonoší</div>
+  </div>
+  <p style="margin-bottom:14px">Zjednodušené schéma toku pracovníků a materiálu. Plné výkresové schéma je součástí stavební a provozní dokumentace objektu.</p>
+
+  <div style="font-family:'Source Sans 3',sans-serif;font-size:12px;border:1.5px solid var(--border);border-radius:6px;padding:20px;max-width:700px">
+
+    <!-- Vstup / přízemí -->
+    <div style="display:flex;gap:12px;align-items:stretch;margin-bottom:8px">
+      <div style="flex:1;background:var(--bg-soft);border:1px solid var(--border);border-radius:4px;padding:10px;text-align:center">
+        <div style="font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--fg-muted);margin-bottom:4px">Exteriér</div>
+        <div>🚚 Příjmová rampa<br><small>dodávky surovin</small></div>
+      </div>
+      <div style="display:flex;align-items:center;font-size:18px;color:var(--fg-muted)">→</div>
+      <div style="flex:1;background:var(--bg-soft);border:1px solid var(--border);border-radius:4px;padding:10px;text-align:center">
+        <div style="font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--fg-muted);margin-bottom:4px">Přízemí — Sklad</div>
+        <div>📦 Hlavní sklad surovin<br><small>regály + palety, K2 lokace</small><br><small style="color:var(--ccp)">🔴 vozík červená stuha</small></div>
+      </div>
+    </div>
+
+    <!-- Vstup pracovníka -->
+    <div style="border-top:2px dashed var(--accent);margin:10px 0;padding-top:10px">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--accent);margin-bottom:8px">→ Tok pracovníka (vstupní hygienický protokol)</div>
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+        <div style="background:var(--accent-soft);border:1px solid var(--accent);border-radius:4px;padding:6px 10px;text-align:center;font-size:11px"><strong>Hlavní vchod</strong><br>+ botník<br>přezutí</div>
+        <div style="color:var(--fg-muted)">→</div>
+        <div style="background:var(--accent-soft);border:1px solid var(--accent);border-radius:4px;padding:6px 10px;text-align:center;font-size:11px"><strong>Schodiště</strong><br>do 2. patra</div>
+        <div style="color:var(--fg-muted)">→</div>
+        <div style="background:var(--accent-soft);border:1px solid var(--accent);border-radius:4px;padding:6px 10px;text-align:center;font-size:11px"><strong>Šatna</strong><br>2. patro<br>převlečení</div>
+        <div style="color:var(--fg-muted)">→</div>
+        <div style="background:var(--accent-soft);border:1px solid var(--accent);border-radius:4px;padding:6px 10px;text-align:center;font-size:11px"><strong>Vnitřní</strong><br>schodiště<br>dolů</div>
+        <div style="color:var(--fg-muted)">→</div>
+        <div style="background:var(--ccp-bg);border:1.5px solid var(--ccp);border-radius:4px;padding:6px 10px;text-align:center;font-size:11px"><strong>ČISTÁ ZÓNA</strong><br>rozcestník</div>
+      </div>
+    </div>
+
+    <!-- Čistá zóna -->
+    <div style="border:2px solid var(--ccp);border-radius:6px;padding:14px;margin-top:10px;background:var(--ccp-bg)">
+      <div style="font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--ccp);margin-bottom:10px">ČISTÁ ZÓNA — přístup pouze v pracovním oděvu po umytí rukou</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+
+        <!-- Balírna -->
+        <div style="flex:1;min-width:180px;background:var(--bg);border:1.5px solid var(--oprp-border);border-radius:4px;padding:10px">
+          <div style="font-weight:700;color:var(--oprp);font-size:12px;margin-bottom:6px">BALÍRNA</div>
+          <div style="font-size:11px;line-height:1.7">
+            🚿 Umyvadlo na mytí rukou<br>
+            ⚖️ Váha kalibrovaná (ref.)<br>
+            ⚖️ Váhy pracovní<br>
+            🔧 Kontinuální tavicí svářečka<br>
+            🪣 Pracovní kbelíky<br>
+            🟢 <span style="color:var(--prp)">vozík zelená stuha</span><br>
+            🦋 Elektrický lapač molů<br>
+            📦 Obalový materiál
+          </div>
+        </div>
+
+        <!-- Dárkovna -->
+        <div style="flex:1;min-width:180px;background:var(--bg);border:1.5px solid var(--accent);border-radius:4px;padding:10px">
+          <div style="font-weight:700;color:var(--accent);font-size:12px;margin-bottom:6px">DÁRKOVNA</div>
+          <div style="font-size:11px;line-height:1.7">
+            🎁 Kompletace dárk. balení<br>
+            🖨️ Tiskárna etiket (vlastní)<br>
+            📋 DJ zakázkové listy (K2)<br>
+            ✅ Pouze uzavřené výrobky<br>
+            ❌ Žádné otevřené suroviny
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Expedice -->
+    <div style="margin-top:10px;background:var(--bg-soft);border:1px solid var(--border);border-radius:4px;padding:10px">
+      <div style="font-weight:700;font-size:12px;margin-bottom:4px">EXPEDICE + SKLAD HOTOVÝCH VÝROBKŮ</div>
+      <div style="font-size:11px">🖨️ Tisk etiket (K2/Shoptet — automaticky) · 📬 Příprava zásilek · 🚛 Předání dopravci (Geis, PPL, Zásilkovna)</div>
+    </div>
+
+    <!-- Kanceláře -->
+    <div style="margin-top:6px;background:var(--bg-soft);border:1px solid var(--border-light);border-radius:4px;padding:8px;font-size:11px;color:var(--fg-muted)">
+      🏢 Kanceláře a zázemí (2. patro) — přístupné bez hygienického protokolu · Návštěvy zde pokud nevstupují do výroby
+    </div>
+
+    <!-- Rentokil -->
+    <div style="margin-top:10px;border-top:1px dashed var(--border);padding-top:8px;font-size:11px;color:var(--fg-muted)">
+      <strong>Rentokil monitorovací zařízení:</strong> záchytné stanice na moly (sklad + výroba) · elektrický lapač molů (balírna) · záchytné stanice na hlodavce (rizikové lokace dle smlouvy Rentokil) · sítě proti hmyzu na větracích oknech
+    </div>
+  </div>
+
+  <div class="info-box" style="margin-top:14px;font-size:12px">
+    <strong>Zásada oddělení:</strong> Surovina a hotový výrobek se nepohybují ve stejném prostoru ve stejnou dobu bez fyzického oddělení. Elektrický vozík s červenou stuhou (sklad) nesmí vstoupit do čisté zóny. Elektrický vozík se zelenou stuhou (balírna) se nepoužívá v hlavním skladu.
+  </div>
+</div>
+
+<!-- PŘÍLOHA 13: KALIBRACE VAH -->
+<div class="section" id="kalibrace" style="page-break-before:always">
+  <div class="sec-hd">
+    <div class="sec-num">Příloha 13</div>
+    <div class="sec-title">Kalibrace a ověřování vah</div>
+  </div>
+
+  <h3>Referenční (kalibrovaná) váha</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Parametr</th><th>Hodnota</th></tr>
+      <tr><td><strong>Typ / model</strong></td><td>Digitální váha SM LP/SW do 3 kg</td></tr>
+      <tr><td><strong>Kalibraci provedl</strong></td><td>VÁHY – LAPKA PETR, Na Drahách 753, 500 09 Hradec Králové – Malšovice (IČ: 68218770)</td></tr>
+      <tr><td><strong>Ověření</strong></td><td>Metrologie s ČMI (Český metrologický institut) — státní plomba <strong>CM5-26</strong></td></tr>
+      <tr><td><strong>Datum poslední kalibrace</strong></td><td>22. 9. 2026</td></tr>
+      <tr><td><strong>Platnost kalibrace</strong></td><td>2 roky — příští kalibrace: <strong>září 2028</strong></td></tr>
+      <tr><td><strong>Doklad</strong></td><td>Faktura Váhy Lapka č. VS 26474 ze dne 22. 9. 2026 — archivovat do září 2028</td></tr>
+    </table>
+  </div>
+
+  <h3>Pracovní váhy (bez státního ověření)</h3>
+  <p>Ostatní váhy v provozu jsou pracovní — nemají individuální kalibrační certifikát. Ověřují se pravidelně srovnáním s referenční váhou.</p>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Postup ověření pracovní váhy</th><th>Frekvence</th><th>Kdo</th><th>Záznam</th></tr>
+      <tr>
+        <td>Zvážit kontrolní závaží nebo produkt se známou hmotností na referenční váze → zvážit totéž na pracovní váze → odchylka musí být do ±2 g (do 500 g) nebo ±5 g (500 g–3 kg)</td>
+        <td>1× týdně + vždy při podezření na chybu</td>
+        <td>Vedoucí balírny</td>
+        <td>Formulář měsíční kontroly (P6 — bod „Funkčnost vah")</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="rule-box" style="margin-top:12px">
+    <strong>Při překročení tolerance:</strong> pracovní váha se vyřadí z provozu → označí „NEPOUŽÍVAT" → informuje se vedoucí provozu → zajistí se servis nebo náhrada. Výrobky zvážené na problematické váze se posoudí individuálně.
+  </div>
+</div>
+
+</div><!-- /doc-wrap -->
+</body>
+</html>
