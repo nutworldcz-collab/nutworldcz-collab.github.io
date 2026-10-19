@@ -1,49 +1,49 @@
 {
-  "generated": "2026-10-18T08:59:56",
-  "period": "2026-10-11 – 2026-10-17",
+  "generated": "2026-10-19T08:30:17",
+  "period": "2026-10-12 – 2026-10-18",
   "channels": {
     "Meta CZ": {
-      "spend": 20488.0,
-      "revenue": 128201.0,
-      "pno": 16.0,
-      "conversions": 117.0,
-      "clicks": 5400,
-      "prev_spend": 18673.0,
-      "prev_pno": 25.0
+      "spend": 21063.0,
+      "revenue": 126506.0,
+      "pno": 16.6,
+      "conversions": 120.0,
+      "clicks": 5492,
+      "prev_spend": 18264.0,
+      "prev_pno": 26.0
     },
     "Meta SK": {
-      "spend": 240.0,
-      "revenue": 1487.0,
-      "pno": 16.1,
-      "conversions": 20.0,
-      "clicks": 1988,
-      "prev_spend": 280.0,
-      "prev_pno": 11.7
+      "spend": 230.0,
+      "revenue": 1693.0,
+      "pno": 13.6,
+      "conversions": 18.0,
+      "clicks": 1946,
+      "prev_spend": 279.0,
+      "prev_pno": 12.5
     },
     "Google CZ": {
-      "spend": 5576.0,
-      "revenue": 50915.0,
-      "pno": 11.0,
-      "conversions": 41.3,
-      "clicks": 1620,
-      "prev_spend": 5839.0,
-      "prev_pno": 7.8
+      "spend": 5579.0,
+      "revenue": 46283.0,
+      "pno": 12.1,
+      "conversions": 40.3,
+      "clicks": 1618,
+      "prev_spend": 5685.0,
+      "prev_pno": 8.9
     },
     "Google SK": {
-      "spend": 3331.0,
-      "revenue": 5698.0,
-      "pno": 58.5,
-      "conversions": 9.0,
-      "clicks": 369,
-      "prev_spend": 3237.0,
-      "prev_pno": 22.4
+      "spend": 3495.0,
+      "revenue": 5357.0,
+      "pno": 65.3,
+      "conversions": 8.0,
+      "clicks": 362,
+      "prev_spend": 3179.0,
+      "prev_pno": 21.3
     }
   },
   "anomalies": [
-    "🔴 Google SK: PNO 58.5% — nad break-even (40%)",
-    "🟡 Google SK: PNO zhoršilo o 36.1pp vs minulý týden"
+    "🔴 Google SK: PNO 65.3% — nad break-even (40%)",
+    "🟡 Google SK: PNO zhoršilo o 44.0pp vs minulý týden"
   ],
   "priorities": [
-    "Zkontrolovat kampaně Google SK — PNO 58.5%"
+    "Zkontrolovat kampaně Google SK — PNO 65.3%"
   ]
 }
