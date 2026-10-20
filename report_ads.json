@@ -1,49 +1,49 @@
 {
-  "generated": "2026-10-19T08:30:17",
-  "period": "2026-10-12 – 2026-10-18",
+  "generated": "2026-10-20T08:30:31",
+  "period": "2026-10-13 – 2026-10-19",
   "channels": {
     "Meta CZ": {
-      "spend": 21063.0,
-      "revenue": 126506.0,
-      "pno": 16.6,
-      "conversions": 120.0,
-      "clicks": 5492,
-      "prev_spend": 18264.0,
-      "prev_pno": 26.0
+      "spend": 21902.0,
+      "revenue": 144386.0,
+      "pno": 15.2,
+      "conversions": 132.0,
+      "clicks": 5784,
+      "prev_spend": 18476.0,
+      "prev_pno": 26.2
     },
     "Meta SK": {
-      "spend": 230.0,
-      "revenue": 1693.0,
-      "pno": 13.6,
-      "conversions": 18.0,
-      "clicks": 1946,
-      "prev_spend": 279.0,
-      "prev_pno": 12.5
+      "spend": 220.0,
+      "revenue": 1687.0,
+      "pno": 13.0,
+      "conversions": 19.0,
+      "clicks": 1842,
+      "prev_spend": 278.0,
+      "prev_pno": 11.6
     },
     "Google CZ": {
-      "spend": 5579.0,
-      "revenue": 46283.0,
-      "pno": 12.1,
-      "conversions": 40.3,
-      "clicks": 1618,
-      "prev_spend": 5685.0,
-      "prev_pno": 8.9
+      "spend": 5531.0,
+      "revenue": 47255.0,
+      "pno": 11.7,
+      "conversions": 39.0,
+      "clicks": 1676,
+      "prev_spend": 5632.0,
+      "prev_pno": 9.1
     },
     "Google SK": {
-      "spend": 3495.0,
-      "revenue": 5357.0,
-      "pno": 65.3,
-      "conversions": 8.0,
-      "clicks": 362,
-      "prev_spend": 3179.0,
-      "prev_pno": 21.3
+      "spend": 3578.0,
+      "revenue": 7774.0,
+      "pno": 46.0,
+      "conversions": 10.5,
+      "clicks": 388,
+      "prev_spend": 3208.0,
+      "prev_pno": 24.0
     }
   },
   "anomalies": [
-    "🔴 Google SK: PNO 65.3% — nad break-even (40%)",
-    "🟡 Google SK: PNO zhoršilo o 44.0pp vs minulý týden"
+    "🔴 Google SK: PNO 46.0% — nad break-even (40%)",
+    "🟡 Google SK: PNO zhoršilo o 22.0pp vs minulý týden"
   ],
   "priorities": [
-    "Zkontrolovat kampaně Google SK — PNO 65.3%"
+    "Zkontrolovat kampaně Google SK — PNO 46.0%"
   ]
 }
