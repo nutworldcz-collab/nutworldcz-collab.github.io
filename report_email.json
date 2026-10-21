@@ -1,54 +1,22 @@
 {
-  "generated": "2026-10-21T07:30:26",
-  "total": 4,
+  "generated": "2026-10-21T12:00:42",
+  "total": 2,
   "spam_skipped": 0,
   "emails": [
     {
-      "account": "Exchange",
-      "sender": "info@nutworld.sk",
-      "subject": "Fwd: objednávka SOLARNY DOM",
-      "date": "středa 21. října 2026 4:19:10",
-      "unread": false,
-      "preview": "-------- Původní zpráva -------- Předmět: objednávka SOLARNY DOM Datum: 2026-10-20 17:24 Odesílatel: Krištofová Katarína - SOLARNYDOM",
-      "category": "b2b",
-      "sender_short": "info@nutworld.sk",
-      "sender_email": "info@nutworld.sk",
+      "account": "Google",
+      "sender": "Apple <News@InsideApple.Apple.com>",
+      "subject": "Představujeme novou Apple TV 4K.",
+      "date": "středa 21. října 2026 9:09:32",
+      "unread": true,
+      "preview": "￼ Filmový zážitek jako v kině. ￼ Apple TV 4K přináší fantastickou kvalitu obrazu ve 4K Dolby Vision1 a působivý prostorový zvuk2 pro zážitek jako v kině. V prodeji od 13. listopadu Předobjednat Více Proč je lepší koupit novou Apple TV 4K u Apple. Nakup online se specialistou Apple. Specialisté Apple",
+      "category": "ostatni",
+      "sender_short": "Apple",
+      "sender_email": "News@InsideApple.Apple.com",
       "ai": {
-        "shrn": "Přesměrovaná objednávka od slovenského klienta SOLARNY DOM. Výžaduje zpracování B2B objednávky.",
-        "tyka_se": true,
-        "akce": "Zkontrolovat objednávku, potvrdit dostupnost a zaslat nabídku/fakturu"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "InfoNutWorld <info@nutworld.cz>",
-      "subject": "Fw: Dotaz na balení oříšků pro firemního klienta",
-      "date": "středa 21. října 2026 3:32:45",
-      "unread": false,
-      "preview": "Zasláno z Outlooku pro Android From: Šárka Kukalová - Pedant s.r.o. <sarka.kukalova@pedant.cz> Sent: Tuesday",
-      "category": "tym",
-      "sender_short": "InfoNutWorld",
-      "sender_email": "info@nutworld.cz",
-      "ai": {
-        "shrn": "Dotaz od Pedant s.r.o. na balení oříšků pro firemního klienta. Firemní zákazník potřebuje poradit ohledně balení.",
-        "tyka_se": true,
-        "akce": "Poskytnout informace o dostupných balení a podmínkách pro firemní klienty"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "InfoNutWorld <info@nutworld.cz>",
-      "subject": "Fw: Poptávka spolupráce – Bar DejaVu Louny",
-      "date": "středa 21. října 2026 3:23:24",
-      "unread": false,
-      "preview": "Zasláno z Outlooku pro Android From: Nikol Ivanovičová <nikolivanovicova@icloud.com> Sent: Tuesday",
-      "category": "b2b",
-      "sender_short": "InfoNutWorld",
-      "sender_email": "info@nutworld.cz",
-      "ai": {
-        "shrn": "Poptávka spolupráce od Bar DejaVu Louny. Potenciální B2B partner chce jednat o možné spolupráci.",
-        "tyka_se": true,
-        "akce": "Kontaktovat a dojednat podmínky případné spolupráce"
+        "shrn": "Apple oznamuje nový produkt Apple TV 4K s nabídkou předobjednávky. Email se týká marketingového sdělení o spotřební elektronice.",
+        "tyka_se": false,
+        "akce": null
       }
     },
     {
@@ -62,7 +30,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "Notifikace z CrossFit serveru obsahující Workout of the Day. Automatizovaná zpráva bez relevance pro Nutworld.",
+        "shrn": "CrossFit zasílá denní tréninkaž (Workout of the Day) se zaměřením na 3-rep max. Email obsahuje fitness program, který není relevantní pro provoz e-shopu Nutworld.cz.",
         "tyka_se": false,
         "akce": null
       }
