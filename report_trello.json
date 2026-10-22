@@ -1,17 +1,57 @@
 {
-  "generated": "2026-10-21T03:00:23",
-  "date": "2026-10-20",
-  "total": 35,
+  "generated": "2026-10-22T03:09:22",
+  "date": "2026-10-21",
+  "total": 20,
   "notifications": [
     {
-      "type": "addedToCard",
-      "label": "Přidán/a na kartu",
-      "card": "EMEDIS - 800260036",
-      "card_url": "https://trello.com/c/PSPD8H2L",
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "HUFA - 4765/2026",
+      "card_url": "https://trello.com/c/VKAaZ8ih",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Balírna",
+      "comment": "",
+      "time": "2026-10-21T17:58:19.286Z"
+    },
+    {
+      "type": "cardDueSoon",
+      "label": "Karta má brzy termín",
+      "card": "REDA objednávka 23.10.2026",
+      "card_url": "https://trello.com/c/Jw2ZkP6G",
+      "board": "Firmy dárky + objednávky",
+      "creator": "",
+      "comment": "",
+      "time": "2026-10-21T17:01:37.363Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "L I N E T spol. s r.o. — 200 ks — 29.10.2026",
+      "card_url": "https://trello.com/c/bfjriBx0",
       "board": "Firmy dárky + objednávky",
       "creator": "Jana Nývltová",
       "comment": "",
-      "time": "2026-10-20T15:57:44.144Z"
+      "time": "2026-10-21T14:47:36.993Z"
+    },
+    {
+      "type": "mentionedOnCard",
+      "label": "Zmíněn/a v komentáři",
+      "card": "L I N E T spol. s r.o. — 200 ks — 29.10.2026",
+      "card_url": "https://trello.com/c/bfjriBx0",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Renata Pošepná",
+      "comment": "@jananyvltova @wolf1988  Joo má to u sebe Honza, to přesypával do něčeho, ale teď taky nevím jaký. ",
+      "time": "2026-10-21T14:41:41.495Z"
+    },
+    {
+      "type": "commentCard",
+      "label": "Nový komentář",
+      "card": "L I N E T spol. s r.o. — 200 ks — 29.10.2026",
+      "card_url": "https://trello.com/c/bfjriBx0",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Jana Nývltová",
+      "comment": "@darky70 Reniku, toto se bude dávat do nějakého sáčku?",
+      "time": "2026-10-21T14:39:15.308Z"
     },
     {
       "type": "mentionedOnCard",
@@ -20,338 +60,148 @@
       "card_url": "https://trello.com/c/bfjriBx0",
       "board": "Firmy dárky + objednávky",
       "creator": "Jana Nývltová",
-      "comment": "@wolf1988 krabičku jsi objednal?",
-      "time": "2026-10-20T15:21:51.648Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "HUFA - 4765/2026",
-      "card_url": "https://trello.com/c/VKAaZ8ih",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "",
-      "time": "2026-10-20T15:20:19.062Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "HUFA - 4765/2026",
-      "card_url": "https://trello.com/c/VKAaZ8ih",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "",
-      "time": "2026-10-20T15:18:06.819Z"
-    },
-    {
-      "type": "addedToCard",
-      "label": "Přidán/a na kartu",
-      "card": "HUFA - 4765/2026",
-      "card_url": "https://trello.com/c/VKAaZ8ih",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "",
-      "time": "2026-10-20T15:17:56.891Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "ALZA - EDI/2026/47",
-      "card_url": "https://trello.com/c/l5dufVui",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "",
-      "time": "2026-10-20T14:21:34.906Z"
-    },
-    {
-      "type": "mentionedOnCard",
-      "label": "Zmíněn/a v komentáři",
-      "card": "ALZA - EDI/2026/47",
-      "card_url": "https://trello.com/c/l5dufVui",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "@card krabička objednaná ",
-      "time": "2026-10-20T14:21:27.362Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "ALZA - EDI/2026/46",
-      "card_url": "https://trello.com/c/CCWPzBnD",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "",
-      "time": "2026-10-20T14:16:25.369Z"
-    },
-    {
-      "type": "mentionedOnCard",
-      "label": "Zmíněn/a v komentáři",
-      "card": "ALZA - EDI/2026/46",
-      "card_url": "https://trello.com/c/CCWPzBnD",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "@card krabička objednaná ",
-      "time": "2026-10-20T14:16:13.722Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "ALZA - EDI/2026/46",
-      "card_url": "https://trello.com/c/CCWPzBnD",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Hamerník Tomáš",
-      "comment": "@jananyvltova opět chybně některé ceny. Do faktury dát tyto ceny:\n\nBJ-MX-1000B02 Ořechy Bery Jones Směs ořechů natural 1kg 289,00 Kč\n\nBJ-MX-300W04 Dárkový box Bery Jones Degustační sada mix 380g  164,",
-      "time": "2026-10-20T12:48:48.413Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "Ardix",
-      "card_url": "https://trello.com/c/KqwtzixJ",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Markéta Costachová",
-      "comment": "",
-      "time": "2026-10-20T12:32:53.040Z"
-    },
-    {
-      "type": "addedToCard",
-      "label": "Přidán/a na kartu",
-      "card": "Ardix",
-      "card_url": "https://trello.com/c/KqwtzixJ",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Markéta Costachová",
-      "comment": "",
-      "time": "2026-10-20T12:32:35.393Z"
-    },
-    {
-      "type": "addedToCard",
-      "label": "Přidán/a na kartu",
-      "card": "ALZA - EDI/2026/46",
-      "card_url": "https://trello.com/c/CCWPzBnD",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "",
-      "time": "2026-10-20T10:42:49.821Z"
+      "comment": "@wolf1988 krabička objednána, prosím jen dodat logo, děkuji",
+      "time": "2026-10-21T14:26:41.108Z"
     },
     {
       "type": "cardDueSoon",
       "label": "Karta má brzy termín",
-      "card": "AGRO CS a.s. — Vánoční oříšky v sáčku 80g —  mix ořechů v medu a soli",
-      "card_url": "https://trello.com/c/N9d5Ud4o",
-      "board": "Tvorba štítků CANVA",
-      "creator": "",
-      "comment": "",
-      "time": "2026-10-20T10:00:44.579Z"
-    },
-    {
-      "type": "cardDueSoon",
-      "label": "Karta má brzy termín",
-      "card": "Nakup na Dobro s.r.o. — Mix ořechů v medu a soli 100g / NND etiketa, Uzené mandle …",
-      "card_url": "https://trello.com/c/APWlbQqt",
-      "board": "Tvorba štítků CANVA",
-      "creator": "",
-      "comment": "",
-      "time": "2026-10-20T10:00:35.376Z"
-    },
-    {
-      "type": "cardDueSoon",
-      "label": "Karta má brzy termín",
-      "card": "DiMisvět — MAKADAMOVÉ OŘECHY PRAŽENÉ NA SUCHO, SOLENÉ-KS  100g, MANGO PLATKY BEZ S…",
-      "card_url": "https://trello.com/c/pPR54s6n",
-      "board": "Tvorba štítků CANVA",
-      "creator": "",
-      "comment": "",
-      "time": "2026-10-20T10:00:32.044Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "ALZA - EDI/2026/39",
-      "card_url": "https://trello.com/c/QDY1fnUH",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "",
-      "time": "2026-10-20T08:21:26.887Z"
-    },
-    {
-      "type": "mentionedOnCard",
-      "label": "Zmíněn/a v komentáři",
-      "card": "AF Production, s.r.o. — 500 ks — 28.10.2026",
-      "card_url": "https://trello.com/c/jv5hyIlx",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "@wolf1988 bylo by možné poslat dříve?Je to už na expedici",
-      "time": "2026-10-20T08:20:21.813Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "obec Pernštejn",
-      "card_url": "https://trello.com/c/4SxopGNV",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Martin Werner",
-      "comment": "",
-      "time": "2026-10-20T08:03:00.965Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "obec Pernštejn",
-      "card_url": "https://trello.com/c/4SxopGNV",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Martin Werner",
-      "comment": "@jananyvltova ještě se nebude realizovat, vyberou něco s delší trvanlivostí.",
-      "time": "2026-10-20T08:02:42.452Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "obec Pernštejn",
-      "card_url": "https://trello.com/c/4SxopGNV",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Martin Werner",
-      "comment": "@jananyvltova to je zase málo to se poseru",
-      "time": "2026-10-20T08:00:52.975Z"
-    },
-    {
-      "type": "mentionedOnCard",
-      "label": "Zmíněn/a v komentáři",
-      "card": "ALZA - EDI/2026/39",
-      "card_url": "https://trello.com/c/QDY1fnUH",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Renata Pošepná",
-      "comment": "@card na balírně nemají nadělané na 920 krabiček. My fakt zázraky neumíme, když to není hotové od nich. Do druhého dne 920 krabiček nikdo neudělá. Na Náchod by to muselo odejít zítra. Aby nám něco dov",
-      "time": "2026-10-20T07:56:55.448Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "REDA WOTAN FOREST objednávka",
-      "card_url": "https://trello.com/c/GrFzSIsT",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Renata Pošepná",
-      "comment": "@hamerniktomas tak ono jim tam hlavně z toho přesného počtu ještě chybělo teď několikrát 🤦🏻‍♀️ když to bude větší množství 500ks tak 5ks, když třeba 300 tak 3ks. Díky ",
-      "time": "2026-10-20T07:41:19.684Z"
-    },
-    {
-      "type": "cardDueSoon",
-      "label": "Karta má brzy termín",
-      "card": "REDA WOTAN FOREST objednávka",
-      "card_url": "https://trello.com/c/GrFzSIsT",
-      "board": "Firmy dárky + objednávky",
-      "creator": "",
-      "comment": "",
-      "time": "2026-10-20T07:34:14.678Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "REDA WOTAN FOREST objednávka",
-      "card_url": "https://trello.com/c/GrFzSIsT",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Hamerník Tomáš",
-      "comment": "@darky70 objednával jsem vždy přesný počet dle objednávky. O kolik mám objednávat víc? kolik se tak cca poničí? Bude stačit 5 kusů?",
-      "time": "2026-10-20T07:17:21.537Z"
-    },
-    {
-      "type": "mentionedOnCard",
-      "label": "Zmíněn/a v komentáři",
-      "card": "ALZA - EDI/2026/39",
-      "card_url": "https://trello.com/c/QDY1fnUH",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Hamerník Tomáš",
-      "comment": "@card Celá tato objednávka musí tento týden odejít. Již je to 5 týden od objednávky. Nestačí jen část. Děkuji",
-      "time": "2026-10-20T07:14:02.935Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "ALZA - EDI/2026/39",
-      "card_url": "https://trello.com/c/QDY1fnUH",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Hamerník Tomáš",
-      "comment": "",
-      "time": "2026-10-20T07:11:13.157Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "ALZA - EDI/2026/47",
-      "card_url": "https://trello.com/c/l5dufVui",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Hamerník Tomáš",
-      "comment": "@jananyvltova opět mají špatnou cenu. Do faktury dejme BJ-MX-500B01 Ořechy Bery Jones Směs ořechů a ovoce 500g 106,50 Kč.",
-      "time": "2026-10-20T07:08:34.929Z"
-    },
-    {
-      "type": "addedToCard",
-      "label": "Přidán/a na kartu",
-      "card": "EDI/2026/36",
-      "card_url": "https://trello.com/c/O5OD2U50",
-      "board": "ALZA",
-      "creator": "Renata Pošepná",
-      "comment": "",
-      "time": "2026-10-20T07:06:08.948Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "obec Pernštejn",
-      "card_url": "https://trello.com/c/4SxopGNV",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "@martinwerner63 1/2027",
-      "time": "2026-10-20T06:59:40.683Z"
-    },
-    {
-      "type": "addedToCard",
-      "label": "Přidán/a na kartu",
-      "card": "5469v - mix Italie",
-      "card_url": "https://trello.com/c/chUagHoN",
-      "board": "Dostupnost produktů",
-      "creator": "Jana Nývltová",
-      "comment": "",
-      "time": "2026-10-20T06:38:13.722Z"
-    },
-    {
-      "type": "addedToCard",
-      "label": "Přidán/a na kartu",
-      "card": "10041v - arašídy v medu a skořici",
-      "card_url": "https://trello.com/c/v3rHrRV7",
-      "board": "Dostupnost produktů",
-      "creator": "Jana Nývltová",
-      "comment": "",
-      "time": "2026-10-20T06:37:19.140Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "REDA WOTAN FOREST objednávka",
-      "card_url": "https://trello.com/c/GrFzSIsT",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Renata Pošepná",
-      "comment": "@hamerniktomas @jananyvltova Tomáši, objednáváš nějaké krabičky navíc? teď ve třech zakázkách chybělo několik kusů. Tady také, takže místo aby to zítra šlo, tak se musí doposlat, dogravírovat a až pak",
-      "time": "2026-10-20T06:33:17.319Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
       "card": "REDA objednávka",
       "card_url": "https://trello.com/c/ATcZFO1f",
       "board": "Firmy dárky + objednávky",
-      "creator": "Renata Pošepná",
+      "creator": "",
       "comment": "",
-      "time": "2026-10-20T04:35:35.928Z"
+      "time": "2026-10-21T13:30:37.673Z"
     },
     {
-      "type": "addedToCard",
-      "label": "Přidán/a na kartu",
-      "card": "ALZA - EDI/2026/47",
-      "card_url": "https://trello.com/c/l5dufVui",
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "Hotel Ambassador Zlatá Husa objednávka 21.10.2026",
+      "card_url": "https://trello.com/c/nqIoB1Yw",
       "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
+      "creator": "Doprava NutWorld",
       "comment": "",
-      "time": "2026-10-20T02:17:24.868Z"
+      "time": "2026-10-21T11:40:40.021Z"
+    },
+    {
+      "type": "markedCompleteCard",
+      "label": "markedCompleteCard",
+      "card": "Hotel Ambassador Zlatá Husa objednávka 21.10.2026",
+      "card_url": "https://trello.com/c/nqIoB1Yw",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Doprava NutWorld",
+      "comment": "",
+      "time": "2026-10-21T11:40:36.407Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "Hotel Ambassador Zlatá Husa objednávka 21.10.2026",
+      "card_url": "https://trello.com/c/nqIoB1Yw",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Balírna",
+      "comment": "",
+      "time": "2026-10-21T10:31:18.248Z"
+    },
+    {
+      "type": "cardDueSoon",
+      "label": "Karta má brzy termín",
+      "card": "EKVIA s.r.o. — MANDLE VE SLANÉM KARAMELU V CELOFÁNKU S MAŠLIČKOU 180G - LOGO NUT",
+      "card_url": "https://trello.com/c/UU790oi4",
+      "board": "Tvorba štítků CANVA",
+      "creator": "",
+      "comment": "",
+      "time": "2026-10-21T10:00:59.778Z"
+    },
+    {
+      "type": "cardDueSoon",
+      "label": "Karta má brzy termín",
+      "card": "Kooperativa pojišťovna, a.s., Vienna Insurance Group — Dárková kazetka VÁNOČNÍ – M…",
+      "card_url": "https://trello.com/c/X31pNmbY",
+      "board": "Tvorba štítků CANVA",
+      "creator": "",
+      "comment": "",
+      "time": "2026-10-21T10:00:37.184Z"
+    },
+    {
+      "type": "mentionedOnCard",
+      "label": "Zmíněn/a v komentáři",
+      "card": "Víno z Kobylí",
+      "card_url": "https://trello.com/c/YCuBBHix",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Markéta Costachová",
+      "comment": "@wolf1988 ahoj, se mi neukázalo v emailu, volal nakonec jednatel dříve, než jsem volala klientce, že to potřebuje vědět, že má rozjednáno více poptávek jinde, tak jsem raději ustoupila na kompromis ( ",
+      "time": "2026-10-21T09:06:18.196Z"
+    },
+    {
+      "type": "addAttachmentToCard",
+      "label": "addAttachmentToCard",
+      "card": "Colsys s.r.o. — 262 ks — 05.11.2026",
+      "card_url": "https://trello.com/c/MYbZHoQa",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Renata Pošepná",
+      "comment": "",
+      "time": "2026-10-21T08:10:59.695Z"
+    },
+    {
+      "type": "addAttachmentToCard",
+      "label": "addAttachmentToCard",
+      "card": "Colsys s.r.o. — 262 ks — 05.11.2026",
+      "card_url": "https://trello.com/c/MYbZHoQa",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Renata Pošepná",
+      "comment": "",
+      "time": "2026-10-21T08:10:43.957Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "Colsys s.r.o. — 262 ks — 05.11.2026",
+      "card_url": "https://trello.com/c/MYbZHoQa",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Renata Pošepná",
+      "comment": "",
+      "time": "2026-10-21T08:06:42.165Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "Objednávka REDA",
+      "card_url": "https://trello.com/c/k7LleDR7",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Doprava NutWorld",
+      "comment": "",
+      "time": "2026-10-21T07:13:06.576Z"
+    },
+    {
+      "type": "markedCompleteCard",
+      "label": "markedCompleteCard",
+      "card": "Objednávka REDA",
+      "card_url": "https://trello.com/c/k7LleDR7",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Doprava NutWorld",
+      "comment": "",
+      "time": "2026-10-21T07:13:02.156Z"
+    },
+    {
+      "type": "mentionedOnCard",
+      "label": "Zmíněn/a v komentáři",
+      "card": "ALZA - EDI/2026/39",
+      "card_url": "https://trello.com/c/QDY1fnUH",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Doprava NutWorld",
+      "comment": "@card dnes odchází na mix paletě Geis položky Bj-MX-1000B02+BJ-mx-250b02+bj-hc-100b04",
+      "time": "2026-10-21T06:52:53.428Z"
+    },
+    {
+      "type": "mentionedOnCard",
+      "label": "Zmíněn/a v komentáři",
+      "card": "ALZA - EDI/2026/36",
+      "card_url": "https://trello.com/c/dMYuw5Kp",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Doprava NutWorld",
+      "comment": "@card dnes odchází na dvou paletach Geis položky BJ-MX-1000B02+BJ-MX-300W04",
+      "time": "2026-10-21T06:35:59.115Z"
     }
   ]
 }
