@@ -385,6 +385,7 @@ tr:nth-child(even) td { background: var(--bg-soft) }
   <a href="#sledovatelnost">P11 Traceability</a>
   <a href="#schema">P12 Schéma</a>
   <a href="#kalibrace">P13 Kalibrace</a>
+  <a href="#dmt-pravidla">P14 DMT vzorec</a>
 </nav>
 
 <div class="doc-wrap">
@@ -1755,6 +1756,42 @@ tr:nth-child(even) td { background: var(--bg-soft) }
       <tr><td><strong>Mořské plody (#2, #14)</strong></td><td>Součást koření / ochucovadel u spec. produktů</td><td style="color:#854d0e">střední</td><td>Deklarace dodavatele v K2 + etiketa</td></tr>
     </table>
   </div>
+
+  <h3 style="margin-top:20px">Povinné pořadí výroby — od nejméně k nejvíce alergenním</h3>
+  <p style="margin-bottom:10px">Pokud ve stejný den probíhá výroba více produktů, musí být dodrženo toto pořadí. Přeskočení pořadí = povinný plný mokrý changeover před zahájením.</p>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Pořadí</th><th>Kategorie</th><th>Příklady</th></tr>
+      <tr><td style="text-align:center;font-weight:700">1.</td><td>Produkty BEZ zákonných alergenů</td><td>Slunečnice, dýňová semínka, lněná semínka</td></tr>
+      <tr><td style="text-align:center;font-weight:700">2.</td><td>Stromové ořechy — natural (suchá očista mezi druhy)</td><td>Mandle, kešu, vlašské, lískovce, piniové, pekanové, para, pistácie</td></tr>
+      <tr><td style="text-align:center;font-weight:700">3.</td><td>Stromové ořechy — pražené / solené / obalované</td><td>Pražené mandle, solené kešu, ořechy v krustu</td></tr>
+      <tr><td style="text-align:center;font-weight:700">4.</td><td>Arašídy (vždy po ořeších, nikdy před nimi)</td><td>Arašídy raw, pražené, solené, v potaženích</td></tr>
+      <tr><td style="text-align:center;font-weight:700">5.</td><td>Sezam</td><td>Sezamová semínka, tahini produkty</td></tr>
+      <tr><td style="text-align:center;font-weight:700">6.</td><td>Čokoládové / mléčné / s polevou (sója, mléko)</td><td>Čokoládové arašídy, ořechy v mléčné čokoládě</td></tr>
+    </table>
+  </div>
+
+  <h3 style="margin-top:20px">Čisticí postup dle typu přechodu alergenů</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Typ přechodu</th><th>Postup</th><th>Čas</th><th>Schvaluje</th></tr>
+      <tr><td>Stejná alergenní skupina (vlašský → kešu)</td><td>Suchá očista — kartáč + vysavač, vizuální kontrola</td><td>~5 min</td><td>Operátor</td></tr>
+      <tr><td>Jiná alergenní skupina (ořechy → arašídy)</td><td>Suchá očista + vlhká dezinfekce kontaktních ploch + výměna sáčků/kbelíku</td><td>~15 min</td><td>Operátor + záznam Příloha 3</td></tr>
+      <tr><td>Přechod na produkt s deklarací MŮŽE OBSAHOVAT</td><td>Mokré čištění celé linky + vizuální kontrola vedoucím balírny</td><td>~30 min</td><td>Vedoucí balírny</td></tr>
+      <tr><td>Přechod na produkt NEOBSAHUJE X (deklarovaný)</td><td>Mokré čištění + záznam Příloha 3 + podpis vedoucího</td><td>~45 min</td><td>Vedoucí balírny + podpis</td></tr>
+    </table>
+  </div>
+
+  <h3 style="margin-top:20px">Skladová segregace alergenů</h3>
+  <div class="rule-box">
+    <ul style="margin:0;padding-left:18px;line-height:1.9">
+      <li>Arašídy skladovat vždy v <strong>uzavřených nádobách</strong>, odděleně od stromových ořechů</li>
+      <li>Sezam skladovat v označené zóně — prach se snadno šíří, kontaminuje okolní produkty</li>
+      <li>Čokoládové produkty (sója, mléko) oddělit od natural ořechů</li>
+      <li>Každá paleta/box musí mít viditelné alergénové označení (barevný štítek nebo K2 kód)</li>
+      <li>Otevřené suroviny vždy uzavřít a označit datem otevření + šarží</li>
+    </ul>
+  </div>
 </div>
 
 <!-- PŘÍLOHA 11: SLEDOVATELNOST -->
@@ -1931,6 +1968,62 @@ tr:nth-child(even) td { background: var(--bg-soft) }
 
   <div class="rule-box" style="margin-top:12px">
     <strong>Při překročení tolerance:</strong> pracovní váha se vyřadí z provozu → označí „NEPOUŽÍVAT" → informuje se vedoucí provozu → zajistí se servis nebo náhrada. Výrobky zvážené na problematické váze se posoudí individuálně.
+  </div>
+</div>
+
+<!-- PŘÍLOHA 14: DMT PRAVIDLA -->
+<div class="section" id="dmt-pravidla" style="page-break-before:always">
+  <div class="sec-hd">
+    <div class="sec-num">Příloha 14</div>
+    <div class="sec-title">Pravidla DMT — vzorec a tabulka zkrácení</div>
+  </div>
+  <p style="margin-bottom:12px">Závazný postup pro stanovení data minimální trvanlivosti (DMT) hotového výrobku. Pracovník <strong>nikdy neurčuje DMT volným odhadem</strong> — vždy vychází ze šarže zaznamenané v K2.</p>
+
+  <div class="rule-box" style="margin-bottom:14px">
+    <strong>Pravidlo č. 1:</strong> DMT hotového výrobku ≤ nejnižší DMT suroviny ve výrobku. NIKDY nepřekročit DMT dodavatele.<br>
+    <strong>Pravidlo č. 2:</strong> DMT se krátí za přebalení dle kategorie produktu (viz tabulka níže).<br>
+    <strong>Pravidlo č. 3:</strong> Při výsledném DMT &lt; dnešní datum → výrobek do karantény, informovat vedoucího.
+  </div>
+
+  <div style="background:var(--prp-bg);border:2px solid var(--prp-border);border-radius:6px;padding:14px 18px;font-family:monospace;font-size:14px;color:var(--fg);margin-bottom:16px;line-height:2">
+    DMT výrobku = min(DMT všech surovin) − Δ(dle kategorie)
+  </div>
+
+  <h3>Tabulka zkrácení dle kategorie produktu</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Kategorie</th><th>Příklady</th><th>Zkrácení (Δ)</th><th>Důvod</th></tr>
+      <tr><td><strong>Ořechy natural</strong></td><td>Mandle, kešu, vlašské raw</td><td style="font-weight:700;color:var(--prp)">−30 dní</td><td>Nízká vlhkost, stabilní tuk</td></tr>
+      <tr><td><strong>Ořechy pražené / solené</strong></td><td>Pražené arašídy, solené kešu</td><td style="font-weight:700;color:#854d0e">−21 dní</td><td>Oxidace tuku po pražení rychlejší</td></tr>
+      <tr><td><strong>Sušené ovoce</strong></td><td>Brusinky, meruňky, mango</td><td style="font-weight:700;color:var(--prp)">−30 dní</td><td>Vyšší cukr, nízká oxidace</td></tr>
+      <tr><td><strong>Čokoládové / kakaové</strong></td><td>Čokoládové arašídy, kakaové produkty</td><td style="font-weight:700;color:#854d0e">−21 dní</td><td>Citlivost na teplotu a vlhkost</td></tr>
+      <tr><td><strong>Obalované slané</strong></td><td>Ořechy v krustu, s kořením</td><td style="font-weight:700;color:#854d0e">−21 dní</td><td>Krusta navlhá rychle</td></tr>
+      <tr><td><strong>Semínka</strong></td><td>Chia, dýňová, konopná, sezam</td><td style="font-weight:700;color:var(--prp)">−30 dní</td><td>Stabilní, nízká vlhkost</td></tr>
+      <tr><td><strong>Směsi (mix)</strong></td><td>Müsli mix, trail mix</td><td style="font-weight:700;color:var(--ccp)">Δ nejkratší složky</td><td>DMT = nejkratší složka − její Δ</td></tr>
+      <tr><td><strong>Dárková krabička / sada</strong></td><td>Více produktů v jednom balení</td><td style="font-weight:700;color:var(--ccp)">Δ nejkratší složky</td><td>DMT celku = nejkratší složka</td></tr>
+    </table>
+  </div>
+
+  <h3 style="margin-top:16px">Postup výpočtu — krok za krokem</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>#</th><th>Akce</th><th>Kde</th></tr>
+      <tr><td>1</td><td>Z K2 výrobní zakázky zjisti DMT všech použitých surovin</td><td>K2 — šarže → příjmový doklad</td></tr>
+      <tr><td>2</td><td>Vyber nejnižší DMT ze všech surovin v zakázce</td><td>—</td></tr>
+      <tr><td>3</td><td>Urči kategorii produktu dle tabulky výše</td><td>—</td></tr>
+      <tr><td>4</td><td>Odečti příslušné zkrácení (Δ)</td><td>—</td></tr>
+      <tr><td>5</td><td>Ověř: výsledné datum ≥ dnešní datum (pokud ne → karanténa)</td><td>—</td></tr>
+      <tr><td>6</td><td>Napiš DMT na sáček ve formátu DD.MM.RRRR nebo MM/RRRR</td><td>Tavicí svářečka / štítek</td></tr>
+    </table>
+  </div>
+
+  <div class="info-box" style="margin-top:14px">
+    <strong>Příklad 1 — Kešu natural 100g:</strong> DMT suroviny 15.06.2027 → natural ořechy, Δ = 30 dní → DMT výrobku: <strong>16.05.2027</strong><br><br>
+    <strong>Příklad 2 — Trail mix:</strong> Mandle DMT 01/2027, Brusinky DMT 06/2026, Slunečnice DMT 11/2026 → nejkratší = Brusinky → sušené ovoce, Δ = 30 dní → DMT výrobku: <strong>01.05.2026</strong>
+  </div>
+
+  <div class="rule-box" style="margin-top:14px;font-size:12px;color:var(--fg-muted)">
+    <strong>Poznámka k validaci:</strong> Počty dní (Δ) jsou výchozí hodnoty k ověření. Před finálním zavedením doporučujeme potvrdit shelf-life testem nebo konzultací s hygienikem. Záznamy o validaci archivovat v HACCP složce.
   </div>
 </div>
 
