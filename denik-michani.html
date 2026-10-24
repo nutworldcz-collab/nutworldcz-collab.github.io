@@ -558,26 +558,43 @@ textarea:focus { border-color: #83502e; background: #fff; }
   // Start with 3 empty rows
   addRow(); addRow(); addRow();
 
-  // Print blank: clear fields → repaint → print → restore
-  window.printBlank = function() {
-    const saved = {};
+  // Blank print helper — clears values AND converts date/time → text so Chrome shows truly empty fields
+  function clearForPrint() {
+    const saved = [];
+    document.querySelectorAll('input, select, textarea').forEach(el => {
+      saved.push({ value: el.value, type: el.getAttribute('type') });
+      el.value = '';
+      if (el.type === 'date' || el.type === 'time') el.setAttribute('type', 'text');
+    });
     const recNum = document.getElementById('rec-num').textContent;
     const minDmt = document.getElementById('min-dmt').textContent;
-    document.querySelectorAll('input, select, textarea').forEach((el, i) => {
-      saved[i] = el.value;
-      el.value = '';
-    });
     document.getElementById('rec-num').textContent = '';
-    document.getElementById('min-dmt').textContent = '—';
+    document.getElementById('min-dmt').textContent = '';
+    return { saved, recNum, minDmt };
+  }
+  function restoreAfterPrint(state) {
+    document.querySelectorAll('input, select, textarea').forEach((el, i) => {
+      const s = state.saved[i];
+      if (s && s.type) el.setAttribute('type', s.type);
+      el.value = (s && s.value) || '';
+    });
+    document.getElementById('rec-num').textContent = state.recNum;
+    document.getElementById('min-dmt').textContent = state.minDmt;
+  }
+
+  // Button print
+  window.printBlank = function() {
+    const state = clearForPrint();
     requestAnimationFrame(() => requestAnimationFrame(() => {
       window.print();
-      document.querySelectorAll('input, select, textarea').forEach((el, i) => {
-        el.value = saved[i] || '';
-      });
-      document.getElementById('rec-num').textContent = recNum;
-      document.getElementById('min-dmt').textContent = minDmt;
+      restoreAfterPrint(state);
     }));
   };
+
+  // Cmd+P fallback
+  let _printState = null;
+  window.addEventListener('beforeprint', () => { _printState = clearForPrint(); });
+  window.addEventListener('afterprint', () => { if (_printState) { restoreAfterPrint(_printState); _printState = null; } });
 </script>
 </body>
 </html>
