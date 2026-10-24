@@ -557,6 +557,28 @@ textarea:focus { border-color: #83502e; background: #fff; }
 
   // Start with 3 empty rows
   addRow(); addRow(); addRow();
+
+  // Clear all fields before print, restore after
+  let _savedValues = {};
+  let _savedRecNum = '';
+  let _savedMinDmt = '';
+  window.addEventListener('beforeprint', () => {
+    _savedRecNum = document.getElementById('rec-num').textContent;
+    _savedMinDmt = document.getElementById('min-dmt').textContent;
+    document.getElementById('rec-num').textContent = '___________';
+    document.getElementById('min-dmt').textContent = '—';
+    document.querySelectorAll('input, select, textarea').forEach((el, i) => {
+      _savedValues[i] = el.value;
+      el.value = '';
+    });
+  });
+  window.addEventListener('afterprint', () => {
+    document.getElementById('rec-num').textContent = _savedRecNum;
+    document.getElementById('min-dmt').textContent = _savedMinDmt;
+    document.querySelectorAll('input, select, textarea').forEach((el, i) => {
+      el.value = _savedValues[i] || '';
+    });
+  });
 </script>
 </body>
 </html>
