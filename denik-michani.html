@@ -262,8 +262,21 @@ textarea:focus { border-color: #83502e; background: #fff; }
   .del-btn { display: none; }
   .col-del { display: none; }
   thead th:last-child { display: none; }
-  input, select, textarea { border: none !important; background: transparent !important; box-shadow: none !important; padding: 4px 2px !important; }
+  input, select, textarea {
+    border: none !important;
+    border-bottom: 1px solid #bbb !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 4px 2px !important;
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+  }
+  input::placeholder, textarea::placeholder {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+  }
   .sign-box { min-height: 80px; }
+  .dmt-box { background: #f5f0eb !important; }
   @page { margin: 12mm; size: A4; }
 }
 
