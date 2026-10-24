@@ -312,6 +312,35 @@ textarea:focus { border-color: #83502e; background: #fff; }
   .actions { padding: 12px 16px; }
   .sign-grid { grid-template-columns: 1fr; }
 }
+
+/* Mode toggle + templates */
+.ctrl-bar {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 14px 32px; background: #faf5f0; border-bottom: 1.5px solid #f1e6da;
+}
+.mode-toggle { display: flex; gap: 4px; background: #f1e6da; border-radius: 8px; padding: 3px; }
+.mode-btn {
+  background: none; border: none; padding: 6px 14px; border-radius: 6px;
+  font-family: 'Source Sans 3', sans-serif; font-size: 13px; font-weight: 600;
+  color: #83502e; cursor: pointer; transition: background .12s, color .12s; white-space: nowrap;
+}
+.mode-btn.active { background: #83502e; color: #fff; }
+.tmpl-bar { display: flex; gap: 6px; align-items: center; flex: 1; flex-wrap: wrap; }
+.tmpl-bar select {
+  border: 1.5px solid #d9c9b8; border-radius: 5px; padding: 5px 10px;
+  font-family: 'Source Sans 3', sans-serif; font-size: 12.5px; color: #5c381f;
+  background: #fff; outline: none; min-width: 160px; max-width: 220px;
+}
+.btn-tmpl { background: none; border: 1.5px solid #c8976a; border-radius: 5px; padding: 5px 12px; font-size: 12px; font-weight: 600; color: #83502e; cursor: pointer; font-family: 'Source Sans 3', sans-serif; white-space: nowrap; }
+.btn-tmpl:hover { background: #f5ede4; }
+.btn-tmpl.green { border-color: #4a7c2f; color: #4a7c2f; }
+.btn-tmpl.green:hover { background: #f0f7ea; }
+
+/* Section visibility */
+.section-surovina { display: none; }
+body.mode-surovina .section-michani { display: none; }
+body.mode-surovina .section-surovina { display: block; }
+body.mode-surovina .section-dmt { display: none; }
 </style>
 </head>
 <body>
@@ -327,6 +356,19 @@ textarea:focus { border-color: #83502e; background: #fff; }
     <div style="display:flex;align-items:center;gap:12px">
       <span class="record-num" id="rec-num">ZM–001</span>
       <div class="header-logo">🐿</div>
+    </div>
+  </div>
+
+  <!-- Mode toggle + templates -->
+  <div class="ctrl-bar">
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="btn-mode-michani" onclick="setMode('michani')">🥣 Míchání / Směs</button>
+      <button class="mode-btn" id="btn-mode-surovina" onclick="setMode('surovina')">🌾 Jedna surovina</button>
+    </div>
+    <div class="tmpl-bar">
+      <select id="tmpl-select"><option value="">— Vybrat šablonu —</option></select>
+      <button class="btn-tmpl" onclick="loadTemplate()">Načíst</button>
+      <button class="btn-tmpl green" onclick="saveTemplate()">+ Uložit šablonu</button>
     </div>
   </div>
 
@@ -375,8 +417,53 @@ textarea:focus { border-color: #83502e; background: #fff; }
       </div>
     </div>
 
-    <!-- SLOŽENÍ — SUROVINY -->
-    <div class="block">
+    <!-- SINGLE SUROVINA (only in surovina mode) -->
+    <div class="block section-surovina">
+      <div class="block-title">Surovina</div>
+      <div class="meta-grid">
+        <div class="field field--key">
+          <label>Kód suroviny</label>
+          <input type="text" id="sv-kod" placeholder="napr. 101" />
+        </div>
+        <div class="field field--key" style="grid-column: span 2">
+          <label>Název suroviny</label>
+          <input type="text" id="sv-nazev" placeholder="Mandle natural" />
+        </div>
+        <div class="field">
+          <label>Dodavatel</label>
+          <input type="text" id="sv-dodavatel" placeholder="KS / Jumbo…" />
+        </div>
+        <div class="field field--key">
+          <label>Šarže / LOT</label>
+          <input type="text" id="sv-sarze" placeholder="LOT číslo" />
+        </div>
+        <div class="field field--key">
+          <label>DMT suroviny</label>
+          <input type="date" id="sv-dmt" />
+        </div>
+        <div class="field field--key">
+          <label>Množství (kg)</label>
+          <input type="number" id="sv-mnozstvi" placeholder="50" min="0" step="0.1" />
+        </div>
+        <div class="field field--key">
+          <label>Operace</label>
+          <select id="sv-operace">
+            <option value="">— vybrat —</option>
+            <option>Přebalení</option>
+            <option>Pražení</option>
+            <option>Třídění</option>
+            <option>Sušení</option>
+            <option>Čištění</option>
+            <option>Drcení / sekání</option>
+            <option>Míchání koření</option>
+            <option>Jiné</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLOŽENÍ — SUROVINY (míchání mode) -->
+    <div class="block section-michani">
       <div class="block-title">Složení — použité suroviny</div>
       <div class="tbl-wrap">
         <table id="ing-table">
@@ -400,7 +487,7 @@ textarea:focus { border-color: #83502e; background: #fff; }
     </div>
 
     <!-- DMT VÝSLEDKU -->
-    <div class="block">
+    <div class="block section-dmt">
       <div class="block-title">DMT výsledného produktu</div>
       <div class="dmt-box">
         <div>
@@ -645,6 +732,96 @@ textarea:focus { border-color: #83502e; background: #fff; }
   window.addEventListener('beforeprint', () => { _printState = clearForPrint(); });
   window.addEventListener('afterprint', () => { if (_printState) { restoreAfterPrint(_printState); _printState = null; } });
 
+  // ── Mode toggle ──────────────────────────────────────────
+  let _currentMode = 'michani';
+  window.setMode = function(mode) {
+    _currentMode = mode;
+    document.body.classList.toggle('mode-surovina', mode === 'surovina');
+    document.getElementById('btn-mode-michani').classList.toggle('active', mode === 'michani');
+    document.getElementById('btn-mode-surovina').classList.toggle('active', mode === 'surovina');
+    renderTemplates();
+  };
+
+  // ── Templates (localStorage) ──────────────────────────────
+  const TMPL_KEY = 'nw_michani_templates_v1';
+  function getTemplates() { try { return JSON.parse(localStorage.getItem(TMPL_KEY) || '[]'); } catch { return []; } }
+  function saveTemplates(arr) { try { localStorage.setItem(TMPL_KEY, JSON.stringify(arr)); } catch {} }
+
+  function renderTemplates() {
+    const sel = document.getElementById('tmpl-select');
+    const tmpls = getTemplates().filter(t => t.mode === _currentMode);
+    sel.innerHTML = '<option value="">— Vybrat šablonu —</option>';
+    tmpls.forEach(t => { const o = document.createElement('option'); o.value = t.id; o.textContent = t.nazev; sel.appendChild(o); });
+  }
+
+  window.saveTemplate = function() {
+    const nazev = _currentMode === 'michani'
+      ? document.getElementById('nazev').value
+      : document.getElementById('sv-nazev').value;
+    const name = prompt('Název šablony:', nazev || '');
+    if (!name) return;
+    const tmpls = getTemplates();
+    const id = Date.now().toString(36);
+    if (_currentMode === 'michani') {
+      const rows = [];
+      document.querySelectorAll('#ing-body tr').forEach(tr => {
+        const inputs = tr.querySelectorAll('input');
+        if (inputs.length >= 6) rows.push({
+          kod: inputs[0].value, nazev: inputs[1].value,
+          dodavatel: inputs[2].value, mnozstvi: inputs[5].value
+        });
+      });
+      tmpls.push({ id, mode: 'michani', nazev: name,
+        kod: document.getElementById('kod').value,
+        mnozstvi: document.getElementById('mnozstvi').value,
+        ingredience: rows });
+    } else {
+      tmpls.push({ id, mode: 'surovina', nazev: name,
+        sv_kod: document.getElementById('sv-kod').value,
+        sv_nazev: document.getElementById('sv-nazev').value,
+        sv_dodavatel: document.getElementById('sv-dodavatel').value,
+        sv_mnozstvi: document.getElementById('sv-mnozstvi').value,
+        sv_operace: document.getElementById('sv-operace').value });
+    }
+    saveTemplates(tmpls);
+    renderTemplates();
+    document.getElementById('tmpl-select').value = id;
+    alert('Šablona uložena ✓');
+  };
+
+  window.loadTemplate = function() {
+    const id = document.getElementById('tmpl-select').value;
+    if (!id) return;
+    const tmpl = getTemplates().find(t => t.id === id);
+    if (!tmpl) return;
+    if (tmpl.mode === 'michani') {
+      setMode('michani');
+      document.getElementById('kod').value = tmpl.kod || '';
+      document.getElementById('nazev').value = tmpl.nazev;
+      document.getElementById('mnozstvi').value = tmpl.mnozstvi || '';
+      document.getElementById('ing-body').innerHTML = '';
+      (tmpl.ingredience || []).forEach(r => {
+        addRow();
+        const rows = document.querySelectorAll('#ing-body tr');
+        const last = rows[rows.length - 1].querySelectorAll('input');
+        last[0].value = r.kod || '';
+        last[1].value = r.nazev || '';
+        last[2].value = r.dodavatel || '';
+        last[5].value = r.mnozstvi || '';
+      });
+    } else {
+      setMode('surovina');
+      document.getElementById('sv-kod').value = tmpl.sv_kod || '';
+      document.getElementById('sv-nazev').value = tmpl.sv_nazev || '';
+      document.getElementById('sv-dodavatel').value = tmpl.sv_dodavatel || '';
+      document.getElementById('sv-mnozstvi').value = tmpl.sv_mnozstvi || '';
+      document.getElementById('sv-operace').value = tmpl.sv_operace || '';
+    }
+  };
+
+  renderTemplates();
+
+  // ── Trello save ──────────────────────────────────────────
   // Trello save
   const TK = '0363ebb149df04d' + '1285672a3080160a2';
   const TT = 'ATTA7b1b8a1cedc122827' + 'fdb2f80dc24b58d10855d967' + 'e0045b5e4d7d6fd340c2feaC4F111FE';
@@ -684,8 +861,45 @@ textarea:focus { border-color: #83502e; background: #fff; }
     let qcLines = '';
     selects.forEach((s, i) => { if (s.value) qcLines += `- ${qcLabels[i]}: ${s.value}\n`; });
 
-    const cardName = `${datum} | ${nazev}${mnoz ? ' | '+mnoz+' kg' : ''}${proKoho ? ' → '+proKoho : ''}`;
-    const desc = `## Výrobní záznam ${sarze || datum}
+    // Single surovina mode fields
+    const svKod    = document.getElementById('sv-kod').value;
+    const svNazev  = document.getElementById('sv-nazev').value;
+    const svDod    = document.getElementById('sv-dodavatel').value;
+    const svSarze  = document.getElementById('sv-sarze').value;
+    const svDmt    = document.getElementById('sv-dmt').value;
+    const svMnoz   = document.getElementById('sv-mnozstvi').value;
+    const svOp     = document.getElementById('sv-operace').value;
+
+    let cardName, desc;
+    if (_currentMode === 'surovina') {
+      if (!datum || !svNazev) { alert('Vyplň alespoň Datum a Název suroviny.'); return; }
+      cardName = `${datum} | ${svOp ? svOp+': ' : ''}${svNazev}${svMnoz ? ' | '+svMnoz+' kg' : ''}${proKoho ? ' → '+proKoho : ''}`;
+      desc = `## Záznam zpracování suroviny — ${datum}
+
+**Operace:** ${svOp || '—'}
+**Datum:** ${datum}
+**ZJ příkaz K2:** ${zj || '—'}
+**Pro koho:** ${proKoho || '—'}
+**Čas:** ${casS || '—'} – ${casE || '—'}
+**Místo uložení:** ${ulozeni || '—'}
+
+## Surovina
+- **Kód:** ${svKod || '—'}
+- **Název:** ${svNazev}
+- **Dodavatel:** ${svDod || '—'}
+- **Šarže / LOT:** ${svSarze || '—'}
+- **DMT suroviny:** ${svDmt || '—'}
+- **Množství:** ${svMnoz || '—'} kg
+
+## Kontrola kvality
+${qcLines || '— (nevyplněno)'}
+
+## Poznámky
+${pozn || '—'}`;
+    } else {
+      if (!datum || !nazev) { alert('Vyplň alespoň Datum míchání a Název produktu.'); return; }
+      cardName = `${datum} | ${nazev}${mnoz ? ' | '+mnoz+' kg' : ''}${proKoho ? ' → '+proKoho : ''}`;
+      desc = `## Výrobní záznam ${sarze || datum}
 
 **Datum míchání:** ${datum}
 **ZJ příkaz K2:** ${zj || '—'}
@@ -709,6 +923,7 @@ ${qcLines || '— (nevyplněno)'}
 
 ## Poznámky
 ${pozn || '—'}`;
+    }
 
     btn.disabled = true;
     btn.textContent = '⏳ Ukládám…';

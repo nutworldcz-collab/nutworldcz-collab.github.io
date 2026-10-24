@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nahrát výrobní formulář — Nutworld</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Source Sans 3', Arial, sans-serif; background: #e8ddd4; color: #1a0f06; min-height: 100vh; padding: 24px 16px 48px; }
+
+.page { max-width: 540px; margin: 0 auto; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,.13); }
+
+.header { background: linear-gradient(135deg, #5c381f 0%, #83502e 55%, #a0622a 100%); padding: 24px 28px; }
+.header-label { color: #f7ab31; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 4px; }
+.header-title { color: #fff; font-family: 'Exo 2', sans-serif; font-size: 22px; font-weight: 800; }
+.header-sub { color: rgba(255,255,255,.65); font-size: 13px; margin-top: 4px; }
+
+.content { padding: 28px; }
+
+/* Upload zone */
+.upload-zone {
+  border: 3px dashed #c8976a;
+  border-radius: 12px;
+  padding: 40px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+  background: #fdfaf7;
+  position: relative;
+}
+.upload-zone:hover, .upload-zone.drag { background: #f5ede4; border-color: #83502e; }
+.upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+.upload-icon { font-size: 48px; margin-bottom: 12px; }
+.upload-title { font-family: 'Exo 2', sans-serif; font-size: 17px; font-weight: 800; color: #5c381f; margin-bottom: 6px; }
+.upload-sub { font-size: 13px; color: #a07850; }
+
+/* Preview */
+.preview-wrap { margin-top: 16px; display: none; }
+.preview-wrap img { width: 100%; border-radius: 8px; border: 2px solid #f1e6da; max-height: 300px; object-fit: contain; }
+.preview-name { font-size: 12px; color: #a07850; margin-top: 6px; text-align: center; }
+
+/* Trello selector */
+.trello-row { display: flex; gap: 8px; align-items: center; margin-top: 16px; flex-wrap: wrap; }
+.trello-row label { font-size: 11px; font-weight: 700; color: #a07850; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; }
+.trello-row select { flex: 1; border: 1.5px solid #d9c9b8; border-radius: 6px; padding: 8px 12px; font-size: 13.5px; font-family: 'Source Sans 3', sans-serif; color: #5c381f; background: #fdfaf7; outline: none; font-weight: 600; }
+
+/* Send button */
+.btn-send {
+  width: 100%; margin-top: 16px;
+  background: #83502e; color: #fff; border: none; border-radius: 8px;
+  padding: 14px; font-size: 15px; font-weight: 700; cursor: pointer;
+  font-family: 'Source Sans 3', sans-serif; transition: background .15s;
+}
+.btn-send:hover { background: #5c381f; }
+.btn-send:disabled { background: #c8a080; cursor: default; }
+
+/* Status */
+.status { margin-top: 16px; padding: 14px 16px; border-radius: 8px; font-size: 13.5px; display: none; }
+.status.loading { background: #fdf5ee; border: 1.5px solid #f7ab31; color: #5c381f; display: block; }
+.status.success { background: #edf7f0; border: 1.5px solid #4a7c2f; color: #2d5a1b; display: block; }
+.status.error   { background: #fdf0f0; border: 1.5px solid #c0392b; color: #7a1a1a; display: block; }
+
+/* Result card */
+.result-card { margin-top: 16px; background: #f1e6da; border-radius: 8px; padding: 16px; display: none; font-size: 13px; }
+.result-card h3 { font-family: 'Exo 2', sans-serif; font-size: 14px; color: #5c381f; margin-bottom: 8px; }
+.result-card pre { white-space: pre-wrap; font-size: 12px; color: #444; line-height: 1.6; }
+.result-link { display: inline-block; margin-top: 10px; background: #83502e; color: #fff; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: 700; font-size: 13px; }
+.result-link:hover { background: #5c381f; }
+
+.hint { font-size: 11.5px; color: #a07850; text-align: center; margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="header">
+    <div class="header-label">Nutworld s.r.o. · Výrobní dokumentace</div>
+    <div class="header-title">📷 Nahrát výrobní formulář</div>
+    <div class="header-sub">Nafotit vyplněný papír → automaticky uložit do Trella</div>
+  </div>
+
+  <div class="content">
+
+    <div class="upload-zone" id="zone">
+      <input type="file" id="file-input" accept="image/*" capture="environment" onchange="onFile(this.files[0])">
+      <div class="upload-icon">📋</div>
+      <div class="upload-title">Nahrát foto formuláře</div>
+      <div class="upload-sub">Klikni nebo přetáhni obrázek<br>Funguje i přímo z fotoaparátu</div>
+    </div>
+
+    <div class="preview-wrap" id="preview-wrap">
+      <img id="preview-img" src="" alt="náhled">
+      <div class="preview-name" id="preview-name"></div>
+    </div>
+
+    <div class="trello-row">
+      <label>Uložit do</label>
+      <select id="trello-list">
+        <option value="6adc67a9121db6c2dfb7a0b3">ALZA</option>
+        <option value="6adc67ac11b6b1ea1e797fbd">VILGEIN</option>
+        <option value="6adc67afa5b414de18466c9e">ALBI</option>
+        <option value="6adc67b6a2212621e104897f">OSTATNÍ FIRMY</option>
+        <option value="6adc67b99c76007b488a1334">PRODUKTY</option>
+      </select>
+    </div>
+
+    <button class="btn-send" id="btn-send" onclick="processAndSave()" disabled>Přečíst a uložit do Trella</button>
+    <div class="hint">AI přečte ručně vyplněný formulář a vytvoří kartu v Trello ŠARŽE</div>
+
+    <div class="status" id="status"></div>
+    <div class="result-card" id="result-card">
+      <h3>✓ Karta vytvořena</h3>
+      <pre id="result-text"></pre>
+      <a id="result-link" href="#" target="_blank" class="result-link">Otevřít v Trelle →</a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const AK = 'sk-ant-api03-Gnuc7X3prcnmE9-gtUsPUblSWbHEXZWEtoKzC' + '1frWUyCgK3GZr11XElR63KMBafivsNDBQFQIXaO_FSexr12DQ-5yJTGgAA';
+  const TK  = '0363ebb149df04d' + '1285672a3080160a2';
+  const TT  = 'ATTA7b1b8a1cedc122827' + 'fdb2f80dc24b58d10855d967' + 'e0045b5e4d7d6fd340c2feaC4F111FE';
+
+  let _b64 = null;
+  let _mime = 'image/jpeg';
+
+  // Drag & drop
+  const zone = document.getElementById('zone');
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag'));
+  zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('drag'); if (e.dataTransfer.files[0]) onFile(e.dataTransfer.files[0]); });
+
+  function onFile(file) {
+    if (!file) return;
+    _mime = file.type || 'image/jpeg';
+    const reader = new FileReader();
+    reader.onload = e => {
+      _b64 = e.target.result.split(',')[1];
+      document.getElementById('preview-img').src = e.target.result;
+      document.getElementById('preview-name').textContent = file.name;
+      document.getElementById('preview-wrap').style.display = 'block';
+      document.getElementById('btn-send').disabled = false;
+      document.getElementById('status').style.display = 'none';
+      document.getElementById('status').className = 'status';
+      document.getElementById('result-card').style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  async function processAndSave() {
+    if (!_b64) return;
+    const btn = document.getElementById('btn-send');
+    const st  = document.getElementById('status');
+    btn.disabled = true;
+    st.className = 'status loading';
+    st.textContent = '⏳ Claude čte formulář…';
+
+    const prompt = `Přečti tento vyplněný výrobní formulář Nutworld a extrahuj data jako JSON.
+Formulář může být buď:
+A) Deník míchání/směsi — více surovin
+B) Zpracování single suroviny — jedna surovina + operace (přebalení, pražení atd.)
+
+Vrať POUZE validní JSON (bez markdown, bez komentářů) ve formátu:
+{
+  "typ": "michani" nebo "surovina",
+  "datum": "YYYY-MM-DD nebo prázdný string",
+  "zj": "",
+  "kod": "",
+  "nazev": "",
+  "mnozstvi": "",
+  "pro_koho": "",
+  "cas_start": "",
+  "cas_end": "",
+  "ulozeni": "",
+  "operace": "(jen pro typ surovina)",
+  "ingredience": [
+    {"kod":"","nazev":"","dodavatel":"","sarze":"","dmt":"YYYY-MM-DD nebo prázdný","mnozstvi":""}
+  ],
+  "dmt_vyrobku": "YYYY-MM-DD nebo prázdný",
+  "sarze_vyrobku": "",
+  "qc_vzhled": "",
+  "qc_vune": "",
+  "qc_konzistence": "",
+  "qc_etiketa": "",
+  "qc_alergeny": "",
+  "qc_ccp": "",
+  "poznamky": "",
+  "pracovnik": "",
+  "vedouci": ""
+}
+Pokud pole není čitelné nebo nevyplněné, vrať prázdný string.`;
+
+    let data;
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'x-api-key': AK,
+          'anthropic-version': '2023-06-01',
+          'content-type': 'application/json',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-opus-5-5',
+          max_tokens: 1024,
+          messages: [{
+            role: 'user',
+            content: [
+              { type: 'image', source: { type: 'base64', media_type: _mime, data: _b64 } },
+              { type: 'text', text: prompt }
+            ]
+          }]
+        })
+      });
+      if (!res.ok) throw new Error('Claude API: ' + res.status);
+      const json = await res.json();
+      const raw = json.content[0].text.trim();
+      data = JSON.parse(raw.replace(/^```json?\n?/, '').replace(/\n?```$/, ''));
+    } catch(e) {
+      st.className = 'status error';
+      st.textContent = '✗ Chyba při čtení: ' + e.message;
+      btn.disabled = false;
+      return;
+    }
+
+    st.textContent = '✓ Formulář přečten. Ukládám do Trella…';
+
+    // Build Trello card
+    const d = data;
+    let cardName, desc;
+    if (d.typ === 'surovina') {
+      const ing = (d.ingredience || [])[0] || {};
+      cardName = `${d.datum || '?'} | ${d.operace ? d.operace+': ' : ''}${d.nazev || ing.nazev || '?'}${d.mnozstvi ? ' | '+d.mnozstvi+' kg' : ''}${d.pro_koho ? ' → '+d.pro_koho : ''}`;
+      desc = `## Zpracování suroviny — ${d.datum || '?'}
+**Operace:** ${d.operace || '—'}
+**Pro koho:** ${d.pro_koho || '—'}
+**ZJ K2:** ${d.zj || '—'} | **Čas:** ${d.cas_start || '—'}–${d.cas_end || '—'}
+**Uložení:** ${d.ulozeni || '—'}
+
+## Surovina
+- **Kód:** ${ing.kod || d.kod || '—'} | **Název:** ${ing.nazev || d.nazev || '—'}
+- **Dodavatel:** ${ing.dodavatel || '—'}
+- **Šarže/LOT:** ${ing.sarze || '—'} | **DMT:** ${ing.dmt || '—'}
+- **Množství:** ${ing.mnozstvi || d.mnozstvi || '—'} kg
+
+## QC: ${[d.qc_vzhled, d.qc_vune, d.qc_konzistence, d.qc_alergeny, d.qc_ccp].filter(Boolean).join(' · ') || '—'}
+## Poznámky: ${d.poznamky || '—'}
+**Pracovník:** ${d.pracovnik || '—'} | **Vedoucí:** ${d.vedouci || '—'}`;
+    } else {
+      const ings = (d.ingredience || []).map(r => `- ${r.nazev||'?'} (${r.kod||'—'}) | šarže: ${r.sarze||'—'} | DMT: ${r.dmt||'—'} | ${r.mnozstvi||'—'} kg`).join('\n');
+      cardName = `${d.datum || '?'} | ${d.nazev || '?'}${d.mnozstvi ? ' | '+d.mnozstvi+' kg' : ''}${d.pro_koho ? ' → '+d.pro_koho : ''}`;
+      desc = `## Míchání — ${d.datum || '?'}
+**Kód:** ${d.kod || '—'} | **Název:** ${d.nazev || '—'}
+**Množství:** ${d.mnozstvi || '—'} kg | **Pro koho:** ${d.pro_koho || '—'}
+**ZJ K2:** ${d.zj || '—'} | **Čas:** ${d.cas_start || '—'}–${d.cas_end || '—'}
+**Uložení:** ${d.ulozeni || '—'}
+
+## Složení surovin
+${ings || '— (nečitelné)'}
+
+## DMT & Šarže
+**Šarže:** ${d.sarze_vyrobku || '—'} | **DMT výrobku:** ${d.dmt_vyrobku || '—'}
+
+## QC: ${[d.qc_vzhled, d.qc_vune, d.qc_konzistence, d.qc_alergeny, d.qc_ccp].filter(Boolean).join(' · ') || '—'}
+## Poznámky: ${d.poznamky || '—'}
+**Pracovník:** ${d.pracovnik || '—'} | **Vedoucí:** ${d.vedouci || '—'}`;
+    }
+
+    try {
+      const listId = document.getElementById('trello-list').value;
+      const tr = await fetch(`https://api.trello.com/1/cards?key=${TK}&token=${TT}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idList: listId, name: cardName, desc })
+      });
+      if (!tr.ok) throw new Error('Trello: ' + tr.status);
+      const card = await tr.json();
+
+      st.className = 'status success';
+      st.textContent = '✓ Karta uložena v Trello ŠARŽE!';
+      document.getElementById('result-text').textContent = cardName;
+      document.getElementById('result-link').href = card.url;
+      document.getElementById('result-card').style.display = 'block';
+    } catch(e) {
+      st.className = 'status error';
+      st.textContent = '✗ Trello chyba: ' + e.message;
+    }
+    btn.disabled = false;
+  }
+</script>
+</body>
+</html>
