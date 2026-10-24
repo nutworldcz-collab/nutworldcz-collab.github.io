@@ -465,7 +465,7 @@ textarea:focus { border-color: #83502e; background: #fff; }
 
   <div class="actions">
     <button class="btn-new" onclick="newRecord()">Nový záznam</button>
-    <button class="btn-print" onclick="window.print()">🖨 Tisk / PDF</button>
+    <button class="btn-print" onclick="printBlank()">🖨 Tisk / PDF</button>
   </div>
 
 </div><!-- /page -->
@@ -558,27 +558,26 @@ textarea:focus { border-color: #83502e; background: #fff; }
   // Start with 3 empty rows
   addRow(); addRow(); addRow();
 
-  // Clear all fields before print, restore after
-  let _savedValues = {};
-  let _savedRecNum = '';
-  let _savedMinDmt = '';
-  window.addEventListener('beforeprint', () => {
-    _savedRecNum = document.getElementById('rec-num').textContent;
-    _savedMinDmt = document.getElementById('min-dmt').textContent;
-    document.getElementById('rec-num').textContent = '___________';
-    document.getElementById('min-dmt').textContent = '—';
+  // Print blank: clear fields → repaint → print → restore
+  window.printBlank = function() {
+    const saved = {};
+    const recNum = document.getElementById('rec-num').textContent;
+    const minDmt = document.getElementById('min-dmt').textContent;
     document.querySelectorAll('input, select, textarea').forEach((el, i) => {
-      _savedValues[i] = el.value;
+      saved[i] = el.value;
       el.value = '';
     });
-  });
-  window.addEventListener('afterprint', () => {
-    document.getElementById('rec-num').textContent = _savedRecNum;
-    document.getElementById('min-dmt').textContent = _savedMinDmt;
-    document.querySelectorAll('input, select, textarea').forEach((el, i) => {
-      el.value = _savedValues[i] || '';
-    });
-  });
+    document.getElementById('rec-num').textContent = '';
+    document.getElementById('min-dmt').textContent = '—';
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      window.print();
+      document.querySelectorAll('input, select, textarea').forEach((el, i) => {
+        el.value = saved[i] || '';
+      });
+      document.getElementById('rec-num').textContent = recNum;
+      document.getElementById('min-dmt').textContent = minDmt;
+    }));
+  };
 </script>
 </body>
 </html>
