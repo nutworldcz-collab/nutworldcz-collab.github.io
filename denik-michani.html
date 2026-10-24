@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deník míchání — Nutworld</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Source Sans 3', Arial, sans-serif;
+  background: #e8ddd4;
+  color: #1a0f06;
+  font-size: 13.5px;
+  padding: 24px 16px 48px;
+}
+
+.page {
+  max-width: 860px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,.13);
+}
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, #5c381f 0%, #83502e 55%, #a0622a 100%);
+  padding: 22px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.header-left { }
+.header-label { color: #f7ab31; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 4px; }
+.header-title { color: #fff; font-family: 'Exo 2', sans-serif; font-size: 20px; font-weight: 800; }
+.header-sub { color: rgba(255,255,255,.65); font-size: 12px; margin-top: 3px; }
+.header-logo { color: rgba(255,255,255,.25); font-family: 'Exo 2', sans-serif; font-size: 28px; font-weight: 800; }
+
+/* Sections */
+.content { padding: 24px 32px 32px; }
+.block { margin-bottom: 24px; }
+.block-title {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #83502e;
+  border-bottom: 2px solid #f1e6da;
+  padding-bottom: 6px;
+  margin-bottom: 12px;
+}
+
+/* Meta grid */
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px 20px;
+}
+.field { }
+.field label {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #a07850;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 3px;
+}
+.field input, .field select {
+  width: 100%;
+  border: 1.5px solid #d9c9b8;
+  border-radius: 5px;
+  padding: 6px 10px;
+  font-family: 'Source Sans 3', Arial, sans-serif;
+  font-size: 13.5px;
+  color: #1a0f06;
+  background: #fdfaf7;
+  outline: none;
+  transition: border-color .15s;
+}
+.field input:focus, .field select:focus { border-color: #83502e; background: #fff; }
+.field.wide { grid-column: 1 / -1; }
+
+/* Ingredient table */
+.tbl-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 600px; }
+thead th {
+  background: #83502e;
+  color: #fff;
+  padding: 9px 10px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  white-space: nowrap;
+}
+thead th:first-child { border-radius: 4px 0 0 0; }
+thead th:last-child { border-radius: 0 4px 0 0; }
+tbody td {
+  padding: 2px 4px;
+  border-bottom: 1px solid #f1e6da;
+  vertical-align: middle;
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:nth-child(even) { background: #fdfaf7; }
+tbody td input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 5px 6px;
+  font-family: 'Source Sans 3', Arial, sans-serif;
+  font-size: 13px;
+  color: #1a0f06;
+  outline: none;
+}
+tbody td input:focus {
+  background: #fffbf5;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1.5px #f7ab31;
+}
+.col-kod { width: 90px; }
+.col-nazev { min-width: 160px; }
+.col-dod { min-width: 110px; }
+.col-sarze { min-width: 110px; }
+.col-dmt { width: 100px; }
+.col-mnoz { width: 80px; }
+.col-del { width: 38px; text-align: center; }
+
+.add-row-btn {
+  margin-top: 8px;
+  background: none;
+  border: 1.5px dashed #c8976a;
+  border-radius: 5px;
+  padding: 6px 16px;
+  color: #83502e;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: background .12s;
+}
+.add-row-btn:hover { background: #fdf5ee; }
+
+.del-btn {
+  background: none;
+  border: none;
+  color: #c8976a;
+  cursor: pointer;
+  font-size: 15px;
+  padding: 4px;
+  line-height: 1;
+  border-radius: 3px;
+  transition: color .12s;
+}
+.del-btn:hover { color: #c0392b; }
+
+/* DMT summary */
+.dmt-box {
+  background: #f1e6da;
+  border: 2px solid #c8976a;
+  border-radius: 7px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.dmt-box .dmt-label { font-size: 11px; font-weight: 700; color: #a07850; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+.dmt-box .dmt-value { font-size: 17px; font-weight: 700; color: #5c381f; font-family: 'Exo 2', sans-serif; }
+.dmt-box .dmt-note { font-size: 11.5px; color: #83502e; margin-top: 2px; }
+
+/* Quality check */
+.qc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px 16px; }
+.qc-item { display: flex; align-items: center; gap: 8px; }
+.qc-item label { font-size: 13px; color: #444; flex: 1; }
+.qc-item select { border: 1.5px solid #d9c9b8; border-radius: 4px; padding: 4px 8px; font-size: 12.5px; color: #1a0f06; background: #fdfaf7; outline: none; }
+.qc-item select:focus { border-color: #83502e; }
+
+/* Notes */
+textarea {
+  width: 100%;
+  border: 1.5px solid #d9c9b8;
+  border-radius: 5px;
+  padding: 8px 12px;
+  font-family: 'Source Sans 3', Arial, sans-serif;
+  font-size: 13px;
+  color: #1a0f06;
+  background: #fdfaf7;
+  resize: vertical;
+  outline: none;
+  min-height: 56px;
+}
+textarea:focus { border-color: #83502e; background: #fff; }
+
+/* Signature */
+.sign-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.sign-box { border: 1.5px solid #d9c9b8; border-radius: 6px; padding: 12px 16px; min-height: 70px; }
+.sign-box label { font-size: 10.5px; font-weight: 700; color: #a07850; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 6px; }
+.sign-line { border-bottom: 1.5px solid #c8976a; margin-top: 30px; }
+.sign-hint { font-size: 10.5px; color: #b09070; margin-top: 4px; }
+
+/* Print/Save buttons */
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding: 16px 32px;
+  background: #fdfaf7;
+  border-top: 1.5px solid #f1e6da;
+  flex-wrap: wrap;
+}
+.btn-print {
+  background: #83502e;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 9px 22px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Source Sans 3', Arial, sans-serif;
+  transition: background .15s;
+}
+.btn-print:hover { background: #5c381f; }
+.btn-new {
+  background: none;
+  border: 1.5px solid #c8976a;
+  color: #83502e;
+  border-radius: 6px;
+  padding: 9px 22px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Source Sans 3', Arial, sans-serif;
+  transition: background .15s;
+}
+.btn-new:hover { background: #f5ede4; }
+
+.record-num {
+  background: #f7ab31;
+  color: #5c381f;
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+/* Print styles */
+@media print {
+  body { background: #fff; padding: 0; font-size: 12px; }
+  .page { box-shadow: none; border-radius: 0; max-width: 100%; }
+  .actions { display: none; }
+  .add-row-btn { display: none; }
+  .del-btn { display: none; }
+  .col-del { display: none; }
+  thead th:last-child { display: none; }
+  input, select, textarea { border: none !important; background: transparent !important; box-shadow: none !important; padding: 4px 2px !important; }
+  .sign-box { min-height: 80px; }
+  @page { margin: 12mm; size: A4; }
+}
+
+@media (max-width: 500px) {
+  .content { padding: 16px; }
+  .header { padding: 18px 16px; }
+  .actions { padding: 12px 16px; }
+  .sign-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="header">
+    <div class="header-left">
+      <div class="header-label">Nutworld s.r.o. · Výrobní dokumentace</div>
+      <div class="header-title">Deník míchání a zpracování surovin</div>
+      <div class="header-sub">Záznam velkovýroby — směsi, přebalování, kompletace</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <span class="record-num" id="rec-num">ZM–001</span>
+      <div class="header-logo">🐿</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ZÁKLADNÍ INFO -->
+    <div class="block">
+      <div class="block-title">Základní informace o výrobní dávce</div>
+      <div class="meta-grid">
+        <div class="field">
+          <label>Datum míchání</label>
+          <input type="date" id="datum" />
+        </div>
+        <div class="field">
+          <label>Výrobní příkaz K2 (ZJ)</label>
+          <input type="text" id="zj" placeholder="ZJ-00000" />
+        </div>
+        <div class="field">
+          <label>Kód produktu (směsi)</label>
+          <input type="text" id="kod" placeholder="napr. 2345" />
+        </div>
+        <div class="field">
+          <label>Název produktu / směsi</label>
+          <input type="text" id="nazev" placeholder="Směs ořechů Premium" />
+        </div>
+        <div class="field">
+          <label>Celkové množství (kg)</label>
+          <input type="number" id="mnozstvi" placeholder="500" min="0" step="0.1" />
+        </div>
+        <div class="field">
+          <label>Pro koho (zákazník / sklad)</label>
+          <input type="text" id="pro-koho" placeholder="B2B zákazník / Interní sklad" />
+        </div>
+        <div class="field">
+          <label>Čas zahájení</label>
+          <input type="time" id="cas-start" />
+        </div>
+        <div class="field">
+          <label>Čas ukončení</label>
+          <input type="time" id="cas-end" />
+        </div>
+        <div class="field wide">
+          <label>Místo uložení hotového produktu</label>
+          <input type="text" id="ulozeni" placeholder="Regál A2, paleta č. …" />
+        </div>
+      </div>
+    </div>
+
+    <!-- SLOŽENÍ — SUROVINY -->
+    <div class="block">
+      <div class="block-title">Složení — použité suroviny</div>
+      <div class="tbl-wrap">
+        <table id="ing-table">
+          <thead>
+            <tr>
+              <th class="col-kod">Kód suroviny</th>
+              <th class="col-nazev">Název suroviny</th>
+              <th class="col-dod">Dodavatel</th>
+              <th class="col-sarze">Šarže / LOT</th>
+              <th class="col-dmt">DMT suroviny</th>
+              <th class="col-mnoz">Množství (kg)</th>
+              <th class="col-del"></th>
+            </tr>
+          </thead>
+          <tbody id="ing-body">
+            <!-- rows added by JS -->
+          </tbody>
+        </table>
+      </div>
+      <button class="add-row-btn" onclick="addRow()">+ Přidat surovinu</button>
+    </div>
+
+    <!-- DMT VÝSLEDKU -->
+    <div class="block">
+      <div class="block-title">DMT výsledného produktu</div>
+      <div class="dmt-box">
+        <div>
+          <div class="dmt-label">Nejnižší DMT suroviny</div>
+          <div class="dmt-value" id="min-dmt">—</div>
+        </div>
+        <div style="font-size:22px;color:#c8976a">→</div>
+        <div>
+          <div class="dmt-label">DMT hotového výrobku (zkrácení dle P14)</div>
+          <input type="date" id="dmt-vyrobku" style="border:1.5px solid #c8976a;border-radius:5px;padding:5px 10px;font-size:15px;font-weight:700;color:#5c381f;background:#fff;font-family:'Exo 2',sans-serif;outline:none" />
+        </div>
+        <div>
+          <div class="dmt-label">Šarže výrobku</div>
+          <input type="text" id="sarze-vyrobku" placeholder="auto: ZJ + datum" style="border:1.5px solid #d9c9b8;border-radius:5px;padding:5px 10px;font-size:13px;background:#fdfaf7;outline:none;font-family:'Source Sans 3',sans-serif" />
+        </div>
+      </div>
+      <div style="font-size:11.5px;color:#a07850;margin-top:8px">💡 DMT výrobku = min(DMT surovin) − zkrácení dle kategorie (viz Příloha 14 HACCP). Vyplň ručně nebo viz <a href="haccp.html#dmt-pravidla" style="color:#83502e">P14 DMT vzorec</a>.</div>
+    </div>
+
+    <!-- KONTROLA KVALITY -->
+    <div class="block">
+      <div class="block-title">Kontrola kvality před uložením</div>
+      <div class="qc-grid">
+        <div class="qc-item">
+          <label>Vizuální vzhled</label>
+          <select>
+            <option value="">—</option>
+            <option>✓ OK</option>
+            <option>✗ NOK</option>
+          </select>
+        </div>
+        <div class="qc-item">
+          <label>Vůně / aroma</label>
+          <select>
+            <option value="">—</option>
+            <option>✓ OK</option>
+            <option>✗ NOK</option>
+          </select>
+        </div>
+        <div class="qc-item">
+          <label>Konzistence / poměr složek</label>
+          <select>
+            <option value="">—</option>
+            <option>✓ OK</option>
+            <option>✗ NOK</option>
+          </select>
+        </div>
+        <div class="qc-item">
+          <label>Správnost etikety / označení</label>
+          <select>
+            <option value="">—</option>
+            <option>✓ OK</option>
+            <option>✗ NOK</option>
+          </select>
+        </div>
+        <div class="qc-item">
+          <label>Alergeny dle etikety ✓</label>
+          <select>
+            <option value="">—</option>
+            <option>✓ Ověřeno</option>
+            <option>✗ Neshoda</option>
+          </select>
+        </div>
+        <div class="qc-item">
+          <label>CCP 1 changeover proveden</label>
+          <select>
+            <option value="">—</option>
+            <option>✓ ANO</option>
+            <option>— Nepotřebný</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- POZNÁMKY -->
+    <div class="block">
+      <div class="block-title">Poznámky / odchylky / neshody</div>
+      <textarea placeholder="Žádné / popis odchylky, opatření…"></textarea>
+    </div>
+
+    <!-- PODPISY -->
+    <div class="block">
+      <div class="block-title">Záznamy a podpisy</div>
+      <div class="sign-grid">
+        <div class="sign-box">
+          <label>Zpracoval (pracovník výroby)</label>
+          <input type="text" placeholder="Jméno + kód K2" style="border:none;width:100%;padding:4px 0;font-size:13px;outline:none;background:transparent;color:#1a0f06" />
+          <div class="sign-line"></div>
+          <div class="sign-hint">Podpis</div>
+        </div>
+        <div class="sign-box">
+          <label>Zkontroloval (vedoucí balírny)</label>
+          <input type="text" placeholder="Jméno" style="border:none;width:100%;padding:4px 0;font-size:13px;outline:none;background:transparent;color:#1a0f06" />
+          <div class="sign-line"></div>
+          <div class="sign-hint">Podpis</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <div class="actions">
+    <button class="btn-new" onclick="newRecord()">Nový záznam</button>
+    <button class="btn-print" onclick="window.print()">🖨 Tisk / PDF</button>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+  // Auto-set today's date
+  document.getElementById('datum').valueAsDate = new Date();
+
+  // Auto-generate record number from date
+  function updateRecNum() {
+    const d = document.getElementById('datum').value;
+    if (d) {
+      const [y, m, day] = d.split('-');
+      document.getElementById('rec-num').textContent = `ZM–${y.slice(2)}${m}${day}`;
+    }
+  }
+  document.getElementById('datum').addEventListener('change', updateRecNum);
+  updateRecNum();
+
+  // Auto-fill šarže výrobku
+  document.getElementById('datum').addEventListener('change', () => {
+    const zj = document.getElementById('zj').value;
+    const d = document.getElementById('datum').value.replace(/-/g, '');
+    document.getElementById('sarze-vyrobku').value = zj ? `${zj}-${d}` : d;
+    updateMinDmt();
+  });
+  document.getElementById('zj').addEventListener('input', () => {
+    const zj = document.getElementById('zj').value;
+    const d = document.getElementById('datum').value.replace(/-/g, '');
+    document.getElementById('sarze-vyrobku').value = `${zj}-${d}`;
+  });
+
+  // Add ingredient row
+  function addRow() {
+    const tbody = document.getElementById('ing-body');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="col-kod"><input type="text" placeholder="kód"></td>
+      <td class="col-nazev"><input type="text" placeholder="název suroviny"></td>
+      <td class="col-dod"><input type="text" placeholder="dodavatel"></td>
+      <td class="col-sarze"><input type="text" placeholder="LOT / šarže"></td>
+      <td class="col-dmt"><input type="date" class="dmt-input" onchange="updateMinDmt()"></td>
+      <td class="col-mnoz"><input type="number" placeholder="kg" min="0" step="0.1"></td>
+      <td class="col-del"><button class="del-btn" onclick="this.closest('tr').remove();updateMinDmt()" title="Smazat">×</button></td>
+    `;
+    tbody.appendChild(tr);
+    tr.querySelector('input').focus();
+  }
+
+  // Calculate min DMT from ingredient rows
+  function updateMinDmt() {
+    const inputs = document.querySelectorAll('.dmt-input');
+    let minDate = null;
+    inputs.forEach(inp => {
+      if (inp.value) {
+        const d = new Date(inp.value);
+        if (!minDate || d < minDate) minDate = d;
+      }
+    });
+    const el = document.getElementById('min-dmt');
+    if (minDate) {
+      el.textContent = minDate.toLocaleDateString('cs-CZ');
+      el.style.color = '#5c381f';
+    } else {
+      el.textContent = '—';
+    }
+  }
+
+  // New record
+  function newRecord() {
+    if (!confirm('Vymazat formulář a začít nový záznam?')) return;
+    document.getElementById('ing-body').innerHTML = '';
+    document.getElementById('zj').value = '';
+    document.getElementById('kod').value = '';
+    document.getElementById('nazev').value = '';
+    document.getElementById('mnozstvi').value = '';
+    document.getElementById('pro-koho').value = '';
+    document.getElementById('cas-start').value = '';
+    document.getElementById('cas-end').value = '';
+    document.getElementById('ulozeni').value = '';
+    document.getElementById('dmt-vyrobku').value = '';
+    document.getElementById('sarze-vyrobku').value = '';
+    document.getElementById('min-dmt').textContent = '—';
+    document.getElementById('datum').valueAsDate = new Date();
+    updateRecNum();
+    // add default rows
+    addRow(); addRow(); addRow();
+  }
+
+  // Start with 3 empty rows
+  addRow(); addRow(); addRow();
+</script>
+</body>
+</html>
