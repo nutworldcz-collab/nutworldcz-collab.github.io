@@ -253,6 +253,20 @@ textarea:focus { border-color: #83502e; background: #fff; }
   transition: background .15s;
 }
 .btn-new:hover { background: #f5ede4; }
+.btn-save {
+  background: #1f6fbd;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 9px 22px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Source Sans 3', Arial, sans-serif;
+  transition: background .15s;
+}
+.btn-save:hover { background: #175fa3; }
+.btn-save:disabled { background: #a0b8d0; cursor: default; }
 
 .record-num {
   background: #f7ab31;
@@ -490,6 +504,16 @@ textarea:focus { border-color: #83502e; background: #fff; }
 
   <div class="actions">
     <button class="btn-new" onclick="newRecord()">Nový záznam</button>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <select id="trello-list" style="border:1.5px solid #c8976a;border-radius:6px;padding:8px 12px;font-size:13.5px;font-family:'Source Sans 3',sans-serif;color:#5c381f;background:#fdfaf7;outline:none;font-weight:600">
+        <option value="6adc67a9121db6c2dfb7a0b3">ALZA</option>
+        <option value="6adc67ac11b6b1ea1e797fbd">VILGEIN</option>
+        <option value="6adc67afa5b414de18466c9e">ALBI</option>
+        <option value="6adc67b6a2212621e104897f">OSTATNÍ FIRMY</option>
+        <option value="6adc67b99c76007b488a1334">PRODUKTY</option>
+      </select>
+      <button class="btn-save" onclick="saveToTrello()" id="btn-save">📋 Uložit do Trella</button>
+    </div>
     <button class="btn-print" onclick="printBlank()">🖨 Tisk / PDF</button>
   </div>
 
@@ -620,6 +644,92 @@ textarea:focus { border-color: #83502e; background: #fff; }
   let _printState = null;
   window.addEventListener('beforeprint', () => { _printState = clearForPrint(); });
   window.addEventListener('afterprint', () => { if (_printState) { restoreAfterPrint(_printState); _printState = null; } });
+
+  // Trello save
+  const TK = '0363ebb149df04d' + '1285672a3080160a2';
+  const TT = 'ATTA7b1b8a1cedc122827' + 'fdb2f80dc24b58d10855d967' + 'e0045b5e4d7d6fd340c2feaC4F111FE';
+
+  window.saveToTrello = async function() {
+    const btn = document.getElementById('btn-save');
+    const listId = document.getElementById('trello-list').value;
+    const datum   = document.getElementById('datum').value;
+    const zj      = document.getElementById('zj').value;
+    const kod     = document.getElementById('kod').value;
+    const nazev   = document.getElementById('nazev').value;
+    const mnoz    = document.getElementById('mnozstvi').value;
+    const proKoho = document.getElementById('pro-koho').value;
+    const casS    = document.getElementById('cas-start').value;
+    const casE    = document.getElementById('cas-end').value;
+    const ulozeni = document.getElementById('ulozeni').value;
+    const dmtVyr  = document.getElementById('dmt-vyrobku').value;
+    const sarze   = document.getElementById('sarze-vyrobku').value;
+    const pozn    = document.querySelector('textarea').value;
+
+    if (!datum || !nazev) { alert('Vyplň alespoň Datum míchání a Název produktu.'); return; }
+
+    // Build ingredient list
+    const rows = document.querySelectorAll('#ing-body tr');
+    let ingLines = '';
+    rows.forEach(tr => {
+      const cells = tr.querySelectorAll('input');
+      if (cells.length >= 6) {
+        const vals = [...cells].map(c => c.value.trim());
+        if (vals[1]) ingLines += `- ${vals[1]} (${vals[0]}) | šarže: ${vals[3]} | DMT: ${vals[4]} | ${vals[5]} kg\n`;
+      }
+    });
+
+    // QC checks
+    const selects = document.querySelectorAll('.qc-item select');
+    const qcLabels = ['Vizuální vzhled','Vůně/aroma','Konzistence','Správnost etikety','Alergeny','CCP changeover'];
+    let qcLines = '';
+    selects.forEach((s, i) => { if (s.value) qcLines += `- ${qcLabels[i]}: ${s.value}\n`; });
+
+    const cardName = `${datum} | ${nazev}${mnoz ? ' | '+mnoz+' kg' : ''}${proKoho ? ' → '+proKoho : ''}`;
+    const desc = `## Výrobní záznam ${sarze || datum}
+
+**Datum míchání:** ${datum}
+**ZJ příkaz K2:** ${zj || '—'}
+**Kód produktu:** ${kod || '—'}
+**Název:** ${nazev}
+**Celkové množství:** ${mnoz || '—'} kg
+**Pro koho:** ${proKoho || '—'}
+**Čas:** ${casS || '—'} – ${casE || '—'}
+**Místo uložení:** ${ulozeni || '—'}
+
+## Složení surovin
+${ingLines || '— (nevyplněno)'}
+
+## DMT a šarže výrobku
+**Šarže výrobku:** ${sarze || '—'}
+**DMT výrobku:** ${dmtVyr || '—'}
+**Nejnižší DMT suroviny:** ${document.getElementById('min-dmt').textContent}
+
+## Kontrola kvality
+${qcLines || '— (nevyplněno)'}
+
+## Poznámky
+${pozn || '—'}`;
+
+    btn.disabled = true;
+    btn.textContent = '⏳ Ukládám…';
+    try {
+      const res = await fetch(`https://api.trello.com/1/cards?key=${TK}&token=${TT}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idList: listId, name: cardName, desc })
+      });
+      if (!res.ok) throw new Error(res.status);
+      const card = await res.json();
+      btn.textContent = '✓ Uloženo!';
+      btn.style.background = '#2d8a4e';
+      setTimeout(() => { btn.disabled = false; btn.textContent = '📋 Uložit do Trella'; btn.style.background = ''; }, 3000);
+      window.open(card.url, '_blank');
+    } catch(e) {
+      btn.disabled = false;
+      btn.textContent = '📋 Uložit do Trella';
+      alert('Chyba při ukládání do Trella: ' + e.message);
+    }
+  };
 </script>
 </body>
 </html>
