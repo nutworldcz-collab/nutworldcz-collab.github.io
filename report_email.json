@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-24T12:00:31",
+  "generated": "2026-10-25T07:59:13",
   "total": 12,
   "spam_skipped": 0,
   "emails": [
@@ -14,7 +14,7 @@
       "sender_short": "Trello",
       "sender_email": "do-not-reply@trello.com",
       "ai": {
-        "shrn": "Notifikace z Trella: Renata přesunula kartu REDA objednávky do sloupce Kompletuje se dárek v Dárkově. Jedná se o automatickou zprávu o pohybu úkolu.",
+        "shrn": "Trello notifikace: Renata přesunula kartu REDA objednávky do sloupce &quot;Kompletuje se dárek&quot; v projektovém board.",
         "tyka_se": false,
         "akce": null
       }
@@ -52,9 +52,9 @@
       "sender_short": "Jana Nývltová",
       "sender_email": "jana.nyvltova@nutworld.cz",
       "ai": {
-        "shrn": "Jana Nývltová žádá Jana Vlčka, aby objednal na Alzu 1kg doypack ořechů. Jedná se o operativní nákupní požadavek.",
+        "shrn": "Jana Nývltová žádá Janu objednat 1kg doypack Alza, kterou si &quot;Simča&quot; přála.",
         "tyka_se": true,
-        "akce": "Objednat na Alzu 1kg doypack"
+        "akce": "Objednat 1kg doypack na Alze"
       }
     },
     {
@@ -79,7 +79,7 @@
       "sender_short": "Trello",
       "sender_email": "do-not-reply@trello.com",
       "ai": {
-        "shrn": "Notifikace z Trella: Renata připojila fotku IMG_20261024_103218.jpg ke kartě REDA objednávky. Jedná se o informativní hlášení z Trella.",
+        "shrn": "Trello notifikace: Renata přidala fotku IMG_20261024_103218.jpg k REDA objednávce.",
         "tyka_se": false,
         "akce": null
       }
@@ -95,7 +95,7 @@
       "sender_short": "Trello",
       "sender_email": "do-not-reply@trello.com",
       "ai": {
-        "shrn": "Notifikace z Trella: Renata připojila fotku IMG_20261024_103231.jpg ke kartě REDA objednávky. Jedná se o informativní hlášení z Trella.",
+        "shrn": "Trello notifikace: Renata přidala fotku IMG_20261024_103231.jpg k REDA objednávce.",
         "tyka_se": false,
         "akce": null
       }
@@ -122,9 +122,9 @@
       "sender_short": "claudie.nutworld.cz@gmail.com",
       "sender_email": "claudie.nutworld.cz@gmail.com",
       "ai": {
-        "shrn": "Denní zdravotní report automatizací z Nutworld s upozorněním na kontrolu stavu. Jedná se o monitorovací report.",
+        "shrn": "Denní report automatizací Nutworld - výstraha k vyřešení problémů ze 24.10.",
         "tyka_se": true,
-        "akce": "Zkontrolovat stav automatizací dne 24.10."
+        "akce": "Zkontrolovat a opravit automatizace"
       }
     },
     {
@@ -138,7 +138,7 @@
       "sender_short": "Trello",
       "sender_email": "do-not-reply@trello.com",
       "ai": {
-        "shrn": "Notifikace z Trella: Renata přesunula kartu REDA objednávky do sloupce Hotovo - čeká na zabalení. Jedná se o aktualizaci stavu úkolu.",
+        "shrn": "Trello notifikace: Renata přesunula REDA objednávku do sloupce &quot;Hotovo - čeká na zabalení&quot;.",
         "tyka_se": false,
         "akce": null
       }
@@ -154,7 +154,7 @@
       "sender_short": "Temu",
       "sender_email": "temu@eu.temuemail.com",
       "ai": {
-        "shrn": "Promo email od Temu o vrácení kreditu. Jedná se o marketingový email od třetí strany.",
+        "shrn": "Spam email od Temu o vracení kreditu.",
         "tyka_se": false,
         "akce": null
       }
@@ -170,7 +170,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "Email od CrossFitu s názvem Workout of the Day. Jedná se o newsletter se sportovním obsahem.",
+        "shrn": "Email od CrossFitu s &quot;Workout of the Day&quot; programem.",
         "tyka_se": false,
         "akce": null
       }
