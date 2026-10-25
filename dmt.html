@@ -30,15 +30,6 @@ body { font-family: 'Source Sans 3', Arial, sans-serif; background: #e8ddd4; col
 .tab-btn.active { color: #f7ab31; border-bottom-color: #f7ab31; }
 .tab-btn:hover:not(.active) { color: rgba(255,255,255,.85); }
 
-/* Token bar */
-.token-bar {
-  background: #fff8e8; border-bottom: 1.5px solid #f7ab31;
-  padding: 8px 32px; display: flex; align-items: center; gap: 10px; font-size: 12.5px;
-}
-.token-bar.ok { background: #f0faf4; border-bottom-color: #4a9e67; }
-.token-bar input { flex:1; max-width:320px; border:1.5px solid #d9c9b8; border-radius:5px; padding:4px 9px; font-size:12.5px; font-family:'Source Sans 3',sans-serif; outline:none; }
-.token-bar button { background:#83502e; color:#fff; border:none; border-radius:5px; padding:4px 13px; font-size:12.5px; font-weight:700; cursor:pointer; font-family:'Source Sans 3',sans-serif; }
-.tok-ok { color: #2d8a4e; font-weight: 700; }
 
 /* Content */
 .page { max-width: 920px; margin: 0 auto; background: #fff; min-height: 70vh; }
@@ -96,6 +87,9 @@ select.typ-select { border: 1.5px solid #c8976a; border-radius: 6px; padding: 7p
 .ac-item .ac-dmt-ok { color: #2d8a4e; }
 .ac-item .ac-dmt-warn { color: #b05000; }
 .ac-item .ac-dmt-bad { color: #b03030; }
+.ac-group-hdr { padding: 7px 12px 4px; background: #f5ede4; border-bottom: 1px solid #e8d8c8; display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12.5px; }
+.ac-add-all { background: #83502e; color: #fff; border: none; border-radius: 4px; padding: 2px 9px; font-size: 11.5px; font-weight: 700; cursor: pointer; font-family: 'Source Sans 3', sans-serif; white-space: nowrap; }
+.ac-add-all:hover { background: #5c381f; }
 
 /* ── PŘEHLED DMT ── */
 .dmt-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; font-size: 12px; }
@@ -161,13 +155,7 @@ select.typ-select { border: 1.5px solid #c8976a; border-radius: 6px; padding: 7p
   </div>
 </div>
 
-<!-- Token bar -->
-<div id="token-bar" class="token-bar">
-  <span>🔑 GitHub token (pro přehled DMT z archivů):</span>
-  <input type="password" id="token-inp" placeholder="ghp_…">
-  <button onclick="saveToken()">Uložit</button>
-  <span style="color:#a07850;font-size:12px">Kalkulátor funguje i bez tokenu</span>
-</div>
+<div id="load-bar" style="background:#fff8e8;border-bottom:1.5px solid #e8d8c8;padding:6px 32px;font-size:12px;color:#a07850;display:none">⏳ Načítám archiv surovin…</div>
 
 <!-- Tabs -->
 <div class="tabs">
@@ -179,8 +167,8 @@ select.typ-select { border: 1.5px solid #c8976a; border-radius: 6px; padding: 7p
 <!-- ═══════════════════════════════ KALKULÁTOR ═══════════════════════════════ -->
 <div id="tab-kalk" class="tab-panel active">
   <p class="kalk-intro">
-    Zadej suroviny a jejich DMT. Kalkulátor najde nejnižší DMT, aplikuje pravidlo zkrácení dle HACCP P14 a doporučí DMT hotového výrobku.<br>
-    💡 Začni psát název suroviny — automaticky se nabídnou šarže z archivu příjmů.
+    Zadej suroviny a jejich DMT. Kalkulátor najde nejnižší DMT, aplikuje zkrácení dle HACCP P14 a doporučí DMT výrobku.<br>
+    💡 Začni psát název — nabídnou se všechny šarže ze skladu. Stejný produkt lze přidat víckrát (různé šarže s různým DMT) — kalkulátor automaticky vezme nejhorší.
   </p>
 
   <div class="sec-title">Suroviny / ingredience</div>
@@ -286,26 +274,6 @@ select.typ-select { border: 1.5px solid #c8976a; border-radius: 6px; padding: 7p
 </div><!-- /page -->
 
 <script>
-// ── Token ────────────────────────────────────────────────────────────────────
-function getToken() { try { return localStorage.getItem('nw_gh_token') || ''; } catch(e) { return ''; } }
-function saveToken() {
-  const val = document.getElementById('token-inp').value.trim();
-  if (!val) return;
-  try { localStorage.setItem('nw_gh_token', val); } catch(e) {}
-  showTokenOk();
-  loadArchives();
-}
-function showTokenOk() {
-  const bar = document.getElementById('token-bar');
-  bar.className = 'token-bar ok';
-  bar.innerHTML = '<span class="tok-ok">🔑 Token nastaven.</span> <button onclick="clearToken()" style="background:none;border:1.5px solid #c8976a;border-radius:4px;padding:3px 10px;cursor:pointer;font-size:12px;color:#83502e">Změnit</button>';
-}
-function clearToken() {
-  try { localStorage.removeItem('nw_gh_token'); } catch(e) {}
-  const bar = document.getElementById('token-bar');
-  bar.className = 'token-bar';
-  bar.innerHTML = '<span>🔑 GitHub token (pro přehled DMT z archivů):</span><input type="password" id="token-inp" placeholder="ghp_…"><button onclick="saveToken()">Uložit</button><span style="color:#a07850;font-size:12px">Kalkulátor funguje i bez tokenu</span>';
-}
 function b64decode(str) {
   const bytes = Uint8Array.from(atob(str.replace(/\n/g,'')), c => c.charCodeAt(0));
   return new TextDecoder().decode(bytes);
@@ -315,17 +283,17 @@ function b64decode(str) {
 const GH = 'nutworldcz-collab/nutworldcz-collab.github.io';
 let prijmyData = [], michaniData = [];
 
-async function fetchJson(file) {
-  const token = getToken();
-  if (!token) return null;
-  const r = await fetch(`https://api.github.com/repos/${GH}/contents/${file}?_=${Date.now()}`, { headers: { Authorization: 'token ' + token } });
-  if (!r.ok) return null;
-  const m = await r.json();
-  return JSON.parse(b64decode(m.content));
+async function fetchJsonPublic(file) {
+  // Direct fetch — public GitHub Pages, no token needed
+  try {
+    const r = await fetch('/' + file + '?_=' + Date.now());
+    if (r.ok) return await r.json();
+  } catch(e) {}
+  return null;
 }
 
 async function loadArchives() {
-  const [p, m] = await Promise.all([fetchJson('prijmy_archiv.json'), fetchJson('michani_archiv.json')]);
+  const [p, m] = await Promise.all([fetchJsonPublic('prijmy_archiv.json'), fetchJsonPublic('michani_archiv.json')]);
   if (p) prijmyData = p;
   if (m) michaniData = m;
   renderPrehled();
@@ -452,22 +420,42 @@ function showKalkAc(inp) {
       }
     });
   });
-  // Deduplicate by sarze
+  // Deduplicate by nazev+sarze
   const seen = new Set();
   const uniq = matches.filter(m => { const k = m.nazev + '|' + m.sarze; if (seen.has(k)) return false; seen.add(k); return true; });
   if (!uniq.length) { list.style.display = 'none'; return; }
-  list.innerHTML = uniq.slice(0,12).map((m, idx) => {
-    const dc = dmtClass(m.dmt);
-    return `<div class="ac-item" onclick="fillKalkRow(this,${idx})">
-      <div class="ac-name">${m.nazev}</div>
-      <div class="ac-meta">
-        <span class="ac-sarze">${m.sarze||'—'}</span>
-        &nbsp;·&nbsp; DMT: <span class="${dc}">${fmtDate(m.dmt)}</span>
-        &nbsp;·&nbsp; ${m.dod||''}
-      </div>
-    </div>`;
-  }).join('');
-  list._items = uniq;
+
+  // Group by product name to detect multi-šarže situation
+  const byName = {};
+  uniq.forEach(m => { (byName[m.nazev] = byName[m.nazev] || []).push(m); });
+
+  let html = '';
+  let allItems = [];
+  Object.entries(byName).forEach(([nazev, sarze]) => {
+    const startIdx = allItems.length;
+    sarze.forEach(m => allItems.push(m));
+    // Header row with "přidat vše" if multiple šarže
+    if (sarze.length > 1) {
+      html += `<div class="ac-group-hdr">
+        <span style="font-weight:700;color:#5c381f">${nazev}</span>
+        <button class="ac-add-all" onclick="addAllSarze(event, this, ${startIdx}, ${sarze.length})">+ přidat všechny šarže (${sarze.length}×)</button>
+      </div>`;
+    }
+    sarze.forEach((m, i) => {
+      const idx = startIdx + i;
+      const dc = dmtClass(m.dmt);
+      html += `<div class="ac-item" onclick="fillKalkRow(this,${idx})">
+        <div class="ac-name" style="${sarze.length > 1 ? 'padding-left:10px' : ''}">${sarze.length > 1 ? '↳ ' : ''}${m.nazev}</div>
+        <div class="ac-meta">
+          <span class="ac-sarze">${m.sarze||'—'}</span>
+          &nbsp;·&nbsp; DMT: <span class="${dc}">${fmtDate(m.dmt)}</span>
+          &nbsp;·&nbsp; ${m.dod||''}
+        </div>
+      </div>`;
+    });
+  });
+  list.innerHTML = html;
+  list._items = allItems;
   list.style.display = 'block';
 }
 function fillKalkRow(el, idx) {
@@ -478,6 +466,27 @@ function fillKalkRow(el, idx) {
   tr.querySelector('.kalk-nazev').value = item.nazev;
   tr.querySelector('.kalk-sarze').value = item.sarze || '';
   tr.querySelector('.kalk-dmt').value = item.dmt || '';
+  list.style.display = 'none';
+}
+function addAllSarze(e, btn, startIdx, count) {
+  e.stopPropagation();
+  const list = btn.closest('.ac-list');
+  const tr = list.closest('tr');  // current row
+  const items = list._items.slice(startIdx, startIdx + count);
+  // Fill current row with first item, add new rows for the rest
+  if (items[0]) {
+    tr.querySelector('.kalk-nazev').value = items[0].nazev;
+    tr.querySelector('.kalk-sarze').value = items[0].sarze || '';
+    tr.querySelector('.kalk-dmt').value = items[0].dmt || '';
+  }
+  for (let i = 1; i < items.length; i++) {
+    addKalkRow();
+    const rows = document.querySelectorAll('#ing-body tr');
+    const newTr = rows[rows.length - 1];
+    newTr.querySelector('.kalk-nazev').value = items[i].nazev;
+    newTr.querySelector('.kalk-sarze').value = items[i].sarze || '';
+    newTr.querySelector('.kalk-dmt').value = items[i].dmt || '';
+  }
   list.style.display = 'none';
 }
 
@@ -598,9 +607,12 @@ function fmtDate(d) {
 
 // ── Init ─────────────────────────────────────────────────────────────────────
 (function init() {
-  if (getToken()) { showTokenOk(); loadArchives(); }
   renderRulesTable();
   addKalkRow(); addKalkRow(); addKalkRow();
+  // Always load archives (public files — no token needed)
+  const bar = document.getElementById('load-bar');
+  if (bar) bar.style.display = 'block';
+  loadArchives().then(() => { if (bar) bar.style.display = 'none'; });
 })();
 </script>
 </body>
