@@ -368,7 +368,7 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
           <td><strong>${i.nazev}</strong></td>
           <td>${nwCell}</td>
           <td><span class="lot">${i.sarze || '—'}</span></td>
-          <td class="td-dmt ${dc}" onclick="editDmt(this,'${d.id}',${JSON.stringify(i.nazev)},${JSON.stringify(i.sarze||'')})">${dmtDisplay}</td>
+          <td class="td-dmt ${dc}" data-did="${d.id}" data-nazev="${(i.nazev||'').replace(/"/g,'&quot;')}" data-sarze="${(i.sarze||'').replace(/"/g,'&quot;')}" onclick="editDmt(this)">${dmtDisplay}</td>
           <td>${i.mnozstvi ? i.mnozstvi+' kg' : '—'}</td>
           <td>${i.cena_kg ? i.cena_kg.toFixed(2)+' Kč' : '—'}</td>
           <td>${cenikCell}</td>
@@ -449,7 +449,10 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
   }
 
   // Inline DMT editing — click on DMT cell
-  function editDmt(el, delivId, nazev, sarze) {
+  function editDmt(el) {
+    const delivId = el.dataset.did;
+    const nazev   = el.dataset.nazev;
+    const sarze   = el.dataset.sarze;
     if (el.classList.contains('editing')) return;
     el.classList.add('editing');
     const d = allData.find(x => x.id === delivId);
