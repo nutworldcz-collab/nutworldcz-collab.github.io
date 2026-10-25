@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Archiv příjmů — Nutworld</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --brown: #83502e; --brown-dark: #5c381f; --brown-soft: #f1e6da;
+  --amber: #f7ab31; --border: #d9c9b8; --bg: #e8ddd4;
+  --ok: #2d5a1b; --nok: #b91c1c;
+}
+body { font-family: 'Source Sans 3', Arial, sans-serif; background: var(--bg); color: #1a0f06; min-height: 100vh; padding: 20px 16px 60px; }
+.page { max-width: 1000px; margin: 0 auto; }
+
+/* Header */
+.hdr { background: linear-gradient(135deg, var(--brown-dark) 0%, var(--brown) 55%, #a0622a 100%); border-radius: 12px 12px 0 0; padding: 20px 28px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.hdr-left .label { color: var(--amber); font-size: 10px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 3px; }
+.hdr-left h1 { font-family: 'Exo 2', sans-serif; font-size: 22px; font-weight: 800; color: #fff; }
+.hdr-right { color: rgba(255,255,255,.65); font-size: 13px; }
+
+/* Filter bar */
+.filters { background: #fff; border: 1px solid var(--border); border-top: none; padding: 16px 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; }
+.f-group { display: flex; flex-direction: column; gap: 4px; }
+.f-group label { font-size: 11px; font-weight: 700; color: #a07850; text-transform: uppercase; letter-spacing: 1px; }
+.f-group input, .f-group select { border: 1.5px solid var(--border); border-radius: 6px; padding: 7px 10px; font-size: 13px; font-family: 'Source Sans 3', sans-serif; color: #1a0f06; background: #fdfaf7; outline: none; }
+.f-group input:focus, .f-group select:focus { border-color: var(--brown); }
+.f-group input[type="text"] { width: 220px; }
+.f-group input[type="date"] { width: 140px; }
+.f-group select { width: 160px; }
+.btn-reset { margin-top: auto; background: none; border: 1.5px solid var(--border); border-radius: 6px; padding: 7px 14px; font-size: 13px; font-family: 'Source Sans 3', sans-serif; color: #a07850; cursor: pointer; font-weight: 600; }
+.btn-reset:hover { border-color: var(--brown); color: var(--brown); }
+
+/* Stats bar */
+.stats { background: var(--brown-soft); border: 1px solid var(--border); border-top: none; padding: 10px 20px; display: flex; gap: 24px; flex-wrap: wrap; }
+.stat { font-size: 13px; color: var(--brown-dark); }
+.stat strong { font-weight: 800; }
+
+/* Results */
+.results { background: #fff; border: 1px solid var(--border); border-top: none; border-radius: 0 0 12px 12px; }
+.empty { padding: 48px; text-align: center; color: #a07850; font-size: 15px; }
+
+/* Delivery card */
+.delivery { border-bottom: 1px solid var(--brown-soft); }
+.delivery:last-child { border-bottom: none; }
+.delivery-hdr { padding: 14px 20px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: background .12s; user-select: none; flex-wrap: wrap; }
+.delivery-hdr:hover { background: #fdfaf7; }
+.d-date { font-weight: 800; color: var(--brown-dark); font-family: 'Exo 2', sans-serif; font-size: 15px; min-width: 100px; }
+.d-supplier { font-weight: 700; color: #1a0f06; flex: 1; min-width: 160px; }
+.d-num { font-size: 12px; color: #a07850; }
+.d-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.badge { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 20px; }
+.badge-kg { background: var(--brown-soft); color: var(--brown-dark); }
+.badge-items { background: #edf7f0; color: var(--ok); }
+.badge-nok { background: #fdf0f0; color: var(--nok); }
+.badge-warn { background: #fff8e6; color: #b45309; }
+.chevron { color: #bbb; font-size: 14px; margin-left: auto; transition: transform .2s; flex-shrink: 0; }
+.delivery.open .chevron { transform: rotate(90deg); }
+
+/* Items table */
+.delivery-body { display: none; overflow-x: auto; border-top: 1px solid var(--brown-soft); }
+.delivery.open .delivery-body { display: block; }
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+thead th { background: var(--brown-soft); color: var(--brown-dark); font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: .6px; padding: 8px 10px; text-align: left; white-space: nowrap; }
+tbody tr { border-bottom: 1px solid #f5ede4; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr.highlight { background: #fffbe6; }
+tbody td { padding: 7px 10px; vertical-align: middle; }
+.td-dmt { font-weight: 700; white-space: nowrap; }
+.dmt-ok   { color: var(--ok); }
+.dmt-warn { color: #b45309; }
+.dmt-red  { color: var(--nok); }
+.stav-ok  { color: var(--ok); font-weight: 700; }
+.stav-nok { color: var(--nok); font-weight: 700; }
+.stav-q   { color: #b45309; font-weight: 700; }
+.lot      { font-family: monospace; font-size: 12px; color: #5c381f; background: var(--brown-soft); padding: 2px 6px; border-radius: 4px; }
+
+/* GitHub settings */
+.gh-banner { background: #fff8e6; border: 1.5px solid var(--amber); border-radius: 8px; padding: 12px 16px; margin: 12px 0; font-size: 13px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.gh-banner input { border: 1.5px solid var(--border); border-radius: 6px; padding: 6px 10px; font-size: 13px; font-family: monospace; flex: 1; min-width: 200px; }
+.btn-small { background: var(--brown); color: #fff; border: none; border-radius: 6px; padding: 7px 14px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Source Sans 3', sans-serif; white-space: nowrap; }
+.btn-small:hover { background: var(--brown-dark); }
+.gh-ok { color: var(--ok); font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hdr">
+    <div class="hdr-left">
+      <div class="label">Nutworld s.r.o.</div>
+      <h1>Archiv příjmů surovin</h1>
+    </div>
+    <div class="hdr-right" id="hdr-count">Načítám…</div>
+  </div>
+
+  <!-- GitHub token setup -->
+  <div id="gh-banner" class="gh-banner" style="display:none">
+    ⚠️ Pro ukládání z formuláře zadej GitHub token (PAT s oprávněním <code>contents:write</code>):
+    <input type="password" id="gh-token-input" placeholder="ghp_…">
+    <button class="btn-small" onclick="saveGhToken()">Uložit token</button>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+    <div class="f-group">
+      <label>Hledat (surovina / LOT / dodavatel)</label>
+      <input type="text" id="f-search" placeholder="např. mandle, E13260…" oninput="render()">
+    </div>
+    <div class="f-group">
+      <label>Dodavatel</label>
+      <select id="f-supplier" onchange="render()">
+        <option value="">Všichni</option>
+      </select>
+    </div>
+    <div class="f-group">
+      <label>Datum od</label>
+      <input type="date" id="f-date-from" onchange="render()">
+    </div>
+    <div class="f-group">
+      <label>Datum do</label>
+      <input type="date" id="f-date-to" onchange="render()">
+    </div>
+    <div class="f-group">
+      <label>DMT expiruje do</label>
+      <input type="date" id="f-dmt" onchange="render()">
+    </div>
+    <div class="f-group">
+      <label>Stav</label>
+      <select id="f-stav" onchange="render()">
+        <option value="">Vše</option>
+        <option value="NOK">Pouze NOK</option>
+        <option value="warn">Blíží se DMT (&lt;90 dní)</option>
+      </select>
+    </div>
+    <button class="btn-reset" onclick="resetFilters()">✕ Reset</button>
+  </div>
+
+  <div class="stats" id="stats"></div>
+  <div class="results" id="results"><div class="empty">Načítám…</div></div>
+
+</div>
+
+<script>
+  const GH_REPO  = 'nutworldcz-collab/nutworldcz-collab.github.io';
+  const GH_FILE  = 'prijmy_archiv.json';
+  const TOKEN_KEY = 'nw_gh_token';
+
+  let allData = [];
+
+  // GitHub token
+  function getToken() { try { return localStorage.getItem(TOKEN_KEY) || ''; } catch { return ''; } }
+  function saveGhToken() {
+    const t = document.getElementById('gh-token-input').value.trim();
+    if (!t) return;
+    try { localStorage.setItem(TOKEN_KEY, t); } catch {}
+    document.getElementById('gh-banner').innerHTML = '<span class="gh-ok">✓ GitHub token uložen — formulář nyní může ukládat do archivu.</span>';
+  }
+  if (!getToken()) document.getElementById('gh-banner').style.display = 'flex';
+
+  // Load data
+  async function loadData() {
+    try {
+      const r = await fetch('/prijmy_archiv.json?t=' + Date.now());
+      allData = await r.json();
+      populateSupplierFilter();
+      render();
+    } catch(e) {
+      document.getElementById('results').innerHTML = `<div class="empty">Chyba načítání: ${e.message}</div>`;
+    }
+  }
+
+  function populateSupplierFilter() {
+    const sel = document.getElementById('f-supplier');
+    const suppliers = [...new Set(allData.map(d => d.dodavatel))].sort();
+    suppliers.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
+    document.getElementById('hdr-count').textContent = `${allData.length} dodávek v archivu`;
+  }
+
+  function dmtClass(dateStr) {
+    if (!dateStr) return '';
+    const days = (new Date(dateStr) - new Date()) / 86400000;
+    if (days < 60) return 'dmt-red';
+    if (days < 90) return 'dmt-warn';
+    return 'dmt-ok';
+  }
+  function fmtDate(d) { return d ? new Date(d).toLocaleDateString('cs-CZ') : '—'; }
+
+  function render() {
+    const q       = document.getElementById('f-search').value.trim().toLowerCase();
+    const sup     = document.getElementById('f-supplier').value;
+    const dateFrom = document.getElementById('f-date-from').value;
+    const dateTo   = document.getElementById('f-date-to').value;
+    const dmtBefore = document.getElementById('f-dmt').value;
+    const stavF   = document.getElementById('f-stav').value;
+    const today   = new Date();
+
+    let filtered = allData.filter(d => {
+      if (sup && d.dodavatel !== sup) return false;
+      if (dateFrom && d.datum < dateFrom) return false;
+      if (dateTo   && d.datum > dateTo)   return false;
+
+      // item-level filters
+      let items = d.items;
+      if (q) items = items.filter(i =>
+        i.nazev.toLowerCase().includes(q) ||
+        (i.sarze||'').toLowerCase().includes(q) ||
+        (i.kod||'').toLowerCase().includes(q) ||
+        d.dodavatel.toLowerCase().includes(q) ||
+        d.cislo_dodavky.toLowerCase().includes(q)
+      );
+      if (dmtBefore) items = items.filter(i => i.dmt && i.dmt <= dmtBefore);
+      if (stavF === 'NOK') items = items.filter(i => i.stav === 'NOK' || i.stav === '?');
+      if (stavF === 'warn') items = items.filter(i => {
+        if (!i.dmt) return false;
+        const days = (new Date(i.dmt) - today) / 86400000;
+        return days < 90;
+      });
+
+      if ((q || dmtBefore || stavF === 'NOK' || stavF === 'warn') && !items.length) return false;
+      d._filteredItems = items;
+      return true;
+    });
+
+    // Stats
+    const totalKg = filtered.reduce((s, d) => s + (d._filteredItems || d.items).reduce((a,i) => a + (parseFloat(i.mnozstvi)||0), 0), 0);
+    const totalItems = filtered.reduce((s, d) => s + (d._filteredItems || d.items).length, 0);
+    document.getElementById('stats').innerHTML =
+      `<div class="stat">Dodávky: <strong>${filtered.length}</strong></div>
+       <div class="stat">Položky: <strong>${totalItems}</strong></div>
+       <div class="stat">Celkem kg: <strong>${totalKg.toLocaleString('cs-CZ')} kg</strong></div>`;
+
+    if (!filtered.length) {
+      document.getElementById('results').innerHTML = '<div class="empty">Žádné záznamy neodpovídají filtru.</div>';
+      return;
+    }
+
+    // Sort newest first
+    filtered = [...filtered].sort((a, b) => b.datum.localeCompare(a.datum));
+
+    document.getElementById('results').innerHTML = filtered.map(d => {
+      const items = d._filteredItems || d.items;
+      const nokCount = items.filter(i => i.stav === 'NOK' || i.stav === '?').length;
+      const warnCount = items.filter(i => {
+        if (!i.dmt) return false;
+        return (new Date(i.dmt) - today) / 86400000 < 90;
+      }).length;
+
+      const badges = [
+        `<span class="badge badge-kg">${(d.celkove_kg||0).toLocaleString('cs-CZ')} kg</span>`,
+        `<span class="badge badge-items">${items.length} pol.</span>`,
+        nokCount ? `<span class="badge badge-nok">⚠ ${nokCount} NOK</span>` : '',
+        warnCount ? `<span class="badge badge-warn">⏰ ${warnCount} DMT</span>` : '',
+      ].filter(Boolean).join('');
+
+      const rows = items.map(i => {
+        const dc = dmtClass(i.dmt);
+        const stavCls = i.stav === 'OK' ? 'stav-ok' : i.stav === 'NOK' ? 'stav-nok' : 'stav-q';
+        return `<tr>
+          <td>${i.kod || '—'}</td>
+          <td><strong>${i.nazev}</strong></td>
+          <td><span class="lot">${i.sarze || '—'}</span></td>
+          <td class="td-dmt ${dc}">${fmtDate(i.dmt)}</td>
+          <td>${i.mnozstvi ? i.mnozstvi+' kg' : '—'}</td>
+          <td>${i.cena_kg ? i.cena_kg.toFixed(2)+' Kč' : '—'}</td>
+          <td class="${stavCls}">${i.stav || '—'}</td>
+        </tr>`;
+      }).join('');
+
+      return `<div class="delivery" id="del-${d.id}">
+        <div class="delivery-hdr" onclick="toggle('del-${d.id}')">
+          <div class="d-date">${fmtDate(d.datum)}</div>
+          <div class="d-supplier">${d.dodavatel}</div>
+          <div class="d-num">${d.cislo_dodavky || ''}</div>
+          <div class="d-badges">${badges}</div>
+          <div class="chevron">▶</div>
+        </div>
+        <div class="delivery-body">
+          <table>
+            <thead><tr>
+              <th style="width:90px">Kód</th>
+              <th>Název suroviny</th>
+              <th style="width:130px">Šarže / LOT</th>
+              <th style="width:100px">DMT</th>
+              <th style="width:80px">Množství</th>
+              <th style="width:80px">Cena/kg</th>
+              <th style="width:60px">Stav</th>
+            </tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+          ${d.poznamka ? `<div style="padding:10px 16px;font-size:12px;color:#a07850;border-top:1px solid #f5ede4">📝 ${d.poznamka}</div>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function toggle(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('open');
+  }
+
+  function resetFilters() {
+    ['f-search','f-date-from','f-date-to','f-dmt'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('f-supplier').value = '';
+    document.getElementById('f-stav').value = '';
+    render();
+  }
+
+  // Public API for prijem-surovin.html to call
+  window.NW_ARCHIV = {
+    async append(entry) {
+      const token = getToken();
+      if (!token) { alert('Nejprve nastav GitHub token v archivu příjmů.'); return false; }
+      try {
+        // Get current file SHA + content
+        const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${GH_FILE}`, {
+          headers: { Authorization: 'token ' + token }
+        });
+        if (!r.ok) throw new Error('GitHub GET: ' + r.status);
+        const meta = await r.json();
+        const current = JSON.parse(atob(meta.content.replace(/\n/g,'')));
+        current.push(entry);
+        const updated = btoa(unescape(encodeURIComponent(JSON.stringify(current, null, 2))));
+        const w = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${GH_FILE}`, {
+          method: 'PUT',
+          headers: { Authorization: 'token ' + token, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: `prijem: ${entry.dodavatel} ${entry.datum}`, content: updated, sha: meta.sha })
+        });
+        if (!w.ok) throw new Error('GitHub PUT: ' + w.status);
+        return true;
+      } catch(e) { alert('Chyba ukládání do archivu: ' + e.message); return false; }
+    }
+  };
+
+  loadData();
+</script>
+</body>
+</html>

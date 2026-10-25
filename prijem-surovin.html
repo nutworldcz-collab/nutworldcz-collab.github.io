@@ -200,7 +200,8 @@ td.td-del { width: 32px; }
         <option value="6adc67b6a2212621e104897f">OSTATNÍ FIRMY</option>
       </select>
     </div>
-    <button class="btn-save" id="btn-save" onclick="saveToTrello()">📋 Uložit do Trella</button>
+    <button class="btn-save" id="btn-save" onclick="saveAll()">💾 Uložit (Trello + Archiv)</button>
+    <a href="/archiv-prijmu.html" style="font-size:12px;color:var(--brown);font-weight:600;text-decoration:none;white-space:nowrap">📂 Archiv →</a>
     <div class="status" id="status"></div>
   </div>
 
@@ -313,28 +314,18 @@ td.td-del { width: 32px; }
   // Init 15 rows
   for (let i = 0; i < 15; i++) addRow();
 
-  async function saveToTrello() {
-    const btn  = document.getElementById('btn-save');
-    const st   = document.getElementById('status');
-    st.style.display = '';
-    st.className = 'status loading';
-    st.textContent = '⏳ Ukládám…';
-    btn.disabled = true;
+  const GH_REPO = 'nutworldcz-collab/nutworldcz-collab.github.io';
+  const GH_FILE = 'prijmy_archiv.json';
+  const TOKEN_KEY = 'nw_gh_token';
+  function getGhToken() { try { return localStorage.getItem(TOKEN_KEY) || ''; } catch { return ''; } }
 
+  function collectFormData() {
     const cislo   = document.getElementById('cislo-dodavky').value.trim();
     const dod     = document.getElementById('dodavatel').value.trim();
     const datum   = document.getElementById('datum').value;
     const prijal  = document.getElementById('prijal').value.trim();
     const pozn    = document.getElementById('poznamka').value.trim();
     const ulozeni = document.getElementById('ulozeni').value.trim();
-
-    if (!dod || !datum) {
-      st.className = 'status error';
-      st.textContent = '✗ Vyplň alespoň Dodavatele a Datum.';
-      btn.disabled = false;
-      return;
-    }
-
     const rows = Array.from(document.querySelectorAll('#prijem-body tr')).map(tr => {
       const inp = tr.querySelectorAll('input');
       const sel = tr.querySelector('select');
@@ -343,48 +334,89 @@ td.td-del { width: 32px; }
         nazev:  inp[1]?.value.trim() || '',
         sarze:  inp[2]?.value.trim() || '',
         dmt:    inp[3]?.value || '',
-        mnoz:   inp[4]?.value.trim() || '',
-        stav:   sel?.value || ''
+        mnozstvi: parseFloat(inp[4]?.value) || 0,
+        stav:   sel?.value || 'OK'
       };
     }).filter(r => r.nazev || r.kod);
+    return { cislo, dod, datum, prijal, pozn, ulozeni, rows };
+  }
+
+  async function saveAll() {
+    const btn = document.getElementById('btn-save');
+    const st  = document.getElementById('status');
+    st.style.display = '';
+    st.className = 'status loading';
+    st.textContent = '⏳ Ukládám…';
+    btn.disabled = true;
+
+    const { cislo, dod, datum, prijal, pozn, ulozeni, rows } = collectFormData();
+
+    if (!dod || !datum) {
+      st.className = 'status error';
+      st.textContent = '✗ Vyplň alespoň Dodavatele a Datum.';
+      btn.disabled = false;
+      return;
+    }
 
     const nokItems = rows.filter(r => r.stav === 'NOK' || r.stav === '?');
     const cardName = `${datum} | ${dod}${cislo ? ' | '+cislo : ''}${nokItems.length ? ' ⚠️ '+nokItems.length+' NOK' : ''}`;
-
     const rowLines = rows.length
-      ? rows.map((r, i) => `${i+1}. **${r.nazev || '—'}** (${r.kod || '—'}) | Šarže: ${r.sarze || '—'} | DMT: ${r.dmt || '—'} | ${r.mnoz || '—'} kg | ${r.stav || '—'}`).join('\n')
+      ? rows.map((r, i) => `${i+1}. **${r.nazev || '—'}** (${r.kod || '—'}) | Šarže: ${r.sarze || '—'} | DMT: ${r.dmt || '—'} | ${r.mnozstvi || '—'} kg | ${r.stav || '—'}`).join('\n')
       : '— (prázdné)';
+    const desc = `## Příjem surovin — ${datum}\n\n**Dodavatel:** ${dod}\n**Číslo dodávky:** ${cislo || '—'}\n**Přijal:** ${prijal || '—'}\n**Místo uložení:** ${ulozeni || '—'}\n\n## Suroviny (${rows.length} pol.)\n${rowLines}\n\n## Poznámky\n${pozn || '—'}${nokItems.length ? '\n\n⚠️ K řešení: '+nokItems.map(r=>r.nazev||r.kod).join(', ') : ''}`;
 
-    const desc = `## Příjem surovin — ${datum}
+    const msgs = [];
 
-**Dodavatel:** ${dod}
-**Číslo dodávky:** ${cislo || '—'}
-**Datum příjmu:** ${datum}
-**Přijal:** ${prijal || '—'}
-**Místo uložení:** ${ulozeni || '—'}
-
-## Přijaté suroviny (${rows.length} položek)
-${rowLines}
-
-## Poznámky
-${pozn || '—'}${nokItems.length ? '\n\n⚠️ **Položky k řešení:** '+nokItems.map(r=>r.nazev||r.kod).join(', ') : ''}`;
-
+    // 1. Trello
     try {
       const listId = document.getElementById('trello-list').value;
       const tr = await fetch(`https://api.trello.com/1/cards?key=${TK}&token=${TT}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idList: listId, name: cardName, desc })
       });
       if (!tr.ok) throw new Error('Trello ' + tr.status);
       const card = await tr.json();
-      st.className = 'status success';
-      st.textContent = `✓ Uloženo do Trella! → ${card.url}`;
-      st.innerHTML = `✓ Uloženo do Trella! <a href="${card.url}" target="_blank" style="color:var(--ok);font-weight:700;margin-left:8px">Otevřít kartu →</a>`;
-    } catch(e) {
-      st.className = 'status error';
-      st.textContent = '✗ Chyba: ' + e.message;
+      msgs.push(`✓ Trello <a href="${card.url}" target="_blank" style="color:var(--ok);font-weight:700">→ karta</a>`);
+    } catch(e) { msgs.push(`✗ Trello: ${e.message}`); }
+
+    // 2. GitHub archive
+    const token = getGhToken();
+    if (token) {
+      try {
+        const entry = {
+          id: cislo || (dod.replace(/\s+/g,'-') + '-' + datum),
+          cislo_dodavky: cislo,
+          dodavatel: dod,
+          datum,
+          datum_ulozeni: new Date().toISOString().slice(0,10),
+          prijal,
+          poznamka: pozn,
+          ulozeni,
+          celkove_kg: rows.reduce((s,r) => s + (r.mnozstvi||0), 0),
+          items: rows.map(r => ({ nazev: r.nazev, kod: r.kod, sarze: r.sarze, dmt: r.dmt, mnozstvi: r.mnozstvi, stav: r.stav || 'OK' }))
+        };
+        const meta = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${GH_FILE}`, {
+          headers: { Authorization: 'token ' + token }
+        });
+        if (!meta.ok) throw new Error('GitHub GET: ' + meta.status);
+        const mj = await meta.json();
+        const current = JSON.parse(atob(mj.content.replace(/\n/g,'')));
+        current.push(entry);
+        const updated = btoa(unescape(encodeURIComponent(JSON.stringify(current, null, 2))));
+        const wr = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${GH_FILE}`, {
+          method: 'PUT', headers: { Authorization: 'token ' + token, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: `prijem: ${dod} ${datum}`, content: updated, sha: mj.sha })
+        });
+        if (!wr.ok) throw new Error('GitHub PUT: ' + wr.status);
+        msgs.push('✓ Archiv uložen');
+      } catch(e) { msgs.push(`⚠️ Archiv: ${e.message}`); }
+    } else {
+      msgs.push('ℹ️ Archiv: <a href="/archiv-prijmu.html" target="_blank" style="color:var(--brown)">nastav GitHub token</a>');
     }
+
+    const allOk = msgs.every(m => m.startsWith('✓'));
+    st.className = allOk ? 'status success' : (msgs.some(m => m.startsWith('✗')) ? 'status error' : 'status loading');
+    st.innerHTML = msgs.join(' &nbsp;|&nbsp; ');
     btn.disabled = false;
   }
 </script>
