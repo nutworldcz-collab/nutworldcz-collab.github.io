@@ -358,6 +358,57 @@ textarea:focus { border-color: #83502e; background: #fff; }
 body.mode-surovina .section-michani { display: none; }
 body.mode-surovina .section-surovina { display: block; }
 body.mode-surovina .section-dmt { display: none; }
+
+/* Lookup button in sarze cell */
+.sarze-cell { display: flex; gap: 3px; align-items: center; }
+.sarze-cell input { flex: 1; min-width: 0; }
+.lookup-btn {
+  background: #f5ede4; border: 1.5px solid #c8976a; border-radius: 4px;
+  padding: 4px 7px; cursor: pointer; font-size: 14px; line-height: 1;
+  flex-shrink: 0; transition: background .12s;
+}
+.lookup-btn:hover { background: #e8d5bf; }
+
+/* Archive lookup drawer */
+.archiv-drawer {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 10000;
+  background: #fff; border-top: 2px solid #c8976a;
+  box-shadow: 0 -4px 28px rgba(92,56,31,.2);
+  max-height: 62vh; display: flex; flex-direction: column;
+  transform: translateY(100%); transition: transform .22s ease;
+}
+.archiv-drawer.open { transform: translateY(0); }
+.drawer-hdr {
+  padding: 10px 16px; background: #5c381f; color: #fff;
+  display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+}
+.drawer-hdr-title { font-family: 'Exo 2', sans-serif; font-size: 13px; font-weight: 700; white-space: nowrap; }
+.drawer-search {
+  flex: 1; border: none; border-radius: 5px; padding: 6px 10px;
+  font-size: 13px; font-family: 'Source Sans 3', sans-serif;
+  background: rgba(255,255,255,.18); color: #fff; outline: none;
+}
+.drawer-search::placeholder { color: rgba(255,255,255,.5); }
+.drawer-search:focus { background: rgba(255,255,255,.28); }
+.drawer-close {
+  background: none; border: none; color: #fff; font-size: 22px; cursor: pointer;
+  line-height: 1; padding: 2px 4px; opacity: .7; flex-shrink: 0;
+}
+.drawer-close:hover { opacity: 1; }
+.drawer-body { overflow-y: auto; flex: 1; }
+.drawer-row {
+  display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+  padding: 10px 16px; border-bottom: 1px solid #f1e6da; cursor: pointer;
+  transition: background .1s;
+}
+.drawer-row:hover { background: #fdf5ee; }
+.drawer-row-nazev { font-weight: 600; color: #1a0f06; font-size: 13.5px; flex: 1 0 160px; min-width: 0; }
+.drawer-row-meta { display: flex; gap: 8px; font-size: 12px; color: #a07850; flex-wrap: wrap; }
+.drawer-row-meta span { white-space: nowrap; }
+.drawer-tag-sarze { color: #5c381f !important; font-weight: 700; }
+.drawer-tag-dmt { color: #b03030 !important; }
+.drawer-empty { padding: 22px 16px; color: #b09070; text-align: center; font-style: italic; }
+@media print { .archiv-drawer { display: none !important; } }
 </style>
 </head>
 <body>
@@ -717,7 +768,7 @@ body.mode-surovina .section-dmt { display: none; }
       <td class="col-kod"><input type="text" placeholder="kód"></td>
       <td class="col-nazev"><input type="text" placeholder="název suroviny"></td>
       <td class="col-dod"><input type="text" placeholder="dodavatel"></td>
-      <td class="col-sarze"><input type="text" placeholder="LOT / šarže"></td>
+      <td class="col-sarze"><div class="sarze-cell"><input type="text" placeholder="LOT / šarže"><button class="lookup-btn" onclick="openLookup(this.closest('tr'))" title="Hledat v archivu příjmů">📦</button></div></td>
       <td class="col-dmt"><input type="date" class="dmt-input" onchange="updateMinDmt()"></td>
       <td class="col-mnoz"><input type="number" placeholder="kg" min="0" step="0.1"></td>
       <td class="col-del"><button class="del-btn" onclick="this.closest('tr').remove();updateMinDmt()" title="Smazat">×</button></td>
@@ -1065,6 +1116,101 @@ ${pozn || '—'}`;
       alert('Chyba při ukládání do Trella: ' + e.message);
     }
   };
+
+  // ── Archive lookup ──────────────────────────────────────────────────────────
+  let archivData = [];
+  let _lookupRow = null;
+  let _drawerResults = [];
+
+  (async function fetchArchiv() {
+    try {
+      const r = await fetch('/prijmy_archiv.json?_=' + Date.now());
+      if (r.ok) archivData = await r.json();
+    } catch(e) {}
+  })();
+
+  function openLookup(tr) {
+    _lookupRow = tr;
+    const nazev = tr.querySelector('.col-nazev input').value.trim();
+    const inp = document.getElementById('drawer-search');
+    inp.value = nazev;
+    renderDrawer(nazev);
+    document.getElementById('archiv-drawer').classList.add('open');
+    setTimeout(() => { inp.focus(); inp.select(); }, 50);
+  }
+
+  function closeDrawer() {
+    document.getElementById('archiv-drawer').classList.remove('open');
+  }
+
+  function renderDrawer(q) {
+    const ql = (q || '').toLowerCase();
+    _drawerResults = [];
+    archivData.forEach(d => {
+      (d.items || []).forEach(i => {
+        const match = !ql ||
+          (i.nazev||'').toLowerCase().includes(ql) ||
+          (i.sarze||'').toLowerCase().includes(ql) ||
+          (d.dodavatel||'').toLowerCase().includes(ql) ||
+          (i.nw_kod||'').toLowerCase().includes(ql) ||
+          (i.kod||'').toLowerCase().includes(ql);
+        if (match) _drawerResults.push({ item: i, dodavatel: d.dodavatel, datum: d.datum });
+      });
+    });
+    _drawerResults.sort((a, b) => (b.datum || '').localeCompare(a.datum || ''));
+    const body = document.getElementById('drawer-body');
+    if (!_drawerResults.length) {
+      body.innerHTML = '<div class="drawer-empty">Nic nenalezeno — zkuste jiný výraz</div>';
+      return;
+    }
+    body.innerHTML = _drawerResults.slice(0, 60).map((r, idx) => {
+      const dmtStr = r.item.dmt ? new Date(r.item.dmt + 'T00:00:00').toLocaleDateString('cs-CZ') : '';
+      const datStr = r.datum ? new Date(r.datum + 'T00:00:00').toLocaleDateString('cs-CZ') : '';
+      return `<div class="drawer-row" onclick="fillFromArchive(${idx})">
+        <span class="drawer-row-nazev">${r.item.nazev || '—'}</span>
+        <span class="drawer-row-meta">
+          ${r.dodavatel ? `<span>${r.dodavatel}</span>` : ''}
+          ${datStr ? `<span>${datStr}</span>` : ''}
+          ${r.item.sarze ? `<span class="drawer-tag-sarze">Šarže: ${r.item.sarze}</span>` : '<span style="color:#ccc">bez šarže</span>'}
+          ${dmtStr ? `<span class="drawer-tag-dmt">DMT: ${dmtStr}</span>` : ''}
+          ${r.item.nw_kod ? `<span style="color:#83502e">#${r.item.nw_kod}</span>` : ''}
+        </span>
+      </div>`;
+    }).join('');
+  }
+
+  function fillFromArchive(idx) {
+    const r = _drawerResults[idx];
+    if (!r || !_lookupRow) return;
+    const tr = _lookupRow;
+    const nazevInp = tr.querySelector('.col-nazev input');
+    if (nazevInp && !nazevInp.value.trim()) nazevInp.value = r.item.nazev || '';
+    const dodInp = tr.querySelector('.col-dod input');
+    if (dodInp) dodInp.value = r.dodavatel || '';
+    const sarzeInp = tr.querySelector('.col-sarze input');
+    if (sarzeInp && r.item.sarze) sarzeInp.value = r.item.sarze;
+    const dmtInp = tr.querySelector('.dmt-input');
+    if (dmtInp && r.item.dmt) { dmtInp.value = r.item.dmt; updateMinDmt(); }
+    closeDrawer();
+  }
+
+  // Close drawer on Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeDrawer();
+  });
 </script>
+
+<!-- Archive lookup drawer -->
+<div class="archiv-drawer" id="archiv-drawer">
+  <div class="drawer-hdr">
+    <span class="drawer-hdr-title">📦 Archiv příjmů surovin</span>
+    <input class="drawer-search" id="drawer-search" type="text" placeholder="Hledat název, šarži, dodavatele…" oninput="renderDrawer(this.value)">
+    <button class="drawer-close" onclick="closeDrawer()" title="Zavřít">×</button>
+  </div>
+  <div class="drawer-body" id="drawer-body">
+    <div class="drawer-empty">Klikni na 📦 u řádku a vyber surovinu ze skladu</div>
+  </div>
+</div>
+
 </body>
 </html>
