@@ -451,18 +451,6 @@ body.mode-surovina .section-dmt { display: none; }
           <input type="text" id="sv-dodavatel" placeholder="KS / Jumbo…" />
         </div>
         <div class="field field--key">
-          <label>Šarže / LOT</label>
-          <input type="text" id="sv-sarze" placeholder="LOT číslo" />
-        </div>
-        <div class="field field--key">
-          <label>DMT suroviny</label>
-          <input type="date" id="sv-dmt" />
-        </div>
-        <div class="field field--key">
-          <label>Množství (kg)</label>
-          <input type="number" id="sv-mnozstvi" placeholder="50" min="0" step="0.1" />
-        </div>
-        <div class="field field--key">
           <label>Operace</label>
           <select id="sv-operace">
             <option value="">— vybrat —</option>
@@ -477,6 +465,23 @@ body.mode-surovina .section-dmt { display: none; }
           </select>
         </div>
       </div>
+
+      <!-- Tabulka šarží -->
+      <div class="block-title" style="margin-top:16px">Šarže / LOT</div>
+      <div class="tbl-wrap">
+        <table id="sv-lot-table">
+          <thead>
+            <tr>
+              <th style="min-width:140px">Šarže / LOT</th>
+              <th style="width:110px">DMT suroviny</th>
+              <th style="width:90px">Množství (kg)</th>
+              <th style="width:38px"></th>
+            </tr>
+          </thead>
+          <tbody id="sv-lot-body"></tbody>
+        </table>
+      </div>
+      <button class="add-row-btn" onclick="addLotRow()">+ Přidat šarži</button>
     </div>
 
     <!-- SLOŽENÍ — SUROVINY (míchání mode) -->
@@ -853,7 +858,6 @@ body.mode-surovina .section-dmt { display: none; }
         sv_kod: document.getElementById('sv-kod').value,
         sv_nazev: document.getElementById('sv-nazev').value,
         sv_dodavatel: document.getElementById('sv-dodavatel').value,
-        sv_mnozstvi: document.getElementById('sv-mnozstvi').value,
         sv_operace: document.getElementById('sv-operace').value });
     }
     saveTemplates(tmpls);
@@ -887,13 +891,48 @@ body.mode-surovina .section-dmt { display: none; }
       document.getElementById('sv-kod').value = tmpl.sv_kod || '';
       document.getElementById('sv-nazev').value = tmpl.sv_nazev || '';
       document.getElementById('sv-dodavatel').value = tmpl.sv_dodavatel || '';
-      document.getElementById('sv-mnozstvi').value = tmpl.sv_mnozstvi || '';
       document.getElementById('sv-operace').value = tmpl.sv_operace || '';
     }
   };
 
   renderTemplates();
   setupAutocomplete(document.getElementById('sv-kod'), document.getElementById('sv-nazev'));
+
+  // Lot rows for single surovina mode
+  window.addLotRow = function() {
+    const tbody = document.getElementById('sv-lot-body');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input type="text" placeholder="LOT číslo / šarže"></td>
+      <td><input type="date" class="sv-dmt-input" onchange="updateSvMinDmt()"></td>
+      <td><input type="number" placeholder="kg" min="0" step="0.1"></td>
+      <td><button class="del-btn" onclick="this.closest('tr').remove();updateSvMinDmt()" title="Smazat">×</button></td>
+    `;
+    tbody.appendChild(tr);
+    tr.querySelector('input').focus();
+  };
+
+  function updateSvMinDmt() {
+    const inputs = document.querySelectorAll('.sv-dmt-input');
+    let minDate = null;
+    inputs.forEach(inp => {
+      if (inp.value) { const d = new Date(inp.value); if (!minDate || d < minDate) minDate = d; }
+    });
+    // reuse min-dmt display if in surovina mode
+    if (document.body.classList.contains('mode-surovina')) {
+      const el = document.getElementById('min-dmt');
+      el.textContent = minDate ? minDate.toLocaleDateString('cs-CZ') : '—';
+    }
+  }
+
+  // Init with one lot row when switching to surovina mode
+  const _origSetMode = window.setMode;
+  window.setMode = function(mode) {
+    _origSetMode(mode);
+    if (mode === 'surovina' && document.getElementById('sv-lot-body').children.length === 0) {
+      addLotRow();
+    }
+  };
 
   // ── Trello save ──────────────────────────────────────────
   // Trello save
@@ -939,15 +978,21 @@ body.mode-surovina .section-dmt { display: none; }
     const svKod    = document.getElementById('sv-kod').value;
     const svNazev  = document.getElementById('sv-nazev').value;
     const svDod    = document.getElementById('sv-dodavatel').value;
-    const svSarze  = document.getElementById('sv-sarze').value;
-    const svDmt    = document.getElementById('sv-dmt').value;
-    const svMnoz   = document.getElementById('sv-mnozstvi').value;
     const svOp     = document.getElementById('sv-operace').value;
+    // Read multi-lot rows
+    const svLotRows = Array.from(document.querySelectorAll('#sv-lot-body tr')).map(tr => {
+      const inputs = tr.querySelectorAll('input');
+      return { sarze: inputs[0]?.value || '', dmt: inputs[1]?.value || '', mnozstvi: inputs[2]?.value || '' };
+    }).filter(r => r.sarze || r.mnozstvi);
+    const svTotalMnoz = svLotRows.reduce((s, r) => s + (parseFloat(r.mnozstvi) || 0), 0);
+    const svLotLines = svLotRows.length
+      ? svLotRows.map(r => `- Šarže: ${r.sarze || '—'} | DMT: ${r.dmt || '—'} | ${r.mnozstvi || '—'} kg`).join('\n')
+      : '— (nevyplněno)';
 
     let cardName, desc;
     if (_currentMode === 'surovina') {
       if (!datum || !svNazev) { alert('Vyplň alespoň Datum a Název suroviny.'); return; }
-      cardName = `${datum} | ${svOp ? svOp+': ' : ''}${svNazev}${svMnoz ? ' | '+svMnoz+' kg' : ''}${proKoho ? ' → '+proKoho : ''}`;
+      cardName = `${datum} | ${svOp ? svOp+': ' : ''}${svNazev}${svTotalMnoz ? ' | '+svTotalMnoz.toFixed(1)+' kg' : ''}${proKoho ? ' → '+proKoho : ''}`;
       desc = `## Záznam zpracování suroviny — ${datum}
 
 **Operace:** ${svOp || '—'}
@@ -961,9 +1006,10 @@ body.mode-surovina .section-dmt { display: none; }
 - **Kód:** ${svKod || '—'}
 - **Název:** ${svNazev}
 - **Dodavatel:** ${svDod || '—'}
-- **Šarže / LOT:** ${svSarze || '—'}
-- **DMT suroviny:** ${svDmt || '—'}
-- **Množství:** ${svMnoz || '—'} kg
+- **Celkové množství:** ${svTotalMnoz ? svTotalMnoz.toFixed(1)+' kg' : '—'}
+
+## Šarže / LOT
+${svLotLines}
 
 ## Kontrola kvality
 ${qcLines || '— (nevyplněno)'}
