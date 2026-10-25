@@ -54,5 +54,27 @@
       { "nazev": "Mandle v mliečnej čokoláde so škoricou", "kod": "30801533", "sarze": "E0R260385A", "dmt": "2027-06-25", "mnozstvi": 25, "stav": "OK", "cena_kg": 205.00 },
       { "nazev": "Brusnice v horkej čokoláde", "kod": "30801512", "sarze": "E13260417A", "dmt": "2027-07-08", "mnozstvi": 5, "stav": "OK", "cena_kg": 183.00 }
     ]
+  },
+  {
+    "id": "260100404",
+    "cislo_dodavky": "260100404",
+    "dodavatel": "MB INDUSTRY s.r.o. (BIN)",
+    "datum": "2026-10-19",
+    "datum_ulozeni": "2026-10-25",
+    "poznamka": "Faktura + dodací list v jednom. Splatnost 18.11.2026. Forma úhrady: Příkazem. 1 euro paleta.",
+    "ulozeni": "",
+    "celkove_kg": 657.44,
+    "items": [
+      { "nazev": "Banán chips", "kod": "170", "sarze": "250725?", "dmt": "", "mnozstvi": 54.4, "stav": "OK", "cena_kg": 89.00 },
+      { "nazev": "Klikva (Brusnice) soft a moist MFG", "kod": "179", "sarze": "?", "dmt": "", "mnozstvi": 56.7, "stav": "OK", "cena_kg": 132.00 },
+      { "nazev": "Datle vypeckované (SAYER) GAQ", "kod": "185", "sarze": "2447?", "dmt": "", "mnozstvi": 80, "stav": "OK", "cena_kg": 49.00 },
+      { "nazev": "Lísková jádra 13-15, 25kg pytle", "kod": "125", "sarze": "W0002-2026?", "dmt": "", "mnozstvi": 75, "stav": "OK", "cena_kg": 235.00 },
+      { "nazev": "Macadam ořechy", "kod": "146", "sarze": "?21818", "dmt": "", "mnozstvi": 11.34, "stav": "OK", "cena_kg": 389.00 },
+      { "nazev": "Para ořechy celé", "kod": "143", "sarze": "?", "dmt": "", "mnozstvi": 100, "stav": "OK", "cena_kg": 367.00 },
+      { "nazev": "Piniové ořechy", "kod": "149", "sarze": "15670?", "dmt": "", "mnozstvi": 50, "stav": "OK", "cena_kg": 879.00 },
+      { "nazev": "Pistácie loupané Extra No. 1, USA", "kod": "137", "sarze": "25090095?", "dmt": "", "mnozstvi": 40, "stav": "OK", "cena_kg": 595.00 },
+      { "nazev": "Arašidy 38/40 runner blanched, pražené & solené", "kod": "44", "sarze": "A1?", "dmt": "", "mnozstvi": 130, "stav": "OK", "cena_kg": 65.00 },
+      { "nazev": "Pistácie ve skořápce USA 21/25 No. 1 PS", "kod": "134", "sarze": "?127115", "dmt": "", "mnozstvi": 60, "stav": "OK", "cena_kg": 269.00 }
+    ]
   }
 ]
