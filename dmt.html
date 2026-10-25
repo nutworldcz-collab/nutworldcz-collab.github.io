@@ -415,8 +415,8 @@ function showKalkAc(inp) {
   const matches = [];
   prijmyData.forEach(d => {
     (d.items || []).forEach(i => {
-      if ((i.nazev||'').toLowerCase().includes(q) || (i.nw_kod||'').includes(q)) {
-        if (i.dmt) matches.push({ nazev: i.nazev, sarze: i.sarze, dmt: i.dmt, dod: d.dodavatel, datum: d.datum });
+      if ((i.nazev||'').toLowerCase().includes(q) || (i.nw_kod||'').toLowerCase().includes(q)) {
+        if (i.dmt) matches.push({ nazev: i.nazev, nw_kod: i.nw_kod, sarze: i.sarze, dmt: i.dmt, dod: d.dodavatel, datum: d.datum });
       }
     });
   });
@@ -445,7 +445,7 @@ function showKalkAc(inp) {
       const idx = startIdx + i;
       const dc = dmtClass(m.dmt);
       html += `<div class="ac-item" onclick="fillKalkRow(this,${idx})">
-        <div class="ac-name" style="${sarze.length > 1 ? 'padding-left:10px' : ''}">${sarze.length > 1 ? '↳ ' : ''}${m.nazev}</div>
+        <div class="ac-name" style="${sarze.length > 1 ? 'padding-left:10px' : ''}">${sarze.length > 1 ? '↳ ' : ''}${m.nazev}${m.nw_kod ? `<span style="margin-left:7px;font-size:11px;color:#83502e;font-weight:700;background:#f1e6da;border-radius:4px;padding:1px 5px">${m.nw_kod}</span>` : ''}</div>
         <div class="ac-meta">
           <span class="ac-sarze">${m.sarze||'—'}</span>
           &nbsp;·&nbsp; DMT: <span class="${dc}">${fmtDate(m.dmt)}</span>
