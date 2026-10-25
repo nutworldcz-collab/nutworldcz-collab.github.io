@@ -9,34 +9,311 @@
     "ulozeni": "",
     "celkove_kg": 2062,
     "items": [
-      { "nazev": "Ananás kandizovaný 8x10mm", "kod": "10400210", "sarze": "LSSK251056", "dmt": "2027-06-02", "mnozstvi": 160, "stav": "OK", "cena_kg": 112.90 },
-      { "nazev": "Ananás kandizovaný 8x10mm", "kod": "10400210", "sarze": "LSSK251107", "dmt": "2027-07-31", "mnozstvi": 80, "stav": "OK", "cena_kg": 112.90 },
-      { "nazev": "Hrozienka sušené Typ 10", "kod": "10300605", "sarze": "LSSK260898", "dmt": "2027-11-30", "mnozstvi": 450, "stav": "OK", "cena_kg": 64.50 },
-      { "nazev": "Arašidy v mliečnej čokoláde", "kod": "30801506", "sarze": "E13260421A", "dmt": "2027-07-09", "mnozstvi": 40, "stav": "OK", "cena_kg": 115.00 },
-      { "nazev": "Arašidy v horkej čokoláde", "kod": "30801508", "sarze": "E13260456A", "dmt": "2027-07-17", "mnozstvi": 40, "stav": "OK", "cena_kg": 118.00 },
-      { "nazev": "Banán chips v mliečnej čokoláde", "kod": "30801510", "sarze": "E0R260389C", "dmt": "2027-06-28", "mnozstvi": 16, "stav": "OK", "cena_kg": 159.00 },
-      { "nazev": "Banán chips v horkej čokoláde", "kod": "30801509", "sarze": "E0R260200C", "dmt": "2027-03-01", "mnozstvi": 12, "stav": "OK", "cena_kg": 165.00 },
-      { "nazev": "Brusnice v mliečnej čokoláde", "kod": "30801513", "sarze": "E13260418A", "dmt": "2027-07-08", "mnozstvi": 25, "stav": "OK", "cena_kg": 176.00 },
-      { "nazev": "Kešu v horkej čokoláde", "kod": "30801519", "sarze": "E13260468D", "dmt": "2027-07-21", "mnozstvi": 5, "stav": "OK", "cena_kg": 209.00 },
-      { "nazev": "Kešu v mliečnej čokoláde", "kod": "30801520", "sarze": "E0R260458B", "dmt": "2027-07-19", "mnozstvi": 15, "stav": "OK", "cena_kg": 205.00 },
-      { "nazev": "Kešu v mliečnej čokoláde", "kod": "30801520", "sarze": "E13260372B", "dmt": "2027-06-25", "mnozstvi": 75, "stav": "OK", "cena_kg": 205.00 },
-      { "nazev": "Lieskovce v bielej čokoláde", "kod": "30800544", "sarze": "D0V260433C", "dmt": "2027-06-11", "mnozstvi": 35, "stav": "OK", "cena_kg": 238.00 },
-      { "nazev": "Lieskovce v horkej čokoláde", "kod": "30801523", "sarze": "E0R260455D", "dmt": "2027-07-16", "mnozstvi": 35, "stav": "OK", "cena_kg": 222.00 },
-      { "nazev": "Lieskovce v mliečnej čokoláde", "kod": "30801524", "sarze": "E0R260454D", "dmt": "2027-07-16", "mnozstvi": 10, "stav": "OK", "cena_kg": 215.00 },
-      { "nazev": "Lieskovce v mliečnej čokoláde", "kod": "30801524", "sarze": "E0R260418B", "dmt": "2027-07-03", "mnozstvi": 50, "stav": "OK", "cena_kg": 215.00 },
-      { "nazev": "Lieskovce v mliečnej čokoláde so škoricou", "kod": "30801525", "sarze": "E0R260324C", "dmt": "2027-05-24", "mnozstvi": 10, "stav": "OK", "cena_kg": 239.00 },
-      { "nazev": "Maliny v bielej čokoláde", "kod": "30801629", "sarze": "E0R260462D", "dmt": "2027-07-20", "mnozstvi": 9, "stav": "OK", "cena_kg": 412.00 },
-      { "nazev": "Mandle v bielej čokoláde", "kod": "30801526", "sarze": "E0R260276A", "dmt": "2027-04-30", "mnozstvi": 15, "stav": "OK", "cena_kg": 213.00 },
-      { "nazev": "Mandle v bielej čokoláde", "kod": "30801526", "sarze": "E13260467D", "dmt": "2027-07-21", "mnozstvi": 185, "stav": "OK", "cena_kg": 213.00 },
-      { "nazev": "Mandle v bielej čokoláde so zeleným čajom", "kod": "30801553", "sarze": "E0R260442A", "dmt": "2027-07-09", "mnozstvi": 15, "stav": "OK", "cena_kg": 228.00 },
-      { "nazev": "Mandle v horkej čokoláde", "kod": "30801530", "sarze": "E13260457A", "dmt": "2027-07-17", "mnozstvi": 400, "stav": "OK", "cena_kg": 205.00 },
-      { "nazev": "Mandle v horkej čokoláde", "kod": "30801530", "sarze": "E13260422A", "dmt": "2027-07-09", "mnozstvi": 90, "stav": "OK", "cena_kg": 205.00 },
-      { "nazev": "Mandle v mliečnej čokoláde", "kod": "30801531", "sarze": "E13260454D", "dmt": "2027-07-15", "mnozstvi": 200, "stav": "OK", "cena_kg": 195.00 },
-      { "nazev": "Mandle v mliečnej čokoláde so škoricou", "kod": "30801533", "sarze": "E0R260385A", "dmt": "2027-06-25", "mnozstvi": 20, "stav": "OK", "cena_kg": 205.00 },
-      { "nazev": "Slaný preclík v mliečnej čokoláde slaný karamel", "kod": "30801766", "sarze": "E0R260306C", "dmt": "2027-05-20", "mnozstvi": 5, "stav": "OK", "cena_kg": 195.00 },
-      { "nazev": "Slaný preclík v mliečnej čokoláde", "kod": "30801767", "sarze": "E0R260304C", "dmt": "2027-05-20", "mnozstvi": 35, "stav": "OK", "cena_kg": 175.00 },
-      { "nazev": "Slaný preclík v horkej čokoláde", "kod": "30801765", "sarze": "E0R260305C", "dmt": "2027-05-20", "mnozstvi": 10, "stav": "OK", "cena_kg": 180.00 },
-      { "nazev": "Banánové želé v mliečnej čokoláde", "kod": "30801602", "sarze": "E0R260464D", "dmt": "2027-07-21", "mnozstvi": 20, "stav": "OK", "cena_kg": 184.00 }
+      {
+        "nazev": "Ananás kandizovaný 8x10mm",
+        "kod": "10400210",
+        "sarze": "LSSK251056",
+        "dmt": "2027-06-02",
+        "mnozstvi": 160,
+        "stav": "OK",
+        "cena_kg": 112.9,
+        "nw_kod": "2744",
+        "cenik_kg": 112.9
+      },
+      {
+        "nazev": "Ananás kandizovaný 8x10mm",
+        "kod": "10400210",
+        "sarze": "LSSK251107",
+        "dmt": "2027-07-31",
+        "mnozstvi": 80,
+        "stav": "OK",
+        "cena_kg": 112.9,
+        "nw_kod": "2744",
+        "cenik_kg": 112.9
+      },
+      {
+        "nazev": "Hrozienka sušené Typ 10",
+        "kod": "10300605",
+        "sarze": "LSSK260898",
+        "dmt": "2027-11-30",
+        "mnozstvi": 450,
+        "stav": "OK",
+        "cena_kg": 64.5,
+        "nw_kod": "230",
+        "cenik_kg": 64.5
+      },
+      {
+        "nazev": "Arašidy v mliečnej čokoláde",
+        "kod": "30801506",
+        "sarze": "E13260421A",
+        "dmt": "2027-07-09",
+        "mnozstvi": 40,
+        "stav": "OK",
+        "cena_kg": 115.0,
+        "nw_kod": "27562",
+        "cenik_kg": 115.0
+      },
+      {
+        "nazev": "Arašidy v horkej čokoláde",
+        "kod": "30801508",
+        "sarze": "E13260456A",
+        "dmt": "2027-07-17",
+        "mnozstvi": 40,
+        "stav": "OK",
+        "cena_kg": 118.0,
+        "nw_kod": "2756",
+        "cenik_kg": 118.0
+      },
+      {
+        "nazev": "Banán chips v mliečnej čokoláde",
+        "kod": "30801510",
+        "sarze": "E0R260389C",
+        "dmt": "2027-06-28",
+        "mnozstvi": 16,
+        "stav": "OK",
+        "cena_kg": 159.0,
+        "nw_kod": "5475",
+        "cenik_kg": 159.0
+      },
+      {
+        "nazev": "Banán chips v horkej čokoláde",
+        "kod": "30801509",
+        "sarze": "E0R260200C",
+        "dmt": "2027-03-01",
+        "mnozstvi": 12,
+        "stav": "OK",
+        "cena_kg": 165.0,
+        "nw_kod": "2759",
+        "cenik_kg": 159.0
+      },
+      {
+        "nazev": "Brusnice v mliečnej čokoláde",
+        "kod": "30801513",
+        "sarze": "E13260418A",
+        "dmt": "2027-07-08",
+        "mnozstvi": 25,
+        "stav": "OK",
+        "cena_kg": 176.0,
+        "nw_kod": ""
+      },
+      {
+        "nazev": "Kešu v horkej čokoláde",
+        "kod": "30801519",
+        "sarze": "E13260468D",
+        "dmt": "2027-07-21",
+        "mnozstvi": 5,
+        "stav": "OK",
+        "cena_kg": 209.0,
+        "nw_kod": "4035",
+        "cenik_kg": 209.0
+      },
+      {
+        "nazev": "Kešu v mliečnej čokoláde",
+        "kod": "30801520",
+        "sarze": "E0R260458B",
+        "dmt": "2027-07-19",
+        "mnozstvi": 15,
+        "stav": "OK",
+        "cena_kg": 205.0,
+        "nw_kod": "119",
+        "cenik_kg": 205.0
+      },
+      {
+        "nazev": "Kešu v mliečnej čokoláde",
+        "kod": "30801520",
+        "sarze": "E13260372B",
+        "dmt": "2027-06-25",
+        "mnozstvi": 75,
+        "stav": "OK",
+        "cena_kg": 205.0,
+        "nw_kod": "119",
+        "cenik_kg": 205.0
+      },
+      {
+        "nazev": "Lieskovce v bielej čokoláde",
+        "kod": "30800544",
+        "sarze": "D0V260433C",
+        "dmt": "2027-06-11",
+        "mnozstvi": 35,
+        "stav": "OK",
+        "cena_kg": 238.0,
+        "nw_kod": "3107",
+        "cenik_kg": 238.0
+      },
+      {
+        "nazev": "Lieskovce v horkej čokoláde",
+        "kod": "30801523",
+        "sarze": "E0R260455D",
+        "dmt": "2027-07-16",
+        "mnozstvi": 35,
+        "stav": "OK",
+        "cena_kg": 222.0,
+        "nw_kod": "3106",
+        "cenik_kg": 222.0
+      },
+      {
+        "nazev": "Lieskovce v mliečnej čokoláde",
+        "kod": "30801524",
+        "sarze": "E0R260454D",
+        "dmt": "2027-07-16",
+        "mnozstvi": 10,
+        "stav": "OK",
+        "cena_kg": 215.0,
+        "nw_kod": "1475",
+        "cenik_kg": 215.0
+      },
+      {
+        "nazev": "Lieskovce v mliečnej čokoláde",
+        "kod": "30801524",
+        "sarze": "E0R260418B",
+        "dmt": "2027-07-03",
+        "mnozstvi": 50,
+        "stav": "OK",
+        "cena_kg": 215.0,
+        "nw_kod": "1475",
+        "cenik_kg": 215.0
+      },
+      {
+        "nazev": "Lieskovce v mliečnej čokoláde so škoricou",
+        "kod": "30801525",
+        "sarze": "E0R260324C",
+        "dmt": "2027-05-24",
+        "mnozstvi": 10,
+        "stav": "OK",
+        "cena_kg": 239.0,
+        "nw_kod": "510",
+        "cenik_kg": 239.0
+      },
+      {
+        "nazev": "Maliny v bielej čokoláde",
+        "kod": "30801629",
+        "sarze": "E0R260462D",
+        "dmt": "2027-07-20",
+        "mnozstvi": 9,
+        "stav": "OK",
+        "cena_kg": 412.0,
+        "nw_kod": "920",
+        "cenik_kg": 412.0
+      },
+      {
+        "nazev": "Mandle v bielej čokoláde",
+        "kod": "30801526",
+        "sarze": "E0R260276A",
+        "dmt": "2027-04-30",
+        "mnozstvi": 15,
+        "stav": "OK",
+        "cena_kg": 213.0,
+        "nw_kod": "107",
+        "cenik_kg": 213.0
+      },
+      {
+        "nazev": "Mandle v bielej čokoláde",
+        "kod": "30801526",
+        "sarze": "E13260467D",
+        "dmt": "2027-07-21",
+        "mnozstvi": 185,
+        "stav": "OK",
+        "cena_kg": 213.0,
+        "nw_kod": "107",
+        "cenik_kg": 213.0
+      },
+      {
+        "nazev": "Mandle v bielej čokoláde so zeleným čajom",
+        "kod": "30801553",
+        "sarze": "E0R260442A",
+        "dmt": "2027-07-09",
+        "mnozstvi": 15,
+        "stav": "OK",
+        "cena_kg": 228.0,
+        "nw_kod": ""
+      },
+      {
+        "nazev": "Mandle v horkej čokoláde",
+        "kod": "30801530",
+        "sarze": "E13260457A",
+        "dmt": "2027-07-17",
+        "mnozstvi": 400,
+        "stav": "OK",
+        "cena_kg": 205.0,
+        "nw_kod": "1955",
+        "cenik_kg": 205.0
+      },
+      {
+        "nazev": "Mandle v horkej čokoláde",
+        "kod": "30801530",
+        "sarze": "E13260422A",
+        "dmt": "2027-07-09",
+        "mnozstvi": 90,
+        "stav": "OK",
+        "cena_kg": 205.0,
+        "nw_kod": "1955",
+        "cenik_kg": 205.0
+      },
+      {
+        "nazev": "Mandle v mliečnej čokoláde",
+        "kod": "30801531",
+        "sarze": "E13260454D",
+        "dmt": "2027-07-15",
+        "mnozstvi": 200,
+        "stav": "OK",
+        "cena_kg": 195.0,
+        "nw_kod": "4038",
+        "cenik_kg": 210.0
+      },
+      {
+        "nazev": "Mandle v mliečnej čokoláde so škoricou",
+        "kod": "30801533",
+        "sarze": "E0R260385A",
+        "dmt": "2027-06-25",
+        "mnozstvi": 20,
+        "stav": "OK",
+        "cena_kg": 205.0,
+        "nw_kod": "1958",
+        "cenik_kg": 215.0
+      },
+      {
+        "nazev": "Slaný preclík v mliečnej čokoláde slaný karamel",
+        "kod": "30801766",
+        "sarze": "E0R260306C",
+        "dmt": "2027-05-20",
+        "mnozstvi": 5,
+        "stav": "OK",
+        "cena_kg": 195.0,
+        "nw_kod": "3980",
+        "cenik_kg": 195.0
+      },
+      {
+        "nazev": "Slaný preclík v mliečnej čokoláde",
+        "kod": "30801767",
+        "sarze": "E0R260304C",
+        "dmt": "2027-05-20",
+        "mnozstvi": 35,
+        "stav": "OK",
+        "cena_kg": 175.0,
+        "nw_kod": "3978",
+        "cenik_kg": 175.0
+      },
+      {
+        "nazev": "Slaný preclík v horkej čokoláde",
+        "kod": "30801765",
+        "sarze": "E0R260305C",
+        "dmt": "2027-05-20",
+        "mnozstvi": 10,
+        "stav": "OK",
+        "cena_kg": 180.0,
+        "nw_kod": "3975",
+        "cenik_kg": 180.0
+      },
+      {
+        "nazev": "Banánové želé v mliečnej čokoláde",
+        "kod": "30801602",
+        "sarze": "E0R260464D",
+        "dmt": "2027-07-21",
+        "mnozstvi": 20,
+        "stav": "OK",
+        "cena_kg": 184.0,
+        "nw_kod": ""
+      }
     ]
   },
   {
@@ -49,10 +326,49 @@
     "ulozeni": "",
     "celkove_kg": 165,
     "items": [
-      { "nazev": "Lieskovce v mliečnej čokoláde", "kod": "30801524", "sarze": "E0R260454D", "dmt": "2027-07-16", "mnozstvi": 60, "stav": "OK", "cena_kg": 215.00 },
-      { "nazev": "Mandle v mliečnej čokoláde so škoricou", "kod": "30801533", "sarze": "E0R260463D", "dmt": "2027-07-21", "mnozstvi": 75, "stav": "OK", "cena_kg": 205.00 },
-      { "nazev": "Mandle v mliečnej čokoláde so škoricou", "kod": "30801533", "sarze": "E0R260385A", "dmt": "2027-06-25", "mnozstvi": 25, "stav": "OK", "cena_kg": 205.00 },
-      { "nazev": "Brusnice v horkej čokoláde", "kod": "30801512", "sarze": "E13260417A", "dmt": "2027-07-08", "mnozstvi": 5, "stav": "OK", "cena_kg": 183.00 }
+      {
+        "nazev": "Lieskovce v mliečnej čokoláde",
+        "kod": "30801524",
+        "sarze": "E0R260454D",
+        "dmt": "2027-07-16",
+        "mnozstvi": 60,
+        "stav": "OK",
+        "cena_kg": 215.0,
+        "nw_kod": "1475",
+        "cenik_kg": 215.0
+      },
+      {
+        "nazev": "Mandle v mliečnej čokoláde so škoricou",
+        "kod": "30801533",
+        "sarze": "E0R260463D",
+        "dmt": "2027-07-21",
+        "mnozstvi": 75,
+        "stav": "OK",
+        "cena_kg": 205.0,
+        "nw_kod": "1958",
+        "cenik_kg": 215.0
+      },
+      {
+        "nazev": "Mandle v mliečnej čokoláde so škoricou",
+        "kod": "30801533",
+        "sarze": "E0R260385A",
+        "dmt": "2027-06-25",
+        "mnozstvi": 25,
+        "stav": "OK",
+        "cena_kg": 205.0,
+        "nw_kod": "1958",
+        "cenik_kg": 215.0
+      },
+      {
+        "nazev": "Brusnice v horkej čokoláde",
+        "kod": "30801512",
+        "sarze": "E13260417A",
+        "dmt": "2027-07-08",
+        "mnozstvi": 5,
+        "stav": "OK",
+        "cena_kg": 183.0,
+        "nw_kod": ""
+      }
     ]
   },
   {
@@ -65,16 +381,115 @@
     "ulozeni": "",
     "celkove_kg": 657.44,
     "items": [
-      { "nazev": "Banán chips", "kod": "170", "sarze": "250725?", "dmt": "", "mnozstvi": 54.4, "stav": "OK", "cena_kg": 89.00 },
-      { "nazev": "Klikva (Brusnice) soft a moist MFG", "kod": "179", "sarze": "?", "dmt": "", "mnozstvi": 56.7, "stav": "OK", "cena_kg": 132.00 },
-      { "nazev": "Datle vypeckované (SAYER) GAQ", "kod": "185", "sarze": "2447?", "dmt": "", "mnozstvi": 80, "stav": "OK", "cena_kg": 49.00 },
-      { "nazev": "Lísková jádra 13-15, 25kg pytle", "kod": "125", "sarze": "W0002-2026?", "dmt": "", "mnozstvi": 75, "stav": "OK", "cena_kg": 235.00 },
-      { "nazev": "Macadam ořechy", "kod": "146", "sarze": "?21818", "dmt": "", "mnozstvi": 11.34, "stav": "OK", "cena_kg": 389.00 },
-      { "nazev": "Para ořechy celé", "kod": "143", "sarze": "?", "dmt": "", "mnozstvi": 100, "stav": "OK", "cena_kg": 367.00 },
-      { "nazev": "Piniové ořechy", "kod": "149", "sarze": "15670?", "dmt": "", "mnozstvi": 50, "stav": "OK", "cena_kg": 879.00 },
-      { "nazev": "Pistácie loupané Extra No. 1, USA", "kod": "137", "sarze": "25090095?", "dmt": "", "mnozstvi": 40, "stav": "OK", "cena_kg": 595.00 },
-      { "nazev": "Arašidy 38/40 runner blanched, pražené & solené", "kod": "44", "sarze": "A1?", "dmt": "", "mnozstvi": 130, "stav": "OK", "cena_kg": 65.00 },
-      { "nazev": "Pistácie ve skořápce USA 21/25 No. 1 PS", "kod": "134", "sarze": "?127115", "dmt": "", "mnozstvi": 60, "stav": "OK", "cena_kg": 269.00 }
+      {
+        "nazev": "Banán chips",
+        "kod": "170",
+        "sarze": "250725?",
+        "dmt": "",
+        "mnozstvi": 54.4,
+        "stav": "OK",
+        "cena_kg": 89.0,
+        "nw_kod": "170",
+        "cenik_kg": 89.0
+      },
+      {
+        "nazev": "Klikva (Brusnice) soft a moist MFG",
+        "kod": "179",
+        "sarze": "?",
+        "dmt": "",
+        "mnozstvi": 56.7,
+        "stav": "OK",
+        "cena_kg": 132.0,
+        "nw_kod": "179",
+        "cenik_kg": 128.0
+      },
+      {
+        "nazev": "Datle vypeckované (SAYER) GAQ",
+        "kod": "185",
+        "sarze": "2447?",
+        "dmt": "",
+        "mnozstvi": 80,
+        "stav": "OK",
+        "cena_kg": 49.0,
+        "nw_kod": "185",
+        "cenik_kg": 49.0
+      },
+      {
+        "nazev": "Lísková jádra 13-15, 25kg pytle",
+        "kod": "125",
+        "sarze": "W0002-2026?",
+        "dmt": "",
+        "mnozstvi": 75,
+        "stav": "OK",
+        "cena_kg": 235.0,
+        "nw_kod": "125",
+        "cenik_kg": 235.0
+      },
+      {
+        "nazev": "Macadam ořechy",
+        "kod": "146",
+        "sarze": "?21818",
+        "dmt": "",
+        "mnozstvi": 11.34,
+        "stav": "OK",
+        "cena_kg": 389.0,
+        "nw_kod": "146",
+        "cenik_kg": 389.0
+      },
+      {
+        "nazev": "Para ořechy celé",
+        "kod": "143",
+        "sarze": "?",
+        "dmt": "",
+        "mnozstvi": 100,
+        "stav": "OK",
+        "cena_kg": 367.0,
+        "nw_kod": "143",
+        "cenik_kg": 379.0
+      },
+      {
+        "nazev": "Piniové ořechy",
+        "kod": "149",
+        "sarze": "15670?",
+        "dmt": "",
+        "mnozstvi": 50,
+        "stav": "OK",
+        "cena_kg": 879.0,
+        "nw_kod": "149",
+        "cenik_kg": 725.0
+      },
+      {
+        "nazev": "Pistácie loupané Extra No. 1, USA",
+        "kod": "137",
+        "sarze": "25090095?",
+        "dmt": "",
+        "mnozstvi": 40,
+        "stav": "OK",
+        "cena_kg": 595.0,
+        "nw_kod": "137",
+        "cenik_kg": 569.0
+      },
+      {
+        "nazev": "Arašidy 38/40 runner blanched, pražené & solené",
+        "kod": "44",
+        "sarze": "A1?",
+        "dmt": "",
+        "mnozstvi": 130,
+        "stav": "OK",
+        "cena_kg": 65.0,
+        "nw_kod": ""
+      },
+      {
+        "nazev": "Pistácie ve skořápce USA 21/25 No. 1 PS",
+        "kod": "134",
+        "sarze": "?127115",
+        "dmt": "",
+        "mnozstvi": 60,
+        "stav": "OK",
+        "cena_kg": 269.0,
+        "nw_kod": "134",
+        "cenik_kg": 265.0
+      }
     ]
   },
   {
@@ -87,13 +502,83 @@
     "ulozeni": "",
     "celkove_kg": 460,
     "items": [
-      { "nazev": "Slunečnice", "kod": "266", "sarze": "", "dmt": "", "mnozstvi": 110, "stav": "OK", "cena_kg": 34.50 },
-      { "nazev": "Jádra tykve natural GWS", "kod": "242", "sarze": "", "dmt": "", "mnozstvi": 125, "stav": "OK", "cena_kg": 94.00 },
-      { "nazev": "Sezam loupaný", "kod": "263", "sarze": "", "dmt": "", "mnozstvi": 50, "stav": "OK", "cena_kg": 51.00 },
-      { "nazev": "Chia semínka", "kod": "245", "sarze": "", "dmt": "", "mnozstvi": 25, "stav": "OK", "cena_kg": 79.00 },
-      { "nazev": "Lněné semínko", "kod": "251", "sarze": "", "dmt": "", "mnozstvi": 25, "stav": "OK", "cena_kg": 26.50 },
-      { "nazev": "Lněné semínko zlaté", "kod": "254", "sarze": "", "dmt": "", "mnozstvi": 25, "stav": "OK", "cena_kg": 34.50 },
-      { "nazev": "Pecan - ořechy", "kod": "140", "sarze": "", "dmt": "", "mnozstvi": 100, "stav": "OK", "cena_kg": 359.00 }
+      {
+        "nazev": "Slunečnice",
+        "kod": "266",
+        "sarze": "",
+        "dmt": "",
+        "mnozstvi": 110,
+        "stav": "OK",
+        "cena_kg": 34.5,
+        "nw_kod": "266",
+        "cenik_kg": 34.5
+      },
+      {
+        "nazev": "Jádra tykve natural GWS",
+        "kod": "242",
+        "sarze": "",
+        "dmt": "",
+        "mnozstvi": 125,
+        "stav": "OK",
+        "cena_kg": 94.0,
+        "nw_kod": "242",
+        "cenik_kg": 94.0
+      },
+      {
+        "nazev": "Sezam loupaný",
+        "kod": "263",
+        "sarze": "",
+        "dmt": "",
+        "mnozstvi": 50,
+        "stav": "OK",
+        "cena_kg": 51.0,
+        "nw_kod": "263",
+        "cenik_kg": 51.0
+      },
+      {
+        "nazev": "Chia semínka",
+        "kod": "245",
+        "sarze": "",
+        "dmt": "",
+        "mnozstvi": 25,
+        "stav": "OK",
+        "cena_kg": 79.0,
+        "nw_kod": "245",
+        "cenik_kg": 127.0
+      },
+      {
+        "nazev": "Lněné semínko",
+        "kod": "251",
+        "sarze": "",
+        "dmt": "",
+        "mnozstvi": 25,
+        "stav": "OK",
+        "cena_kg": 26.5,
+        "nw_kod": "251",
+        "cenik_kg": 26.5
+      },
+      {
+        "nazev": "Lněné semínko zlaté",
+        "kod": "254",
+        "sarze": "",
+        "dmt": "",
+        "mnozstvi": 25,
+        "stav": "OK",
+        "cena_kg": 34.5,
+        "nw_kod": "254",
+        "cenik_kg": 34.5
+      },
+      {
+        "nazev": "Pecan - ořechy",
+        "kod": "140",
+        "sarze": "",
+        "dmt": "",
+        "mnozstvi": 100,
+        "stav": "OK",
+        "cena_kg": 359.0,
+        "nw_kod": "140",
+        "cenik_kg": 359.0
+      }
     ]
   },
   {
@@ -106,8 +591,28 @@
     "ulozeni": "",
     "celkove_kg": 0,
     "items": [
-      { "nazev": "Klipovací pásek 150mm ČERNÝ / plast", "kod": "90153", "sarze": "", "dmt": "", "mnozstvi": 0, "stav": "OK", "cena_kg": 0, "poznamka_pol": "4000 ks × 0,45 Kč" },
-      { "nazev": "Sáček hranolový OPP 100+60x280mm", "kod": "39100", "sarze": "", "dmt": "", "mnozstvi": 0, "stav": "OK", "cena_kg": 0, "poznamka_pol": "2000 ks × 1,7954 Kč" }
+      {
+        "nazev": "Klipovací pásek 150mm ČERNÝ / plast",
+        "kod": "90153",
+        "sarze": "",
+        "dmt": "",
+        "mnozstvi": 0,
+        "stav": "OK",
+        "cena_kg": 0,
+        "poznamka_pol": "4000 ks × 0,45 Kč",
+        "nw_kod": ""
+      },
+      {
+        "nazev": "Sáček hranolový OPP 100+60x280mm",
+        "kod": "39100",
+        "sarze": "",
+        "dmt": "",
+        "mnozstvi": 0,
+        "stav": "OK",
+        "cena_kg": 0,
+        "poznamka_pol": "2000 ks × 1,7954 Kč",
+        "nw_kod": ""
+      }
     ]
   },
   {
@@ -120,13 +625,82 @@
     "ulozeni": "",
     "celkove_kg": 120,
     "items": [
-      { "nazev": "Kyselé želé mix 1kg", "kod": "2336", "sarze": "2607940", "dmt": "", "mnozstvi": 20, "stav": "OK", "cena_kg": 180.48 },
-      { "nazev": "Mandle v baby blue krustě 1kg", "kod": "8542", "sarze": "29012601", "dmt": "", "mnozstvi": 7, "stav": "OK", "cena_kg": 370.56 },
-      { "nazev": "Mandle v karamelové polevě 3kg", "kod": "2333", "sarze": "24240XK", "dmt": "", "mnozstvi": 6, "stav": "OK", "cena_kg": 213.12 },
-      { "nazev": "Mandle ve stříbrné krustě 1kg", "kod": "7853", "sarze": "06102502", "dmt": "", "mnozstvi": 3, "stav": "OK", "cena_kg": 586.56 },
-      { "nazev": "Mandle ve zlaté krustě 1kg", "kod": "7852", "sarze": "09022601", "dmt": "", "mnozstvi": 3, "stav": "OK", "cena_kg": 645.12 },
-      { "nazev": "Mini Marshmallows 4kg", "kod": "4512", "sarze": "LH25301", "dmt": "", "mnozstvi": 60, "stav": "OK", "cena_kg": 176.64 },
-      { "nazev": "Twist Mix 3kg", "kod": "2-LTM-3", "sarze": "290426XK", "dmt": "", "mnozstvi": 21, "stav": "OK", "cena_kg": 180.48 }
+      {
+        "nazev": "Kyselé želé mix 1kg",
+        "kod": "2336",
+        "sarze": "2607940",
+        "dmt": "",
+        "mnozstvi": 20,
+        "stav": "OK",
+        "cena_kg": 180.48,
+        "nw_kod": "2336",
+        "cenik_kg": 180.48
+      },
+      {
+        "nazev": "Mandle v baby blue krustě 1kg",
+        "kod": "8542",
+        "sarze": "29012601",
+        "dmt": "",
+        "mnozstvi": 7,
+        "stav": "OK",
+        "cena_kg": 370.56,
+        "nw_kod": "8542",
+        "cenik_kg": 370.56
+      },
+      {
+        "nazev": "Mandle v karamelové polevě 3kg",
+        "kod": "2333",
+        "sarze": "24240XK",
+        "dmt": "",
+        "mnozstvi": 6,
+        "stav": "OK",
+        "cena_kg": 213.12,
+        "nw_kod": "2333",
+        "cenik_kg": 220.8
+      },
+      {
+        "nazev": "Mandle ve stříbrné krustě 1kg",
+        "kod": "7853",
+        "sarze": "06102502",
+        "dmt": "",
+        "mnozstvi": 3,
+        "stav": "OK",
+        "cena_kg": 586.56,
+        "nw_kod": "7853",
+        "cenik_kg": 575.04
+      },
+      {
+        "nazev": "Mandle ve zlaté krustě 1kg",
+        "kod": "7852",
+        "sarze": "09022601",
+        "dmt": "",
+        "mnozstvi": 3,
+        "stav": "OK",
+        "cena_kg": 645.12,
+        "nw_kod": "7852",
+        "cenik_kg": 645.12
+      },
+      {
+        "nazev": "Mini Marshmallows 4kg",
+        "kod": "4512",
+        "sarze": "LH25301",
+        "dmt": "",
+        "mnozstvi": 60,
+        "stav": "OK",
+        "cena_kg": 176.64,
+        "nw_kod": "4512",
+        "cenik_kg": 171.12
+      },
+      {
+        "nazev": "Twist Mix 3kg",
+        "kod": "2-LTM-3",
+        "sarze": "290426XK",
+        "dmt": "",
+        "mnozstvi": 21,
+        "stav": "OK",
+        "cena_kg": 180.48,
+        "nw_kod": ""
+      }
     ]
   }
 ]

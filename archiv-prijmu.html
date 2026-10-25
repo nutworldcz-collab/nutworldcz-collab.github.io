@@ -76,6 +76,20 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
 .stav-nok { color: var(--nok); font-weight: 700; }
 .stav-q   { color: #b45309; font-weight: 700; }
 .lot      { font-family: monospace; font-size: 12px; color: #5c381f; background: var(--brown-soft); padding: 2px 6px; border-radius: 4px; }
+.nw-kod   { font-size: 11px; color: #a07850; font-weight: 700; }
+.price-ok   { color: var(--ok); font-weight: 700; }
+.price-up   { color: var(--nok); font-weight: 700; }
+.price-down { color: #2d6b8c; font-weight: 700; }
+.price-none { color: #ccc; }
+.delta-cell { font-size: 11px; white-space: nowrap; }
+/* Price alert banner */
+.price-alerts { background: #fdf5ee; border: 1.5px solid var(--amber); border-radius: 8px; padding: 12px 16px; margin-bottom: 0; font-size: 12.5px; }
+.price-alerts h3 { font-family: 'Exo 2', sans-serif; font-size: 12px; font-weight: 800; color: var(--brown-dark); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.alert-row { display: flex; gap: 8px; padding: 4px 0; border-bottom: 1px solid #f1e6da; align-items: center; flex-wrap: wrap; }
+.alert-row:last-child { border-bottom: none; }
+.alert-name { flex: 1; color: #1a0f06; min-width: 180px; }
+.alert-sup { color: #a07850; font-size: 11px; }
+.alert-delta { font-weight: 800; white-space: nowrap; }
 
 /* GitHub settings */
 .gh-banner { background: #fff8e6; border: 1.5px solid var(--amber); border-radius: 8px; padding: 12px 16px; margin: 12px 0; font-size: 13px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
@@ -139,6 +153,7 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
   </div>
 
   <div class="stats" id="stats"></div>
+  <div id="price-alerts" style="display:none" class="price-alerts"></div>
   <div class="results" id="results"><div class="empty">Načítám…</div></div>
 
 </div>
@@ -147,6 +162,9 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
   const GH_REPO  = 'nutworldcz-collab/nutworldcz-collab.github.io';
   const GH_FILE  = 'prijmy_archiv.json';
   const TOKEN_KEY = 'nw_gh_token';
+
+  // NW ceník (kg_czk z cenik.csv) — zdroj pravdy pro srovnání cen
+  const CENIK = {"44":77.7,"56":59.0,"71":43.0,"80":195.0,"83":215.716,"86":199.0,"89":218.0,"95":262.95,"101":228.252,"107":213.0,"110":201.01,"116":213.684,"119":205.0,"122":165.0,"125":235.0,"128":419.0,"131":265.0,"134":265.0,"137":569.0,"140":359.0,"143":379.0,"146":389.0,"149":725.0,"152":98.0,"155":281.3,"158":285.6,"161":239.96,"164":98.0,"167":798.0,"170":89.0,"173":445.0,"176":98.0,"179":128.0,"182":362.0,"185":49.0,"188":83.0,"191":172.0,"203":129.0,"206":197.0,"212":274.0,"218":275.0,"224":278.0,"227":85.0,"230":64.5,"233":129.0,"236":92.0,"239":499.0,"242":94.0,"245":127.0,"248":142.0,"251":26.5,"254":34.5,"257":57.0,"260":79.0,"263":51.0,"266":34.5,"269":265.0,"272":735.0,"275":675.0,"278":740.0,"296":245.0,"305":165.0,"324":309.0,"354":115.24,"429":228.0,"438":254.0,"510":239.0,"546":66.0,"547":99.816,"635":144.0,"719":145.0,"728":239.7333,"920":412.0,"1028":191.95,"1037":334.8,"1040":155.9,"1340":289.0,"1418":199.0,"1475":215.0,"1520":518.35,"1559":372.25,"1560":286.25,"1561":286.25,"1768":189.0,"1771":159.0,"1805":179.0,"1808":149.0,"1832":89.0,"1949":199.0,"1952":261.25,"1955":205.0,"1958":215.0,"1964":189.0,"1967":169.0,"1970":281.28,"1975":189.5,"1976":86.0,"1985":229.0,"1988":289.0,"1991":119.0,"2000":185.22,"2018":205.44,"2024":199.0,"2102":138.75,"2117":229.0,"2123":135.26,"2294":142.0,"2297":198.0,"2333":220.8,"2336":180.48,"2342":202.6,"2345":226.9,"2357":195.0,"2423":127.33,"2474":65.9,"2486":190.0925,"2504":245.0,"2537":242.93,"2540":169.0,"2564":219.0,"2570":235.4,"2573":67.0,"2576":89.0,"2663":235.0,"2693":250.05,"2699":208.6,"2702":153.93,"2705":250.34,"2708":241.55,"2723":277.1,"2726":275.98,"2738":246.06,"2744":112.9,"2747":95.0,"2753":169.0,"2756":118.0,"2759":159.0,"2762":174.0,"2789":172.0,"3013":235.0,"3076":185.0,"3082":127.0,"3091":241.86,"3094":197.96,"3097":180.1,"3106":222.0,"3107":238.0,"3108":249.0,"3111":178.0,"3298":119.0,"3304":127.0,"3537":149.0,"3540":137.0,"3632":159.0,"3633":159.0,"3634":149.0,"3648":249.0,"3651":249.0,"3702":213.75,"3703":210.0,"3704":208.0,"3705":231.0,"3714":185.0,"3717":200.0,"3720":335.0,"3721":356.0,"3722":375.0,"3723":356.0,"3726":275.0,"3729":210.0,"3732":127.5,"3735":145.0,"3975":180.0,"3978":175.0,"3979":84.0,"3980":195.0,"3993":289.0,"3995":299.0,"4035":209.0,"4038":210.0,"4146":159.0,"4212":349.0,"4443":212.19,"4449":252.0,"4452":222.83,"4506":89.0,"4512":171.12,"4794":187.725,"4797":89.0,"4893":459.0,"4896":231.85,"5358":271.25,"5364":307.5,"5475":159.0,"5499":215.51,"5502":144.25,"5505":134.65,"5511":221.61,"5515":146.25,"5852":194.95,"5892":89.0,"6450":243.0,"6453":276.25,"6456":317.5,"6459":183.75,"6462":170.0,"6465":114.0,"7563":135.0,"7564":149.0,"7566":132.5,"7569":125.0,"7852":645.12,"7853":575.04,"8542":370.56,"8543":362.88,"8657":360.0,"8739":89.0,"8742":89.0,"8745":89.0,"8751":89.0,"8977":299.73,"9543":346.25,"9547":378.75,"9549":160.0,"9552":318.75,"9570":350.0,"9571":388.75,"9572":481.75,"9573":380.0,"9598":125.0,"9601":249.0,"9604":146.25,"9673":89.0,"9679":89.0,"9811":188.0,"9921":309.0,"9945":223.0667,"10011":265.0,"10020":89.0,"10035":119.0,"10041":119.0,"10161":164.75,"10233":89.0,"10239":89.0,"10245":89.0,"10246":284.0,"10251":89.0,"10257":89.0,"10261":209.0,"10262":299.0,"10264":209.0,"10269":89.0,"10270":255.75,"10271":345.0,"10473":134.0,"10479":58.0,"10503":299.0,"10558":120.0,"10564":120.0,"10570":120.0,"10579":125.0,"10724":136.0,"10730":245.0,"10736":232.0,"27562":115.0};
 
   let allData = [];
 
@@ -224,13 +242,43 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
       return true;
     });
 
-    // Stats
+    // Stats + price alerts
     const totalKg = filtered.reduce((s, d) => s + (d._filteredItems || d.items).reduce((a,i) => a + (parseFloat(i.mnozstvi)||0), 0), 0);
     const totalItems = filtered.reduce((s, d) => s + (d._filteredItems || d.items).length, 0);
     document.getElementById('stats').innerHTML =
       `<div class="stat">Dodávky: <strong>${filtered.length}</strong></div>
        <div class="stat">Položky: <strong>${totalItems}</strong></div>
        <div class="stat">Celkem kg: <strong>${totalKg.toLocaleString('cs-CZ')} kg</strong></div>`;
+
+    // Build price alerts
+    const alerts = [];
+    filtered.forEach(d => {
+      (d._filteredItems || d.items).forEach(i => {
+        if (!i.nw_kod || !i.cena_kg) return;
+        const cp = CENIK[i.nw_kod];
+        if (!cp) return;
+        const delta = i.cena_kg - cp;
+        const pct = delta / cp * 100;
+        if (Math.abs(pct) >= 2) alerts.push({ item: i, dod: d.dodavatel, delta, pct });
+      });
+    });
+    const alertEl = document.getElementById('price-alerts');
+    if (alerts.length) {
+      const up = alerts.filter(a => a.delta > 0);
+      const dn = alerts.filter(a => a.delta < 0);
+      const mkRow = a => `<div class="alert-row">
+        <span class="alert-name">${a.item.nazev} <span class="alert-sup">(${a.dod.split(' ')[0]})</span></span>
+        <span class="nw-kod">NW ${a.item.nw_kod}</span>
+        <span style="color:#a07850;font-size:11px">${CENIK[a.item.nw_kod].toFixed(2)} → ${a.item.cena_kg.toFixed(2)} Kč/kg</span>
+        <span class="alert-delta ${a.delta > 0 ? 'price-up' : 'price-down'}">${a.delta > 0 ? '▲' : '▼'} ${Math.abs(a.delta).toFixed(2)} Kč (${a.pct > 0 ? '+' : ''}${a.pct.toFixed(1)}%)</span>
+      </div>`;
+      alertEl.style.display = '';
+      alertEl.innerHTML = `
+        ${up.length ? `<h3>⚠️ Zdražení (${up.length})</h3>${up.map(mkRow).join('')}` : ''}
+        ${dn.length ? `<h3 style="margin-top:${up.length?'12px':'0'}">✅ Zlevnění (${dn.length})</h3>${dn.map(mkRow).join('')}` : ''}`;
+    } else {
+      alertEl.style.display = 'none';
+    }
 
     if (!filtered.length) {
       document.getElementById('results').innerHTML = '<div class="empty">Žádné záznamy neodpovídají filtru.</div>';
@@ -258,13 +306,33 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
       const rows = items.map(i => {
         const dc = dmtClass(i.dmt);
         const stavCls = i.stav === 'OK' ? 'stav-ok' : i.stav === 'NOK' ? 'stav-nok' : 'stav-q';
+        // Price delta
+        let nwCell = i.nw_kod ? `<span class="nw-kod">${i.nw_kod}</span>` : '<span class="price-none">—</span>';
+        let cenikCell = '—', deltaCell = '';
+        if (i.nw_kod && CENIK[i.nw_kod]) {
+          const cp = CENIK[i.nw_kod];
+          cenikCell = cp.toFixed(2) + ' Kč';
+          if (i.cena_kg) {
+            const d = i.cena_kg - cp, pct = d / cp * 100;
+            if (Math.abs(pct) < 1) {
+              deltaCell = `<span class="price-ok">✓</span>`;
+            } else if (d > 0) {
+              deltaCell = `<span class="price-up">▲ ${d.toFixed(0)} Kč<br><small>${pct.toFixed(1)}%</small></span>`;
+            } else {
+              deltaCell = `<span class="price-down">▼ ${Math.abs(d).toFixed(0)} Kč<br><small>${pct.toFixed(1)}%</small></span>`;
+            }
+          }
+        }
         return `<tr>
           <td>${i.kod || '—'}</td>
           <td><strong>${i.nazev}</strong></td>
+          <td>${nwCell}</td>
           <td><span class="lot">${i.sarze || '—'}</span></td>
           <td class="td-dmt ${dc}">${fmtDate(i.dmt)}</td>
           <td>${i.mnozstvi ? i.mnozstvi+' kg' : '—'}</td>
           <td>${i.cena_kg ? i.cena_kg.toFixed(2)+' Kč' : '—'}</td>
+          <td>${cenikCell}</td>
+          <td class="delta-cell">${deltaCell}</td>
           <td class="${stavCls}">${i.stav || '—'}</td>
         </tr>`;
       }).join('');
@@ -280,13 +348,16 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
         <div class="delivery-body">
           <table>
             <thead><tr>
-              <th style="width:90px">Kód</th>
+              <th style="width:90px">Kód dod.</th>
               <th>Název suroviny</th>
-              <th style="width:130px">Šarže / LOT</th>
-              <th style="width:100px">DMT</th>
-              <th style="width:80px">Množství</th>
-              <th style="width:80px">Cena/kg</th>
-              <th style="width:60px">Stav</th>
+              <th style="width:70px">NW kód</th>
+              <th style="width:120px">Šarže / LOT</th>
+              <th style="width:90px">DMT</th>
+              <th style="width:75px">Množství</th>
+              <th style="width:80px">Faktura</th>
+              <th style="width:80px">Ceník</th>
+              <th style="width:70px">Δ cena</th>
+              <th style="width:50px">Stav</th>
             </tr></thead>
             <tbody>${rows}</tbody>
           </table>
