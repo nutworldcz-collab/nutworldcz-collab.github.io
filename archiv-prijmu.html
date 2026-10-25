@@ -120,9 +120,22 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
 
   <!-- GitHub token setup -->
   <div id="gh-banner" class="gh-banner" style="display:none">
-    ⚠️ Pro ukládání z formuláře zadej GitHub token (PAT s oprávněním <code>contents:write</code>):
-    <input type="password" id="gh-token-input" placeholder="ghp_…">
-    <button class="btn-small" onclick="saveGhToken()">Uložit token</button>
+    <div style="width:100%">
+      <strong>🔑 Potřebuješ GitHub token pro ukládání DMT a nových dodávek.</strong><br>
+      <small style="color:#5c381f">
+        1. Otevři <a href="https://github.com/settings/tokens/new?scopes=repo&description=NutWorld+archiv" target="_blank" style="color:var(--brown);font-weight:700">github.com → Settings → Tokens → New token</a><br>
+        2. Zaškrtni <strong>repo</strong> → klikni Generate → zkopíruj token (začíná <code>ghp_</code>)<br>
+        3. Vlož sem a ulož — jednou, zůstane v prohlížeči
+      </small>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px">
+      <input type="password" id="gh-token-input" placeholder="ghp_…" style="flex:1;min-width:220px">
+      <button class="btn-small" onclick="saveGhToken()">💾 Uložit token</button>
+    </div>
+  </div>
+  <div id="gh-ok-banner" class="gh-banner" style="display:none;background:#edf7f0;border-color:#6fa044">
+    <span style="color:#2d5a1b;font-weight:700">✓ GitHub token nastaven — ukládání funguje</span>
+    <button onclick="resetGhToken()" style="margin-left:auto;background:none;border:1.5px solid #ccc;border-radius:5px;padding:4px 10px;font-size:12px;cursor:pointer;color:#a07850">Změnit token</button>
   </div>
 
   <!-- Filters -->
@@ -189,9 +202,19 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
     const t = document.getElementById('gh-token-input').value.trim();
     if (!t) return;
     try { localStorage.setItem(TOKEN_KEY, t); } catch {}
-    document.getElementById('gh-banner').innerHTML = '<span class="gh-ok">✓ GitHub token uložen — formulář nyní může ukládat do archivu.</span>';
+    document.getElementById('gh-banner').style.display = 'none';
+    document.getElementById('gh-ok-banner').style.display = 'flex';
   }
-  if (!getToken()) document.getElementById('gh-banner').style.display = 'flex';
+  function resetGhToken() {
+    try { localStorage.removeItem(TOKEN_KEY); } catch {}
+    document.getElementById('gh-ok-banner').style.display = 'none';
+    document.getElementById('gh-banner').style.display = 'flex';
+  }
+  if (getToken()) {
+    document.getElementById('gh-ok-banner').style.display = 'flex';
+  } else {
+    document.getElementById('gh-banner').style.display = 'flex';
+  }
 
   // Load data
   async function loadData() {
@@ -241,6 +264,7 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
         i.nazev.toLowerCase().includes(q) ||
         (i.sarze||'').toLowerCase().includes(q) ||
         (i.kod||'').toLowerCase().includes(q) ||
+        (i.nw_kod||'').toLowerCase().includes(q) ||
         d.dodavatel.toLowerCase().includes(q) ||
         d.cislo_dodavky.toLowerCase().includes(q)
       );
