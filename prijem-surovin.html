@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Příjem surovin — Nutworld</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --brown: #83502e;
+  --brown-dark: #5c381f;
+  --brown-soft: #f1e6da;
+  --amber: #f7ab31;
+  --border: #d9c9b8;
+  --bg: #e8ddd4;
+  --ok: #2d5a1b;
+  --nok: #b91c1c;
+}
+body { font-family: 'Source Sans 3', Arial, sans-serif; background: var(--bg); color: #1a0f06; min-height: 100vh; padding: 20px 16px 60px; }
+
+.page { max-width: 900px; margin: 0 auto; }
+
+/* Header */
+.hdr { background: linear-gradient(135deg, var(--brown-dark) 0%, var(--brown) 55%, #a0622a 100%); border-radius: 12px 12px 0 0; padding: 20px 28px 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.hdr-left .label { color: var(--amber); font-size: 10px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 3px; }
+.hdr-left h1 { font-family: 'Exo 2', sans-serif; font-size: 22px; font-weight: 800; color: #fff; }
+.hdr-btns { display: flex; gap: 10px; }
+.btn-print { background: rgba(255,255,255,.15); border: 1.5px solid rgba(255,255,255,.35); color: #fff; border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Source Sans 3', sans-serif; transition: background .15s; }
+.btn-print:hover { background: rgba(255,255,255,.25); }
+
+/* Blocks */
+.block { background: #fff; padding: 20px 24px; border: 1px solid var(--border); border-top: none; }
+.block:last-of-type { border-radius: 0 0 12px 12px; }
+.block-title { font-family: 'Exo 2', sans-serif; font-size: 13px; font-weight: 800; color: var(--brown); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px; }
+
+/* Meta grid */
+.meta-grid { display: grid; grid-template-columns: 1fr 2fr 1fr 1fr; gap: 12px; }
+@media (max-width: 640px) { .meta-grid { grid-template-columns: 1fr 1fr; } }
+.field label { display: block; font-size: 11px; font-weight: 700; color: #a07850; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+.field input, .field select { width: 100%; border: 1.5px solid var(--border); border-radius: 7px; padding: 8px 11px; font-size: 14px; font-family: 'Source Sans 3', sans-serif; color: #1a0f06; background: #fdfaf7; outline: none; transition: border-color .15s; }
+.field input:focus, .field select:focus { border-color: var(--brown); }
+.field--key label { color: var(--brown-dark); font-weight: 800; }
+.field--key input, .field--key select { font-weight: 700; color: var(--brown-dark); border-color: #c8976a; }
+
+/* Table */
+.tbl-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead th { background: var(--brown-soft); color: var(--brown-dark); font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: .8px; padding: 9px 8px; text-align: left; border-bottom: 2px solid var(--border); white-space: nowrap; }
+tbody tr { border-bottom: 1px solid #ede3d8; }
+tbody tr:hover { background: #fdfaf7; }
+tbody td { padding: 4px 4px; vertical-align: middle; }
+tbody td input, tbody td select { border: 1.5px solid transparent; border-radius: 5px; padding: 6px 7px; font-size: 13px; font-family: 'Source Sans 3', sans-serif; width: 100%; background: transparent; outline: none; color: #1a0f06; transition: border-color .12s, background .12s; }
+tbody td input:focus, tbody td select:focus { border-color: var(--brown); background: #fdfaf7; }
+tbody td.td-num { width: 32px; text-align: center; color: #bbb; font-size: 12px; font-weight: 700; }
+td.td-ok select { font-weight: 700; }
+td.td-ok select.ok  { color: var(--ok); }
+td.td-ok select.nok { color: var(--nok); }
+td.td-del { width: 32px; }
+.del-btn { background: none; border: none; cursor: pointer; color: #ccc; font-size: 16px; line-height: 1; padding: 4px 6px; border-radius: 4px; transition: color .12s; }
+.del-btn:hover { color: var(--nok); }
+.add-row-btn { margin-top: 10px; background: none; border: 1.5px dashed var(--border); border-radius: 7px; padding: 7px 18px; font-size: 13px; font-family: 'Source Sans 3', sans-serif; color: var(--brown); cursor: pointer; font-weight: 700; transition: border-color .15s, background .15s; }
+.add-row-btn:hover { border-color: var(--brown); background: var(--brown-soft); }
+
+/* Notes */
+.notes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 640px) { .notes-grid { grid-template-columns: 1fr; } }
+.field textarea { width: 100%; border: 1.5px solid var(--border); border-radius: 7px; padding: 8px 11px; font-size: 13.5px; font-family: 'Source Sans 3', sans-serif; color: #1a0f06; background: #fdfaf7; outline: none; resize: vertical; min-height: 64px; }
+.field textarea:focus { border-color: var(--brown); }
+
+/* Save bar */
+.save-bar { background: #fff; border: 1px solid var(--border); border-top: 2px solid var(--brown-soft); border-radius: 0 0 12px 12px; padding: 16px 24px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.trello-sel { display: flex; align-items: center; gap: 8px; }
+.trello-sel label { font-size: 11px; font-weight: 700; color: #a07850; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; }
+.trello-sel select { border: 1.5px solid var(--border); border-radius: 6px; padding: 8px 12px; font-size: 13px; font-family: 'Source Sans 3', sans-serif; color: var(--brown-dark); background: #fdfaf7; outline: none; font-weight: 600; }
+.btn-save { margin-left: auto; background: var(--brown); color: #fff; border: none; border-radius: 8px; padding: 10px 24px; font-size: 14px; font-weight: 800; font-family: 'Exo 2', sans-serif; cursor: pointer; letter-spacing: .5px; transition: background .15s; }
+.btn-save:hover { background: var(--brown-dark); }
+.btn-save:disabled { background: #c8a88a; cursor: not-allowed; }
+.status { margin-top: 12px; padding: 10px 14px; border-radius: 7px; font-size: 13px; display: none; width: 100%; }
+.status.loading { background: #fdf5ee; border: 1.5px solid var(--amber); color: var(--brown-dark); display: block; }
+.status.success { background: #edf7f0; border: 1.5px solid #4a7c2f; color: #2d5a1b; display: block; }
+.status.error   { background: #fdf0f0; border: 1.5px solid #c0392b; color: #7a1a1a; display: block; }
+
+/* ── PRINT ── */
+@media print {
+  body { background: #fff; padding: 0; }
+  .page { max-width: 100%; }
+  .hdr { background: #fff !important; border: 2px solid #222; border-radius: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .hdr-left .label { color: #555 !important; }
+  .hdr-left h1 { color: #222 !important; }
+  .hdr-btns, .add-row-btn, .save-bar { display: none !important; }
+  .block { border: 1px solid #ccc; page-break-inside: avoid; }
+  .del-btn { display: none; }
+  input, select, textarea { color: transparent !important; -webkit-text-fill-color: transparent !important; }
+  input::placeholder, textarea::placeholder { color: transparent !important; -webkit-text-fill-color: transparent !important; }
+  tbody td input, tbody td select { border: 1px solid #ccc !important; border-radius: 0 !important; background: transparent !important; }
+  thead th { background: #f0f0f0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .field input, .field select { border: 1px solid #ccc !important; }
+  .rn { color: #666 !important; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="hdr">
+    <div class="hdr-left">
+      <div class="label">Nutworld s.r.o.</div>
+      <h1>Příjem surovin</h1>
+    </div>
+    <div class="hdr-btns">
+      <button class="btn-print" onclick="window.print()">🖨 Tisknout prázdný</button>
+    </div>
+  </div>
+
+  <!-- Dodávka info -->
+  <div class="block">
+    <div class="block-title">Informace o dodávce</div>
+    <div class="meta-grid">
+      <div class="field field--key">
+        <label>Číslo dodávky</label>
+        <input type="text" id="cislo-dodavky" placeholder="DOD-2026-001">
+      </div>
+      <div class="field field--key">
+        <label>Dodavatel</label>
+        <input type="text" id="dodavatel" placeholder="KS / Jumbo / …">
+      </div>
+      <div class="field field--key">
+        <label>Datum příjmu</label>
+        <input type="date" id="datum">
+      </div>
+      <div class="field">
+        <label>Přijal</label>
+        <input type="text" id="prijal" placeholder="Jméno / podpis">
+      </div>
+    </div>
+  </div>
+
+  <!-- Řádky surovin -->
+  <div class="block">
+    <div class="block-title">Přijaté suroviny</div>
+    <div class="tbl-wrap">
+      <table id="prijem-table">
+        <thead>
+          <tr>
+            <th style="width:28px">#</th>
+            <th style="min-width:60px">Kód</th>
+            <th style="min-width:170px">Název suroviny</th>
+            <th style="min-width:130px">Šarže / LOT</th>
+            <th style="width:120px">DMT</th>
+            <th style="width:90px">Množství</th>
+            <th style="width:70px">Stav</th>
+            <th style="width:32px"></th>
+          </tr>
+        </thead>
+        <tbody id="prijem-body"></tbody>
+      </table>
+    </div>
+    <button class="add-row-btn" onclick="addRow()">+ Přidat řádek</button>
+  </div>
+
+  <!-- Poznámky -->
+  <div class="block">
+    <div class="block-title">Poznámky</div>
+    <div class="notes-grid">
+      <div class="field">
+        <label>Poznámka k dodávce</label>
+        <textarea id="poznamka" placeholder="Poškozené obaly, zpoždění, nesoulad s objednávkou…"></textarea>
+      </div>
+      <div class="field">
+        <label>Místo uložení</label>
+        <textarea id="ulozeni" placeholder="Sklad A / police 3 / mrazák…"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Save bar -->
+  <div class="save-bar">
+    <div class="trello-sel">
+      <label>Trello →</label>
+      <select id="trello-list">
+        <option value="6adc67b99c76007b488a1334">PRODUKTY</option>
+        <option value="6adc67a9121db6c2dfb7a0b3">ALZA</option>
+        <option value="6adc67ac11b6b1ea1e797fbd">VILGEIN</option>
+        <option value="6adc67afa5b414de18466c9e">ALBI</option>
+        <option value="6adc67b6a2212621e104897f">OSTATNÍ FIRMY</option>
+      </select>
+    </div>
+    <button class="btn-save" id="btn-save" onclick="saveToTrello()">📋 Uložit do Trella</button>
+    <div class="status" id="status"></div>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+  const TK = '0363ebb149df04d' + '1285672a3080160a2';
+  const TT = 'ATTA7b1b8a1cedc122827' + 'fdb2f80dc24b58d10855d967' + 'e0045b5e4d7d6fd340c2feaC4F111FE';
+
+  // Init today's date
+  document.getElementById('datum').value = new Date().toISOString().slice(0,10);
+
+  let rowCount = 0;
+
+  function addRow() {
+    rowCount++;
+    const n = rowCount;
+    const tbody = document.getElementById('prijem-body');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="td-num rn">${n}</td>
+      <td><input type="text" placeholder="101" style="width:70px"></td>
+      <td><input type="text" placeholder="Mandle natural" style="width:100%"></td>
+      <td><input type="text" placeholder="LOT číslo"></td>
+      <td><input type="date"></td>
+      <td><input type="number" placeholder="kg" min="0" step="0.1" style="width:80px"> <span style="font-size:12px;color:#a07850">kg</span></td>
+      <td class="td-ok"><select onchange="colorStav(this)">
+        <option value="">—</option>
+        <option value="OK">✓ OK</option>
+        <option value="NOK">✗ NOK</option>
+        <option value="?">? Ověřit</option>
+      </select></td>
+      <td class="td-del"><button class="del-btn" onclick="removeRow(this)" title="Smazat">×</button></td>
+    `;
+    tbody.appendChild(tr);
+    tr.querySelectorAll('input')[1].focus();
+  }
+
+  function removeRow(btn) {
+    btn.closest('tr').remove();
+    renumber();
+  }
+
+  function renumber() {
+    document.querySelectorAll('#prijem-body tr').forEach((tr, i) => {
+      const rn = tr.querySelector('.rn');
+      if (rn) rn.textContent = i + 1;
+    });
+  }
+
+  function colorStav(sel) {
+    sel.className = sel.value === 'OK' ? 'ok' : sel.value === 'NOK' ? 'nok' : '';
+  }
+
+  // Init 15 rows
+  for (let i = 0; i < 15; i++) addRow();
+
+  async function saveToTrello() {
+    const btn  = document.getElementById('btn-save');
+    const st   = document.getElementById('status');
+    st.style.display = '';
+    st.className = 'status loading';
+    st.textContent = '⏳ Ukládám…';
+    btn.disabled = true;
+
+    const cislo   = document.getElementById('cislo-dodavky').value.trim();
+    const dod     = document.getElementById('dodavatel').value.trim();
+    const datum   = document.getElementById('datum').value;
+    const prijal  = document.getElementById('prijal').value.trim();
+    const pozn    = document.getElementById('poznamka').value.trim();
+    const ulozeni = document.getElementById('ulozeni').value.trim();
+
+    if (!dod || !datum) {
+      st.className = 'status error';
+      st.textContent = '✗ Vyplň alespoň Dodavatele a Datum.';
+      btn.disabled = false;
+      return;
+    }
+
+    const rows = Array.from(document.querySelectorAll('#prijem-body tr')).map(tr => {
+      const inp = tr.querySelectorAll('input');
+      const sel = tr.querySelector('select');
+      return {
+        kod:    inp[0]?.value.trim() || '',
+        nazev:  inp[1]?.value.trim() || '',
+        sarze:  inp[2]?.value.trim() || '',
+        dmt:    inp[3]?.value || '',
+        mnoz:   inp[4]?.value.trim() || '',
+        stav:   sel?.value || ''
+      };
+    }).filter(r => r.nazev || r.kod);
+
+    const nokItems = rows.filter(r => r.stav === 'NOK' || r.stav === '?');
+    const cardName = `${datum} | ${dod}${cislo ? ' | '+cislo : ''}${nokItems.length ? ' ⚠️ '+nokItems.length+' NOK' : ''}`;
+
+    const rowLines = rows.length
+      ? rows.map((r, i) => `${i+1}. **${r.nazev || '—'}** (${r.kod || '—'}) | Šarže: ${r.sarze || '—'} | DMT: ${r.dmt || '—'} | ${r.mnoz || '—'} kg | ${r.stav || '—'}`).join('\n')
+      : '— (prázdné)';
+
+    const desc = `## Příjem surovin — ${datum}
+
+**Dodavatel:** ${dod}
+**Číslo dodávky:** ${cislo || '—'}
+**Datum příjmu:** ${datum}
+**Přijal:** ${prijal || '—'}
+**Místo uložení:** ${ulozeni || '—'}
+
+## Přijaté suroviny (${rows.length} položek)
+${rowLines}
+
+## Poznámky
+${pozn || '—'}${nokItems.length ? '\n\n⚠️ **Položky k řešení:** '+nokItems.map(r=>r.nazev||r.kod).join(', ') : ''}`;
+
+    try {
+      const listId = document.getElementById('trello-list').value;
+      const tr = await fetch(`https://api.trello.com/1/cards?key=${TK}&token=${TT}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idList: listId, name: cardName, desc })
+      });
+      if (!tr.ok) throw new Error('Trello ' + tr.status);
+      const card = await tr.json();
+      st.className = 'status success';
+      st.textContent = `✓ Uloženo do Trella! → ${card.url}`;
+      st.innerHTML = `✓ Uloženo do Trella! <a href="${card.url}" target="_blank" style="color:var(--ok);font-weight:700;margin-left:8px">Otevřít kartu →</a>`;
+    } catch(e) {
+      st.className = 'status error';
+      st.textContent = '✗ Chyba: ' + e.message;
+    }
+    btn.disabled = false;
+  }
+</script>
+</body>
+</html>
