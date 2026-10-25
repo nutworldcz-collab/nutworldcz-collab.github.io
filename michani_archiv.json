@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ZM–261024-alza-smesa",
+    "typ": "michani",
+    "datum": "2026-10-24",
+    "rec_num": "ZM–261024",
+    "zj": "",
+    "kod": "",
+    "nazev": "ALZA ořechová směs",
+    "mnozstvi": null,
+    "pro_koho": "ALZA",
+    "cas_start": "06:00",
+    "cas_end": "10:00",
+    "ulozeni": "",
+    "sarze_vyrobku": "",
+    "dmt_vyrobku": "2027-05-07",
+    "created_at": "2026-10-24T10:00:00Z",
+    "suroviny": [
+      {
+        "kod": "",
+        "nazev": "Mandle loupané natural",
+        "dodavatel": "",
+        "sarze": "L07092026",
+        "dmt": "2027-06-07",
+        "mnozstvi": null
+      },
+      {
+        "kod": "",
+        "nazev": "Pekan",
+        "dodavatel": "",
+        "sarze": "LOT-.26-399.007/LKS260124",
+        "dmt": "2027-08-25",
+        "mnozstvi": null
+      },
+      {
+        "kod": "",
+        "nazev": "Kešu natural",
+        "dodavatel": "",
+        "sarze": "L19102026",
+        "dmt": "2027-07-19",
+        "mnozstvi": null
+      },
+      {
+        "kod": "",
+        "nazev": "Mandle natural",
+        "dodavatel": "",
+        "sarze": "LOT-25-326-01",
+        "dmt": "2028-03-30",
+        "mnozstvi": null
+      }
+    ]
+  },
+  {
+    "id": "ZM–261019-mandle-skořice-poex",
+    "typ": "surovina",
+    "datum": "2026-10-19",
+    "rec_num": "ZM–261019",
+    "zj": "",
+    "kod": "1958",
+    "nazev": "MANDLOVÁ JÁDRA PRAŽENÁ V MLÉČNÉ ČOKOLÁDĚ A SKOŘICI",
+    "mnozstvi": null,
+    "pro_koho": "ALZA tubus",
+    "cas_start": "",
+    "cas_end": "",
+    "ulozeni": "",
+    "sarze_vyrobku": "",
+    "dmt_vyrobku": null,
+    "sv_kod": "1958",
+    "sv_nazev": "MANDLOVÁ JÁDRA PRAŽENÁ V MLÉČNÉ ČOKOLÁDĚ A SKOŘICI",
+    "sv_dodavatel": "POEX",
+    "sv_operace": "",
+    "created_at": "2026-10-19T12:00:00Z",
+    "lot_zaznamy": [
+      {
+        "sarze": "L622700731",
+        "dmt": "2027-08-17",
+        "mnozstvi": null
+      },
+      {
+        "sarze": "L622700732",
+        "dmt": "2027-09-30",
+        "mnozstvi": null
+      }
+    ]
+  }
+]
