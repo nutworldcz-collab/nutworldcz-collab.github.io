@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DMT Manager — Nutworld</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Source Sans 3', Arial, sans-serif; background: #e8ddd4; color: #1a0f06; font-size: 13.5px; }
+
+.header {
+  background: linear-gradient(135deg, #5c381f 0%, #83502e 55%, #a0622a 100%);
+  padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+}
+.header-label { color: #f7ab31; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 3px; }
+.header-title { color: #fff; font-family: 'Exo 2', sans-serif; font-size: 22px; font-weight: 800; }
+.header-sub { color: rgba(255,255,255,.65); font-size: 12px; margin-top: 2px; }
+.header-nav { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.header-nav a { color: rgba(255,255,255,.7); text-decoration: none; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.header-nav a:hover { color: #fff; }
+
+/* Tabs */
+.tabs { background: #5c381f; display: flex; gap: 2px; padding: 0 32px; }
+.tab-btn {
+  background: none; border: none; color: rgba(255,255,255,.55); font-family: 'Source Sans 3', sans-serif;
+  font-size: 13.5px; font-weight: 700; padding: 12px 20px; cursor: pointer; border-bottom: 3px solid transparent;
+  transition: color .12s; white-space: nowrap;
+}
+.tab-btn.active { color: #f7ab31; border-bottom-color: #f7ab31; }
+.tab-btn:hover:not(.active) { color: rgba(255,255,255,.85); }
+
+/* Token bar */
+.token-bar {
+  background: #fff8e8; border-bottom: 1.5px solid #f7ab31;
+  padding: 8px 32px; display: flex; align-items: center; gap: 10px; font-size: 12.5px;
+}
+.token-bar.ok { background: #f0faf4; border-bottom-color: #4a9e67; }
+.token-bar input { flex:1; max-width:320px; border:1.5px solid #d9c9b8; border-radius:5px; padding:4px 9px; font-size:12.5px; font-family:'Source Sans 3',sans-serif; outline:none; }
+.token-bar button { background:#83502e; color:#fff; border:none; border-radius:5px; padding:4px 13px; font-size:12.5px; font-weight:700; cursor:pointer; font-family:'Source Sans 3',sans-serif; }
+.tok-ok { color: #2d8a4e; font-weight: 700; }
+
+/* Content */
+.page { max-width: 920px; margin: 0 auto; background: #fff; min-height: 70vh; }
+.tab-panel { display: none; padding: 24px 32px 40px; }
+.tab-panel.active { display: block; }
+
+/* Section headings */
+.sec-title { font-family: 'Exo 2', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #83502e; border-bottom: 2px solid #f1e6da; padding-bottom: 6px; margin-bottom: 14px; }
+
+/* ── KALKULÁTOR ── */
+.kalk-intro { background: #fdf5ee; border-left: 3px solid #f7ab31; padding: 10px 14px; border-radius: 0 6px 6px 0; font-size: 12.5px; color: #5c381f; margin-bottom: 18px; line-height: 1.5; }
+
+.ing-tbl { width: 100%; border-collapse: collapse; margin-bottom: 8px; }
+.ing-tbl th { text-align: left; padding: 5px 8px; font-size: 10.5px; font-weight: 700; color: #a07850; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1.5px solid #e8d8c8; background: #f5ede4; }
+.ing-tbl td { padding: 4px 6px; border-bottom: 1px solid #f1e6da; vertical-align: middle; }
+.ing-tbl tr:last-child td { border-bottom: none; }
+.ing-tbl input[type=text] { width: 100%; border: 1.5px solid #d9c9b8; border-radius: 5px; padding: 6px 9px; font-size: 13px; font-family: 'Source Sans 3', sans-serif; color: #1a0f06; background: #fdfaf7; outline: none; }
+.ing-tbl input[type=text]:focus { border-color: #83502e; background: #fff; }
+.ing-tbl input[type=date] { border: 1.5px solid #d9c9b8; border-radius: 5px; padding: 5px 8px; font-size: 13px; font-family: 'Source Sans 3', sans-serif; color: #1a0f06; background: #fdfaf7; outline: none; width: 140px; }
+.ing-tbl input[type=date]:focus { border-color: #83502e; }
+.del-btn { background: none; border: none; color: #e08080; font-size: 16px; cursor: pointer; padding: 2px 6px; line-height: 1; }
+.del-btn:hover { color: #b03030; }
+
+.kalk-controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 12px 0 20px; }
+.add-row-btn { background: none; border: 1.5px solid #c8976a; border-radius: 5px; padding: 6px 14px; font-size: 12.5px; font-weight: 700; color: #83502e; cursor: pointer; font-family: 'Source Sans 3', sans-serif; }
+.add-row-btn:hover { background: #f5ede4; }
+select.typ-select { border: 1.5px solid #c8976a; border-radius: 6px; padding: 7px 12px; font-size: 13px; font-family: 'Source Sans 3', sans-serif; color: #5c381f; background: #fdfaf7; outline: none; min-width: 200px; }
+.calc-btn { background: #5c381f; color: #fff; border: none; border-radius: 6px; padding: 8px 22px; font-size: 13.5px; font-weight: 700; cursor: pointer; font-family: 'Source Sans 3', sans-serif; transition: background .12s; }
+.calc-btn:hover { background: #3e2410; }
+
+.result-box { background: #f5ede4; border: 2px solid #c8976a; border-radius: 9px; padding: 18px 22px; display: none; }
+.result-box.show { display: block; }
+.result-row { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; font-size: 13.5px; flex-wrap: wrap; }
+.result-row:last-child { margin-bottom: 0; }
+.result-label { color: #a07850; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; min-width: 200px; }
+.result-val { font-weight: 700; color: #1a0f06; font-size: 15px; }
+.result-val.big { font-family: 'Exo 2', sans-serif; font-size: 22px; color: #5c381f; }
+.result-val.warn { color: #b05000; }
+.result-note { font-size: 12px; color: #a07850; margin-top: 6px; font-style: italic; }
+
+/* Autocomplete */
+.ac-wrap { position: relative; }
+.ac-list {
+  position: absolute; top: 100%; left: 0; z-index: 9000; min-width: 280px; max-width: 440px;
+  background: #fff; border: 1.5px solid #c8976a; border-radius: 7px;
+  box-shadow: 0 4px 16px rgba(92,56,31,.15); max-height: 200px; overflow-y: auto;
+  font-family: 'Source Sans 3', sans-serif;
+}
+.ac-item { padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f1e6da; font-size: 13px; }
+.ac-item:last-child { border-bottom: none; }
+.ac-item:hover, .ac-item.sel { background: #fdf5ee; }
+.ac-item .ac-name { font-weight: 600; color: #1a0f06; }
+.ac-item .ac-meta { font-size: 11.5px; color: #a07850; margin-top: 2px; }
+.ac-item .ac-sarze { color: #5c381f; font-weight: 700; }
+.ac-item .ac-dmt-ok { color: #2d8a4e; }
+.ac-item .ac-dmt-warn { color: #b05000; }
+.ac-item .ac-dmt-bad { color: #b03030; }
+
+/* ── PŘEHLED DMT ── */
+.dmt-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; font-size: 12px; }
+.leg-item { display: flex; align-items: center; gap: 6px; }
+.leg-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.filter-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; align-items: center; }
+.fbtn { background: #f1e6da; border: 1.5px solid #d9c9b8; border-radius: 6px; padding: 5px 13px; font-size: 12.5px; font-weight: 700; color: #83502e; cursor: pointer; font-family: 'Source Sans 3', sans-serif; white-space: nowrap; }
+.fbtn.active { background: #83502e; color: #fff; border-color: #83502e; }
+.search-bar input { border: 1.5px solid #d9c9b8; border-radius: 6px; padding: 6px 12px; font-size: 13px; font-family: 'Source Sans 3', sans-serif; outline: none; min-width: 220px; }
+.search-bar input:focus { border-color: #83502e; }
+
+.dmt-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.dmt-table th { text-align: left; padding: 7px 10px; font-size: 10.5px; font-weight: 700; color: #a07850; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #e8d8c8; background: #f5ede4; }
+.dmt-table td { padding: 8px 10px; border-bottom: 1px solid #f1e6da; vertical-align: middle; }
+.dmt-table tr:last-child td { border-bottom: none; }
+.dmt-table tr:hover { background: #fdfaf7; }
+.badge-typ { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 8px; white-space: nowrap; }
+.badge-prijem { background: #e8f0fc; color: #2a5aad; border: 1px solid #a8c0e8; }
+.badge-vyr { background: #e8f4f0; color: #1a7057; border: 1px solid #a8dac8; }
+.dmt-pill { font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 10px; white-space: nowrap; display: inline-block; }
+.dmt-red   { background: #fde8e8; color: #b03030; border: 1px solid #e8aaaa; }
+.dmt-orange { background: #fff0e0; color: #b05000; border: 1px solid #e8c87a; }
+.dmt-yellow { background: #fffae0; color: #8a6a00; border: 1px solid #e8d87a; }
+.dmt-green { background: #e8f4f0; color: #2d8a4e; border: 1px solid #a8dac8; }
+.empty-state { text-align: center; padding: 40px; color: #b09070; font-style: italic; }
+
+/* ── PRAVIDLA ── */
+.rules-intro { background: #f5ede4; border-left: 3px solid #f7ab31; padding: 10px 14px; border-radius: 0 6px 6px 0; font-size: 12.5px; color: #5c381f; margin-bottom: 16px; line-height: 1.5; }
+.rules-tbl { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+.rules-tbl th { text-align: left; padding: 7px 10px; font-size: 10.5px; font-weight: 700; color: #a07850; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #e8d8c8; background: #f5ede4; }
+.rules-tbl td { padding: 6px 8px; border-bottom: 1px solid #f1e6da; vertical-align: middle; }
+.rules-tbl input[type=text] { width: 100%; border: 1.5px solid #d9c9b8; border-radius: 5px; padding: 5px 9px; font-size: 13px; font-family: 'Source Sans 3', sans-serif; outline: none; background: #fdfaf7; }
+.rules-tbl input[type=number] { width: 70px; border: 1.5px solid #d9c9b8; border-radius: 5px; padding: 5px 9px; font-size: 13px; font-family: 'Source Sans 3', sans-serif; outline: none; text-align: center; background: #fdfaf7; }
+.rules-tbl input:focus { border-color: #83502e; background: #fff; }
+.save-rules-btn { background: #2d8a4e; color: #fff; border: none; border-radius: 6px; padding: 8px 20px; font-size: 13.5px; font-weight: 700; cursor: pointer; font-family: 'Source Sans 3', sans-serif; margin-right: 10px; }
+.save-rules-btn:hover { background: #237040; }
+.reset-rules-btn { background: none; border: 1.5px solid #c8976a; color: #83502e; border-radius: 6px; padding: 8px 16px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Source Sans 3', sans-serif; }
+.reset-rules-btn:hover { background: #f5ede4; }
+.save-ok { color: #2d8a4e; font-weight: 700; font-size: 13px; display: none; }
+.rule-note { font-size: 12px; color: #a07850; background: #faf5f0; border-radius: 6px; padding: 10px 14px; margin-top: 12px; line-height: 1.6; }
+
+@media (max-width: 600px) {
+  .header, .tabs, .tab-panel, .token-bar { padding-left: 16px; padding-right: 16px; }
+  .tabs { overflow-x: auto; }
+  .kalk-controls { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<div class="header">
+  <div>
+    <div class="header-label">Nutworld s.r.o. · HACCP</div>
+    <div class="header-title">DMT Manager</div>
+    <div class="header-sub">Kalkulátor, pravidla a přehled trvanlivostí</div>
+  </div>
+  <div class="header-nav">
+    <a href="denik-michani.html">← Deník míchání</a>
+    <a href="michani-archiv.html">Archiv výroby</a>
+    <a href="archiv-prijmu.html">Archiv příjmů</a>
+  </div>
+</div>
+
+<!-- Token bar -->
+<div id="token-bar" class="token-bar">
+  <span>🔑 GitHub token (pro přehled DMT z archivů):</span>
+  <input type="password" id="token-inp" placeholder="ghp_…">
+  <button onclick="saveToken()">Uložit</button>
+  <span style="color:#a07850;font-size:12px">Kalkulátor funguje i bez tokenu</span>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('kalk')">🧮 Kalkulátor DMT</button>
+  <button class="tab-btn" onclick="showTab('prehled')">📅 Přehled DMT</button>
+  <button class="tab-btn" onclick="showTab('pravidla')">📋 Pravidla (P14)</button>
+</div>
+
+<!-- ═══════════════════════════════ KALKULÁTOR ═══════════════════════════════ -->
+<div id="tab-kalk" class="tab-panel active">
+  <p class="kalk-intro">
+    Zadej suroviny a jejich DMT. Kalkulátor najde nejnižší DMT, aplikuje pravidlo zkrácení dle HACCP P14 a doporučí DMT hotového výrobku.<br>
+    💡 Začni psát název suroviny — automaticky se nabídnou šarže z archivu příjmů.
+  </p>
+
+  <div class="sec-title">Suroviny / ingredience</div>
+  <table class="ing-tbl" id="ing-tbl">
+    <thead>
+      <tr>
+        <th style="min-width:220px">Název suroviny</th>
+        <th style="min-width:130px">Šarže / LOT</th>
+        <th style="width:150px">DMT suroviny</th>
+        <th style="width:32px"></th>
+      </tr>
+    </thead>
+    <tbody id="ing-body"></tbody>
+  </table>
+
+  <div class="kalk-controls">
+    <button class="add-row-btn" onclick="addKalkRow()">+ Přidat surovinu</button>
+    <select class="typ-select" id="typ-select">
+      <option value="">— Vybrat typ výrobku —</option>
+    </select>
+    <button class="calc-btn" onclick="calculate()">📐 Spočítat DMT</button>
+  </div>
+
+  <div class="result-box" id="result-box">
+    <div class="result-row">
+      <span class="result-label">Nejnižší DMT suroviny</span>
+      <span class="result-val" id="res-min-dmt">—</span>
+    </div>
+    <div class="result-row">
+      <span class="result-label">Typ výrobku</span>
+      <span class="result-val" id="res-typ">—</span>
+    </div>
+    <div class="result-row">
+      <span class="result-label">Zkrácení (P14)</span>
+      <span class="result-val" id="res-zkraceni">—</span>
+    </div>
+    <div class="result-row" style="margin-top:10px;padding-top:10px;border-top:2px solid #c8976a">
+      <span class="result-label" style="font-size:13px">✅ Doporučené DMT výrobku</span>
+      <span class="result-val big" id="res-dmt">—</span>
+    </div>
+    <div class="result-row">
+      <span class="result-label">Zbývá do konce trvanlivosti</span>
+      <span class="result-val" id="res-remaining">—</span>
+    </div>
+    <div class="result-note" id="res-note"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ PŘEHLED DMT ═══════════════════════════════ -->
+<div id="tab-prehled" class="tab-panel">
+  <div class="dmt-legend">
+    <div class="leg-item"><div class="leg-dot" style="background:#b03030"></div> Prošlé nebo do 30 dní</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#b05000"></div> 31–90 dní</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#8a6a00"></div> 91–180 dní</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#2d8a4e"></div> Více než 180 dní</div>
+  </div>
+
+  <div class="filter-row">
+    <button class="fbtn active" data-pf="vse" onclick="setPrehledFilter('vse')">Vše</button>
+    <button class="fbtn" data-pf="prijem" onclick="setPrehledFilter('prijem')">📦 Příjem surovin</button>
+    <button class="fbtn" data-pf="vyroba" onclick="setPrehledFilter('vyroba')">🥣 Výroba</button>
+    <div class="search-bar"><input type="text" id="prehled-search" placeholder="Hledat…" oninput="renderPrehled()"></div>
+  </div>
+
+  <div id="prehled-wrap">
+    <div class="empty-state">Načítám data z archivů…</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ PRAVIDLA ═══════════════════════════════ -->
+<div id="tab-pravidla" class="tab-panel">
+  <p class="rules-intro">
+    Tabulka pravidel pro zkrácení DMT výrobku dle HACCP Přílohy 14. Vzorec: <strong>DMT výrobku = min(DMT surovin) − zkrácení</strong>.<br>
+    Pravidla jsou uložena v prohlížeči a lze je libovolně upravit. Zkrácení zadáváš ve dnech.
+  </p>
+
+  <div class="sec-title">Pravidla zkrácení DMT (editovatelné)</div>
+  <table class="rules-tbl" id="rules-tbl">
+    <thead>
+      <tr>
+        <th style="min-width:200px">Typ výrobku</th>
+        <th style="width:120px">Zkrácení (dny)</th>
+        <th style="min-width:240px">Poznámka / příklady</th>
+        <th style="width:36px"></th>
+      </tr>
+    </thead>
+    <tbody id="rules-body"></tbody>
+  </table>
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap">
+    <button class="add-row-btn" onclick="addRuleRow()">+ Přidat pravidlo</button>
+    <button class="save-rules-btn" onclick="saveRules()">💾 Uložit pravidla</button>
+    <button class="reset-rules-btn" onclick="resetRules()">Obnovit výchozí</button>
+    <span class="save-ok" id="save-ok">✓ Uloženo</span>
+  </div>
+  <div class="rule-note">
+    💡 <strong>Jak to funguje:</strong> Pokud je nejnižší DMT suroviny 1. 6. 2027 a zkrácení pro daný typ je 60 dní,
+    doporučené DMT výrobku bude <strong>2. 4. 2027</strong>.<br>
+    Pravidla vychází z ČSN EN ISO 22000 a interní Přílohy 14 HACCP — upravuj dle aktuálního znění.
+    Výsledek kalkulátoru je doporučení — finální DMT vždy potvrzuje vedoucí výroby.
+  </div>
+</div>
+
+</div><!-- /page -->
+
+<script>
+// ── Token ────────────────────────────────────────────────────────────────────
+function getToken() { try { return localStorage.getItem('nw_gh_token') || ''; } catch(e) { return ''; } }
+function saveToken() {
+  const val = document.getElementById('token-inp').value.trim();
+  if (!val) return;
+  try { localStorage.setItem('nw_gh_token', val); } catch(e) {}
+  showTokenOk();
+  loadArchives();
+}
+function showTokenOk() {
+  const bar = document.getElementById('token-bar');
+  bar.className = 'token-bar ok';
+  bar.innerHTML = '<span class="tok-ok">🔑 Token nastaven.</span> <button onclick="clearToken()" style="background:none;border:1.5px solid #c8976a;border-radius:4px;padding:3px 10px;cursor:pointer;font-size:12px;color:#83502e">Změnit</button>';
+}
+function clearToken() {
+  try { localStorage.removeItem('nw_gh_token'); } catch(e) {}
+  const bar = document.getElementById('token-bar');
+  bar.className = 'token-bar';
+  bar.innerHTML = '<span>🔑 GitHub token (pro přehled DMT z archivů):</span><input type="password" id="token-inp" placeholder="ghp_…"><button onclick="saveToken()">Uložit</button><span style="color:#a07850;font-size:12px">Kalkulátor funguje i bez tokenu</span>';
+}
+function b64decode(str) {
+  const bytes = Uint8Array.from(atob(str.replace(/\n/g,'')), c => c.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
+}
+
+// ── Archives ─────────────────────────────────────────────────────────────────
+const GH = 'nutworldcz-collab/nutworldcz-collab.github.io';
+let prijmyData = [], michaniData = [];
+
+async function fetchJson(file) {
+  const token = getToken();
+  if (!token) return null;
+  const r = await fetch(`https://api.github.com/repos/${GH}/contents/${file}?_=${Date.now()}`, { headers: { Authorization: 'token ' + token } });
+  if (!r.ok) return null;
+  const m = await r.json();
+  return JSON.parse(b64decode(m.content));
+}
+
+async function loadArchives() {
+  const [p, m] = await Promise.all([fetchJson('prijmy_archiv.json'), fetchJson('michani_archiv.json')]);
+  if (p) prijmyData = p;
+  if (m) michaniData = m;
+  renderPrehled();
+}
+
+// ── Tabs ─────────────────────────────────────────────────────────────────────
+function showTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+  if (id === 'prehled' && !prijmyData.length && !michaniData.length) loadArchives();
+}
+
+// ── Rules ────────────────────────────────────────────────────────────────────
+const RULES_KEY = 'nw_dmt_rules_v1';
+const DEFAULT_RULES = [
+  { typ: 'Ořechy natural (celé, plátky, třísky)', dni: 30, pozn: 'Mandle, kešu, vlašské, para, pistácie…' },
+  { typ: 'Ořechy pražené / solené', dni: 45, pozn: 'Pražené a solené, drcené, smažené' },
+  { typ: 'Semínka (chia, lněné, slunečnice, dýně…)', dni: 30, pozn: 'Semena bez úpravy nebo pražená' },
+  { typ: 'Sušené ovoce', dni: 30, pozn: 'Rozinky, švestky, meruňky, mango, klikva…' },
+  { typ: 'Směs ořechů a sušeného ovoce', dni: 60, pozn: 'Studentská, tropická, fitness směs…' },
+  { typ: 'Čokoládové dražé / poleva', dni: 90, pozn: 'Mandle v čokoládě, kešu v čokoládě, dražé…' },
+  { typ: 'Karamelizované ořechy', dni: 90, pozn: 'Karamelizované mandle, kešu, pekán…' },
+  { typ: 'Želé / bonbóny / cukrovinky', dni: 60, pozn: 'Ovocné želé, lékořice, marshmallow…' },
+  { typ: 'Dárkové sety / mixované krabice', dni: 90, pozn: 'Kombinace různých typů — brát nejkratší' },
+];
+
+function getRules() {
+  try { return JSON.parse(localStorage.getItem(RULES_KEY)) || DEFAULT_RULES; } catch(e) { return DEFAULT_RULES; }
+}
+function setRules(arr) { try { localStorage.setItem(RULES_KEY, JSON.stringify(arr)); } catch(e) {} }
+
+function renderRulesTable() {
+  const rules = getRules();
+  const tbody = document.getElementById('rules-body');
+  tbody.innerHTML = '';
+  rules.forEach((r, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input type="text" value="${r.typ}" data-i="${i}" data-f="typ"></td>
+      <td><input type="number" value="${r.dni}" min="0" max="730" data-i="${i}" data-f="dni"></td>
+      <td><input type="text" value="${r.pozn || ''}" data-i="${i}" data-f="pozn"></td>
+      <td><button class="del-btn" onclick="deleteRule(${i})">×</button></td>`;
+    tbody.appendChild(tr);
+  });
+  // Rebuild typ select in kalkulátor
+  const sel = document.getElementById('typ-select');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">— Vybrat typ výrobku —</option>';
+  rules.forEach(r => {
+    const o = document.createElement('option');
+    o.value = r.typ; o.textContent = `${r.typ} (−${r.dni} dní)`;
+    sel.appendChild(o);
+  });
+  sel.value = cur;
+}
+
+function addRuleRow() {
+  const rules = getRules();
+  rules.push({ typ: '', dni: 30, pozn: '' });
+  setRules(rules);
+  renderRulesTable();
+}
+function deleteRule(i) {
+  const rules = getRules();
+  rules.splice(i, 1);
+  setRules(rules);
+  renderRulesTable();
+}
+function saveRules() {
+  const rows = document.querySelectorAll('#rules-body tr');
+  const arr = [];
+  rows.forEach(tr => {
+    const typ = tr.querySelector('[data-f=typ]').value.trim();
+    const dni = parseInt(tr.querySelector('[data-f=dni]').value) || 0;
+    const pozn = tr.querySelector('[data-f=pozn]').value.trim();
+    if (typ) arr.push({ typ, dni, pozn });
+  });
+  setRules(arr);
+  renderRulesTable();
+  const ok = document.getElementById('save-ok');
+  ok.style.display = 'inline'; setTimeout(() => { ok.style.display = 'none'; }, 2000);
+}
+function resetRules() {
+  if (!confirm('Obnovit výchozí pravidla? Vlastní změny se ztratí.')) return;
+  setRules(DEFAULT_RULES);
+  renderRulesTable();
+}
+
+// ── Kalkulátor ───────────────────────────────────────────────────────────────
+function addKalkRow() {
+  const tbody = document.getElementById('ing-body');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="ac-wrap">
+      <input type="text" class="kalk-nazev" placeholder="Název suroviny…" oninput="showKalkAc(this)">
+      <div class="ac-list" style="display:none"></div>
+    </td>
+    <td><input type="text" class="kalk-sarze" placeholder="LOT / šarže"></td>
+    <td><input type="date" class="kalk-dmt"></td>
+    <td><button class="del-btn" onclick="this.closest('tr').remove()">×</button></td>`;
+  tbody.appendChild(tr);
+  tr.querySelector('.kalk-nazev').focus();
+  // close ac on outside click
+  document.addEventListener('click', closeAllAc, { once: false });
+}
+
+function closeAllAc() {
+  document.querySelectorAll('.ac-list').forEach(l => l.style.display = 'none');
+}
+document.addEventListener('click', e => { if (!e.target.closest('.ac-wrap')) closeAllAc(); });
+
+function showKalkAc(inp) {
+  const q = inp.value.toLowerCase().trim();
+  const list = inp.closest('.ac-wrap').querySelector('.ac-list');
+  if (!q || q.length < 2) { list.style.display = 'none'; return; }
+  // Collect all items from prijmyData with DMT
+  const matches = [];
+  prijmyData.forEach(d => {
+    (d.items || []).forEach(i => {
+      if ((i.nazev||'').toLowerCase().includes(q) || (i.nw_kod||'').includes(q)) {
+        if (i.dmt) matches.push({ nazev: i.nazev, sarze: i.sarze, dmt: i.dmt, dod: d.dodavatel, datum: d.datum });
+      }
+    });
+  });
+  // Deduplicate by sarze
+  const seen = new Set();
+  const uniq = matches.filter(m => { const k = m.nazev + '|' + m.sarze; if (seen.has(k)) return false; seen.add(k); return true; });
+  if (!uniq.length) { list.style.display = 'none'; return; }
+  list.innerHTML = uniq.slice(0,12).map((m, idx) => {
+    const dc = dmtClass(m.dmt);
+    return `<div class="ac-item" onclick="fillKalkRow(this,${idx})">
+      <div class="ac-name">${m.nazev}</div>
+      <div class="ac-meta">
+        <span class="ac-sarze">${m.sarze||'—'}</span>
+        &nbsp;·&nbsp; DMT: <span class="${dc}">${fmtDate(m.dmt)}</span>
+        &nbsp;·&nbsp; ${m.dod||''}
+      </div>
+    </div>`;
+  }).join('');
+  list._items = uniq;
+  list.style.display = 'block';
+}
+function fillKalkRow(el, idx) {
+  const list = el.closest('.ac-list');
+  const item = list._items[idx];
+  if (!item) return;
+  const tr = el.closest('tr');
+  tr.querySelector('.kalk-nazev').value = item.nazev;
+  tr.querySelector('.kalk-sarze').value = item.sarze || '';
+  tr.querySelector('.kalk-dmt').value = item.dmt || '';
+  list.style.display = 'none';
+}
+
+function calculate() {
+  const rows = document.querySelectorAll('#ing-body tr');
+  const dmts = [];
+  rows.forEach(tr => {
+    const v = tr.querySelector('.kalk-dmt').value;
+    if (v) dmts.push(new Date(v + 'T00:00:00'));
+  });
+  const box = document.getElementById('result-box');
+  if (!dmts.length) { alert('Zadej alespoň jedno DMT suroviny.'); return; }
+  const minDmt = new Date(Math.min(...dmts));
+  const typVal = document.getElementById('typ-select').value;
+  const rules = getRules();
+  const rule = rules.find(r => r.typ === typVal);
+  const dni = rule ? rule.dni : 0;
+  const resultDmt = new Date(minDmt.getTime() - dni * 86400000);
+  const today = new Date(); today.setHours(0,0,0,0);
+  const daysLeft = Math.round((resultDmt - today) / 86400000);
+
+  document.getElementById('res-min-dmt').textContent = fmtDate(minDmt.toISOString().slice(0,10));
+  document.getElementById('res-typ').textContent = typVal || '(nevybráno — bez zkrácení)';
+  document.getElementById('res-zkraceni').textContent = dni ? `−${dni} dní` : '0 dní (žádné zkrácení)';
+  const resDmtEl = document.getElementById('res-dmt');
+  resDmtEl.textContent = fmtDate(resultDmt.toISOString().slice(0,10));
+  resDmtEl.className = 'result-val big ' + (daysLeft < 0 ? 'warn' : '');
+  const remEl = document.getElementById('res-remaining');
+  if (daysLeft < 0) { remEl.textContent = `⚠️ Prošlé před ${Math.abs(daysLeft)} dny!`; remEl.style.color = '#b03030'; }
+  else if (daysLeft < 30) { remEl.textContent = `⚠️ Jen ${daysLeft} dní!`; remEl.style.color = '#b05000'; }
+  else { remEl.textContent = `${daysLeft} dní od dneška`; remEl.style.color = '#2d8a4e'; }
+  document.getElementById('res-note').textContent = rule ? `Pravidlo P14: ${rule.pozn || rule.typ}` : 'Bez pravidla — zadej typ výrobku pro výpočet zkrácení.';
+  box.classList.add('show');
+}
+
+// ── Přehled DMT ──────────────────────────────────────────────────────────────
+let prehledFilter = 'vse';
+function setPrehledFilter(f) {
+  prehledFilter = f;
+  document.querySelectorAll('[data-pf]').forEach(b => b.classList.toggle('active', b.dataset.pf === f));
+  renderPrehled();
+}
+
+function renderPrehled() {
+  const q = (document.getElementById('prehled-search')?.value || '').toLowerCase();
+  const today = new Date(); today.setHours(0,0,0,0);
+  const items = [];
+
+  if (prehledFilter !== 'vyroba') {
+    prijmyData.forEach(d => {
+      (d.items || []).forEach(i => {
+        if (!i.dmt) return;
+        if (q && ![(i.nazev||''), (i.sarze||''), (d.dodavatel||''), (i.nw_kod||'')].join(' ').toLowerCase().includes(q)) return;
+        items.push({ typ: 'prijem', nazev: i.nazev, sarze: i.sarze, dmt: i.dmt, ref: d.dodavatel, datum: d.datum });
+      });
+    });
+  }
+  if (prehledFilter !== 'prijem') {
+    michaniData.forEach(r => {
+      const dmt = r.dmt_vyrobku || (r.lot_zaznamy?.[0]?.dmt);
+      const nazev = r.nazev || r.sv_nazev;
+      if (!dmt) return;
+      if (q && ![nazev||'', r.sarze_vyrobku||'', r.pro_koho||''].join(' ').toLowerCase().includes(q)) return;
+      items.push({ typ: 'vyroba', nazev, sarze: r.sarze_vyrobku || (r.lot_zaznamy?.[0]?.sarze) || '', dmt, ref: r.pro_koho || '', datum: r.datum });
+      // also show individual lot entries for surovina typ
+      if (r.typ === 'surovina' && r.lot_zaznamy?.length > 1) {
+        r.lot_zaznamy.forEach(l => {
+          if (!l.dmt) return;
+          items.push({ typ: 'vyroba', nazev: (r.sv_nazev || nazev) + ` (${l.sarze||'?'})`, sarze: l.sarze, dmt: l.dmt, ref: r.sv_dodavatel || '', datum: r.datum });
+        });
+      }
+    });
+  }
+
+  items.sort((a, b) => a.dmt.localeCompare(b.dmt));
+  const wrap = document.getElementById('prehled-wrap');
+  if (!items.length) {
+    wrap.innerHTML = '<div class="empty-state">' + (getToken() ? 'Žádné záznamy s DMT.' : '🔑 Nastav GitHub token pro načtení dat.') + '</div>';
+    return;
+  }
+  wrap.innerHTML = `<table class="dmt-table">
+    <thead><tr><th>Název</th><th>Šarže</th><th>DMT</th><th>Zbývá</th><th>Zdroj</th><th>Typ</th></tr></thead>
+    <tbody>${items.map(i => {
+      const dt = new Date(i.dmt + 'T00:00:00');
+      const days = Math.round((dt - today) / 86400000);
+      let cls, txt;
+      if (days < 0)        { cls = 'dmt-red';    txt = `prošlé ${Math.abs(days)} d`; }
+      else if (days <= 30) { cls = 'dmt-red';    txt = `${days} dní`; }
+      else if (days <= 90) { cls = 'dmt-orange'; txt = `${days} dní`; }
+      else if (days <= 180){ cls = 'dmt-yellow'; txt = `${days} dní`; }
+      else                 { cls = 'dmt-green';  txt = `${days} dní`; }
+      return `<tr>
+        <td style="font-weight:600">${i.nazev || '—'}</td>
+        <td style="font-size:12px;color:#5c381f;font-weight:700">${i.sarze || '—'}</td>
+        <td><span class="dmt-pill ${cls}">${fmtDate(i.dmt)}</span></td>
+        <td style="font-size:12px">${txt}</td>
+        <td style="font-size:12px;color:#a07850">${i.ref || '—'}${i.datum ? ' · '+fmtDate(i.datum) : ''}</td>
+        <td><span class="badge-typ ${i.typ === 'prijem' ? 'badge-prijem' : 'badge-vyr'}">${i.typ === 'prijem' ? '📦 Příjem' : '🥣 Výroba'}</span></td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table>`;
+}
+
+function dmtClass(dmt) {
+  if (!dmt) return '';
+  const today = new Date(); today.setHours(0,0,0,0);
+  const d = new Date(dmt + 'T00:00:00');
+  const days = Math.round((d - today) / 86400000);
+  if (days < 0) return 'ac-dmt-bad';
+  if (days <= 90) return 'ac-dmt-warn';
+  return 'ac-dmt-ok';
+}
+
+function fmtDate(d) {
+  if (!d) return '—';
+  return new Date(d + 'T00:00:00').toLocaleDateString('cs-CZ');
+}
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+(function init() {
+  if (getToken()) { showTokenOk(); loadArchives(); }
+  renderRulesTable();
+  addKalkRow(); addKalkRow(); addKalkRow();
+})();
+</script>
+</body>
+</html>
