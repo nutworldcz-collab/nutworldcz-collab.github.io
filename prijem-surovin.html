@@ -447,9 +447,15 @@ td.td-del { width: 32px; }
         });
         if (!wr.ok) throw new Error('GitHub PUT: ' + wr.status);
         msgs.push('✓ Archiv uložen');
-      } catch(e) { msgs.push(`⚠️ Archiv: ${e.message}`); }
+      } catch(e) {
+        const errMsg = e.message || String(e);
+        msgs.push(`⚠️ Archiv: ${errMsg}`);
+        console.error('Archive save error:', e);
+        alert('❌ Archiv se neuložil:\n\n' + errMsg + '\n\nOtevři konzoli (F12) pro více detailů.');
+      }
     } else {
-      msgs.push('ℹ️ Archiv: <a href="/archiv-prijmu.html" target="_blank" style="color:var(--brown)">nastav GitHub token</a>');
+      alert('⚠️ GitHub token není nastaven.\n\nZadej token v žlutém poli pod formulářem a klikni Uložit.');
+      msgs.push('ℹ️ Archiv: token není nastaven');
     }
 
     const allOk = msgs.every(m => m.startsWith('✓'));
