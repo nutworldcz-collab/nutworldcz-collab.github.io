@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Archiv výroby — Nutworld</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Source Sans 3', Arial, sans-serif;
+  background: #e8ddd4; color: #1a0f06; font-size: 13.5px;
+  padding: 0 0 48px;
+}
+.page { max-width: 900px; margin: 0 auto; }
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, #5c381f 0%, #83502e 55%, #a0622a 100%);
+  padding: 22px 32px; display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+}
+.header-label { color: #f7ab31; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 4px; }
+.header-title { color: #fff; font-family: 'Exo 2', sans-serif; font-size: 22px; font-weight: 800; }
+.header-sub { color: rgba(255,255,255,.65); font-size: 12px; margin-top: 3px; }
+.header-logo { color: rgba(255,255,255,.25); font-family: 'Exo 2', sans-serif; font-size: 30px; font-weight: 800; }
+
+/* Toolbar */
+.toolbar {
+  background: #faf5f0; border-bottom: 1.5px solid #e0d0c0;
+  padding: 14px 32px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+.search-wrap { flex: 1; min-width: 200px; position: relative; }
+.search-wrap input {
+  width: 100%; border: 1.5px solid #d9c9b8; border-radius: 7px; padding: 8px 12px 8px 34px;
+  font-family: 'Source Sans 3', sans-serif; font-size: 13.5px; color: #1a0f06;
+  background: #fff; outline: none;
+}
+.search-wrap input:focus { border-color: #83502e; }
+.search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #a07850; font-size: 15px; pointer-events: none; }
+.filter-btns { display: flex; gap: 4px; }
+.fbtn {
+  background: #f1e6da; border: 1.5px solid #d9c9b8; border-radius: 6px;
+  padding: 6px 14px; font-size: 12.5px; font-weight: 700; color: #83502e;
+  cursor: pointer; font-family: 'Source Sans 3', sans-serif; transition: background .12s;
+  white-space: nowrap;
+}
+.fbtn.active { background: #83502e; color: #fff; border-color: #83502e; }
+.fbtn:hover:not(.active) { background: #e8d5bf; }
+.count-badge { font-size: 11px; color: #a07850; white-space: nowrap; }
+
+/* Token bar */
+.token-bar {
+  background: #fff8e8; border-bottom: 1.5px solid #f7ab31; padding: 10px 32px;
+  display: flex; align-items: center; gap: 10px; font-size: 12.5px;
+}
+.token-bar.ok { background: #f0faf4; border-bottom-color: #4a9e67; }
+.token-bar.hidden { display: none; }
+.token-bar input {
+  flex: 1; max-width: 340px; border: 1.5px solid #d9c9b8; border-radius: 5px; padding: 5px 10px;
+  font-size: 12.5px; font-family: 'Source Sans 3', sans-serif; outline: none;
+}
+.token-bar button {
+  background: #83502e; color: #fff; border: none; border-radius: 5px;
+  padding: 5px 14px; font-size: 12.5px; font-weight: 700; cursor: pointer; font-family: 'Source Sans 3', sans-serif;
+}
+.token-ok-text { color: #2d8a4e; font-weight: 700; }
+
+/* Records */
+.records { padding: 16px 32px; }
+.empty-state { text-align: center; padding: 60px 20px; color: #b09070; }
+.empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+.empty-state h3 { font-family: 'Exo 2', sans-serif; font-size: 18px; color: #a07850; margin-bottom: 6px; }
+
+.record-card {
+  background: #fff; border-radius: 9px; margin-bottom: 12px;
+  box-shadow: 0 1px 6px rgba(92,56,31,.1); overflow: hidden;
+  border: 1.5px solid #e8d8c8;
+}
+.record-head {
+  display: flex; align-items: center; gap: 12px; padding: 13px 18px;
+  cursor: pointer; transition: background .1s; flex-wrap: wrap;
+  border-bottom: 1.5px solid transparent;
+}
+.record-head:hover { background: #fdf5ee; }
+.record-head.open { border-bottom-color: #f1e6da; }
+.rec-date {
+  font-family: 'Exo 2', sans-serif; font-weight: 800; font-size: 13px; color: #5c381f;
+  white-space: nowrap;
+}
+.rec-num { font-size: 11px; color: #a07850; white-space: nowrap; }
+.rec-typ {
+  font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 10px; white-space: nowrap;
+}
+.rec-typ.michani { background: #e8f4f0; color: #1a7057; border: 1px solid #a8dac8; }
+.rec-typ.surovina { background: #f0f0e8; color: #5c5c20; border: 1px solid #c8c890; }
+.rec-nazev { font-weight: 700; font-size: 14px; color: #1a0f06; flex: 1; min-width: 0; }
+.rec-mnoz { font-size: 12.5px; color: #83502e; font-weight: 700; white-space: nowrap; }
+.rec-sarze { font-size: 12px; color: #5c381f; white-space: nowrap; }
+.rec-dmt { font-size: 12px; color: #b03030; white-space: nowrap; }
+.rec-chevron { color: #c8976a; font-size: 13px; flex-shrink: 0; transition: transform .15s; }
+.record-head.open .rec-chevron { transform: rotate(90deg); }
+
+.record-detail { display: none; padding: 14px 18px 16px; background: #fdfaf7; }
+.record-detail.open { display: block; }
+.detail-meta {
+  display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 12px;
+  font-size: 12px; color: #a07850;
+}
+.detail-meta span { white-space: nowrap; }
+.detail-meta strong { color: #5c381f; }
+.detail-title {
+  font-family: 'Exo 2', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: #83502e; margin: 12px 0 6px;
+  border-bottom: 1.5px solid #f1e6da; padding-bottom: 4px;
+}
+.sur-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.sur-table th {
+  text-align: left; padding: 5px 8px; font-size: 10.5px; font-weight: 700;
+  color: #a07850; text-transform: uppercase; letter-spacing: 1px;
+  border-bottom: 1.5px solid #e8d8c8; background: #f5ede4;
+}
+.sur-table td { padding: 7px 8px; border-bottom: 1px solid #f1e6da; vertical-align: middle; }
+.sur-table tr:last-child td { border-bottom: none; }
+.sur-table .td-sarze { font-weight: 700; color: #5c381f; }
+.sur-table .td-dmt { color: #b03030; }
+.sur-table .td-miss { color: #c8976a; font-style: italic; }
+.lot-row { display: flex; gap: 16px; flex-wrap: wrap; padding: 6px 0; border-bottom: 1px solid #f1e6da; font-size: 12.5px; }
+.lot-row:last-child { border-bottom: none; }
+
+/* Stats strip */
+.stats-strip {
+  background: #f5ede4; border-top: 1.5px solid #e0d0c0;
+  padding: 10px 32px; display: flex; gap: 20px; font-size: 12.5px; color: #83502e;
+  flex-wrap: wrap;
+}
+.stats-strip strong { font-weight: 700; }
+
+@media (max-width: 600px) {
+  .header, .toolbar, .records, .token-bar, .stats-strip { padding-left: 16px; padding-right: 16px; }
+  .record-head { gap: 8px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="header">
+  <div>
+    <div class="header-label">Nutworld s.r.o. · Výrobní dokumentace</div>
+    <div class="header-title">Archiv výroby</div>
+    <div class="header-sub">Záznamy míchání a surovin — šarže, DMT, složení</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <a href="denik-michani.html" style="font-size:12px;color:rgba(255,255,255,.7);text-decoration:none;font-weight:600">← Zpět do deníku</a>
+    <div class="header-logo">🐿</div>
+  </div>
+</div>
+
+<!-- Token bar -->
+<div id="token-bar" class="token-bar">
+  <span>🔑 GitHub token pro načtení dat:</span>
+  <input type="password" id="token-inp" placeholder="ghp_…">
+  <button onclick="saveToken()">Uložit</button>
+  <span style="color:#a07850;font-size:12px">Token si uloží browser — zadáváš jen jednou</span>
+</div>
+
+<!-- Toolbar -->
+<div class="toolbar">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="search-inp" placeholder="Hledat název, šarži, kód, dodavatele…" oninput="render()">
+  </div>
+  <div class="filter-btns">
+    <button class="fbtn active" data-f="vse" onclick="setFilter('vse')">Vše</button>
+    <button class="fbtn" data-f="michani" onclick="setFilter('michani')">🥣 Míchání</button>
+    <button class="fbtn" data-f="surovina" onclick="setFilter('surovina')">🌾 Surovina</button>
+  </div>
+  <span class="count-badge" id="count-badge"></span>
+</div>
+
+<!-- Records -->
+<div class="records" id="records-wrap">
+  <div class="empty-state">
+    <div class="icon">📦</div>
+    <h3>Načítám záznamy…</h3>
+    <p>Data se načítají z GitHubu.</p>
+  </div>
+</div>
+
+<!-- Stats -->
+<div class="stats-strip" id="stats-strip" style="display:none"></div>
+
+</div><!-- /page -->
+
+<script>
+const GH_REPO = 'nutworldcz-collab/nutworldcz-collab.github.io';
+const GH_FILE = 'michani_archiv.json';
+let allData = [];
+let activeFilter = 'vse';
+
+function getToken() { try { return localStorage.getItem('nw_gh_token') || ''; } catch(e) { return ''; } }
+function saveToken() {
+  const val = document.getElementById('token-inp').value.trim();
+  if (!val) return;
+  try { localStorage.setItem('nw_gh_token', val); } catch(e) {}
+  document.getElementById('token-bar').className = 'token-bar ok';
+  document.getElementById('token-bar').innerHTML = '<span class="token-ok-text">🔑 Token uložen.</span> <button onclick="clearToken()" style="background:none;border:1.5px solid #c8976a;border-radius:4px;padding:3px 10px;cursor:pointer;font-size:12px;color:#83502e">Změnit token</button>';
+  loadData();
+}
+function clearToken() {
+  try { localStorage.removeItem('nw_gh_token'); } catch(e) {}
+  document.getElementById('token-bar').className = 'token-bar';
+  document.getElementById('token-bar').innerHTML = '<span>🔑 GitHub token pro načtení dat:</span><input type="password" id="token-inp" placeholder="ghp_…"><button onclick="saveToken()">Uložit</button><span style="color:#a07850;font-size:12px">Token si uloží browser — zadáváš jen jednou</span>';
+}
+
+function b64decode(str) {
+  const bytes = Uint8Array.from(atob(str.replace(/\n/g,'')), c => c.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
+}
+
+async function loadData() {
+  const token = getToken();
+  const wrap = document.getElementById('records-wrap');
+  if (!token) {
+    wrap.innerHTML = '<div class="empty-state"><div class="icon">🔑</div><h3>Nastav GitHub token</h3><p>Token je potřeba pro přístup k archivu.</p></div>';
+    return;
+  }
+  wrap.innerHTML = '<div class="empty-state"><div class="icon" style="animation:spin 1s linear infinite;display:inline-block">⏳</div><h3>Načítám…</h3></div>';
+  try {
+    const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${GH_FILE}?_=${Date.now()}`, {
+      headers: { Authorization: 'token ' + token }
+    });
+    if (!r.ok) throw new Error(r.status);
+    const meta = await r.json();
+    allData = JSON.parse(b64decode(meta.content));
+    render();
+  } catch(e) {
+    wrap.innerHTML = `<div class="empty-state"><div class="icon">⚠️</div><h3>Chyba načítání</h3><p>${e.message}</p></div>`;
+  }
+}
+
+function setFilter(f) {
+  activeFilter = f;
+  document.querySelectorAll('.fbtn').forEach(b => b.classList.toggle('active', b.dataset.f === f));
+  render();
+}
+
+function fmtDate(d) { return d ? new Date(d + 'T00:00:00').toLocaleDateString('cs-CZ') : ''; }
+
+function render() {
+  const q = (document.getElementById('search-inp').value || '').toLowerCase().trim();
+  let data = allData.slice();
+  if (activeFilter !== 'vse') data = data.filter(r => r.typ === activeFilter);
+  if (q) {
+    data = data.filter(r => {
+      const s = [r.nazev, r.sv_nazev, r.kod, r.sv_kod, r.rec_num, r.zj, r.sarze_vyrobku,
+        r.pro_koho, r.sv_dodavatel,
+        ...(r.suroviny||[]).flatMap(s2 => [s2.nazev, s2.kod, s2.sarze, s2.dodavatel]),
+        ...(r.lot_zaznamy||[]).map(l => l.sarze)
+      ].join(' ').toLowerCase();
+      return s.includes(q);
+    });
+  }
+  document.getElementById('count-badge').textContent = `${data.length} záznamů`;
+  const wrap = document.getElementById('records-wrap');
+  if (!data.length) {
+    wrap.innerHTML = '<div class="empty-state"><div class="icon">🔍</div><h3>Nic nenalezeno</h3><p>Zkuste jiný výraz nebo filtr.</p></div>';
+    document.getElementById('stats-strip').style.display = 'none';
+    return;
+  }
+  wrap.innerHTML = data.map((r, idx) => renderCard(r, idx)).join('');
+  renderStats(data);
+}
+
+function renderCard(r, idx) {
+  const label = r.typ === 'surovina' ? (r.sv_nazev || r.nazev) : r.nazev;
+  const mnoz = r.mnozstvi ? r.mnozstvi + ' kg' : '';
+  const typLabel = r.typ === 'michani' ? '🥣 Míchání' : '🌾 Surovina';
+  const sarze = r.sarze_vyrobku || (r.lot_zaznamy?.[0]?.sarze) || '';
+  const dmt = r.dmt_vyrobku || (r.lot_zaznamy?.[0]?.dmt) || '';
+
+  let detail = '';
+  if (r.typ === 'michani' && r.suroviny?.length) {
+    detail = `<div class="detail-title">Použité suroviny (${r.suroviny.length})</div>
+      <table class="sur-table">
+        <thead><tr><th>Název</th><th>Dodavatel</th><th>Šarže</th><th>DMT</th><th style="text-align:right">kg</th></tr></thead>
+        <tbody>${r.suroviny.map(s => `<tr>
+          <td>${s.nazev || '—'}${s.kod ? `<br><span style="font-size:11px;color:#a07850">#${s.kod}</span>` : ''}</td>
+          <td>${s.dodavatel || '<span class="td-miss">—</span>'}</td>
+          <td class="${s.sarze ? 'td-sarze' : 'td-miss'}">${s.sarze || '—'}</td>
+          <td class="${s.dmt ? 'td-dmt' : 'td-miss'}">${s.dmt ? fmtDate(s.dmt) : '—'}</td>
+          <td style="text-align:right">${s.mnozstvi != null ? s.mnozstvi : '—'}</td>
+        </tr>`).join('')}</tbody>
+      </table>`;
+  } else if (r.typ === 'surovina' && r.lot_zaznamy?.length) {
+    detail = `<div class="detail-title">Šarže / LOT záznamy</div>
+      ${r.lot_zaznamy.map(l => `<div class="lot-row">
+        <span><strong>Šarže:</strong> <span class="td-sarze">${l.sarze || '—'}</span></span>
+        ${l.dmt ? `<span><strong>DMT:</strong> <span class="td-dmt">${fmtDate(l.dmt)}</span></span>` : ''}
+        ${l.mnozstvi != null ? `<span><strong>Množství:</strong> ${l.mnozstvi} kg</span>` : ''}
+      </div>`).join('')}`;
+  }
+
+  const metaItems = [
+    r.zj ? `<span><strong>ZJ:</strong> ${r.zj}</span>` : '',
+    r.pro_koho ? `<span><strong>Pro:</strong> ${r.pro_koho}</span>` : '',
+    (r.cas_start || r.cas_end) ? `<span><strong>Čas:</strong> ${r.cas_start||'?'} – ${r.cas_end||'?'}</span>` : '',
+    r.ulozeni ? `<span><strong>Uloženo:</strong> ${r.ulozeni}</span>` : '',
+    r.sv_dodavatel ? `<span><strong>Dodavatel:</strong> ${r.sv_dodavatel}</span>` : '',
+    r.sv_operace ? `<span><strong>Operace:</strong> ${r.sv_operace}</span>` : '',
+    r.created_at ? `<span style="color:#c8b098">Zapsáno: ${new Date(r.created_at).toLocaleString('cs-CZ',{dateStyle:'short',timeStyle:'short'})}</span>` : '',
+  ].filter(Boolean).join('');
+
+  return `<div class="record-card">
+    <div class="record-head" onclick="toggleCard(${idx})" id="head-${idx}">
+      <div>
+        <div class="rec-date">${fmtDate(r.datum)}</div>
+        <div class="rec-num">${r.rec_num || ''}</div>
+      </div>
+      <span class="rec-typ ${r.typ}">${typLabel}</span>
+      <span class="rec-nazev">${label || '—'}</span>
+      ${mnoz ? `<span class="rec-mnoz">${mnoz}</span>` : ''}
+      ${sarze ? `<span class="rec-sarze">Šarže: ${sarze}</span>` : ''}
+      ${dmt ? `<span class="rec-dmt">DMT: ${fmtDate(dmt)}</span>` : ''}
+      <span class="rec-chevron">›</span>
+    </div>
+    <div class="record-detail" id="detail-${idx}">
+      ${metaItems ? `<div class="detail-meta">${metaItems}</div>` : ''}
+      ${detail}
+    </div>
+  </div>`;
+}
+
+function toggleCard(idx) {
+  const head = document.getElementById('head-' + idx);
+  const det = document.getElementById('detail-' + idx);
+  if (!head || !det) return;
+  const open = det.classList.toggle('open');
+  head.classList.toggle('open', open);
+}
+
+function renderStats(data) {
+  const strip = document.getElementById('stats-strip');
+  const totalMichani = data.filter(r => r.typ === 'michani').length;
+  const totalSur = data.filter(r => r.typ === 'surovina').length;
+  const totalKg = data.reduce((s, r) => s + (r.mnozstvi || 0), 0);
+  strip.style.display = 'flex';
+  strip.innerHTML = `
+    <span>📋 <strong>${data.length}</strong> záznamy celkem</span>
+    <span>🥣 <strong>${totalMichani}</strong> míchání</span>
+    <span>🌾 <strong>${totalSur}</strong> surovina</span>
+    ${totalKg ? `<span>⚖️ <strong>${totalKg.toLocaleString('cs-CZ')}</strong> kg celkem</span>` : ''}
+  `;
+}
+
+// Init
+(function init() {
+  const t = getToken();
+  if (t) {
+    document.getElementById('token-bar').className = 'token-bar ok';
+    document.getElementById('token-bar').innerHTML = '<span class="token-ok-text">🔑 Token nastaven.</span> <button onclick="clearToken()" style="background:none;border:1.5px solid #c8976a;border-radius:4px;padding:3px 10px;cursor:pointer;font-size:12px;color:#83502e">Změnit</button>';
+    loadData();
+  }
+})();
+</script>
+</body>
+</html>

@@ -267,6 +267,26 @@ textarea:focus { border-color: #83502e; background: #fff; }
 }
 .btn-save:hover { background: #175fa3; }
 .btn-save:disabled { background: #a0b8d0; cursor: default; }
+.btn-archiv {
+  background: #2d8a4e; color: #fff; border: none; border-radius: 6px;
+  padding: 9px 18px; font-size: 13.5px; font-weight: 700; cursor: pointer;
+  font-family: 'Source Sans 3', Arial, sans-serif; transition: background .15s;
+}
+.btn-archiv:hover { background: #237040; }
+.btn-archiv:disabled { background: #7abf94; cursor: default; }
+.token-badge {
+  font-size: 11.5px; cursor: pointer; padding: 4px 10px; border-radius: 4px;
+  border: 1.5px solid; font-weight: 700; white-space: nowrap;
+  font-family: 'Source Sans 3', sans-serif;
+}
+.token-badge.ok { color: #2d8a4e; border-color: #2d8a4e; background: #f0faf4; }
+.token-badge.missing { color: #b03030; border-color: #e08080; background: #fff5f5; }
+.archiv-ind {
+  display: none; position: fixed; top: 16px; right: 16px; z-index: 9999;
+  background: #2d8a4e; color: #fff; border-radius: 6px; padding: 8px 16px;
+  font-size: 13px; font-weight: 700; box-shadow: 0 2px 12px rgba(0,0,0,.2);
+  font-family: 'Source Sans 3', sans-serif;
+}
 
 .record-num {
   background: #f7ab31;
@@ -665,6 +685,9 @@ body.mode-surovina .section-dmt { display: none; }
   <div class="actions">
     <button class="btn-new" onclick="newRecord()">Nový záznam</button>
     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <a href="michani-archiv.html" target="_blank" style="font-size:12px;color:#83502e;text-decoration:none;white-space:nowrap;font-weight:600">📚 Archiv výroby →</a>
+      <button class="btn-archiv" onclick="saveToMichaniArchiv()" id="btn-archiv">💾 Do archivu</button>
+      <span id="token-badge" class="token-badge" onclick="handleTokenBadge()" title="GitHub token pro ukládání archivu"></span>
       <select id="trello-list" style="border:1.5px solid #c8976a;border-radius:6px;padding:8px 12px;font-size:13.5px;font-family:'Source Sans 3',sans-serif;color:#5c381f;background:#fdfaf7;outline:none;font-weight:600">
         <option value="6adc67a9121db6c2dfb7a0b3">ALZA</option>
         <option value="6adc67ac11b6b1ea1e797fbd">VILGEIN</option>
@@ -1117,6 +1140,113 @@ ${pozn || '—'}`;
     }
   };
 
+  // ── GitHub archiv výroby ────────────────────────────────────────────────────
+  const GH_REPO_M = 'nutworldcz-collab/nutworldcz-collab.github.io';
+  const GH_FILE_M = 'michani_archiv.json';
+
+  function getToken() {
+    try { return localStorage.getItem('nw_gh_token') || ''; } catch(e) { return ''; }
+  }
+  function b64decode(str) {
+    const bytes = Uint8Array.from(atob(str.replace(/\n/g,'')), c => c.charCodeAt(0));
+    return new TextDecoder().decode(bytes);
+  }
+  function updateTokenBadge() {
+    const badge = document.getElementById('token-badge');
+    if (!badge) return;
+    if (getToken()) { badge.className = 'token-badge ok'; badge.textContent = '🔑 OK'; }
+    else            { badge.className = 'token-badge missing'; badge.textContent = '🔑 Nastav token'; }
+  }
+  function handleTokenBadge() {
+    const val = prompt('GitHub personal access token (scope: repo):\n\nZískat: github.com/settings/tokens/new?scopes=repo', getToken() || '');
+    if (val === null) return;
+    try { val.trim() ? localStorage.setItem('nw_gh_token', val.trim()) : localStorage.removeItem('nw_gh_token'); } catch(e) {}
+    updateTokenBadge();
+  }
+  updateTokenBadge();
+
+  function buildRecord() {
+    const isSur = document.body.classList.contains('mode-surovina');
+    const rec = {
+      id: document.getElementById('rec-num').textContent.replace(/\s/g,'') + '-' + Date.now(),
+      typ: isSur ? 'surovina' : 'michani',
+      datum:         document.getElementById('datum').value,
+      rec_num:       document.getElementById('rec-num').textContent,
+      zj:            document.getElementById('zj').value,
+      kod:           document.getElementById('kod').value,
+      nazev:         document.getElementById('nazev').value,
+      mnozstvi:      parseFloat(document.getElementById('mnozstvi').value) || null,
+      pro_koho:      document.getElementById('pro-koho').value,
+      cas_start:     document.getElementById('cas-start').value,
+      cas_end:       document.getElementById('cas-end').value,
+      ulozeni:       document.getElementById('ulozeni').value,
+      sarze_vyrobku: document.getElementById('sarze-vyrobku').value,
+      dmt_vyrobku:   document.getElementById('dmt-vyrobku').value || null,
+      created_at:    new Date().toISOString(),
+    };
+    if (isSur) {
+      rec.sv_kod       = document.getElementById('sv-kod').value;
+      rec.sv_nazev     = document.getElementById('sv-nazev').value;
+      rec.sv_dodavatel = document.getElementById('sv-dodavatel').value;
+      rec.sv_operace   = document.getElementById('sv-operace').value;
+      const lots = [];
+      document.querySelectorAll('#sv-lot-body tr').forEach(tr => {
+        const ins = tr.querySelectorAll('input');
+        if (ins.length >= 3 && (ins[0].value || ins[2].value))
+          lots.push({ sarze: ins[0].value, dmt: ins[1].value || null, mnozstvi: parseFloat(ins[2].value) || null });
+      });
+      rec.lot_zaznamy = lots;
+    } else {
+      const sur = [];
+      document.querySelectorAll('#ing-body tr').forEach(tr => {
+        const k = tr.querySelector('.col-kod input')?.value;
+        const n = tr.querySelector('.col-nazev input')?.value;
+        if (!n && !k) return;
+        sur.push({
+          kod:       k,
+          nazev:     n,
+          dodavatel: tr.querySelector('.col-dod input')?.value,
+          sarze:     tr.querySelector('.col-sarze input')?.value,
+          dmt:       tr.querySelector('.dmt-input')?.value || null,
+          mnozstvi:  parseFloat(tr.querySelector('.col-mnoz input')?.value) || null,
+        });
+      });
+      rec.suroviny = sur;
+    }
+    return rec;
+  }
+
+  async function saveToMichaniArchiv() {
+    const token = getToken();
+    if (!token) { handleTokenBadge(); return; }
+    const rec = buildRecord();
+    const label = rec.nazev || rec.sv_nazev;
+    if (!label) { alert('Vyplň název produktu.'); return; }
+    const btn = document.getElementById('btn-archiv');
+    const ind = document.getElementById('archiv-ind');
+    btn.disabled = true; btn.textContent = '⏳ Ukládám…';
+    ind.textContent = '💾 Ukládám do archivu…'; ind.style.display = 'block';
+    try {
+      const r = await fetch(`https://api.github.com/repos/${GH_REPO_M}/contents/${GH_FILE_M}`, { headers: { Authorization: 'token ' + token } });
+      let data = [], sha = null;
+      if (r.ok) { const m = await r.json(); sha = m.sha; data = JSON.parse(b64decode(m.content)); }
+      data.unshift(rec);
+      const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+      const w = await fetch(`https://api.github.com/repos/${GH_REPO_M}/contents/${GH_FILE_M}`, {
+        method: 'PUT',
+        headers: { Authorization: 'token ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: `záznam: ${rec.rec_num} — ${label}`, content, ...(sha ? { sha } : {}) }),
+      });
+      if (!w.ok) throw new Error('PUT ' + w.status);
+      btn.textContent = '✓ Uloženo!'; btn.style.background = '#237040';
+      ind.textContent = '✓ Uloženo do archivu';
+      setTimeout(() => { btn.disabled = false; btn.textContent = '💾 Do archivu'; btn.style.background = ''; ind.style.display = 'none'; }, 2800);
+    } catch(e) {
+      btn.disabled = false; btn.textContent = '💾 Do archivu'; ind.style.display = 'none';
+      alert('Chyba ukládání: ' + e.message);
+    }
+  }
+
   // ── Archive lookup ──────────────────────────────────────────────────────────
   let archivData = [];
   let _lookupRow = null;
@@ -1199,6 +1329,8 @@ ${pozn || '—'}`;
     if (e.key === 'Escape') closeDrawer();
   });
 </script>
+
+<div id="archiv-ind" class="archiv-ind"></div>
 
 <!-- Archive lookup drawer -->
 <div class="archiv-drawer" id="archiv-drawer">
