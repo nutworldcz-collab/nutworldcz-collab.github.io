@@ -89,14 +89,18 @@ td.td-del { width: 32px; }
   .hdr-left .label { color: #555 !important; }
   .hdr-left h1 { color: #222 !important; }
   .hdr-btns, .add-row-btn, .save-bar { display: none !important; }
-  .block { border: 1px solid #ccc; page-break-inside: avoid; }
+  .block { border: 1px solid #ccc; border-top: none; }
+  .tbl-wrap { overflow: visible !important; }
+  table { width: 100%; table-layout: fixed; }
   .del-btn { display: none; }
   input, select, textarea { color: transparent !important; -webkit-text-fill-color: transparent !important; }
   input::placeholder, textarea::placeholder { color: transparent !important; -webkit-text-fill-color: transparent !important; }
-  tbody td input, tbody td select { border: 1px solid #ccc !important; border-radius: 0 !important; background: transparent !important; }
+  tbody td input, tbody td select { border: 1px solid #ccc !important; border-radius: 0 !important; background: transparent !important; min-height: 24px; display: block; width: 100%; }
+  tbody td { padding: 3px 4px; }
   thead th { background: #f0f0f0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .field input, .field select { border: 1px solid #ccc !important; }
+  .field input, .field select, .field textarea { border: 1px solid #ccc !important; }
   .rn { color: #666 !important; }
+  .notes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 }
 </style>
 </head>
