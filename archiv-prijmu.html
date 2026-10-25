@@ -97,6 +97,14 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
 .btn-small { background: var(--brown); color: #fff; border: none; border-radius: 6px; padding: 7px 14px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Source Sans 3', sans-serif; white-space: nowrap; }
 .btn-small:hover { background: var(--brown-dark); }
 .gh-ok { color: var(--ok); font-weight: 700; }
+
+/* Inline DMT editing */
+.td-dmt { cursor: pointer; position: relative; }
+.td-dmt:hover::after { content: ' ✎'; font-size: 10px; color: #a07850; opacity: .7; }
+.td-dmt.editing { cursor: default; }
+.td-dmt.editing::after { display: none; }
+.dmt-inp { border: 1.5px solid var(--brown); border-radius: 5px; padding: 2px 5px; font-size: 12px; font-family: 'Source Sans 3', sans-serif; background: #fff; color: #1a0f06; width: 120px; }
+.save-indicator { position: fixed; bottom: 20px; right: 20px; background: var(--brown-dark); color: #fff; border-radius: 8px; padding: 10px 18px; font-size: 13px; font-weight: 700; z-index: 999; display: none; }
 </style>
 </head>
 <body>
@@ -157,6 +165,7 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
   <div class="results" id="results"><div class="empty">Načítám…</div></div>
 
 </div>
+<div class="save-indicator" id="save-ind">💾 Ukládám DMT…</div>
 
 <script>
   const GH_REPO  = 'nutworldcz-collab/nutworldcz-collab.github.io';
@@ -323,12 +332,13 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
             }
           }
         }
+        const dmtDisplay = i.dmt ? fmtDate(i.dmt) : '<span style="color:#ccc;font-size:11px">+ DMT</span>';
         return `<tr>
           <td>${i.kod || '—'}</td>
           <td><strong>${i.nazev}</strong></td>
           <td>${nwCell}</td>
           <td><span class="lot">${i.sarze || '—'}</span></td>
-          <td class="td-dmt ${dc}">${fmtDate(i.dmt)}</td>
+          <td class="td-dmt ${dc}" onclick="editDmt(this,'${d.id}',${JSON.stringify(i.nazev)},${JSON.stringify(i.sarze||'')})">${dmtDisplay}</td>
           <td>${i.mnozstvi ? i.mnozstvi+' kg' : '—'}</td>
           <td>${i.cena_kg ? i.cena_kg.toFixed(2)+' Kč' : '—'}</td>
           <td>${cenikCell}</td>
@@ -377,6 +387,64 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
     document.getElementById('f-supplier').value = '';
     document.getElementById('f-stav').value = '';
     render();
+  }
+
+  // Save entire allData back to GitHub
+  async function saveAllData(message) {
+    const token = getToken();
+    if (!token) { alert('Nejprve nastav GitHub token.'); return false; }
+    const ind = document.getElementById('save-ind');
+    ind.style.display = 'block';
+    try {
+      const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${GH_FILE}`, {
+        headers: { Authorization: 'token ' + token }
+      });
+      if (!r.ok) throw new Error('GET ' + r.status);
+      const meta = await r.json();
+      const updated = btoa(unescape(encodeURIComponent(JSON.stringify(allData, null, 2))));
+      const w = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${GH_FILE}`, {
+        method: 'PUT',
+        headers: { Authorization: 'token ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message, content: updated, sha: meta.sha })
+      });
+      if (!w.ok) throw new Error('PUT ' + w.status);
+      ind.textContent = '✓ Uloženo';
+      setTimeout(() => { ind.style.display = 'none'; ind.textContent = '💾 Ukládám DMT…'; }, 1800);
+      return true;
+    } catch(e) {
+      ind.style.display = 'none';
+      alert('Chyba ukládání: ' + e.message);
+      return false;
+    }
+  }
+
+  // Inline DMT editing — click on DMT cell
+  function editDmt(el, delivId, nazev, sarze) {
+    if (el.classList.contains('editing')) return;
+    el.classList.add('editing');
+    const d = allData.find(x => x.id === delivId);
+    if (!d) return;
+    const item = d.items.find(i => i.nazev === nazev && (i.sarze||'') === sarze);
+    if (!item) return;
+    const cur = item.dmt || '';
+    const inp = document.createElement('input');
+    inp.type = 'date'; inp.value = cur; inp.className = 'dmt-inp';
+    inp.onclick = e => e.stopPropagation();
+    el.innerHTML = ''; el.appendChild(inp); inp.focus();
+
+    let saved = false;
+    async function save() {
+      if (saved) return; saved = true;
+      const val = inp.value;
+      if (val === cur) { render(); return; }
+      item.dmt = val || null;
+      // Recalculate celkove_kg stays same; just save
+      await saveAllData(`dmt: ${nazev} → ${val||'(vymazáno)'}`);
+      render();
+    }
+    inp.addEventListener('change', () => setTimeout(save, 50));
+    inp.addEventListener('blur', () => setTimeout(save, 100));
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') inp.blur(); if (e.key === 'Escape') { saved = true; render(); } });
   }
 
   // Public API for prijem-surovin.html to call
