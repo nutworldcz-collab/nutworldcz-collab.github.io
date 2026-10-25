@@ -204,6 +204,11 @@ td.td-del { width: 32px; }
     <a href="/archiv-prijmu.html" style="font-size:12px;color:var(--brown);font-weight:600;text-decoration:none;white-space:nowrap">📂 Archiv →</a>
     <div class="status" id="status"></div>
   </div>
+  <div id="gh-token-bar" style="display:none;background:#fff8e6;border:1.5px solid #f7ab31;border-radius:8px;padding:10px 16px;margin:10px 0;font-size:13px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+    ⚠️ Archiv: nastav <strong>GitHub PAT</strong> (pro uložení dodávek):
+    <input type="password" id="gh-tok-inp" placeholder="ghp_…" style="border:1.5px solid #d9c9b8;border-radius:5px;padding:5px 8px;font-size:13px;font-family:monospace;flex:1;min-width:180px;max-width:300px">
+    <button onclick="saveGhToken()" style="background:#83502e;color:#fff;border:none;border-radius:5px;padding:6px 14px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">Uložit</button>
+  </div>
 
 </div><!-- /page -->
 
@@ -319,6 +324,39 @@ td.td-del { width: 32px; }
   const TOKEN_KEY = 'nw_gh_token';
   function getGhToken() { try { return localStorage.getItem(TOKEN_KEY) || ''; } catch { return ''; } }
 
+  // UTF-8 safe base64 decode (GitHub API vrací UTF-8 jako base64)
+  function b64decode(str) {
+    const bytes = Uint8Array.from(atob(str.replace(/\n/g,'')), c => c.charCodeAt(0));
+    return new TextDecoder().decode(bytes);
+  }
+
+  // Token setup banner
+  (function initTokenBanner() {
+    const tok = getGhToken();
+    const el = document.getElementById('gh-token-bar');
+    if (!tok) {
+      el.style.display = 'flex';
+    } else {
+      el.style.display = 'flex';
+      el.innerHTML = `<span style="color:#2d5a1b;font-weight:700">✓ GitHub token nastaven</span> <button onclick="clearGhToken()" style="margin-left:auto;background:none;border:1.5px solid #ccc;border-radius:5px;padding:4px 10px;font-size:12px;cursor:pointer;color:#a07850">Změnit</button>`;
+    }
+  })();
+  function saveGhToken() {
+    const v = document.getElementById('gh-tok-inp').value.trim();
+    if (!v) return;
+    try { localStorage.setItem(TOKEN_KEY, v); } catch {}
+    document.getElementById('gh-token-bar').innerHTML = `<span style="color:#2d5a1b;font-weight:700">✓ GitHub token uložen</span> <button onclick="clearGhToken()" style="margin-left:auto;background:none;border:1.5px solid #ccc;border-radius:5px;padding:4px 10px;font-size:12px;cursor:pointer;color:#a07850">Změnit</button>`;
+  }
+  function clearGhToken() {
+    try { localStorage.removeItem(TOKEN_KEY); } catch {}
+    document.getElementById('gh-token-bar').innerHTML = tokenBarHTML();
+  }
+  function tokenBarHTML() {
+    return `⚠️ Archiv: nastav <strong>GitHub PAT</strong> (pro uložení dodávek):
+      <input type="password" id="gh-tok-inp" placeholder="ghp_…" style="border:1.5px solid #d9c9b8;border-radius:5px;padding:5px 8px;font-size:13px;font-family:monospace;flex:1;min-width:180px;max-width:300px">
+      <button onclick="saveGhToken()" style="background:var(--brown);color:#fff;border:none;border-radius:5px;padding:6px 14px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">Uložit</button>`;
+  }
+
   function collectFormData() {
     const cislo   = document.getElementById('cislo-dodavky').value.trim();
     const dod     = document.getElementById('dodavatel').value.trim();
@@ -400,7 +438,7 @@ td.td-del { width: 32px; }
         });
         if (!meta.ok) throw new Error('GitHub GET: ' + meta.status);
         const mj = await meta.json();
-        const current = JSON.parse(atob(mj.content.replace(/\n/g,'')));
+        const current = JSON.parse(b64decode(mj.content));
         current.push(entry);
         const updated = btoa(unescape(encodeURIComponent(JSON.stringify(current, null, 2))));
         const wr = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${GH_FILE}`, {

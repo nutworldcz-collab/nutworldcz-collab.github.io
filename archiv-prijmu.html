@@ -179,6 +179,12 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
 
   // GitHub token
   function getToken() { try { return localStorage.getItem(TOKEN_KEY) || ''; } catch { return ''; } }
+
+  // UTF-8 safe base64 decode
+  function b64decode(str) {
+    const bytes = Uint8Array.from(atob(str.replace(/\n/g,'')), c => c.charCodeAt(0));
+    return new TextDecoder().decode(bytes);
+  }
   function saveGhToken() {
     const t = document.getElementById('gh-token-input').value.trim();
     if (!t) return;
@@ -459,7 +465,7 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
         });
         if (!r.ok) throw new Error('GitHub GET: ' + r.status);
         const meta = await r.json();
-        const current = JSON.parse(atob(meta.content.replace(/\n/g,'')));
+        const current = JSON.parse(b64decode(meta.content));
         current.push(entry);
         const updated = btoa(unescape(encodeURIComponent(JSON.stringify(current, null, 2))));
         const w = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${GH_FILE}`, {
