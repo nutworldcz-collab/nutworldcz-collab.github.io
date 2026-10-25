@@ -142,7 +142,7 @@ body { font-family: 'Source Sans 3', Arial, sans-serif; background: #e8ddd4; col
       document.getElementById('preview-name').textContent = file.name;
       document.getElementById('preview-wrap').style.display = 'block';
       document.getElementById('btn-send').disabled = false;
-      document.getElementById('status').style.display = 'none';
+      document.getElementById('status').style.display = '';
       document.getElementById('status').className = 'status';
       document.getElementById('result-card').style.display = 'none';
     };
@@ -154,6 +154,7 @@ body { font-family: 'Source Sans 3', Arial, sans-serif; background: #e8ddd4; col
     const btn = document.getElementById('btn-send');
     const st  = document.getElementById('status');
     btn.disabled = true;
+    st.style.display = '';
     st.className = 'status loading';
     st.textContent = '⏳ Claude čte formulář…';
 
