@@ -76,5 +76,57 @@
       { "nazev": "Arašidy 38/40 runner blanched, pražené & solené", "kod": "44", "sarze": "A1?", "dmt": "", "mnozstvi": 130, "stav": "OK", "cena_kg": 65.00 },
       { "nazev": "Pistácie ve skořápce USA 21/25 No. 1 PS", "kod": "134", "sarze": "?127115", "dmt": "", "mnozstvi": 60, "stav": "OK", "cena_kg": 269.00 }
     ]
+  },
+  {
+    "id": "10183920",
+    "cislo_dodavky": "10183920",
+    "dodavatel": "K-SERVIS PRAHA, a.s.",
+    "datum": "2026-10-23",
+    "datum_ulozeni": "2026-10-25",
+    "poznamka": "Objednávka OP01-2026-0247. Dodací list FT01-4022/2026. Splatnost 22.11.2026.",
+    "ulozeni": "",
+    "celkove_kg": 460,
+    "items": [
+      { "nazev": "Slunečnice", "kod": "266", "sarze": "", "dmt": "", "mnozstvi": 110, "stav": "OK", "cena_kg": 34.50 },
+      { "nazev": "Jádra tykve natural GWS", "kod": "242", "sarze": "", "dmt": "", "mnozstvi": 125, "stav": "OK", "cena_kg": 94.00 },
+      { "nazev": "Sezam loupaný", "kod": "263", "sarze": "", "dmt": "", "mnozstvi": 50, "stav": "OK", "cena_kg": 51.00 },
+      { "nazev": "Chia semínka", "kod": "245", "sarze": "", "dmt": "", "mnozstvi": 25, "stav": "OK", "cena_kg": 79.00 },
+      { "nazev": "Lněné semínko", "kod": "251", "sarze": "", "dmt": "", "mnozstvi": 25, "stav": "OK", "cena_kg": 26.50 },
+      { "nazev": "Lněné semínko zlaté", "kod": "254", "sarze": "", "dmt": "", "mnozstvi": 25, "stav": "OK", "cena_kg": 34.50 },
+      { "nazev": "Pecan - ořechy", "kod": "140", "sarze": "", "dmt": "", "mnozstvi": 100, "stav": "OK", "cena_kg": 359.00 }
+    ]
+  },
+  {
+    "id": "260112800",
+    "cislo_dodavky": "260112800",
+    "dodavatel": "Doypacky s.r.o.",
+    "datum": "2026-10-19",
+    "datum_ulozeni": "2026-10-25",
+    "poznamka": "Obaly — ne suroviny. Objednávka 90835 ze 17.10.2026. Splatnost 02.11.2026.",
+    "ulozeni": "",
+    "celkove_kg": 0,
+    "items": [
+      { "nazev": "Klipovací pásek 150mm ČERNÝ / plast", "kod": "90153", "sarze": "", "dmt": "", "mnozstvi": 0, "stav": "OK", "cena_kg": 0, "poznamka_pol": "4000 ks × 0,45 Kč" },
+      { "nazev": "Sáček hranolový OPP 100+60x280mm", "kod": "39100", "sarze": "", "dmt": "", "mnozstvi": 0, "stav": "OK", "cena_kg": 0, "poznamka_pol": "2000 ks × 1,7954 Kč" }
+    ]
+  },
+  {
+    "id": "27FW001354",
+    "cislo_dodavky": "27FW001354",
+    "dodavatel": "DIANA COMPANY, spol. s r.o.",
+    "datum": "2026-10-22",
+    "datum_ulozeni": "2026-10-25",
+    "poznamka": "Objednávka 2760000393. Sleva 4% na vše. Splatnost 29.10.2026. Závoz.",
+    "ulozeni": "",
+    "celkove_kg": 120,
+    "items": [
+      { "nazev": "Kyselé želé mix 1kg", "kod": "2336", "sarze": "2607940", "dmt": "", "mnozstvi": 20, "stav": "OK", "cena_kg": 180.48 },
+      { "nazev": "Mandle v baby blue krustě 1kg", "kod": "8542", "sarze": "29012601", "dmt": "", "mnozstvi": 7, "stav": "OK", "cena_kg": 370.56 },
+      { "nazev": "Mandle v karamelové polevě 3kg", "kod": "2333", "sarze": "24240XK", "dmt": "", "mnozstvi": 6, "stav": "OK", "cena_kg": 213.12 },
+      { "nazev": "Mandle ve stříbrné krustě 1kg", "kod": "7853", "sarze": "06102502", "dmt": "", "mnozstvi": 3, "stav": "OK", "cena_kg": 586.56 },
+      { "nazev": "Mandle ve zlaté krustě 1kg", "kod": "7852", "sarze": "09022601", "dmt": "", "mnozstvi": 3, "stav": "OK", "cena_kg": 645.12 },
+      { "nazev": "Mini Marshmallows 4kg", "kod": "4512", "sarze": "LH25301", "dmt": "", "mnozstvi": 60, "stav": "OK", "cena_kg": 176.64 },
+      { "nazev": "Twist Mix 3kg", "kod": "2-LTM-3", "sarze": "290426XK", "dmt": "", "mnozstvi": 21, "stav": "OK", "cena_kg": 180.48 }
+    ]
   }
 ]
