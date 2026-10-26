@@ -1,5 +1,56 @@
 [
   {
+    "id": "ZM–261026-1793031404143",
+    "typ": "michani",
+    "datum": "2026-10-26",
+    "rec_num": "ZM–261026",
+    "zj": "",
+    "kod": "",
+    "nazev": "Alza směs ořechů",
+    "mnozstvi": null,
+    "pro_koho": "",
+    "cas_start": "",
+    "cas_end": "",
+    "ulozeni": "",
+    "sarze_vyrobku": "261026",
+    "dmt_vyrobku": "2027-05-21",
+    "created_at": "2026-10-26T16:16:44.143Z",
+    "suroviny": [
+      {
+        "kod": "110",
+        "nazev": "KEŠU NATURAL WW320",
+        "dodavatel": "",
+        "sarze": "L-21092026",
+        "dmt": "2027-06-21",
+        "mnozstvi": null
+      },
+      {
+        "kod": "2486",
+        "nazev": "MANDLE JÁDRA NATURAL",
+        "dodavatel": "",
+        "sarze": "L-07092026",
+        "dmt": "2027-06-07",
+        "mnozstvi": null
+      },
+      {
+        "kod": "83",
+        "nazev": "MANDLE JÁDRA LOUPANÉ",
+        "dodavatel": "",
+        "sarze": "25-326-01",
+        "dmt": null,
+        "mnozstvi": null
+      },
+      {
+        "kod": "140",
+        "nazev": "PEKANOVÉ OŘECHY JÁDRA",
+        "dodavatel": "",
+        "sarze": "26-399007",
+        "dmt": "2027-07-30",
+        "mnozstvi": null
+      }
+    ]
+  },
+  {
     "id": "ZM–261024-alza-smesa",
     "typ": "michani",
     "datum": "2026-10-24",
