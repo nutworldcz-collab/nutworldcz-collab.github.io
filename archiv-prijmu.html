@@ -105,18 +105,61 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
 .td-dmt.editing::after { display: none; }
 .dmt-inp { border: 1.5px solid var(--brown); border-radius: 5px; padding: 2px 5px; font-size: 12px; font-family: 'Source Sans 3', sans-serif; background: #fff; color: #1a0f06; width: 120px; }
 .save-indicator { position: fixed; bottom: 20px; right: 20px; background: var(--brown-dark); color: #fff; border-radius: 8px; padding: 10px 18px; font-size: 13px; font-weight: 700; z-index: 999; display: none; }
+
+/* Tabs */
+.tabs { display: flex; gap: 0; background: var(--brown-dark); border-radius: 12px 12px 0 0; overflow: hidden; }
+.tab-btn { flex: 1; padding: 14px 18px; font-family: 'Exo 2', sans-serif; font-size: 13px; font-weight: 800; color: rgba(255,255,255,.55); background: none; border: none; cursor: pointer; letter-spacing: .5px; transition: background .15s, color .15s; }
+.tab-btn:hover { background: rgba(255,255,255,.1); color: rgba(255,255,255,.8); }
+.tab-btn.active { background: rgba(255,255,255,.18); color: #fff; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* Supplier view */
+.sup-card { border-bottom: 1px solid var(--brown-soft); }
+.sup-card:last-child { border-bottom: none; }
+.sup-hdr { padding: 14px 20px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: background .12s; user-select: none; flex-wrap: wrap; }
+.sup-hdr:hover { background: #fdfaf7; }
+.sup-name { font-family: 'Exo 2', sans-serif; font-weight: 800; font-size: 15px; color: var(--brown-dark); flex: 1; min-width: 180px; }
+.sup-meta { font-size: 12px; color: #a07850; }
+.sup-body { display: none; border-top: 1px solid var(--brown-soft); }
+.sup-card.open .sup-body { display: block; }
+.sup-card.open .chevron { transform: rotate(90deg); }
+
+/* Šarže table */
+.sarze-tbl { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.sarze-tbl thead th { background: var(--brown-soft); color: var(--brown-dark); font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: .6px; padding: 8px 10px; text-align: left; white-space: nowrap; }
+.sarze-tbl tbody tr { border-bottom: 1px solid #f5ede4; }
+.sarze-tbl tbody tr:last-child { border-bottom: none; }
+.sarze-tbl tbody td { padding: 7px 10px; vertical-align: middle; }
+.sarze-tbl tbody tr:hover { background: #fdfaf7; }
+
+/* Šarže badges */
+.sb { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 800; white-space: nowrap; }
+.sb-new   { background: #edf7f0; color: #2d5a1b; }
+.sb-same  { background: #fff8e6; color: #b45309; }
+.sb-warn  { background: #fdf0f0; color: #b91c1c; }
+.sb-once  { background: var(--brown-soft); color: #a07850; }
+
+/* Šarže history expand */
+.sh-toggle { font-size: 11px; color: var(--brown); cursor: pointer; text-decoration: underline; white-space: nowrap; }
+.sh-toggle:hover { color: var(--brown-dark); }
+.sh-hist { display: none; margin-top: 6px; }
+.sh-hist.open { display: block; }
+.sh-hist table { font-size: 11px; border-collapse: collapse; }
+.sh-hist td { padding: 2px 8px 2px 0; color: #5c381f; border: none; }
+.sh-hist td:first-child { color: #a07850; white-space: nowrap; }
 </style>
 </head>
 <body>
 <div class="page">
 
-  <div class="hdr">
-    <div class="hdr-left">
-      <div class="label">Nutworld s.r.o.</div>
-      <h1>Archiv příjmů surovin</h1>
-    </div>
-    <div class="hdr-right" id="hdr-count">Načítám…</div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('deliveries',this)">📦 Přehled dodávek</button>
+    <button class="tab-btn" onclick="switchTab('suppliers',this)">🏭 Podle dodavatele</button>
   </div>
+
+  <!-- TAB: Deliveries -->
+  <div id="tab-deliveries" class="tab-panel active">
 
   <!-- GitHub token setup -->
   <div id="gh-banner" class="gh-banner" style="display:none">
@@ -176,6 +219,29 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
   <div class="stats" id="stats"></div>
   <div id="price-alerts" style="display:none" class="price-alerts"></div>
   <div class="results" id="results"><div class="empty">Načítám…</div></div>
+
+  </div><!-- /tab-deliveries -->
+
+  <!-- TAB: By supplier -->
+  <div id="tab-suppliers" class="tab-panel">
+    <div class="filters" style="border-top:none">
+      <div class="f-group">
+        <label>Hledat produkt / NW kód / šarže</label>
+        <input type="text" id="sup-search" placeholder="např. mandle, 101, L07102026…" oninput="renderSuppliers()">
+      </div>
+      <div class="f-group">
+        <label>Zobrazit šarže</label>
+        <select id="sup-sarze-filter" onchange="renderSuppliers()">
+          <option value="">Vše</option>
+          <option value="same">Stejná šarže (opakuje se)</option>
+          <option value="new">Nová šarže (změna)</option>
+        </select>
+      </div>
+      <button class="btn-reset" onclick="document.getElementById('sup-search').value='';document.getElementById('sup-sarze-filter').value='';renderSuppliers()">✕ Reset</button>
+    </div>
+    <div class="stats" id="sup-stats"></div>
+    <div class="results" id="sup-results" style="border-radius:0 0 12px 12px"><div class="empty">Načítám…</div></div>
+  </div><!-- /tab-suppliers -->
 
 </div>
 <div class="save-indicator" id="save-ind">💾 Ukládám DMT…</div>
@@ -480,6 +546,228 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
     inp.addEventListener('keydown', e => { if (e.key === 'Enter') inp.blur(); if (e.key === 'Escape') { saved = true; render(); } });
   }
 
+  // ── TAB SWITCHER ─────────────────────────────────────────────────────────
+  function switchTab(name, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    btn.classList.add('active');
+    if (name === 'suppliers') renderSuppliers();
+  }
+
+  // ── ŠARŽE ANALYSIS ───────────────────────────────────────────────────────
+  // Returns per-supplier, per-product šarže history
+  function buildSupplierMap(data) {
+    const suppliers = {};
+    data.forEach(d => {
+      const key = d.dodavatel;
+      if (!suppliers[key]) suppliers[key] = { name: key, deliveries: [] };
+      suppliers[key].deliveries.push(d);
+    });
+    // Sort deliveries per supplier by date ascending
+    Object.values(suppliers).forEach(s => {
+      s.deliveries.sort((a, b) => a.datum.localeCompare(b.datum));
+    });
+    return suppliers;
+  }
+
+  function buildProductHistory(deliveries) {
+    // Key: nw_kod|sarze combination (different lots = different rows)
+    const products = {};
+    deliveries.forEach(d => {
+      d.items.forEach(i => {
+        const prodKey = i.nw_kod ? String(i.nw_kod) : (i.nazev || '?');
+        if (!products[prodKey]) products[prodKey] = { nazev: i.nazev, nw_kod: i.nw_kod, entries: [] };
+        products[prodKey].entries.push({
+          datum: d.datum, sarze: i.sarze, dmt: i.dmt,
+          mnozstvi: i.mnozstvi, dodavka: d.cislo_dodavky, did: d.id
+        });
+      });
+    });
+    // Sort entries per product by date ascending
+    Object.values(products).forEach(p => {
+      p.entries.sort((a, b) => a.datum.localeCompare(b.datum));
+    });
+    return products;
+  }
+
+  // For a product's entries (sorted by date), compute šarže status of the LATEST entry
+  function sharzeStat(entries) {
+    if (entries.length === 1) return { type: 'once', streak: 1, prev: null, current: entries[0].sarze };
+    const last = entries[entries.length - 1];
+    const prev = entries[entries.length - 2];
+    if (!last.sarze) return { type: 'once', streak: 1, prev: prev.sarze, current: null };
+    if (last.sarze === prev.sarze) {
+      // Count consecutive same-šarže streak from the end
+      let streak = 1;
+      for (let i = entries.length - 2; i >= 0; i--) {
+        if (entries[i].sarze === last.sarze) streak++;
+        else break;
+      }
+      return { type: 'same', streak, prev: prev.sarze, current: last.sarze };
+    }
+    return { type: 'new', streak: 1, prev: prev.sarze, current: last.sarze };
+  }
+
+  function renderSuppliers() {
+    const q = (document.getElementById('sup-search').value || '').trim().toLowerCase();
+    const szFilter = document.getElementById('sup-sarze-filter').value;
+    const supMap = buildSupplierMap(allData);
+    const supList = Object.values(supMap).sort((a, b) => {
+      // Sort by most recent delivery date descending
+      const la = a.deliveries[a.deliveries.length - 1]?.datum || '';
+      const lb = b.deliveries[b.deliveries.length - 1]?.datum || '';
+      return lb.localeCompare(la);
+    });
+
+    let totalProducts = 0, totalSame = 0, totalNew = 0;
+
+    const html = supList.map(s => {
+      const prodMap = buildProductHistory(s.deliveries);
+      const totalKg = s.deliveries.reduce((sum, d) => sum + (d.celkove_kg || 0), 0);
+      const dates = s.deliveries.map(d => d.datum);
+      const lastDate = dates[dates.length - 1];
+      const firstDate = dates[0];
+      const dodavekCount = s.deliveries.length;
+
+      // Filter products
+      let prodEntries = Object.entries(prodMap);
+      if (q) {
+        prodEntries = prodEntries.filter(([k, p]) =>
+          p.nazev.toLowerCase().includes(q) ||
+          (p.nw_kod || '').toString().toLowerCase().includes(q) ||
+          p.entries.some(e => (e.sarze || '').toLowerCase().includes(q))
+        );
+      }
+      if (szFilter === 'same') prodEntries = prodEntries.filter(([k, p]) => p.entries.length > 1 && sharzeStat(p.entries).type === 'same');
+      if (szFilter === 'new')  prodEntries = prodEntries.filter(([k, p]) => p.entries.length > 1 && sharzeStat(p.entries).type === 'new');
+      if (!prodEntries.length && (q || szFilter)) return '';
+
+      // Sort products: same-šarže first (most critical), then new, then once; within same group by streak desc
+      prodEntries.sort(([,a], [,b]) => {
+        const sa = a.entries.length > 1 ? sharzeStat(a.entries) : { type: 'once', streak: 0 };
+        const sb = b.entries.length > 1 ? sharzeStat(b.entries) : { type: 'once', streak: 0 };
+        const order = { same: 0, new: 1, once: 2 };
+        if (order[sa.type] !== order[sb.type]) return order[sa.type] - order[sb.type];
+        return sb.streak - sa.streak;
+      });
+
+      const sameCount = prodEntries.filter(([,p]) => p.entries.length > 1 && sharzeStat(p.entries).type === 'same').length;
+      const newCount  = prodEntries.filter(([,p]) => p.entries.length > 1 && sharzeStat(p.entries).type === 'new').length;
+      totalProducts += prodEntries.length;
+      totalSame += sameCount;
+      totalNew  += newCount;
+
+      const badgesHtml = [
+        `<span class="badge badge-kg">${dodavekCount} dodávek</span>`,
+        `<span class="badge badge-kg">${totalKg.toLocaleString('cs-CZ')} kg</span>`,
+        sameCount ? `<span class="badge badge-warn">⚠ ${sameCount}× stejná šarže</span>` : '',
+        newCount  ? `<span class="badge badge-items">↻ ${newCount}× nová šarže</span>` : '',
+      ].filter(Boolean).join('');
+
+      const supId = 'sup-' + s.name.replace(/[^a-z0-9]/gi, '-');
+
+      const rows = prodEntries.map(([k, p]) => {
+        const stat = p.entries.length > 1 ? sharzeStat(p.entries) : { type: 'once', streak: 1, prev: null, current: p.entries[0]?.sarze };
+        const last = p.entries[p.entries.length - 1];
+        const totalMnozstvi = p.entries.reduce((sum, e) => sum + (parseFloat(e.mnozstvi) || 0), 0);
+
+        let sbHtml = '';
+        if (stat.type === 'same') {
+          const cls = stat.streak >= 3 ? 'sb-warn' : 'sb-same';
+          sbHtml = `<span class="sb ${cls}">⚠ STEJNÁ ${stat.streak > 1 ? stat.streak+'×' : ''}</span>`;
+        } else if (stat.type === 'new') {
+          sbHtml = `<span class="sb sb-new">✓ NOVÁ ŠARŽE</span>`;
+        } else {
+          sbHtml = `<span class="sb sb-once">1× příjem</span>`;
+        }
+
+        // DMT of last entry
+        const dmtHtml = last.dmt
+          ? `<span class="${dmtClass(last.dmt)}">${fmtDate(last.dmt)}</span>`
+          : '<span style="color:#ccc;font-size:11px">—</span>';
+
+        // History toggle (only if > 1 entry)
+        const histId = 'sh-' + k + '-' + supId;
+        let histHtml = '';
+        if (p.entries.length > 1) {
+          const histRows = [...p.entries].reverse().map((e, idx) => {
+            const isLatest = idx === 0;
+            const isPrev   = idx === 1;
+            return `<tr>
+              <td>${fmtDate(e.datum)}</td>
+              <td style="font-family:monospace;${isLatest?'font-weight:700;color:#5c381f':''}">${e.sarze || '—'}</td>
+              <td>${e.dmt ? fmtDate(e.dmt) : '—'}</td>
+              <td>${e.mnozstvi || '—'} kg</td>
+              <td style="color:#a07850">${e.dodavka || ''}</td>
+            </tr>`;
+          }).join('');
+          histHtml = `
+            <br><span class="sh-toggle" onclick="toggleHist('${histId}')">▾ ${p.entries.length} dodávek</span>
+            <div class="sh-hist" id="${histId}">
+              <table>
+                <tr style="color:#a07850;font-size:10px"><td>Datum</td><td>Šarže</td><td>DMT</td><td>Množství</td><td>DL č.</td></tr>
+                ${histRows}
+              </table>
+            </div>`;
+        }
+
+        const prevHtml = stat.prev && stat.type === 'same'
+          ? `<div style="font-size:10.5px;color:#a07850;margin-top:2px">Předchozí: <span style="font-family:monospace">${stat.prev}</span></div>`
+          : '';
+
+        return `<tr>
+          <td><strong>${p.nazev}</strong>${p.nw_kod ? `<br><span class="nw-kod">NW ${p.nw_kod}</span>` : ''}</td>
+          <td>
+            <span class="lot">${last.sarze || '—'}</span>
+            ${prevHtml}
+            ${histHtml}
+          </td>
+          <td>${sbHtml}</td>
+          <td>${dmtHtml}</td>
+          <td style="text-align:right">${fmtDate(last.datum)}</td>
+          <td style="text-align:right">${totalMnozstvi > 0 ? totalMnozstvi.toLocaleString('cs-CZ', {maximumFractionDigits:2}) + ' kg' : '—'}</td>
+        </tr>`;
+      }).join('');
+
+      return `<div class="sup-card" id="${supId}">
+        <div class="sup-hdr" onclick="toggleSup('${supId}')">
+          <div class="sup-name">${s.name}</div>
+          <div class="sup-meta">${fmtDate(firstDate)}${firstDate !== lastDate ? ' – ' + fmtDate(lastDate) : ''}</div>
+          <div class="d-badges">${badgesHtml}</div>
+          <div class="chevron">▶</div>
+        </div>
+        <div class="sup-body">
+          <div style="overflow-x:auto">
+          <table class="sarze-tbl">
+            <thead><tr>
+              <th>Produkt</th>
+              <th style="min-width:160px">Šarže (poslední)</th>
+              <th style="width:140px">Stav šarže</th>
+              <th style="width:90px">DMT</th>
+              <th style="width:100px;text-align:right">Poslední příjem</th>
+              <th style="width:100px;text-align:right">Celkem kg</th>
+            </tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+          </div>
+        </div>
+      </div>`;
+    }).filter(Boolean).join('');
+
+    document.getElementById('sup-stats').innerHTML =
+      `<div class="stat">Dodavatelé: <strong>${supList.filter(s => !q && !szFilter || html.includes(s.name.replace(/[^a-z0-9]/gi,'-'))).length}</strong></div>
+       <div class="stat">Produkty: <strong>${totalProducts}</strong></div>
+       ${totalSame ? `<div class="stat" style="color:#b45309">⚠ Stejná šarže: <strong>${totalSame}×</strong></div>` : ''}
+       ${totalNew  ? `<div class="stat" style="color:#2d5a1b">↻ Nová šarže: <strong>${totalNew}×</strong></div>` : ''}`;
+
+    document.getElementById('sup-results').innerHTML = html || '<div class="empty">Žádné záznamy neodpovídají filtru.</div>';
+  }
+
+  function toggleSup(id) { document.getElementById(id).classList.toggle('open'); }
+  function toggleHist(id) { document.getElementById(id).classList.toggle('open'); }
+
+  // ── PUBLIC API ────────────────────────────────────────────────────────────
   // Public API for prijem-surovin.html to call
   window.NW_ARCHIV = {
     async append(entry) {
