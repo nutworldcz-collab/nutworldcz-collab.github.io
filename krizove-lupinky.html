@@ -1,0 +1,449 @@
+<title>Stažení lupínků</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&family=Source+Sans+3:wght@400;600&display=swap">
+
+<style>
+  /* Layout: single-column scrollable table, warm kraft palette */
+  :root {
+    --bg: #fdf7f0;
+    --bg2: #f1e6da;
+    --fg: #2e1a0e;
+    --fg-soft: #6b4f35;
+    --brown: #83502e;
+    --brown-dark: #5c381f;
+    --accent: #da1668;
+    --amber: #f7ab31;
+    --border: #d4b89a;
+    --badge-warn-bg: #fff3cd;
+    --badge-warn-fg: #7a5200;
+    --badge-ok-bg: #e8f5e9;
+    --badge-ok-fg: #2e6b30;
+    --badge-info-bg: #e8f0fb;
+    --badge-info-fg: #1a4880;
+    --row-even: #fdf7f0;
+    --row-odd: #f6ede1;
+    --shadow: 0 2px 12px rgba(92,56,31,.10);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1e120a;
+      --bg2: #2a1a0e;
+      --fg: #f0e0cc;
+      --fg-soft: #b8906a;
+      --brown: #c4845a;
+      --brown-dark: #d6a278;
+      --accent: #f0447e;
+      --amber: #f7c060;
+      --border: #5a3820;
+      --badge-warn-bg: #3d2c00;
+      --badge-warn-fg: #f7c060;
+      --badge-ok-bg: #0e2e10;
+      --badge-ok-fg: #7ecf82;
+      --badge-info-bg: #0a1e3a;
+      --badge-info-fg: #7ab4f5;
+      --row-even: #1e120a;
+      --row-odd: #271610;
+      --shadow: 0 2px 12px rgba(0,0,0,.35);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1e120a;
+    --bg2: #2a1a0e;
+    --fg: #f0e0cc;
+    --fg-soft: #b8906a;
+    --brown: #c4845a;
+    --brown-dark: #d6a278;
+    --accent: #f0447e;
+    --amber: #f7c060;
+    --border: #5a3820;
+    --badge-warn-bg: #3d2c00;
+    --badge-warn-fg: #f7c060;
+    --badge-ok-bg: #0e2e10;
+    --badge-ok-fg: #7ecf82;
+    --badge-info-bg: #0a1e3a;
+    --badge-info-fg: #7ab4f5;
+    --row-even: #1e120a;
+    --row-odd: #271610;
+    --shadow: 0 2px 12px rgba(0,0,0,.35);
+    color-scheme: dark;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Source Sans 3', Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    padding-block: 32px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    max-width: 1100px;
+    margin-inline: auto;
+  }
+
+  header {
+    margin-bottom: 28px;
+    border-bottom: 2px solid var(--brown);
+    padding-bottom: 16px;
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .header-left { flex: 1; min-width: 200px; }
+
+  .eyebrow {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--brown);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  h1 {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--brown-dark);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .meta {
+    font-size: 13px;
+    color: var(--fg-soft);
+    margin-top: 4px;
+  }
+
+  .summary-pills {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .pill {
+    background: var(--bg2);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 13px;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 600;
+    color: var(--fg-soft);
+    white-space: nowrap;
+  }
+  .pill strong { color: var(--brown-dark); }
+
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    border: 1.5px solid var(--border);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+    min-width: 640px;
+  }
+
+  thead {
+    background: var(--brown-dark);
+    color: #f0e0cc;
+  }
+
+  thead th {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 12px 14px;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  tbody tr:nth-child(even) { background: var(--row-even); }
+  tbody tr:nth-child(odd)  { background: var(--row-odd); }
+
+  tbody tr:hover { background: var(--bg2); }
+
+  td {
+    padding: 12px 14px;
+    vertical-align: top;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+
+  .num {
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--brown);
+    text-align: center;
+    width: 36px;
+  }
+
+  .name { font-weight: 600; color: var(--fg); }
+  .sub  { font-size: 12px; color: var(--fg-soft); margin-top: 2px; }
+
+  .addr { color: var(--fg); }
+  .addr .country {
+    display: inline-block;
+    font-size: 11px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    margin-left: 4px;
+    color: var(--fg-soft);
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 600;
+    letter-spacing: .5px;
+  }
+
+  .qty {
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--brown-dark);
+    white-space: nowrap;
+  }
+
+  .contact a {
+    color: var(--brown);
+    text-decoration: none;
+  }
+  .contact a:hover { text-decoration: underline; }
+  .contact .phone {
+    display: block;
+    font-size: 13px;
+    color: var(--fg-soft);
+    margin-top: 2px;
+  }
+  .dash { color: var(--fg-soft); font-style: italic; font-size: 13px; }
+
+  .badge {
+    display: inline-block;
+    border-radius: 6px;
+    padding: 3px 9px;
+    font-size: 12px;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 600;
+  }
+  .badge-warn  { background: var(--badge-warn-bg);  color: var(--badge-warn-fg); }
+  .badge-info  { background: var(--badge-info-bg);  color: var(--badge-info-fg); }
+  .badge-ok    { background: var(--badge-ok-bg);    color: var(--badge-ok-fg); }
+
+  .note-text { font-size: 13px; color: var(--fg-soft); margin-top: 4px; }
+
+  footer {
+    margin-top: 24px;
+    font-size: 12px;
+    color: var(--fg-soft);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .dot { color: var(--border); }
+</style>
+
+<header>
+  <div class="header-left">
+    <div class="eyebrow">Nutworld · Stažení produktu</div>
+    <h1>Vyzvednutí — Mandlové lupínky</h1>
+    <div class="meta">Přehled zákazníků k vyřízení · 8 položek</div>
+  </div>
+  <div class="summary-pills">
+    <div class="pill">Celkem <strong>8</strong> míst</div>
+    <div class="pill">CZ <strong>6</strong> · SK <strong>2</strong></div>
+  </div>
+</header>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Firma / Zákazník</th>
+        <th>Adresa vyzvednutí</th>
+        <th>Množství</th>
+        <th>Kontakt</th>
+        <th>Stav / Poznámka</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr>
+        <td class="num">1</td>
+        <td>
+          <div class="name">Lékárna EUC</div>
+          <div class="sub">Gabriela Příhodová · v poliklinice</div>
+        </td>
+        <td class="addr">
+          Plaňanská 573/1<br>Praha 10 <span class="country">CZ</span>
+        </td>
+        <td class="qty">350 g</td>
+        <td class="contact">
+          <a href="mailto:gprihodova@gmail.com">gprihodova@gmail.com</a>
+          <span class="phone">+420 724 166 544</span>
+        </td>
+        <td>
+          <span class="badge badge-ok">Připraveno</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="num">2</td>
+        <td>
+          <div class="name">Martina Nováková</div>
+        </td>
+        <td class="addr">
+          V Lipkách 362<br>391 33 Jistebnice <span class="country">CZ</span>
+        </td>
+        <td class="qty">2 balíky</td>
+        <td class="contact">
+          <a href="mailto:martina4886@gmail.com">martina4886@gmail.com</a>
+          <span class="phone">+420 720 116 300</span>
+        </td>
+        <td>
+          <span class="badge badge-ok">Připraveno</span>
+          <div class="note-text">2 rozdělané balíky</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="num">3</td>
+        <td>
+          <div class="name">Podniková prodejna VŠÚO</div>
+          <div class="sub">Havelková · VÝZKUMNÝ A ŠLECHTITELSKÝ ÚSTAV OVOCNÁŘSKÝ Holovousy s.r.o.</div>
+        </td>
+        <td class="addr">
+          Holovousy 129<br>508 01 Hořice <span class="country">CZ</span>
+        </td>
+        <td class="qty">9 ks</td>
+        <td class="contact">
+          <a href="mailto:prodejna@vsuo.cz">prodejna@vsuo.cz</a>
+          <span class="phone">+420 732 569 987</span>
+        </td>
+        <td>
+          <span class="badge badge-ok">Připraveno</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="num">4</td>
+        <td>
+          <div class="name">Potraviny Versh</div>
+          <div class="sub">Jakub Káňovič · POST Servis s.r.p. · IČO 31328245</div>
+        </td>
+        <td class="addr">
+          Turecká 2/E<br>Senec 903 01 <span class="country">SK</span>
+        </td>
+        <td class="qty">9 ks</td>
+        <td class="contact">
+          <a href="mailto:potraviny.versh@gmail.com">potraviny.versh@gmail.com</a>
+          <span class="phone">+421 918 661 706</span>
+        </td>
+        <td>
+          <span class="badge badge-ok">Připraveno</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="num">5</td>
+        <td>
+          <div class="name">Lucia Marková</div>
+        </td>
+        <td class="addr">
+          Mlynica 263<br>059 91 Mlynica <span class="country">SK</span>
+        </td>
+        <td class="qty">~150 g</td>
+        <td class="contact">
+          <a href="mailto:luciamarkova@gmail.com">luciamarkova@gmail.com</a>
+          <span class="phone">+421 907 152 125</span>
+        </td>
+        <td>
+          <span class="badge badge-ok">Připraveno</span>
+          <div class="note-text">Z 200g balení, zbývá ~150 g</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="num">6</td>
+        <td>
+          <div class="name">pekáreňRoh s.r.o.</div>
+          <div class="sub">Chulud Abbásová · Veľkoobchodný odberateľ</div>
+        </td>
+        <td class="addr">
+          Koceľova 8<br>949 01 Nitra <span class="country">SK</span>
+        </td>
+        <td class="qty">9 kg</td>
+        <td class="contact">
+          <a href="mailto:pekarenroh@gmail.com">pekarenroh@gmail.com</a>
+          <span class="phone">+421 908 800 247</span>
+        </td>
+        <td>
+          <span class="badge badge-ok">Připraveno</span>
+          <div class="note-text">3× 3 kg (orig. balení) + 1 otevřený ~350 g · Posílají sami</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="num">7</td>
+        <td>
+          <div class="name">Jakub Adámek</div>
+        </td>
+        <td class="addr">
+          Horky 100<br>664 61 Řebešovice <span class="country">CZ</span>
+        </td>
+        <td class="qty">—</td>
+        <td class="contact">
+          <a href="mailto:jakub.adamek@icloud.com">jakub.adamek@icloud.com</a>
+          <span class="phone">+420 739 832 974</span>
+        </td>
+        <td>
+          <span class="badge badge-info">Čeká na info</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="num">8</td>
+        <td>
+          <div class="name">Vinotéka u Pavluší</div>
+          <div class="sub">Pavlína Volejníková · Velkoobchodní odberatel</div>
+        </td>
+        <td class="addr">
+          Hradecká 32<br>535 01 Přelouč <span class="country">CZ</span>
+        </td>
+        <td class="qty">—</td>
+        <td class="contact">
+          <a href="mailto:volejnikova.p@seznam.cz">volejnikova.p@seznam.cz</a>
+          <span class="phone">+420 723 385 376</span>
+        </td>
+        <td>
+          <span class="badge badge-info">Čeká na info</span>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+<footer>
+  <span>Mandlové lupínky — stažení z trhu</span>
+  <span class="dot">·</span>
+  <span>Nutworld.cz</span>
+  <span class="dot">·</span>
+  <span>26. 10. 2026</span>
+</footer>
