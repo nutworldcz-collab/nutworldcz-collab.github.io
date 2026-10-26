@@ -1,5 +1,48 @@
 [
   {
+    "id": "ZM–261026-1793032224720",
+    "typ": "michani",
+    "datum": "2026-10-26",
+    "rec_num": "ZM–261026",
+    "zj": "",
+    "kod": "",
+    "nazev": "Směs Reksel",
+    "mnozstvi": null,
+    "pro_koho": "",
+    "cas_start": "",
+    "cas_end": "",
+    "ulozeni": "",
+    "sarze_vyrobku": "261026",
+    "dmt_vyrobku": "0002-03-20",
+    "created_at": "2026-10-26T16:30:24.720Z",
+    "suroviny": [
+      {
+        "kod": "101",
+        "nazev": "MANDLE PRAŽENÉ SOLENÉ",
+        "dodavatel": "",
+        "sarze": "L06102026",
+        "dmt": "2027-04-20",
+        "mnozstvi": null
+      },
+      {
+        "kod": "116",
+        "nazev": "KEŠU JÁDRA PRAŽENÁ SOLENÁ",
+        "dodavatel": "",
+        "sarze": "L22092026",
+        "dmt": "2027-03-23",
+        "mnozstvi": null
+      },
+      {
+        "kod": "56",
+        "nazev": "Arašídy pražené solené ",
+        "dodavatel": "",
+        "sarze": "260302/APS",
+        "dmt": "2028-04-30",
+        "mnozstvi": null
+      }
+    ]
+  },
+  {
     "id": "ZM–261026-1793031404143",
     "typ": "michani",
     "datum": "2026-10-26",
