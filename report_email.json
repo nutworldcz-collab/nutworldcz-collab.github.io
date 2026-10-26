@@ -1,20 +1,63 @@
 {
-  "generated": "2026-10-25T17:30:54",
-  "total": 11,
+  "generated": "2026-10-26T07:30:18",
+  "total": 7,
   "spam_skipped": 0,
   "emails": [
     {
       "account": "Exchange",
-      "sender": "\"scannutworld@mekrs.cz\" <scannutworld@mekrs.cz>",
-      "subject": "Message from \"NUT-1PATRO-RICOH\"",
-      "date": "neděle 25. října 2026 15:37:30",
-      "unread": false,
-      "preview": "E-mail byl odeslán z \"NUT-1PATRO-RICOH\" (IM C300). Datum skenování: 25.10.2026 15:37:19 (+0100) Dotazy na: scannutworld@mekrs.cz",
+      "sender": "\"fakturace@nutworld.cz\" <fakturace@nutworld.cz>",
+      "subject": "Odblokování zákazníka na VIP",
+      "date": "pondělí 26. října 2026 6:55:59",
+      "unread": true,
+      "preview": "Uživatel NYVLTOVAJ odblokoval zákazníka: Pematex s.r.o. (zkratka PEMATEX S.R.O.)",
       "category": "tym",
-      "sender_short": "scannutworld@mekrs.cz",
-      "sender_email": "scannutworld@mekrs.cz",
+      "sender_short": "fakturace@nutworld.cz",
+      "sender_email": "fakturace@nutworld.cz",
       "ai": {
-        "shrn": "Zpráva ze skeneru NUT-1PATRO-RICOH z 25.10.2026 15:35:11. Systémové oznámení o odeslání dokumentu.",
+        "shrn": "Systémová notifikace o odblokování VIP zákazníka Pematex s.r.o. Není potřeba Janovo rozhodnutí.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 6:12 (26. října 2026)",
+      "date": "pondělí 26. října 2026 6:14:20",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Doprava NutWorld označil(a) kartu REDA objednávka jako dokončenou Odpovědět e-mailem ￼ Doprava NutWorld přesunul(a) kartu REDA objednávka do sloupce Firmy 2026 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spoluprá",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Markéta Costachova <marketa.costachova@nutworld.cz>",
+      "subject": "párty box",
+      "date": "pondělí 26. října 2026 5:08:50",
+      "unread": true,
+      "preview": "Honzi",
+      "category": "tym",
+      "sender_short": "Markéta Costachova",
+      "sender_email": "marketa.costachova@nutworld.cz",
+      "ai": {
+        "shrn": "Krátká zpráva od Markéty týkající se party boxu bez dalších detailů. Nejasný obsah vyžaduje objasnění.",
+        "tyka_se": true,
+        "akce": "Požádat Markétu na objasnění obsahu zprávy o party boxu"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Markéta Costachova <marketa.costachova@nutworld.cz>",
+      "subject": "volno",
+      "date": "pondělí 26. října 2026 5:02:54",
+      "unread": true,
+      "preview": "Ahojte, posílám info",
+      "category": "tym",
+      "sender_short": "Markéta Costachova",
+      "sender_email": "marketa.costachova@nutworld.cz",
+      "ai": {
+        "shrn": "Markéta informuje o době volna. Jedná se o interní notifikaci bez požadavku na akci.",
         "tyka_se": false,
         "akce": null
       }
@@ -23,153 +66,46 @@
       "account": "Exchange",
       "sender": "scannutworld@mekrs.cz",
       "subject": "Message from \"NUT-1PATRO-RICOH\"",
-      "date": "neděle 25. října 2026 15:37:07",
+      "date": "pondělí 26. října 2026 4:36:38",
       "unread": false,
-      "preview": "E-mail byl odeslán z \"NUT-1PATRO-RICOH\" (IM C300). Datum skenování: 25.10.2026 15:37:00 (+0100) Dotazy na: scannutworld@mekrs.cz",
+      "preview": "E-mail byl odeslán z \"NUT-1PATRO-RICOH\" (IM C300). Datum skenování: 26.10.2026 04:36:30 (+0100) Dotazy na: scannutworld@mekrs.cz",
       "category": "tym",
       "sender_short": "scannutworld@mekrs.cz",
       "sender_email": "scannutworld@mekrs.cz",
       "ai": {
-        "shrn": "Zpráva ze skeneru NUT-1PATRO-RICOH z 25.10.2026 15:37:00. Systémové oznámení o odeslání dokumentu.",
+        "shrn": "Systémová zpráva ze skenovacího zařízení Ricoh bez konkrétního obsahu. Není jasné, co bylo naskenováno.",
         "tyka_se": false,
         "akce": null
       }
     },
     {
       "account": "Exchange",
-      "sender": "\"scannutworld@mekrs.cz\" <scannutworld@mekrs.cz>",
-      "subject": "Message from \"NUT-1PATRO-RICOH\"",
-      "date": "neděle 25. října 2026 15:37:03",
+      "sender": "InfoNutWorld <info@nutworld.cz>",
+      "subject": "Fw: [NutWorld.cz] Dotaz k produktu",
+      "date": "pondělí 26. října 2026 4:08:47",
       "unread": false,
-      "preview": "E-mail byl odeslán z \"NUT-1PATRO-RICOH\" (IM C300). Datum skenování: 25.10.2026 15:36:49 (+0100) Dotazy na: scannutworld@mekrs.cz",
+      "preview": "Zasláno z Outlooku pro Android From: info@nutworld.cz <info@nutworld.cz> Sent: Sunday",
       "category": "tym",
-      "sender_short": "scannutworld@mekrs.cz",
-      "sender_email": "scannutworld@mekrs.cz",
+      "sender_short": "InfoNutWorld",
+      "sender_email": "info@nutworld.cz",
       "ai": {
-        "shrn": "Zpráva ze skeneru NUT-1PATRO-RICOH z 25.10.2026 15:35:11. Systémové oznámení o odeslání dokumentu.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "\"scannutworld@mekrs.cz\" <scannutworld@mekrs.cz>",
-      "subject": "Message from \"NUT-1PATRO-RICOH\"",
-      "date": "neděle 25. října 2026 15:36:05",
-      "unread": false,
-      "preview": "E-mail byl odeslán z \"NUT-1PATRO-RICOH\" (IM C300). Datum skenování: 25.10.2026 15:35:58 (+0100) Dotazy na: scannutworld@mekrs.cz",
-      "category": "tym",
-      "sender_short": "scannutworld@mekrs.cz",
-      "sender_email": "scannutworld@mekrs.cz",
-      "ai": {
-        "shrn": "Zpráva ze skeneru NUT-1PATRO-RICOH z 25.10.2026 15:35:11. Systémové oznámení o odeslání dokumentu.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "\"scannutworld@mekrs.cz\" <scannutworld@mekrs.cz>",
-      "subject": "Message from \"NUT-1PATRO-RICOH\"",
-      "date": "neděle 25. října 2026 15:35:39",
-      "unread": false,
-      "preview": "E-mail byl odeslán z \"NUT-1PATRO-RICOH\" (IM C300). Datum skenování: 25.10.2026 15:35:31 (+0100) Dotazy na: scannutworld@mekrs.cz",
-      "category": "tym",
-      "sender_short": "scannutworld@mekrs.cz",
-      "sender_email": "scannutworld@mekrs.cz",
-      "ai": {
-        "shrn": "Zpráva ze skeneru NUT-1PATRO-RICOH z 25.10.2026 15:35:11. Systémové oznámení o odeslání dokumentu.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "\"scannutworld@mekrs.cz\" <scannutworld@mekrs.cz>",
-      "subject": "Message from \"NUT-1PATRO-RICOH\"",
-      "date": "neděle 25. října 2026 15:35:20",
-      "unread": false,
-      "preview": "E-mail byl odeslán z \"NUT-1PATRO-RICOH\" (IM C300). Datum skenování: 25.10.2026 15:35:11 (+0100) Dotazy na: scannutworld@mekrs.cz",
-      "category": "tym",
-      "sender_short": "scannutworld@mekrs.cz",
-      "sender_email": "scannutworld@mekrs.cz",
-      "ai": {
-        "shrn": "Zpráva ze skeneru NUT-1PATRO-RICOH z 25.10.2026 15:35:11. Systémové oznámení o odeslání dokumentu.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Okresné stavebné bytové družstvo — Dárková krabice MIX DRUHŮ L – Edice 1 na Tvorba štítků CANVA má termín za den",
-      "date": "neděle 25. října 2026 11:02:53",
-      "unread": true,
-      "preview": "￼ Termín je brzy... Okresné stavebné bytové družstvo — Dárková krabice MIX DRUHŮ L – Edice 1 na nástěnce Tvorba štítků CANVA s termínem má termín za den Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Exchange",
-      "sender": "Radka Goderová <radka.goderova@mekrs.cz>",
-      "subject": "RE: NUT 2026",
-      "date": "neděle 25. října 2026 10:40:16",
-      "unread": false,
-      "preview": "Ahojky",
-      "category": "tym",
-      "sender_short": "Radka Goderová",
-      "sender_email": "radka.goderova@mekrs.cz",
-      "ai": {
-        "shrn": "Krátká zpráva od Radky Goderové s pozdravem bez konkrétního obsahu.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "\"claudie.nutworld.cz@gmail.com\" <claudie.nutworld.cz@gmail.com>",
-      "subject": "🔄 Opraveno · Denní stav automatizací · 25.10.",
-      "date": "neděle 25. října 2026 8:49:12",
-      "unread": true,
-      "preview": "DENNÍ ZDRAVOTNÍ REPORT · NUTWORLD 🔄 Opraveno 2× · jinak OK 25. 10. 2026",
-      "category": "ostatni",
-      "sender_short": "claudie.nutworld.cz@gmail.com",
-      "sender_email": "claudie.nutworld.cz@gmail.com",
-      "ai": {
-        "shrn": "Denní report o stavu automatizací Nutworld z 25.10.2026 - 2× opraveno, jinak vše OK.",
-        "tyka_se": false,
-        "akce": null
+        "shrn": "Přeposlaný dotaz ze zákazníka k produktu přes email info@nutworld.cz. Vyžaduje Janovu odpověď nebo delegaci.",
+        "tyka_se": true,
+        "akce": "Zkontrolovat obsah dotazu a odpovědět zákazníkovi nebo delegovat na relevantní tým"
       }
     },
     {
       "account": "Google",
-      "sender": "Temu <temu@eu.temuemail.com>",
-      "subject": "V 25. říj 2026 jsme Vám poslali královskou odměnu!",
-      "date": "neděle 25. října 2026 12:33:19",
+      "sender": "\"CrossFit\" <crossfit@mail.crossfit.com>",
+      "subject": "261026 Workout of the Day: Sprint Intervals",
+      "date": "pondělí 26. října 2026 1:31:14",
       "unread": true,
-      "preview": "Prosím přijměte",
+      "preview": "￼ ￼ ￼ MONDAY",
       "category": "ostatni",
-      "sender_short": "Temu",
-      "sender_email": "temu@eu.temuemail.com",
+      "sender_short": "CrossFit",
+      "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "Propagační email od Temu s informací o přijaté odměně.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Google",
-      "sender": "AliExpress <ae-fresh-item04@newarrival.aliexpress.com>",
-      "subject": "Up to 51% OFF  For Samsung Galaxy Tab S5e Tablet Case 10.5 inch Trifold...",
-      "date": "neděle 25. října 2026 0:05:26",
-      "unread": true,
-      "preview": "Don't miss out on these electronics ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ￼ On sale now ￼ CZK95.54 ￼ CZK70.71 . ￼ CZK932.12 CZK3,444.29 View more . ",
-      "category": "ostatni",
-      "sender_short": "AliExpress",
-      "sender_email": "ae-fresh-item04@newarrival.aliexpress.com",
-      "ai": {
-        "shrn": "Promoce na AliExpress na pouzdra na tablety Samsung Galaxy Tab S5e se slevou až 51%.",
+        "shrn": "Marketingový email z CrossFitu o tréninkovém programu. Není relevantní pro operace Nutworld.cz.",
         "tyka_se": false,
         "akce": null
       }
