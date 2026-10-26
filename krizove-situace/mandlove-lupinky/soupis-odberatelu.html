@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Přehled odběratelů VO — Mandlové lupínky</title>
+<style>
+/* ── základní proměnné ──────────────────────────────── */
+:root {
+  --brown: #5c381f;
+  --brown-mid: #83502e;
+  --brown-light: #f1e6da;
+  --border: #c8a882;
+  --text: #1a1208;
+  --muted: #6b4f35;
+  --red: #c01040;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  background: #fff;
+  padding: 24px 32px;
+  max-width: 860px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* ── tlačítko tisku ─────────────────────────────────── */
+.print-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+.btn-print {
+  background: var(--brown);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 22px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.btn-print:hover { background: var(--brown-mid); }
+.btn-back {
+  background: #f1e6da;
+  color: var(--brown);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: Arial, Helvetica, sans-serif;
+  display: inline-flex;
+  align-items: center;
+}
+.btn-back:hover { background: #e8d8c8; }
+
+/* ── hlavička dokumentu ─────────────────────────────── */
+.doc-header {
+  border-bottom: 3px solid var(--brown);
+  padding-bottom: 14px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.doc-logo {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--brown);
+  letter-spacing: 0.5px;
+}
+.doc-firm {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.doc-meta {
+  text-align: right;
+  font-size: 11px;
+  color: var(--muted);
+}
+.doc-meta strong { color: var(--text); }
+
+/* ── nadpis dokumentu ───────────────────────────────── */
+.doc-title {
+  margin-bottom: 6px;
+}
+.doc-title h1 {
+  font-size: 15px;
+  font-weight: bold;
+  color: var(--brown);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+.doc-title h2 {
+  font-size: 13px;
+  font-weight: normal;
+  color: var(--muted);
+}
+.doc-intro {
+  background: var(--brown-light);
+  border-left: 4px solid var(--brown-mid);
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 24px;
+  border-radius: 0 6px 6px 0;
+}
+
+/* ── sekce ──────────────────────────────────────────── */
+.section {
+  margin-bottom: 28px;
+}
+.section-head {
+  background: var(--brown);
+  color: white;
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  border-radius: 6px 6px 0 0;
+  text-transform: uppercase;
+}
+
+/* ── tabulky ────────────────────────────────────────── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+thead th {
+  background: var(--brown-light);
+  color: var(--brown);
+  font-weight: bold;
+  padding: 7px 10px;
+  text-align: left;
+  border: 1px solid var(--border);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+tbody td {
+  padding: 7px 10px;
+  border: 1px solid #ddd;
+  vertical-align: top;
+}
+tbody tr:nth-child(even) td { background: #faf6f1; }
+.num { text-align: center; font-weight: bold; color: var(--brown-mid); width: 30px; }
+.bold { font-weight: bold; }
+.note { font-size: 11px; color: var(--muted); margin-top: 3px; }
+.badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-top: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.badge-ok  { background: #e6f4ea; color: #2a6b30; border: 1px solid #a8d8b0; }
+.badge-warn { background: #fff3cd; color: #7a5200; border: 1px solid #f0c060; }
+.badge-red  { background: #fde8ee; color: #a01040; border: 1px solid #e8a0b8; }
+
+/* ── podpis ─────────────────────────────────────────── */
+.signature {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+  font-size: 12px;
+}
+.sig-block { min-width: 200px; }
+.sig-line {
+  border-top: 1px solid #aaa;
+  width: 220px;
+  margin-top: 40px;
+  margin-bottom: 4px;
+}
+.sig-label { font-size: 11px; color: var(--muted); }
+
+/* ── TISK ────────────────────────────────────────────── */
+@media print {
+  @page { size: A4; margin: 15mm 14mm 12mm 14mm; }
+  .print-bar, .btn-back { display: none !important; }
+  body { padding: 0; font-size: 11.5px; }
+  table { page-break-inside: auto; }
+  tr { page-break-inside: avoid; }
+  .section { page-break-inside: avoid; }
+  a { color: inherit; text-decoration: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="print-bar">
+  <a class="btn-back" href="/krizove-situace/">← Zpět</a>
+  <button class="btn-print" onclick="window.print()">🖨 Stáhnout / Tisknout PDF</button>
+</div>
+
+<!-- Hlavička -->
+<div class="doc-header">
+  <div>
+    <div class="doc-logo">NUTWORLD s.r.o.</div>
+    <div class="doc-firm">IČO: 09801688 · Jiráskova 1117/14, 549 01 Nové Město nad Metují</div>
+  </div>
+  <div class="doc-meta">
+    <div>Datum vyhotovení: <strong>26. 10. 2026</strong></div>
+    <div>Věc: Stažení výrobku z trhu</div>
+  </div>
+</div>
+
+<div class="doc-title">
+  <h1>Přehled odběratelů VO a nakládání s dotčeným výrobkem</h1>
+  <h2>Výrobek: Mandlové lupínky · Dodavatel: K servis</h2>
+</div>
+
+<div class="doc-intro">
+  Přehled zahrnuje všechny evidované velkoobchodní odběratele dotčeného výrobku na území České republiky a Slovenské republiky. U každého odběratele je uveden objem odběru, způsob použití a aktuální stav nakládání s výrobkem.
+</div>
+
+<!-- ── 1. ČESKÁ REPUBLIKA ── -->
+<div class="section">
+  <div class="section-head">1. Česká republika (CZ)</div>
+  <table>
+    <thead>
+      <tr>
+        <th class="num">#</th>
+        <th>Odběratel</th>
+        <th>Objem odběru</th>
+        <th>Způsob použití</th>
+        <th>Období</th>
+        <th>Stav</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="num">1</td>
+        <td>
+          <div class="bold">Pavlína Volejníková</div>
+          <div class="note">Vinotéka u Pavluší, Přelouč · VO odběratel</div>
+        </td>
+        <td>2–3 ks × 200 g</td>
+        <td>B2B odběr, použití pro osobní potřebu</td>
+        <td>—</td>
+        <td><span class="badge badge-warn">Čeká na info</span></td>
+      </tr>
+      <tr>
+        <td class="num">2</td>
+        <td>
+          <div class="bold">VŠÚO Holovousy s.r.o.</div>
+          <div class="note">Podniková prodejna, Holovousy 129, 508 01 Hořice</div>
+        </td>
+        <td>Do 10 ks × 200 g</td>
+        <td>Výrobek určený k dalšímu prodeji konečným zákazníkům</td>
+        <td>—</td>
+        <td><span class="badge badge-ok">Staženo z prodeje</span><div class="note">Staženo 9 ks z 10</div></td>
+      </tr>
+      <tr>
+        <td class="num">3</td>
+        <td>
+          <div class="bold">Leona Goldová</div>
+        </td>
+        <td>1 ks × 200 g</td>
+        <td>—</td>
+        <td>3. 9. 2026</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td class="num">4</td>
+        <td>
+          <div class="bold">ŠKODA</div>
+        </td>
+        <td>1 ks × 200 g</td>
+        <td>—</td>
+        <td>Leden 2026</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td class="num">5</td>
+        <td>
+          <div class="bold">Papírnictví a dekorace Lišková</div>
+        </td>
+        <td>3 ks × 200 g</td>
+        <td>Přímý prodej</td>
+        <td>14. 1. 2026</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td class="num">6</td>
+        <td>
+          <div class="bold">Sylva Kotoučková</div>
+          <div class="note">PE&amp;Cafe s.r.o.</div>
+        </td>
+        <td>3 ks × 200 g</td>
+        <td>—</td>
+        <td>4. 12. 2025</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td class="num">7</td>
+        <td>
+          <div class="bold">Archid</div>
+        </td>
+        <td>3 ks × 200 g</td>
+        <td>—</td>
+        <td>Prosinec 2025</td>
+        <td><span class="badge badge-ok">Neevidují</span><div class="note">Dle dostupné evidence výrobek již neevidují</div></td>
+      </tr>
+      <tr>
+        <td class="num">8</td>
+        <td>
+          <div class="bold">Petra Vlachová</div>
+        </td>
+        <td>3 ks × 200 g</td>
+        <td>—</td>
+        <td>Září 2025</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td class="num">9</td>
+        <td>
+          <div class="bold">Trees</div>
+        </td>
+        <td>1 balení × 3 kg</td>
+        <td>Přímý prodej v kavárně</td>
+        <td>Červenec 2025</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td class="num">10</td>
+        <td>
+          <div class="bold">Naděžda Leskovská</div>
+        </td>
+        <td>2 ks × 200 g</td>
+        <td>—</td>
+        <td>Červenec 2025</td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ── 2. SLOVENSKÁ REPUBLIKA ── -->
+<div class="section">
+  <div class="section-head">2. Slovenská republika (SK)</div>
+  <table>
+    <thead>
+      <tr>
+        <th class="num">#</th>
+        <th>Odběratel</th>
+        <th>Objem odběru</th>
+        <th>Způsob použití</th>
+        <th>Období</th>
+        <th>Stav</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="num">1</td>
+        <td>
+          <div class="bold">POST Servis s.r.p.</div>
+          <div class="note">Potraviny Versh, Turecká 2/E, 903 01 Senec</div>
+        </td>
+        <td>10 ks × 200 g</td>
+        <td>Přímý prodej konečným zákazníkům</td>
+        <td>—</td>
+        <td><span class="badge badge-ok">Staženo 9/10 ks</span><div class="note">1 ks byl prodán konečnému zákazníkovi</div></td>
+      </tr>
+      <tr>
+        <td class="num">2</td>
+        <td>
+          <div class="bold">Pekáreň ROH s.r.o.</div>
+          <div class="note">Koceľova 8, 949 01 Nitra</div>
+        </td>
+        <td>Opakované odběry × 3 kg</td>
+        <td>Vlastní zpracování při pečení</td>
+        <td>Poslední použití: Květen 2026</td>
+        <td>
+          <span class="badge badge-ok">Vráceno 9 kg</span>
+          <div class="note">Od 5/2026 výrobek nebyl dále používán ani přeprodáván. Zrušena výroba produktu, kde se plátky používaly.</div>
+        </td>
+      </tr>
+      <tr>
+        <td class="num">3</td>
+        <td>
+          <div class="bold">Mária Kasanová – KVETINY</div>
+        </td>
+        <td>2 ks × 200 g</td>
+        <td>—</td>
+        <td>Srpen 2026</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td class="num">4</td>
+        <td>
+          <div class="bold">Špajza Humenné</div>
+        </td>
+        <td>1 kg celkem</td>
+        <td>Bezobalový prodej — bez možnosti dalšího přebalení</td>
+        <td>Květen 2026</td>
+        <td><span class="badge badge-ok">Staženo 800 g</span></td>
+      </tr>
+      <tr>
+        <td class="num">5</td>
+        <td>
+          <div class="bold">Róbert Lánik</div>
+        </td>
+        <td>3 kg</td>
+        <td>—</td>
+        <td>Srpen 2025</td>
+        <td><span class="badge badge-red">Nereaguje</span><div class="note">Odběratel dosud nereaguje na komunikaci. Aktuální stav výrobku se nepodařilo potvrdit.</div></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Podpis -->
+<div class="signature">
+  <div class="sig-block">
+    <div class="sig-line"></div>
+    <div class="sig-label">Jméno a podpis odpovědné osoby</div>
+  </div>
+  <div class="sig-block">
+    <div class="sig-line"></div>
+    <div class="sig-label">Datum a razítko</div>
+  </div>
+</div>
+
+</body>
+</html>
