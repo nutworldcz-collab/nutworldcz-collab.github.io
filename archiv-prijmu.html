@@ -298,7 +298,9 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
     const sel = document.getElementById('f-supplier');
     const suppliers = [...new Set(allData.map(d => d.dodavatel))].sort();
     suppliers.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
-    document.getElementById('hdr-count').textContent = `${allData.length} dodávek v archivu`;
+    // Update tab label with count
+    const tabBtn = document.querySelector('.tab-btn');
+    if (tabBtn) tabBtn.textContent = `📦 Přehled dodávek (${allData.length})`;
   }
 
   function dmtClass(dateStr) {
