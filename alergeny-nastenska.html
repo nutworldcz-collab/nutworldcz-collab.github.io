@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alergeny — nástěnka Nutworld</title>
+<style>
+  :root {
+    --brown: #83502e;
+    --brown-dark: #5c381f;
+    --brown-soft: #f1e6da;
+    --border: #c8976a;
+    --red: #c62828;
+    --red-soft: #fde8e8;
+    --green: #2e7d32;
+    --green-soft: #e8f5e9;
+    --orange: #e65100;
+    --orange-soft: #fff3e0;
+    --yellow-soft: #fff8e1;
+    --purple: #6a1b9a;
+    --purple-soft: #f3e5f5;
+    --blue: #1565c0;
+    --blue-soft: #e3f2fd;
+    --teal: #00695c;
+    --teal-soft: #e0f2f1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    background: #f5f0eb;
+    color: #1a1a1a;
+    padding: 16px;
+  }
+
+  .no-print { }
+  .btn-print {
+    display: block;
+    margin: 0 auto 16px;
+    background: var(--brown);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 28px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .btn-print:hover { background: var(--brown-dark); }
+
+  /* === DOKUMENT === */
+  .doc {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    border: 2px solid var(--brown);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  /* Header */
+  .doc-header {
+    background: var(--brown);
+    color: #fff;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .doc-header h1 { font-size: 17px; font-weight: 800; letter-spacing: .5px; }
+  .doc-header small { font-size: 10px; opacity: .8; }
+
+  .doc-body { padding: 14px 18px; display: flex; flex-direction: column; gap: 14px; }
+
+  /* Sekce nadpis */
+  .sec-title {
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--brown);
+    border-bottom: 2px solid var(--brown);
+    padding-bottom: 3px;
+    margin-bottom: 8px;
+  }
+
+  /* Alergeny grid */
+  .alergeny-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+  .alergen-card {
+    background: var(--red-soft);
+    border: 1.5px solid var(--red);
+    border-radius: 5px;
+    padding: 7px 8px;
+    text-align: center;
+    font-size: 10.5px;
+  }
+  .alergen-card .ico { font-size: 15px; display: block; margin-bottom: 2px; }
+  .alergen-card strong { display: block; font-size: 11px; }
+  .alergen-card span { color: #555; font-size: 9.5px; display: block; margin-top: 2px; }
+  .alergen-card.warn { background: var(--yellow-soft); border-color: #f9a825; }
+
+  /* Pořadí výroby */
+  .poradi {
+    display: flex;
+    gap: 4px;
+    align-items: stretch;
+  }
+  .poradi-step {
+    flex: 1;
+    border-radius: 5px;
+    padding: 7px 5px;
+    text-align: center;
+    font-size: 9.5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .poradi-step .num {
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .poradi-step strong { font-size: 9.5px; }
+  .poradi-step small { color: #555; }
+  .arr { display: flex; align-items: center; color: #aaa; font-size: 14px; padding: 0 1px; flex-shrink: 0; }
+
+  .warn-box {
+    background: var(--yellow-soft);
+    border: 1.5px solid #f9a825;
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 10.5px;
+    margin-top: 6px;
+  }
+
+  /* Varianta 2 tabulka */
+  table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  th { background: var(--brown); color: #fff; padding: 6px 8px; text-align: left; }
+  td { padding: 5px 8px; border: 1px solid var(--border); vertical-align: top; }
+  tr:nth-child(even) td { background: var(--brown-soft); }
+
+  /* Changeover grid */
+  .changeover-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+  }
+  .co-card {
+    border-radius: 5px;
+    padding: 8px 10px;
+    font-size: 10.5px;
+  }
+  .co-card strong { display: block; margin-bottom: 3px; font-size: 11px; }
+  .co-card ul { padding-left: 14px; line-height: 1.7; }
+
+  /* Checklist */
+  .checklist { font-size: 11.5px; line-height: 2.2; padding-left: 4px; }
+
+  /* Footer */
+  .doc-footer {
+    border-top: 1px solid var(--border);
+    padding: 6px 18px;
+    font-size: 9.5px;
+    color: #888;
+    text-align: center;
+    background: var(--brown-soft);
+  }
+
+  /* ===== PRINT ===== */
+  @media print {
+    @page { size: A4 portrait; margin: 10mm 12mm; }
+    *, *::before, *::after { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    body { padding: 0; background: #fff; font-size: 10.5px; }
+    .no-print { display: none !important; }
+    .doc { max-width: 100%; border-radius: 0; border: none; }
+    .doc-header { padding: 8px 14px; }
+    .doc-header h1 { font-size: 15px; }
+    .doc-body { padding: 10px 14px; gap: 10px; }
+    .alergeny-grid { gap: 4px; }
+    .alergen-card { padding: 5px 6px; }
+    .poradi-step { padding: 5px 4px; }
+    .poradi-step .num { font-size: 18px; }
+    .changeover-grid { gap: 5px; }
+    .co-card { padding: 6px 8px; }
+    .checklist { line-height: 2; }
+  }
+</style>
+</head>
+<body>
+
+<div class="no-print" style="text-align:center;margin-bottom:12px">
+  <button class="btn-print" onclick="window.print()">🖨 Vytisknout / uložit jako PDF</button>
+  <div style="font-size:11px;color:#666;margin-top:4px">Doporučeno: barevný tisk, A4 na výšku, zalaminovat</div>
+</div>
+
+<div class="doc">
+
+  <!-- HEADER -->
+  <div class="doc-header">
+    <div>
+      <h1>⚠️ ALERGENY V BALÍRNĚ — NUT WORLD s.r.o.</h1>
+      <small>IDA 825 · Rtyně v Podkrkonoší · HACCP Příloha 10 + 23 · Říjen 2026</small>
+    </div>
+    <div style="text-align:right;font-size:10px;opacity:.8">Nástěnka pro balírnu<br>Aktualizovat při změně sortimentu</div>
+  </div>
+
+  <div class="doc-body">
+
+    <!-- SEKCE 1: ALERGENY -->
+    <div>
+      <div class="sec-title">1 — Alergeny přítomné v provozu (EU 1169/2011)</div>
+      <div class="alergeny-grid">
+        <div class="alergen-card">
+          <span class="ico">🥜</span>
+          <strong>Stromové ořechy</strong>
+          <span>mandle, kešu, vlašské, lískové, para, pekanové, makadamové, pistácie</span>
+        </div>
+        <div class="alergen-card">
+          <span class="ico">🥜</span>
+          <strong>Arašídy</strong>
+          <span>burské oříšky a výrobky z nich — samostatná alergenní skupina!</span>
+        </div>
+        <div class="alergen-card">
+          <span class="ico">🌱</span>
+          <strong>Sezam</strong>
+          <span>semínka a olej — prach se šíří, kontaminuje okolí!</span>
+        </div>
+        <div class="alergen-card">
+          <span class="ico">🍫</span>
+          <strong>Sója</strong>
+          <span>v polevách a ochucených ořeších od dodavatelů</span>
+        </div>
+        <div class="alergen-card">
+          <span class="ico">🥛</span>
+          <strong>Mléko</strong>
+          <span>mléčné polevy, bílá čokoláda, čokoládové dražé</span>
+        </div>
+        <div class="alergen-card">
+          <span class="ico">🌾</span>
+          <strong>Lepek / Pšenice</strong>
+          <span>ořechy v těstíčku — pšeničná mouka v obalu</span>
+        </div>
+        <div class="alergen-card">
+          <span class="ico">SO₂</span>
+          <strong>Siřičitany</strong>
+          <span>sušené meruňky, rozinky, datle — konzervant</span>
+        </div>
+        <div class="alergen-card warn">
+          <span class="ico">🌿</span>
+          <strong>Hořčice</strong>
+          <span>koření a krusty — dle spec. listu dodavatele</span>
+        </div>
+      </div>
+      <div style="font-size:9.5px;color:#777;margin-top:5px">Ostatní alergeny dle EU 1169/2011 se vyskytují výjimečně — vždy ověřit v K2 spec listu konkrétního produktu.</div>
+    </div>
+
+    <!-- SEKCE 2: VARIANTA A -->
+    <div>
+      <div class="sec-title">2 — Varianta A: Jedno pracoviště — povinné pořadí výroby</div>
+      <div class="poradi">
+        <div class="poradi-step" style="background:var(--green-soft);border:2px solid var(--green)">
+          <span class="num" style="color:var(--green)">1</span>
+          <strong>BEZ ALERGENŮ</strong>
+          <small>Slunečnice, dýně, lněná semínka</small>
+        </div>
+        <div class="arr">→</div>
+        <div class="poradi-step" style="background:var(--blue-soft);border:2px solid var(--blue)">
+          <span class="num" style="color:var(--blue)">2</span>
+          <strong>NATURAL OŘECHY</strong>
+          <small>Mandle, kešu, vlašské, para…</small>
+        </div>
+        <div class="arr">→</div>
+        <div class="poradi-step" style="background:var(--teal-soft);border:2px solid var(--teal)">
+          <span class="num" style="color:var(--teal)">3</span>
+          <strong>PRAŽENÉ OŘECHY</strong>
+          <small>Pražené, solené, obalované</small>
+        </div>
+        <div class="arr">→</div>
+        <div class="poradi-step" style="background:var(--orange-soft);border:2px solid var(--orange)">
+          <span class="num" style="color:var(--orange)">4</span>
+          <strong>SUŠENÉ OVOCE</strong>
+          <small>Bez SO₂ → se SO₂</small>
+        </div>
+        <div class="arr">→</div>
+        <div class="poradi-step" style="background:var(--red-soft);border:2px solid var(--red)">
+          <span class="num" style="color:var(--red)">5</span>
+          <strong>ARAŠÍDY</strong>
+          <small>Vždy předposlední</small>
+        </div>
+        <div class="arr">→</div>
+        <div class="poradi-step" style="background:var(--purple-soft);border:2px solid var(--purple)">
+          <span class="num" style="color:var(--purple)">6</span>
+          <strong>ČOKOLÁDOVÉ</strong>
+          <small>Mléko + sója → vždy poslední</small>
+        </div>
+      </div>
+      <div class="warn-box">
+        ⚠️ <strong>Přeskočení pořadí = povinný plný mokrý changeover</strong> před zahájením výroby! Nelze přejít z čokoládových zpátky na natural bez kompletního čištění.
+      </div>
+    </div>
+
+    <!-- SEKCE 3: VARIANTA B -->
+    <div>
+      <div class="sec-title">3 — Varianta B: Oddělená pracoviště — fyzická segregace</div>
+      <p style="font-size:10.5px;margin-bottom:7px;color:#444">Každé pracoviště má vlastní vyhrazené vybavení (váha, nádoby, lopatky). Changeover mezi pracovišti se <strong>nevyžaduje</strong>. Přesun pracovníka mezi pracovišti = výměna rukavic + mytí rukou.</p>
+      <table>
+        <tr>
+          <th style="width:120px">Pracoviště</th>
+          <th>Pořadí výroby na pracovišti</th>
+          <th style="width:200px">Alergeny pracoviště</th>
+        </tr>
+        <tr>
+          <td><strong>🍓 OVOCE</strong></td>
+          <td>1. Natural (bez SO₂) → 2. Slazené → 3. Se SO₂ (siřičitany)</td>
+          <td>SO₂ / siřičitany</td>
+        </tr>
+        <tr>
+          <td><strong>🌱 SEMÍNKA</strong></td>
+          <td>1. Bez alergenů (slunečnice, dýně, lněná) → 2. Sezam</td>
+          <td>Sezam</td>
+        </tr>
+        <tr>
+          <td><strong>🥜 OŘECHY</strong></td>
+          <td>1. Natural → 2. Pražené / solené → 3. Obalované / krusta → 4. Arašídy</td>
+          <td>Stromové ořechy, arašídy, hořčice</td>
+        </tr>
+        <tr>
+          <td><strong>🍫 ČOKOLÁDA</strong></td>
+          <td>1. Hořká čokoláda → 2. Mléčná → 3. Bílá čokoláda</td>
+          <td>Mléko, sója, stromové ořechy</td>
+        </tr>
+      </table>
+      <div style="font-size:9.5px;color:#666;margin-top:5px">Každé pracoviště musí být fyzicky označeno tabulkou s názvem a alergeny pracoviště. Vybavení nesmí přecházet mezi pracovišti.</div>
+    </div>
+
+    <!-- SEKCE 4: ČISTICÍ POSTUP -->
+    <div>
+      <div class="sec-title">4 — Čisticí postup dle přechodu alergenů</div>
+      <div class="changeover-grid">
+        <div class="co-card" style="background:var(--green-soft);border:1.5px solid var(--green)">
+          <strong style="color:var(--green)">✅ SUCHÁ OČISTA — ~5 min</strong>
+          Přechod v rámci <em>stejné</em> alergenní skupiny (např. mandle → kešu)
+          <ul>
+            <li>Kartáč + vysavač</li>
+            <li>Vizuální kontrola plochy a váhy</li>
+            <li>Záznam P3 <strong>není</strong> nutný</li>
+          </ul>
+        </div>
+        <div class="co-card" style="background:var(--orange-soft);border:1.5px solid var(--orange)">
+          <strong style="color:var(--orange)">⚠️ VLHKÁ DEZINFEKCE + ZÁZNAM P3 — ~15 min</strong>
+          Přechod do <em>jiné</em> alergenní skupiny (např. ořechy → arašídy)
+          <ul>
+            <li>Suchá očista (kartáč + vysavač)</li>
+            <li>Vlhká dezinfekce všech kontaktních ploch</li>
+            <li>Výměna kbelíku / pracovního sáčku</li>
+            <li>Zapsat do <strong>Přílohy 3</strong></li>
+          </ul>
+        </div>
+        <div class="co-card" style="background:var(--red-soft);border:1.5px solid var(--red)">
+          <strong style="color:var(--red)">🔴 MOKRÉ ČIŠTĚNÍ + VEDOUCÍ — ~30–45 min</strong>
+          Přechod na produkt s deklarací <em>NEOBSAHUJE X</em>
+          <ul>
+            <li>Kompletní mokré čištění celé linky</li>
+            <li>Vizuální kontrola vedoucím balírny</li>
+            <li>Podpis vedoucího + záznam Přílohy 3</li>
+          </ul>
+        </div>
+        <div class="co-card" style="background:#fff3cd;border:1.5px solid #f9a825">
+          <strong style="color:#a05000">🚨 ZASTAV VÝROBU — VOLEJ VEDOUCÍHO</strong>
+          Okamžitě přestat a nahlásit, pokud:
+          <ul>
+            <li>Surovina má podezřelý zápach, barvu nebo cizí těleso</li>
+            <li>Etiketa nesedí k produktu v ruce</li>
+            <li>Nejsi si jistý/á pořadím nebo postupem</li>
+            <li>Zjistíš neshodu po zahájení výroby</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEKCE 5: CHECKLIST -->
+    <div>
+      <div class="sec-title">5 — Před každou šarží zkontroluj</div>
+      <div class="checklist">
+        ☐ &nbsp; Pracovní plocha, váha a všechny pomůcky jsou čisté — žádné zbytky předchozí suroviny<br>
+        ☐ &nbsp; Správná surovina: kód K2 souhlasí s výrobním příkazem<br>
+        ☐ &nbsp; Etiketa odpovídá produktu — správný název, zvýrazněné alergeny a text „stopy" souhlasí<br>
+        ☐ &nbsp; Ochranný oděv, čepice a rukavice jsou nasazeny a čisté<br>
+        ☐ &nbsp; Pořadí výroby dodrženo (viz Varianta A nebo B výše)
+      </div>
+    </div>
+
+  </div><!-- /doc-body -->
+
+  <div class="doc-footer">
+    Nutworld s.r.o. · IDA 825, Rtyně v Podkrkonoší · HACCP Příloha 10 + 23 · Vytisknout barevně, zalaminovat · Plná verze: nutworldcz-collab.github.io/haccp.html
+  </div>
+
+</div><!-- /doc -->
+
+</body>
+</html>
