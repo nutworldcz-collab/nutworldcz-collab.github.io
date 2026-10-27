@@ -312,14 +312,14 @@ function showTab(id) {
 const RULES_KEY = 'nw_dmt_rules_v1';
 const DEFAULT_RULES = [
   { typ: 'Ořechy natural (celé, plátky, třísky)', dni: 30, pozn: 'Mandle, kešu, vlašské, para, pistácie…' },
-  { typ: 'Ořechy pražené / solené', dni: 45, pozn: 'Pražené a solené, drcené, smažené' },
-  { typ: 'Semínka (chia, lněné, slunečnice, dýně…)', dni: 30, pozn: 'Semena bez úpravy nebo pražená' },
+  { typ: 'Ořechy pražené / solené', dni: 20, pozn: 'Pražené a solené, drcené, smažené' },
   { typ: 'Sušené ovoce', dni: 30, pozn: 'Rozinky, švestky, meruňky, mango, klikva…' },
-  { typ: 'Směs ořechů a sušeného ovoce', dni: 60, pozn: 'Studentská, tropická, fitness směs…' },
-  { typ: 'Čokoládové dražé / poleva', dni: 90, pozn: 'Mandle v čokoládě, kešu v čokoládě, dražé…' },
-  { typ: 'Karamelizované ořechy', dni: 90, pozn: 'Karamelizované mandle, kešu, pekán…' },
-  { typ: 'Želé / bonbóny / cukrovinky', dni: 60, pozn: 'Ovocné želé, lékořice, marshmallow…' },
-  { typ: 'Dárkové sety / mixované krabice', dni: 90, pozn: 'Kombinace různých typů — brát nejkratší' },
+  { typ: 'Čokoládové / kakaové', dni: 20, pozn: 'Mandle v čokoládě, kešu v čokoládě, dražé, kakao…' },
+  { typ: 'Obalované slané (krusta, koření)', dni: 20, pozn: 'Ořechy v těstíčku, v krustu, ochucené kořením' },
+  { typ: 'Semínka (chia, lněné, slunečnice, dýně…)', dni: 30, pozn: 'Semena bez úpravy nebo pražená' },
+  { typ: 'Směsi (mix) — trial', dni: 20, pozn: 'Nejkratší složka − Δ její kategorie (zkouška)' },
+  { typ: 'Dárková krabička / sada', dni: 0, pozn: 'DMT = nejkratší složka (bez dalšího odečtu)' },
+  { typ: 'Želé / bonbóny / cukrovinky', dni: 20, pozn: 'Ovocné želé, lékořice, marshmallow…' },
 ];
 
 function getRules() {
