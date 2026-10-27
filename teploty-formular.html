@@ -157,6 +157,7 @@
     .screen-header { border-radius: 0; padding: 8px 12px; }
     .screen-header h1 { font-size: 14px; }
     .controls, .btn-print, .no-print { display: none !important; }
+    .print-meta { display: flex !important; }
     .ranges { margin-bottom: 10px; }
     .range-card { padding: 5px 8px; }
     table { font-size: 9.5px; }
@@ -170,6 +171,7 @@
       -webkit-appearance: none;
       font-size: 9px;
     }
+    input::placeholder { color: transparent !important; }
     select.ok-sel { border: none; border-bottom: 1px solid #999; }
     .sign-row { margin-top: 10px; }
   }
@@ -183,6 +185,13 @@
     <small>IDA 825 · Rtyně v Podkrkonoší · HACCP Příloha 16</small>
   </div>
   <div style="text-align:right;font-size:11px;opacity:.85">Archivovat min. 2 roky · Neshody hlásit vedoucímu</div>
+</div>
+
+<!-- Řádek viditelný POUZE při tisku -->
+<div class="print-meta" style="display:none;background:var(--brown-soft);border:1px solid var(--border);border-radius:5px;padding:8px 14px;margin-bottom:12px;font-size:12px;gap:32px;align-items:center;flex-wrap:wrap">
+  <div><strong>Měsíc / rok:</strong> <span id="printPeriod"></span></div>
+  <div><strong>Zodpovědná osoba:</strong> <span id="printOsobaLine"></span></div>
+  <div style="margin-left:auto;font-size:10.5px;color:var(--fg-muted)">HACCP Příloha 16</div>
 </div>
 
 <!-- Ovládací panel -->
@@ -292,8 +301,15 @@ function buildTable() {
     tbody.appendChild(tr);
   }
 
-  // Update page title for print
+  // Update page title + print-meta row
   document.title = `Evidence teplot — ${MONTHS_CS[m]} ${y} — Nutworld`;
+  document.getElementById('printPeriod').textContent = `${MONTHS_CS[m]} ${y}`;
+}
+
+function updatePrintOsoba() {
+  const v = document.getElementById('inpOsoba').value;
+  document.getElementById('printOsoba').textContent = v;
+  document.getElementById('printOsobaLine').textContent = v;
 }
 
 function checkRange(el, min, max) {
@@ -325,9 +341,7 @@ buildTable();
 document.getElementById('selMonth').addEventListener('change', buildTable);
 document.getElementById('selYear').addEventListener('change', buildTable);
 document.getElementById('selYear').addEventListener('input', buildTable);
-document.getElementById('inpOsoba').addEventListener('input', () => {
-  document.getElementById('printOsoba').textContent = document.getElementById('inpOsoba').value;
-});
+document.getElementById('inpOsoba').addEventListener('input', updatePrintOsoba);
 </script>
 </body>
 </html>
