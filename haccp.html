@@ -397,6 +397,7 @@ tr:nth-child(even) td { background: var(--bg-soft) }
   <a href="#odpady">P19 Odpady</a>
   <a href="#obaly">P20 Obaly</a>
   <a href="#dodavatele">P21 Dodavatelé</a>
+  <a href="#skoleni-plan">P22 Školení</a>
 </nav>
 
 <div class="doc-wrap">
@@ -2599,6 +2600,73 @@ tr:nth-child(even) td { background: var(--bg-soft) }
 
   <div class="rule-box" style="margin-top:14px;font-size:12px">
     <strong>Záznamy příjmu:</strong> Každá dodávka je zaznamenána v digitálním archivu příjmu (archiv-prijmu — interní systém Nut World). Papírový dodací list je archivován fyzicky po dobu min. 5 let (EU 178/2002 — traceability).
+  </div>
+</div>
+
+
+<!-- P22: PLÁN ŠKOLENÍ -->
+<div class="section" id="skoleni-plan" style="page-break-before:always">
+  <div class="sec-hd">
+    <div class="sec-num">Příloha 22</div>
+    <div class="sec-title">Plán školení pracovníků</div>
+  </div>
+
+  <div class="rule-box" style="margin-bottom:16px">
+    <strong>Školitel:</strong> Jan Vlček — vedoucí HACCP týmu<br>
+    <strong>Záznam:</strong> Každé školení se zapisuje do Prezenční listiny (Příloha 7) + stručný obsah (o čem školení bylo)<br>
+    <strong>Archivace:</strong> Záznamy ze školení uchovávat min. 3 roky
+  </div>
+
+  <!-- TYP 1: VSTUPNÍ -->
+  <h3 style="margin-top:4px">Typ 1 — Vstupní školení (každý nový pracovník)</h3>
+  <p style="font-size:12px;color:var(--fg-muted);margin:4px 0 10px">Proběhne před prvním vstupem do balírny. Rozsah: 1–2 hodiny. Školitel potvrdí podpisem do P7.</p>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>#</th><th>Téma</th><th>Klíčový obsah</th><th>Příloha HACCP</th></tr>
+      <tr><td>1</td><td><strong>Osobní hygiena</strong></td><td>Mytí rukou, ochranný oděv, šperky, nemoc = nástup zakázán</td><td>P18</td></tr>
+      <tr><td>2</td><td><strong>14 alergenů</strong></td><td>Které suroviny je obsahují, co je křížová kontaminace, jak se jí vyhnout</td><td>P1, P10</td></tr>
+      <tr><td>3</td><td><strong>Changeover — CCP1</strong></td><td>Pořadí výroby od nejméně k nejvíce alergenním, čistění mezi šaržemi, proč nelze přeskočit</td><td>P3</td></tr>
+      <tr><td>4</td><td><strong>Kontrola etikety — CCP2</strong></td><td>Co ověřit před nalepením, co dělat při zjištění chyby</td><td>P4</td></tr>
+      <tr><td>5</td><td><strong>Traceability (šarže + DMT)</strong></td><td>Jak číst šarži a DMT na obalu suroviny, kde se zapisuje, proč je to důležité</td><td>P11, P14</td></tr>
+      <tr><td>6</td><td><strong>Postup při neshodě</strong></td><td>Co dělat když surovina vypadá podezřele / etiketa nesedí / odchytíme hlodavce</td><td>P5, P15</td></tr>
+      <tr><td>7</td><td><strong>Sanitace — Deník sanitace</strong></td><td>Které prostředky na co, jak vyplnit Deník sanitace po šarži</td><td>P17</td></tr>
+    </table>
+  </div>
+
+  <!-- TYP 2: ROČNÍ -->
+  <h3 style="margin-top:20px">Typ 2 — Roční opakování (celý tým, 1× ročně)</h3>
+  <p style="font-size:12px;color:var(--fg-muted);margin:4px 0 10px">Ideálně v lednu nebo při výročním přezkoumání HACCP. Rozsah: ~1 hodina.</p>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>#</th><th>Téma</th><th>Klíčový obsah</th><th>Příloha HACCP</th></tr>
+      <tr><td>1</td><td><strong>Alergenový update</strong></td><td>Nové produkty v sortimentu, změny složení, nová alergeny v provozu</td><td>P1, P10</td></tr>
+      <tr><td>2</td><td><strong>Přehled neshod za rok</strong></td><td>Co se stalo (CCP odchylky, reklamace), co se z toho naučilo, jak se situace vyřešila</td><td>P5, P8</td></tr>
+      <tr><td>3</td><td><strong>Výsledky DDD za rok</strong></td><td>Protokoly od Miloslava Prouzy — záchyt hlodavců / hmyzu, trend, opatření</td><td>P15</td></tr>
+      <tr><td>4</td><td><strong>Recall simulace</strong></td><td>Krátké procvičení: „Šarže XY je problematická — co teď?" Kdo volá komu, za jak dlouho</td><td>Sekce 8</td></tr>
+      <tr><td>5</td><td><strong>Změny HACCP plánu</strong></td><td>Co se v plánu změnilo od posledního přezkoumání, proč</td><td>P8</td></tr>
+    </table>
+  </div>
+
+  <!-- TYP 3: AD HOC -->
+  <h3 style="margin-top:20px">Typ 3 — Ad hoc školení (okamžitě při konkrétní situaci)</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Spouštěč</th><th>Obsah školení</th><th>Kdo se školí</th></tr>
+      <tr><td>Nový produkt s novým alergenem</td><td>Jaký nový alergen, jak se zařadí do changeover pořadí, úprava čisticího postupu</td><td>Celý tým balírny</td></tr>
+      <tr><td>Incident / neshoda na CCP</td><td>Rozbor co se stalo, proč, jak se tomu příště vyhnout</td><td>Dotčení pracovníci + vedoucí</td></tr>
+      <tr><td>Změna čisticího prostředku</td><td>Nový prostředek — jak používat, ředění, bezpečnost</td><td>Celý tým balírny</td></tr>
+      <tr><td>Nový dodavatel / nová surovina</td><td>Spec list suroviny, alergeny, DMT pravidla, kde se skladuje</td><td>Pracovníci skladu + balírny</td></tr>
+    </table>
+  </div>
+
+  <h3 style="margin-top:20px">Přehled provedených školení — roční plán</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Typ školení</th><th>Plánovaný termín</th><th>Skutečný termín</th><th>Počet účastníků</th><th>Prezenční listina (P7)</th></tr>
+      <tr><td>Vstupní — nový pracovník</td><td>Před nástupem</td><td style="height:24px"></td><td></td><td>✅ vyplněna</td></tr>
+      <tr><td>Roční opakování</td><td>Leden 2027</td><td style="height:24px"></td><td></td><td>✅ vyplněna</td></tr>
+      <tr><td>Ad hoc (dle potřeby)</td><td>—</td><td style="height:24px"></td><td></td><td>✅ vyplněna</td></tr>
+    </table>
   </div>
 </div>
 
