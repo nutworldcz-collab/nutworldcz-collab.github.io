@@ -1,5 +1,48 @@
 [
   {
+    "id": "ZM–261026-1793088529378",
+    "typ": "michani",
+    "datum": "2026-10-26",
+    "rec_num": "ZM–261026",
+    "zj": "",
+    "kod": "",
+    "nazev": "Alza mandle tří barev",
+    "mnozstvi": null,
+    "pro_koho": "",
+    "cas_start": "",
+    "cas_end": "",
+    "ulozeni": "",
+    "sarze_vyrobku": "261026",
+    "dmt_vyrobku": "2027-06-14",
+    "created_at": "2026-10-27T08:08:49.378Z",
+    "suroviny": [
+      {
+        "kod": "4038",
+        "nazev": "MANDLOVÁ JÁDRA PRAŽENÁ V MLÉČNÉ ČOKOLÁDĚ",
+        "dodavatel": "encinger",
+        "sarze": "E13260454D",
+        "dmt": "2027-07-15",
+        "mnozstvi": null
+      },
+      {
+        "kod": "1955",
+        "nazev": "MANDLOVÁ JÁDRA PRAŽENÁ V HOŘKÉ ČOKOLÁDĚ",
+        "dodavatel": "Encinger",
+        "sarze": "E13260457A",
+        "dmt": "2027-07-17",
+        "mnozstvi": null
+      },
+      {
+        "kod": "107",
+        "nazev": "MANDLOVÁ JÁDRA V BÍLÉ ČOKOLÁDĚ",
+        "dodavatel": "En",
+        "sarze": "E13260467D",
+        "dmt": "2027-07-21",
+        "mnozstvi": null
+      }
+    ]
+  },
+  {
     "id": "ZM–261026-1793088346960",
     "typ": "surovina",
     "datum": "2026-10-26",
