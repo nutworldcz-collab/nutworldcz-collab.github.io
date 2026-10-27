@@ -1343,7 +1343,7 @@ tr:nth-child(even) td { background: var(--bg-soft) }
   <div class="tbl-wrap">
     <table>
       <tr><th>#</th><th>Alergen</th><th>Příklady</th><th>Přítomno v Nutworld sortimentu</th></tr>
-      <tr><td>1</td><td><strong>Obiloviny obsahující lepek</strong></td><td>pšenice, žito, ječmen, oves, špalda, kamut</td><td>Stopy (sdílená linka / koření)</td></tr>
+      <tr><td>1</td><td><strong>Obiloviny obsahující lepek</strong></td><td>pšenice, žito, ječmen, oves, špalda, kamut</td><td><span class="sig-yes">ANO — ořechy v těstíčku (pšeničná mouka v obalu)</span></td></tr>
       <tr><td>2</td><td><strong>Korýši</strong></td><td>krevety, krabi, humři</td><td><span class="sig-yes">ANO — v ochucených produktech (mořské plody)</span></td></tr>
       <tr><td>3</td><td><strong>Vejce</strong></td><td>vejce a vaječné produkty</td><td>Stopy (sdílená linka)</td></tr>
       <tr><td>4</td><td><strong>Ryby</strong></td><td>všechny druhy ryb</td><td>Ne</td></tr>
@@ -1360,8 +1360,9 @@ tr:nth-child(even) td { background: var(--bg-soft) }
     </table>
   </div>
   <div class="info-box" style="font-size:12px">
-    <strong>Alergeny přítomné v sortimentu Nutworld:</strong> č. 2, 5, 6, 7, 8, 9, 10, 11, 12, 14 — tj. 10 z 14 hlavních alergenů.<br>
+    <strong>Alergeny přítomné v sortimentu Nutworld:</strong> č. 1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 14 — tj. 11 z 14 hlavních alergenů.<br>
     Alergeny č. 5, 8, 11 (arašídy, ořechy, sezam) jsou přítomny ve výrobě souběžně jako suroviny — proto je CCP 1 (křížová kontaminace při changeover) kritickým bodem.<br>
+    Alergen č. 1 (lepek) — přítomen v produktech <em>ořechy v těstíčku</em> (pšeničná mouka v obalu); changeover nutný při přechodu na bezlepkový produkt.<br>
     Alergeny č. 6, 7, 9, 10 (sója, mléko, celer, hořčice) se vyskytují jako součásti polev a koření u zpracovaných ořechů — pocházejí od dodavatele, jsou deklarovány ve specifikaci produktu v K2.<br>
     Na etiketě každého produktu: složení se <u>zvýrazněnými alergeny</u> + text „Může obsahovat stopy …" dle specifikace v K2.
   </div>
@@ -1752,6 +1753,7 @@ tr:nth-child(even) td { background: var(--bg-soft) }
       <tr><td><strong>Sója (#6)</strong></td><td>Součást polev zpracovaných ořechů</td><td style="color:#854d0e">střední</td><td>Deklarace dodavatele v K2 + etiketa</td></tr>
       <tr><td><strong>Celer (#9)</strong></td><td>V kořeních na ochucených ořeších</td><td style="color:#854d0e">střední</td><td>Deklarace dodavatele v K2 + etiketa</td></tr>
       <tr><td><strong>Hořčice (#10)</strong></td><td>Hořčičné semínko v kořeních</td><td style="color:#854d0e">střední</td><td>Deklarace dodavatele v K2 + etiketa</td></tr>
+      <tr><td><strong>Obiloviny / Lepek (#1)</strong></td><td>Ořechy v těstíčku (pšeničná mouka v obalu)</td><td style="color:#854d0e">střední</td><td>Changeover + deklarace na etiketě</td></tr>
       <tr><td><strong>Siřičitany (#12)</strong></td><td>Sušené ovoce</td><td style="color:var(--prp)">nízké</td><td>Deklarace na etiketě</td></tr>
       <tr><td><strong>Mořské plody (#2, #14)</strong></td><td>Součást koření / ochucovadel u spec. produktů</td><td style="color:#854d0e">střední</td><td>Deklarace dodavatele v K2 + etiketa</td></tr>
     </table>
