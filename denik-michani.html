@@ -1306,10 +1306,12 @@ ${pozn || '—'}`;
 
   function openLookup(tr) {
     _lookupRow = tr;
+    const lot   = tr.querySelector('.col-sarze input').value.trim();
     const nazev = tr.querySelector('.col-nazev input').value.trim();
+    const q = lot || nazev;
     const inp = document.getElementById('drawer-search');
-    inp.value = nazev;
-    renderDrawer(nazev);
+    inp.value = q;
+    renderDrawer(q);
     document.getElementById('archiv-drawer').classList.add('open');
     setTimeout(() => { inp.focus(); inp.select(); }, 50);
   }
