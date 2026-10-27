@@ -1,5 +1,39 @@
 [
   {
+    "id": "10183866",
+    "cislo_dodavky": "10183866",
+    "dodavatel": "K-SERVIS PRAHA, a.s.",
+    "datum": "2026-10-21",
+    "datum_ulozeni": "2026-10-27",
+    "poznamka": "Objednávka OP01-2026-0221. DL FT01-3967/2026. Splatnost 20.11.2026. BIO certifikace CZ-BIO-002. Šarže a DMT doplnit z etiket.",
+    "ulozeni": "",
+    "celkove_kg": 150,
+    "items": [
+      {
+        "nazev": "Ananas kostky 4-8mm proslazený",
+        "kod": "10100",
+        "sarze": "",
+        "dmt": null,
+        "mnozstvi": 100,
+        "stav": "OK",
+        "cena_kg": 109.0,
+        "nw_kod": "",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Papaya kostky 8-10mm",
+        "kod": "10300",
+        "sarze": "",
+        "dmt": null,
+        "mnozstvi": 50,
+        "stav": "OK",
+        "cena_kg": 112.0,
+        "nw_kod": "",
+        "cenik_kg": null
+      }
+    ]
+  },
+  {
     "id": "700261875",
     "cislo_dodavky": "700261875",
     "dodavatel": "Hosova obchodní společnost, spol. s r. o.",
