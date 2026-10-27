@@ -258,6 +258,10 @@ tr:nth-child(even) td { background: var(--bg-soft) }
 }
 .flow-step.has-ccp { border-color: var(--ccp); background: var(--ccp-bg) }
 .flow-step.has-oprp { border-color: var(--oprp); background: var(--oprp-bg) }
+.flow-branch { display: flex; gap: 12px; width: 100%; }
+.flow-branch-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.flow-branch-label { font-size: 10px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--fg-muted); padding: 3px 10px; border-radius: 20px; background: var(--bg-soft); border: 1px solid var(--border); margin-bottom: 2px; white-space: nowrap; }
+.flow-branch-col .flow-step { width: 100%; }
 .flow-num {
   font-family: 'Exo 2', sans-serif;
   font-size: 10px;
@@ -588,28 +592,46 @@ tr:nth-child(even) td { background: var(--bg-soft) }
         <span class="flow-badge oprp">OPRP 3</span>
       </div>
       <span class="flow-arrow">↓</span>
-      <div class="flow-step">
-        <span class="flow-num">Krok 9</span>
-        Sklad hotových výrobků (neetiketováno)
-      </div>
-      <span class="flow-arrow">↓</span>
-      <div class="flow-step" style="border-style:dashed">
+      <div class="flow-step" style="border-style:dashed;text-align:center">
         <span class="flow-num">Větvení</span>
-        Balírna → Expedice (etiketa systém) &nbsp;|&nbsp; Dárkový → Dárkovna (etiketa tam)
+        Dárkový produkt (DJ) → Dárkovna &nbsp;|&nbsp; Standardní produkt → Sklad / Expedice
       </div>
       <span class="flow-arrow">↓</span>
-      <div class="flow-step has-ccp has-oprp" style="position:relative;border-color:var(--ccp)">
-        <span class="flow-num">Krok 10A — Dárkovna (DJ zakázky)</span>
-        Kompletace + tisk etikety vlastní tiskárnou dárkovny
-        <span class="flow-badge ccp" style="top:30%">CCP 2</span>
-        <span class="flow-badge oprp" style="top:70%">OPRP 4</span>
+
+      <!-- Two-column branch -->
+      <div class="flow-branch">
+        <!-- Branch A: Dárkovna -->
+        <div class="flow-branch-col">
+          <span class="flow-branch-label">🎁 Větev A — Dárkovna</span>
+          <div class="flow-step">
+            <span class="flow-num">Krok 9A</span>
+            Kompletace dárkového balení (DJ zakázka)
+          </div>
+          <span class="flow-arrow">↓</span>
+          <div class="flow-step has-ccp has-oprp" style="position:relative;border-color:var(--ccp)">
+            <span class="flow-num">Krok 10A — Etiketování</span>
+            Tisk etikety vlastní tiskárnou dárkovny + nalepení před uzavřením
+            <span class="flow-badge ccp" style="top:30%">CCP 2</span>
+            <span class="flow-badge oprp" style="top:70%">OPRP 4</span>
+          </div>
+        </div>
+
+        <!-- Branch B: Sklad → Expedice -->
+        <div class="flow-branch-col">
+          <span class="flow-branch-label">📦 Větev B — Sklad / Expedice</span>
+          <div class="flow-step">
+            <span class="flow-num">Krok 9B</span>
+            Sklad hotových výrobků (neetiketováno)
+          </div>
+          <span class="flow-arrow">↓</span>
+          <div class="flow-step has-ccp" style="position:relative">
+            <span class="flow-num">Krok 10B — Etiketování</span>
+            K2/Shoptet automaticky generuje a tiskne etiketu při vychystání
+            <span class="flow-badge ccp">CCP 2</span>
+          </div>
+        </div>
       </div>
-      <span class="flow-arrow">↓</span>
-      <div class="flow-step has-ccp" style="position:relative">
-        <span class="flow-num">Krok 10B — Expedice (balírna produkty)</span>
-        K2/Shoptet automaticky generuje a tiskne etiketu při vychystání
-        <span class="flow-badge ccp">CCP 2</span>
-      </div>
+
       <span class="flow-arrow">↓</span>
       <div class="flow-step">
         <span class="flow-num">Krok 11</span>
