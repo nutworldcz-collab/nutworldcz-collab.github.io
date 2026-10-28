@@ -1085,39 +1085,44 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
     method: isEdit ? 'PUT' : 'POST',
     headers: {'Content-Type':'application/json'},
     body: JSON.stringify(trelloBody)
-  }).then(r => r.json()).then(card => {
-    if (card.id) {
-      _trelloCardId = card.id;
-      _savedCislo = cislo;
-      // Aktualizuj URL hash s card ID a číslem nabídky
-      const editDataFinal = { ...collectFormData(), _cardId: card.id, _cislo: cislo };
-      const editHashFinal = btoa(unescape(encodeURIComponent(JSON.stringify(editDataFinal))));
-      history.replaceState(null, '', '#' + editHashFinal);
-      // Vygeneruj finální zakazka URL s _cardId → oba linky v Trello kartě přepiš
-      const zakazkaDataFinal = { ...collectFormData(), _cardId: card.id, _cislo: cislo };
-      const zakazkaUrlFinal = 'https://nutworldcz-collab.github.io/zakazka.html#' + btoa(unescape(encodeURIComponent(JSON.stringify(zakazkaDataFinal))));
-      const editUrlFinal = 'https://nutworldcz-collab.github.io/nabidky.html#' + editHashFinal;
-      window._zakazkaUrl = zakazkaUrlFinal;
-      // Při prvním vytvoření (ne editaci) aktualizuj popis karty — zakazka a edit linky teď obsahují _cardId
-      if (!isEdit) {
-        const updatedDesc = cardDesc.replace(zakazkaUrl, zakazkaUrlFinal).replace(editUrl, editUrlFinal);
-        fetch(`https://api.trello.com/1/cards/${card.id}?key=${NW_KEY}&token=${NW_TOKEN}`, {
-          method: 'PUT', headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ desc: updatedDesc })
-        }).catch(() => {});
-      }
-
-      const msg = isEdit ? '✏️ Nabídka aktualizována v Trellu!' : '✅ Karta vytvořena v Trellu!';
-      document.getElementById('link-copied').style.display = 'block';
-      document.getElementById('link-copied').innerHTML =
-        `${msg} &nbsp;
-         <a href="${card.url}" target="_blank" style="color:#5c381f;font-weight:700">Otevřít kartu →</a><br>
-         <span style="font-size:11px;color:#888">Finanční přehled odeslán na tvůj email.</span>`;
-      document.getElementById('btn-link').style.display = 'none';
+  }).then(r => {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }).then(card => {
+    if (!card.id) throw new Error('no card id');
+    _trelloCardId = card.id;
+    _savedCislo = cislo;
+    // Aktualizuj URL hash s card ID a číslem nabídky
+    const editDataFinal = { ...collectFormData(), _cardId: card.id, _cislo: cislo };
+    const editHashFinal = btoa(unescape(encodeURIComponent(JSON.stringify(editDataFinal))));
+    history.replaceState(null, '', '#' + editHashFinal);
+    // Vygeneruj finální zakazka URL s _cardId → oba linky v Trello kartě přepiš
+    const zakazkaDataFinal = { ...collectFormData(), _cardId: card.id, _cislo: cislo };
+    const zakazkaUrlFinal = 'https://nutworldcz-collab.github.io/zakazka.html#' + btoa(unescape(encodeURIComponent(JSON.stringify(zakazkaDataFinal))));
+    const editUrlFinal = 'https://nutworldcz-collab.github.io/nabidky.html#' + editHashFinal;
+    window._zakazkaUrl = zakazkaUrlFinal;
+    // Při prvním vytvoření (ne editaci) aktualizuj popis karty — zakazka a edit linky teď obsahují _cardId
+    if (!isEdit) {
+      const updatedDesc = cardDesc.replace(zakazkaUrl, zakazkaUrlFinal).replace(editUrl, editUrlFinal);
+      fetch(`https://api.trello.com/1/cards/${card.id}?key=${NW_KEY}&token=${NW_TOKEN}`, {
+        method: 'PUT', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ desc: updatedDesc })
+      }).catch(() => {});
     }
-  }).catch(() => {
+
+    const msg = isEdit ? '✏️ Nabídka aktualizována v Trellu!' : '✅ Karta vytvořena v Trellu!';
+    document.getElementById('link-copied').style.display = 'block';
+    document.getElementById('link-copied').innerHTML =
+      `${msg} &nbsp;
+       <a href="${card.url || card.shortUrl}" target="_blank" style="color:#5c381f;font-weight:700">Otevřít kartu →</a><br>
+       <span style="font-size:11px;color:#888">Finanční přehled odeslán na tvůj email.</span>`;
+    document.getElementById('btn-link').style.display = 'none';
+  }).catch(err => {
+    console.error('Trello karta se neuložila:', err);
+    document.getElementById('link-copied').style.display = 'block';
+    document.getElementById('link-copied').innerHTML =
+      `⚠️ Trello karta se neuložila (${err.message}). Nabídka je vygenerovaná, ale zkontroluj Trello ručně nebo klikni Generovat znovu.`;
     document.getElementById('btn-link').style.display = 'block';
-    document.getElementById('link-copied').style.display = 'none';
   });
 
   // Email vlastníkovi — PLNÝ finanční přehled (jen pro tebe)
