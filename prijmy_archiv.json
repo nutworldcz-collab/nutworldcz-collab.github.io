@@ -1145,5 +1145,105 @@
         "cenik_kg": 185.0
       }
     ]
+  },
+  {
+    "id": "2610404017",
+    "cislo_dodavky": "2610404017",
+    "dodavatel": "ENCINGER SK s.r.o.",
+    "datum": "2026-10-29",
+    "datum_ulozeni": "2026-10-29",
+    "poznamka": "DL 2610404017. DAP, cestná doprava, vybavuje Oldřich Svoboda. Celkem 740 kg / 99 090 Kč. Vs ceník červen 2026: Mandle v mléčné -15 Kč 🟢, Mandle se skořicí -10 Kč 🟢, Kešu v hořké +4 Kč ⚠️.",
+    "ulozeni": "",
+    "celkove_kg": 740,
+    "items": [
+      {
+        "nazev": "Brusnice v mléčné čokoládě á 5kg",
+        "kod": "30801513",
+        "sarze": "E13260418A",
+        "dmt": "2027-07-08",
+        "mnozstvi": 10,
+        "stav": "OK",
+        "cena_kg": 176.0,
+        "nw_kod": "",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Kešu v hořké čokoládě á 5kg",
+        "kod": "30801519",
+        "sarze": "E13260468D",
+        "dmt": "2027-07-21",
+        "mnozstvi": 10,
+        "stav": "POZOR",
+        "cena_kg": 209.0,
+        "nw_kod": "4035",
+        "cenik_kg": 205.0
+      },
+      {
+        "nazev": "Kešu v mléčné čokoládě á 5kg",
+        "kod": "30801520",
+        "sarze": "E0R260474C",
+        "dmt": "2027-07-25",
+        "mnozstvi": 20,
+        "stav": "OK",
+        "cena_kg": 205.0,
+        "nw_kod": "119",
+        "cenik_kg": 205.0
+      },
+      {
+        "nazev": "Mandle v mléčné čokoládě á 5kg",
+        "kod": "30801531",
+        "sarze": "E13260481D",
+        "dmt": "2027-07-27",
+        "mnozstvi": 60,
+        "stav": "OK",
+        "cena_kg": 195.0,
+        "nw_kod": "4038",
+        "cenik_kg": 210.0
+      },
+      {
+        "nazev": "Mandle v mléčné čokoládě á 5kg",
+        "kod": "30801531",
+        "sarze": "E13260469D",
+        "dmt": "2027-07-21",
+        "mnozstvi": 40,
+        "stav": "OK",
+        "cena_kg": 195.0,
+        "nw_kod": "4038",
+        "cenik_kg": 210.0
+      },
+      {
+        "nazev": "Mandle v mléčné čokoládě se skořicí á 5kg",
+        "kod": "30801533",
+        "sarze": "E0R260463D",
+        "dmt": "2027-07-21",
+        "mnozstvi": 200,
+        "stav": "OK",
+        "cena_kg": 205.0,
+        "nw_kod": "1958",
+        "cenik_kg": 215.0
+      },
+      {
+        "nazev": "Ananás kandizovaný 8x10mm á 20kg",
+        "kod": "10400210",
+        "sarze": "LSSK251107",
+        "dmt": "2027-07-31",
+        "mnozstvi": 100,
+        "stav": "OK",
+        "cena_kg": 112.9,
+        "nw_kod": "",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Hrozienka sušené Typ 10 á 12,5kg",
+        "kod": "10300605",
+        "sarze": "LSSK260898",
+        "dmt": "2027-11-30",
+        "mnozstvi": 300,
+        "stav": "OK",
+        "cena_kg": 64.5,
+        "nw_kod": "",
+        "cenik_kg": null
+      }
+    ]
   }
 ]
