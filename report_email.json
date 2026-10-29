@@ -1,20 +1,90 @@
 {
-  "generated": "2026-10-29T07:30:29",
-  "total": 8,
-  "spam_skipped": 0,
+  "generated": "2026-10-29T12:01:06",
+  "total": 13,
+  "spam_skipped": 1,
   "emails": [
     {
       "account": "Exchange",
-      "sender": "Lucie Nekudová <lucie.nekudova@bmt.cz>",
-      "subject": "Automatická odpověď: objednávka",
-      "date": "čtvrtek 29. října 2026 7:21:53",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Balírna přesunul/a kartu Metrostav Slovakia.a.s — 74 ks — 06.11.2026 do sloupce Připravují se komponenty - Balírna na nástěnce Firmy dárky + objednávky",
+      "date": "čtvrtek 29. října 2026 11:45:49",
       "unread": true,
-      "preview": "﻿ Dobrý den",
-      "category": "b2b",
-      "sender_short": "Lucie Nekudová",
-      "sender_email": "lucie.nekudova@bmt.cz",
+      "preview": "￼ Zde je nejnovější... ￼ Balírna přesunul(a) kartu Metrostav Slovakia .a.s — 74 ks — 06.11.2026 do sloupce Připravují se komponenty - Balírna na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobt",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Jan Melichar <jan.melichar@mekrs.cz>",
+      "subject": "Fwd: FIO účet",
+      "date": "čtvrtek 29. října 2026 11:40:59",
+      "unread": true,
+      "preview": "Rado Sporka ten ktk na Nut world neda? Honzo ja mam email jan.melichar posilal jsi to na tatu. Diky Odesláno z iPhonu Začátek přeposílané zprávy:",
+      "category": "tym",
+      "sender_short": "Jan Melichar",
+      "sender_email": "jan.melichar@mekrs.cz",
       "ai": {
-        "shrn": "Automatická odpověď na objednávku od Lucie Nekudové. Email vyžaduje kontrolu stavu objednávky.",
+        "shrn": "Jan Melichar se ptá na FIO účet a řeší komunikaci kolem Nut world.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Martin Werner <martin.werner@nutworld.cz>",
+      "subject": "5414",
+      "date": "čtvrtek 29. října 2026 11:35:51",
+      "unread": true,
+      "preview": "Ahoj, můžeš prosím nahrát do Jáchyma tento produkt? Chodí mi na něj obj z CSOB a pořád ho ťukám ručně. Díky moc. Slaný MIX VÁNOČNÍ v celofánku a kelímku 180g - VESELÉ VÁNOCE - NutWorld.cz ￼ Martin Werner Obchodní manager NutWorld s.r.o. ￼ +420734633424 ￼ martin.werner@nutworld.cz ￼ www.nutworld.cz /",
+      "category": "tym",
+      "sender_short": "Martin Werner",
+      "sender_email": "martin.werner@nutworld.cz",
+      "ai": {
+        "shrn": "Martin Werner žádá nahrát nový produkt Slaný MIX VÁNOČNÍ do systému, protože přicházejí objednávky.",
+        "tyka_se": true,
+        "akce": "Nahrát produkt Slaný MIX VÁNOČNÍ 180g do Jáchyma"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Balírna přesunul/a kartu SCHINKMANN s.r.o. — 52 ks — 10.11.2026 do sloupce Připravují se komponenty - Balírna na nástěnce Firmy dárky + objednávky",
+      "date": "čtvrtek 29. října 2026 11:31:39",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Balírna přesunul(a) kartu SCHINKMANN s.r.o. — 52 ks — 10.11.2026 do sloupce Připravují se komponenty - Balírna na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si o",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Markéta Costachova <marketa.costachova@nutworld.cz>",
+      "subject": "RE: [B2B DOPYT SK] Nová požiadavka",
+      "date": "čtvrtek 29. října 2026 11:27:31",
+      "unread": true,
+      "preview": "Děkuju. pořeším Přeji krásný den Markéta Costachová obchodní manažer tel.: 603 873 604 email: marketa.costachova@nutworld.cz www.nutworld.cz www.nutworld.sk IČO:27517357",
+      "category": "b2b",
+      "sender_short": "Markéta Costachova",
+      "sender_email": "marketa.costachova@nutworld.cz",
+      "ai": {
+        "shrn": "Markéta potvrzuje vyřešení B2B dotazu ze Slovenska.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Markéta Costachova <marketa.costachova@nutworld.cz>",
+      "subject": "FW: regál oříšky",
+      "date": "čtvrtek 29. října 2026 11:25:37",
+      "unread": true,
+      "preview": "Honzi, Posílá ty regály",
+      "category": "tym",
+      "sender_short": "Markéta Costachova",
+      "sender_email": "marketa.costachova@nutworld.cz",
+      "ai": {
+        "shrn": "Markéta informuje o zasílání regálů s oříšky.",
         "tyka_se": false,
         "akce": null
       }
@@ -22,87 +92,87 @@
     {
       "account": "Exchange",
       "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Balírna přesunul/a kartu VILGAIN objednávka do sloupce Hotovo - čeká na zabalení na nástěnce Firmy dárky + objednávky",
-      "date": "čtvrtek 29. října 2026 7:08:42",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 11:22 (29. října 2026)",
+      "date": "čtvrtek 29. října 2026 11:23:51",
       "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Balírna přesunul(a) kartu VILGAIN objednávka do sloupce Hotovo - čeká na zabalení na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
-      "category": "b2b",
+      "preview": "￼ Zde je nejnovější... ￼ Balírna přesunul(a) kartu Arch.Design",
+      "category": "sluzby",
       "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Martin Werner <martin.werner@nutworld.cz>",
+      "subject": "FW: Objednávka č. 115",
+      "date": "čtvrtek 29. října 2026 11:23:04",
+      "unread": true,
+      "preview": "Ahoj, zasílám k podpisu a naskenování. Martin ￼ Martin Werner Obchodní manager NutWorld s.r.o. ￼ +420734633424 ￼ martin.werner@nutworld.cz ￼ www.nutworld.cz / www.nutworld.sk ￼ Hvězdova 1716/2",
+      "category": "b2b",
+      "sender_short": "Martin Werner",
+      "sender_email": "martin.werner@nutworld.cz",
       "ai": {
-        "shrn": "Trello notifikace o přesunu VILGAIN objednávky do stavu hotovo a čekání na zabalení. Informativní zpráva o průběhu.",
+        "shrn": "Martin Werner zasílá objednávku č. 115 k podpisu a naskenování.",
+        "tyka_se": true,
+        "akce": "Podepsat a naskenovat objednávku č. 115"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Markéta Costachová tě přidal/a ke kartě Městská část Bratislava na nástěnce Firmy dárky + objednávky",
+      "date": "čtvrtek 29. října 2026 11:21:29",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Markéta Costachová vás přidal(a) na kartu Městská část Bratislava na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Markéta Costachova <marketa.costachova@nutworld.cz>",
+      "subject": "FW: náhled loga na krabičce se sobem",
+      "date": "čtvrtek 29. října 2026 11:18:45",
+      "unread": true,
+      "preview": "Ahojte, náhledy schválené… Přeji krásný den Markéta Costachová obchodní manažer tel.: 603 873 604 email: marketa.costachova@nutworld.cz www.nutworld.cz www.nutworld.sk IČO:27517357",
+      "category": "tym",
+      "sender_short": "Markéta Costachova",
+      "sender_email": "marketa.costachova@nutworld.cz",
+      "ai": {
+        "shrn": "Markéta informuje o schválených náhledech loga na krabičce se sobem.",
         "tyka_se": false,
         "akce": null
       }
     },
     {
-      "account": "Exchange",
-      "sender": "\"michaela.mejzlikova@carbide.cz\" <michaela.mejzlikova@carbide.cz>",
-      "subject": "RE: poptávka",
-      "date": "čtvrtek 29. října 2026 7:01:51",
+      "account": "Google",
+      "sender": "Atomrat <news@e.atomrat.cz>",
+      "subject": "Zachumlejte se do pohodlí",
+      "date": "čtvrtek 29. října 2026 11:16:17",
       "unread": true,
-      "preview": "Dobrý den",
-      "category": "b2b",
-      "sender_short": "michaela.mejzlikova@carbide.cz",
-      "sender_email": "michaela.mejzlikova@carbide.cz",
+      "preview": "￼ Zobrazit na webu Odhlásit eshop@atomrat.cz ￼ Bundy Kalhoty Vesty Mikiny Trička Sukně Kraťasy Šaty Milé atomové ženy, podzim přeje pohodlnému oblečení",
+      "category": "ostatni",
+      "sender_short": "Atomrat",
+      "sender_email": "news@e.atomrat.cz",
       "ai": {
-        "shrn": "Odpověď na poptávku od Michaely Mejzlikové s nejasným obsahem. Vyžaduje přečtení a případnou odpověď.",
-        "tyka_se": true,
-        "akce": "Zjistit obsah emailu a odpovědět na poptávku"
+        "shrn": "Newsletter od Atomrat s nabídkou podzimního oblečení.",
+        "tyka_se": false,
+        "akce": null
       }
     },
     {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 6:25 (29. října 2026)",
-      "date": "čtvrtek 29. října 2026 6:26:47",
+      "account": "Google",
+      "sender": "\"SEVT.cz\" <marketing@mailing.sevt.cz>",
+      "subject": "🎨 Vše pro vaše kreativní nápady na jednom místě",
+      "date": "čtvrtek 29. října 2026 9:41:23",
       "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Renata Pošepná připojil(a) přílohu IMG_20261029_062413.jpg ke kartě CRV Czech Republic",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Balírna vložil/a komentář na kartu ALZA - EDI/2026/36 na nástěnce Firmy dárky + objednávky",
-      "date": "čtvrtek 29. října 2026 5:59:25",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Balírna okomentoval(a) kartu ALZA - EDI/2026/36 na nástěnce Firmy dárky + objednávky @hamerniktomas Ahoj",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Exchange",
-      "sender": "\"info@nutworld.sk\" <info@nutworld.sk>",
-      "subject": "Fwd: Vianocne sety",
-      "date": "čtvrtek 29. října 2026 4:25:07",
-      "unread": true,
-      "preview": "-------- Původní zpráva -------- Předmět: Vianocne sety Datum: 2026-10-28 15:22 Odesílatel: Tatiana Tomkova <tatiana.tomkova@armitas.sk> Adresát: \"info@nutworld.sk\" <info@nutworld.sk> Dobry den, pre zakaznikov by som rada objednat k Vianociam dracekovu krabicku s orechmi - prirodne chute. Moja preds",
-      "category": "tym",
-      "sender_short": "info@nutworld.sk",
-      "sender_email": "info@nutworld.sk",
+      "preview": "Nezobrazuje se Vám e-mail správně? Přejděte na webovou verzi. ￼ Vše do školy a kanceláře na jednom místě ￼ Školní potřeby Výtvarné potřeby Kancelářské potřeby Hry a hračky Knihkupectví Výhodné výtvarné sady vhodné jako dárek 🎁 ￼ Velká výtvarná sada Daler-Rowney - Complete Art Set - 115 ks",
+      "category": "ostatni",
+      "sender_short": "SEVT.cz",
+      "sender_email": "marketing@mailing.sevt.cz",
       "ai": {
-        "shrn": "Objednávka vánočních sad s dracekovou krabičkou od slovenského zákazníka Tatiany Tomkové. Vyžaduje Janovo rozhodnutí ohledně dostupnosti a realizace.",
-        "tyka_se": true,
-        "akce": "Ověřit dostupnost produktu a zaslat cenovou nabídku"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "\"info@nutworld.sk\" <info@nutworld.sk>",
-      "subject": "Fwd: Info",
-      "date": "čtvrtek 29. října 2026 4:23:30",
-      "unread": true,
-      "preview": "-------- Původní zpráva -------- Předmět: Info Datum: 2026-10-28 13:02 Odesílatel: Zuzana Smatanová <Zuzana.Smatanova@p3parks.com> Adresát: \"info@nutworld.sk\" <info@nutworld.sk> Dobry den pan Vlcek, Chcem Vas poprosit o info cca kolko ks z baleni (vid linky) mate na sklade? Zhanam totiz alternativu ",
-      "category": "tym",
-      "sender_short": "info@nutworld.sk",
-      "sender_email": "info@nutworld.sk",
-      "ai": {
-        "shrn": "Dotaz od Zuzany Smatanové na skladové zásoby konkrétního balení. Vyžaduje poskytnutí informací o dostupnosti.",
-        "tyka_se": true,
-        "akce": "Zkontrolovat sklad a poslat info o počtu kusů"
+        "shrn": "Newsletter od SEVT.cz s nabídkou školních a výtvarných potřeb.",
+        "tyka_se": false,
+        "akce": null
       }
     },
     {
@@ -116,7 +186,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "Newsletter z CrossFitu o tréninku a zdraví. Jedná se o marketingový obsah bez relevance pro Nutworld.",
+        "shrn": "Newsletter od CrossFit o tréninku žen v menopauze.",
         "tyka_se": false,
         "akce": null
       }
