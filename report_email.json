@@ -1,84 +1,63 @@
 {
-  "generated": "2026-10-28T12:00:33",
-  "total": 14,
+  "generated": "2026-10-29T07:30:29",
+  "total": 8,
   "spam_skipped": 0,
   "emails": [
     {
       "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 11:45 (28. října 2026)",
-      "date": "středa 28. října 2026 11:46:39",
+      "sender": "Lucie Nekudová <lucie.nekudova@bmt.cz>",
+      "subject": "Automatická odpověď: objednávka",
+      "date": "čtvrtek 29. října 2026 7:21:53",
       "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Hamerník Tomáš vás zmínil(a) na kartě ALZA - EDI/2026/42 na nástěnce Firmy dárky + objednávky @card prosím o info",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
+      "preview": "﻿ Dobrý den",
+      "category": "b2b",
+      "sender_short": "Lucie Nekudová",
+      "sender_email": "lucie.nekudova@bmt.cz",
+      "ai": {
+        "shrn": "Automatická odpověď na objednávku od Lucie Nekudové. Email vyžaduje kontrolu stavu objednávky.",
+        "tyka_se": false,
+        "akce": null
+      }
     },
     {
       "account": "Exchange",
       "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Hamerník Tomáš vložil/a komentář na kartu Vilgain objednávka na nástěnce Firmy dárky + objednávky",
-      "date": "středa 28. října 2026 11:33:37",
+      "subject": "Balírna přesunul/a kartu VILGAIN objednávka do sloupce Hotovo - čeká na zabalení na nástěnce Firmy dárky + objednávky",
+      "date": "čtvrtek 29. října 2026 7:08:42",
       "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Hamerník Tomáš okomentoval(a) kartu Vilgain objednávka na nástěnce Firmy dárky + objednávky @gabrielapohlova expedovat v pátek 30.10. děkuji Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "preview": "￼ Zde je nejnovější... ￼ Balírna přesunul(a) kartu VILGAIN objednávka do sloupce Hotovo - čeká na zabalení na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
       "category": "b2b",
       "sender_short": "Trello",
       "sender_email": "do-not-reply@trello.com",
-      "ai": null
+      "ai": {
+        "shrn": "Trello notifikace o přesunu VILGAIN objednávky do stavu hotovo a čekání na zabalení. Informativní zpráva o průběhu.",
+        "tyka_se": false,
+        "akce": null
+      }
     },
     {
       "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Hamerník Tomáš vložil/a komentář na kartu VILGAIN objednávka na nástěnce Firmy dárky + objednávky",
-      "date": "středa 28. října 2026 11:31:23",
+      "sender": "\"michaela.mejzlikova@carbide.cz\" <michaela.mejzlikova@carbide.cz>",
+      "subject": "RE: poptávka",
+      "date": "čtvrtek 29. října 2026 7:01:51",
       "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Hamerník Tomáš okomentoval(a) kartu VILGAIN objednávka na nástěnce Firmy dárky + objednávky @gabrielapohlova prosím expedovat v pátek 30.10. děkuji Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si o",
+      "preview": "Dobrý den",
       "category": "b2b",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com",
-      "ai": null
+      "sender_short": "michaela.mejzlikova@carbide.cz",
+      "sender_email": "michaela.mejzlikova@carbide.cz",
+      "ai": {
+        "shrn": "Odpověď na poptávku od Michaely Mejzlikové s nejasným obsahem. Vyžaduje přečtení a případnou odpověď.",
+        "tyka_se": true,
+        "akce": "Zjistit obsah emailu a odpovědět na poptávku"
+      }
     },
     {
       "account": "Exchange",
       "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Hamerník Tomáš vložil/a komentář na kartu FORM NATUR Bulk velké balení 26.10.2026 na nástěnce Firmy dárky + objednávky",
-      "date": "středa 28. října 2026 11:21:02",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 6:25 (29. října 2026)",
+      "date": "čtvrtek 29. října 2026 6:26:47",
       "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Hamerník Tomáš okomentoval(a) kartu FORM NATUR Bulk velké balení 26.10.2026 na nástěnce Firmy dárky + objednávky @gabrielapohlova moc děkuji Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Exchange",
-      "sender": "Martin Staněk | Comgate <podpora@comgate.cz>",
-      "subject": "Ušetřete 20 - 30 % na platební bráně",
-      "date": "středa 28. října 2026 11:19:19",
-      "unread": true,
-      "preview": "Dobrý den, po přechodu na platební bránu Comgate klienti běžně ušetří 20 - 30 % z poplatků. V průměru to znamená kolem 40 tis. Kč ročně. Chcete se dozvědět",
-      "category": "ostatni",
-      "sender_short": "Martin Staněk | Comgate",
-      "sender_email": "podpora@comgate.cz",
-      "ai": null
-    },
-    {
-      "account": "Exchange",
-      "sender": "\"Shoptet.cz\" <notification@shoptet.cz>",
-      "subject": "[johnwolf.cz] 2. upomínka platby č. 2608246854",
-      "date": "středa 28. října 2026 11:15:39",
-      "unread": true,
-      "preview": "￼ Platbu stále vyhlížíme Milý kliente",
-      "category": "sluzby",
-      "sender_short": "Shoptet.cz",
-      "sender_email": "notification@shoptet.cz"
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Na nástěnce Tvorba štítků CANVA máš 5 upozornění od poslední návštěvy 10:59 (28. října 2026)",
-      "date": "středa 28. října 2026 11:02:47",
-      "unread": true,
-      "preview": "￼ Termín je brzy... Ing. Naděžda Bajerová TANAX — TANAX Ing Bajerová 719 arašídy v těstíčku 100g v do… na nástěnce Tvorba štítků CANVA s termínem má termín za den Odpovědět e-mailem Ing. Naděžda Bajerová TANAX — Arašídy v chilli těstíčku 100g v doypacku bez loga",
+      "preview": "￼ Zde je nejnovější... ￼ Renata Pošepná připojil(a) přílohu IMG_20261029_062413.jpg ke kartě CRV Czech Republic",
       "category": "sluzby",
       "sender_short": "Trello",
       "sender_email": "do-not-reply@trello.com"
@@ -86,84 +65,61 @@
     {
       "account": "Exchange",
       "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 10:59 (28. října 2026)",
-      "date": "středa 28. října 2026 11:02:44",
+      "subject": "Balírna vložil/a komentář na kartu ALZA - EDI/2026/36 na nástěnce Firmy dárky + objednávky",
+      "date": "čtvrtek 29. října 2026 5:59:25",
       "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Doprava NutWorld vás zmínil(a) na kartě ALZA/2026/45 na nástěnce Firmy dárky + objednávky @card zítra odchází na mix paletě položky BJ-MX-500B02+Bj-Mx-250B01 Odpovědět e-mailem Termín je brzy... L I N E T spol. s r.o. — 200 ks — 29.10.2026 na nástěnce Firmy dárky + objednávk",
+      "preview": "￼ Zde je nejnovější... ￼ Balírna okomentoval(a) kartu ALZA - EDI/2026/36 na nástěnce Firmy dárky + objednávky @hamerniktomas Ahoj",
       "category": "sluzby",
       "sender_short": "Trello",
       "sender_email": "do-not-reply@trello.com"
     },
     {
       "account": "Exchange",
-      "sender": "Martin Werner <martin.werner@nutworld.cz>",
-      "subject": "nabídka záhadná",
-      "date": "středa 28. října 2026 10:43:01",
+      "sender": "\"info@nutworld.sk\" <info@nutworld.sk>",
+      "subject": "Fwd: Vianocne sety",
+      "date": "čtvrtek 29. října 2026 4:25:07",
       "unread": true,
-      "preview": "￼ Martin Werner Obchodní manager NutWorld s.r.o. ￼ +420734633424 ￼ martin.werner@nutworld.cz ￼ www.nutworld.cz / www.nutworld.sk ￼ Hvězdova 1716/2",
-      "category": "dodavatel",
-      "sender_short": "Martin Werner",
-      "sender_email": "martin.werner@nutworld.cz",
-      "ai": null
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Na nástěnce Firmy dárky + objednávky máš 3 upozornění od poslední návštěvy 10:37 (28. října 2026)",
-      "date": "středa 28. října 2026 10:39:41",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Renata Pošepná připojil(a) přílohu IMG_20261028_103630.jpg ke kartě L I N E T spol. s r.o. — 200 ks — 29.10.2026 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem ￼ Renata Pošepná připojil(a) přílohu IMG_20261028_103524.jpg ke kartě L I N E T spol. s r.o. — 200 ks — 29",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Google",
-      "sender": "\"DJI\" <enews@e.dji.com>",
-      "subject": "All-New DJI Power Auro 2000 Elite Is Here",
-      "date": "středa 28. října 2026 11:19:04",
-      "unread": true,
-      "preview": "￼ DJI Power Auro 2000 Elite 2 kWh. Power Assured. Buy Now Watch Video ￼ Launch Perks at a Glance ￼ 15% OFF Voucher COUPON CODE: POWERAURO15O ￼ 5% Back in DJI Credit Earn 5% back in DJI Credit on your purchase of the new product. ￼ Gifts With Purchase Spend €2000 to receive a DJI Power Series Hand Tr",
-      "category": "ostatni",
-      "sender_short": "DJI",
-      "sender_email": "enews@e.dji.com",
-      "ai": null
-    },
-    {
-      "account": "Google",
-      "sender": "\"AliExpress.seller\" <promotion@aliexpress.com>",
-      "subject": "🤑 Special CODE for you",
-      "date": "středa 28. října 2026 10:52:53",
-      "unread": true,
-      "preview": "‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ￼ Dear - user name US $1.00 US $1.00 When value up to US $3.00 Use code: TTXQIKJR7CPR 2026-10-15 01:00:00 - 20",
-      "category": "ostatni",
-      "sender_short": "AliExpress.seller",
-      "sender_email": "promotion@aliexpress.com",
-      "ai": null
-    },
-    {
-      "account": "Google",
-      "sender": "Nutworld.cz <info@nutworld.cz>",
-      "subject": "Malá hrst ořechů. Velký rozdíl na talíři",
-      "date": "středa 28. října 2026 9:01:53",
-      "unread": true,
-      "preview": "￼ 🌰 Ořechy nejsou jen na zobání! Objevte jejich kouzlo v kuchyni ￼ Milý Jane, víte",
+      "preview": "-------- Původní zpráva -------- Předmět: Vianocne sety Datum: 2026-10-28 15:22 Odesílatel: Tatiana Tomkova <tatiana.tomkova@armitas.sk> Adresát: \"info@nutworld.sk\" <info@nutworld.sk> Dobry den, pre zakaznikov by som rada objednat k Vianociam dracekovu krabicku s orechmi - prirodne chute. Moja preds",
       "category": "tym",
-      "sender_short": "Nutworld.cz",
-      "sender_email": "info@nutworld.cz",
-      "ai": null
+      "sender_short": "info@nutworld.sk",
+      "sender_email": "info@nutworld.sk",
+      "ai": {
+        "shrn": "Objednávka vánočních sad s dracekovou krabičkou od slovenského zákazníka Tatiany Tomkové. Vyžaduje Janovo rozhodnutí ohledně dostupnosti a realizace.",
+        "tyka_se": true,
+        "akce": "Ověřit dostupnost produktu a zaslat cenovou nabídku"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "\"info@nutworld.sk\" <info@nutworld.sk>",
+      "subject": "Fwd: Info",
+      "date": "čtvrtek 29. října 2026 4:23:30",
+      "unread": true,
+      "preview": "-------- Původní zpráva -------- Předmět: Info Datum: 2026-10-28 13:02 Odesílatel: Zuzana Smatanová <Zuzana.Smatanova@p3parks.com> Adresát: \"info@nutworld.sk\" <info@nutworld.sk> Dobry den pan Vlcek, Chcem Vas poprosit o info cca kolko ks z baleni (vid linky) mate na sklade? Zhanam totiz alternativu ",
+      "category": "tym",
+      "sender_short": "info@nutworld.sk",
+      "sender_email": "info@nutworld.sk",
+      "ai": {
+        "shrn": "Dotaz od Zuzany Smatanové na skladové zásoby konkrétního balení. Vyžaduje poskytnutí informací o dostupnosti.",
+        "tyka_se": true,
+        "akce": "Zkontrolovat sklad a poslat info o počtu kusů"
+      }
     },
     {
       "account": "Google",
-      "sender": "CrossFit <crossfit@mail.crossfit.com>",
-      "subject": "261028 Workout of the Day: Gymnastics",
-      "date": "středa 28. října 2026 1:30:56",
+      "sender": "\"CrossFit\" <crossfit@mail.crossfit.com>",
+      "subject": "261029 Rest Day: Your Weekly CrossFit Updates",
+      "date": "čtvrtek 29. října 2026 1:06:17",
       "unread": true,
-      "preview": "￼ ￼ ￼ WEDNESDAY",
+      "preview": "￼ ￼ ￼ CrossFit and Menopause: The Case for Training for Life (Part 2 of 3) COMMUNITY A physician specializing in menopause health and an 11-year CrossFit athlete makes the case that CrossFit delivers exactly what the evidence says menopausal women need: strength",
       "category": "ostatni",
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
-      "ai": null
+      "ai": {
+        "shrn": "Newsletter z CrossFitu o tréninku a zdraví. Jedná se o marketingový obsah bez relevance pro Nutworld.",
+        "tyka_se": false,
+        "akce": null
+      }
     }
   ]
 }
