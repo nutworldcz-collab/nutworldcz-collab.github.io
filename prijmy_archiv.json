@@ -83,7 +83,7 @@
         "dmt": null,
         "mnozstvi": 250,
         "stav": "OK",
-        "cena_kg": 213.70,
+        "cena_kg": 213.7,
         "nw_kod": "116",
         "cenik_kg": null
       },
@@ -193,7 +193,7 @@
         "dmt": null,
         "mnozstvi": 515,
         "stav": "OK",
-        "cena_kg": 218.00,
+        "cena_kg": 218.0,
         "nw_kod": "89",
         "cenik_kg": null
       }
@@ -900,6 +900,249 @@
         "stav": "OK",
         "cena_kg": 180.48,
         "nw_kod": ""
+      }
+    ]
+  },
+  {
+    "id": "10183952",
+    "cislo_dodavky": "10183952",
+    "dodavatel": "K-SERVIS PRAHA, a.s.",
+    "datum": "2026-10-26",
+    "datum_ulozeni": "2026-10-29",
+    "poznamka": "DL FT01-4060/2026. Celkem 84 398 Kč s DPH. Splatnost 25.11.2026. Atesty FT01-4060/2026 přiloženy. ⚠️ Banán chips BIO: faktura 113 Kč vs ceník 94 Kč (+19 Kč). Množství doplnit z faktury.",
+    "ulozeni": "",
+    "celkove_kg": null,
+    "items": [
+      {
+        "nazev": "Ananas v polevě jogurt 1kg",
+        "kod": "170001",
+        "sarze": "L629500731",
+        "dmt": "2027-07-22",
+        "mnozstvi": null,
+        "stav": "OK",
+        "cena_kg": null,
+        "nw_kod": "",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Aloe Vera proslazená plátky",
+        "kod": "12640",
+        "sarze": "LKS260067",
+        "dmt": "2028-02-28",
+        "mnozstvi": null,
+        "stav": "OK",
+        "cena_kg": 218.0,
+        "nw_kod": "",
+        "cenik_kg": 218.0
+      },
+      {
+        "nazev": "Banán chips BIO",
+        "kod": "12171",
+        "sarze": "L261112",
+        "dmt": "2027-10-14",
+        "mnozstvi": null,
+        "stav": "POZOR",
+        "cena_kg": 113.0,
+        "nw_kod": "",
+        "cenik_kg": 94.0
+      },
+      {
+        "nazev": "Čokoládové kamínky",
+        "kod": "16830",
+        "sarze": "L261282",
+        "dmt": "2027-04-13",
+        "mnozstvi": null,
+        "stav": "OK",
+        "cena_kg": 129.0,
+        "nw_kod": "",
+        "cenik_kg": 129.0
+      },
+      {
+        "nazev": "Kiwi",
+        "kod": "12630",
+        "sarze": "L25348",
+        "dmt": "2027-12-31",
+        "mnozstvi": null,
+        "stav": "OK",
+        "cena_kg": 129.0,
+        "nw_kod": "",
+        "cenik_kg": 129.0
+      },
+      {
+        "nazev": "Konopné semínko loupané",
+        "kod": "16365",
+        "sarze": "L261239",
+        "dmt": "2027-09-01",
+        "mnozstvi": null,
+        "stav": "OK",
+        "cena_kg": 142.0,
+        "nw_kod": "",
+        "cenik_kg": 142.0
+      },
+      {
+        "nazev": "Kukuřice pražená BBQ",
+        "kod": "16331",
+        "sarze": "L26760",
+        "dmt": "2027-02-28",
+        "mnozstvi": null,
+        "stav": "OK",
+        "cena_kg": 66.0,
+        "nw_kod": "",
+        "cenik_kg": 66.0
+      },
+      {
+        "nazev": "Goji (kustovnice) 380",
+        "kod": "12886",
+        "sarze": "LKS260109",
+        "dmt": "2028-03-31",
+        "mnozstvi": null,
+        "stav": "OK",
+        "cena_kg": 197.0,
+        "nw_kod": "",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Lněné semeno",
+        "kod": "16300",
+        "sarze": "LKS260325",
+        "dmt": "2027-09-30",
+        "mnozstvi": null,
+        "stav": "OK",
+        "cena_kg": 26.5,
+        "nw_kod": "",
+        "cenik_kg": 26.5
+      },
+      {
+        "nazev": "Lněné semeno zlaté",
+        "kod": "16310",
+        "sarze": "LKS260032",
+        "dmt": "2028-02-28",
+        "mnozstvi": null,
+        "stav": "OK",
+        "cena_kg": 34.5,
+        "nw_kod": "",
+        "cenik_kg": 34.5
+      },
+      {
+        "nazev": "Jahody plátky lyofilizované 1kg",
+        "kod": "10601",
+        "sarze": "LB260275",
+        "dmt": "2028-02-28",
+        "mnozstvi": null,
+        "stav": "OK",
+        "cena_kg": 865.0,
+        "nw_kod": "",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Mango plátky lyofilizované",
+        "kod": "10681",
+        "sarze": "LB260320",
+        "dmt": "2027-12-31",
+        "mnozstvi": null,
+        "stav": "OK",
+        "cena_kg": 675.0,
+        "nw_kod": "",
+        "cenik_kg": 675.0
+      },
+      {
+        "nazev": "Meruňky č. 4",
+        "kod": "11520",
+        "sarze": "LKS260319",
+        "dmt": "2027-12-31",
+        "mnozstvi": null,
+        "stav": "OK",
+        "cena_kg": 209.0,
+        "nw_kod": "",
+        "cenik_kg": 209.0
+      },
+      {
+        "nazev": "Meruňky v polevě jogurt 1kg",
+        "kod": "170301",
+        "sarze": "L629500731",
+        "dmt": "2027-07-22",
+        "mnozstvi": null,
+        "stav": "OK",
+        "cena_kg": 178.0,
+        "nw_kod": "",
+        "cenik_kg": 178.0
+      },
+      {
+        "nazev": "Papaya kostky 8-10mm",
+        "kod": "10300",
+        "sarze": "LKS260056",
+        "dmt": "2028-02-28",
+        "mnozstvi": null,
+        "stav": "OK",
+        "cena_kg": 112.0,
+        "nw_kod": "",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Papaya plátky",
+        "kod": "10360",
+        "sarze": "LKS250202",
+        "dmt": "2027-11-30",
+        "mnozstvi": null,
+        "stav": "OK",
+        "cena_kg": 112.0,
+        "nw_kod": "",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Pomelo plátky zelené",
+        "kod": "10465",
+        "sarze": "LKS260059",
+        "dmt": "2028-02-28",
+        "mnozstvi": null,
+        "stav": "OK",
+        "cena_kg": 89.0,
+        "nw_kod": "",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Rozinky obří zlaté",
+        "kod": "12450",
+        "sarze": "L251452",
+        "dmt": "2027-10-02",
+        "mnozstvi": null,
+        "stav": "OK",
+        "cena_kg": 129.0,
+        "nw_kod": "",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Švestky Ashlock 80/90",
+        "kod": "11900",
+        "sarze": "LKS260215",
+        "dmt": "2027-12-08",
+        "mnozstvi": null,
+        "stav": "OK",
+        "cena_kg": 92.0,
+        "nw_kod": "",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Vlašská jádra 80% půlek",
+        "kod": "15521",
+        "sarze": "L261334",
+        "dmt": "2027-06-30",
+        "mnozstvi": null,
+        "stav": "OK",
+        "cena_kg": 189.0,
+        "nw_kod": "",
+        "cenik_kg": 189.0
+      },
+      {
+        "nazev": "Třešně",
+        "kod": "12844",
+        "sarze": "LKS250063",
+        "dmt": "2027-08-31",
+        "mnozstvi": null,
+        "stav": "OK",
+        "cena_kg": 185.0,
+        "nw_kod": "",
+        "cenik_kg": 185.0
       }
     ]
   }
