@@ -861,9 +861,6 @@ async function createLink() {
   const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
   const url = 'https://nutworldcz-collab.github.io/zakazka.html#' + encoded;
 
-  // Uložit do archivu
-  saveToArchiv(data, cislo, url);
-
   // Zkopíruj do schránky
   navigator.clipboard.writeText(url).then(() => {
     document.getElementById('link-copied').style.display = 'block';
@@ -876,6 +873,9 @@ async function createLink() {
 
   // Vytvoř kartu v Trellu — seznam Nabídky
   const cislo = window._offerCislo || ('NW-' + new Date().toISOString().slice(0,10));
+
+  // Uložit do archivu (musí být až po definici cislo)
+  saveToArchiv(data, cislo, url);
   const totalBez = data.produkty.reduce((s,p) => s + p.ks * p.cena, 0);
   const prodList = data.produkty.map(p => `- ${p.nazev} · ${p.ks} ks · ${p.cena.toFixed(2)} ${curSym}`).join('\n');
   const desc = `## ${data.firma}\n**Číslo:** ${cislo}\n**Rep:** ${data.repName||'-'}\n\n### Produkty\n${prodList.replace(/ · [\d, .]+ [^\s]+$/gm,'')}\n\n---\n[➡️ Otevřít formulář zakázky](${url})`;
