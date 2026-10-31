@@ -1,52 +1,106 @@
 {
-  "generated": "2026-10-30T12:00:43",
-  "total": 13,
-  "spam_skipped": 1,
+  "generated": "2026-10-31T05:17:21",
+  "total": 16,
+  "spam_skipped": 0,
   "emails": [
     {
       "account": "Exchange",
-      "sender": "\"scannutworld@mekrs.cz\" <scannutworld@mekrs.cz>",
-      "subject": "Message from \"NUT-1PATRO-RICOH\"",
-      "date": "pátek 30. října 2026 11:04:52",
-      "unread": false,
-      "preview": "E-mail byl odeslán z \"NUT-1PATRO-RICOH\" (IM C300). Datum skenování: 30.10.2026 11:04:35 (+0100) Dotazy na: scannutworld@mekrs.cz",
-      "category": "tym",
-      "sender_short": "scannutworld@mekrs.cz",
-      "sender_email": "scannutworld@mekrs.cz",
+      "sender": "Tereza Brůžková <Tereza.Bruzkova@heineken.com>",
+      "subject": "RE: Poptávka Heineken",
+      "date": "pátek 30. října 2026 14:45:45",
+      "unread": true,
+      "preview": "",
+      "category": "b2b",
+      "sender_short": "Tereza Brůžková",
+      "sender_email": "Tereza.Bruzkova@heineken.com",
       "ai": {
-        "shrn": "Notifikace ze skeneru Ricoh na prvním patře Nutworld. Automatická zpráva bez konkrétního obsahu.",
-        "tyka_se": false,
-        "akce": null
+        "shrn": "Odpověď na poptávku od společnosti Heineken ohledně obchodní spolupráce.",
+        "tyka_se": true,
+        "akce": "Přečíst si obsah a rozhodnou o odpovědi na B2B poptávku"
+      }
+    },
+    {
+      "account": "s.r.o.\" <claudie.nutworld.cz@gmail.com>",
+      "sender": "[B2B DOPYT SK] Nová požiadavka",
+      "subject": "pátek 30. října 2026 14:28:29",
+      "date": "false",
+      "unread": false,
+      "preview": "",
+      "category": "ostatni",
+      "sender_short": "[B2B DOPYT SK] Nová požiadavka",
+      "sender_email": "[B2B DOPYT SK] Nová požiadavka",
+      "ai": {
+        "shrn": "Nová B2B poptávka ze Slovenska se systémově vygenerovaným časovým razítkem.",
+        "tyka_se": true,
+        "akce": "Zkontrolovat a zpracovat novou B2B požiadavku"
+      }
+    },
+    {
+      "account": "s.r.o.\" <claudie.nutworld.cz@gmail.com>",
+      "sender": "[B2B DOPYT SK] Nová požiadavka",
+      "subject": "pátek 30. října 2026 14:23:40",
+      "date": "false",
+      "unread": false,
+      "preview": "",
+      "category": "ostatni",
+      "sender_short": "[B2B DOPYT SK] Nová požiadavka",
+      "sender_email": "[B2B DOPYT SK] Nová požiadavka",
+      "ai": {
+        "shrn": "Další nová B2B poptávka ze Slovenska téhož dne v krátké časové vzdálenosti.",
+        "tyka_se": true,
+        "akce": "Zkontrolovat a zpracovat novou B2B požiadavku"
       }
     },
     {
       "account": "Exchange",
-      "sender": "\"scannutworld@mekrs.cz\" <scannutworld@mekrs.cz>",
-      "subject": "Message from \"NUT-1PATRO-RICOH\"",
-      "date": "pátek 30. října 2026 11:04:29",
-      "unread": false,
-      "preview": "E-mail byl odeslán z \"NUT-1PATRO-RICOH\" (IM C300). Datum skenování: 30.10.2026 11:04:16 (+0100) Dotazy na: scannutworld@mekrs.cz",
-      "category": "tym",
-      "sender_short": "scannutworld@mekrs.cz",
-      "sender_email": "scannutworld@mekrs.cz",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 14:05 (30. října 2026)",
+      "date": "pátek 30. října 2026 14:07:13",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Renata Pošepná připojil(a) přílohu IMG_20261030_140215.jpg ke kartě MOSS.SK na nástěnce Firmy dárky + objednávky Odpovědět e-mailem ￼ Renata Pošepná připojil(a) přílohu IMG_20261030_140311.jpg ke kartě MOSS.SK na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívej",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Hofmannova Irena <Irena.Hofmannova@mariuspedersen.cz>",
+      "subject": "RE: Smlouva + ZPO",
+      "date": "pátek 30. října 2026 13:55:10",
+      "unread": true,
+      "preview": "Dobrý den",
+      "category": "ostatni",
+      "sender_short": "Hofmannova Irena",
+      "sender_email": "Irena.Hofmannova@mariuspedersen.cz",
       "ai": {
-        "shrn": "Notifikace ze skeneru Ricoh na prvním patře Nutworld. Automatická zpráva bez konkrétního obsahu.",
-        "tyka_se": false,
-        "akce": null
+        "shrn": "Email od Ireny Hofmannové týkající se smlouvy a ZPO.",
+        "tyka_se": true,
+        "akce": "Přečíst si a odpovědět na dotaz ohledně smlouvy a ZPO"
       }
     },
     {
       "account": "Exchange",
-      "sender": "scannutworld@mekrs.cz",
-      "subject": "Message from \"NUT-1PATRO-RICOH\"",
-      "date": "pátek 30. října 2026 11:04:24",
-      "unread": false,
-      "preview": "E-mail byl odeslán z \"NUT-1PATRO-RICOH\" (IM C300). Datum skenování: 30.10.2026 11:03:50 (+0100) Dotazy na: scannutworld@mekrs.cz",
-      "category": "tym",
-      "sender_short": "scannutworld@mekrs.cz",
-      "sender_email": "scannutworld@mekrs.cz",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Balírna přesunul/a kartu Olympicpalace do sloupce Hotovo - čeká na zabalení na nástěnce Firmy dárky + objednávky",
+      "date": "pátek 30. října 2026 13:21:52",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Balírna přesunul(a) kartu Olympicpalace do sloupce Hotovo - čeká na zabalení na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "\"Katarzyna Ślaza - Godan S.A.\" <k.slaza@godan.pl>",
+      "subject": "🎄✨ New Christmas & New Year Collection 2026 is Here! 🎉🥂",
+      "date": "pátek 30. října 2026 13:18:35",
+      "unread": true,
+      "preview": "Dear Customer, We are excited to share our new November–December 2026 Catalogue with you! 🎁✨ Inside",
+      "category": "ostatni",
+      "sender_short": "Katarzyna Ślaza - Godan S.A.",
+      "sender_email": "k.slaza@godan.pl",
       "ai": {
-        "shrn": "Notifikace ze skeneru Ricoh na prvním patře Nutworld. Automatická zpráva bez konkrétního obsahu.",
+        "shrn": "Katarzyna Ślaza z Godanu zasílá nový vánočně-novoroční katalog na roky 2026.",
         "tyka_se": false,
         "akce": null
       }
@@ -54,10 +108,10 @@
     {
       "account": "Exchange",
       "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 11:00 (30. října 2026)",
-      "date": "pátek 30. října 2026 11:02:07",
+      "subject": "Renata Pošepná přesunul/a kartu Huber Technology do sloupce Hotovo - čeká na zabalení na nástěnce Firmy dárky + objednávky",
+      "date": "pátek 30. října 2026 12:34:05",
       "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Renata Pošepná připojil(a) přílohu IMG_20261030_104252.jpg ke kartě Huber Technology na nástěnce Firmy dárky + objednávky Odpovědět e-mailem ￼ Renata Pošepná připojil(a) přílohu IMG_20261030_104441.jpg ke kartě Huber Technology na nástěnce Firmy dárky + objednávky Odpovědět ",
+      "preview": "￼ Zde je nejnovější... ￼ Renata Pošepná přesunul(a) kartu Huber Technology do sloupce Hotovo - čeká na zabalení na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svá nastavení a přizpůsobte si oznámení",
       "category": "sluzby",
       "sender_short": "Trello",
       "sender_email": "do-not-reply@trello.com"
@@ -65,74 +119,58 @@
     {
       "account": "Exchange",
       "sender": "InfoNutWorld <info@nutworld.cz>",
-      "subject": "Fw: poptávka",
-      "date": "pátek 30. října 2026 10:13:40",
-      "unread": false,
-      "preview": "Zasláno z Outlooku pro Android From: Doudová Magda <mdoudova@sitel.cz> Sent: Friday",
-      "category": "b2b",
+      "subject": "Fw: Vánoční MIX",
+      "date": "pátek 30. října 2026 12:20:59",
+      "unread": true,
+      "preview": "Zasláno z Outlooku pro Android From: Petra Holečková || QuiQ.cz <petra.holeckova@quiq.cz> Sent: Friday",
+      "category": "tym",
       "sender_short": "InfoNutWorld",
       "sender_email": "info@nutworld.cz",
       "ai": {
-        "shrn": "Forwardovaná B2B poptávka od Magdy Doudové přijatá přes Outlook. Vyžaduje Janův přehled a potenciální odpověď.",
+        "shrn": "Interní email od Petry Holečkové přeposlaný přes InfoNutWorld týkající se Vánočního MIXu.",
         "tyka_se": true,
-        "akce": "Přečíst poptávku a rozhodnout o odpovědi zákazníkovi"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Hofmannova Irena <Irena.Hofmannova@mariuspedersen.cz>",
-      "subject": "Smlouva + ZPO",
-      "date": "pátek 30. října 2026 10:10:07",
-      "unread": false,
-      "preview": "Dobrý den",
-      "category": "ostatni",
-      "sender_short": "Hofmannova Irena",
-      "sender_email": "Irena.Hofmannova@mariuspedersen.cz",
-      "ai": {
-        "shrn": "Email od právníka Ireny Hofmannové ohledně smlouvy a zákonných povinností. Vyžaduje právní pozornost.",
-        "tyka_se": true,
-        "akce": "Přečíst a projednat obsah smlouvy a ZPO s právníkem"
+        "akce": "Zkontrolovat obsah týmu ohledně přípravy Vánočního MIXu"
       }
     },
     {
       "account": "Exchange",
       "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Doprava NutWorld tě zmínil/a na kartě ALZA - EDI/2026/33 na nástěnce Firmy dárky + objednávky",
-      "date": "pátek 30. října 2026 9:59:47",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 5 upozornění od poslední návštěvy 12:09 (30. října 2026)",
+      "date": "pátek 30. října 2026 12:10:51",
       "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Doprava NutWorld vás zmínil(a) na kartě ALZA - EDI/2026/33 na nástěnce Firmy dárky + objednávky @card v pondělí odchází z Náchoda do Alzy pet palet s polozkami BJ-CC-1000P01-415ks+BJ-CC-425B01 750 ks+Bj-MX-200W02 560ks Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroj",
+      "preview": "￼ Zde je nejnovější... ￼ Doprava NutWorld vás zmínil(a) na kartě AV Medical CZ s.r.o. — 730 ks — 30.10.2026 na nástěnce Firmy dárky + objednávky @card odchází v pondělí na paletě Geis Odpovědět e-mailem ￼ Doprava NutWorld označil(a) kartu AV Medical CZ s.r.o. — 730 ks — 30.10.2026 jako dokončenou Od",
       "category": "sluzby",
       "sender_short": "Trello",
       "sender_email": "do-not-reply@trello.com"
     },
     {
-      "account": "Exchange",
-      "sender": "Allegro <info@notifikace.allegro.cz>",
-      "subject": "Kvalitní elektronika pro každý styl bydlení.",
-      "date": "pátek 30. října 2026 9:32:37",
+      "account": "Google",
+      "sender": "AliExpress <ae-fresh-item04@newarrival.aliexpress.com>",
+      "subject": "In the spotlight this week",
+      "date": "pátek 30. října 2026 14:54:59",
       "unread": true,
-      "preview": "￼ ￼ Dobrý den",
+      "preview": "",
       "category": "ostatni",
-      "sender_short": "Allegro",
-      "sender_email": "info@notifikace.allegro.cz",
+      "sender_short": "AliExpress",
+      "sender_email": "ae-fresh-item04@newarrival.aliexpress.com",
       "ai": {
-        "shrn": "Marketingový email od Allegro s nabídkou elektroniky. Není relevantní pro Nutworld.",
+        "shrn": "Propagační email od AliExpressu s týdenní nabídkou produktů.",
         "tyka_se": false,
         "akce": null
       }
     },
     {
-      "account": "Exchange",
-      "sender": "Miloš Kamitz <milos.kamitz@mekrs.cz>",
-      "subject": "RE: statistiky vyroby / vychystani",
-      "date": "pátek 30. října 2026 9:31:31",
+      "account": "Google",
+      "sender": "\"Temu\" <temu@eu.temuemail.com>",
+      "subject": "✨ Předčasný Black Friday je v plném proudu",
+      "date": "pátek 30. října 2026 14:33:55",
       "unread": true,
-      "preview": "Ještě je ted vylepšená statitika na vychystání pro Váš přehled. Najdete v K2 ikona statitiky skladníka. Kde najdete rozšíření v pravo od grafu a pod grafem. Je tam vidět",
-      "category": "tym",
-      "sender_short": "Miloš Kamitz",
-      "sender_email": "milos.kamitz@mekrs.cz",
+      "preview": "Objevte skvělé nabídky ￼ U jakýchkoli položek uvedených v tomto e-mailu nebo v rámci této promoakce",
+      "category": "ostatni",
+      "sender_short": "Temu",
+      "sender_email": "temu@eu.temuemail.com",
       "ai": {
-        "shrn": "Email od Miloše Kamitze z týmu o vylepšené statistice výroby a vychystávání zboží v systému K2.",
+        "shrn": "Marketingový email od Temu týkající se předčasného Black Friday.",
         "tyka_se": false,
         "akce": null
       }
@@ -143,12 +181,12 @@
       "subject": "PSA: weekly bestsellers are here",
       "date": "pátek 30. října 2026 8:24:09",
       "unread": true,
-      "preview": "Get it now: 2024 Street Fashion Two-piece Suits INCERUN Men Causal Simple Solid... ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ￼ Recommended for you ￼ CZK",
+      "preview": "",
       "category": "ostatni",
       "sender_short": "AliExpress",
       "sender_email": "ae-fresh-item04@newarrival.aliexpress.com",
       "ai": {
-        "shrn": "Marketingový email od AliExpress s nabídkou oblečení a módy. Není relevantní pro Nutworld.",
+        "shrn": "Pravidelný email od AliExpressu s týdenními bestsellery.",
         "tyka_se": false,
         "akce": null
       }
@@ -164,7 +202,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "Email od CrossFitu s denním tréninkovým plánem. Není relevantní pro Nutworld.",
+        "shrn": "Denní WOD (Workout of the Day) od CrossFitu na pátek.",
         "tyka_se": false,
         "akce": null
       }
@@ -175,12 +213,12 @@
       "subject": "Coupon codes go live soon",
       "date": "pátek 30. října 2026 0:08:18",
       "unread": true,
-      "preview": "Explore hot finds in accessories ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ￼ . . CZK51.65 . -2% . CZK78.48 . CZK93.68 . Explore deals . . Coupon codes .",
+      "preview": "",
       "category": "ostatni",
       "sender_short": "AliExpress",
       "sender_email": "ae-fresh-item04@newarrival.aliexpress.com",
       "ai": {
-        "shrn": "Marketingový email od AliExpress s kupóny a nabídkou doplňků. Není relevantní pro Nutworld.",
+        "shrn": "Vzdělávací email od CrossFitu o chybách v technice muscle-up.",
         "tyka_se": false,
         "akce": null
       }
@@ -196,7 +234,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "Email od CrossFitu o technickém článku k fitness cvičení. Není relevantní pro Nutworld.",
+        "shrn": "Email od AliExpressu o připravovaných kuponech a slevách.",
         "tyka_se": false,
         "akce": null
       }
