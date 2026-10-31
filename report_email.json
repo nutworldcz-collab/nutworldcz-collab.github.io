@@ -1,6 +1,6 @@
 {
-  "generated": "2026-10-31T12:48:46",
-  "total": 9,
+  "generated": "2026-10-31T17:35:49",
+  "total": 10,
   "spam_skipped": 0,
   "emails": [
     {
@@ -36,7 +36,7 @@
       "sender_short": "Allegro",
       "sender_email": "info@notifikace.allegro.cz",
       "ai": {
-        "shrn": "Upozornění od Allegro na konec halloweenských slev o půlnoci. Jedná se o marketingový email.",
+        "shrn": "Allegro oznamuje konec halloweenských slev o půlnoci. Jedná se o automatickou notifikaci z marketplace.",
         "tyka_se": false,
         "akce": null
       }
@@ -52,9 +52,9 @@
       "sender_short": "claudie.nutworld.cz@gmail.com",
       "sender_email": "claudie.nutworld.cz@gmail.com",
       "ai": {
-        "shrn": "Denní zpráva o stavu automatizací v Nutworld ze dne 31.10. Vyžaduje kontrolu automatizací.",
+        "shrn": "Denní report o stavu automatizací Nutworld z 31.10. vyžaduje Janovu kontrolu. Email pochází z interního systému.",
         "tyka_se": true,
-        "akce": "Zkontrolovat stav automatizací v systému Nutworld"
+        "akce": "Zkontrolovat stav automatizací na 31.10.2026"
       }
     },
     {
@@ -104,15 +104,31 @@
     {
       "account": "Google",
       "sender": "AliExpress <ae-fresh-item04@newarrival.aliexpress.com>",
-      "subject": "Had to say congrats. You'll see why",
-      "date": "sobota 31. října 2026 9:13:57",
+      "subject": "We did the math",
+      "date": "sobota 31. října 2026 13:00:39",
       "unread": true,
       "preview": "",
       "category": "ostatni",
       "sender_short": "AliExpress",
       "sender_email": "ae-fresh-item04@newarrival.aliexpress.com",
       "ai": {
-        "shrn": "Marketingový email od AliExpress s nejasným obsahem o nové položce. Jedná se o spam/propagační email.",
+        "shrn": "Generický marketing email od AliExpresu bez konkrétního obsahu. Spam/notifikace o novinkách.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "AliExpress <ae-fresh-item04@newarrival.aliexpress.com>",
+      "subject": "Had to say congrats. You'll see why",
+      "date": "sobota 31. října 2026 9:13:57",
+      "unread": true,
+      "preview": "Good day? Something to explore ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ￼ . . -17% . CZK4,731.62 . -32% . CZK347.38 . -53% . CZK628.45 . Explore deals ",
+      "category": "ostatni",
+      "sender_short": "AliExpress",
+      "sender_email": "ae-fresh-item04@newarrival.aliexpress.com",
+      "ai": {
+        "shrn": "Marketingový email od AliExpresu s nabídkou slev na různé produkty. Typický spam.",
         "tyka_se": false,
         "akce": null
       }
