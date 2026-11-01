@@ -1,8 +1,19 @@
 {
-  "generated": "2026-11-01T12:21:01",
-  "total": 3,
+  "generated": "2026-11-01T18:17:51",
+  "total": 6,
   "spam_skipped": 0,
   "emails": [
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Na nástěnce Tvorba štítků CANVA máš 4 upozornění od poslední návštěvy 11:00 (1. listopadu 2026)",
+      "date": "neděle 1. listopadu 2026 11:01:55",
+      "unread": true,
+      "preview": "￼ Termín je brzy... GIFT PRINT PRODUCTION s.r.o. — Premium mix ořechů",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
     {
       "account": "Exchange",
       "sender": "Seznam Peněženka <noreply@firma.seznam.cz>",
@@ -14,7 +25,7 @@
       "sender_short": "Seznam Peněženka",
       "sender_email": "noreply@firma.seznam.cz",
       "ai": {
-        "shrn": "Přehled měsíčních plateb a transakcí za období 1. 10. - 1. 11. 2026 ze Seznam Peněženky.",
+        "shrn": "Měsíční přehled plateb a transakcí z účtu Seznam.cz za období 1.10. - 1.11.2026.",
         "tyka_se": false,
         "akce": null
       }
@@ -30,7 +41,7 @@
       "sender_short": "claudie.nutworld.cz@gmail.com",
       "sender_email": "claudie.nutworld.cz@gmail.com",
       "ai": {
-        "shrn": "Denní health report automatizací Nutworld - jedna oprava, jinak vše v pořádku.",
+        "shrn": "Denní zdravotní report automatizací Nutworld s jednou opravou, jinak vše v pořádku.",
         "tyka_se": false,
         "akce": null
       }
@@ -46,9 +57,41 @@
       "sender_short": "MERGADO Billing",
       "sender_email": "billing@mergado.com",
       "ai": {
-        "shrn": "Faktura od Mergado za využívání Editoru pro správu inzercí a feedů.",
+        "shrn": "Mergado faktura za využívání Editoru pro správu inzercí na srovnávačích zboží.",
         "tyka_se": true,
-        "akce": "Zkontrolovat a uhradit fakturu z Fakturoid"
+        "akce": "Zkontrolovat fakturu a zajistit její včasné zaplacení"
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "AliExpress <ae-fresh-item04@newarrival.aliexpress.com>",
+      "subject": "Clearance blowout up to 60% off",
+      "date": "neděle 1. listopadu 2026 10:35:04",
+      "unread": true,
+      "preview": "",
+      "category": "ostatni",
+      "sender_short": "AliExpress",
+      "sender_email": "ae-fresh-item04@newarrival.aliexpress.com",
+      "ai": {
+        "shrn": "Propagační email od AliExpress s výprodejovým nabídnutím slev až 60%.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "AliExpress <ae-fresh-item04@newarrival.aliexpress.com>",
+      "subject": "JUST LANDED: new items with high ratings",
+      "date": "neděle 1. listopadu 2026 9:33:42",
+      "unread": true,
+      "preview": "Rave reviews for: Christmas Pendant & Drop Ornaments ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ￼ Recommended for you ￼ CZK1,145.85 CZK3,270.88 | -65% ￼ ",
+      "category": "ostatni",
+      "sender_short": "AliExpress",
+      "sender_email": "ae-fresh-item04@newarrival.aliexpress.com",
+      "ai": {
+        "shrn": "Propagační email od AliExpress s novými vánoční doplňky s vysokými hodnoceními.",
+        "tyka_se": false,
+        "akce": null
       }
     }
   ]
