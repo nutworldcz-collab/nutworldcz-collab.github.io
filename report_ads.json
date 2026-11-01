@@ -1,48 +1,38 @@
 {
-  "generated": "2026-10-31T08:30:16",
-  "period": "2026-10-24 – 2026-10-30",
+  "generated": "2026-11-01T08:33:41",
+  "period": "2026-10-25 – 2026-10-31",
   "channels": {
     "Meta CZ": {
-      "spend": 28653.0,
-      "revenue": 191549.0,
-      "pno": 15.0,
-      "conversions": 137.0,
-      "clicks": 7859,
-      "prev_spend": 24687.0,
-      "prev_pno": 15.7
+      "spend": 28629.0,
+      "revenue": 197233.0,
+      "pno": 14.5,
+      "conversions": 146.0,
+      "clicks": 8211,
+      "prev_spend": 26341.0,
+      "prev_pno": 16.2
     },
     "Meta SK": {
       "spend": 499.0,
-      "revenue": 2767.0,
-      "pno": 18.0,
-      "conversions": 47.0,
-      "clicks": 5998,
-      "prev_spend": 244.0,
-      "prev_pno": 10.2
+      "revenue": 2661.0,
+      "pno": 18.8,
+      "conversions": 43.0,
+      "clicks": 6542,
+      "prev_spend": 273.0,
+      "prev_pno": 12.7
     },
     "Google CZ": {
-      "spend": 5037.0,
-      "revenue": 33911.0,
-      "pno": 14.9,
-      "conversions": 34.5,
-      "clicks": 1917,
-      "prev_spend": 5370.0,
-      "prev_pno": 13.5
+      "error": "('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))"
     },
     "Google SK": {
-      "spend": 5410.0,
-      "revenue": 30720.0,
-      "pno": 17.6,
-      "conversions": 20.4,
-      "clicks": 630,
-      "prev_spend": 4991.0,
-      "prev_pno": 11.9
+      "error": "('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))"
     }
   },
   "anomalies": [
-    "🟡 Meta SK: útrata +105% vs minulý týden"
+    "🟡 Meta SK: útrata +83% vs minulý týden",
+    "⚠️ Google CZ: chyba připojení",
+    "⚠️ Google SK: chyba připojení"
   ],
   "priorities": [
-    "Nejlepší kanál: Google CZ (PNO 14.9%) — zvýšit budget?"
+    "Nejlepší kanál: Meta CZ (PNO 14.5%) — zvýšit budget?"
   ]
 }
