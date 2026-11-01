@@ -1,6 +1,55 @@
 {
-  "generated": "2026-11-01T07:43:45",
-  "total": 0,
+  "generated": "2026-11-01T12:21:01",
+  "total": 3,
   "spam_skipped": 0,
-  "emails": []
+  "emails": [
+    {
+      "account": "Exchange",
+      "sender": "Seznam Peněženka <noreply@firma.seznam.cz>",
+      "subject": "Přehled plateb - Seznam.cz",
+      "date": "neděle 1. listopadu 2026 10:15:41",
+      "unread": true,
+      "preview": "￼ Hezký den. V příloze najdete přehled plateb a transakcí vašeho účtu HVlcek@seznam.cz za období 1. 10. 2026 - 1. 11. 2026. Zasílání přehledu plateb si můžete kdykoli upravit v Klientské zóně. Váš Seznam.cz V případě dotazů nás neváhejte kontaktovat na čísle +420 234 694 200 nebo e‑mailem: reklama@f",
+      "category": "ostatni",
+      "sender_short": "Seznam Peněženka",
+      "sender_email": "noreply@firma.seznam.cz",
+      "ai": {
+        "shrn": "Přehled měsíčních plateb a transakcí za období 1. 10. - 1. 11. 2026 ze Seznam Peněženky.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "\"claudie.nutworld.cz@gmail.com\" <claudie.nutworld.cz@gmail.com>",
+      "subject": "🔄 Opraveno · Denní stav automatizací · 1.11.",
+      "date": "neděle 1. listopadu 2026 8:50:15",
+      "unread": true,
+      "preview": "DENNÍ ZDRAVOTNÍ REPORT · NUTWORLD 🔄 Opraveno 1× · jinak OK 1. 11. 2026",
+      "category": "ostatni",
+      "sender_short": "claudie.nutworld.cz@gmail.com",
+      "sender_email": "claudie.nutworld.cz@gmail.com",
+      "ai": {
+        "shrn": "Denní health report automatizací Nutworld - jedna oprava, jinak vše v pořádku.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "MERGADO Billing <billing@mergado.com>",
+      "subject": "Mergado faktura",
+      "date": "neděle 1. listopadu 2026 7:17:27",
+      "unread": false,
+      "preview": "Dobrý den, zasíláme Vám fakturu za využívání Mergado Editoru. Jeho pomocí nastavujete inzerci na srovnávačích zboží či zpracováváte dodavatelské feedy. Fakturu najdete na adrese: https://app.fakturoid.cz/mergado/p/tUEIx6hU5g/1202632745 Děkujeme za její včasné uhrazení. Pokud máte otázky související ",
+      "category": "dodavatel",
+      "sender_short": "MERGADO Billing",
+      "sender_email": "billing@mergado.com",
+      "ai": {
+        "shrn": "Faktura od Mergado za využívání Editoru pro správu inzercí a feedů.",
+        "tyka_se": true,
+        "akce": "Zkontrolovat a uhradit fakturu z Fakturoid"
+      }
+    }
+  ]
 }
