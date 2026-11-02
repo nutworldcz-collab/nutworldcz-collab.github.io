@@ -64,17 +64,6 @@ input,button{font-family:inherit;font-size:inherit;}
 #sheetTitle::placeholder{color:var(--fg-muted);font-weight:400;}
 .btn-add{background:var(--brown);color:#fff;border:none;padding:8px 16px;border-radius:var(--r);font-family:var(--font-ui);font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s;}
 .btn-add:hover{background:var(--brown-dark);}
-.btn-reset{background:transparent;color:var(--brown);border:1.5px solid var(--brown);padding:7px 14px;border-radius:var(--r);font-family:var(--font-ui);font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s;}
-.btn-reset:hover{background:var(--brown);color:#fff;}
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:999999;padding:16px;}
-.modal{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px 28px;max-width:360px;width:100%;}
-.modal h3{font-family:var(--font-ui);font-size:16px;color:var(--brown-dark);margin-bottom:8px;}
-.modal p{font-size:14px;color:var(--fg-muted);margin-bottom:18px;line-height:1.5;}
-.modal-btns{display:flex;gap:10px;justify-content:flex-end;}
-.modal-ok{background:var(--brown);color:#fff;border:none;padding:8px 18px;border-radius:8px;font-family:var(--font-ui);font-size:13px;font-weight:700;cursor:pointer;}
-.modal-ok:hover{background:var(--brown-dark);}
-.modal-cancel{background:transparent;color:var(--fg-muted);border:1.5px solid var(--border);padding:7px 18px;border-radius:8px;font-family:var(--font-ui);font-size:13px;font-weight:700;cursor:pointer;}
-.modal-cancel:hover{border-color:var(--brown);color:var(--brown);}
 
 .stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
 .stat{flex:1 1 110px;background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--r);padding:11px 14px;}
@@ -189,16 +178,6 @@ tr.ship-row td{padding:0;}
   </table>
 </div>
 <p class="footnote">Data se ukládají automaticky v prohlížeči. Klikni na ▼ pro zásilky.</p>
-<div class="modal-bg" id="resetModal" hidden onclick="if(event.target===this)this.hidden=true">
-  <div class="modal">
-    <h3>Načíst obj. 191698 Albi?</h3>
-    <p>Načte se 6 produktů, 2 000 ks, termín 19. 11.<br><strong>Stávající data budou smazána.</strong></p>
-    <div class="modal-btns">
-      <button class="modal-cancel" onclick="document.getElementById('resetModal').hidden=true">Zrušit</button>
-      <button class="modal-ok" onclick="confirmLoad()">Načíst</button>
-    </div>
-  </div>
-</div>
 
 <script>
 const STORE = 'nw_albi_v1';
@@ -227,17 +206,6 @@ function defaultRows() {
   ];
 }
 
-function loadDefaults(){
-  document.getElementById('resetModal').hidden=false;
-}
-function confirmLoad(){
-  document.getElementById('resetModal').hidden=true;
-  const dr=defaultRows();
-  state={title:'Albi — obj. 191698',rows:dr};
-  nextId=dr.reduce((m,r)=>Math.max(m,r.id+1),1);
-  save();render();
-  document.getElementById('sheetTitle').value=state.title;
-}
 
 function load() {
   try {
