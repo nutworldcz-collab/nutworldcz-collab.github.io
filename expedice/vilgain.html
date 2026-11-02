@@ -71,6 +71,19 @@ input,button{font-family:inherit;font-size:inherit;}
 }
 .btn-add:hover{background:var(--brown-dark);}
 
+/* Summary */
+.summary{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;}
+.summary-hdr{background:var(--brown-dark);color:#fff;padding:7px 14px;font-family:var(--font-ui);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+.sum-row{display:grid;grid-template-columns:110px 1fr 80px 80px 90px;align-items:center;gap:8px;padding:7px 14px;border-top:1px solid var(--border-soft);font-size:13px;}
+@media(max-width:700px){.sum-row{grid-template-columns:90px 1fr 70px 70px 80px;}}
+@media(max-width:500px){.sum-row{grid-template-columns:1fr 1fr;}.sum-name{display:none;}}
+.sum-code{font-family:var(--font-ui);font-weight:700;color:var(--brown);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sum-name{color:var(--fg-muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sum-total{text-align:right;font-variant-numeric:tabular-nums;color:var(--fg-muted);font-size:12px;}
+.sum-sent{text-align:right;font-variant-numeric:tabular-nums;color:var(--amber);font-size:12px;font-weight:600;}
+.sum-rem{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;color:var(--fg);font-size:13px;}
+.sum-empty{padding:10px 14px;font-size:13px;color:var(--leaf);font-style:italic;}
+
 /* Stats */
 .stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
 .stat{flex:1 1 110px;background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--r);padding:11px 14px;}
@@ -176,6 +189,10 @@ tr.ship-row td{padding:0;}
   <a class="back-link" href="/expedice/">← Zpět</a>
   <div class="sheet-title"><input id="sheetTitle" type="text" placeholder="Název"></div>
   <button class="btn-add" onclick="addRow()">+ Přidat produkt</button>
+</div>
+<div class="summary" id="summaryBox">
+  <div class="summary-hdr">Souhrn výroby — co zbývá nadělat</div>
+  <div id="summaryBody"><div class="sum-empty">Načítám…</div></div>
 </div>
 <div class="stats">
   <div class="stat"><div class="stat-label">Produktů</div><div class="stat-val c-brown" id="stProd">0</div></div>
@@ -345,6 +362,26 @@ function renderStats(){
   document.getElementById('stRem').textContent=rem;
   document.getElementById('stShips').textContent=ships;
   document.getElementById('stRem').className='stat-val '+(rem===0&&products>0?'c-leaf':'c-fg');
+  renderSummary();
+}
+
+function renderSummary(){
+  const body=document.getElementById('summaryBody');if(!body)return;
+  const map={};
+  for(const r of state.rows){
+    const sep=r.name.indexOf(' — ');
+    const code=sep>-1?r.name.slice(0,sep).trim():r.name.trim()||'—';
+    const name=sep>-1?r.name.slice(sep+3).trim():'';
+    if(!map[code])map[code]={code,name,total:0,sent:0};
+    map[code].total+=r.total;
+    map[code].sent+=r.manualDone?r.total:sentSum(r);
+  }
+  const items=Object.values(map).filter(x=>x.total-x.sent>0);
+  if(items.length===0){body.innerHTML='<div class="sum-empty">✓ Vše odesláno nebo v pořádku</div>';return;}
+  body.innerHTML=items.map(x=>{
+    const rem=x.total-x.sent;
+    return `<div class="sum-row"><div class="sum-code">${esc(x.code)}</div><div class="sum-name">${esc(x.name)}</div><div class="sum-total">${x.total} ks</div><div class="sum-sent">${x.sent} odesláno</div><div class="sum-rem">${rem} ks</div></div>`;
+  }).join('');
 }
 
 function orderHeaderHtml(ord,rows){
