@@ -1,0 +1,430 @@
+<title>Expedice — Albi</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700&family=Source+Sans+3:wght@400;600&display=swap">
+
+<style>
+:root {
+  --bg:#f5f0eb; --surface:#ffffff; --surface2:#faf7f4;
+  --fg:#1a1208; --fg-muted:#6b4f35;
+  --brown:#83502e; --brown-dark:#5c381f;
+  --amber:#f7ab31; --amber-bg:#fff8e6;
+  --leaf:#6fa044; --leaf-bg:#eef6e6;
+  --danger:#da1668; --danger-bg:#fff0f5;
+  --border:#dcc9b0; --border-soft:#ede3d6;
+  --ship-bg:#fdf9f5;
+  --font-ui:'Exo 2',system-ui,sans-serif;
+  --font-data:'Source Sans 3',system-ui,sans-serif;
+  --r:8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#18100a; --surface:#231608; --surface2:#2c1e0e;
+    --fg:#f0e4d0; --fg-muted:#b08060;
+    --brown:#c4834a; --brown-dark:#e8a870;
+    --amber:#f7ab31; --amber-bg:#2a1f00;
+    --leaf:#8aba5c; --leaf-bg:#0f1f06;
+    --danger:#f04880; --danger-bg:#2a0010;
+    --border:#4a3020; --border-soft:#3a2415;
+    --ship-bg:#1f1208; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#18100a; --surface:#231608; --surface2:#2c1e0e;
+  --fg:#f0e4d0; --fg-muted:#b08060;
+  --brown:#c4834a; --brown-dark:#e8a870;
+  --amber:#f7ab31; --amber-bg:#2a1f00;
+  --leaf:#8aba5c; --leaf-bg:#0f1f06;
+  --danger:#f04880; --danger-bg:#2a0010;
+  --border:#4a3020; --border-soft:#3a2415;
+  --ship-bg:#1f1208; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:var(--bg);color:var(--fg);
+  font-family:var(--font-data);font-size:14px;line-height:1.4;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:20px;
+}
+input,button{font-family:inherit;font-size:inherit;}
+
+.topbar{display:flex;align-items:center;flex-wrap:wrap;gap:10px 16px;margin-bottom:16px;}
+.brand{font-family:var(--font-ui);font-size:16px;font-weight:700;color:var(--brown);}
+.brand span{color:var(--fg-muted);font-weight:600;}
+.back-link{font-size:12px;color:var(--fg-muted);text-decoration:none;border:1px solid var(--border);padding:4px 10px;border-radius:var(--r);transition:color .15s,border-color .15s;}
+.back-link:hover{color:var(--brown);border-color:var(--brown);}
+.sheet-title{flex:1 1 160px;min-width:0;}
+#sheetTitle{
+  width:100%;border:none;border-bottom:2px solid var(--border);
+  background:transparent;color:var(--fg);
+  font-family:var(--font-ui);font-size:15px;font-weight:700;
+  padding:4px 2px;outline:none;
+}
+#sheetTitle:focus{border-bottom-color:var(--brown);}
+#sheetTitle::placeholder{color:var(--fg-muted);font-weight:400;}
+.btn-add{background:var(--brown);color:#fff;border:none;padding:8px 16px;border-radius:var(--r);font-family:var(--font-ui);font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s;}
+.btn-add:hover{background:var(--brown-dark);}
+.btn-reset{background:transparent;color:var(--brown);border:1.5px solid var(--brown);padding:7px 14px;border-radius:var(--r);font-family:var(--font-ui);font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s;}
+.btn-reset:hover{background:var(--brown);color:#fff;}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:999999;padding:16px;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px 28px;max-width:360px;width:100%;}
+.modal h3{font-family:var(--font-ui);font-size:16px;color:var(--brown-dark);margin-bottom:8px;}
+.modal p{font-size:14px;color:var(--fg-muted);margin-bottom:18px;line-height:1.5;}
+.modal-btns{display:flex;gap:10px;justify-content:flex-end;}
+.modal-ok{background:var(--brown);color:#fff;border:none;padding:8px 18px;border-radius:8px;font-family:var(--font-ui);font-size:13px;font-weight:700;cursor:pointer;}
+.modal-ok:hover{background:var(--brown-dark);}
+.modal-cancel{background:transparent;color:var(--fg-muted);border:1.5px solid var(--border);padding:7px 18px;border-radius:8px;font-family:var(--font-ui);font-size:13px;font-weight:700;cursor:pointer;}
+.modal-cancel:hover{border-color:var(--brown);color:var(--brown);}
+
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
+.stat{flex:1 1 110px;background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--r);padding:11px 14px;}
+.stat-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--fg-muted);font-family:var(--font-ui);font-weight:600;margin-bottom:3px;}
+.stat-val{font-size:22px;font-weight:700;font-family:var(--font-ui);font-variant-numeric:tabular-nums;}
+.c-brown{color:var(--brown);} .c-amber{color:var(--amber);} .c-leaf{color:var(--leaf);} .c-fg{color:var(--fg);}
+
+.note-bar{background:var(--amber-bg);border:1.5px solid var(--amber);border-radius:var(--r);padding:8px 14px;margin-bottom:14px;font-size:13px;color:#5a3a00;display:flex;align-items:center;gap:8px;}
+.note-bar strong{font-family:var(--font-ui);}
+
+.table-wrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--border);background:var(--surface);}
+table{width:100%;border-collapse:collapse;min-width:620px;}
+thead th{background:var(--brown-dark);color:#fff;font-family:var(--font-ui);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;padding:9px 12px;text-align:left;white-space:nowrap;}
+th.c-center,td.c-center{text-align:center;}
+th.w-num{width:40px;} th.w-act{width:50px;} th.w-mid{width:100px;}
+th.w-prog{width:130px;} th.w-stat{width:100px;} th.w-tog{width:44px;}
+
+tr.order-hdr>td{background:linear-gradient(135deg,var(--brown-dark) 0%,#9a6035 100%);padding:7px 14px;}
+.order-hdr-inner{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.order-tag{font-family:var(--font-ui);font-size:12px;font-weight:700;color:#fff;letter-spacing:0.3px;}
+.order-date{font-size:11px;color:rgba(255,255,255,.65);}
+.order-progress{font-size:12px;color:rgba(255,255,255,.85);font-family:var(--font-data);}
+.c-leaf-hdr{color:#b8f080;font-weight:700;}
+.c-amber-hdr{color:var(--amber);font-weight:700;}
+.order-deadline{font-size:12px;color:rgba(255,255,255,.9);background:rgba(0,0,0,.18);padding:2px 8px;border-radius:99px;}
+
+tr.prod-row{border-bottom:1px solid var(--border-soft);cursor:pointer;transition:background .1s;}
+tr.prod-row:hover{background:var(--surface2);}
+tr.prod-row.is-done{background:var(--leaf-bg);}
+tr.prod-row.is-done:hover{filter:brightness(.97);}
+tr.prod-row.is-over{background:var(--danger-bg);}
+tr.prod-row.is-expanded{border-bottom:none;}
+td{padding:7px 12px;vertical-align:middle;}
+td.num-col{color:var(--fg-muted);font-size:12px;font-variant-numeric:tabular-nums;}
+
+.name-inp{width:100%;border:none;background:transparent;color:var(--fg);font-family:var(--font-data);font-size:14px;font-weight:600;outline:none;padding:2px 4px;border-radius:4px;}
+.name-inp:focus{background:var(--surface2);box-shadow:inset 0 0 0 1.5px var(--brown);}
+.total-inp{width:72px;border:1.5px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--fg);font-variant-numeric:tabular-nums;font-weight:600;padding:4px 6px;text-align:right;outline:none;transition:border-color .15s;}
+.total-inp:focus{border-color:var(--brown);}
+.sent-sum{font-weight:700;font-variant-numeric:tabular-nums;font-size:15px;color:var(--amber);}
+.zbyvá-val{font-weight:700;font-variant-numeric:tabular-nums;font-size:15px;}
+.zbyvá-val.z-zero{color:var(--leaf);} .zbyvá-val.z-pos{color:var(--fg);} .zbyvá-val.z-over{color:var(--danger);}
+.prog-track{background:var(--border-soft);border-radius:99px;height:8px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:99px;transition:width .3s;}
+.pf-early{background:var(--brown);} .pf-mid{background:var(--amber);}
+.pf-done{background:var(--leaf);} .pf-over{background:var(--danger);}
+.prog-pct{font-size:11px;color:var(--fg-muted);margin-top:2px;font-variant-numeric:tabular-nums;}
+.badge{display:inline-block;padding:2px 8px;border-radius:99px;font-family:var(--font-ui);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;white-space:nowrap;}
+.b-new{background:var(--surface2);color:var(--fg-muted);border:1px solid var(--border);}
+.b-mid{background:var(--amber-bg);color:#7a5000;}
+.b-done{background:var(--leaf-bg);color:var(--leaf);}
+.b-over{background:var(--danger-bg);color:var(--danger);}
+.btn-del{background:none;border:none;color:var(--fg-muted);padding:4px 7px;border-radius:4px;font-size:17px;cursor:pointer;line-height:1;transition:color .15s,background .15s;}
+.btn-del:hover{color:var(--danger);background:var(--danger-bg);}
+.btn-done{background:none;border:1.5px solid var(--border);color:var(--fg-muted);padding:3px 7px;border-radius:4px;font-size:13px;cursor:pointer;line-height:1;transition:color .15s,background .15s,border-color .15s;}
+.btn-done:hover{color:var(--leaf);border-color:var(--leaf);}
+.btn-done.is-done{background:var(--leaf-bg);border-color:var(--leaf);color:var(--leaf);font-weight:700;}
+.toggle-btn{background:none;border:none;color:var(--fg-muted);padding:4px 6px;border-radius:4px;cursor:pointer;font-size:13px;font-family:var(--font-ui);font-weight:700;transition:color .15s,background .15s;line-height:1;}
+.toggle-btn:hover{color:var(--brown);background:var(--surface2);}
+.toggle-btn.open{color:var(--brown);}
+
+tr.ship-row{border-bottom:1px solid var(--border-soft);}
+tr.ship-row td{padding:0;}
+.ship-panel{background:var(--ship-bg);border-top:1px dashed var(--border);padding:12px 16px 14px;}
+.ship-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px 14px;}
+@media(max-width:700px){.ship-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:480px){.ship-grid{grid-template-columns:1fr;}}
+.ship-slot{background:var(--surface);border:1.5px solid var(--border-soft);border-radius:var(--r);padding:8px 10px;display:flex;align-items:center;gap:8px;}
+.ship-slot.has-data{border-color:var(--amber);background:var(--amber-bg);}
+.slot-num{font-family:var(--font-ui);font-size:10px;font-weight:700;color:var(--fg-muted);text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap;min-width:20px;}
+.slot-date{flex:1;border:none;background:transparent;color:var(--fg);font-size:13px;outline:none;padding:2px 4px;border-radius:3px;min-width:0;}
+.slot-date::placeholder{color:var(--border);}
+.slot-date:focus{background:var(--surface2);}
+.slot-sep{color:var(--border);font-size:13px;flex-shrink:0;}
+.slot-amount{width:60px;border:1.5px solid var(--border);border-radius:5px;background:var(--surface2);color:var(--fg);font-weight:700;font-size:13px;font-variant-numeric:tabular-nums;padding:3px 6px;text-align:right;outline:none;transition:border-color .15s;}
+.slot-amount:focus{border-color:var(--amber);}
+.empty-state td{text-align:center;padding:36px 12px;color:var(--fg-muted);font-style:italic;}
+.footnote{margin-top:10px;font-size:12px;color:var(--fg-muted);}
+</style>
+
+<div class="topbar">
+  <div class="brand">Nut<span>world</span></div>
+  <a class="back-link" href="/expedice/">← Zpět</a>
+  <div class="sheet-title"><input id="sheetTitle" type="text" placeholder="Název"></div>
+  <button class="btn-add" onclick="addRow()">+ Přidat produkt</button>
+</div>
+<div class="note-bar">⚠️ <strong>Slovenské etikety</strong> — všechny produkty v této objednávce mají SK etikety</div>
+<div class="stats">
+  <div class="stat"><div class="stat-label">Produktů</div><div class="stat-val c-brown" id="stProd">0</div></div>
+  <div class="stat"><div class="stat-label">Celkem k expedici</div><div class="stat-val c-brown" id="stTotal">0</div></div>
+  <div class="stat"><div class="stat-label">Odesláno</div><div class="stat-val c-amber" id="stSent">0</div></div>
+  <div class="stat"><div class="stat-label">Zbývá</div><div class="stat-val c-fg" id="stRem">0</div></div>
+  <div class="stat"><div class="stat-label">Zásilek</div><div class="stat-val c-fg" id="stShips">0</div></div>
+</div>
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th class="w-num c-center">#</th>
+        <th>Produkt</th>
+        <th class="w-mid">Celkem</th>
+        <th class="w-mid">Odesláno</th>
+        <th class="w-mid">Zbývá</th>
+        <th class="w-prog">Průběh</th>
+        <th class="w-stat">Stav</th>
+        <th class="w-act c-center">Hotovo</th>
+        <th class="w-act c-center">Smazat</th>
+        <th class="w-tog c-center">Detail</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</div>
+<p class="footnote">Data se ukládají automaticky v prohlížeči. Klikni na ▼ pro zásilky.</p>
+<div class="modal-bg" id="resetModal" hidden onclick="if(event.target===this)this.hidden=true">
+  <div class="modal">
+    <h3>Načíst obj. 191698 Albi?</h3>
+    <p>Načte se 6 produktů, 2 000 ks, termín 19. 11.<br><strong>Stávající data budou smazána.</strong></p>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="document.getElementById('resetModal').hidden=true">Zrušit</button>
+      <button class="modal-ok" onclick="confirmLoad()">Načíst</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORE = 'nw_albi_v1';
+const N_SLOTS = 6;
+let state = {title:'', rows:[]};
+let nextId = 1;
+const expanded = new Set();
+
+const ORDER_DATES = {
+  '191698': '7. 10. 2026',
+};
+const ORDER_DELIVERY = {
+  '191698': '19. 11.',
+};
+
+function defaultRows() {
+  const blank = () => Array.from({length:6}, () => ({date:'',amount:0}));
+  let i=1;
+  return [
+    {id:i++,order:'191698',name:'51903 — Proti stresu_ořechy v medu a soli 180g',             total:520, shipments:blank()},
+    {id:i++,order:'191698',name:'51901 — Prostě k sežrání_ořechy v medu a soli 180g',         total:340, shipments:blank()},
+    {id:i++,order:'191698',name:'87762 — Povolený doping_ořechy v medu a soli 180g',           total:440, shipments:blank()},
+    {id:i++,order:'191698',name:'51904 — Energie na cesty_arašídy v karamelu se sezamem 180g', total:220, shipments:blank()},
+    {id:i++,order:'191698',name:'51902 — Pro nejlepší maminku_ořechy v medu a soli 180g',      total:220, shipments:blank()},
+    {id:i++,order:'191698',name:'92057 — Pro úžasného tatínka_uzené mandle 180g',              total:260, shipments:blank()},
+  ];
+}
+
+function loadDefaults(){
+  document.getElementById('resetModal').hidden=false;
+}
+function confirmLoad(){
+  document.getElementById('resetModal').hidden=true;
+  const dr=defaultRows();
+  state={title:'Albi — obj. 191698',rows:dr};
+  nextId=dr.reduce((m,r)=>Math.max(m,r.id+1),1);
+  save();render();
+  document.getElementById('sheetTitle').value=state.title;
+}
+
+function load() {
+  try {
+    const s = localStorage.getItem(STORE);
+    if (s) {
+      state=JSON.parse(s);
+      nextId=state.rows.reduce((m,r)=>Math.max(m,r.id+1),1);
+      state.rows.forEach(r=>{ if(!r.order) r.order=''; });
+      state.rows.forEach(r=>{ while(r.shipments.length<6) r.shipments.push({date:'',amount:0}); });
+      save();
+    } else {
+      const dr=defaultRows();
+      state={title:'Albi — obj. 191698',rows:dr};
+      nextId=dr.reduce((m,r)=>Math.max(m,r.id+1),1);
+      save();
+    }
+  } catch(e) {
+    const dr=defaultRows();
+    state={title:'Albi — obj. 191698',rows:dr};
+    nextId=dr.reduce((m,r)=>Math.max(m,r.id+1),1);
+  }
+}
+function save(){try{localStorage.setItem(STORE,JSON.stringify(state));}catch(e){}}
+function blankShipments(){return Array.from({length:N_SLOTS},()=>({date:'',amount:0}));}
+function sentSum(row){return row.shipments.reduce((s,sh)=>s+(Number(sh.amount)||0),0);}
+
+function addRow(){
+  const id=nextId++;
+  state.rows.push({id,name:'',order:'',total:0,shipments:blankShipments()});
+  expanded.add(id);save();render();
+  const inp=document.querySelector(`tr[data-id="${id}"] .name-inp`);
+  if(inp)inp.focus();
+}
+function deleteRow(id){state.rows=state.rows.filter(r=>r.id!==id);expanded.delete(id);save();render();}
+function toggleExpand(id){expanded.has(id)?expanded.delete(id):expanded.add(id);render();}
+function onName(id,v){const r=state.rows.find(r=>r.id===id);if(!r)return;r.name=v;save();}
+function onTotal(id,v){const r=state.rows.find(r=>r.id===id);if(!r)return;r.total=Math.max(0,parseInt(v)||0);save();refreshRow(id);}
+function onSlot(id,i,field,v){
+  const r=state.rows.find(r=>r.id===id);if(!r)return;
+  if(field==='date')r.shipments[i].date=v;
+  else r.shipments[i].amount=Math.max(0,parseInt(v)||0);
+  save();refreshRow(id);renderStats();
+  const slot=document.querySelector(`.ship-slot[data-rid="${id}"][data-si="${i}"]`);
+  if(slot){const sh=r.shipments[i];slot.classList.toggle('has-data',!!(sh.date||sh.amount));}
+}
+function toggleManualDone(id){
+  const r=state.rows.find(r=>r.id===id);if(!r)return;
+  r.manualDone=!r.manualDone;save();refreshRow(id);renderStats();
+}
+function rowMeta(r){
+  const sent=sentSum(r);
+  const over=sent>r.total&&r.total>0&&!r.manualDone;
+  const done=r.manualDone||(r.total>0&&sent>=r.total&&!over);
+  const zbyvá=done?0:r.total-sent;
+  const pct=r.manualDone?100:(r.total>0?Math.min(Math.round((sent/r.total)*100),100):0);
+  const ships=r.shipments.filter(s=>s.amount>0).length;
+  return {sent,zbyvá,over,done,pct,ships};
+}
+function refreshRow(id){
+  const r=state.rows.find(r=>r.id===id);if(!r)return;
+  const {sent,zbyvá,over,done,pct}=rowMeta(r);
+  const tr=document.querySelector(`tr.prod-row[data-id="${id}"]`);if(!tr)return;
+  tr.className=`prod-row${expanded.has(id)?' is-expanded':''}${done?' is-done':''}${over?' is-over':''}`;
+  const sentEl=tr.querySelector('.sent-sum');if(sentEl)sentEl.textContent=sent;
+  const zEl=tr.querySelector('.zbyvá-val');
+  if(zEl){zEl.textContent=zbyvá;zEl.className='zbyvá-val '+(over?'z-over':done?'z-zero':'z-pos');}
+  const fill=tr.querySelector('.prog-fill');
+  if(fill){fill.style.width=pct+'%';fill.className='prog-fill '+(over?'pf-over':pct===100?'pf-done':pct>=50?'pf-mid':'pf-early');}
+  const pEl=tr.querySelector('.prog-pct');if(pEl)pEl.textContent=pct+' %';
+  const badge=tr.querySelector('.badge');
+  if(badge){
+    if(over){badge.className='badge b-over';badge.textContent='Přebytek';}
+    else if(done){badge.className='badge b-done';badge.textContent='Hotovo';}
+    else if(sent>0){badge.className='badge b-mid';badge.textContent='Probíhá';}
+    else{badge.className='badge b-new';badge.textContent='Nezahájeno';}
+  }
+  renderStats();refreshOrderHeader(r.order||'');
+}
+function refreshOrderHeader(ord){
+  const tr=document.querySelector(`tr.order-hdr[data-order="${CSS.escape(ord)}"]`);if(!tr)return;
+  const rows=state.rows.filter(r=>(r.order||'')===ord);
+  const gTotal=rows.reduce((s,r)=>s+r.total,0);
+  const gSent=rows.reduce((s,r)=>s+sentSum(r),0);
+  const gRem=Math.max(0,gTotal-gSent);
+  const gDone=gRem===0&&gTotal>0;
+  const prog=tr.querySelector('.order-progress');
+  if(prog)prog.innerHTML=`${gTotal} ks · odesláno: <strong>${gSent}</strong> · zbývá: <strong class="${gDone?'c-leaf-hdr':'c-amber-hdr'}">${gRem}</strong>`;
+  const bdg=tr.querySelector('.order-badge');
+  if(bdg){bdg.textContent=gDone?'Dodáno ✓':'';bdg.hidden=!gDone;}
+}
+function renderStats(){
+  const products=state.rows.length;
+  const total=state.rows.reduce((s,r)=>s+r.total,0);
+  const sent=state.rows.reduce((s,r)=>s+sentSum(r),0);
+  const rem=state.rows.reduce((s,r)=>s+Math.max(r.total-sentSum(r),0),0);
+  const ships=state.rows.reduce((s,r)=>s+r.shipments.filter(sh=>sh.amount>0).length,0);
+  document.getElementById('stProd').textContent=products;
+  document.getElementById('stTotal').textContent=total;
+  document.getElementById('stSent').textContent=sent;
+  document.getElementById('stRem').textContent=rem;
+  document.getElementById('stShips').textContent=ships;
+  document.getElementById('stRem').className='stat-val '+(rem===0&&products>0?'c-leaf':'c-fg');
+}
+function orderHeaderHtml(ord,rows){
+  const gTotal=rows.reduce((s,r)=>s+r.total,0);
+  const gSent=rows.reduce((s,r)=>s+sentSum(r),0);
+  const gRem=Math.max(0,gTotal-gSent);
+  const gDone=gRem===0&&gTotal>0;
+  const date=ORDER_DATES[ord]||'';
+  const delivery=ORDER_DELIVERY[ord]||'';
+  return `<tr class="order-hdr" data-order="${esc(ord)}">
+    <td colspan="10"><div class="order-hdr-inner">
+      <span class="order-tag">Obj. ${esc(ord)}</span>
+      ${date?`<span class="order-date">${date}</span>`:''}
+      ${delivery?`<span class="order-deadline">📦 dodání: <strong>${delivery}</strong></span>`:''}
+      <span class="order-progress">${gTotal} ks · odesláno: <strong>${gSent}</strong> · zbývá: <strong class="${gDone?'c-leaf-hdr':'c-amber-hdr'}">${gRem}</strong></span>
+      <span class="order-badge badge b-done"${gDone?'':' hidden'}>Dodáno ✓</span>
+    </div></td>
+  </tr>`;
+}
+function rowHtml(r,idx){
+  const {sent,zbyvá,over,done,pct}=rowMeta(r);
+  const isExp=expanded.has(r.id);
+  const rowCls=`prod-row${isExp?' is-expanded':''}${done?' is-done':''}${over?' is-over':''}`;
+  const zCls=over?'z-over':done?'z-zero':'z-pos';
+  const fillCls=over?'pf-over':pct===100?'pf-done':pct>=50?'pf-mid':'pf-early';
+  let bCls,bTxt;
+  if(over){bCls='badge b-over';bTxt='Přebytek';}
+  else if(done){bCls='badge b-done';bTxt='Hotovo';}
+  else if(sent>0){bCls='badge b-mid';bTxt='Probíhá';}
+  else{bCls='badge b-new';bTxt='Nezahájeno';}
+  const main=`<tr class="${rowCls}" data-id="${r.id}" onclick="handleRowClick(event,${r.id})">
+    <td class="num-col c-center">${idx+1}</td>
+    <td><input class="name-inp" type="text" value="${esc(r.name)}" placeholder="Název produktu"
+      oninput="onName(${r.id},this.value)" onclick="event.stopPropagation()"></td>
+    <td><input class="total-inp" type="number" min="0" value="${r.total}"
+      onchange="onTotal(${r.id},this.value)" oninput="onTotal(${r.id},this.value)" onclick="event.stopPropagation()"></td>
+    <td><span class="sent-sum">${sent}</span></td>
+    <td><span class="zbyvá-val ${zCls}">${zbyvá}</span></td>
+    <td><div class="prog-track"><div class="prog-fill ${fillCls}" style="width:${pct}%"></div></div>
+      <div class="prog-pct">${pct} %</div></td>
+    <td><span class="${bCls}">${bTxt}</span></td>
+    <td class="c-center"><button class="btn-done${r.manualDone?' is-done':''}" onclick="event.stopPropagation();toggleManualDone(${r.id})" title="${r.manualDone?'Zrušit hotovo':'Označit jako hotovo'}">✓</button></td>
+    <td class="c-center"><button class="btn-del" onclick="event.stopPropagation();deleteRow(${r.id})" title="Smazat">×</button></td>
+    <td class="c-center"><button class="toggle-btn${isExp?' open':''}" onclick="event.stopPropagation();toggleExpand(${r.id})">${isExp?'▲':'▼'}</button></td>
+  </tr>`;
+  if(!isExp)return main;
+  const slots=r.shipments.map((sh,i)=>{
+    const has=!!(sh.date||sh.amount);
+    return `<div class="ship-slot${has?' has-data':''}" data-rid="${r.id}" data-si="${i}">
+      <span class="slot-num">#${i+1}</span>
+      <input class="slot-date" type="text" value="${esc(sh.date)}" placeholder="datum"
+        oninput="onSlot(${r.id},${i},'date',this.value)" onclick="event.stopPropagation()">
+      <span class="slot-sep">·</span>
+      <input class="slot-amount" type="number" min="0" value="${sh.amount||''}" placeholder="0"
+        onchange="onSlot(${r.id},${i},'amount',this.value)" oninput="onSlot(${r.id},${i},'amount',this.value)"
+        onclick="event.stopPropagation()">
+      <span class="slot-unit">ks</span>
+    </div>`;
+  }).join('');
+  return main+`<tr class="ship-row" data-id="${r.id}">
+    <td colspan="10"><div class="ship-panel"><div class="ship-grid">${slots}</div></div></td>
+  </tr>`;
+}
+function handleRowClick(e,id){if(e.target.closest('input,button'))return;toggleExpand(id);}
+function render(){
+  const tbody=document.getElementById('tbody');
+  if(state.rows.length===0){tbody.innerHTML='<tr class="empty-state"><td colspan="10">Žádné produkty</td></tr>';renderStats();return;}
+  const orderList=[];const orderMap={};
+  for(const row of state.rows){
+    const ord=row.order||'—';
+    if(!orderMap[ord]){orderMap[ord]=[];orderList.push(ord);}
+    orderMap[ord].push(row);
+  }
+  let html='';let gi=0;
+  for(const ord of orderList){
+    const rows=orderMap[ord];
+    html+=orderHeaderHtml(ord,rows);
+    for(const row of rows)html+=rowHtml(row,gi++);
+  }
+  tbody.innerHTML=html;renderStats();
+}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
+
+document.getElementById('sheetTitle').addEventListener('input',function(){state.title=this.value;save();});
+load();
+document.getElementById('sheetTitle').value=state.title||'';
+render();
+</script>
+<script src="../pin-guard.js"></script>
