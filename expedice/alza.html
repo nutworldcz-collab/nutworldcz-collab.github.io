@@ -300,21 +300,25 @@ function defaultRows() {
 
 function load() {
   try {
-    const s = localStorage.getItem(STORE) || localStorage.getItem('nw_exp_v2');
+    const s = localStorage.getItem(STORE);
     if (s) {
-      state=JSON.parse(s);
-      nextId=state.rows.reduce((m,r)=>Math.max(m,r.id+1),1);
-      // ensure each row has order field
-      state.rows.forEach(r=>{ if(!r.order) r.order=''; });
-      // ensure 6 slots
-      state.rows.forEach(r=>{
-        while(r.shipments.length<6) r.shipments.push({date:'',amount:0});
-      });
-      save();
-    } else {
-      state={title:'Alza — Vánoce 2026',rows:defaultRows()};nextId=41;save();
+      const parsed = JSON.parse(s);
+      if (parsed && Array.isArray(parsed.rows)) {
+        state = parsed;
+        nextId = state.rows.reduce((m,r)=>Math.max(m,r.id+1),1);
+        state.rows.forEach(r=>{ if(!r.order) r.order=''; });
+        state.rows.forEach(r=>{
+          if(!Array.isArray(r.shipments)) r.shipments=[];
+          while(r.shipments.length<6) r.shipments.push({date:'',amount:0});
+        });
+        save();
+        return;
+      }
     }
-  } catch(e) {state={title:'Alza — Vánoce 2026',rows:defaultRows()};nextId=41;}
+    state={title:'Alza — Vánoce 2026',rows:defaultRows()};nextId=41;save();
+  } catch(e) {
+    state={title:'Alza — Vánoce 2026',rows:defaultRows()};nextId=41;save();
+  }
 }
 function save(){try{localStorage.setItem(STORE,JSON.stringify(state));}catch(e){}}
 function blankShipments(){return Array.from({length:N_SLOTS},()=>({date:'',amount:0}));}
