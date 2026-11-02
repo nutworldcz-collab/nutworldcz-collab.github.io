@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Expedice — Bery Jones</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bd:#5c381f;--br:#83502e;--kraft:#f1e6da;--amb:#f7ab31;--acc:#da1668;--leaf:#6fa044}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;min-height:100vh}
+
+.topbar{background:var(--bd);padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.topbar-title{font-family:'Exo 2',sans-serif;font-size:17px;font-weight:800;color:white}
+.topbar a{color:rgba(255,255,255,.6);font-size:12px;text-decoration:none}
+.topbar a:hover{color:white}
+
+.page{max-width:860px;margin:0 auto;padding:32px 16px 48px}
+.page-header{margin-bottom:28px}
+.page-header h1{font-family:'Exo 2',sans-serif;font-size:22px;font-weight:800;color:var(--bd);margin-bottom:4px}
+.page-header p{font-size:14px;color:#6b4f35;line-height:1.5}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+
+.card{display:flex;flex-direction:column;background:#fff;border:2px solid #d4b896;border-radius:14px;padding:22px 20px 20px;text-decoration:none;color:inherit;transition:transform .15s,box-shadow .15s;position:relative}
+.card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.12)}
+.card.brown{background:linear-gradient(135deg,var(--bd),var(--br));border-color:transparent;color:white}
+.card.amber{background:linear-gradient(135deg,#b8860b,var(--amb));border-color:transparent;color:#3a2000}
+.card.green{background:linear-gradient(135deg,#2d6b1f,var(--leaf));border-color:transparent;color:white}
+.card.gray{background:#f1e6da;border-color:#c8a87a;color:#3a1e08}
+.card.disabled{opacity:.45;pointer-events:none;filter:grayscale(.4)}
+
+.card-icon{font-size:32px;margin-bottom:12px;display:block}
+.card-title{font-family:'Exo 2',sans-serif;font-size:15px;font-weight:700;margin-bottom:6px}
+.card-desc{font-size:13px;line-height:1.5;opacity:.85}
+
+.badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:2px 8px;border-radius:99px;margin-top:10px;align-self:flex-start}
+.badge.soon{background:rgba(0,0,0,.12);color:inherit}
+.badge.live{background:rgba(100,200,80,.3);color:#1a4a0e}
+.card.brown .badge.live{background:rgba(255,255,255,.25);color:white}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-title">🚚 Expedice & výroba — Bery Jones</span>
+  <a href="/">← Domů</a>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <h1>Přehled odběratelů</h1>
+    <p>Výrobní sledování zakázek pro jednotlivé B2B odběratele — stav objednávek, co se musí nadělat, termíny.</p>
+  </div>
+
+  <div class="grid">
+
+    <a class="card brown" href="/expedice/alza.html">
+      <span class="card-icon">🛒</span>
+      <div class="card-title">Alza.cz</div>
+      <div class="card-desc">EDI objednávky — přehled co se musí nadělat, odeslané zásilky, termíny dodání</div>
+      <span class="badge live">✓ Aktivní</span>
+    </a>
+
+    <div class="card gray disabled">
+      <span class="card-icon">📚</span>
+      <div class="card-title">Albi</div>
+      <div class="card-desc">Objednávky Albi — bude doplněno</div>
+      <span class="badge soon">Připravujeme</span>
+    </div>
+
+    <div class="card gray disabled">
+      <span class="card-icon">💪</span>
+      <div class="card-title">Vilgain</div>
+      <div class="card-desc">Objednávky Vilgain — bude doplněno</div>
+      <span class="badge soon">Připravujeme</span>
+    </div>
+
+  </div>
+</div>
+
+<script src="../pin-guard.js"></script>
+</body>
+</html>

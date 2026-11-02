@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vstupní školení DPP</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+:root {
+  --bg: #faf7f4;
+  --bg-card: #ffffff;
+  --bg-soft: #f1e6da;
+  --fg: #1a1208;
+  --fg-muted: #5a4530;
+  --brown: #83502e;
+  --brown-dark: #5c381f;
+  --amber: #f7ab31;
+  --accent: #da1668;
+  --border: #d4b896;
+  --font-head: 'Exo 2', system-ui, sans-serif;
+  --font-body: 'Source Sans 3', system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1208; --bg-card: #241a0e; --bg-soft: #2e1f0f;
+    --fg: #f1e6da; --fg-muted: #c4a07a; --border: #5a3e22;
+  }
+}
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 15px; line-height: 1.65;
+  margin: 0; padding: 32px max(16px, env(safe-area-inset-left, 0px));
+}
+.doc {
+  max-width: 760px; margin: 0 auto;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden;
+}
+.doc-header {
+  background: linear-gradient(135deg, #5c381f 0%, #83502e 55%, #a0622a 100%);
+  color: #fff; padding: 28px 36px 24px;
+  display: flex; justify-content: space-between; align-items: flex-start;
+  flex-wrap: wrap; gap: 12px;
+}
+.doc-header .brand { font-family: var(--font-head); font-size: 22px; font-weight: 700; }
+.doc-header .brand span { color: var(--amber); }
+.doc-header .meta { font-size: 12px; opacity: 0.8; text-align: right; line-height: 1.5; }
+.doc-title { padding: 24px 36px 8px; border-bottom: 2px solid var(--border); }
+.doc-title h1 {
+  font-family: var(--font-head); font-size: 20px; font-weight: 700;
+  color: var(--brown-dark); margin: 0 0 4px; text-wrap: balance;
+}
+.doc-title .subtitle {
+  font-size: 13px; color: var(--fg-muted);
+  text-transform: uppercase; letter-spacing: 1.5px; margin: 0;
+}
+.doc-body { padding: 24px 36px 32px; }
+.section { margin-bottom: 28px; }
+.section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.section-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--brown); color: #fff;
+  font-family: var(--font-head); font-size: 13px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.section-title {
+  font-family: var(--font-head); font-size: 14px; font-weight: 700;
+  color: var(--brown-dark); text-transform: uppercase; letter-spacing: 1px; margin: 0;
+}
+ul { margin: 0; padding-left: 20px; }
+ul li { margin-bottom: 5px; color: var(--fg); }
+ul li strong { color: var(--brown-dark); }
+.alert-box {
+  background: #fff5f7; border: 1.5px solid var(--accent);
+  border-radius: 8px; padding: 12px 16px; margin-top: 12px; font-size: 14px;
+}
+.alert-box strong { color: var(--accent); }
+@media (prefers-color-scheme: dark) {
+  .alert-box { background: #2a0a14; border-color: #9a1048; }
+  .alert-box strong { color: #f06090; }
+}
+.info-box {
+  background: var(--bg-soft); border: 1.5px solid var(--border);
+  border-left: 4px solid var(--amber); border-radius: 8px;
+  padding: 12px 16px; margin-top: 12px; font-size: 14px;
+}
+.divider { height: 1px; background: var(--border); margin: 24px 0; }
+.sign-section { border-top: 2px solid var(--brown); padding-top: 24px; margin-top: 8px; }
+.sign-section h2 {
+  font-family: var(--font-head); font-size: 15px; font-weight: 700;
+  color: var(--brown-dark); margin: 0 0 6px;
+  text-transform: uppercase; letter-spacing: 1px;
+}
+.sign-statement { font-size: 14px; color: var(--fg-muted); margin-bottom: 20px; line-height: 1.5; }
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 24px; }
+@media (max-width: 480px) { .fields { grid-template-columns: 1fr; } }
+.field { display: flex; flex-direction: column; gap: 4px; }
+.field label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--fg-muted); font-weight: 600; }
+.field .line { height: 32px; border-bottom: 1.5px solid var(--border); background: transparent; }
+.sign-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+@media (max-width: 480px) { .sign-grid { grid-template-columns: 1fr; } }
+.sign-box { display: flex; flex-direction: column; gap: 4px; }
+.sign-box label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--fg-muted); font-weight: 600; }
+.sign-box .sign-area { height: 72px; border: 1.5px solid var(--border); border-radius: 6px; background: var(--bg-soft); }
+.sign-box .sign-date { height: 32px; border-bottom: 1.5px solid var(--border); margin-top: 8px; }
+.sign-box .sign-date-label { font-size: 11px; color: var(--fg-muted); margin-top: 3px; letter-spacing: 0.5px; }
+.doc-footer {
+  background: var(--bg-soft); border-top: 1px solid var(--border);
+  padding: 14px 36px; font-size: 12px; color: var(--fg-muted);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px;
+}
+@media (max-width: 500px) {
+  .doc-header, .doc-title, .doc-body, .doc-footer { padding-left: 20px; padding-right: 20px; }
+}
+</style>
+</head>
+<body>
+
+<div class="doc">
+
+  <div class="doc-header">
+    <div class="brand">Nut<span>world</span>.cz</div>
+    <div class="meta">Interní dokument · Vstupní školení<br>Verze 1.0 · Říjen 2026</div>
+  </div>
+
+  <div class="doc-title">
+    <p class="subtitle">Vstupní školení pracovníka</p>
+    <h1>Obecné školení pro pracovníky na DPP — balírna a sklad</h1>
+  </div>
+
+  <div class="doc-body">
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <p class="section-title">Pracovní řád a docházka</p>
+      </div>
+      <ul>
+        <li>Na směnu nastoupit včas — v případě nemoci nebo neplánované absence <strong>kontaktovat vedoucího co nejdříve</strong>, ideálně před začátkem směny.</li>
+        <li>Pracovní dobu, přestávky a předání směny řídit se pokyny vedoucího.</li>
+        <li>Přesčasová práce nebo změna směny pouze po dohodě s vedoucím — pracovník není povinen ji odmítnout ani přijmout bez souhlasu.</li>
+        <li>Osobní věci, telefon a jiné předměty odkládat do šatny nebo určeného místa — na pracovní ploše není místo pro osobní vybavení.</li>
+        <li>Pokud pracovník zjistí, že nemůže dokončit dohodnutý úkol nebo směnu, informuje vedoucího co nejdříve.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">2</div>
+        <p class="section-title">Mobilní telefon a elektronika</p>
+      </div>
+      <ul>
+        <li>Mobilní telefon je na pracovišti <strong>povolen pouze v přestávkách</strong> a mimo aktivní pracovní zónu (balicí plocha, váhy, plnění).</li>
+        <li>Při manipulaci s produktem telefon odkládáme — hrozí jeho pád do otevřeného obalu.</li>
+        <li><strong>Fotografování a natáčení videa v provozovně je zakázáno</strong> bez výslovného souhlasu vedoucího — platí pro výrobní plochu, sklad i produkty.</li>
+        <li>Sluchátka/airpods při práci nepoužívat — pracovník musí reagovat na pokyny a signály okolí.</li>
+        <li>Naléhavý hovor: informovat vedoucího, odejít do pauzy nebo do vyhrazeného místa.</li>
+      </ul>
+      <div class="info-box">
+        Pravidlo platí i pro osobní chytré hodinky — u balení potravin existuje riziko pádu předmětu do produktu.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">3</div>
+        <p class="section-title">Mlčenlivost a ochrana informací</p>
+      </div>
+      <ul>
+        <li>Pracovník je povinen zachovávat <strong>mlčenlivost o interních informacích</strong> — recepturách, cenách, zákaznících, dodavatelích, výrobních postupech.</li>
+        <li>Sdílení těchto informací třetím osobám (včetně na sociálních sítích) je zakázáno, a to i po skončení spolupráce.</li>
+        <li>Fotografie produktů, obalů nebo interních dokumentů lze sdílet pouze se svolením vedoucího.</li>
+        <li>Osobní údaje zákazníků, které se pracovník případně dozví, jsou důvěrné — GDPR.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">4</div>
+        <p class="section-title">Základní povinnosti pracovníka (BOZP)</p>
+      </div>
+      <ul>
+        <li>Nastoupit do práce <strong>fyzicky zdravý a odpočatý</strong> — v případě nemoci nebo nevolnosti ihned informovat odpovědnou osobu.</li>
+        <li>Řídit se pokyny vedoucího nebo odpovědné osoby na směně.</li>
+        <li>Nepoužívat pracovní vybavení, ke kterému nebyl pracovník zaučen.</li>
+        <li>Jakékoli poškození stroje, police, podlahy nebo zařízení ihned nahlásit.</li>
+        <li><strong>Nepracovat pod vlivem alkoholu nebo jiných návykových látek.</strong></li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">5</div>
+        <p class="section-title">Hygiena a potravinová bezpečnost</p>
+      </div>
+      <ul>
+        <li>Před vstupem do provozu si <strong>umýt a dezinfikovat ruce</strong> — a opakovat po každé přestávce, po odchodu na WC a po manipulaci s odpadem.</li>
+        <li>Nasadit <strong>čepici nebo síťku na vlasy</strong> před vstupem do balicí zóny.</li>
+        <li>Na pracovišti <strong>nejíst, nepít (pouze voda), nekouřit</strong>.</li>
+        <li>Šperky (prsteny, náramky, náušnice) odložit nebo zakrýt — hrozí zavlečení do produktu.</li>
+        <li>Při kašlání nebo kýchání se otočit od produktu a zakrýt ústa.</li>
+        <li>Pracovní oblečení udržovat čisté; do provozu nevstupovat v oblečení z ulice.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">6</div>
+        <p class="section-title">Bezpečnost při balení a manipulaci</p>
+      </div>
+      <ul>
+        <li>Při práci s balicím strojem <strong>dodržovat postup podle zaučení</strong> — nezasahovat do stroje za chodu.</li>
+        <li>Nůžky, nože a řezné nástroje používat pouze k určenému účelu, po použití uložit.</li>
+        <li>Krabice a zásoby stohovat maximálně do výšky <strong>1,5 m</strong> — nestabilní hromady ihned zajistit.</li>
+        <li>Na podlaze udržovat volné uličky (min. 80 cm) — neklást nic do průchodů.</li>
+        <li>Rozsypaný obsah ihned uklidit — kluzká podlaha = riziko pádu.</li>
+        <li>Při práci ve výšce (žebřík) informovat druhého pracovníka.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">7</div>
+        <p class="section-title">Správné zvedání a ergonomie</p>
+      </div>
+      <ul>
+        <li>Zvedat břemena <strong>z dřepu, zpříma v zádech</strong> — nikoli přehýbáním v pase.</li>
+        <li>Maximální hmotnost pro jednu osobu: <strong>25 kg</strong> — těžší břemena přenášet ve dvou nebo s ručním vozíkem.</li>
+        <li>Při delší stojící práci využívat protahovací přestávky.</li>
+      </ul>
+      <div class="info-box">
+        <strong>Tip:</strong> Ruční paletový vozík a rudl jsou k dispozici ve skladu — neváhejte je použít, šetří záda.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">8</div>
+        <p class="section-title">Chemické látky a čisticí prostředky</p>
+      </div>
+      <ul>
+        <li>Čisticí a dezinfekční prostředky používat pouze dle označení a návodu na obale.</li>
+        <li><strong>Nepoužívat v blízkosti otevřených potravin</strong> — nejdříve produkty zakrýt nebo odstavit.</li>
+        <li>V případě kontaktu s pokožkou nebo očima okamžitě opláchnout vodou a nahlásit vedoucímu.</li>
+        <li>Prostředky uchovávat v označených nádobách, <strong>nikdy nepřelévat do lahví od potravin</strong>.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">9</div>
+        <p class="section-title">Požární ochrana</p>
+      </div>
+      <ul>
+        <li>Znát umístění <strong>hasicího přístroje</strong> a únikového východu — vedoucí ukáže při zaučení.</li>
+        <li>Neotvírat kartonové obaly v blízkosti tepelných zdrojů.</li>
+        <li>V případě požáru <strong>opustit budovu, přivolat pomoc (112), nesnažit se zachraňovat majetek</strong>.</li>
+        <li>Shromaždiště po evakuaci: <strong>před hlavní budovou u vstupu</strong> — vedoucí provede kontrolu přítomnosti.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">10</div>
+        <p class="section-title">Pracovní úrazy — postup hlášení</p>
+      </div>
+      <ul>
+        <li>Každý pracovní úraz (i drobné poranění) je nutné <strong>ihned nahlásit odpovědné osobě</strong>.</li>
+        <li>Lékárnička se nachází: <strong>hlavní sklad u hydrantu</strong>.</li>
+        <li>Při vážném úrazu volat <strong>záchrannou službu: 155</strong> nebo tísňovou linku <strong>112</strong>.</li>
+        <li>Nenahlášený úraz nelze zpětně uznat jako pracovní — to má dopad na pojistné plnění.</li>
+      </ul>
+      <div class="alert-box">
+        <strong>Povinnost:</strong> Neodcházet domů bez nahlášení úrazu vedoucímu, i když se zdá drobný.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">11</div>
+        <p class="section-title">Alergeny na pracovišti</p>
+      </div>
+      <ul>
+        <li>Pracoviště zpracovává produkty obsahující <strong>ořechy, arašídy, sezam, lepek, mléko, sóju</strong> a další alergeny.</li>
+        <li>Pracovník s přecitlivělostí na tyto látky je povinen tuto skutečnost <strong>sdělit vedoucímu před zahájením práce</strong>.</li>
+        <li>Při náhodném požití nebo alergické reakci okamžitě informovat vedoucího a přivolat pomoc.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">12</div>
+        <p class="section-title">Pořádek na pracovišti</p>
+      </div>
+      <ul>
+        <li>Na konci směny uklidit pracovní plochu, odložit nástroje na místo, uzavřít otevřené obaly.</li>
+        <li>Odpad třídit dle označení nádob (karton, plast, směsný).</li>
+        <li>Zapnuté stroje nepouštět bez dozoru — před odchodem zkontrolovat, zda jsou vypnuté.</li>
+        <li>Osobní věci ponechat v šatně, ne na pracovní ploše.</li>
+      </ul>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="sign-section">
+      <h2>Potvrzení o absolvování školení</h2>
+      <p class="sign-statement">
+        Níže podepsaný/á potvrzuje, že byl/a řádně seznámen/a s obsahem tohoto vstupního školení (pracovní řád, BOZP, hygiena, požární ochrana) pro pracovníky na DPP ve společnosti Nutworld s.r.o., obsahu porozuměl/a a zavazuje se uvedená pravidla dodržovat.
+      </p>
+
+      <div class="fields">
+        <div class="field">
+          <label>Jméno a příjmení</label>
+          <div class="line"></div>
+        </div>
+        <div class="field">
+          <label>Číslo DPP</label>
+          <div class="line"></div>
+        </div>
+        <div class="field">
+          <label>Datum narození</label>
+          <div class="line"></div>
+        </div>
+        <div class="field">
+          <label>Datum školení</label>
+          <div class="line"></div>
+        </div>
+      </div>
+
+      <div class="sign-grid">
+        <div class="sign-box">
+          <label>Podpis pracovníka</label>
+          <div class="sign-area"></div>
+        </div>
+        <div class="sign-box">
+          <label>Podpis odpovědné osoby (zaměstnavatel)</label>
+          <div class="sign-area"></div>
+          <div class="sign-date"></div>
+          <div class="sign-date-label">Jméno a funkce</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="doc-footer">
+    <span>Nutworld s.r.o. · interní dokument</span>
+    <span>Vstupní školení DPP · v1.0 · 2026</span>
+  </div>
+
+</div>
+</body>
+</html>
