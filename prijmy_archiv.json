@@ -1389,5 +1389,138 @@
         "cenik_kg": 269.0
       }
     ]
+  },
+  {
+    "id": 2610404092,
+    "cislo_dodavky": "2610404092",
+    "dodavatel": "ENCINGER SK s.r.o.",
+    "datum": "2026-11-03",
+    "datum_ulozeni": "2026-11-03",
+    "poznamka": "Mandle mléčná −15 Kč/kg, Mandle mléčná se škoricí −10 Kč/kg vs ceník 06/2026. Brusnice, višně, hořké varianty, hrozienka — nové položky mimo ceník.",
+    "ulozeni": "",
+    "celkove_kg": 620.0,
+    "items": [
+      {
+        "nazev": "Brusnice v horkej čokoláde",
+        "kod": "30801512",
+        "sarze": "E13260479B",
+        "dmt": "24.07.2027",
+        "mnozstvi": 5.0,
+        "stav": "NENÍ V CENÍKU",
+        "cena_kg": 183.0,
+        "nw_kod": "-",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Brusnice v mliečnej čokoláde",
+        "kod": "30801513",
+        "sarze": "E0R260493C",
+        "dmt": "30.07.2027",
+        "mnozstvi": 20.0,
+        "stav": "NENÍ V CENÍKU",
+        "cena_kg": 176.0,
+        "nw_kod": "-",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Lieskovce v horkej čokoláde",
+        "kod": "30801523",
+        "sarze": "E0R260455D",
+        "dmt": "16.07.2027",
+        "mnozstvi": 10.0,
+        "stav": "NENÍ V CENÍKU",
+        "cena_kg": 222.0,
+        "nw_kod": "3106",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Lieskovce v mliečnej čokoláde",
+        "kod": "30801524",
+        "sarze": "E0R260454D",
+        "dmt": "16.07.2027",
+        "mnozstvi": 110.0,
+        "stav": "OK",
+        "cena_kg": 215.0,
+        "nw_kod": "1475",
+        "cenik_kg": 215.0
+      },
+      {
+        "nazev": "Mandle v horkej čokoláde",
+        "kod": "30801530",
+        "sarze": "E13260466D",
+        "dmt": "21.07.2027",
+        "mnozstvi": 40.0,
+        "stav": "NENÍ V CENÍKU",
+        "cena_kg": 205.0,
+        "nw_kod": "-",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Mandle v mliečnej čokoláde",
+        "kod": "30801531",
+        "sarze": "E13260481D",
+        "dmt": "27.07.2027",
+        "mnozstvi": 50.0,
+        "stav": "POZOR",
+        "cena_kg": 195.0,
+        "nw_kod": "4038",
+        "cenik_kg": 210.0
+      },
+      {
+        "nazev": "Mandle v mliečnej čokoláde so škoricou",
+        "kod": "30801533",
+        "sarze": "E0R260487D",
+        "dmt": "26.07.2027",
+        "mnozstvi": 300.0,
+        "stav": "POZOR",
+        "cena_kg": 205.0,
+        "nw_kod": "1958",
+        "cenik_kg": 215.0
+      },
+      {
+        "nazev": "Hrozienka sušené Typ 10",
+        "kod": "10300605",
+        "sarze": "LSSK260898",
+        "dmt": "30.11.2027",
+        "mnozstvi": 50.0,
+        "stav": "NENÍ V CENÍKU",
+        "cena_kg": 64.5,
+        "nw_kod": "230",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Višne v horkej čokoláde",
+        "kod": "30801534",
+        "sarze": "E13260437B",
+        "dmt": "13.07.2027",
+        "mnozstvi": 5.0,
+        "stav": "NENÍ V CENÍKU",
+        "cena_kg": 210.0,
+        "nw_kod": "-",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Slaný praclík v mliečnej čokoláde",
+        "kod": "30801767",
+        "sarze": "E0R260495D",
+        "dmt": "02.08.2027",
+        "mnozstvi": 20.0,
+        "stav": "OK",
+        "cena_kg": 175.0,
+        "nw_kod": "3978",
+        "cenik_kg": 175.0
+      },
+      {
+        "nazev": "Slaný praclík v horkej čokoláde",
+        "kod": "30801765",
+        "sarze": "E0R260305C",
+        "dmt": "20.05.2027",
+        "mnozstvi": 10.0,
+        "stav": "NENÍ V CENÍKU",
+        "cena_kg": 180.0,
+        "nw_kod": "3975",
+        "cenik_kg": null
+      }
+    ]
   }
 ]
