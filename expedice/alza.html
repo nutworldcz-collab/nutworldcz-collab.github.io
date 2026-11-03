@@ -409,20 +409,22 @@ function renderStats(){
 
 function renderSummary(){
   const body=document.getElementById('summaryBody');if(!body)return;
-  const map={};
+  const map={};const ord=[];
   for(const r of state.rows){
     const sep=r.name.indexOf(' — ');
     const code=sep>-1?r.name.slice(0,sep).trim():r.name.trim()||'—';
-    const name=sep>-1?r.name.slice(sep+3).trim():'';
-    if(!map[code])map[code]={code,name,total:0,sent:0};
-    map[code].total+=r.total;
-    map[code].sent+=r.manualDone?r.total:sentSum(r);
+    const name=sep>-1?r.name.slice(sep+3).trim():r.name.trim();
+    const key=name||code;
+    if(!map[key]){map[key]={code,name,total:0,sent:0};ord.push(key);}
+    else if(map[key].code!==code)map[key].code='';
+    map[key].total+=r.total;
+    map[key].sent+=r.manualDone?r.total:sentSum(r);
   }
-  const items=Object.values(map).filter(x=>x.total-x.sent>0);
+  const items=ord.map(k=>map[k]).filter(x=>x.total-x.sent>0);
   if(items.length===0){body.innerHTML='<div class="sum-empty">✓ Vše odesláno nebo v pořádku</div>';return;}
   body.innerHTML=items.map(x=>{
     const rem=x.total-x.sent;
-    return `<div class="sum-row"><div class="sum-code">${esc(x.code)}</div><div class="sum-name">${esc(x.name)}</div><div class="sum-total">${x.total} ks</div><div class="sum-sent">${x.sent} odesláno</div><div class="sum-rem">${rem} ks</div></div>`;
+    return `<div class="sum-row"><div class="sum-code">${esc(x.code||'—')}</div><div class="sum-name">${esc(x.name)}</div><div class="sum-total">${x.total} ks</div><div class="sum-sent">${x.sent} odesláno</div><div class="sum-rem">${rem} ks</div></div>`;
   }).join('');
 }
 
