@@ -1245,5 +1245,149 @@
         "cenik_kg": null
       }
     ]
+  },
+  {
+    "id": 260100428,
+    "cislo_dodavky": "260100428",
+    "dodavatel": "MB INDUSTRY s.r.o. (BIN)",
+    "datum": "2026-10-29",
+    "datum_ulozeni": "2026-11-03",
+    "poznamka": "Rozinky Jumbo: faktura 63 Kč vs ceník 85 Kč — ověřit",
+    "ulozeni": "",
+    "celkove_kg": 934.12,
+    "items": [
+      {
+        "nazev": "Banán chips",
+        "kod": "suroviny",
+        "sarze": "052025",
+        "dmt": null,
+        "mnozstvi": 54.4,
+        "stav": "OK",
+        "cena_kg": 89.0,
+        "nw_kod": "-",
+        "cenik_kg": 89.0
+      },
+      {
+        "nazev": "Klikva (Brusnice) soft a moist MFG",
+        "kod": "L287-24",
+        "sarze": "L287-24",
+        "dmt": null,
+        "mnozstvi": 56.7,
+        "stav": "OK",
+        "cena_kg": 132.0,
+        "nw_kod": "179",
+        "cenik_kg": 132.0
+      },
+      {
+        "nazev": "Datle vypeckované (SAYER) GAQ",
+        "kod": "IR10102027",
+        "sarze": "IR10102027",
+        "dmt": null,
+        "mnozstvi": 20.0,
+        "stav": "OK",
+        "cena_kg": 49.0,
+        "nw_kod": "185",
+        "cenik_kg": 49.0
+      },
+      {
+        "nazev": "Kešu WW320, Afrika",
+        "kod": "P2600143-2",
+        "sarze": "P2600143-2",
+        "dmt": null,
+        "mnozstvi": 589.68,
+        "stav": "OK",
+        "cena_kg": 182.0,
+        "nw_kod": "110",
+        "cenik_kg": 182.0
+      },
+      {
+        "nazev": "Lísková jádra 13-15, 25kg pytle",
+        "kod": "W001-2026",
+        "sarze": "W001-2026",
+        "dmt": null,
+        "mnozstvi": 25.0,
+        "stav": "OK",
+        "cena_kg": 235.0,
+        "nw_kod": "125",
+        "cenik_kg": 235.0
+      },
+      {
+        "nazev": "Macadam ořechy styl 1",
+        "kod": "240506004",
+        "sarze": "240506004",
+        "dmt": null,
+        "mnozstvi": 11.34,
+        "stav": "OK",
+        "cena_kg": 389.0,
+        "nw_kod": "146",
+        "cenik_kg": 389.0
+      },
+      {
+        "nazev": "Para ořechy celé",
+        "kod": "L26-26",
+        "sarze": "L26-26",
+        "dmt": null,
+        "mnozstvi": 40.0,
+        "stav": "OK",
+        "cena_kg": 367.0,
+        "nw_kod": "143",
+        "cenik_kg": 367.0
+      },
+      {
+        "nazev": "Rozinky Jumbo",
+        "kod": "25988",
+        "sarze": "25988",
+        "dmt": null,
+        "mnozstvi": 50.0,
+        "stav": "POZOR",
+        "cena_kg": 63.0,
+        "nw_kod": "227",
+        "cenik_kg": 85.0
+      },
+      {
+        "nazev": "Arašídy 38/40 pražené & solené",
+        "kod": "L2602",
+        "sarze": "L2602",
+        "dmt": null,
+        "mnozstvi": 20.0,
+        "stav": "OK",
+        "cena_kg": 65.0,
+        "nw_kod": "-",
+        "cenik_kg": 65.0
+      },
+      {
+        "nazev": "Kešu WW240 pražené & solené + kari",
+        "kod": "261021/KEK",
+        "sarze": "261021/KEK",
+        "dmt": null,
+        "mnozstvi": 7.0,
+        "stav": "OK",
+        "cena_kg": 235.0,
+        "nw_kod": "3013",
+        "cenik_kg": 235.0
+      },
+      {
+        "nazev": "Pistácie USA 21/25 pražené",
+        "kod": "260609/PP",
+        "sarze": "260609/PP",
+        "dmt": null,
+        "mnozstvi": 40.0,
+        "stav": "OK",
+        "cena_kg": 269.0,
+        "nw_kod": "131",
+        "cenik_kg": 269.0
+      },
+      {
+        "nazev": "Pistácie ve skořápce USA 21/25 pražené & solené",
+        "kod": "260722/PPS",
+        "sarze": "260722/PPS",
+        "dmt": null,
+        "mnozstvi": 20.0,
+        "stav": "OK",
+        "cena_kg": 269.0,
+        "nw_kod": "134",
+        "cenik_kg": 269.0
+      }
+    ]
   }
 ]
