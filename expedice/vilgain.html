@@ -232,10 +232,12 @@ const expanded = new Set();
 const ORDER_DATES = {
   'PO 79661': '2026',
   'PO 79755': '27. 10. 2026',
+  'PO 79907': '3. 11. 2026',
 };
 const ORDER_DELIVERY = {
   'PO 79661': '12. 11.',
   'PO 79755': '19. 11.',
+  'PO 79907': '30. 11.',
 };
 
 function defaultRows() {
@@ -251,6 +253,11 @@ function defaultRows() {
     // PO 79755
     {id:i++,order:'PO 79755',name:'#001 — Vilgain Nut Mix 250g Natural',                                           total:348, shipments:blank()},
     {id:i++,order:'PO 79755',name:'PV47449 — Směs semínek do salátu (Seed Topper Mix 500g Natural)',                total:280, shipments:blank()},
+    // PO 79907
+    {id:i++,order:'PO 79907',name:'#001 — Vilgain Medjool Dates 260g (Datle)',                                     total:348, shipments:blank()},
+    {id:i++,order:'PO 79907',name:'#002 — Vilgain Nut Mix 1000g Natural',                                          total:240, shipments:blank()},
+    {id:i++,order:'PO 79907',name:'#003 — Vilgain Nut Mix 500g Natural',                                           total:280, shipments:blank()},
+    {id:i++,order:'PO 79907',name:'#004 — Vilgain Seed Topper Mix 500g Natural (Seed Mix)',                        total:280, shipments:blank()},
   ];
 }
 
@@ -265,6 +272,18 @@ function load() {
       state.rows.forEach(r=>{
         while(r.shipments.length<6) r.shipments.push({date:'',amount:0});
       });
+      // migrate: add PO 79907 if missing
+      const hasP79907 = state.rows.some(r=>r.order==='PO 79907');
+      if(!hasP79907){
+        const blank=()=>Array.from({length:N_SLOTS},()=>({date:'',amount:0}));
+        const newRows=[
+          {id:nextId++,order:'PO 79907',name:'#001 — Vilgain Medjool Dates 260g (Datle)',              total:348, shipments:blank()},
+          {id:nextId++,order:'PO 79907',name:'#002 — Vilgain Nut Mix 1000g Natural',                   total:240, shipments:blank()},
+          {id:nextId++,order:'PO 79907',name:'#003 — Vilgain Nut Mix 500g Natural',                    total:280, shipments:blank()},
+          {id:nextId++,order:'PO 79907',name:'#004 — Vilgain Seed Topper Mix 500g Natural (Seed Mix)', total:280, shipments:blank()},
+        ];
+        state.rows.push(...newRows);
+      }
       save();
     } else {
       const dr=defaultRows();
