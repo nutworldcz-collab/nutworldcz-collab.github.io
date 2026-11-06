@@ -1,6 +1,55 @@
 {
-  "generated": "2026-11-05T17:28:42",
-  "total": 0,
+  "generated": "2026-11-06T07:30:25",
+  "total": 3,
   "spam_skipped": 0,
-  "emails": []
+  "emails": [
+    {
+      "account": "Google",
+      "sender": "\"Paketo.cz\" <news@newsletter.paketo.cz>",
+      "subject": "Získejte inspiraci",
+      "date": "pátek 6. listopadu 2026 6:48:34",
+      "unread": true,
+      "preview": "Zobrazit on-line náhled ￼ Získejte inspiraci pro svá dárková balení Zima klepe na dveře. A ať se nám to líbí nebo ne",
+      "category": "ostatni",
+      "sender_short": "Paketo.cz",
+      "sender_email": "news@newsletter.paketo.cz",
+      "ai": {
+        "shrn": "Newsletter od Paketo.cz s inspirací pro zimní dárková balení. Obsahuje tipy na balení produktů pro nadcházející sezónu.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "\"CrossFit\" <crossfit@mail.crossfit.com>",
+      "subject": "261106 Workout of the Day: Fight Gone Bad",
+      "date": "pátek 6. listopadu 2026 2:31:19",
+      "unread": true,
+      "preview": "￼ ￼ ￼ FRIDAY",
+      "category": "ostatni",
+      "sender_short": "CrossFit",
+      "sender_email": "crossfit@mail.crossfit.com",
+      "ai": {
+        "shrn": "CrossFit workout zpráva s denním tréninkem 'Fight Gone Bad' na pátek. Standardní fitness newsletter bez požadavku na akci.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "\"CrossFit\" <crossfit@mail.crossfit.com>",
+      "subject": "The Professional Coach - Your Best Friend Coach: Pat Sherwood",
+      "date": "pátek 6. listopadu 2026 1:01:30",
+      "unread": true,
+      "preview": "￼ ￼ Your Best Friend Coach: Pat Sherwood ￼ Pat Sherwood brought the discipline of a Navy SEAL and the warmth of a best friend to nearly two decades of CrossFit coaching",
+      "category": "ostatni",
+      "sender_short": "CrossFit",
+      "sender_email": "crossfit@mail.crossfit.com",
+      "ai": {
+        "shrn": "CrossFit newsletter představující kouče Pat Sherwooda a jeho coaching přístup. Motivační obsah o tréninkovém vedení.",
+        "tyka_se": false,
+        "akce": null
+      }
+    }
+  ]
 }
