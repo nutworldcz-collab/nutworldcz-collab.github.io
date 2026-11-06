@@ -704,7 +704,7 @@ function parseCard(card){
   if(sect){
     let cur=null;
     for(const line of sect[1].split('\n')){
-      const hm=line.match(/^\*\*(.+?)\*\*(\s*\*\(služba\)\*)?\s*$/);
+      const hm=line.match(/^\*\*(.+?)\*\*(\s*[*_]\(služba\)[*_])?\s*$/);
       if(hm){ if(cur)produkty.push(cur); cur={nazev:hm[1].trim(),isSluzba:!!hm[2],ks:0,slozeni:[]}; continue; }
       if(!cur) continue;
       const km=line.match(/[-\s]*(\d+)\s*ks/); if(km) cur.ks=parseInt(km[1]);
