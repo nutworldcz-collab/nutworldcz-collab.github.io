@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Zásilkovna Kalkulátor — Nutworld</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Exo+2:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg:#F5F1EC;--surface:#EDE8DF;--surface-2:#E4DDD3;--border:#CEC6B9;
+    --text:#1C1710;--text-muted:#72604F;--text-faint:#9E8570;
+    --accent:#83502E;--accent-light:rgba(131,80,46,0.10);--accent-border:rgba(131,80,46,0.22);
+    --green:#3A6A28;--pink:#A01050;--amber:#D4900E;--blue:#1A5080;
+    --warn-bg:rgba(212,144,14,0.10);--warn-border:rgba(212,144,14,0.28);--warn-text:#7A5000;
+    --result-bg:#5C381F;--result-text:#FBF6F1;--result-muted:rgba(251,246,241,0.60);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:1.5rem 1.25rem 3rem;font-size:14.5px}
+
+  .topnav{display:flex;align-items:center;gap:10px;margin-bottom:1.75rem}
+  .topnav a{font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700;color:var(--accent);text-decoration:none;opacity:.7}
+  .topnav a:hover{opacity:1}
+  .topnav-sep{color:var(--text-muted);font-size:12px}
+
+  .page{max-width:600px;margin:0 auto}
+
+  .header{margin-bottom:1.5rem}
+  .eyebrow{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.4rem;font-weight:500}
+  h1{font-family:'DM Serif Display',Georgia,serif;font-size:1.75rem;font-weight:400;line-height:1.2;margin-bottom:.3rem}
+  .header-sub{font-size:13px;color:var(--text-muted)}
+
+  /* Country tabs */
+  .country-row{display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap}
+  .country-btn{padding:.45rem 1.1rem;border-radius:8px;border:1.5px solid var(--border);background:var(--surface-2);color:var(--text-muted);font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:600;cursor:pointer;transition:all .13s;display:flex;align-items:center;gap:5px}
+  .country-btn:hover:not(.active){border-color:var(--accent);color:var(--accent)}
+  .country-btn.active.cz{background:var(--green);border-color:var(--green);color:#fff}
+  .country-btn.active.sk{background:var(--accent);border-color:var(--accent);color:#fff}
+  .country-btn.active.hu{background:var(--blue);border-color:var(--blue);color:#fff}
+  .country-btn.active.at{background:var(--pink);border-color:var(--pink);color:#fff}
+
+  /* Service select */
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.1rem 1.4rem;margin-bottom:.8rem}
+  .card-title{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);font-weight:600;margin-bottom:.8rem}
+
+  .svc-select{width:100%;border:1.5px solid var(--border);border-radius:9px;padding:.6rem .9rem;background:var(--surface-2);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2372604F' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+  .svc-select:focus{outline:none;border-color:var(--accent)}
+
+  .svc-badges{display:flex;gap:5px;margin-top:.7rem;flex-wrap:wrap}
+  .svc-badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:12px;border:1px solid;letter-spacing:.04em}
+  .svc-badge.pp{background:rgba(58,106,40,.10);border-color:rgba(58,106,40,.25);color:var(--green)}
+  .svc-badge.hd{background:rgba(131,80,46,.10);border-color:rgba(131,80,46,.25);color:var(--accent)}
+  .svc-badge.box{background:rgba(212,144,14,.10);border-color:rgba(212,144,14,.28);color:var(--amber)}
+  .svc-badge.fuel{background:var(--warn-bg);border-color:var(--warn-border);color:var(--warn-text)}
+  .svc-badge.toll{background:var(--warn-bg);border-color:var(--warn-border);color:var(--warn-text)}
+  .svc-badge.nocod{background:rgba(160,16,80,.10);border-color:rgba(160,16,80,.25);color:var(--pink)}
+  .svc-note{font-size:11.5px;color:var(--text-faint);margin-top:.6rem;line-height:1.4;font-style:italic}
+
+  /* Weight */
+  .weight-top{display:flex;align-items:baseline;gap:5px;margin-bottom:.8rem}
+  .weight-num{width:68px;font-family:'DM Serif Display',serif;font-size:2rem;font-weight:400;border:none;background:transparent;color:var(--text);padding:0;text-align:right;font-variant-numeric:tabular-nums;-moz-appearance:textfield}
+  .weight-num::-webkit-inner-spin-button,.weight-num::-webkit-outer-spin-button{-webkit-appearance:none}
+  .weight-num:focus{outline:none}
+  .weight-unit{font-size:1.1rem;color:var(--text-muted);font-weight:600}
+
+  .slider{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:3px;background:var(--border);outline:none;cursor:pointer;display:block}
+  .slider::-webkit-slider-thumb{-webkit-appearance:none;width:19px;height:19px;border-radius:50%;background:var(--green);border:3px solid var(--surface);box-shadow:0 1px 4px rgba(0,0,0,.18);cursor:pointer}
+  .slider::-moz-range-thumb{width:19px;height:19px;border-radius:50%;background:var(--green);border:3px solid var(--surface);box-shadow:0 1px 4px rgba(0,0,0,.18);cursor:pointer}
+  .slider.sk::-webkit-slider-thumb{background:var(--accent)}
+  .slider.sk::-moz-range-thumb{background:var(--accent)}
+  .slider.hu::-webkit-slider-thumb{background:var(--blue)}
+  .slider.hu::-moz-range-thumb{background:var(--blue)}
+  .slider.at::-webkit-slider-thumb{background:var(--pink)}
+  .slider.at::-moz-range-thumb{background:var(--pink)}
+
+  .weight-scale{display:flex;justify-content:space-between;font-size:10px;color:var(--text-faint);margin-top:3px;font-variant-numeric:tabular-nums}
+
+  /* COD toggle */
+  .addon{display:flex;align-items:flex-start;gap:10px;padding:.5rem 0}
+  .addon input[type="checkbox"]{width:14px;height:14px;margin-top:3px;flex-shrink:0;accent-color:var(--accent);cursor:pointer}
+  .addon input[type="checkbox"]:disabled{opacity:.4;cursor:not-allowed}
+  .addon-body{flex:1}
+  .addon-name{font-size:13.5px;font-weight:500;cursor:pointer;display:block}
+  .addon-name.dim{color:var(--text-faint);cursor:not-allowed}
+  .addon-hint{font-size:11.5px;color:var(--text-muted);margin-top:1px;display:block}
+
+  /* Result */
+  .result-card{background:var(--result-bg);border-radius:14px;padding:1.25rem 1.4rem;color:var(--result-text);margin-bottom:.8rem}
+  .res-eyebrow{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--result-muted);margin-bottom:4px}
+  .res-total{font-family:'DM Serif Display',serif;font-size:2.2rem;font-weight:400;font-variant-numeric:tabular-nums;line-height:1;margin-bottom:3px}
+  .res-hr{border:none;border-top:1px solid rgba(255,255,255,.12);margin-bottom:.75rem}
+  .res-row{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;padding:2px 0;font-variant-numeric:tabular-nums;gap:8px}
+  .res-row.sub{border-top:1px solid rgba(255,255,255,.12);margin-top:5px;padding-top:.5rem;font-weight:600}
+  .res-k{color:var(--result-muted)}
+  .res-v{color:var(--result-text);font-weight:500;white-space:nowrap}
+  .res-warn{margin-top:.75rem;padding:.45rem .75rem;background:rgba(212,144,14,.18);border:1px solid rgba(212,144,14,.30);border-radius:7px;font-size:11.5px;color:#FFCC55;line-height:1.4}
+
+  /* Price table */
+  .pt-title{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);font-weight:600;margin-bottom:.65rem}
+  .pt{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums}
+  .pt th{text-align:left;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);padding:4px 0;border-bottom:1px solid var(--border);font-weight:600}
+  .pt td{padding:5px 0;border-bottom:1px solid var(--surface-2)}
+  .pt td:last-child{text-align:right;font-weight:600}
+  .pt tr.active-row td{color:var(--accent);font-weight:700}
+
+  /* Info bar */
+  .info-bar{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.8rem 1.1rem;display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+  .info-item{display:flex;flex-direction:column;gap:1px}
+  .info-k{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
+  .info-v{font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700;color:var(--text)}
+  .info-sep{width:1px;height:28px;background:var(--border)}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <a href="/">Rozcestník</a>
+  <span class="topnav-sep">›</span>
+  <a href="/doprava.html">Doprava</a>
+  <span class="topnav-sep">›</span>
+  <span>Zásilkovna</span>
+</div>
+
+<div class="page">
+
+  <div class="header">
+    <div class="eyebrow">Nutworld · Logistika</div>
+    <h1>Zásilkovna</h1>
+    <div class="header-sub">Výdejní místa, domů, boxy · CZ, SK, HU, AT · ceník od 6. 11. 2026</div>
+  </div>
+
+  <!-- Country tabs -->
+  <div class="country-row" id="cTabs"></div>
+
+  <!-- Service selector -->
+  <div class="card">
+    <div class="card-title">Služba</div>
+    <select class="svc-select" id="svcSel"></select>
+    <div class="svc-badges" id="svcBadges"></div>
+    <div class="svc-note" id="svcNote"></div>
+  </div>
+
+  <!-- Weight -->
+  <div class="card">
+    <div class="card-title">Hmotnost zásilky</div>
+    <div class="weight-top">
+      <input type="number" class="weight-num" id="wNum" value="1" min="0.1" max="50" step="0.1">
+      <span class="weight-unit">kg</span>
+    </div>
+    <input type="range" class="slider cz" id="wSlider" min="0.1" max="15" step="0.1" value="1">
+    <div class="weight-scale" id="wScale"></div>
+  </div>
+
+  <!-- COD -->
+  <div class="card">
+    <div class="card-title">Doplňkové služby</div>
+    <div class="addon">
+      <input type="checkbox" id="codChk">
+      <div class="addon-body">
+        <label class="addon-name" for="codChk" id="codLabel">Dobírka (COD)</label>
+        <span class="addon-hint" id="codHint">+17 Kč za zásilku</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result -->
+  <div class="result-card" id="resultCard">
+    <div class="res-eyebrow">Cena zásilky (bez DPH)</div>
+    <div class="res-total" id="resTotal">—</div>
+    <div class="res-hr"></div>
+    <div id="resRows"></div>
+  </div>
+
+  <!-- Price table -->
+  <div class="card">
+    <div class="pt-title">Ceník pásem</div>
+    <table class="pt" id="ptTable">
+      <thead><tr><th>Pásmo</th><th>Základ</th></tr></thead>
+      <tbody id="ptBody"></tbody>
+    </table>
+  </div>
+
+  <div class="info-bar">
+    <div class="info-item"><span class="info-k">Platnost ceníku</span><span class="info-v">od 6. 11. 2026</span></div>
+    <div class="info-sep"></div>
+    <div class="info-item"><span class="info-k">Ceny</span><span class="info-v">bez DPH</span></div>
+    <div class="info-sep"></div>
+    <div class="info-item"><span class="info-k">Palivový příplatek</span><span class="info-v">19,5 % ze základu</span></div>
+    <div class="info-sep"></div>
+    <div class="info-item"><span class="info-k">Mýtné (CZ/SK)</span><span class="info-v">1,10 Kč/kg</span></div>
+  </div>
+
+</div>
+
+<script src="pin-guard.js"></script>
+<script>
+const D = {
+  cz:{name:"Česká republika",flag:"🇨🇿",cls:"cz",services:[
+    {id:"cz_zpoint",name:"Z-Point (výdejní místa)",type:"PP",
+     tiers:[{max:5,p:47},{max:15,p:53}],
+     fuel:.195,toll:1.1,cod:17,maxKg:15,
+     note:"Výdejní místa. Max. 70 cm / Σ120 cm (do 5 kg), 120 cm / Σ150 cm (do 15 kg)."},
+    {id:"cz_domu",name:"Zásilkovna domů",type:"HD",
+     tiers:[{max:5,p:73},{max:15,p:99},{max:30,p:250}],
+     fuel:.195,toll:1.1,cod:17,maxKg:30,
+     note:"Doručení na adresu. Max. 15 kg / Σ150 cm (nadrozměr do 30 kg / Σ999 cm)."},
+    {id:"cz_zbox",name:"Z-Box",type:"Box",
+     tiers:[{max:5,p:47},{max:15,p:53}],
+     fuel:.195,toll:1.1,cod:17,maxKg:15,
+     note:"Uzamykatelné boxy. Max. rozměry 60×43×35 cm."},
+    {id:"cz_vecerni",name:"Zásilkovna večerní",type:"HD",
+     tiers:[{max:5,p:130},{max:30,p:180}],
+     fuel:.195,toll:1.1,cod:21,maxKg:30,
+     note:"Večerní doručení. Max. 70 cm / Σ120 cm (do 5 kg)."},
+  ]},
+  sk:{name:"Slovensko",flag:"🇸🇰",cls:"sk",services:[
+    {id:"sk_zpoint",name:"Packeta Z-Point (výdejní místa)",type:"PP",
+     tiers:[{max:5,p:61},{max:15,p:67}],
+     fuel:.195,toll:1.1,cod:17,maxKg:15,
+     note:"Výdejní místa na Slovensku."},
+    {id:"sk_home",name:"Packeta Home (domů)",type:"HD",
+     tiers:[{max:1,p:89},{max:2,p:99},{max:5,p:109},{max:10,p:129},{max:15,p:159},{max:30,p:299}],
+     fuel:.195,toll:1.1,cod:19,maxKg:30,
+     note:"Doručení na adresu. Max. 70 cm / Σ120 cm (do 15 kg)."},
+    {id:"sk_zbox",name:"Z-Box",type:"Box",
+     tiers:[{max:5,p:61},{max:15,p:67}],
+     fuel:.195,toll:1.1,cod:17,maxKg:15,
+     note:"Uzamykatelné boxy. Max. rozměry 60×43×35 cm."},
+    {id:"sk_vecerni",name:"Packeta večerní",type:"HD",
+     tiers:[{max:5,p:150},{max:10,p:180},{max:15,p:195},{max:30,p:210}],
+     fuel:.195,toll:1.1,cod:12,maxKg:30,
+     note:"Večerní doručení na adresu."},
+  ]},
+  hu:{name:"Maďarsko",flag:"🇭🇺",cls:"hu",services:[
+    {id:"hu_zpoint",name:"Packeta Z-Point (výdejní místa)",type:"PP",
+     tiers:[{max:5,p:70},{max:15,p:110}],
+     fuel:.195,toll:1.1,cod:17,maxKg:15,
+     note:"Výdejní místa v Maďarsku."},
+    {id:"hu_doruceni",name:"Doručení na adresu",type:"HD",
+     tiers:[{max:2,p:125},{max:5,p:140},{max:10,p:150},{max:15,p:210},{max:30,p:300},{max:50,p:400}],
+     fuel:false,toll:false,cod:30,maxKg:50,
+     note:"Bez palivového a mýtného příplatku."},
+    {id:"hu_express",name:"Express One",type:"HD",
+     tiers:[{max:2,p:115},{max:5,p:125},{max:10,p:155},{max:15,p:170},{max:30,p:255},{max:50,p:380}],
+     fuel:false,toll:false,cod:20,maxKg:50,
+     note:"Expresní doručení. Bez palivového a mýtného příplatku."},
+    {id:"hu_foxpost",name:"FoxPost Box",type:"Box",
+     tiers:[{max:5,p:70},{max:15,p:110}],
+     fuel:.195,toll:1.1,cod:17,maxKg:15,
+     note:"Max. rozměry 62×45×36 cm."},
+    {id:"hu_posta_box",name:"Maďarská pošta Box",type:"Box",
+     tiers:[{max:2,p:107},{max:5,p:117},{max:10,p:147},{max:15,p:227}],
+     fuel:false,toll:false,cod:20,maxKg:15,
+     note:"Bez palivového příplatku. Max. rozměry 50×35×31 cm."},
+    {id:"hu_posta_hd",name:"Maďarská pošta HD",type:"HD",
+     tiers:[{max:2,p:107},{max:5,p:117},{max:10,p:147},{max:15,p:227},{max:30,p:399}],
+     fuel:false,toll:false,cod:30,maxKg:30,
+     note:"Bez palivového a mýtného příplatku."},
+  ]},
+  at:{name:"Rakousko",flag:"🇦🇹",cls:"at",services:[
+    {id:"at_dpd",name:"AT DPD",type:"HD",
+     tiers:[{max:5,p:200},{max:15,p:230},{max:30,p:275}],
+     fuel:false,toll:false,cod:null,maxKg:30,
+     note:"⚠ Dobírka není dostupná! Bez palivového příplatku."},
+    {id:"at_rakuska",name:"Rakouská pošta",type:"HD",
+     tiers:[{max:5,p:220},{max:10,p:250},{max:15,p:260},{max:30,p:350}],
+     fuel:false,toll:false,cod:123,maxKg:30,
+     note:"Bez palivového příplatku. Dobírka do 500 EUR: 123 Kč, do 2 000 EUR: 208 Kč."},
+  ]},
+};
+
+let curC = 'cz';
+
+function fmt2(n){return n.toLocaleString('cs-CZ',{minimumFractionDigits:2,maximumFractionDigits:2})+' Kč'}
+function getSvc(){
+  const id = document.getElementById('svcSel').value;
+  for(const c of Object.values(D)) for(const s of c.services) if(s.id===id) return s;
+  return null;
+}
+function baseP(svc,kg){for(const t of svc.tiers) if(kg<=t.max) return t.p; return svc.tiers[svc.tiers.length-1].p}
+function tollP(svc,kg){return svc.toll ? Math.ceil(Math.min(kg,30))*svc.toll : 0}
+
+function buildTabs(){
+  const tb = document.getElementById('cTabs'); tb.innerHTML='';
+  for(const[k,v] of Object.entries(D)){
+    const b=document.createElement('button');
+    b.className='country-btn'+(k===curC?' active '+v.cls:'');
+    b.innerHTML=`${v.flag} ${v.name}`;
+    b.onclick=()=>{curC=k;buildTabs();buildSvcs();};
+    tb.appendChild(b);
+  }
+}
+
+function buildSvcs(){
+  const sel=document.getElementById('svcSel'); sel.innerHTML='';
+  for(const svc of D[curC].services){
+    const o=document.createElement('option');o.value=svc.id;o.textContent=svc.name;sel.appendChild(o);
+  }
+  const slider=document.getElementById('wSlider');
+  slider.className='slider '+curC;
+  onSvcChange();
+}
+
+function onSvcChange(){
+  const svc=getSvc(); if(!svc)return;
+  // badges
+  const badges=document.getElementById('svcBadges'); badges.innerHTML='';
+  const typeLbl={PP:'Výdejní místo',HD:'Doručení domů',Box:'Box/Automat'};
+  const typeCls={PP:'pp',HD:'hd',Box:'box'};
+  badges.innerHTML=`<span class="svc-badge ${typeCls[svc.type]||'hd'}">${typeLbl[svc.type]||svc.type}</span>`;
+  if(svc.fuel) badges.innerHTML+=`<span class="svc-badge fuel">Palivo +19,5 %</span>`;
+  if(svc.toll) badges.innerHTML+=`<span class="svc-badge toll">Mýtné 1,10 Kč/kg</span>`;
+  if(svc.cod===null) badges.innerHTML+=`<span class="svc-badge nocod">Bez dobírky</span>`;
+  document.getElementById('svcNote').textContent=svc.note||'';
+  // slider max
+  const slider=document.getElementById('wSlider');
+  slider.max=Math.min(svc.maxKg,30);
+  const curKg=parseFloat(document.getElementById('wNum').value)||1;
+  if(curKg>svc.maxKg){document.getElementById('wNum').value=svc.maxKg;slider.value=Math.min(svc.maxKg,30);}
+  // scale
+  const tiers=svc.tiers;
+  document.getElementById('wScale').innerHTML=`<span>0,1</span>${tiers.map(t=>`<span>${t.max}</span>`).join('')}`;
+  // COD
+  const codChk=document.getElementById('codChk');
+  const codLabel=document.getElementById('codLabel');
+  const codHint=document.getElementById('codHint');
+  if(svc.cod===null){
+    codChk.disabled=true; codChk.checked=false;
+    codLabel.className='addon-name dim';
+    codHint.textContent='Není dostupná pro tuto službu';
+  } else {
+    codChk.disabled=false;
+    codLabel.className='addon-name';
+    codHint.textContent=`+${svc.cod} Kč za zásilku`;
+  }
+  // price table
+  const tbody=document.getElementById('ptBody'); tbody.innerHTML='';
+  const kg=parseFloat(document.getElementById('wNum').value)||1;
+  tiers.forEach((t,i)=>{
+    const lbl=i===0?`do ${t.max} kg`:`${tiers[i-1].max}–${t.max} kg`;
+    const isActive=kg<=t.max&&(i===0||kg>tiers[i-1].max);
+    tbody.innerHTML+=`<tr class="${isActive?'active-row':''}"><td>${lbl}</td><td>${t.p} Kč</td></tr>`;
+  });
+  calc();
+}
+
+function calc(){
+  const svc=getSvc(); if(!svc)return;
+  const kg=Math.max(0.1,parseFloat(document.getElementById('wNum').value)||1);
+  const resTotal=document.getElementById('resTotal');
+  const resRows=document.getElementById('resRows');
+  if(kg>svc.maxKg){
+    resTotal.textContent='Překročena max. hmotnost';
+    resRows.innerHTML=`<div class="res-warn">Zásilka ${kg} kg překračuje maximum ${svc.maxKg} kg pro tuto službu.</div>`;
+    return;
+  }
+  const base=baseP(svc,kg);
+  const fuel=svc.fuel?base*svc.fuel:0;
+  const toll=tollP(svc,kg);
+  const cod=(document.getElementById('codChk').checked&&svc.cod)?svc.cod:0;
+  const total=base+fuel+toll+cod;
+  resTotal.textContent=fmt2(total);
+  let html=`<div class="res-row"><span class="res-k">Základ</span><span class="res-v">${fmt2(base)}</span></div>`;
+  if(fuel>0) html+=`<div class="res-row"><span class="res-k">Palivový příplatek (19,5 %)</span><span class="res-v">+ ${fmt2(fuel)}</span></div>`;
+  if(toll>0) html+=`<div class="res-row"><span class="res-k">Mýtné (${Math.ceil(kg)} kg × 1,10 Kč)</span><span class="res-v">+ ${fmt2(toll)}</span></div>`;
+  if(cod>0) html+=`<div class="res-row"><span class="res-k">Dobírka (COD)</span><span class="res-v">+ ${fmt2(cod)}</span></div>`;
+  html+=`<div class="res-row sub"><span class="res-k">Celkem bez DPH</span><span class="res-v">${fmt2(total)}</span></div>`;
+  resRows.innerHTML=html;
+  // update price table highlight
+  const tiers=svc.tiers;
+  const rows=document.querySelectorAll('#ptBody tr');
+  rows.forEach((r,i)=>{
+    const isActive=kg<=tiers[i].max&&(i===0||kg>tiers[i-1].max);
+    r.className=isActive?'active-row':'';
+  });
+}
+
+// Weight sync
+const wNum=document.getElementById('wNum'), wSlider=document.getElementById('wSlider');
+wNum.oninput=()=>{let v=parseFloat(wNum.value);if(isNaN(v)||v<0.1)v=0.1;wSlider.value=Math.min(v,parseFloat(wSlider.max));calc();onSvcChange();}
+wSlider.oninput=()=>{wNum.value=parseFloat(wSlider.value).toFixed(1);calc();onSvcChange();}
+document.getElementById('svcSel').onchange=onSvcChange;
+document.getElementById('codChk').onchange=calc;
+
+buildTabs();
+buildSvcs();
+</script>
+</body>
+</html>
