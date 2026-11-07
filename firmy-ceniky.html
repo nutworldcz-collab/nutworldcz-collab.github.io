@@ -78,8 +78,8 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;min-height:
 </div>
 
 <div class="statsbar">
-  <div class="stat"><div class="val" id="stat-firmy">4</div><div class="lbl">Firem</div></div>
-  <div class="stat"><div class="val" id="stat-produkty">52</div><div class="lbl">Produktů</div></div>
+  <div class="stat"><div class="val" id="stat-firmy">5</div><div class="lbl">Firem</div></div>
+  <div class="stat"><div class="val" id="stat-produkty">63</div><div class="lbl">Produktů</div></div>
 </div>
 
 <div class="main">
@@ -197,6 +197,33 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;min-height:
       </div>
     </div>
 
+    <!-- CZECH INN HOTELS — builtin -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Czech Inn Hotels</div>
+        <div class="card-loc">Praha a partnerská města · hotelová síť</div>
+      </div>
+      <div class="card-body">
+        <div class="card-stats">
+          <div><div class="cs-n">11</div><div class="cs-l">Produktů</div></div>
+          <div><div class="cs-n">1</div><div class="cs-l">Formát</div></div>
+        </div>
+        <div class="formats">
+          <span class="fmt">Doypack 40g</span>
+          <span class="fmt">English labels</span>
+        </div>
+        <div class="status">
+          <span class="dot ok"></span>
+          <span>Nabídka aktuální</span>
+          <span class="updated">Listopad 2026</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a class="btn pri" href="/czech-inn-cenik.html">📋 Ceník zákazníka</a>
+        <a class="btn sec" href="/czech-inn-cenik.html#tab-marze">📊 Marže</a>
+      </div>
+    </div>
+
     <!-- ADD -->
     <div class="card add" onclick="showModal()">
       <div class="add-inner">
@@ -288,11 +315,16 @@ function render(data){
 }
 
 function updateStats(data){
-  document.getElementById('stat-firmy').textContent=1+data.length;
+  // 5 hardcoded firms + dynamic ones (remove CIH from localStorage if added earlier)
+  const cleaned=data.filter(f=>f.nazev!=='Czech inn hotels'&&f.nazev!=='Czech Inn Hotels');
+  if(cleaned.length!==data.length){save(cleaned);data=cleaned;}
+  document.getElementById('stat-firmy').textContent=5+data.length;
 }
 
-// init
-const saved=load();
+// init — also remove CIH from localStorage if hardcoded earlier
+const _raw=load();
+const saved=_raw.filter(f=>f.nazev!=='Czech inn hotels'&&f.nazev!=='Czech Inn Hotels');
+if(saved.length!==_raw.length)save(saved);
 if(saved.length){render(saved);updateStats(saved);}
 
 document.getElementById('modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Czech Inn Hotels — Ceník zákazníka · Nutworld</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;min-height:100vh}
+
+/* TOPBAR */
+.topbar{background:#5c381f;padding:14px 24px;display:flex;align-items:center;gap:12px}
+.back{color:rgba(255,255,255,.6);font-size:13px;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .12s}
+.back:hover{color:#fff}
+.topbar-title{font-family:'Exo 2',sans-serif;font-size:17px;font-weight:800;color:#fff;flex:1}
+.topbar-sub{font-size:11px;color:rgba(255,255,255,.45)}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#5c381f 0%,#83502e 55%,#a0622a 100%);padding:32px 24px 28px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:-30px;right:-30px;width:180px;height:180px;border-radius:50%;background:rgba(247,171,49,.12);pointer-events:none}
+.hero-label{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:#f7ab31;margin-bottom:8px}
+.hero-title{font-family:'Exo 2',sans-serif;font-size:26px;font-weight:800;color:#fff;line-height:1.15;margin-bottom:6px}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.65)}
+.hero-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+.chip{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.85);font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px}
+
+/* MAIN */
+.main{max-width:860px;margin:0 auto;padding:24px}
+
+/* SECTION */
+.section{background:#fff;border:2px solid #d4c0a8;border-radius:14px;overflow:hidden;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.section-head{background:#f1e6da;padding:12px 20px;border-bottom:1px solid #d4c0a8;display:flex;align-items:center;gap:10px}
+.sh-icon{font-size:16px}
+.sh-title{font-family:'Exo 2',sans-serif;font-size:14px;font-weight:800;color:#5c381f}
+.sh-sub{font-size:11px;color:#a07850;margin-left:auto}
+
+/* TIER ROW */
+.tier-row{display:flex;align-items:center;gap:10px;padding:8px 20px;border-bottom:1px solid #f1e6da}
+.tier-row:last-child{border-bottom:none}
+.tier-row.head{background:#faf6f1;padding:7px 20px;border-bottom:2px solid #d4c0a8}
+.th{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#a07850}
+.tier-badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+.tier-badge.value{background:#fef3c7;color:#92400e;border:1px solid #fcd34d}
+.tier-badge.standard{background:#e0f2fe;color:#0369a1;border:1px solid #7dd3fc}
+.tier-badge.premium{background:#f3e8ff;color:#7c3aed;border:1px solid #c4b5fd}
+.prod-num{width:36px;font-size:11px;color:#b09070;flex-shrink:0}
+.prod-cz{flex:1;font-size:13px;font-weight:600;color:#2a1a0e}
+.prod-en{flex:1;font-size:12px;color:#6b4c2e;font-style:italic}
+.prod-price{width:80px;text-align:right;font-family:'Exo 2',sans-serif;font-size:15px;font-weight:700;color:#5c381f}
+.prod-dph{font-size:10px;color:#a07850;margin-top:1px;text-align:right}
+.prod-tier{width:70px;text-align:right}
+
+/* PODMÍNKY GRID */
+.cond-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0;padding:0}
+.cond-item{padding:14px 18px;border-bottom:1px solid #f1e6da;border-right:1px solid #f1e6da}
+.cond-item:last-child{border-right:none}
+.ci-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#a07850;margin-bottom:4px}
+.ci-val{font-size:13px;font-weight:600;color:#2a1a0e;line-height:1.4}
+.ci-note{font-size:11px;color:#8a6a4a;margin-top:2px}
+
+/* COUNTRY TABLE */
+.country-table{width:100%;border-collapse:collapse}
+.country-table th{background:#faf6f1;padding:8px 16px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#a07850;border-bottom:2px solid #d4c0a8}
+.country-table td{padding:10px 16px;border-bottom:1px solid #f1e6da;font-size:13px;color:#2a1a0e}
+.country-table tr:last-child td{border-bottom:none}
+.flag{margin-right:6px}
+.min-val{font-family:'Exo 2',sans-serif;font-weight:700;color:#5c381f}
+.carrier{font-size:11px;color:#8a6a4a}
+
+/* FOOTER */
+.footer{text-align:center;font-size:11px;color:#b09070;padding:20px 0 32px}
+.contact-row{display:flex;flex-wrap:wrap;gap:12px;padding:14px 20px;align-items:center}
+.contact-name{font-family:'Exo 2',sans-serif;font-size:15px;font-weight:800;color:#5c381f}
+.contact-role{font-size:11px;color:#a07850}
+.contact-email{margin-left:auto;font-size:12px;color:#83502e;font-weight:600}
+.btn-print{background:#f1e6da;border:1.5px solid #d4c0a8;color:#5c381f;font-family:'Source Sans 3',sans-serif;font-size:12px;font-weight:600;padding:7px 14px;border-radius:8px;cursor:pointer;transition:background .12s}
+.btn-print:hover{background:#e8d5c0}
+
+/* MARZE TAB */
+.tab-bar{display:flex;border-bottom:2px solid #d4c0a8;background:#faf6f1}
+.tab{padding:10px 20px;font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700;color:#a07850;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:color .12s}
+.tab.active{color:#5c381f;border-bottom-color:#5c381f}
+.tab-content{display:none;padding:0}
+.tab-content.active{display:block}
+
+/* MARZE TABLE */
+.marze-table{width:100%;border-collapse:collapse}
+.marze-table th{background:#faf6f1;padding:8px 14px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#a07850;border-bottom:2px solid #d4c0a8}
+.marze-table td{padding:9px 14px;border-bottom:1px solid #f1e6da;font-size:12px;color:#2a1a0e}
+.marze-table tr:last-child td{border-bottom:none}
+.marze-table .num{text-align:right;font-family:'Exo 2',sans-serif;font-weight:700}
+.marze-pct{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700}
+.m-ok{background:#d1fae5;color:#065f46}
+.m-warn{background:#fef3c7;color:#92400e}
+
+@media(max-width:600px){
+  .prod-en,.tier-badge{display:none}
+  .prod-cz{font-size:12px}
+  .cond-grid{grid-template-columns:1fr 1fr}
+}
+@media print{
+  body{background:#fff}
+  .topbar,.btn-print{display:none}
+  .main{padding:0}
+  .section{box-shadow:none;break-inside:avoid}
+  .hero{padding:20px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back" href="/firmy-ceniky.html">← Firmy</a>
+  <div class="topbar-title">Czech Inn Hotels — Ceník zákazníka</div>
+  <span class="topbar-sub">Listopad 2026</span>
+</div>
+
+<div class="hero">
+  <div class="hero-label">B2B · Hotelová síť</div>
+  <div class="hero-title">Czech Inn Hotels × Nutworld</div>
+  <div class="hero-sub">Prémiové snacky do hotelových pokojů · Doypack 40g · English labels</div>
+  <div class="hero-chips">
+    <span class="chip">11 produktů</span>
+    <span class="chip">Doypack 40g</span>
+    <span class="chip">Nutworld logo</span>
+    <span class="chip">English labels</span>
+    <span class="chip">Doprava zahrnuta v ceně</span>
+    <span class="chip">CZ · SK · AT · HU</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- CENÍK / MARŽE TABY -->
+  <div class="section">
+    <div class="tab-bar">
+      <div class="tab active" onclick="switchTab('cenik',this)">📋 Ceník zákazníka</div>
+      <div class="tab" onclick="switchTab('marze',this)">📊 Marže &amp; NC</div>
+    </div>
+
+    <!-- TAB: CENÍK -->
+    <div id="tab-cenik" class="tab-content active">
+      <div class="tier-row head">
+        <div class="prod-num"></div>
+        <div class="prod-cz th">Produkt CZ</div>
+        <div class="prod-en th">English name</div>
+        <div class="prod-tier th" style="text-align:right">Tier</div>
+        <div style="width:80px;text-align:right" class="th">Kč/ks bez DPH</div>
+      </div>
+
+      <!-- VALUE -->
+      <div class="tier-row">
+        <div class="prod-num">56</div>
+        <div class="prod-cz">Arašídy pražené solené</div>
+        <div class="prod-en">Roasted Salted Peanuts</div>
+        <div class="prod-tier"><span class="tier-badge value">VALUE</span></div>
+        <div>
+          <div class="prod-price">14 Kč</div>
+          <div class="prod-dph">+12 % DPH</div>
+        </div>
+      </div>
+      <div class="tier-row">
+        <div class="prod-num">9604</div>
+        <div class="prod-cz">Arašídy v karamelu se sezamem</div>
+        <div class="prod-en">Caramel Sesame Peanuts</div>
+        <div class="prod-tier"><span class="tier-badge value">VALUE</span></div>
+        <div>
+          <div class="prod-price">19 Kč</div>
+          <div class="prod-dph">+12 % DPH</div>
+        </div>
+      </div>
+
+      <!-- STANDARD -->
+      <div class="tier-row">
+        <div class="prod-num">MIX</div>
+        <div class="prod-cz">Klasický slaný ořechový mix</div>
+        <div class="prod-en">Classic Salted Nut Mix</div>
+        <div class="prod-tier"><span class="tier-badge standard">STANDARD</span></div>
+        <div>
+          <div class="prod-price">21 Kč</div>
+          <div class="prod-dph">+12 % DPH</div>
+        </div>
+      </div>
+      <div class="tier-row">
+        <div class="prod-num">116</div>
+        <div class="prod-cz">Kešu jádra pražená solená</div>
+        <div class="prod-en">Roasted Salted Cashews</div>
+        <div class="prod-tier"><span class="tier-badge standard">STANDARD</span></div>
+        <div>
+          <div class="prod-price">22 Kč</div>
+          <div class="prod-dph">+12 % DPH</div>
+        </div>
+      </div>
+      <div class="tier-row">
+        <div class="prod-num">89</div>
+        <div class="prod-cz">Mandle uzené</div>
+        <div class="prod-en">Smoked Almonds</div>
+        <div class="prod-tier"><span class="tier-badge standard">STANDARD</span></div>
+        <div>
+          <div class="prod-price">23 Kč</div>
+          <div class="prod-dph">+12 % DPH</div>
+        </div>
+      </div>
+      <div class="tier-row">
+        <div class="prod-num">101</div>
+        <div class="prod-cz">Mandle pražené solené</div>
+        <div class="prod-en">Roasted Salted Almonds</div>
+        <div class="prod-tier"><span class="tier-badge standard">STANDARD</span></div>
+        <div>
+          <div class="prod-price">23 Kč</div>
+          <div class="prod-dph">+12 % DPH</div>
+        </div>
+      </div>
+      <div class="tier-row">
+        <div class="prod-num">728</div>
+        <div class="prod-cz">Kešu uzené</div>
+        <div class="prod-en">Smoked Cashews</div>
+        <div class="prod-tier"><span class="tier-badge standard">STANDARD</span></div>
+        <div>
+          <div class="prod-price">24 Kč</div>
+          <div class="prod-dph">+12 % DPH</div>
+        </div>
+      </div>
+      <div class="tier-row">
+        <div class="prod-num">PARTY</div>
+        <div class="prod-cz">Slaný párty mix</div>
+        <div class="prod-en">Party Nut Mix</div>
+        <div class="prod-tier"><span class="tier-badge standard">STANDARD</span></div>
+        <div>
+          <div class="prod-price">24 Kč</div>
+          <div class="prod-dph">+12 % DPH</div>
+        </div>
+      </div>
+
+      <!-- PREMIUM -->
+      <div class="tier-row">
+        <div class="prod-num">5364</div>
+        <div class="prod-cz">Kešu česnek &amp; rozmarýn</div>
+        <div class="prod-en">Cashews Garlic &amp; Rosemary</div>
+        <div class="prod-tier"><span class="tier-badge premium">PREMIUM</span></div>
+        <div>
+          <div class="prod-price">27 Kč</div>
+          <div class="prod-dph">+12 % DPH</div>
+        </div>
+      </div>
+      <div class="tier-row">
+        <div class="prod-num">134</div>
+        <div class="prod-cz">Pistácie pražené solené</div>
+        <div class="prod-en">Roasted Salted Pistachios</div>
+        <div class="prod-tier"><span class="tier-badge premium">PREMIUM</span></div>
+        <div>
+          <div class="prod-price">29 Kč</div>
+          <div class="prod-dph">+12 % DPH</div>
+        </div>
+      </div>
+      <div class="tier-row">
+        <div class="prod-num">TRUFFLE</div>
+        <div class="prod-cz">Kešu s lanýžem</div>
+        <div class="prod-en">Truffle Cashews</div>
+        <div class="prod-tier"><span class="tier-badge premium">PREMIUM</span></div>
+        <div>
+          <div class="prod-price">31 Kč</div>
+          <div class="prod-dph">+12 % DPH</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: MARŽE -->
+    <div id="tab-marze" class="tab-content">
+      <table class="marze-table" style="width:100%">
+        <thead>
+          <tr>
+            <th>Produkt</th>
+            <th class="num">NC (Kč/ks)</th>
+            <th class="num">Cena zákazníka</th>
+            <th class="num">Marže</th>
+            <th class="num">Zisk/ks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Arašídy pražené solené</td><td class="num">9.86</td><td class="num">14 Kč</td><td class="num"><span class="marze-pct m-ok">30 %</span></td><td class="num">4.14 Kč</td></tr>
+          <tr><td>Arašídy v karamelu se sezamem</td><td class="num">12.86</td><td class="num">19 Kč</td><td class="num"><span class="marze-pct m-ok">32 %</span></td><td class="num">6.14 Kč</td></tr>
+          <tr><td>Klasický slaný ořechový mix</td><td class="num">14.72</td><td class="num">21 Kč</td><td class="num"><span class="marze-pct m-ok">30 %</span></td><td class="num">6.28 Kč</td></tr>
+          <tr><td>Kešu jádra pražená solená</td><td class="num">15.07</td><td class="num">22 Kč</td><td class="num"><span class="marze-pct m-ok">31 %</span></td><td class="num">6.93 Kč</td></tr>
+          <tr><td>Mandle uzené</td><td class="num">15.22</td><td class="num">23 Kč</td><td class="num"><span class="marze-pct m-ok">34 %</span></td><td class="num">7.78 Kč</td></tr>
+          <tr><td>Mandle pražené solené</td><td class="num">15.63</td><td class="num">23 Kč</td><td class="num"><span class="marze-pct m-ok">32 %</span></td><td class="num">7.37 Kč</td></tr>
+          <tr><td>Kešu uzené</td><td class="num">16.09</td><td class="num">24 Kč</td><td class="num"><span class="marze-pct m-ok">33 %</span></td><td class="num">7.91 Kč</td></tr>
+          <tr><td>Slaný párty mix</td><td class="num">16.72</td><td class="num">24 Kč</td><td class="num"><span class="marze-pct m-warn">30 %</span></td><td class="num">7.28 Kč</td></tr>
+          <tr><td>Kešu česnek &amp; rozmarýn</td><td class="num">18.80</td><td class="num">27 Kč</td><td class="num"><span class="marze-pct m-ok">30 %</span></td><td class="num">8.20 Kč</td></tr>
+          <tr><td>Pistácie pražené solené</td><td class="num">19.69</td><td class="num">29 Kč</td><td class="num"><span class="marze-pct m-ok">32 %</span></td><td class="num">9.31 Kč</td></tr>
+          <tr><td>Kešu s lanýžem</td><td class="num">21.70</td><td class="num">31 Kč</td><td class="num"><span class="marze-pct m-ok">30 %</span></td><td class="num">9.30 Kč</td></tr>
+        </tbody>
+      </table>
+      <div style="padding:12px 16px;background:#faf6f1;border-top:1px solid #d4c0a8;font-size:11px;color:#8a6a4a">
+        NC = nákupní cena + doypack 40g (obal 2+práce 2,5+etiketa 1+tavení 1 = 6,5 Kč) · Vzorec: (kg_czk × 0,040 + 6,5) × 1,35 + 2 Kč logistika · DPH 12 % není zahrnuto v NC ani ceně
+      </div>
+    </div>
+  </div>
+
+  <!-- PODMÍNKY -->
+  <div class="section">
+    <div class="section-head">
+      <span class="sh-icon">📦</span>
+      <span class="sh-title">Podmínky spolupráce</span>
+    </div>
+    <div class="cond-grid">
+      <div class="cond-item">
+        <div class="ci-label">Formát balení</div>
+        <div class="ci-val">Doypack 40g</div>
+        <div class="ci-note">Vlastní logo Nutworld · anglický text</div>
+      </div>
+      <div class="cond-item">
+        <div class="ci-label">DPH</div>
+        <div class="ci-val">12 %</div>
+        <div class="ci-note">Ceny v ceníku jsou bez DPH</div>
+      </div>
+      <div class="cond-item">
+        <div class="ci-label">Doprava</div>
+        <div class="ci-val">Zahrnuta v ceně</div>
+        <div class="ci-note">PPL (CZ) · Zásilkovna (SK/AT/HU)</div>
+      </div>
+      <div class="cond-item">
+        <div class="ci-label">Dodání</div>
+        <div class="ci-val">2–4 / 5–8 dní</div>
+        <div class="ci-note">CZ/SK 2–4 prac. dny · AT/HU 5–8 dní</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MINIMÁLNÍ ZÁVOZ -->
+  <div class="section">
+    <div class="section-head">
+      <span class="sh-icon">🌍</span>
+      <span class="sh-title">Minimální závoz dle země</span>
+      <span class="sh-sub">Doprava vždy zdarma od min. závodu</span>
+    </div>
+    <table class="country-table">
+      <thead>
+        <tr>
+          <th>Země</th>
+          <th>Min. závoz</th>
+          <th>Přibližný počet ks</th>
+          <th>Dopravce</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="flag">🇨🇿</span>Česká republika</td>
+          <td><span class="min-val">2 500 Kč</span></td>
+          <td>~110–180 ks</td>
+          <td><span class="carrier">PPL Parcel CZ</span></td>
+        </tr>
+        <tr>
+          <td><span class="flag">🇸🇰</span>Slovensko</td>
+          <td><span class="min-val">3 000 Kč</span></td>
+          <td>~130–215 ks</td>
+          <td><span class="carrier">Zásilkovna SK</span></td>
+        </tr>
+        <tr>
+          <td><span class="flag">🇦🇹</span>Rakousko</td>
+          <td><span class="min-val">5 000 Kč</span></td>
+          <td>~215–355 ks</td>
+          <td><span class="carrier">Zásilkovna AT</span></td>
+        </tr>
+        <tr>
+          <td><span class="flag">🇭🇺</span>Maďarsko</td>
+          <td><span class="min-val">5 000 Kč</span></td>
+          <td>~215–355 ks</td>
+          <td><span class="carrier">Zásilkovna HU</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- KONTAKT -->
+  <div class="section">
+    <div class="section-head">
+      <span class="sh-icon">👤</span>
+      <span class="sh-title">Kontakt</span>
+      <button class="btn-print" onclick="window.print()">🖨️ Tisk / PDF</button>
+    </div>
+    <div class="contact-row">
+      <div>
+        <div class="contact-name">Jan Vlček</div>
+        <div class="contact-role">Zakladatel · Nutworld s.r.o.</div>
+      </div>
+      <div class="contact-email">jan.vlcek@nutworld.cz</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">nutworldcz-collab.github.io · Nutworld s.r.o. · Interní nástroj</div>
+
+<script src="pin-guard.js"></script>
+<script>
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+// Hash routing: #tab-marze
+if (location.hash === '#tab-marze') {
+  switchTab('marze', document.querySelectorAll('.tab')[1]);
+}
+</script>
+</body>
+</html>
