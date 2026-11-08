@@ -1,48 +1,48 @@
 {
-  "generated": "2026-11-07T08:30:17",
-  "period": "2026-10-31 – 2026-11-06",
+  "generated": "2026-11-08T09:08:25",
+  "period": "2026-11-01 – 2026-11-07",
   "channels": {
     "Meta CZ": {
-      "spend": 38348.0,
-      "revenue": 225675.0,
-      "pno": 17.0,
-      "conversions": 179.0,
-      "clicks": 12198,
-      "prev_spend": 28695.0,
-      "prev_pno": 15.0
+      "spend": 39422.0,
+      "revenue": 230011.0,
+      "pno": 17.1,
+      "conversions": 176.0,
+      "clicks": 12490,
+      "prev_spend": 28635.0,
+      "prev_pno": 14.5
     },
     "Meta SK": {
-      "spend": 681.0,
-      "revenue": 4283.0,
-      "pno": 15.9,
-      "conversions": 52.0,
-      "clicks": 11630,
+      "spend": 725.0,
+      "revenue": 4502.0,
+      "pno": 16.1,
+      "conversions": 58.0,
+      "clicks": 11899,
       "prev_spend": 499.0,
-      "prev_pno": 18.0
+      "prev_pno": 18.8
     },
     "Google CZ": {
-      "spend": 5982.0,
-      "revenue": 40682.0,
-      "pno": 14.7,
-      "conversions": 32.8,
-      "clicks": 1709,
-      "prev_spend": 5038.0,
-      "prev_pno": 10.7
+      "spend": 6195.0,
+      "revenue": 47070.0,
+      "pno": 13.2,
+      "conversions": 35.8,
+      "clicks": 1799,
+      "prev_spend": 4917.0,
+      "prev_pno": 12.2
     },
     "Google SK": {
-      "spend": 5530.0,
-      "revenue": 34388.0,
-      "pno": 16.1,
-      "conversions": 24.4,
-      "clicks": 795,
-      "prev_spend": 5410.0,
-      "prev_pno": 15.0
+      "spend": 5643.0,
+      "revenue": 38518.0,
+      "pno": 14.7,
+      "conversions": 26.6,
+      "clicks": 774,
+      "prev_spend": 5298.0,
+      "prev_pno": 15.1
     }
   },
   "anomalies": [
     "✅ Žádné výrazné anomálie"
   ],
   "priorities": [
-    "Nejlepší kanál: Google CZ (PNO 14.7%) — zvýšit budget?"
+    "Nejlepší kanál: Google CZ (PNO 13.2%) — zvýšit budget?"
   ]
 }
