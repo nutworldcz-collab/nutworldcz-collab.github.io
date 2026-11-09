@@ -670,7 +670,7 @@ function renderMixProduction(){
         <div class="mix-num" style="color:var(--amber)">${sumSent} ks</div>
         <div class="mix-num">${sumRem} ks</div>
         <div class="mix-kg">${fmtKg(sumTotalKg)}</div>
-        <div class="mix-kg" style="color:var(${sumRemKg>0?'--amber':'--leaf'})">${fmtKg(sumRemKg)}</div>
+        <div class="mix-kg" style="color:var(${sumRemKg>0?'--amber':'--leaf'})">${fmtKg(sumRemKg)} <span style="font-size:11px;font-weight:400;color:var(--fg-muted)">~${Math.ceil(sumRemKg/20)} kbelíků</span></div>
       </div>
     </div>`;
   }
