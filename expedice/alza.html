@@ -178,6 +178,25 @@ tr.ship-row td{padding:0;}
 .empty-state td{text-align:center;padding:36px 12px;color:var(--fg-muted);font-style:italic;}
 .footnote{margin-top:10px;font-size:12px;color:var(--fg-muted);}
 
+/* Mix production */
+.mix-box{margin-top:20px;}
+.mix-group{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:12px;overflow:hidden;}
+.mix-hdr{background:linear-gradient(135deg,#4a7c2f 0%,#6fa044 100%);padding:8px 14px;display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px;}
+.mix-title{font-family:var(--font-ui);font-size:12px;font-weight:700;color:#fff;letter-spacing:0.3px;}
+.mix-total-kg{font-size:12px;color:rgba(255,255,255,.85);}
+.mix-total-kg strong{color:#fff;}
+.mix-cols-hdr,.mix-row{display:grid;grid-template-columns:80px 90px 90px 90px 100px 100px;gap:0;padding:6px 14px;border-top:1px solid var(--border-soft);}
+.mix-cols-hdr{background:var(--surface2);font-family:var(--font-ui);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.7px;color:var(--fg-muted);}
+.mix-row{font-size:13px;font-variant-numeric:tabular-nums;}
+.mix-row:hover{background:var(--surface2);}
+.mix-size{font-family:var(--font-ui);font-weight:700;color:var(--brown);}
+.mix-num{color:var(--fg);}
+.mix-kg{font-weight:700;}
+.mix-row-total{display:grid;grid-template-columns:80px 90px 90px 90px 100px 100px;gap:0;padding:7px 14px;border-top:2px solid var(--border);background:var(--amber-bg);font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;}
+@media(max-width:650px){
+  .mix-cols-hdr,.mix-row,.mix-row-total{grid-template-columns:70px 1fr 1fr 1fr 90px 90px;font-size:12px;}
+}
+
 /* Summary */
 .summary{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;}
 .summary-hdr{background:var(--brown-dark);color:#fff;padding:7px 14px;font-family:var(--font-ui);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
@@ -228,6 +247,7 @@ tr.ship-row td{padding:0;}
   </table>
 </div>
 <p class="footnote">Data se ukládají automaticky v prohlížeči. Klikni na ▼ pro zásilky.</p>
+<div class="mix-box" id="mixBox"></div>
 
 <script>
 const STORE = 'nw_exp_v3';
@@ -468,6 +488,7 @@ function renderStats(){
   document.getElementById('stShips').textContent=ships;
   document.getElementById('stRem').className='stat-val '+(rem===0&&products>0?'c-leaf':'c-fg');
   renderSummary();
+  renderMixProduction();
 }
 
 function renderSummary(){
@@ -579,6 +600,80 @@ function render(){
     for(const row of rows)html+=rowHtml(row,gi++);
   }
   tbody.innerHTML=html;renderStats();
+}
+
+// --- Mix production helpers ---
+const MIX_GROUPS = [
+  {label:'Směs ořechů a ovoce', match: n => { const code=n.split(' — ')[0].trim(); return code.endsWith('B01'); }},
+];
+
+function parseGramaz(name){
+  const kg=name.match(/(\d+(?:[,.]\d+)?)\s*kg/i);
+  if(kg)return Math.round(parseFloat(kg[1].replace(',','.'))*1000);
+  const g=name.match(/(\d+)\s*g(?:\b|$)/i);
+  if(g)return parseInt(g[1]);
+  return 0;
+}
+function fmtKg(n){return n%1===0?n+' kg':(Math.round(n*100)/100).toFixed(2).replace('.',',')+' kg';}
+
+function renderMixProduction(){
+  const box=document.getElementById('mixBox');if(!box)return;
+  let html='';
+  for(const grp of MIX_GROUPS){
+    const rows=state.rows.filter(r=>grp.match(r.name));
+    if(!rows.length)continue;
+    // group by gramáž
+    const byG={};
+    for(const r of rows){
+      const g=parseGramaz(r.name);if(!g)continue;
+      if(!byG[g])byG[g]={total:0,sent:0};
+      const s=r.manualDone?r.total:sentSum(r);
+      byG[g].total+=r.total;
+      byG[g].sent+=s;
+    }
+    const sizes=Object.keys(byG).map(Number).sort((a,b)=>a-b);
+    let sumTotal=0,sumSent=0,sumTotalKg=0,sumRemKg=0;
+    const rowsHtml=sizes.map(g=>{
+      const {total,sent}=byG[g];
+      const rem=Math.max(total-sent,0);
+      const tKg=total*g/1000;const rKg=rem*g/1000;
+      sumTotal+=total;sumSent+=sent;sumTotalKg+=tKg;sumRemKg+=rKg;
+      const lbl=g>=1000?`${g/1000} kg`:`${g} g`;
+      return `<div class="mix-row">
+        <div class="mix-size">${lbl}</div>
+        <div class="mix-num">${total} ks</div>
+        <div class="mix-num c-amber">${sent} ks</div>
+        <div class="mix-num">${rem} ks</div>
+        <div class="mix-kg">${fmtKg(tKg)}</div>
+        <div class="mix-kg" style="color:var(${rKg>0?'--amber':'--leaf'})">${fmtKg(rKg)}</div>
+      </div>`;
+    }).join('');
+    const sumRem=Math.max(sumTotal-sumSent,0);
+    html+=`<div class="mix-group">
+      <div class="mix-hdr">
+        <span class="mix-title">${grp.label}</span>
+        <span class="mix-total-kg">celkem objednáno: <strong>${fmtKg(sumTotalKg)}</strong> &nbsp;·&nbsp; zbývá vyrobit: <strong>${fmtKg(sumRemKg)}</strong></span>
+      </div>
+      <div class="mix-cols-hdr">
+        <div class="mix-size">Gramáž</div>
+        <div class="mix-num">Objednáno</div>
+        <div class="mix-num">Odesláno</div>
+        <div class="mix-num">Zbývá ks</div>
+        <div class="mix-kg">Celkem kg</div>
+        <div class="mix-kg">Zbývá kg</div>
+      </div>
+      ${rowsHtml}
+      <div class="mix-row-total">
+        <div class="mix-size">Celkem</div>
+        <div class="mix-num">${sumTotal} ks</div>
+        <div class="mix-num" style="color:var(--amber)">${sumSent} ks</div>
+        <div class="mix-num">${sumRem} ks</div>
+        <div class="mix-kg">${fmtKg(sumTotalKg)}</div>
+        <div class="mix-kg" style="color:var(${sumRemKg>0?'--amber':'--leaf'})">${fmtKg(sumRemKg)}</div>
+      </div>
+    </div>`;
+  }
+  box.innerHTML=html;
 }
 
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
