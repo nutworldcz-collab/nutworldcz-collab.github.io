@@ -1,0 +1,918 @@
+<title>Obchod & Nabídky — Alza + Vilgain</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap">
+
+<style>
+:root {
+  --bg: #f7f3ee;
+  --surface: #ffffff;
+  --surface2: #faf7f4;
+  --border: #e2ceb4;
+  --fg: #1a0e05;
+  --muted: #7a5535;
+  --brown: #5c381f;
+  --brown-mid: #83502e;
+  --amber: #f7ab31;
+  --amber-soft: #fff8e6;
+  --amber-border: #e8990a;
+  --leaf: #4a7c2f;
+  --leaf-soft: #edf5e6;
+  --leaf-border: #5e9c3a;
+  --g-ok: #2e7d32; --g-ok-bg: #e8f5e9;
+  --g-mid: #d97706; --g-mid-bg: #fff8e1;
+  --g-low: #c62828; --g-low-bg: #ffebee;
+  --font-h: 'Exo 2', system-ui, sans-serif;
+  --font-b: 'Source Sans 3', system-ui, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1a110a; --surface: #241810; --surface2: #2c1e12; --border: #4a3220;
+    --fg: #f5ede2; --muted: #c09060; --brown: #d4a070; --brown-mid: #c08050;
+    --amber-soft: #2a1f05; --amber-border: #b8800a; --leaf-soft: #0e1f08; --leaf-border: #3a7020;
+    --g-ok-bg: #0d2e10; --g-mid-bg: #2a1e05; --g-low-bg: #2e0a0a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1a110a; --surface: #241810; --surface2: #2c1e12; --border: #4a3220;
+  --fg: #f5ede2; --muted: #c09060; --brown: #d4a070; --brown-mid: #c08050;
+  --amber-soft: #2a1f05; --amber-border: #b8800a; --leaf-soft: #0e1f08; --leaf-border: #3a7020;
+  --g-ok-bg: #0d2e10; --g-mid-bg: #2a1e05; --g-low-bg: #2e0a0a; color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-b);
+  background: var(--bg);
+  color: var(--fg);
+  padding-block: 20px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* Page header */
+.page-hdr {
+  max-width: 960px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.page-title { font-family: var(--font-h); font-size: 21px; font-weight: 800; color: var(--brown); }
+.page-title span { color: var(--muted); font-weight: 600; }
+.page-meta { font-size: 11px; color: var(--muted); text-align: right; line-height: 1.6; }
+
+/* Section */
+.section { max-width: 960px; margin: 0 auto 28px; }
+.section-hdr { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.sbadge {
+  font-family: var(--font-h); font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; padding: 3px 10px; border-radius: 20px;
+}
+.sbadge-alza  { background: var(--amber-soft); color: var(--brown); border: 1.5px solid var(--amber-border); }
+.sbadge-vilgain { background: var(--leaf-soft); color: var(--leaf); border: 1.5px solid var(--leaf-border); }
+.section-title { font-family: var(--font-h); font-size: 16px; font-weight: 700; color: var(--fg); }
+
+/* Sub-section label */
+.subsec {
+  font-family: var(--font-h); font-size: 11px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--muted); margin: 16px 0 8px; padding-left: 2px;
+}
+
+/* ── MIX card ── */
+.mix-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.mix-top {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 0;
+}
+.mix-info { padding: 14px 16px; border-right: 1px solid var(--border); }
+.mix-name { font-family: var(--font-h); font-size: 14px; font-weight: 700; color: var(--fg); margin-bottom: 3px; }
+.mix-code { font-size: 11px; color: var(--muted); margin-bottom: 7px; font-weight: 600; }
+.pills { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
+.pill {
+  font-size: 11px; padding: 2px 7px; border-radius: 10px; color: var(--muted);
+  background: var(--surface2); border: 1px solid var(--border); font-weight: 600;
+}
+.pill .pct { opacity: .6; }
+.mix-nc {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+}
+.nc-row { display: flex; justify-content: space-between; align-items: baseline; }
+.nc-label { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; }
+.nc-val { font-family: var(--font-h); font-size: 15px; font-weight: 800; color: var(--fg); }
+.nc-unit { font-size: 10px; color: var(--muted); margin-left: 2px; }
+.nc-divider { border: none; border-top: 1px solid var(--border); }
+
+/* Gramáž pricing table (inside mix card) */
+.gram-table-wrap {
+  border-top: 1.5px solid var(--border);
+  background: var(--surface2);
+}
+.gram-table-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px 0;
+}
+.obal-note {
+  font-size: 11px;
+  color: var(--muted);
+  padding: 4px 10px 6px;
+  font-style: italic;
+}
+.gram-table-title {
+  font-size: 10px; font-weight: 700; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 1px;
+}
+.gram-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+.gram-table th {
+  text-align: left;
+  color: var(--muted); font-weight: 700; letter-spacing: 0.5px;
+  text-transform: uppercase; font-size: 10px;
+  padding: 6px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.gram-table td { padding: 7px 16px; border-bottom: 1px solid var(--border); }
+.gram-table tr:last-child td { border-bottom: none; }
+.gram-table .num { text-align: right; font-family: var(--font-h); font-weight: 700; }
+.gram-table .alert { color: var(--g-low); }
+
+/* Margin badge */
+.mb {
+  display: inline-block; font-family: var(--font-h); font-size: 11px;
+  font-weight: 800; padding: 2px 8px; border-radius: 8px;
+}
+.mb-g { background: var(--g-ok-bg); color: var(--g-ok); }
+.mb-y { background: var(--g-mid-bg); color: var(--g-mid); }
+.mb-r { background: var(--g-low-bg); color: var(--g-low); }
+
+/* Detail toggle */
+.ing-detail { border-top: 1px solid var(--border); background: var(--surface2); display: none; padding: 12px 16px; }
+.ing-detail.open { display: block; }
+.ing-tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+.ing-tbl th { text-align: left; color: var(--muted); font-weight: 700; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; padding: 4px 8px 6px; border-bottom: 1px solid var(--border); }
+.ing-tbl td { padding: 5px 8px; border-bottom: 1px solid var(--border); }
+.ing-tbl tr:last-child td { border-bottom: none; }
+.ing-tbl .r { text-align: right; font-family: var(--font-h); font-weight: 700; }
+.ing-tbl tfoot td { font-family: var(--font-h); font-weight: 800; border-top: 2px solid var(--border); padding-top: 7px; }
+.toggle-btn {
+  background: none; border: none; font-size: 11px; color: var(--muted); cursor: pointer;
+  padding: 4px 0 0; font-family: var(--font-b); font-weight: 600;
+}
+.toggle-btn:hover { color: var(--brown-mid); }
+
+/* ── Ostatní produkty — compact table card ── */
+.prod-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.prod-card-hdr {
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+}
+.prod-name { font-family: var(--font-h); font-size: 13px; font-weight: 700; color: var(--fg); }
+.prod-code { font-size: 11px; color: var(--muted); font-weight: 600; }
+.prod-nc { font-size: 11px; color: var(--muted); }
+.prod-nc strong { color: var(--fg); font-family: var(--font-h); font-weight: 700; }
+
+.prod-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.prod-table th {
+  text-align: left; color: var(--muted); font-weight: 700; font-size: 10px;
+  text-transform: uppercase; letter-spacing: 0.5px; padding: 6px 16px;
+  border-bottom: 1px solid var(--border); background: var(--surface2);
+}
+.prod-table td { padding: 8px 16px; border-bottom: 1px solid var(--border); }
+.prod-table tr:last-child td { border-bottom: none; }
+.prod-table .num { text-align: right; font-family: var(--font-h); font-weight: 700; }
+
+/* Editable input for Vilgain cards */
+.price-input {
+  font-family: var(--font-h); font-size: 15px; font-weight: 800; color: var(--brown-mid);
+  background: none; border: none; border-bottom: 2px solid var(--amber); outline: none;
+  width: 80px; padding: 0 0 1px; line-height: 1;
+}
+.price-input::placeholder { color: var(--border); font-weight: 600; }
+.pbox-label { font-size: 9.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 3px; }
+
+.note { max-width: 960px; margin: 0 auto 14px; font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+/* Vilgain cards (keep original layout) */
+.vil-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.vil-main {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+.vil-info { padding: 14px 16px; border-right: 1px solid var(--border); }
+.vil-pricing {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(85px, 1fr));
+  min-width: 380px;
+}
+.pbox {
+  padding: 10px 13px; border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 2px; justify-content: center;
+}
+.pbox:last-child { border-right: none; }
+.pbox-val { font-family: var(--font-h); font-size: 16px; font-weight: 800; color: var(--fg); line-height: 1; }
+.pbox-unit { font-size: 10px; color: var(--muted); margin-top: 1px; }
+.margin-val { font-family: var(--font-h); font-size: 16px; font-weight: 800; line-height: 1; }
+
+@media (max-width: 680px) {
+  .mix-top, .vil-main { grid-template-columns: 1fr; }
+  .mix-nc, .vil-pricing { border-top: 1px solid var(--border); border-right: none !important; }
+  .vil-pricing { min-width: 0; grid-template-columns: 1fr 1fr; }
+  .mix-info, .vil-info { border-right: none; }
+}
+</style>
+
+<div class="page-hdr">
+  <div class="page-title">Obchod &amp; Nabídky <span>— Alza + Vilgain</span></div>
+  <div class="page-meta">Zdroj: EDI/2026/49–51 · cenik.csv<br>Ceny bez DPH</div>
+</div>
+
+<!-- ═══════════════ ALZA ═══════════════ -->
+<div class="section">
+  <div class="section-hdr">
+    <span class="sbadge sbadge-alza">Alza</span>
+    <span class="section-title">Alza.cz — B2B dodávky</span>
+  </div>
+
+  <div class="subsec">Směsi</div>
+
+  <!-- B01 -->
+  <div class="mix-card">
+    <div class="mix-top">
+      <div class="mix-info">
+        <div class="mix-name">Směs ořechů a ovoce</div>
+        <div class="mix-code">Kód B01 · BJ-MX-{gram}B01</div>
+        <div class="pills">
+          <span class="pill">Ananas 4 kg <span class="pct">20 %</span></span>
+          <span class="pill">Rozinky 4 kg <span class="pct">20 %</span></span>
+          <span class="pill">Mandle lou. 3 kg <span class="pct">15 %</span></span>
+          <span class="pill">Mandle nat. 3 kg <span class="pct">15 %</span></span>
+          <span class="pill">Kešu 3 kg <span class="pct">15 %</span></span>
+          <span class="pill">Papaya 3 kg <span class="pct">15 %</span></span>
+        </div>
+        <button class="toggle-btn" onclick="toggleDetail('b01')">▸ Detail složení</button>
+      </div>
+      <div class="mix-nc">
+        <div class="nc-row">
+          <span class="nc-label">NC suroviny</span>
+          <span class="nc-val">147,79 <span class="nc-unit">Kč/kg</span></span>
+        </div>
+        <hr class="nc-divider">
+        <div class="nc-row">
+          <span class="nc-label">+ Míchání</span>
+          <span class="nc-val">157,79 <span class="nc-unit">Kč/kg</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="gram-table-wrap">
+      <div class="gram-table-hdr"><span class="gram-table-title">Alza ceny dle gramáže</span></div>
+      <table class="gram-table">
+        <thead><tr><th>Kód</th><th>Gramáž</th><th class="num">Alza Kč/ks</th><th class="num">Kč/kg</th><th class="num">Nákl./kg</th><th class="num">Zisk/kg</th><th class="num">Marže</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>BJ-MX-250B01</td><td>250 g</td>
+            <td class="num">63,80</td><td class="num">255,20</td>
+            <td class="num">198,19</td><td class="num">+57,01</td>
+            <td class="num"><span class="mb mb-y">22,3 %</span></td>
+          </tr>
+          <tr>
+            <td>BJ-MX-500B01</td><td>500 g</td>
+            <td class="num">106,50</td><td class="num">213,00</td>
+            <td class="num">179,39</td><td class="num">+33,61</td>
+            <td class="num"><span class="mb mb-y">15,8 %</span></td>
+          </tr>
+          <tr>
+            <td>BJ-MX-1000B01</td><td>1 000 g</td>
+            <td class="num">196,30</td><td class="num">196,30</td>
+            <td class="num">169,79</td><td class="num">+26,51</td>
+            <td class="num"><span class="mb mb-y">13,5 %</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="obal-note">Nákl./kg = NC+míchání + sáček + plnění + etiketa 2 Kč + etiketování 1 Kč + karton 0,50 Kč + doprava 1 Kč → 250 g: 10,10 Kč/ks | 500 g: 10,80 Kč/ks | 1 kg: 12,00 Kč/ks</div>
+    </div>
+    <div class="ing-detail" id="detail-b01">
+      <table class="ing-tbl">
+        <thead><tr><th>Surovina</th><th class="r">kg</th><th class="r">NC Kč/kg</th><th class="r">Celkem</th><th class="r">%</th></tr></thead>
+        <tbody>
+          <tr><td>Ananas kandizovaný kostky (2744)</td><td class="r">4,00</td><td class="r">112,90</td><td class="r">451,60</td><td class="r">20</td></tr>
+          <tr><td>Rozinky sultánky (227)</td><td class="r">4,00</td><td class="r">63,00</td><td class="r">252,00</td><td class="r">20</td></tr>
+          <tr><td>Mandle loupané JUMBO (83)</td><td class="r">3,00</td><td class="r">215,72</td><td class="r">647,15</td><td class="r">15</td></tr>
+          <tr><td>Mandle natural JUMBO (80)</td><td class="r">3,00</td><td class="r">222,00</td><td class="r">666,00</td><td class="r">15</td></tr>
+          <tr><td>Kešu natural ww320 Afrika (110)</td><td class="r">3,00</td><td class="r">201,01</td><td class="r">603,03</td><td class="r">15</td></tr>
+          <tr><td>Papája kondenzované kostky (2747)</td><td class="r">3,00</td><td class="r">112,00</td><td class="r">336,00</td><td class="r">15</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><td><strong>Suroviny 20 kg</strong></td><td class="r">20,00</td><td class="r">147,79</td><td class="r">2 955,78</td><td></td></tr>
+          <tr><td colspan="2"></td><td><strong>+ Míchání</strong></td><td class="r"><strong>+200,00</strong></td><td></td></tr>
+          <tr><td colspan="2"></td><td><strong>Blended NC</strong></td><td class="r"><strong>3 155,78</strong></td><td></td></tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- B02 -->
+  <div class="mix-card">
+    <div class="mix-top">
+      <div class="mix-info">
+        <div class="mix-name">Směs ořechů natural</div>
+        <div class="mix-code">Kód B02 · BJ-MX-{gram}B02</div>
+        <div class="pills">
+          <span class="pill">Mandle nat. 6 kg <span class="pct">30 %</span></span>
+          <span class="pill">Kešu 6 kg <span class="pct">30 %</span></span>
+          <span class="pill">Mandle lou. 5,6 kg <span class="pct">28 %</span></span>
+          <span class="pill">Pekan 2,4 kg <span class="pct">12 %</span></span>
+        </div>
+        <button class="toggle-btn" onclick="toggleDetail('b02')">▸ Detail složení</button>
+      </div>
+      <div class="mix-nc">
+        <div class="nc-row">
+          <span class="nc-label">NC suroviny</span>
+          <span class="nc-val">230,38 <span class="nc-unit">Kč/kg</span></span>
+        </div>
+        <hr class="nc-divider">
+        <div class="nc-row">
+          <span class="nc-label">+ Míchání</span>
+          <span class="nc-val">240,38 <span class="nc-unit">Kč/kg</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="gram-table-wrap">
+      <div class="gram-table-hdr"><span class="gram-table-title">Alza ceny dle gramáže</span></div>
+      <table class="gram-table">
+        <thead><tr><th>Kód</th><th>Gramáž</th><th class="num">Alza Kč/ks</th><th class="num">Kč/kg</th><th class="num">Nákl./kg</th><th class="num">Zisk/kg</th><th class="num">Marže</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>BJ-MX-250B02</td><td>250 g</td>
+            <td class="num">77,30</td><td class="num">309,20</td>
+            <td class="num">280,78</td><td class="num">+28,42</td>
+            <td class="num"><span class="mb mb-r">9,2 %</span> 🔴</td>
+          </tr>
+          <tr>
+            <td>BJ-MX-500B02</td><td>500 g</td>
+            <td class="num">155,00</td><td class="num">310,00</td>
+            <td class="num">261,98</td><td class="num">+48,02</td>
+            <td class="num"><span class="mb mb-y">15,5 %</span></td>
+          </tr>
+          <tr>
+            <td>BJ-MX-1000B02</td><td>1 000 g</td>
+            <td class="num">277,30</td><td class="num">277,30</td>
+            <td class="num">252,38</td><td class="num">+24,92</td>
+            <td class="num"><span class="mb mb-r">9,0 %</span> 🔴</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="obal-note">Nákl./kg = NC+míchání + sáček + plnění + etiketa 2 Kč + etiketování 1 Kč + karton 0,50 Kč + doprava 1 Kč → 250 g: 10,10 Kč/ks | 500 g: 10,80 Kč/ks | 1 kg: 12,00 Kč/ks</div>
+    </div>
+    <div class="ing-detail" id="detail-b02">
+      <table class="ing-tbl">
+        <thead><tr><th>Surovina</th><th class="r">kg</th><th class="r">NC Kč/kg</th><th class="r">Celkem</th><th class="r">%</th></tr></thead>
+        <tbody>
+          <tr><td>Mandle natural JUMBO (80)</td><td class="r">6,00</td><td class="r">222,00</td><td class="r">1 332,00</td><td class="r">30</td></tr>
+          <tr><td>Kešu natural ww320 Afrika (110)</td><td class="r">6,00</td><td class="r">201,01</td><td class="r">1 206,06</td><td class="r">30</td></tr>
+          <tr><td>Mandle loupané JUMBO (83)</td><td class="r">5,60</td><td class="r">215,72</td><td class="r">1 208,01</td><td class="r">28</td></tr>
+          <tr><td>Pekanové ořechy (140)</td><td class="r">2,40</td><td class="r">359,00</td><td class="r">861,60</td><td class="r">12</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><td><strong>Suroviny 20 kg</strong></td><td class="r">20,00</td><td class="r">230,38</td><td class="r">4 607,67</td><td></td></tr>
+          <tr><td colspan="2"></td><td><strong>+ Míchání</strong></td><td class="r"><strong>+200,00</strong></td><td></td></tr>
+          <tr><td colspan="2"></td><td><strong>Blended NC</strong></td><td class="r"><strong>4 807,67</strong></td><td></td></tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- OSTATNÍ PRODUKTY -->
+  <div class="subsec">Ostatní produkty</div>
+
+  <!-- Uzené mandle -->
+  <div class="prod-card">
+    <div class="prod-card-hdr">
+      <div>
+        <div class="prod-name">Mandle pražené uzené — snížený obsah soli</div>
+        <div class="prod-code">BJ-RN-{gram}B04/B09/B11 · kód 89 · NC 218,00 Kč/kg</div>
+      </div>
+    </div>
+    <table class="prod-table">
+      <thead><tr><th>Kód Alza</th><th>Gramáž</th><th class="num">Alza Kč/ks</th><th class="num">Nákl./ks</th><th class="num">Zisk/ks</th><th class="num">Marže</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>BJ-RN-0250B04</td><td>250 g</td>
+          <td class="num">74,30</td><td class="num">64,60</td><td class="num">+9,70</td>
+          <td class="num"><span class="mb mb-y">13,1 %</span></td>
+        </tr>
+        <tr>
+          <td>BJ-RN-0500B11</td><td>500 g</td>
+          <td class="num">131,30</td><td class="num">119,80</td><td class="num">+11,50</td>
+          <td class="num"><span class="mb mb-r">8,8 %</span> 🔴</td>
+        </tr>
+        <tr>
+          <td>BJ-RN-100B09</td><td>1 000 g</td>
+          <td class="num">251,30</td><td class="num">230,00</td><td class="num">+21,30</td>
+          <td class="num"><span class="mb mb-r">8,5 %</span> 🔴</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="obal-note">Nákl./ks = NC + sáček + plnění + etiketa 2 Kč + etiketování 1 Kč + karton 0,50 Kč + doprava 1 Kč (bez míchání)</div>
+  </div>
+
+  <!-- Preclíky -->
+  <div class="prod-card">
+    <div class="prod-card-hdr">
+      <div>
+        <div class="prod-name">Preclíky v bílé čokoládě — dárkový tubus</div>
+        <div class="prod-code">BJ_SP_P01_0250 · kód 4449 · NC 252,00 Kč/kg</div>
+      </div>
+    </div>
+    <table class="prod-table">
+      <thead><tr><th>Kód Alza</th><th>Gramáž</th><th class="num">Alza Kč/ks</th><th class="num">NC/ks</th><th class="num">Zisk/ks</th><th class="num">Marže</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>BJ_SP_P01_0250</td><td>250 g</td>
+          <td class="num">79,00</td><td class="num">63,00</td><td class="num">+16,00</td>
+          <td class="num"><span class="mb mb-y">20,3 %</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Chipsy -->
+  <div class="prod-card">
+    <div class="prod-card-hdr">
+      <div>
+        <div class="prod-name">Chipsy — ovocné &amp; zeleninové (100g)</div>
+        <div class="prod-code">BJ-HC-100B0x · kódy 9570–9573</div>
+      </div>
+    </div>
+    <table class="prod-table">
+      <thead><tr><th>Produkt</th><th>Kód</th><th class="num">NC Kč/kg</th><th class="num">Nákl./ks</th><th class="num">Alza Kč/ks</th><th class="num">Zisk/ks</th><th class="num">Marže</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Zeleninové mix</td><td>BJ-HC-100B02</td>
+          <td class="num">350,00</td><td class="num">45,10</td>
+          <td class="num">59,20</td><td class="num">+14,10</td>
+          <td class="num"><span class="mb mb-y">23,8 %</span></td>
+        </tr>
+        <tr>
+          <td>Zeleninové wasabi</td><td>BJ-HC-100B04</td>
+          <td class="num">380,00</td><td class="num">48,10</td>
+          <td class="num">59,20</td><td class="num">+11,10</td>
+          <td class="num"><span class="mb mb-y">18,8 %</span></td>
+        </tr>
+        <tr>
+          <td>Ovocné jablko/skořice</td><td>BJ-HC-100B03</td>
+          <td class="num">388,75</td><td class="num">48,98</td>
+          <td class="num">62,00</td><td class="num">+13,02</td>
+          <td class="num"><span class="mb mb-y">21,0 %</span></td>
+        </tr>
+        <tr>
+          <td>Ovocné mix</td><td>BJ-HC-100B01</td>
+          <td class="num">481,75</td><td class="num">58,28</td>
+          <td class="num">62,00</td><td class="num">+3,72</td>
+          <td class="num"><span class="mb mb-r">6,0 %</span> 🔴</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="obal-note">Nákl./ks = NC (100g) + sáček 250g (3,60 Kč) + plnění 2 Kč + etiketa 2 Kč + etiketování 1 Kč + karton 0,50 Kč + doprava 1 Kč = 10,10 Kč/ks</div>
+  </div>
+
+  <!-- Valentýnský kelímek -->
+  <div class="prod-card">
+    <div class="prod-card-hdr">
+      <div>
+        <div class="prod-name">Valentýnské mandle v jahodovém jogurtu — kelímek</div>
+        <div class="prod-code">BJ-CN-150P01 · kód 5852 · NC suroviny 194,95 Kč/kg</div>
+      </div>
+    </div>
+    <table class="prod-table">
+      <thead><tr><th>Kód</th><th>Gramáž</th><th class="num">NC suroviny/ks</th><th class="num">Alza Kč/ks</th><th class="num">Marže (bez obalu)</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>BJ-CN-150P01</td><td>150 g</td>
+          <td class="num">29,24</td>
+          <td class="num">68,00</td>
+          <td class="num"><span class="mb mb-g">57,0 %</span> <span style="font-size:10px;color:var(--muted)">↑ bez kelímku</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Plechová dóza směs B01 -->
+  <div class="prod-card">
+    <div class="prod-card-hdr">
+      <div>
+        <div class="prod-name">Směs ořechů a ovoce — plechová dóza</div>
+        <div class="prod-code">BJ-MX-300W06 · složení B01 · NC suroviny 167,79 Kč/kg</div>
+      </div>
+    </div>
+    <table class="prod-table">
+      <thead><tr><th>Kód</th><th>Gramáž</th><th class="num">NC suroviny/ks</th><th class="num">Alza Kč/ks</th><th class="num">Marže (bez dózy)</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>BJ-MX-300W06</td><td>240 g</td>
+          <td class="num">40,27</td>
+          <td class="num">113,00</td>
+          <td class="num"><span class="mb mb-g">64,4 %</span> <span style="font-size:10px;color:var(--muted)">↑ bez plechovky</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Valentýnské mandle -->
+  <div class="prod-card">
+    <div class="prod-card-hdr">
+      <div>
+        <div class="prod-name">Valentýnské mandle v jahodovém jogurtu — tubus</div>
+        <div class="prod-code">BJ-MX-450W01 · kód 5852 · NC suroviny 194,95 Kč/kg</div>
+      </div>
+    </div>
+    <table class="prod-table">
+      <thead><tr><th>Kód</th><th>Gramáž</th><th class="num">NC suroviny/ks</th><th class="num">Alza Kč/ks</th><th class="num">Marže (bez obalu)</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>BJ-MX-450W01</td><td>450 g</td>
+          <td class="num">87,73</td>
+          <td class="num">153,00</td>
+          <td class="num"><span class="mb mb-g">42,7 %</span> <span style="font-size:10px;color:var(--muted)">↑ bez obalu</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Degustační sady -->
+  <div class="prod-card">
+    <div class="prod-card-hdr">
+      <div>
+        <div class="prod-name">Degustační sady — dárkové boxy</div>
+        <div class="prod-code">BJ-MX-300W01 / W04 · složený produkt</div>
+      </div>
+    </div>
+    <table class="prod-table">
+      <thead><tr><th>Kód</th><th>Obsah</th><th class="num">Alza Kč/ks</th><th class="num">NC/ks</th><th class="num">Marže</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>BJ-MX-300W01</td><td>Sada mix s mašlí 6×50g</td>
+          <td class="num">169,00</td><td class="num">—</td>
+          <td class="num"><span style="font-size:11px;color:var(--muted)">doplnit složení</span></td>
+        </tr>
+        <tr>
+          <td>BJ-MX-300W04</td><td>Degustační sada mix 380g</td>
+          <td class="num">155,00</td><td class="num">—</td>
+          <td class="num"><span style="font-size:11px;color:var(--muted)">doplnit NC</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════ VILGAIN ═══════════════ -->
+<div class="section">
+  <div class="section-hdr">
+    <span class="sbadge sbadge-vilgain">Vilgain</span>
+    <span class="section-title">Vilgain — B2B dodávky</span>
+  </div>
+  <div class="note">⚠️ <strong>Hrubá marže</strong> — Alza mixy (B01, B02): Nákl./kg = plné náklady (NC+míchání+sáček+plnění+etiketa+karton+doprava). Vilgain a ostatní produkty: bez obalů/plnění.</div>
+
+  <!-- Vilgain Nut Mix -->
+  <div class="mix-card">
+    <div class="mix-top">
+      <div class="mix-info">
+        <div class="mix-name">Vilgain Nut Mix Natural</div>
+        <div class="mix-code">PV47461 · 20 kg / kbelík</div>
+        <div class="pills">
+          <span class="pill">Mandle nat. 7 kg <span class="pct">35 %</span></span>
+          <span class="pill">Kešu 7 kg <span class="pct">35 %</span></span>
+          <span class="pill">Mandle lou. 4 kg <span class="pct">20 %</span></span>
+          <span class="pill">Pekan 2 kg <span class="pct">10 %</span></span>
+        </div>
+        <button class="toggle-btn" onclick="toggleDetail('vng')">▸ Detail složení</button>
+      </div>
+      <div class="mix-nc">
+        <div class="nc-row">
+          <span class="nc-label">NC suroviny</span>
+          <span class="nc-val">227,10 <span class="nc-unit">Kč/kg</span></span>
+        </div>
+        <hr class="nc-divider">
+        <div class="nc-row">
+          <span class="nc-label">+ Míchání</span>
+          <span class="nc-val">237,10 <span class="nc-unit">Kč/kg</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="gram-table-wrap">
+      <div class="gram-table-hdr"><span class="gram-table-title">Vilgain prodejní ceny (plné náklady)</span></div>
+      <table class="gram-table">
+        <thead><tr><th>Produkt</th><th>Gramáž</th><th class="num">Vilgain Kč/ks</th><th class="num">Kč/kg</th><th class="num">Nákl./kg</th><th class="num">Zisk/kg</th><th class="num">Marže</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Vilgain Nut Mix 250g</td><td>250 g</td>
+            <td class="num">79,00</td><td class="num">316,00</td>
+            <td class="num">274,30</td><td class="num">+41,70</td>
+            <td class="num"><span class="mb mb-y">13,2 %</span></td>
+          </tr>
+          <tr>
+            <td>Vilgain Nut Mix 500g</td><td>500 g</td>
+            <td class="num">142,00</td><td class="num">284,00</td>
+            <td class="num">259,70</td><td class="num">+24,30</td>
+            <td class="num"><span class="mb mb-r">8,6 %</span> 🔴</td>
+          </tr>
+          <tr>
+            <td>Vilgain Nut Mix 1000g</td><td>1 000 g</td>
+            <td class="num">267,00</td><td class="num">267,00</td>
+            <td class="num">249,50</td><td class="num">+17,50</td>
+            <td class="num"><span class="mb mb-r">6,6 %</span> 🔴</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="obal-note">Nákl./kg = NC+míchání + sáček + plnění + etiketa 2 Kč + etiketování 1,50 Kč + karton 0,50 Kč + doprava 1 Kč → 250 g: 9,30 Kč/ks | 500 g: 11,30 Kč/ks | 1 kg: 12,40 Kč/ks</div>
+    </div>
+    <div class="ing-detail" id="detail-vng">
+      <table class="ing-tbl">
+        <thead><tr><th>Surovina</th><th class="r">kg</th><th class="r">NC Kč/kg</th><th class="r">Celkem</th></tr></thead>
+        <tbody>
+          <tr><td>Mandle natural JUMBO (80)</td><td class="r">7,00</td><td class="r">222,00</td><td class="r">1 554,00</td></tr>
+          <tr><td>Kešu natural ww320 Afrika (110)</td><td class="r">7,00</td><td class="r">201,01</td><td class="r">1 407,07</td></tr>
+          <tr><td>Mandle loupané JUMBO (83)</td><td class="r">4,00</td><td class="r">215,72</td><td class="r">862,86</td></tr>
+          <tr><td>Pekanové ořechy (140)</td><td class="r">2,00</td><td class="r">359,00</td><td class="r">718,00</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><td><strong>Suroviny 20 kg</strong></td><td class="r">20,00</td><td class="r">227,10</td><td class="r">4 541,93</td></tr>
+          <tr><td colspan="2"></td><td><strong>Blended NC</strong></td><td class="r"><strong>4 741,93</strong></td></tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- Nut & Seed Bowl Topper (PV47387) -->
+  <div class="mix-card">
+    <div class="mix-top">
+      <div class="mix-info">
+        <div class="mix-name">Nut &amp; Seed Bowl Topper</div>
+        <div class="mix-code">PV47387 · na etiketě: "Směs semínek s kešu oříšky a mandlemi" · 20 kg / kbelík</div>
+        <div class="pills">
+          <span class="pill">Slunečnice 6 kg <span class="pct">30 %</span></span>
+          <span class="pill">Dýně 6 kg <span class="pct">30 %</span></span>
+          <span class="pill">Mandle nat. 4 kg <span class="pct">20 %</span></span>
+          <span class="pill">Kešu 4 kg <span class="pct">20 %</span></span>
+        </div>
+        <button class="toggle-btn" onclick="toggleDetail('vst')">▸ Detail složení</button>
+      </div>
+      <div class="mix-nc">
+        <div class="nc-row">
+          <span class="nc-label">NC suroviny</span>
+          <span class="nc-val">123,15 <span class="nc-unit">Kč/kg</span></span>
+        </div>
+        <hr class="nc-divider">
+        <div class="nc-row">
+          <span class="nc-label">+ Míchání</span>
+          <span class="nc-val">133,15 <span class="nc-unit">Kč/kg</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="gram-table-wrap">
+      <div class="gram-table-hdr"><span class="gram-table-title">Vilgain prodejní ceny (plné náklady)</span></div>
+      <table class="gram-table">
+        <thead><tr><th>Produkt</th><th>Gramáž</th><th class="num">Vilgain Kč/ks</th><th class="num">Kč/kg</th><th class="num">Nákl./kg</th><th class="num">Zisk/kg</th><th class="num">Marže</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Nut &amp; Seed Bowl Topper 500g</td><td>500 g</td>
+            <td class="num">97,30</td><td class="num">194,60</td>
+            <td class="num">155,75</td><td class="num">+38,85</td>
+            <td class="num"><span class="mb mb-y">20,0 %</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="obal-note">Nákl./kg = NC+míchání + sáček 500g (3,30 Kč) + plnění 3 Kč + etiketa 2 Kč + etiketování 1,50 Kč + karton 0,50 Kč + doprava 1 Kč = 11,30 Kč/ks</div>
+    </div>
+    <div class="ing-detail" id="detail-vst">
+      <table class="ing-tbl">
+        <thead><tr><th>Surovina</th><th class="r">kg</th><th class="r">NC Kč/kg</th><th class="r">Celkem</th></tr></thead>
+        <tbody>
+          <tr><td>Slunečnicová jádra (266)</td><td class="r">6,00</td><td class="r">34,50</td><td class="r">207,00</td></tr>
+          <tr><td>Dýňové semínko (242)</td><td class="r">6,00</td><td class="r">94,00</td><td class="r">564,00</td></tr>
+          <tr><td>Mandle natural JUMBO (80)</td><td class="r">4,00</td><td class="r">222,00</td><td class="r">888,00</td></tr>
+          <tr><td>Kešu natural ww320 Afrika (110)</td><td class="r">4,00</td><td class="r">201,01</td><td class="r">804,04</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><td><strong>Suroviny 20 kg</strong></td><td class="r">20,00</td><td class="r">123,15</td><td class="r">2 463,04</td></tr>
+          <tr><td colspan="2"></td><td><strong>Blended NC</strong></td><td class="r"><strong>2 663,04</strong></td></tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- Crunchy Seed Topper (PV47450) -->
+  <div class="mix-card">
+    <div class="mix-top">
+      <div class="mix-info">
+        <div class="mix-name">Crunchy Seed Topper Natural</div>
+        <div class="mix-code">PV47450 · na etiketě: "Směs semínek s piniovými oříšky" · zatím nebyl objednán</div>
+        <div class="pills">
+          <span class="pill">Slunečnice 6 kg <span class="pct">30 %</span></span>
+          <span class="pill">Sezam 6 kg <span class="pct">30 %</span></span>
+          <span class="pill">Dýně 6 kg <span class="pct">30 %</span></span>
+          <span class="pill">Pinie 2 kg <span class="pct">10 %</span></span>
+        </div>
+        <button class="toggle-btn" onclick="toggleDetail('vcst')">▸ Detail složení</button>
+      </div>
+      <div class="mix-nc">
+        <div class="nc-row">
+          <span class="nc-label">NC suroviny</span>
+          <span class="nc-val">141,75 <span class="nc-unit">Kč/kg</span></span>
+        </div>
+        <hr class="nc-divider">
+        <div class="nc-row">
+          <span class="nc-label">+ Míchání</span>
+          <span class="nc-val">151,75 <span class="nc-unit">Kč/kg</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="gram-table-wrap">
+      <div class="gram-table-hdr"><span class="gram-table-title">Vilgain prodejní cena (nebyl objednán — doplnit)</span></div>
+      <table class="gram-table">
+        <thead><tr><th>Produkt</th><th>Gramáž</th><th class="num">Vilgain Kč/ks</th><th class="num">Kč/kg</th><th class="num">NC/kg</th><th class="num">Hr. marže</th></tr></thead>
+        <tbody>
+          <tr><td>Crunchy Seed Topper 500g</td><td>500 g</td><td class="num">—</td><td class="num">—</td><td class="num">161,75</td><td class="num"><span style="font-size:11px;color:var(--muted)">doplnit cenu</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="ing-detail" id="detail-vcst">
+      <table class="ing-tbl">
+        <thead><tr><th>Surovina</th><th class="r">kg</th><th class="r">NC Kč/kg</th><th class="r">Celkem</th></tr></thead>
+        <tbody>
+          <tr><td>Slunečnicová jádra (266)</td><td class="r">6,00</td><td class="r">34,50</td><td class="r">207,00</td></tr>
+          <tr><td>Sezam loupaný (263)</td><td class="r">6,00</td><td class="r">51,00</td><td class="r">306,00</td></tr>
+          <tr><td>Dýňové semínko (242)</td><td class="r">6,00</td><td class="r">94,00</td><td class="r">564,00</td></tr>
+          <tr><td>Piniová jádra (149)</td><td class="r">2,00</td><td class="r">879,00</td><td class="r">1 758,00</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><td><strong>Suroviny 20 kg</strong></td><td class="r">20,00</td><td class="r">141,75</td><td class="r">2 835,00</td></tr>
+          <tr><td colspan="2"></td><td><strong>Blended NC</strong></td><td class="r"><strong>3 035,00</strong></td></tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- Medjool datle -->
+  <div class="prod-card">
+    <div class="prod-card-hdr">
+      <div>
+        <div class="prod-name">Vilgain Dried Medjool Dates</div>
+        <div class="prod-code">kód 191 · NC 172,00 Kč/kg · jednozložkový produkt</div>
+      </div>
+    </div>
+    <table class="prod-table">
+      <thead><tr><th>Gramáž</th><th class="num">Vilgain Kč/ks</th><th class="num">Kč/kg</th><th class="num">NC/kg</th><th class="num">Zisk/kg</th><th class="num">Hr. marže</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>260 g</td>
+          <td class="num">78,00</td><td class="num">300,00</td>
+          <td class="num">172,00</td><td class="num">+128,00</td>
+          <td class="num"><span class="mb mb-g">42,7 %</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Semínka salátu -->
+  <div class="mix-card">
+    <div class="mix-top">
+      <div class="mix-info">
+        <div class="mix-name">Směs semínek do salátu</div>
+        <div class="mix-code">PV47449 · 20 kg / kbelík</div>
+        <div class="pills">
+          <span class="pill">Slunečnice 4 kg <span class="pct">20 %</span></span>
+          <span class="pill">Sezam 4 kg <span class="pct">20 %</span></span>
+          <span class="pill">Len hnědý 3,6 kg <span class="pct">18 %</span></span>
+          <span class="pill">Len zlatý 3,6 kg <span class="pct">18 %</span></span>
+          <span class="pill">Dýně 2,8 kg <span class="pct">14 %</span></span>
+          <span class="pill">Chia 2 kg <span class="pct">10 %</span></span>
+        </div>
+        <button class="toggle-btn" onclick="toggleDetail('vss')">▸ Detail složení</button>
+      </div>
+      <div class="mix-nc">
+        <div class="nc-row">
+          <span class="nc-label">NC suroviny</span>
+          <span class="nc-val">49,14 <span class="nc-unit">Kč/kg</span></span>
+        </div>
+        <hr class="nc-divider">
+        <div class="nc-row">
+          <span class="nc-label">+ Míchání</span>
+          <span class="nc-val">59,14 <span class="nc-unit">Kč/kg</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="gram-table-wrap">
+      <div class="gram-table-hdr"><span class="gram-table-title">Vilgain prodejní ceny (plné náklady)</span></div>
+      <table class="gram-table">
+        <thead><tr><th>Produkt</th><th>Gramáž</th><th class="num">Vilgain Kč/ks</th><th class="num">Kč/kg</th><th class="num">Nákl./kg</th><th class="num">Zisk/kg</th><th class="num">Marže</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Seed Topper Mix 500g</td><td>500 g</td>
+            <td class="num">63,00</td><td class="num">126,00</td>
+            <td class="num">81,74</td><td class="num">+44,26</td>
+            <td class="num"><span class="mb mb-g">35,1 %</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="obal-note">Nákl./kg = NC+míchání + sáček 500g (3,30 Kč) + plnění 3 Kč + etiketa 2 Kč + etiketování 1,50 Kč + karton 0,50 Kč + doprava 1 Kč = 11,30 Kč/ks</div>
+    </div>
+    <div class="ing-detail" id="detail-vss">
+      <table class="ing-tbl">
+        <thead><tr><th>Surovina</th><th class="r">kg</th><th class="r">NC Kč/kg</th><th class="r">Celkem</th></tr></thead>
+        <tbody>
+          <tr><td>Slunečnicová jádra (266)</td><td class="r">4,00</td><td class="r">34,50</td><td class="r">138,00</td></tr>
+          <tr><td>Sezam loupaný (263)</td><td class="r">4,00</td><td class="r">51,00</td><td class="r">204,00</td></tr>
+          <tr><td>Lněné semínko hnědé (251)</td><td class="r">3,60</td><td class="r">26,50</td><td class="r">95,40</td></tr>
+          <tr><td>Lněné semínko zlaté (254)</td><td class="r">3,60</td><td class="r">34,50</td><td class="r">124,20</td></tr>
+          <tr><td>Dýňové semínko (242)</td><td class="r">2,80</td><td class="r">94,00</td><td class="r">263,20</td></tr>
+          <tr><td>Chia semínka (8541)</td><td class="r">2,00</td><td class="r">79,00</td><td class="r">158,00</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><td><strong>Suroviny 20 kg</strong></td><td class="r">20,00</td><td class="r">49,14</td><td class="r">982,80</td></tr>
+          <tr><td colspan="2"></td><td><strong>Blended NC</strong></td><td class="r"><strong>1 182,80</strong></td></tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+const KEY = 'nw_obchod_v2';
+const VIL = { vng: 237.10, vst: 133.15, vss: 59.14 };
+
+function fmt(n) { return n.toFixed(2).replace('.', ','); }
+
+function calcM(id, nc) {
+  const inp = document.getElementById('price-' + id);
+  const el  = document.getElementById('margin-' + id);
+  const p = parseFloat(inp.value);
+  if (!p || p <= 0) { el.innerHTML = '<span class="mb" style="background:var(--surface2);color:var(--muted)">—</span>'; save(); return; }
+  const m = (p - nc) / p * 100;
+  const cls = m >= 25 ? 'mb-g' : m >= 10 ? 'mb-y' : 'mb-r';
+  const col = m >= 25 ? 'var(--g-ok)' : m >= 10 ? 'var(--g-mid)' : 'var(--g-low)';
+  el.innerHTML = `<div><span class="mb ${cls}">${fmt(m)} %</span><div style="font-size:10px;color:var(--muted);margin-top:3px">+${fmt(p-nc)} Kč/kg</div></div>`;
+  save();
+}
+
+function toggleDetail(id) {
+  const el = document.getElementById('detail-' + id);
+  el.classList.toggle('open');
+  const btn = el.closest('.mix-card, .vil-card').querySelector('.toggle-btn');
+  if (btn) btn.textContent = el.classList.contains('open') ? '▾ Skrýt složení' : '▸ Detail složení';
+}
+
+function save() {
+  try {
+    const d = {};
+    Object.keys(VIL).forEach(id => { const i = document.getElementById('price-'+id); if(i&&i.value) d[id]=i.value; });
+    d._ts = Date.now();
+    localStorage.setItem(KEY, JSON.stringify(d));
+  } catch(e) {}
+}
+
+function load() {
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    Object.keys(VIL).forEach(id => { if(d[id]) { const i=document.getElementById('price-'+id); if(i){i.value=d[id]; calcM(id,VIL[id]);} } });
+  } catch(e) {}
+}
+
+load();
+</script>
