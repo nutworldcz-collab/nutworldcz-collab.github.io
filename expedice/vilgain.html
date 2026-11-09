@@ -518,7 +518,8 @@ function render(){
 
 // --- Mix production helpers ---
 const MIX_GROUPS = [
-  {label:'Vilgain Nut Mix Natural', match: n => /nut\s+mix/i.test(n)},
+  {label:'Vilgain Nut Mix Natural',              match: n => /nut\s+mix/i.test(n)},
+  {label:'Seed Topper Mix (semínka + kešu)',     match: n => n.startsWith('PV47387')},
 ];
 
 function parseGramaz(name){
