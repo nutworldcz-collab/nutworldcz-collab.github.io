@@ -241,6 +241,7 @@ const ORDER_DATES = {
   'EDI/2026/43':'5. 10. 2026','EDI/2026/44':'5. 10. 2026','EDI/2026/45':'5. 10. 2026',
   'EDI/2026/46':'17. 10. 2026','EDI/2026/47':'19. 10. 2026','EDI/2026/48':'25. 10. 2026',
   'EDI/2026/49':'25. 10. 2026',
+  'EDI/2026/50':'3. 11. 2026','EDI/2026/51':'3. 11. 2026',
 };
 const ORDER_DELIVERY = {
   'EDI/2026/41':'29. 10.','EDI/2026/42':'14. 10.',
@@ -303,6 +304,18 @@ function defaultRows() {
     {id:i++,order:'EDI/2026/49',name:'BJ-HC-100B03 — Chipsy ovocné jablko se skořicí 100g',                        total:52,  shipments:blank()},
     {id:i++,order:'EDI/2026/49',name:'BJ-MX-450W01 — Dárková krabička Valentýnské mandle v jahodovém jogurtu 450g',total:100, shipments:blank()},
     {id:i++,order:'EDI/2026/49',name:'BJ-RN-0250B04 — Mandle pražené uzené se sníženým obsahem soli 250g',         total:104, shipments:blank()},
+    // 50
+    {id:i++,order:'EDI/2026/50',name:'BJ-HC-100B01 — Chipsy ovocné mix 100g',                                       total:104, shipments:blank()},
+    {id:i++,order:'EDI/2026/50',name:'BJ-HC-100B03 — Chipsy ovocné jablko se skořicí 100g',                        total:104, shipments:blank()},
+    {id:i++,order:'EDI/2026/50',name:'BJ-HC-100B04 — Chipsy zeleninové s příchutí wasabi 100g',                    total:104, shipments:blank()},
+    {id:i++,order:'EDI/2026/50',name:'BJ-HC-100B02 — Chipsy zeleninové mix 100g',                                   total:208, shipments:blank()},
+    {id:i++,order:'EDI/2026/50',name:'BJ-MX-450W01 — Dárková krabička Valentýnské mandle v jahodovém jogurtu 450g',total:200, shipments:blank()},
+    // 51
+    {id:i++,order:'EDI/2026/51',name:'BJ-MX-1000B02 — Směs ořechů natural 1kg',                                    total:420, shipments:blank()},
+    {id:i++,order:'EDI/2026/51',name:'BJ-MX-500B01 — Směs ořechů a ovoce 500g',                                    total:270, shipments:blank()},
+    {id:i++,order:'EDI/2026/51',name:'BJ-MX-300W04 — Dárkový box Degustační sada mix 380g',                        total:280, shipments:blank()},
+    {id:i++,order:'EDI/2026/51',name:'BJ-RN-0500B11 — Mandle pražené uzené se sníženým obsahem soli 500g',         total:270, shipments:blank()},
+    {id:i++,order:'EDI/2026/51',name:'BJ_SP_P01_0250 — Preclíky v bílé čokoládě v dárkovém tubusu 250g',           total:990, shipments:blank()},
   ];
 }
 
@@ -335,13 +348,39 @@ function load() {
           );
           nextId=s+7;
         }
+        // migrate: add EDI/2026/50 if missing
+        if(!state.rows.some(r=>r.order==='EDI/2026/50')){
+          const b=()=>Array.from({length:6},()=>({date:'',amount:0}));
+          const s=Math.max(nextId,55);
+          state.rows.push(
+            {id:s,  order:'EDI/2026/50',name:'BJ-HC-100B01 — Chipsy ovocné mix 100g',                                       total:104, shipments:b()},
+            {id:s+1,order:'EDI/2026/50',name:'BJ-HC-100B03 — Chipsy ovocné jablko se skořicí 100g',                        total:104, shipments:b()},
+            {id:s+2,order:'EDI/2026/50',name:'BJ-HC-100B04 — Chipsy zeleninové s příchutí wasabi 100g',                    total:104, shipments:b()},
+            {id:s+3,order:'EDI/2026/50',name:'BJ-HC-100B02 — Chipsy zeleninové mix 100g',                                   total:208, shipments:b()},
+            {id:s+4,order:'EDI/2026/50',name:'BJ-MX-450W01 — Dárková krabička Valentýnské mandle v jahodovém jogurtu 450g',total:200, shipments:b()}
+          );
+          nextId=s+5;
+        }
+        // migrate: add EDI/2026/51 if missing
+        if(!state.rows.some(r=>r.order==='EDI/2026/51')){
+          const b=()=>Array.from({length:6},()=>({date:'',amount:0}));
+          const s=Math.max(nextId,60);
+          state.rows.push(
+            {id:s,  order:'EDI/2026/51',name:'BJ-MX-1000B02 — Směs ořechů natural 1kg',                                    total:420, shipments:b()},
+            {id:s+1,order:'EDI/2026/51',name:'BJ-MX-500B01 — Směs ořechů a ovoce 500g',                                    total:270, shipments:b()},
+            {id:s+2,order:'EDI/2026/51',name:'BJ-MX-300W04 — Dárkový box Degustační sada mix 380g',                        total:280, shipments:b()},
+            {id:s+3,order:'EDI/2026/51',name:'BJ-RN-0500B11 — Mandle pražené uzené se sníženým obsahem soli 500g',         total:270, shipments:b()},
+            {id:s+4,order:'EDI/2026/51',name:'BJ_SP_P01_0250 — Preclíky v bílé čokoládě v dárkovém tubusu 250g',           total:990, shipments:b()}
+          );
+          nextId=s+5;
+        }
         save();
         return;
       }
     }
-    state={title:'Alza — Vánoce 2026',rows:defaultRows()};nextId=48;save();
+    state={title:'Alza — Vánoce 2026',rows:defaultRows()};nextId=65;save();
   } catch(e) {
-    state={title:'Alza — Vánoce 2026',rows:defaultRows()};nextId=48;save();
+    state={title:'Alza — Vánoce 2026',rows:defaultRows()};nextId=65;save();
   }
 }
 function save(){try{localStorage.setItem(STORE,JSON.stringify(state));}catch(e){}}
