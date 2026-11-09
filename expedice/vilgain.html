@@ -201,6 +201,12 @@ tr.ship-row td{padding:0;}
 @media(max-width:650px){
   .mix-cols-hdr,.mix-row,.mix-row-total{grid-template-columns:70px 1fr 1fr 1fr 90px 90px;font-size:12px;}
 }
+.mix-recipe{padding:10px 14px 12px;border-top:1px solid var(--border-soft);background:var(--surface2);}
+.mix-recipe-title{font-family:var(--font-ui);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--fg-muted);margin-bottom:7px;}
+.mix-recipe-grid{display:flex;flex-wrap:wrap;gap:5px 10px;}
+.mix-recipe-item{display:flex;align-items:center;gap:5px;background:var(--surface);border:1px solid var(--border-soft);border-radius:6px;padding:4px 9px;font-size:12px;}
+.mix-recipe-ing{color:var(--fg);}
+.mix-recipe-kg{font-family:var(--font-ui);font-weight:700;color:var(--brown);white-space:nowrap;}
 </style>
 
 <div class="topbar">
@@ -518,9 +524,29 @@ function render(){
 
 // --- Mix production helpers ---
 const MIX_GROUPS = [
-  {label:'Vilgain Nut Mix Natural',              match: n => /nut\s+mix/i.test(n)},
-  {label:'Seed Topper Mix (semínka + kešu)',     match: n => n.startsWith('PV47387')},
-  {label:'Směs semínek do salátu',               match: n => n.startsWith('PV47449')},
+  {label:'Vilgain Nut Mix Natural', match: n => /nut\s+mix/i.test(n),
+   recipe:[
+    {ing:'Mandle natural JUMBO', kg:7.00},
+    {ing:'Kešu natural',         kg:7.00},
+    {ing:'Mandle loupané JUMBO', kg:4.00},
+    {ing:'Pekanové ořechy',      kg:2.00},
+  ]},
+  {label:'Seed Topper Mix (semínka + kešu)', match: n => n.startsWith('PV47387'),
+   recipe:[
+    {ing:'Slunečnicová jádra',   kg:6.00},
+    {ing:'Dýňové semínko',       kg:6.00},
+    {ing:'Mandle natural JUMBO', kg:4.00},
+    {ing:'Kešu natural',         kg:4.00},
+  ]},
+  {label:'Směs semínek do salátu', match: n => n.startsWith('PV47449'),
+   recipe:[
+    {ing:'Slunečnicová jádra',     kg:4.00},
+    {ing:'Sezam loupaný',          kg:4.00},
+    {ing:'Lněné semínko hnědé',    kg:3.60},
+    {ing:'Lněné semínko zlaté',    kg:3.60},
+    {ing:'Dýňové semínko',         kg:2.80},
+    {ing:'Chia semínka',           kg:2.00},
+  ]},
 ];
 
 function parseGramaz(name){
@@ -586,6 +612,10 @@ function renderMixProduction(){
         <div class="mix-kg">${fmtKg(sumTotalKg)}</div>
         <div class="mix-kg" style="color:var(${sumRemKg>0?'--amber':'--leaf'})">${fmtKg(sumRemKg)} <span style="font-size:11px;font-weight:400;color:var(--fg-muted)">~${Math.ceil(sumRemKg/20)} kbelíků</span></div>
       </div>
+      ${grp.recipe?`<div class="mix-recipe">
+        <div class="mix-recipe-title">📋 Na 1 kbelík (20 kg)</div>
+        <div class="mix-recipe-grid">${grp.recipe.map(x=>`<div class="mix-recipe-item"><span class="mix-recipe-ing">${esc(x.ing)}</span><span class="mix-recipe-kg">${x.kg.toFixed(2).replace('.',',')} kg</span></div>`).join('')}</div>
+      </div>`:''}
     </div>`;
   }
   box.innerHTML=html;
