@@ -1010,7 +1010,7 @@ input[type="text"]:focus { border-color: var(--brown); }
     <div class="f-label" style="margin-bottom:8px">Typ</div>
     <div class="type-grid">
       <label class="type-opt"><input type="radio" name="new-type" value="zamestnanec" checked><span class="type-opt-dot dot-zamestnanec"></span>Zaměstnanec</label>
-      <label class="type-opt"><input type="radio" name="new-type" value="agentura"><span class="type-opt-dot dot-agentura"></span>Agentura</label>
+      <label class="type-opt"><input type="radio" name="new-type" value="agentura"><span class="type-opt-dot dot-agentura"></span>Firma na úkolové práce</label>
       <label class="type-opt"><input type="radio" name="new-type" value="brigadnik"><span class="type-opt-dot dot-brigadnik"></span>Brigádník</label>
       <label class="type-opt"><input type="radio" name="new-type" value="jine"><span class="type-opt-dot dot-jine"></span>Jiné</label>
     </div>
@@ -1148,7 +1148,7 @@ function openDetail(personId) {
 }
 
 // ── DASHBOARD ──
-const TYPE_LABELS = { zamestnanec:'Zaměstnanec', agentura:'Agentura', brigadnik:'Brigádník', jine:'Jiné' };
+const TYPE_LABELS = { zamestnanec:'Zaměstnanec', agentura:'Firma na úkolové práce', brigadnik:'Brigádník', jine:'Jiné' };
 
 function personMonthStats(pid) {
   const y = cur.year, m = cur.month;
