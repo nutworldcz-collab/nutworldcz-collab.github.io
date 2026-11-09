@@ -604,7 +604,8 @@ function render(){
 
 // --- Mix production helpers ---
 const MIX_GROUPS = [
-  {label:'Směs ořechů a ovoce', match: n => { const code=n.split(' — ')[0].trim(); return code.endsWith('B01'); }},
+  {label:'Směs ořechů a ovoce',  match: n => { const code=n.split(' — ')[0].trim(); return code.endsWith('B01'); }},
+  {label:'Směs ořechů natural',   match: n => { const code=n.split(' — ')[0].trim(); return code.endsWith('B02'); }},
 ];
 
 function parseGramaz(name){
