@@ -160,8 +160,80 @@ let activeTab = 'alza';
 let editIdx = null;
 
 const DEFAULT_DATA = {
-  alza: [],
-  vilgain: [],
+  alza: [
+    {
+      name: 'Směs ořechů a ovoce (B01)',
+      items: [
+        {nazev:'Ananas sušený kostky', kod:'2744', pct:20},
+        {nazev:'Rozinky sultánky', kod:'227', pct:20},
+        {nazev:'Mandle loupané JUMBO', kod:'83', pct:15},
+        {nazev:'Mandle natural JUMBO', kod:'2486', pct:15},
+        {nazev:'Kešu natural ww320', kod:'110', pct:15},
+        {nazev:'Papája kostky kondenzované', kod:'2747', pct:15}
+      ],
+      nc: 143.00, mix: 10,
+      note: 'Kód B01 · kbelík 20 kg · NC suroviny 143 Kč/kg.'
+    },
+    {
+      name: 'Směs ořechů natural (B02)',
+      items: [
+        {nazev:'Mandle natural JUMBO', kod:'2486', pct:30},
+        {nazev:'Kešu natural ww320 Afrika', kod:'110', pct:30},
+        {nazev:'Mandle loupané JUMBO', kod:'83', pct:28},
+        {nazev:'Pekanové ořechy', kod:'140', pct:12}
+      ],
+      nc: 220.81, mix: 10,
+      note: 'Kód B02 · kbelík 20 kg · NC suroviny 220,81 Kč/kg.'
+    }
+  ],
+  vilgain: [
+    {
+      name: 'Vilgain Nut Mix Natural (PV47461)',
+      items: [
+        {nazev:'Mandle natural JUMBO', kod:'2486', pct:35},
+        {nazev:'Kešu natural ww320 Afrika', kod:'110', pct:35},
+        {nazev:'Mandle loupané JUMBO', kod:'83', pct:20},
+        {nazev:'Pekanové ořechy', kod:'140', pct:10}
+      ],
+      nc: 215.93, mix: 10,
+      note: 'PV47461 · kbelík 20 kg · 250 g/500 g/1 000 g.'
+    },
+    {
+      name: 'Seed Topper Mix (PV47387)',
+      items: [
+        {nazev:'Slunečnicová jádra loupaná', kod:'266', pct:30},
+        {nazev:'Dýňové semínko', kod:'242', pct:30},
+        {nazev:'Mandle natural JUMBO', kod:'2486', pct:20},
+        {nazev:'Kešu natural ww320 Afrika', kod:'110', pct:20}
+      ],
+      nc: 116.77, mix: 10,
+      note: 'PV47387 · kbelík 20 kg · 500 g balení.'
+    },
+    {
+      name: 'Směs semínek do salátu (PV47449)',
+      items: [
+        {nazev:'Slunečnicová jádra loupaná', kod:'266', pct:20},
+        {nazev:'Sezam loupaný', kod:'263', pct:20},
+        {nazev:'Lněné semínko hnědé', kod:'251', pct:18},
+        {nazev:'Lněné semínko zlaté', kod:'254', pct:18},
+        {nazev:'Dýňové semínko', kod:'242', pct:14},
+        {nazev:'Chia semínka', kod:'8541', pct:10}
+      ],
+      nc: 49.14, mix: 10,
+      note: 'PV47449 · kbelík 20 kg · 500 g balení.'
+    },
+    {
+      name: 'Crunchy Seed Topper Natural (PV47450)',
+      items: [
+        {nazev:'Slunečnicová jádra loupaná', kod:'266', pct:30},
+        {nazev:'Sezam loupaný', kod:'263', pct:30},
+        {nazev:'Dýňové semínko', kod:'242', pct:30},
+        {nazev:'Piniová jádra', kod:'149', pct:10}
+      ],
+      nc: 141.75, mix: 10,
+      note: 'PV47450 · zatím nebyl objednán · 500 g balení.'
+    }
+  ],
   nutworld: [
     {
       name: 'Mandle v čokoládách MIX (3 druhy)',
@@ -224,8 +296,14 @@ const DEFAULT_DATA = {
 function load(){
   try{
     const s=localStorage.getItem(STORE_KEY);
-    if(s) data=JSON.parse(s);
-    else { data=DEFAULT_DATA; save(); }
+    if(s){
+      data=JSON.parse(s);
+      // migrate: fill empty channels from defaults
+      ['alza','vilgain','nutworld'].forEach(ch=>{
+        if(!data[ch]||data[ch].length===0) data[ch]=DEFAULT_DATA[ch];
+      });
+      save();
+    } else { data=DEFAULT_DATA; save(); }
   }catch(e){ data=DEFAULT_DATA; }
   renderAll();
 }
