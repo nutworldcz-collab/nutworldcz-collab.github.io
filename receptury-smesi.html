@@ -63,8 +63,19 @@ tr.total-final td.num{color:#f7ab31}
 .btn-move{background:#f0f8ff;color:#1565c0;border-color:#90caf9}
 .btn-print-one{background:#f7f0e0;color:#83502e;border-color:#d4a84b}
 
+.search-bar{max-width:960px;margin:0 auto 12px;display:flex;align-items:center;gap:8px}
+.search-bar input{flex:1;padding:11px 16px;border-radius:10px;border:2px solid #d4c0a8;font-size:15px;font-family:'Source Sans 3',sans-serif;background:#fff;color:#3a2010;outline:none;transition:.15s}
+.search-bar input:focus{border-color:#83502e;box-shadow:0 0 0 3px rgba(131,80,46,.15)}
+.search-bar input::placeholder{color:#b8966a}
+.search-clear{padding:9px 14px;border-radius:8px;border:1.5px solid #d4c0a8;background:#fff;color:#83502e;font-size:14px;font-weight:700;cursor:pointer}
+.search-clear:hover{background:#f1e6da}
+.search-results-label{max-width:960px;margin:0 auto 10px;font-size:12px;color:#a07850;letter-spacing:1px}
+
+.recipe-card.search-hidden{display:none}
+.search-empty{text-align:center;padding:40px 20px;color:#a07850;font-size:14px}
+
 @media print{
-  .header .back,.tabs,.toolbar,.edit-btns{display:none!important}
+  .header .back,.tabs,.toolbar,.edit-btns,.search-bar{display:none!important}
   .recipe-card{break-inside:avoid;border:1px solid #ccc}
   body{background:#fff;padding:0}
 }
@@ -81,7 +92,12 @@ tr.total-final td.num{color:#f7ab31}
   <button class="btn-print" onclick="window.print()" style="margin-left:auto">🖨 Tisk</button>
 </div>
 
-<div class="tabs">
+<div class="search-bar" id="search-bar">
+  <input type="search" id="search-input" placeholder="🔍  Hledat recepturu..." oninput="filterRecipes(this.value)" autocomplete="off"/>
+  <button class="search-clear" id="search-clear" onclick="clearSearch()" hidden>✕</button>
+</div>
+
+<div class="tabs" id="tabs-row">
   <button class="tab active" onclick="switchTab('alza',this)">🛒 Alza</button>
   <button class="tab" onclick="switchTab('vilgain',this)">💪 Vilgain</button>
   <button class="tab" onclick="switchTab('nutworld',this)">🌰 Nutworld</button>
@@ -562,6 +578,55 @@ function moveRecipe(ch,i){
   data[dest].push(data[ch][i]);
   data[ch].splice(i,1);
   save(); renderAll();
+}
+
+function filterRecipes(q) {
+  q = q.trim().toLowerCase();
+  const clearBtn = document.getElementById('search-clear');
+  clearBtn.hidden = !q;
+
+  if (!q) {
+    // restore normal tab view
+    document.getElementById('tabs-row').style.display = '';
+    document.querySelectorAll('.channel').forEach(ch => {
+      ch.classList.toggle('active', ch.id === 'ch-' + activeTab);
+    });
+    document.querySelectorAll('.recipe-card').forEach(c => c.classList.remove('search-hidden'));
+    document.querySelectorAll('.search-empty').forEach(e => e.remove());
+    return;
+  }
+
+  // search mode: show all channels, hide non-matching cards
+  document.getElementById('tabs-row').style.display = 'none';
+  document.querySelectorAll('.channel').forEach(ch => ch.classList.add('active'));
+  document.querySelectorAll('.search-empty').forEach(e => e.remove());
+
+  ['alza','vilgain','nutworld'].forEach(ch => {
+    const list = data[ch] || [];
+    let visCount = 0;
+    list.forEach((r, i) => {
+      const card = document.getElementById('rb-' + ch + '-' + i);
+      if (!card) return;
+      const wrap = card.closest('.recipe-card');
+      const matches = r.name.toLowerCase().includes(q) ||
+        r.items.some(it => it.nazev.toLowerCase().includes(q) || it.kod.includes(q));
+      wrap.classList.toggle('search-hidden', !matches);
+      if (matches) visCount++;
+    });
+    const container = document.getElementById('recipes-' + ch);
+    const existing = container.querySelector('.search-empty');
+    if (existing) existing.remove();
+    if (visCount === 0 && list.length > 0) {
+      container.insertAdjacentHTML('beforeend', '<div class="search-empty">Žádná receptura neodpovídá hledání.</div>');
+    }
+  });
+}
+
+function clearSearch() {
+  const inp = document.getElementById('search-input');
+  inp.value = '';
+  filterRecipes('');
+  inp.focus();
 }
 
 function printOne(ch, i) {
