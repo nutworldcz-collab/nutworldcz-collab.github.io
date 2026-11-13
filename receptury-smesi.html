@@ -290,6 +290,85 @@ const DEFAULT_DATA = {
       ],
       nc: 240.13, mix: 20,
       note: 'Základ přesně 1 kg. +20 Kč/kg míchání. Doypack 1kg.'
+    },
+    {
+      name: 'Banánové chipsy tříbarevné (kód 5481)',
+      items: [
+        {nazev:'Banán chips v bílé čokoládě', kod:'2789', pct:33},
+        {nazev:'Banán chips v hořké čokoládě', kod:'2759', pct:33},
+        {nazev:'Banán chips v mléčné čokoládě', kod:'5475', pct:34}
+      ],
+      nc: 160.98, mix: 20,
+      note: 'Kód 5481 · 3 druhy banánových chipsů v čokoládě.'
+    },
+    {
+      name: 'Kešu tří barev (kód 4446)',
+      items: [
+        {nazev:'Kešu pražené v mléčné čokoládě', kod:'119', pct:33},
+        {nazev:'Kešu pražené v hořké čokoládě', kod:'4035', pct:33},
+        {nazev:'Kešu v bílé čokoládě', kod:'1340', pct:34}
+      ],
+      nc: 234.88, mix: 20,
+      note: 'Kód 4446 · 3 druhy kešu v čokoládě.'
+    },
+    {
+      name: 'Lískové ořechy tříbarevné (kód 2504)',
+      items: [
+        {nazev:'Lískovce pražené v hořké čokoládě', kod:'3106', pct:33},
+        {nazev:'Lískovce pražené v mléčné čokoládě', kod:'1475', pct:33},
+        {nazev:'Lískovce jádra pražená v bílé čokoládě', kod:'3107', pct:34}
+      ],
+      nc: 225.13, mix: 20,
+      note: 'Kód 2504 · 3 druhy lískovcových ořechů v čokoládě.'
+    },
+    {
+      name: 'Mandle tří barev (kód 1985)',
+      items: [
+        {nazev:'Mandle pražené v mléčné čokoládě', kod:'4038', pct:33},
+        {nazev:'Mandle pražené v hořké čokoládě', kod:'1955', pct:33},
+        {nazev:'Mandle jádra pražená v bílé čokoládě', kod:'107', pct:34}
+      ],
+      nc: 209.37, mix: 20,
+      note: 'Kód 1985 · 3 druhy mandlí v čokoládě.'
+    },
+    {
+      name: 'Arašídy tří barev (kód 5484)',
+      items: [
+        {nazev:'Arašídy v mléčné čokoládě', kod:'27562', pct:40},
+        {nazev:'Arašídy v hořké čokoládě', kod:'2756', pct:40},
+        {nazev:'Arašídy v bílé čokoládě', kod:'10264', pct:20}
+      ],
+      nc: 135.00, mix: 20,
+      note: 'Kód 5484 · 3 druhy arašídů v čokoládě.'
+    },
+    {
+      name: 'MIX Mandle & Meruňky (kód 2738)',
+      items: [
+        {nazev:'Mandle jádra pražená v bílé čokoládě', kod:'107', pct:33},
+        {nazev:'Meruňky v jahodovém jogurtu', kod:'2018', pct:33},
+        {nazev:'Mandle slaný karamel', kod:'1952', pct:34}
+      ],
+      nc: 227.33, mix: 20,
+      note: 'Kód 2738 · mandle + meruňky + slaný karamel.'
+    },
+    {
+      name: 'Arašídy Wasabi MIX (kód 10585)',
+      items: [
+        {nazev:'Arašídy ve Wasabi', kod:'354', pct:50},
+        {nazev:'Arašídy Wasabi červené', kod:'10579', pct:50}
+      ],
+      nc: 119.50, mix: 20,
+      note: 'Kód 10585 · zelené + červené Wasabi arašídy.'
+    },
+    {
+      name: 'Slaný párty MIX (kód 161)',
+      items: [
+        {nazev:'Kešu pražené solené', kod:'116', pct:33},
+        {nazev:'Mandle loupané pražené solené', kod:'101', pct:33},
+        {nazev:'Mandle uzené', kod:'89', pct:34}
+      ],
+      nc: 219.96, mix: 20,
+      note: 'Kód 161 · 3 druhy slaných ořechů.'
     }
   ]
 };
@@ -299,9 +378,14 @@ function load(){
     const s=localStorage.getItem(STORE_KEY);
     if(s){
       data=JSON.parse(s);
-      // migrate: fill empty channels from defaults
+      // migrate: fill empty channels + add missing recipes from defaults
       ['alza','vilgain','nutworld'].forEach(ch=>{
-        if(!data[ch]||data[ch].length===0) data[ch]=DEFAULT_DATA[ch];
+        if(!data[ch]||data[ch].length===0){
+          data[ch]=DEFAULT_DATA[ch];
+        } else {
+          const existingNames=new Set(data[ch].map(r=>r.name));
+          DEFAULT_DATA[ch].forEach(r=>{ if(!existingNames.has(r.name)) data[ch].push(r); });
+        }
       });
       save();
     } else { data=DEFAULT_DATA; save(); }
