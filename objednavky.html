@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Výrobní rozklad — Nutworld</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+:root {
+  --bg:       #fdf9f5; --bg2: #f1e6da; --bg3: #fff;
+  --fg:       #2a1a0e; --fg2: #6b4b2f; --fg3: #9e7a56;
+  --border:   #e0cdb8;
+  --brown:    #83502e; --brown-dk: #5c381f;
+  --accent:   #da1668; --amber: #f7ab31; --leaf: #6fa044;
+  --shadow:   0 1px 4px rgba(92,56,31,.10);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1a1008; --bg2: #251506; --bg3: #2e1c0c;
+    --fg: #f5e8d8; --fg2: #c9a07a; --fg3: #876248;
+    --border: #4a2e14; --shadow: 0 1px 4px rgba(0,0,0,.35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1a1008; --bg2: #251506; --bg3: #2e1c0c;
+  --fg: #f5e8d8; --fg2: #c9a07a; --fg3: #876248;
+  --border: #4a2e14; --shadow: 0 1px 4px rgba(0,0,0,.35);
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+body {
+  font-family: 'Source Sans 3', system-ui, sans-serif;
+  background: var(--bg); color: var(--fg);
+  font-size: 14px; line-height: 1.5;
+  padding-left:  max(0px, env(safe-area-inset-left,  0px));
+  padding-right: max(0px, env(safe-area-inset-right, 0px));
+  font-variant-numeric: tabular-nums;
+}
+/* ── Header ── */
+.site-header {
+  position: sticky; top: env(safe-area-inset-top, 0px);
+  z-index: 20; background: var(--brown-dk); color: #fff;
+  padding-block: 10px;
+  padding-left:  max(20px, env(safe-area-inset-left,  0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap;
+}
+.site-header h1 {
+  font-family: 'Exo 2', sans-serif; font-size: 16px; font-weight: 800;
+  letter-spacing: .3px; display: flex; align-items: center; gap: 8px;
+}
+.date-badge { font-size: 12px; opacity: .7; font-weight: 400; }
+.header-stats { display: flex; gap: 20px; flex-wrap: wrap; }
+.header-stat { display: flex; flex-direction: column; align-items: flex-end; }
+.header-stat .val {
+  font-family: 'Exo 2', sans-serif; font-size: 17px; font-weight: 700; line-height: 1.1;
+}
+.header-stat .lbl { font-size: 10px; opacity: .6; text-transform: uppercase; letter-spacing: .8px; }
+/* ── Tabs ── */
+.tab-bar {
+  display: flex; border-bottom: 2px solid var(--border);
+  padding-left:  max(20px, env(safe-area-inset-left,  0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+  background: var(--bg); overflow-x: auto;
+}
+.tab-btn {
+  font-family: 'Exo 2', sans-serif; font-size: 13px; font-weight: 600;
+  padding: 10px 18px; border: none; border-bottom: 3px solid transparent;
+  background: none; color: var(--fg3); cursor: pointer; margin-bottom: -2px;
+  white-space: nowrap; transition: color .15s, border-color .15s;
+}
+.tab-btn.active { color: var(--brown); border-bottom-color: var(--brown); }
+.tab-btn:hover:not(.active) { color: var(--fg2); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+/* ── Search ── */
+.search-bar {
+  position: sticky; top: 42px; z-index: 15;
+  background: var(--bg3); border-bottom: 2px solid var(--border);
+  padding: 8px max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+  display: flex; align-items: center; gap: 10px;
+}
+.search-wrap {
+  display: flex; align-items: center; gap: 8px; flex: 1;
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: 8px; padding: 5px 12px; transition: border-color .15s;
+}
+.search-wrap:focus-within { border-color: var(--brown); box-shadow: 0 0 0 2px rgba(131,80,46,.12); }
+.search-icon { font-size: 14px; opacity: .5; flex-shrink: 0; }
+#search-input {
+  flex: 1; border: none; background: none; outline: none;
+  font-family: 'Source Sans 3', sans-serif; font-size: 14px; color: var(--fg); min-width: 0;
+}
+#search-input::placeholder { color: var(--fg3); }
+.search-clear { border: none; background: none; color: var(--fg3); cursor: pointer; font-size: 14px; padding: 0; line-height: 1; flex-shrink: 0; }
+.search-clear:hover { color: var(--accent); }
+.search-count { font-size: 11px; color: var(--fg3); white-space: nowrap; min-width: 60px; text-align: right; }
+.search-count.has-results { color: var(--leaf); font-weight: 600; }
+.search-count.no-results  { color: var(--accent); font-weight: 600; }
+mark { background: rgba(247,171,49,.4); color: inherit; border-radius: 2px; padding: 0 1px; }
+/* ── Date pills ── */
+.date-bar {
+  position: sticky; top: 84px; z-index: 14; background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 7px max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+  display: flex; align-items: center; gap: 6px; overflow-x: auto; scrollbar-width: none;
+}
+.date-bar::-webkit-scrollbar { display: none; }
+.date-pill {
+  font-family: 'Exo 2', sans-serif; font-size: 12px; font-weight: 600;
+  padding: 3px 12px; border-radius: 20px; border: 1.5px solid var(--border);
+  background: var(--bg3); color: var(--fg2); cursor: pointer; white-space: nowrap;
+  transition: all .15s; flex-shrink: 0;
+}
+.date-pill.active { background: var(--brown); border-color: var(--brown); color: #fff; }
+.date-pill:hover:not(.active) { border-color: var(--brown); color: var(--brown); }
+/* ── Shop summary ── */
+.shop-summary {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  padding: 16px max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+}
+.stat-pill {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 14px;
+  display: flex; flex-direction: column; box-shadow: var(--shadow); min-width: 100px;
+}
+.stat-pill .sp-val {
+  font-family: 'Exo 2', sans-serif; font-size: 20px; font-weight: 700;
+  color: var(--brown-dk); line-height: 1.1;
+}
+.stat-pill .sp-lbl { font-size: 11px; color: var(--fg3); text-transform: uppercase; letter-spacing: .7px; margin-top: 2px; }
+/* ── Parent / group / variant ── */
+.parent-section {
+  padding: 0 max(20px, env(safe-area-inset-right, 0px));
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  margin-bottom: 4px;
+}
+.parent-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 0 8px; border-bottom: 2px solid var(--border); margin-bottom: 10px;
+}
+.parent-stripe { width: 4px; height: 22px; border-radius: 2px; flex-shrink: 0; }
+.parent-emoji { font-size: 20px; line-height: 1; }
+.parent-title {
+  font-family: 'Exo 2', sans-serif; font-size: 14px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: .8px; flex: 1; min-width: 0;
+}
+.parent-total { font-family: 'Exo 2', sans-serif; font-size: 22px; font-weight: 800; line-height: 1; }
+.parent-total small { font-size: 12px; font-weight: 400; opacity: .55; margin-left: 2px; }
+.group-block { margin-bottom: 14px; }
+.group-subheader {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 12px; background: var(--bg2);
+  border: 1px solid var(--border); border-radius: 8px 8px 0 0; border-bottom: none;
+}
+.group-sub-emoji { font-size: 17px; line-height: 1; flex-shrink: 0; }
+.group-sub-title {
+  font-family: 'Exo 2', sans-serif; font-size: 12px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .5px; flex: 1; min-width: 0; color: var(--fg2);
+}
+.group-sub-total { font-family: 'Exo 2', sans-serif; font-size: 17px; font-weight: 800; line-height: 1; flex-shrink: 0; }
+.group-sub-total small { font-size: 11px; font-weight: 400; opacity: .6; margin-left: 1px; }
+.variants-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px; padding: 8px 10px; background: var(--bg);
+  border: 1px solid var(--border); border-top: none; border-radius: 0 0 8px 8px;
+}
+.variant-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: var(--shadow); }
+.variant-header { display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-bottom: 1px solid var(--border); }
+.variant-title { font-family: 'Exo 2', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .3px; flex: 1; min-width: 0; text-transform: uppercase; }
+.variant-total { font-family: 'Exo 2', sans-serif; font-size: 15px; font-weight: 800; line-height: 1; flex-shrink: 0; }
+.variant-total small { font-size: 10px; font-weight: 400; opacity: .6; margin-left: 1px; }
+.variant-items { padding: 2px 0; }
+.product-row { display: flex; align-items: baseline; gap: 8px; padding: 4px 12px; border-bottom: 1px solid var(--border); }
+.product-row:last-child { border-bottom: none; }
+.qty-badge { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 13px; min-width: 26px; flex-shrink: 0; line-height: 1; }
+.prod-name { font-size: 12px; color: var(--fg2); flex: 1; min-width: 0; line-height: 1.35; }
+.prod-code { font-size: 10px; color: var(--fg3); flex-shrink: 0; font-family: monospace; opacity: .7; }
+/* ── Totals ── */
+.totals-bar {
+  padding: 10px max(20px, env(safe-area-inset-right, 0px));
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  background: var(--bg2); border-top: 2px solid var(--border);
+  font-family: 'Exo 2', sans-serif; font-size: 13px; font-weight: 600; color: var(--fg2);
+  display: flex; gap: 16px; flex-wrap: wrap;
+}
+.totals-bar strong { color: var(--brown-dk); font-size: 16px; }
+/* ── Loading / Footer ── */
+.state-msg {
+  padding: 40px max(20px, env(safe-area-inset-left, 0px));
+  text-align: center; color: var(--fg3);
+  font-family: 'Exo 2', sans-serif; font-size: 15px;
+}
+.footer {
+  padding: 12px max(20px, env(safe-area-inset-left, 0px));
+  font-size: 11px; color: var(--fg3); text-align: center;
+  border-top: 1px solid var(--border); margin-top: 16px;
+}
+@media (max-width: 480px) {
+  .variants-grid { grid-template-columns: 1fr; }
+  .header-stats { gap: 12px; }
+  .header-stat .val { font-size: 14px; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>🐿 Výrobní rozklad <span class="date-badge" id="header-date">— načítám…</span></h1>
+  <div class="header-stats" id="header-stats"></div>
+</header>
+
+<div class="tab-bar">
+  <button class="tab-btn active" id="btn-cz" onclick="showTab('cz',this)">🇨🇿 CZ</button>
+  <button class="tab-btn" id="btn-sk" onclick="showTab('sk',this)">🇸🇰 SK</button>
+</div>
+
+<div class="search-bar">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="search-input" placeholder="Hledat produkt, variantu, kód…"
+           oninput="applySearch(this.value)" autocomplete="off" spellcheck="false">
+    <button class="search-clear" id="search-clear" onclick="clearSearch()" hidden>✕</button>
+  </div>
+  <span class="search-count" id="search-count"></span>
+</div>
+
+<div class="date-bar" id="date-bar" hidden></div>
+
+<div id="tab-cz" class="tab-content active">
+  <div class="shop-summary" id="cz-summary"></div>
+  <div id="cz-badge" style="padding:6px max(20px,env(safe-area-inset-left,0px));background:var(--bg);border-bottom:1px solid var(--border);font-size:11px;color:var(--fg3);display:none;align-items:center;gap:6px"></div>
+  <div id="cz-sections"></div>
+  <div class="totals-bar" id="cz-total"></div>
+</div>
+
+<div id="tab-sk" class="tab-content">
+  <div class="shop-summary" id="sk-summary"></div>
+  <div id="sk-badge" style="padding:6px max(20px,env(safe-area-inset-left,0px));background:var(--bg);border-bottom:1px solid var(--border);font-size:11px;color:var(--fg3);display:none;align-items:center;gap:6px"></div>
+  <div id="sk-sections"></div>
+  <div class="totals-bar" id="sk-total"></div>
+</div>
+
+<div class="state-msg" id="state-msg">⏳ Načítám objednávky…</div>
+<div class="footer" id="footer" hidden></div>
+
+<script>
+let REPORT = null;
+let activeDate = 'all';
+
+/* ── Helpers ─────────────────────────────────────────────── */
+function getQty(it, date) {
+  if (date === 'all') return it.qty;
+  return (it.by_date && it.by_date[date]) ? it.by_date[date] : 0;
+}
+
+function esc(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+function highlight(text, q) {
+  if (!q) return text;
+  return text.replace(new RegExp(`(${esc(q)})`, 'gi'), '<mark>$1</mark>');
+}
+
+function fmtDate(d) {
+  const [, m, dd] = d.split('-');
+  return `${dd}. ${m}.`;
+}
+
+/* ── Render sections ─────────────────────────────────────── */
+function renderSections(shopKey) {
+  const parents   = REPORT[shopKey].rozklad || [];
+  const container = document.getElementById(`${shopKey}-sections`);
+  const totalEl   = document.getElementById(`${shopKey}-total`);
+  let grandTotal  = 0;
+
+  container.innerHTML = parents.map(p => {
+    const parentTotal = p.groups.reduce((s, g) =>
+      s + g.variants.reduce((sv, v) =>
+        sv + v.items.reduce((si, it) => si + getQty(it, activeDate), 0), 0), 0);
+    if (parentTotal === 0) return '';
+    grandTotal += parentTotal;
+
+    const groupBlocks = p.groups.map(g => {
+      const gTotal = g.variants.reduce((sv, v) =>
+        sv + v.items.reduce((si, it) => si + getQty(it, activeDate), 0), 0);
+      if (gTotal === 0) return '';
+
+      const variantCards = g.variants.map(v => {
+        const vTotal = v.items.reduce((s, it) => s + getQty(it, activeDate), 0);
+        if (vTotal === 0) return '';
+        const rows = v.items.filter(it => getQty(it, activeDate) > 0).map(it => `
+          <div class="product-row">
+            <span class="qty-badge" style="color:${p.color}">${getQty(it, activeDate)}×</span>
+            <span class="prod-name">${it.name}</span>
+            <span class="prod-code">${it.code}</span>
+          </div>`).join('');
+        return `
+          <div class="variant-card">
+            <div class="variant-header" style="border-left:3px solid ${p.color}">
+              <span class="variant-title" style="color:${p.color}">${v.variant}</span>
+              <span class="variant-total" style="color:${p.color}">${vTotal}<small>ks</small></span>
+            </div>
+            <div class="variant-items">${rows}</div>
+          </div>`;
+      }).join('');
+      return `
+        <div class="group-block">
+          <div class="group-subheader">
+            <span class="group-sub-emoji">${g.emoji}</span>
+            <span class="group-sub-title">${g.group}</span>
+            <span class="group-sub-total" style="color:${p.color}">${gTotal}<small>ks</small></span>
+          </div>
+          <div class="variants-grid">${variantCards}</div>
+        </div>`;
+    }).join('');
+
+    return `
+      <div class="parent-section">
+        <div class="parent-header">
+          <div class="parent-stripe" style="background:${p.color}"></div>
+          <span class="parent-emoji">${p.emoji}</span>
+          <span class="parent-title" style="color:${p.color}">${p.parent}</span>
+          <span class="parent-total" style="color:${p.color}">${parentTotal}<small>ks</small></span>
+        </div>
+        ${groupBlocks}
+      </div>`;
+  }).join('');
+
+  totalEl.innerHTML = `Celkem položek k výrobě: <strong>${grandTotal} ks</strong>`;
+  return grandTotal;
+}
+
+/* ── Date pills ──────────────────────────────────────────── */
+function buildDatePills() {
+  const days = REPORT.days || [];
+  const bar  = document.getElementById('date-bar');
+  if (days.length <= 1) { bar.hidden = true; return; }
+  bar.hidden = false;
+  bar.innerHTML =
+    `<button class="date-pill active" onclick="selectDate('all',this)">📅 Vše (${days.length} dny)</button>` +
+    days.map(d => `<button class="date-pill" onclick="selectDate('${d}',this)">${fmtDate(d)}</button>`).join('');
+}
+
+function selectDate(date, btn) {
+  activeDate = date;
+  document.querySelectorAll('.date-pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  renderSections('cz');
+  renderSections('sk');
+  const q = document.getElementById('search-input').value;
+  if (q) applySearch(q);
+}
+
+/* ── Summary pills ───────────────────────────────────────── */
+function renderSummary(shopKey) {
+  const s    = REPORT[shopKey].summary;
+  const conf = REPORT[shopKey].confirmed;
+  const cur  = shopKey === 'cz' ? 'Kč' : '€';
+  const total = shopKey === 'cz'
+    ? Math.round(s.total).toLocaleString('cs-CZ') + ' ' + cur
+    : s.total.toFixed(0) + ' ' + cur;
+  const wait = s.count - conf;
+
+  document.getElementById(`${shopKey}-summary`).innerHTML = `
+    <div class="stat-pill"><span class="sp-val">${s.count}</span><span class="sp-lbl">Objednávky</span></div>
+    <div class="stat-pill"><span class="sp-val">${total}</span><span class="sp-lbl">Tržby</span></div>
+    <div class="stat-pill"><span class="sp-val">${conf}</span><span class="sp-lbl">Potvrzeno</span></div>
+    <div class="stat-pill"><span class="sp-val">${s.paid}</span><span class="sp-lbl">Zaplaceno</span></div>
+    <div class="stat-pill"><span class="sp-val">${s.dobir}</span><span class="sp-lbl">Dobírky</span></div>
+    ${wait > 0 ? `<div class="stat-pill"><span class="sp-val" style="color:var(--accent)">${wait}</span><span class="sp-lbl">Čeká platbu</span></div>` : ''}
+  `;
+
+  const badge = document.getElementById(`${shopKey}-badge`);
+  badge.style.display = 'flex';
+  badge.innerHTML = `<span style="background:#6fa044;color:#fff;border-radius:4px;padding:1px 6px;font-weight:700;font-size:10px">⚡ VÝROBA</span>
+    Pouze potvrzené objednávky — zaplaceno + dobírka (${conf}/${s.count})`;
+}
+
+/* ── Header ──────────────────────────────────────────────── */
+function buildHeader() {
+  const days  = REPORT.days || [];
+  const czS   = REPORT.cz.summary;
+  const skS   = REPORT.sk.summary;
+  const czKs  = (REPORT.cz.rozklad || []).reduce((s, p) =>
+    s + p.groups.reduce((s2, g) =>
+      s2 + g.variants.reduce((s3, v) =>
+        s3 + v.items.reduce((s4, it) => s4 + it.qty, 0), 0), 0), 0);
+  const skKs  = (REPORT.sk.rozklad || []).reduce((s, p) =>
+    s + p.groups.reduce((s2, g) =>
+      s2 + g.variants.reduce((s3, v) =>
+        s3 + v.items.reduce((s4, it) => s4 + it.qty, 0), 0), 0), 0);
+
+  const dateLbl = days.length > 1
+    ? `${fmtDate(days[0])} – ${fmtDate(days[days.length-1])}`
+    : days.length === 1 ? days[0] : (REPORT.generated || '').slice(0, 10);
+
+  document.getElementById('header-date').textContent = dateLbl;
+  document.getElementById('header-stats').innerHTML = `
+    <div class="header-stat"><span class="val">${Math.round(czS.total).toLocaleString('cs-CZ')} Kč</span><span class="lbl">CZ tržby</span></div>
+    <div class="header-stat"><span class="val">${skS.total.toFixed(0)} €</span><span class="lbl">SK tržby</span></div>
+    <div class="header-stat"><span class="val">${czKs + skKs} ks</span><span class="lbl">Celkem výroba</span></div>
+  `;
+  document.getElementById('btn-cz').textContent =
+    `🇨🇿 CZ — ${czS.count} objednávek`;
+  document.getElementById('btn-sk').textContent =
+    `🇸🇰 SK — ${skS.count} objednávek`;
+}
+
+/* ── Search ──────────────────────────────────────────────── */
+function applySearch(raw) {
+  const q       = raw.trim().toLowerCase();
+  const clearBtn = document.getElementById('search-clear');
+  const countEl  = document.getElementById('search-count');
+  clearBtn.hidden = !q;
+
+  const activeTab = document.querySelector('.tab-content.active');
+  if (!activeTab) return;
+
+  activeTab.querySelectorAll('.prod-name, .prod-code, .variant-title, .group-sub-title').forEach(el => {
+    if (el._orig !== undefined) el.innerHTML = el._orig;
+  });
+
+  if (!q) {
+    activeTab.querySelectorAll('.variant-card, .group-block, .parent-section, .product-row')
+      .forEach(el => el.hidden = false);
+    countEl.textContent = ''; countEl.className = 'search-count';
+    return;
+  }
+
+  let totalRows = 0, visibleRows = 0;
+  activeTab.querySelectorAll('.parent-section').forEach(section => {
+    const parentTitle = section.querySelector('.parent-title').textContent.toLowerCase();
+    const parentMatch = parentTitle.includes(q);
+    let sectionVis = false;
+
+    section.querySelectorAll('.group-block').forEach(block => {
+      const groupEl    = block.querySelector('.group-sub-title');
+      const groupMatch = parentMatch || groupEl.textContent.toLowerCase().includes(q);
+      let blockVis = false;
+
+      block.querySelectorAll('.variant-card').forEach(card => {
+        const varEl    = card.querySelector('.variant-title');
+        const varMatch = groupMatch || varEl.textContent.toLowerCase().includes(q);
+        let cardVis = false;
+
+        card.querySelectorAll('.product-row').forEach(row => {
+          const nameEl = row.querySelector('.prod-name');
+          const codeEl = row.querySelector('.prod-code');
+          const show   = varMatch || nameEl.textContent.toLowerCase().includes(q)
+                                  || codeEl.textContent.toLowerCase().includes(q);
+          row.hidden = !show; totalRows++;
+          if (show) { visibleRows++; cardVis = true; }
+        });
+        if (varMatch && !cardVis) {
+          card.querySelectorAll('.product-row').forEach(r => { r.hidden = false; visibleRows++; cardVis = true; });
+        }
+        card.hidden = !cardVis;
+        if (cardVis) {
+          blockVis = true;
+          if (varEl._orig === undefined) varEl._orig = varEl.innerHTML;
+          varEl.innerHTML = highlight(varEl._orig, q);
+        }
+      });
+
+      block.hidden = !blockVis;
+      if (blockVis) {
+        sectionVis = true;
+        if (groupEl._orig === undefined) groupEl._orig = groupEl.innerHTML;
+        groupEl.innerHTML = highlight(groupEl._orig, q);
+      }
+    });
+    section.hidden = !sectionVis;
+  });
+
+  activeTab.querySelectorAll('.product-row:not([hidden]) .prod-name, .product-row:not([hidden]) .prod-code')
+    .forEach(el => {
+      if (el._orig === undefined) el._orig = el.innerHTML;
+      el.innerHTML = highlight(el._orig, q);
+    });
+
+  if (visibleRows === 0) {
+    countEl.textContent = 'Nenalezeno'; countEl.className = 'search-count no-results';
+  } else {
+    countEl.textContent = `${visibleRows} ks`; countEl.className = 'search-count has-results';
+  }
+}
+
+function clearSearch() {
+  const input = document.getElementById('search-input');
+  input.value = ''; applySearch(''); input.focus();
+}
+
+/* ── Tabs ────────────────────────────────────────────────── */
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById(`tab-${id}`).classList.add('active');
+  btn.classList.add('active');
+  const q = document.getElementById('search-input').value;
+  if (q) applySearch(q);
+}
+
+/* ── Load data ───────────────────────────────────────────── */
+async function loadData() {
+  try {
+    const r = await fetch('/report_orders.json?t=' + Date.now());
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    REPORT = await r.json();
+
+    document.getElementById('state-msg').hidden = true;
+    buildHeader();
+    buildDatePills();
+    renderSummary('cz');
+    renderSummary('sk');
+    renderSections('cz');
+    renderSections('sk');
+
+    const gen  = REPORT.generated || '';
+    const days = REPORT.days || [];
+    const foot = document.getElementById('footer');
+    foot.hidden = false;
+    foot.textContent = `Poslední aktualizace: ${gen.replace('T', ' ')} · Dní v přehledu: ${days.length} · nutworldcz-collab.github.io`;
+
+  } catch(e) {
+    const msg = document.getElementById('state-msg');
+    msg.textContent = `⚠️ Nepodařilo se načíst data: ${e.message}`;
+  }
+}
+
+loadData();
+</script>
+</body>
+</html>
