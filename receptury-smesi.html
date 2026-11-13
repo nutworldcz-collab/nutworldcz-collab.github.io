@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Receptury směsí</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;min-height:100vh;padding:24px 16px}
+.header{max-width:960px;margin:0 auto 24px;display:flex;align-items:center;gap:14px}
+.back{font-size:13px;color:#83502e;text-decoration:none;font-weight:600;padding:7px 14px;background:#fff;border-radius:8px;border:1px solid #d4c0a8}
+.back:hover{background:#f1e6da}
+h1{font-family:'Exo 2',sans-serif;font-size:22px;font-weight:800;color:#5c381f}
+.subtitle{font-size:12px;color:#a07850;letter-spacing:2px;text-transform:uppercase;margin-top:2px}
+
+/* Tabs */
+.tabs{max-width:960px;margin:0 auto 20px;display:flex;gap:8px;flex-wrap:wrap}
+.tab{padding:9px 22px;border-radius:10px;border:2px solid #d4c0a8;background:#fff;font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700;color:#83502e;cursor:pointer;transition:.15s}
+.tab:hover{background:#f1e6da}
+.tab.active{background:linear-gradient(135deg,#5c381f,#83502e);color:#fff;border-color:transparent}
+.tab-add{background:#f7f0e8;border-style:dashed;color:#b8966a}
+.tab-add:hover{background:#f1e6da;border-color:#83502e}
+
+/* Content */
+.content{max-width:960px;margin:0 auto}
+.channel{display:none}
+.channel.active{display:block}
+
+/* Toolbar */
+.toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.channel-label{font-family:'Exo 2',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#a07850}
+.btn-add{padding:8px 18px;border-radius:8px;background:linear-gradient(135deg,#2d5a1b,#6fa044);color:#fff;border:none;font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700;cursor:pointer}
+.btn-add:hover{opacity:.9}
+.btn-print{padding:8px 18px;border-radius:8px;background:#fff;color:#83502e;border:1.5px solid #d4c0a8;font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700;cursor:pointer}
+
+/* Recipe card */
+.recipe-card{background:#fff;border-radius:14px;border:2px solid #d4c0a8;margin-bottom:16px;overflow:hidden}
+.recipe-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:linear-gradient(135deg,#5c381f,#83502e);cursor:pointer}
+.recipe-title{font-family:'Exo 2',sans-serif;font-size:15px;font-weight:800;color:#fff}
+.recipe-meta{font-size:12px;color:rgba(255,255,255,.75);margin-top:2px}
+.recipe-nc{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:800;color:#f7ab31}
+.recipe-nc-label{font-size:10px;color:rgba(255,255,255,.6);text-align:right}
+.recipe-body{padding:16px 18px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{font-family:'Exo 2',sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#a07850;padding:6px 10px;text-align:left;border-bottom:2px solid #f1e6da}
+th.num{text-align:right}
+td{padding:7px 10px;border-bottom:1px solid #f5ede4;vertical-align:middle}
+td.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:600;color:#5c381f}
+td.pct{text-align:right;color:#a07850;font-size:12px}
+tr.total{background:#f9f4ee}
+tr.total td{font-weight:700;color:#5c381f;border-top:2px solid #d4c0a8;border-bottom:none}
+tr.mixing td{color:#83502e;font-style:italic;font-size:12px}
+tr.total-final td{background:#5c381f;color:#fff;font-family:'Exo 2',sans-serif;font-weight:800;border-radius:0}
+tr.total-final td.num{color:#f7ab31}
+.kod-badge{display:inline-block;background:#f1e6da;border-radius:4px;padding:1px 6px;font-size:11px;font-family:monospace;color:#83502e;margin-left:4px}
+.empty-state{text-align:center;padding:48px 20px;color:#a07850}
+.empty-icon{font-size:48px;margin-bottom:12px}
+.edit-btns{display:flex;gap:6px;margin-left:12px}
+.btn-sm{padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid}
+.btn-edit{background:#f1e6da;color:#83502e;border-color:#d4c0a8}
+.btn-del{background:#fff0f5;color:#c0184e;border-color:#f4a0c0}
+.btn-move{background:#f0f8ff;color:#1565c0;border-color:#90caf9}
+
+@media print{
+  .header .back,.tabs,.toolbar,.edit-btns{display:none!important}
+  .recipe-card{break-inside:avoid;border:1px solid #ccc}
+  body{background:#fff;padding:0}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a class="back" href="/">← Zpět</a>
+  <div>
+    <h1>🧮 Receptury směsí</h1>
+    <div class="subtitle">Přesné poměry složení na 1 kg a 20 kg</div>
+  </div>
+  <button class="btn-print" onclick="window.print()" style="margin-left:auto">🖨 Tisk</button>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('alza',this)">🛒 Alza</button>
+  <button class="tab" onclick="switchTab('vilgain',this)">💪 Vilgain</button>
+  <button class="tab" onclick="switchTab('nutworld',this)">🌰 Nutworld</button>
+</div>
+
+<div class="content">
+
+  <!-- ALZA -->
+  <div class="channel active" id="ch-alza">
+    <div class="toolbar">
+      <span class="channel-label">Receptury pro Alza.cz</span>
+      <button class="btn-add" onclick="openAddDialog('alza')">+ Přidat recepturu</button>
+    </div>
+    <div id="recipes-alza"></div>
+  </div>
+
+  <!-- VILGAIN -->
+  <div class="channel" id="ch-vilgain">
+    <div class="toolbar">
+      <span class="channel-label">Receptury pro Vilgain</span>
+      <button class="btn-add" onclick="openAddDialog('vilgain')">+ Přidat recepturu</button>
+    </div>
+    <div id="recipes-vilgain"></div>
+  </div>
+
+  <!-- NUTWORLD -->
+  <div class="channel" id="ch-nutworld">
+    <div class="toolbar">
+      <span class="channel-label">Receptury Nutworld e-shop</span>
+      <button class="btn-add" onclick="openAddDialog('nutworld')">+ Přidat recepturu</button>
+    </div>
+    <div id="recipes-nutworld"></div>
+  </div>
+
+</div>
+
+<!-- DIALOG -->
+<div id="dialog" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999;overflow-y:auto">
+  <div style="background:#fff;border-radius:16px;max-width:600px;margin:40px auto;padding:28px 24px">
+    <h2 style="font-family:'Exo 2',sans-serif;color:#5c381f;margin-bottom:20px" id="dialog-title">Nová receptura</h2>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div>
+        <label style="font-size:12px;color:#a07850;display:block;margin-bottom:4px">Název receptury</label>
+        <input id="f-name" style="width:100%;padding:9px 12px;border-radius:8px;border:1.5px solid #d4c0a8;font-size:14px" placeholder="např. Slaný mix vánoční"/>
+      </div>
+      <div>
+        <label style="font-size:12px;color:#a07850;display:block;margin-bottom:4px">Položky (každá na nový řádek: Název;kód;procenta)</label>
+        <textarea id="f-items" rows="7" style="width:100%;padding:9px 12px;border-radius:8px;border:1.5px solid #d4c0a8;font-size:13px;font-family:monospace;resize:vertical" placeholder="Kešu natural ww320;116;30&#10;Mandle loupané solené;101;20&#10;..."></textarea>
+        <div style="font-size:11px;color:#a07850;margin-top:4px">Formát: Název;kód;% — procenta musí dát dohromady 100</div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <div style="flex:1">
+          <label style="font-size:12px;color:#a07850;display:block;margin-bottom:4px">NC Kč/kg (blended)</label>
+          <input id="f-nc" type="number" style="width:100%;padding:9px 12px;border-radius:8px;border:1.5px solid #d4c0a8;font-size:14px" placeholder="209.40"/>
+        </div>
+        <div style="flex:1">
+          <label style="font-size:12px;color:#a07850;display:block;margin-bottom:4px">+ Míchání Kč/kg</label>
+          <input id="f-mix" type="number" value="20" style="width:100%;padding:9px 12px;border-radius:8px;border:1.5px solid #d4c0a8;font-size:14px"/>
+        </div>
+      </div>
+      <div>
+        <label style="font-size:12px;color:#a07850;display:block;margin-bottom:4px">Poznámka</label>
+        <input id="f-note" style="width:100%;padding:9px 12px;border-radius:8px;border:1.5px solid #d4c0a8;font-size:13px" placeholder="volitelně"/>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:20px">
+      <button onclick="saveRecipe()" style="flex:1;padding:11px;border-radius:8px;background:linear-gradient(135deg,#5c381f,#83502e);color:#fff;border:none;font-family:'Exo 2',sans-serif;font-size:14px;font-weight:700;cursor:pointer">Uložit</button>
+      <button onclick="closeDialog()" style="padding:11px 20px;border-radius:8px;background:#f1e6da;color:#83502e;border:none;font-weight:600;cursor:pointer">Zrušit</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORE_KEY = 'nw_receptury_v2';
+let data = {alza:[], vilgain:[], nutworld:[]};
+let activeTab = 'alza';
+let editIdx = null;
+
+const DEFAULT_DATA = {
+  alza: [],
+  vilgain: [],
+  nutworld: [
+    {
+      name: 'Mandle v čokoládách MIX (3 druhy)',
+      items: [
+        {nazev:'Mandle v bílé čokoládě', kod:'107', pct:30},
+        {nazev:'Mandle v hořké čokoládě', kod:'1955', pct:30},
+        {nazev:'Mandle v mléčné čokoládě', kod:'4038', pct:40}
+      ],
+      nc: 209.40, mix: 0,
+      note: 'Základ 1 kg. Bez příplatku za míchání.'
+    },
+    {
+      name: 'Mix Brown (3 druhy)',
+      items: [
+        {nazev:'Mandle tiramisu', kod:'1964', pct:40},
+        {nazev:'Mandle mléčná čokoláda', kod:'4038', pct:40},
+        {nazev:'Mandle slaný karamel', kod:'1952', pct:20}
+      ],
+      nc: 211.75, mix: 0,
+      note: 'Základ 3 kg (1,2 + 1,2 + 0,6). Bez příplatku za míchání.'
+    },
+    {
+      name: 'Slaný mix vánoční (5 druhů)',
+      items: [
+        {nazev:'Kešu pražené solené', kod:'116', pct:15},
+        {nazev:'Mandle loupané pražené solené', kod:'101', pct:17.5},
+        {nazev:'Mandle uzené', kod:'89', pct:17.5},
+        {nazev:'Arašídy pražené solené', kod:'56', pct:20},
+        {nazev:'Arašídy v těstíčku sýr-kečup', kod:'3735', pct:30}
+      ],
+      nc: 166.65, mix: 20,
+      note: 'Základ 180g (1 produkt). +20 Kč/kg míchání.'
+    },
+    {
+      name: 'Směs ořechů DELUXE (kód 155)',
+      items: [
+        {nazev:'Mandle natural jumbo', kod:'2486', pct:30},
+        {nazev:'Kešu natural ww320', kod:'110', pct:30},
+        {nazev:'Pistácie loupané RAW', kod:'137', pct:8},
+        {nazev:'Para ořechy', kod:'143', pct:12},
+        {nazev:'Lísková jádra natural', kod:'125', pct:20}
+      ],
+      nc: 257.41, mix: 20,
+      note: 'Základ přesně 1 kg. +20 Kč/kg míchání.'
+    },
+    {
+      name: 'Směs jader (kód 158)',
+      items: [
+        {nazev:'Kešu natural ww320', kod:'110', pct:30},
+        {nazev:'Mandle natural jumbo', kod:'2486', pct:30},
+        {nazev:'Para ořechy', kod:'143', pct:20},
+        {nazev:'Lísková jádra natural', kod:'125', pct:20}
+      ],
+      nc: 240.13, mix: 20,
+      note: 'Základ přesně 1 kg. +20 Kč/kg míchání. Doypack 1kg.'
+    }
+  ]
+};
+
+function load(){
+  try{
+    const s=localStorage.getItem(STORE_KEY);
+    if(s) data=JSON.parse(s);
+    else { data=DEFAULT_DATA; save(); }
+  }catch(e){ data=DEFAULT_DATA; }
+  renderAll();
+}
+
+function save(){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(data)); }catch(e){}
+}
+
+function renderAll(){
+  ['alza','vilgain','nutworld'].forEach(ch=>renderChannel(ch));
+}
+
+function renderChannel(ch){
+  const el=document.getElementById('recipes-'+ch);
+  const list=data[ch]||[];
+  if(!list.length){
+    el.innerHTML=`<div class="empty-state"><div class="empty-icon">📭</div><div>Zatím žádné receptury pro tento kanál.<br>Klikni <strong>+ Přidat recepturu</strong>.</div></div>`;
+    return;
+  }
+  el.innerHTML=list.map((r,i)=>renderRecipe(r,i,ch)).join('');
+}
+
+function renderRecipe(r,i,ch){
+  const kg20=r.items.map(it=>`<tr>
+    <td>${it.nazev}<span class="kod-badge">${it.kod}</span></td>
+    <td class="pct">${it.pct}%</td>
+    <td class="num">${(it.pct*10).toFixed(0)} g</td>
+    <td class="num">${(it.pct*0.2).toFixed(2).replace('.',',')} kg</td>
+    <td class="num">${(it.pct*0.2*(r.nc/100)*0+0).toFixed(0)}</td>
+  </tr>`).join('');
+  const totalNC=r.nc+r.mix;
+  return `<div class="recipe-card">
+    <div class="recipe-header" onclick="toggleBody('rb-${ch}-${i}')">
+      <div>
+        <div class="recipe-title">${r.name}</div>
+        <div class="recipe-meta">${r.items.length} složek${r.note?' · '+r.note:''}</div>
+      </div>
+      <div style="text-align:right">
+        <div class="recipe-nc">${totalNC.toFixed(2).replace('.',',')} Kč/kg</div>
+        <div class="recipe-nc-label">NC s mícháním</div>
+      </div>
+      <div class="edit-btns" onclick="event.stopPropagation()">
+        <button class="btn-sm btn-edit" onclick="editRecipe('${ch}',${i})">✏️</button>
+        <button class="btn-sm btn-move" onclick="moveRecipe('${ch}',${i})">↔</button>
+        <button class="btn-sm btn-del" onclick="deleteRecipe('${ch}',${i})">🗑</button>
+      </div>
+    </div>
+    <div class="recipe-body" id="rb-${ch}-${i}">
+      <table>
+        <thead><tr>
+          <th>Surovina</th>
+          <th class="num">%</th>
+          <th class="num">1 kg</th>
+          <th class="num">20 kg</th>
+        </tr></thead>
+        <tbody>
+          ${r.items.map(it=>`<tr>
+            <td>${it.nazev}<span class="kod-badge">${it.kod}</span></td>
+            <td class="pct">${it.pct}%</td>
+            <td class="num">${(it.pct*10).toFixed(it.pct%1?1:0)} g</td>
+            <td class="num">${(it.pct*0.2).toFixed(it.pct%1?2:1).replace('.',',')} kg</td>
+          </tr>`).join('')}
+          <tr class="total">
+            <td><strong>CELKEM suroviny</strong></td>
+            <td class="pct">100%</td>
+            <td class="num">1 000 g</td>
+            <td class="num">20,0 kg</td>
+          </tr>
+          ${r.mix>0?`<tr class="mixing"><td>+ Míchání</td><td></td><td class="num">+${r.mix} Kč/kg</td><td class="num">+${r.mix*20} Kč</td></tr>`:''}
+          <tr class="total-final">
+            <td>NC CELKEM</td>
+            <td></td>
+            <td class="num">${r.nc.toFixed(2).replace('.',',')} Kč/kg</td>
+            <td class="num">${(totalNC*20).toFixed(0)} Kč</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>`;
+}
+
+function toggleBody(id){
+  const el=document.getElementById(id);
+  if(el) el.style.display=el.style.display==='none'?'':'none';
+}
+
+function switchTab(tab, btn){
+  activeTab=tab;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.channel').forEach(c=>c.classList.remove('active'));
+  document.getElementById('ch-'+tab).classList.add('active');
+}
+
+let dialogChannel='nutworld';
+function openAddDialog(ch, idx=null){
+  dialogChannel=ch; editIdx=idx;
+  const r=idx!==null?data[ch][idx]:null;
+  document.getElementById('dialog-title').textContent=r?'Upravit recepturu':'Nová receptura';
+  document.getElementById('f-name').value=r?r.name:'';
+  document.getElementById('f-items').value=r?r.items.map(it=>`${it.nazev};${it.kod};${it.pct}`).join('\n'):'';
+  document.getElementById('f-nc').value=r?r.nc:'';
+  document.getElementById('f-mix').value=r?r.mix:20;
+  document.getElementById('f-note').value=r?r.note:'';
+  document.getElementById('dialog').style.display='block';
+}
+function closeDialog(){ document.getElementById('dialog').style.display='none'; editIdx=null; }
+
+function saveRecipe(){
+  const name=document.getElementById('f-name').value.trim();
+  if(!name){alert('Zadej název');return;}
+  const lines=document.getElementById('f-items').value.trim().split('\n').filter(l=>l.trim());
+  const items=lines.map(l=>{const p=l.split(';');return{nazev:(p[0]||'').trim(),kod:(p[1]||'').trim(),pct:parseFloat((p[2]||'0').replace(',','.'))};}).filter(x=>x.nazev);
+  const nc=parseFloat(document.getElementById('f-nc').value)||0;
+  const mix=parseFloat(document.getElementById('f-mix').value)||0;
+  const note=document.getElementById('f-note').value.trim();
+  const recipe={name,items,nc,mix,note};
+  if(editIdx!==null) data[dialogChannel][editIdx]=recipe;
+  else data[dialogChannel].push(recipe);
+  save(); renderChannel(dialogChannel); closeDialog();
+}
+
+function deleteRecipe(ch,i){
+  if(!confirm('Smazat recepturu '+data[ch][i].name+'?'))return;
+  data[ch].splice(i,1); save(); renderChannel(ch);
+}
+
+function editRecipe(ch,i){ openAddDialog(ch,i); }
+
+function moveRecipe(ch,i){
+  const targets=['alza','vilgain','nutworld'].filter(x=>x!==ch);
+  const dest=prompt('Přesunout do (alza / vilgain / nutworld):\n'+targets.join(', '));
+  if(!dest||!data[dest])return;
+  data[dest].push(data[ch][i]);
+  data[ch].splice(i,1);
+  save(); renderAll();
+}
+
+load();
+</script>
+</body>
+</html>
