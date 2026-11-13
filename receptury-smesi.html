@@ -61,6 +61,7 @@ tr.total-final td.num{color:#f7ab31}
 .btn-edit{background:#f1e6da;color:#83502e;border-color:#d4c0a8}
 .btn-del{background:#fff0f5;color:#c0184e;border-color:#f4a0c0}
 .btn-move{background:#f0f8ff;color:#1565c0;border-color:#90caf9}
+.btn-print-one{background:#f7f0e0;color:#83502e;border-color:#d4a84b}
 
 @media print{
   .header .back,.tabs,.toolbar,.edit-btns{display:none!important}
@@ -346,6 +347,7 @@ function renderRecipe(r,i,ch){
         <div class="recipe-nc-label">NC s mícháním</div>
       </div>
       <div class="edit-btns" onclick="event.stopPropagation()">
+        <button class="btn-sm btn-print-one" onclick="printOne('${ch}',${i})">🖨</button>
         <button class="btn-sm btn-edit" onclick="editRecipe('${ch}',${i})">✏️</button>
         <button class="btn-sm btn-move" onclick="moveRecipe('${ch}',${i})">↔</button>
         <button class="btn-sm btn-del" onclick="deleteRecipe('${ch}',${i})">🗑</button>
@@ -440,6 +442,69 @@ function moveRecipe(ch,i){
   data[dest].push(data[ch][i]);
   data[ch].splice(i,1);
   save(); renderAll();
+}
+
+function printOne(ch, i) {
+  const r = data[ch][i];
+  if (!r) return;
+  const totalNC = r.nc + r.mix;
+  const chLabel = {alza:'Alza', vilgain:'Vilgain', nutworld:'Nutworld'}[ch] || ch;
+
+  const rows = r.items.map(it => {
+    const g1 = (it.pct * 10).toFixed(it.pct % 1 ? 1 : 0);
+    const kg20 = (it.pct * 0.2).toFixed(it.pct % 1 ? 2 : 1).replace('.', ',');
+    return `<tr><td>${it.nazev} <span class="kb">${it.kod}</span></td><td class="r">${it.pct}%</td><td class="r">${g1} g</td><td class="r">${kg20} kg</td></tr>`;
+  }).join('');
+
+  const mixRow = r.mix > 0
+    ? `<tr class="mix-r"><td>+ Míchání</td><td></td><td class="r">+${r.mix} Kč/kg</td><td class="r">+${r.mix * 20} Kč</td></tr>`
+    : '';
+
+  const html = `<!doctype html><html><head><meta charset="utf-8">
+<title>${r.name}</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+@page{margin:0;size:A4 portrait}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:#fff;width:210mm;min-height:297mm;padding:28mm 22mm 20mm;color:#1a0e05}
+.eyebrow{font-family:'Exo 2',sans-serif;font-size:9pt;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#a07050;margin-bottom:6px}
+h1{font-family:'Exo 2',sans-serif;font-size:28pt;font-weight:800;color:#5c381f;line-height:1.1;text-wrap:balance;margin-bottom:14px}
+.note{font-size:9pt;color:#a07050;margin-bottom:22px}
+table{width:100%;border-collapse:collapse;font-size:11pt}
+th{font-family:'Exo 2',sans-serif;font-size:8.5pt;letter-spacing:1px;text-transform:uppercase;color:#a07850;padding:7px 10px;text-align:left;border-bottom:2px solid #f0e6d8}
+th.r{text-align:right}
+td{padding:8px 10px;border-bottom:1px solid #f5ede4}
+td.r{text-align:right;font-variant-numeric:tabular-nums;font-weight:600;color:#5c381f}
+.kb{background:#f1e6da;border-radius:3px;padding:1px 5px;font-size:8.5pt;font-family:monospace;color:#83502e;margin-left:4px}
+tr.tot td{font-weight:700;color:#5c381f;border-top:2px solid #d4c0a8;border-bottom:none;background:#fdf8f3}
+tr.mix-r td{color:#83502e;font-style:italic;font-size:10pt}
+tr.final td{background:#5c381f;color:#fff;font-family:'Exo 2',sans-serif;font-weight:800}
+tr.final td.r{color:#f7ab31}
+.footer{position:fixed;bottom:16mm;left:22mm;right:22mm;display:flex;justify-content:space-between;align-items:center;border-top:1px solid #e2ceb4;padding-top:7px}
+.brand{font-family:'Exo 2',sans-serif;font-size:14pt;font-weight:800;color:#5c381f}
+.brand em{color:#a07050;font-style:normal;font-weight:600}
+.fnote{font-size:8pt;color:#a07050;text-align:right}
+</style></head><body>
+<div class="eyebrow">${chLabel} · receptura</div>
+<h1>${r.name}</h1>
+${r.note ? `<div class="note">${r.note}</div>` : ''}
+<table>
+<thead><tr><th>Surovina</th><th class="r">%</th><th class="r">1 kg</th><th class="r">20 kg</th></tr></thead>
+<tbody>
+${rows}
+<tr class="tot"><td><strong>CELKEM suroviny</strong></td><td class="r">100%</td><td class="r">1 000 g</td><td class="r">20,0 kg</td></tr>
+${mixRow}
+<tr class="final"><td>NC CELKEM</td><td></td><td class="r">${r.nc.toFixed(2).replace('.', ',')} Kč/kg</td><td class="r">${(totalNC * 20).toFixed(0)} Kč / 20 kg</td></tr>
+</tbody></table>
+<div class="footer">
+  <div class="brand">Nut<em>world</em></div>
+  <div class="fnote">NC s mícháním: ${totalNC.toFixed(2).replace('.', ',')} Kč/kg<br>${r.items.length} složek · vytisknuto ${new Date().toLocaleDateString('cs-CZ')}</div>
+</div>
+<script>window.onload=()=>{window.print();}<\/script>
+</body></html>`;
+
+  const w = window.open('', '_blank');
+  if (w) { w.document.write(html); w.document.close(); }
 }
 
 load();
