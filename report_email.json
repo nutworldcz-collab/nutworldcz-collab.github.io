@@ -1,40 +1,55 @@
 {
-  "generated": "2026-11-13T07:30:43",
+  "generated": "2026-11-13T12:00:26",
   "total": 5,
   "spam_skipped": 0,
   "emails": [
     {
       "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 6:03 (13. listopadu 2026)",
-      "date": "pátek 13. listopadu 2026 6:10:07",
+      "sender": "claudie.nutworld.cz@gmail.com",
+      "subject": "🔄 Opraveno · Denní stav automatizací · 13.11.",
+      "date": "pátek 13. listopadu 2026 8:45:35",
       "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Doprava NutWorld označil(a) kartu Atlas Copco s.r.o. — 45 ks — 16.11.2026 jako dokončenou Odpovědět e-mailem ￼ Doprava NutWorld přesunul(a) kartu Atlas Copco s.r.o. — 45 ks — 16.11.2026 do sloupce Firmy 2026 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
+      "preview": "DENNÍ ZDRAVOTNÍ REPORT · NUTWORLD 🔄 Opraveno 1× · jinak OK 13. 11. 2026",
+      "category": "ostatni",
+      "sender_short": "claudie.nutworld.cz@gmail.com",
+      "sender_email": "claudie.nutworld.cz@gmail.com",
+      "ai": {
+        "shrn": "Denní zdravotní report Nutworld s jednou opravenou automatizací. Systém běží v pořádku.",
+        "tyka_se": false,
+        "akce": null
+      }
     },
     {
       "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Markéta Costachová vložil/a komentář na kartu Impregnace na nástěnce Firmy dárky + objednávky",
-      "date": "pátek 13. listopadu 2026 5:27:11",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Markéta Costachová okomentoval(a) kartu Impregnace na nástěnce Firmy dárky + objednávky @darky70 já to kopírovala od ní",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
+      "sender": "IT <it@mekrs.cz>",
+      "subject": "potíže s emailem",
+      "date": "pátek 13. listopadu 2026 8:06:36",
+      "unread": false,
+      "preview": "Dobrý den, rádi bychom Vás informovali",
+      "category": "tym",
+      "sender_short": "IT",
+      "sender_email": "it@mekrs.cz",
+      "ai": {
+        "shrn": "IT tým z mekrs.cz hlásí potíže s emailem a chce Janovo vyjádření.",
+        "tyka_se": true,
+        "akce": "Přečíst si úplný obsah mailu od IT a odpovědět na specifické problémy s emailovým systémem"
+      }
     },
     {
       "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Renata Pošepná přesunul/a kartu Atlas Copco s.r.o. — 45 ks — 16.11.2026 do sloupce Hotovo - čeká na zabalení na nástěnce Firmy dárky + objednávky",
-      "date": "pátek 13. listopadu 2026 5:24:41",
+      "sender": "Lamelland sekretariat <sekretariat@lamelland.sk>",
+      "subject": "RE: Hmotnosť balíka + Nomenklatúra",
+      "date": "pátek 13. listopadu 2026 7:52:39",
       "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Renata Pošepná přesunul(a) kartu Atlas Copco s.r.o. — 45 ks — 16.11.2026 do sloupce Hotovo - čeká na zabalení na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svoje nastavení a přizpůsobte si ",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
+      "preview": "Dobrý deň",
+      "category": "ostatni",
+      "sender_short": "Lamelland sekretariat",
+      "sender_email": "sekretariat@lamelland.sk",
+      "ai": {
+        "shrn": "Odpověď od slovenské Lamelland týkající se hmotnosti balíka a nomenklatury.",
+        "tyka_se": true,
+        "akce": "Zjistit kontext předchozí komunikace a odpovědět na otázky ohledně hmotnosti a nomenklatury"
+      }
     },
     {
       "account": "Google",
@@ -47,14 +62,14 @@
       "sender_short": "AliExpress",
       "sender_email": "ae-week-digest20@mail.aliexpress.com",
       "ai": {
-        "shrn": "Marketingový email od AliExpress s nabídkou tréninkovacího stojanu na kolo se slevou.",
+        "shrn": "Marketingový email z AliExpresu o tréninkovém stojanu na kolo.",
         "tyka_se": false,
         "akce": null
       }
     },
     {
       "account": "Google",
-      "sender": "\"CrossFit\" <crossfit@mail.crossfit.com>",
+      "sender": "CrossFit <crossfit@mail.crossfit.com>",
       "subject": "261113 Workout of the Day: Deadlift",
       "date": "pátek 13. listopadu 2026 2:30:36",
       "unread": true,
@@ -63,7 +78,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "Newsletter od CrossFit s denním tréninkovým plánem zaměřeným na mrtvý tah.",
+        "shrn": "Cvičební program (Workout of the Day) z CrossFitu se zaměřením na mrtvý tah.",
         "tyka_se": false,
         "akce": null
       }
