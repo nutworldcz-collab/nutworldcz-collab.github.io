@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-14T07:48:23",
+  "generated": "2026-11-14T09:49:41",
   "days": [
     "2026-11-12",
     "2026-11-13",
@@ -7,14 +7,14 @@
   ],
   "cz": {
     "summary": {
-      "count": 131,
-      "total": 219174.0,
+      "count": 134,
+      "total": 221802.0,
       "currency": "CZK",
-      "paid": 99,
-      "unpaid": 32,
-      "dobir": 22
+      "paid": 103,
+      "unpaid": 31,
+      "dobir": 23
     },
-    "confirmed": 121,
+    "confirmed": 126,
     "rozklad": [
       {
         "parent": "Ořechy",
@@ -206,11 +206,11 @@
                   {
                     "name": "Arašídy pražené solené — Množství:: 200g",
                     "code": "56/200",
-                    "qty": 2,
+                    "qty": 3,
                     "by_date": {
                       "2026-11-12": 1,
                       "2026-11-13": 1,
-                      "2026-11-14": 0
+                      "2026-11-14": 1
                     }
                   },
                   {
@@ -357,10 +357,10 @@
                   {
                     "name": "Mandle uzené v Eko kelímku a celofánku 180g - ČERT",
                     "code": "89X02XMIK",
-                    "qty": 9,
+                    "qty": 10,
                     "by_date": {
                       "2026-11-12": 6,
-                      "2026-11-13": 3,
+                      "2026-11-13": 4,
                       "2026-11-14": 0
                     }
                   },
@@ -375,22 +375,22 @@
                     }
                   },
                   {
+                    "name": "Vánoční ořechový sáček SOB s kolíčkem - 180g VÍCE DRUHŮ — Jaké oříšky dáme?: Mandle uzené",
+                    "code": "4725/MAN",
+                    "qty": 8,
+                    "by_date": {
+                      "2026-11-12": 0,
+                      "2026-11-13": 8,
+                      "2026-11-14": 0
+                    }
+                  },
+                  {
                     "name": "Vánoční mandle uzené 200g",
                     "code": "89/200VAN",
                     "qty": 6,
                     "by_date": {
                       "2026-11-12": 1,
                       "2026-11-13": 5,
-                      "2026-11-14": 0
-                    }
-                  },
-                  {
-                    "name": "Vánoční ořechový sáček SOB s kolíčkem - 180g VÍCE DRUHŮ — Jaké oříšky dáme?: Mandle uzené",
-                    "code": "4725/MAN",
-                    "qty": 4,
-                    "by_date": {
-                      "2026-11-12": 0,
-                      "2026-11-13": 4,
                       "2026-11-14": 0
                     }
                   },
@@ -453,6 +453,16 @@
                       "2026-11-13": 1,
                       "2026-11-14": 0
                     }
+                  },
+                  {
+                    "name": "Mandle uzené v EKO kelímku 100g",
+                    "code": "2917",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-12": 0,
+                      "2026-11-13": 0,
+                      "2026-11-14": 1
+                    }
                   }
                 ]
               },
@@ -472,10 +482,10 @@
                   {
                     "name": "Mandle RAFFAELLO v Eko kelímku a celofánku 180g - ANDĚL",
                     "code": "1988X02XMIK",
-                    "qty": 16,
+                    "qty": 18,
                     "by_date": {
                       "2026-11-12": 8,
-                      "2026-11-13": 8,
+                      "2026-11-13": 10,
                       "2026-11-14": 0
                     }
                   },
@@ -506,6 +516,16 @@
                     "by_date": {
                       "2026-11-12": 0,
                       "2026-11-13": 7,
+                      "2026-11-14": 0
+                    }
+                  },
+                  {
+                    "name": "Vánoční ořechový sáček SOB s kolíčkem - 180g VÍCE DRUHŮ — Jaké oříšky dáme?: Mandle v mléčné čokoládě",
+                    "code": "4725/MAN2",
+                    "qty": 4,
+                    "by_date": {
+                      "2026-11-12": 0,
+                      "2026-11-13": 4,
                       "2026-11-14": 0
                     }
                   },
@@ -542,16 +562,6 @@
                   {
                     "name": "Mandle V HOŘKÉ ČOKOLÁDĚ v celofánku a kelímku 180g",
                     "code": "3248",
-                    "qty": 3,
-                    "by_date": {
-                      "2026-11-12": 0,
-                      "2026-11-13": 3,
-                      "2026-11-14": 0
-                    }
-                  },
-                  {
-                    "name": "Vánoční ořechový sáček SOB s kolíčkem - 180g VÍCE DRUHŮ — Jaké oříšky dáme?: Mandle v mléčné čokoládě",
-                    "code": "4725/MAN2",
                     "qty": 3,
                     "by_date": {
                       "2026-11-12": 0,
@@ -634,6 +644,16 @@
               {
                 "variant": "solené",
                 "items": [
+                  {
+                    "name": "Mandle pražené solené s příchutí lanýže a parmazánem Valencie DELUXE — Množství:: 200g",
+                    "code": "9543/200",
+                    "qty": 3,
+                    "by_date": {
+                      "2026-11-12": 0,
+                      "2026-11-13": 0,
+                      "2026-11-14": 3
+                    }
+                  },
                   {
                     "name": "Mandle pražené solené s příchutí lanýže Valencie DELUXE — Množství:: 200g",
                     "code": "3722/200",
@@ -1059,6 +1079,16 @@
                       "2026-11-13": 1,
                       "2026-11-14": 0
                     }
+                  },
+                  {
+                    "name": "Kešu pražené solené ww320 v EKO kelímku 100g",
+                    "code": "2918",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-12": 0,
+                      "2026-11-13": 0,
+                      "2026-11-14": 1
+                    }
                   }
                 ]
               },
@@ -1216,6 +1246,16 @@
                       "2026-11-13": 1,
                       "2026-11-14": 0
                     }
+                  },
+                  {
+                    "name": "Lískové oříšky pražené blanšírované — Množství:: 500g",
+                    "code": "128/500",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-12": 0,
+                      "2026-11-13": 0,
+                      "2026-11-14": 1
+                    }
                   }
                 ]
               },
@@ -1261,6 +1301,16 @@
                       "2026-11-13": 0,
                       "2026-11-14": 0
                     }
+                  },
+                  {
+                    "name": "Lískové oříšky - jádra 13/15 — Množství:: 1 Kg",
+                    "code": "125/1 K",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-12": 0,
+                      "2026-11-13": 0,
+                      "2026-11-14": 1
+                    }
                   }
                 ]
               }
@@ -1302,6 +1352,16 @@
                       "2026-11-12": 1,
                       "2026-11-13": 1,
                       "2026-11-14": 0
+                    }
+                  },
+                  {
+                    "name": "Vlašské ořechy — Množství:: 3 Kg",
+                    "code": "122/3 K",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-12": 0,
+                      "2026-11-13": 0,
+                      "2026-11-14": 1
                     }
                   }
                 ]
@@ -1576,11 +1636,11 @@
                   {
                     "name": "Babiččin ovocný čaj - brusinka se skořicí 60ml",
                     "code": "6585",
-                    "qty": 2,
+                    "qty": 3,
                     "by_date": {
                       "2026-11-12": 0,
                       "2026-11-13": 2,
-                      "2026-11-14": 0
+                      "2026-11-14": 1
                     }
                   }
                 ]
@@ -1661,6 +1721,37 @@
             ]
           },
           {
+            "group": "Moruše",
+            "emoji": "🍇",
+            "variants": [
+              {
+                "variant": "Moruše",
+                "items": [
+                  {
+                    "name": "Moruše sušená — Množství:: 500g",
+                    "code": "224/500",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-12": 0,
+                      "2026-11-13": 1,
+                      "2026-11-14": 0
+                    }
+                  },
+                  {
+                    "name": "Moruše sušená — Množství:: 200g",
+                    "code": "224/200",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-12": 0,
+                      "2026-11-13": 1,
+                      "2026-11-14": 0
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
             "group": "Směs ovoce",
             "emoji": "🫐",
             "variants": [
@@ -1716,6 +1807,26 @@
                 "variant": "Čokoládové",
                 "items": [
                   {
+                    "name": "Preclíky tří barev — Množství:: 200g",
+                    "code": "4452/200",
+                    "qty": 2,
+                    "by_date": {
+                      "2026-11-12": 1,
+                      "2026-11-13": 0,
+                      "2026-11-14": 1
+                    }
+                  },
+                  {
+                    "name": "Královská ořechová směs v čokoládě — Množství:: 200g",
+                    "code": "6453/200",
+                    "qty": 2,
+                    "by_date": {
+                      "2026-11-12": 1,
+                      "2026-11-13": 0,
+                      "2026-11-14": 1
+                    }
+                  },
+                  {
                     "name": "Čokoláda 30g BOHATÝ POSYP - hořká",
                     "code": "9171",
                     "qty": 2,
@@ -1746,16 +1857,6 @@
                     }
                   },
                   {
-                    "name": "Preclíky tří barev — Množství:: 200g",
-                    "code": "4452/200",
-                    "qty": 1,
-                    "by_date": {
-                      "2026-11-12": 1,
-                      "2026-11-13": 0,
-                      "2026-11-14": 0
-                    }
-                  },
-                  {
                     "name": "Corn flakes v mléčné čokoládě — Množství:: 200g",
                     "code": "2357/200",
                     "qty": 1,
@@ -1768,16 +1869,6 @@
                   {
                     "name": "Preclíky v mléčné čokoládě — Množství:: 500g",
                     "code": "3978/500",
-                    "qty": 1,
-                    "by_date": {
-                      "2026-11-12": 1,
-                      "2026-11-13": 0,
-                      "2026-11-14": 0
-                    }
-                  },
-                  {
-                    "name": "Královská ořechová směs v čokoládě — Množství:: 200g",
-                    "code": "6453/200",
                     "qty": 1,
                     "by_date": {
                       "2026-11-12": 1,
@@ -2070,10 +2161,10 @@
                   {
                     "name": "Vánoční ořechová krabička SOB - 4x80g",
                     "code": "8555",
-                    "qty": 3,
+                    "qty": 4,
                     "by_date": {
                       "2026-11-12": 2,
-                      "2026-11-13": 1,
+                      "2026-11-13": 2,
                       "2026-11-14": 0
                     }
                   },
@@ -2534,6 +2625,16 @@
                       "2026-11-13": 1,
                       "2026-11-14": 0
                     }
+                  },
+                  {
+                    "name": "Slaný mix ALL IN ONE — Množství:: 1 Kg",
+                    "code": "1028/1 K",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-12": 0,
+                      "2026-11-13": 0,
+                      "2026-11-14": 1
+                    }
                   }
                 ]
               },
@@ -2669,22 +2770,22 @@
                     }
                   },
                   {
+                    "name": "Babiččin ovocný čaj - bezinka se skořicí 60ml",
+                    "code": "1437",
+                    "qty": 3,
+                    "by_date": {
+                      "2026-11-12": 0,
+                      "2026-11-13": 2,
+                      "2026-11-14": 1
+                    }
+                  },
+                  {
                     "name": "Kraftová obálka s psaníčkem pro VLASTNÍ VZKAZ",
                     "code": "4905",
                     "qty": 2,
                     "by_date": {
                       "2026-11-12": 1,
                       "2026-11-13": 1,
-                      "2026-11-14": 0
-                    }
-                  },
-                  {
-                    "name": "Babiččin ovocný čaj - bezinka se skořicí 60ml",
-                    "code": "1437",
-                    "qty": 2,
-                    "by_date": {
-                      "2026-11-12": 0,
-                      "2026-11-13": 2,
                       "2026-11-14": 0
                     }
                   },
@@ -2819,26 +2920,6 @@
                     }
                   },
                   {
-                    "name": "Moruše sušená — Množství:: 500g",
-                    "code": "224/500",
-                    "qty": 1,
-                    "by_date": {
-                      "2026-11-12": 0,
-                      "2026-11-13": 1,
-                      "2026-11-14": 0
-                    }
-                  },
-                  {
-                    "name": "Moruše sušená — Množství:: 200g",
-                    "code": "224/200",
-                    "qty": 1,
-                    "by_date": {
-                      "2026-11-12": 0,
-                      "2026-11-13": 1,
-                      "2026-11-14": 0
-                    }
-                  },
-                  {
                     "name": "Duhové mini pendreky — Množství:: 1 Kg",
                     "code": "8751/1 K",
                     "qty": 1,
@@ -2858,11 +2939,11 @@
   },
   "sk": {
     "summary": {
-      "count": 26,
-      "total": 1988.0,
+      "count": 27,
+      "total": 2007.0,
       "currency": "EUR",
       "paid": 17,
-      "unpaid": 9,
+      "unpaid": 10,
       "dobir": 0
     },
     "confirmed": 17,
