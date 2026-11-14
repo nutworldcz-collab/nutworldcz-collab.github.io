@@ -177,11 +177,28 @@ mark { background: rgba(247,171,49,.4); color: inherit; border-radius: 2px; padd
 .variant-total { font-family: 'Exo 2', sans-serif; font-size: 15px; font-weight: 800; line-height: 1; flex-shrink: 0; }
 .variant-total small { font-size: 10px; font-weight: 400; opacity: .6; margin-left: 1px; }
 .variant-items { padding: 2px 0; }
-.product-row { display: flex; align-items: baseline; gap: 8px; padding: 4px 12px; border-bottom: 1px solid var(--border); }
+.product-row { display: flex; align-items: center; gap: 8px; padding: 5px 12px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background .12s; user-select: none; }
 .product-row:last-child { border-bottom: none; }
+.product-row:hover { background: var(--bg2); }
+.product-row.done { background: rgba(111,160,68,.07); }
+.product-row.done .prod-name { text-decoration: line-through; opacity: .4; }
+.product-row.done .qty-badge { opacity: .35; }
+.product-row.done .prod-code { opacity: .25; }
+.done-check { font-size: 13px; color: var(--leaf); flex-shrink: 0; width: 16px; text-align: center; opacity: 0; transition: opacity .15s; }
+.product-row.done .done-check { opacity: 1; }
 .qty-badge { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 13px; min-width: 26px; flex-shrink: 0; line-height: 1; }
 .prod-name { font-size: 12px; color: var(--fg2); flex: 1; min-width: 0; line-height: 1.35; }
 .prod-code { font-size: 10px; color: var(--fg3); flex-shrink: 0; font-family: monospace; opacity: .7; }
+/* ── Skrýt hotové ── */
+.hide-done-btn {
+  font-family: 'Exo 2', sans-serif; font-size: 11px; font-weight: 600;
+  padding: 4px 11px; border-radius: 20px; border: 1.5px solid var(--border);
+  background: var(--bg3); color: var(--fg3); cursor: pointer; white-space: nowrap;
+  transition: all .15s; flex-shrink: 0;
+}
+.hide-done-btn.active { background: var(--leaf); border-color: var(--leaf); color: #fff; }
+.hide-done-btn:hover:not(.active) { border-color: var(--leaf); color: var(--leaf); }
+.variant-done-count { font-size: 9px; color: var(--leaf); font-weight: 600; margin-left: 4px; opacity: .9; }
 /* ── Totals ── */
 .totals-bar {
   padding: 10px max(20px, env(safe-area-inset-right, 0px));
@@ -229,6 +246,7 @@ mark { background: rgba(247,171,49,.4); color: inherit; border-radius: 2px; padd
     <button class="search-clear" id="search-clear" onclick="clearSearch()" hidden>✕</button>
   </div>
   <span class="search-count" id="search-count"></span>
+  <button class="hide-done-btn" id="hide-done-btn" onclick="toggleHideDone(this)">Skrýt hotové</button>
 </div>
 
 <div class="date-bar" id="date-bar" hidden></div>
@@ -253,6 +271,52 @@ mark { background: rgba(247,171,49,.4); color: inherit; border-radius: 2px; padd
 <script>
 let REPORT = null;
 let activeDate = 'all';
+
+/* ── Done stav ───────────────────────────────────────────── */
+const TODAY = new Date().toISOString().slice(0, 10);
+const LS_KEY = 'nw_done_' + TODAY;
+let doneSet = new Set();
+let hideDone = false;
+
+function loadDone() {
+  try { doneSet = new Set(JSON.parse(localStorage.getItem(LS_KEY) || '[]')); } catch {}
+}
+function saveDone() {
+  try { localStorage.setItem(LS_KEY, JSON.stringify([...doneSet])); } catch {}
+}
+function toggleDone(code) {
+  if (doneSet.has(code)) doneSet.delete(code); else doneSet.add(code);
+  saveDone();
+  applyDoneState();
+}
+function applyDoneState() {
+  document.querySelectorAll('.product-row[data-code]').forEach(row => {
+    const done = doneSet.has(row.dataset.code);
+    row.classList.toggle('done', done);
+    if (hideDone) row.hidden = done;
+  });
+  // Aktualizuj počítadla variant
+  document.querySelectorAll('.variant-card').forEach(card => {
+    const rows  = [...card.querySelectorAll('.product-row[data-code]')];
+    const total = rows.reduce((s, r) => s + (parseInt(r.dataset.qty) || 0), 0);
+    const doneQ = rows.filter(r => doneSet.has(r.dataset.code))
+                      .reduce((s, r) => s + (parseInt(r.dataset.qty) || 0), 0);
+    const el = card.querySelector('.variant-total');
+    if (!el) return;
+    const orig = el.dataset.vtotal || total;
+    el.innerHTML = doneQ > 0
+      ? `${total - doneQ}<small>ks</small><span class="variant-done-count">${doneQ} ✓</span>`
+      : `${orig}<small>ks</small>`;
+  });
+}
+function toggleHideDone(btn) {
+  hideDone = !hideDone;
+  btn.classList.toggle('active', hideDone);
+  btn.textContent = hideDone ? 'Zobrazit hotové' : 'Skrýt hotové';
+  // Obnovíme hidden na všech řádcích nejdřív
+  document.querySelectorAll('.product-row[data-code]').forEach(r => r.hidden = false);
+  applyDoneState();
+}
 
 /* ── Helpers ─────────────────────────────────────────────── */
 function getQty(it, date) {
@@ -293,17 +357,20 @@ function renderSections(shopKey) {
       const variantCards = g.variants.map(v => {
         const vTotal = v.items.reduce((s, it) => s + getQty(it, activeDate), 0);
         if (vTotal === 0) return '';
-        const rows = v.items.filter(it => getQty(it, activeDate) > 0).map(it => `
-          <div class="product-row">
-            <span class="qty-badge" style="color:${p.color}">${getQty(it, activeDate)}×</span>
+        const rows = v.items.filter(it => getQty(it, activeDate) > 0).map(it => {
+          const qty = getQty(it, activeDate);
+          return `<div class="product-row" data-code="${it.code}" data-qty="${qty}" onclick="toggleDone('${it.code}')">
+            <span class="done-check">✓</span>
+            <span class="qty-badge" style="color:${p.color}">${qty}×</span>
             <span class="prod-name">${it.name}</span>
             <span class="prod-code">${it.code}</span>
-          </div>`).join('');
+          </div>`;
+        }).join('');
         return `
           <div class="variant-card">
             <div class="variant-header" style="border-left:3px solid ${p.color}">
               <span class="variant-title" style="color:${p.color}">${v.variant}</span>
-              <span class="variant-total" style="color:${p.color}">${vTotal}<small>ks</small></span>
+              <span class="variant-total" style="color:${p.color}" data-vtotal="${vTotal}">${vTotal}<small>ks</small></span>
             </div>
             <div class="variant-items">${rows}</div>
           </div>`;
@@ -352,6 +419,7 @@ function selectDate(date, btn) {
   btn.classList.add('active');
   renderSections('cz');
   renderSections('sk');
+  applyDoneState();
   const q = document.getElementById('search-input').value;
   if (q) applySearch(q);
 }
@@ -513,12 +581,14 @@ async function loadData() {
     REPORT = await r.json();
 
     document.getElementById('state-msg').hidden = true;
+    loadDone();
     buildHeader();
     buildDatePills();
     renderSummary('cz');
     renderSummary('sk');
     renderSections('cz');
     renderSections('sk');
+    applyDoneState();
 
     const gen  = REPORT.generated || '';
     const days = REPORT.days || [];
