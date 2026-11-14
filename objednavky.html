@@ -189,6 +189,23 @@ mark { background: rgba(247,171,49,.4); color: inherit; border-radius: 2px; padd
 .qty-badge { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 13px; min-width: 26px; flex-shrink: 0; line-height: 1; }
 .prod-name { font-size: 12px; color: var(--fg2); flex: 1; min-width: 0; line-height: 1.35; }
 .prod-code { font-size: 10px; color: var(--fg3); flex-shrink: 0; font-family: monospace; opacity: .7; }
+/* ── View toggle (Druh / Výroba) ── */
+.view-bar {
+  display: flex; gap: 4px;
+  padding: 6px max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+}
+.view-btn {
+  font-family: 'Exo 2', sans-serif; font-size: 12px; font-weight: 700;
+  padding: 4px 14px; border-radius: 20px; border: 1.5px solid var(--border);
+  background: var(--bg3); color: var(--fg3); cursor: pointer;
+  transition: all .15s; letter-spacing: .2px;
+}
+.view-btn.active { background: var(--brown); border-color: var(--brown); color: #fff; }
+.view-btn:hover:not(.active) { border-color: var(--brown); color: var(--brown); }
+/* ── Process view ── */
+.process-block { margin-bottom: 14px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
 /* ── Skrýt hotové ── */
 .hide-done-btn {
   font-family: 'Exo 2', sans-serif; font-size: 11px; font-weight: 600;
@@ -233,6 +250,11 @@ mark { background: rgba(247,171,49,.4); color: inherit; border-radius: 2px; padd
   <div class="header-stats" id="header-stats"></div>
 </header>
 
+<div class="view-bar">
+  <button class="view-btn active" id="view-druh"   onclick="setView('druh',this)">🌰 Druh</button>
+  <button class="view-btn"        id="view-vyroba" onclick="setView('vyroba',this)">🏭 Výroba</button>
+</div>
+
 <div class="tab-bar">
   <button class="tab-btn active" id="btn-cz" onclick="showTab('cz',this)">🇨🇿 CZ</button>
   <button class="tab-btn" id="btn-sk" onclick="showTab('sk',this)">🇸🇰 SK</button>
@@ -271,6 +293,114 @@ mark { background: rgba(247,171,49,.4); color: inherit; border-radius: 2px; padd
 <script>
 let REPORT = null;
 let activeDate = 'all';
+let activeView = 'druh'; // 'druh' | 'vyroba'
+
+/* ── Výrobní skupiny ─────────────────────────────────────── */
+const PROCESS_GROUPS = [
+  { label: "Čokoláda",           emoji: "🍫", color: "#5c381f",
+    kw: ["čokolád", "dražov", "kamínk", "v bílé", "v mléčné", "v hořké", "bílá čok", "mléčná čok", "hořká čok"] },
+  { label: "Solené",             emoji: "🧂", color: "#9e7a56",
+    kw: ["solen", "se solí", " sůl", "& sůl", "& sol", "himalájsk", "mořsk"] },
+  { label: "Med & Karamel",      emoji: "🍯", color: "#f7ab31",
+    kw: ["med", "karamel", "medov", "toffee", "honey"] },
+  { label: "Uzené",              emoji: "💨", color: "#6b4b2f",
+    kw: ["uzen"] },
+  { label: "Chili & Pálivé",     emoji: "🌶️", color: "#da1668",
+    kw: ["chili", "pálivé", "jalapeño", "habanero", "sriracha"] },
+  { label: "V těstíčku",         emoji: "🥐", color: "#c8976a",
+    kw: ["těstíčk", "tempura", "obalené v"] },
+  { label: "Se sezamem",         emoji: "🫘", color: "#6fa044",
+    kw: ["sezam"] },
+  { label: "Lyofilizované",      emoji: "❄️", color: "#6b9fd4",
+    kw: ["lyofiliz"] },
+  { label: "Skořice & Koření",   emoji: "🌿", color: "#c8976a",
+    kw: ["skořic", "koření", "curry", "kurkum", "zázvor", "kardamom", "vanilk"] },
+  { label: "Přírodní / Natural", emoji: "🌿", color: "#83502e",
+    kw: [] }, // fallback
+];
+
+function classifyProcess(name) {
+  const n = name.toLowerCase();
+  for (const pg of PROCESS_GROUPS) {
+    if (pg.kw.some(kw => n.includes(kw))) return pg.label;
+  }
+  return "Přírodní / Natural";
+}
+
+function getAllItems(shopKey) {
+  const parents = REPORT[shopKey].rozklad || [];
+  const out = [];
+  for (const p of parents) {
+    for (const g of p.groups) {
+      for (const v of g.variants) {
+        for (const it of v.items) {
+          const qty = getQty(it, activeDate);
+          if (qty > 0) out.push({ ...it, qty_active: qty });
+        }
+      }
+    }
+  }
+  return out;
+}
+
+function renderProcessView(shopKey) {
+  const allItems  = getAllItems(shopKey);
+  const container = document.getElementById(`${shopKey}-sections`);
+  const totalEl   = document.getElementById(`${shopKey}-total`);
+
+  // Seskupit podle výrobního procesu
+  const byProc = {};
+  for (const pg of PROCESS_GROUPS) byProc[pg.label] = [];
+  for (const it of allItems) {
+    const proc = classifyProcess(it.name);
+    byProc[proc].push(it);
+  }
+
+  let grandTotal = 0;
+  container.innerHTML = PROCESS_GROUPS.map(pg => {
+    const items = byProc[pg.label] || [];
+    if (!items.length) return '';
+    const total = items.reduce((s, it) => s + it.qty_active, 0);
+    grandTotal += total;
+
+    const rows = items.map(it => `
+      <div class="product-row" data-code="${it.code}" data-qty="${it.qty_active}" onclick="toggleDone('${it.code}')">
+        <span class="done-check">✓</span>
+        <span class="qty-badge" style="color:${pg.color}">${it.qty_active}×</span>
+        <span class="prod-name">${it.name}</span>
+        <span class="prod-code">${it.code}</span>
+      </div>`).join('');
+
+    return `
+      <div class="parent-section">
+        <div class="parent-header">
+          <div class="parent-stripe" style="background:${pg.color}"></div>
+          <span class="parent-emoji">${pg.emoji}</span>
+          <span class="parent-title" style="color:${pg.color}">${pg.label}</span>
+          <span class="parent-total" style="color:${pg.color}">${total}<small>ks</small></span>
+        </div>
+        <div class="process-block">${rows}</div>
+      </div>`;
+  }).join('');
+
+  totalEl.innerHTML = `Celkem položek k výrobě: <strong>${grandTotal} ks</strong>`;
+}
+
+function setView(view, btn) {
+  activeView = view;
+  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCurrentView('cz');
+  renderCurrentView('sk');
+  applyDoneState();
+  const q = document.getElementById('search-input').value;
+  if (q) applySearch(q);
+}
+
+function renderCurrentView(shopKey) {
+  if (activeView === 'druh') renderSections(shopKey);
+  else renderProcessView(shopKey);
+}
 
 /* ── Done stav ───────────────────────────────────────────── */
 const TODAY = new Date().toISOString().slice(0, 10);
@@ -417,8 +547,8 @@ function selectDate(date, btn) {
   activeDate = date;
   document.querySelectorAll('.date-pill').forEach(p => p.classList.remove('active'));
   btn.classList.add('active');
-  renderSections('cz');
-  renderSections('sk');
+  renderCurrentView('cz');
+  renderCurrentView('sk');
   applyDoneState();
   const q = document.getElementById('search-input').value;
   if (q) applySearch(q);
@@ -586,8 +716,8 @@ async function loadData() {
     buildDatePills();
     renderSummary('cz');
     renderSummary('sk');
-    renderSections('cz');
-    renderSections('sk');
+    renderCurrentView('cz');
+    renderCurrentView('sk');
     applyDoneState();
 
     const gen  = REPORT.generated || '';
