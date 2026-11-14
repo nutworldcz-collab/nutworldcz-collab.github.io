@@ -115,6 +115,47 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
   .quick-grid{grid-template-columns:repeat(4,1fr)}
 }
 
+/* PLATBY */
+.pt-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:16px}
+.pt-tile{background:white;border-radius:12px;padding:12px 16px;box-shadow:0 1px 5px rgba(0,0,0,.07)}
+.pt-lbl{font-family:'Exo 2',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#a08060;margin-bottom:4px}
+.pt-val{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:800;color:#da1668;line-height:1.2}
+.pt-val.am{color:#c27a00}.pt-val.gr{color:#4a7c2f}
+.p-tabs{display:flex;gap:0;border-bottom:2px solid #f0e8df;overflow-x:auto;margin-bottom:14px}
+.p-tab{background:none;border:none;cursor:pointer;font-family:'Exo 2',sans-serif;font-size:12px;font-weight:700;color:#a08060;padding:9px 16px;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:color .15s;display:flex;align-items:center;gap:6px}
+.p-tab:hover{color:#83502e}.p-tab.active{color:#5c381f;border-bottom-color:#83502e}
+.p-pill{font-size:9px;font-weight:800;padding:1px 6px;border-radius:10px;line-height:1.6}
+.ppi-r{background:#fce8ef;color:#b01040;border:1px solid #da1668}
+.ppi-a{background:#fff4df;color:#c27a00;border:1px solid #f7ab31}
+.ppi-g{background:#f0f9ec;color:#4a7c2f;border:1px solid #6fa044}
+.p-panel{display:none}.p-panel.active{display:block}
+.p-sec{font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#a08060;margin:16px 0 8px;padding-left:8px;border-left:3px solid #c8976a}
+.p-sec:first-child{margin-top:0}
+.p-wrap{overflow-x:auto;border-radius:10px;border:1px solid #e8ddd4;background:white;margin-bottom:12px}
+.p-tbl{width:100%;border-collapse:collapse;min-width:460px;font-size:13px}
+.p-tbl thead th{background:#f1e6da;font-family:'Exo 2',sans-serif;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#a08060;font-weight:700;padding:9px 12px;text-align:left;border-bottom:1px solid #e8ddd4;white-space:nowrap}
+.p-tbl thead th.r{text-align:right}
+.p-tbl tbody tr{border-bottom:1px solid #f5ede3;transition:background .1s}
+.p-tbl tbody tr:last-child{border-bottom:none}
+.p-tbl tbody tr:hover{background:#fdfaf7}
+.p-tbl tbody tr.paid-row{opacity:.3}
+.p-tbl tbody tr.paid-row .pname{text-decoration:line-through}
+.p-tbl td{padding:8px 12px;vertical-align:middle}
+.p-tbl td.r{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.p-tbl tfoot td{padding:9px 12px;font-weight:700;font-family:'Exo 2',sans-serif;font-size:12px;background:#f1e6da;border-top:2px solid #e8ddd4;color:#83502e;font-variant-numeric:tabular-nums}
+.p-tbl tfoot td.lbl{color:#a08060;font-weight:600}
+.btn-paid{font-family:'Exo 2',sans-serif;font-size:10px;font-weight:700;padding:4px 9px;border-radius:7px;border:none;cursor:pointer;background:#f1e6da;color:#83502e;transition:all .15s}
+.btn-paid:hover{background:#e0cfc0}.btn-paid.done{background:#d4ebbd;color:#3a6a1a}
+.p-dg{font-family:'Exo 2',sans-serif;font-weight:700;font-size:11px;color:#5c381f;padding:7px 12px;background:#f1e6da;border-bottom:1px solid #e8ddd4}
+.p-dbg{display:inline-block;font-size:9px;font-weight:800;padding:1px 6px;border-radius:8px;margin-left:7px;vertical-align:middle}
+.dbg-t{background:#da1668;color:white}.dbg-s{background:#f7ab31;color:white}
+.pbg{display:inline-block;padding:2px 6px;border-radius:10px;font-size:10px;font-weight:700;white-space:nowrap}
+.pbg-r{background:#fce8ef;color:#b01040;border:1px solid #da1668}
+.pbg-a{background:#fff4df;color:#c27a00;border:1px solid #f7ab31}
+.pbg-n{background:#f1e6da;color:#a08060;border:1px solid #c8976a}
+.p-upd{font-size:11px;color:#a08060;text-align:right;margin-top:6px}
+.p-credit{color:#4a7c2f}
+
 /* ROZVRH */
 .rz-tab{font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;padding:5px 14px;border-radius:20px;border:2px solid transparent;background:white;color:#a08060;cursor:pointer;transition:all .15s}
 .rz-tab.active{border-color:#83502e;color:#5c381f}
@@ -230,6 +271,38 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
         <span style="font-size:10px;color:#a08060;text-align:center">Výstupní + pracovní</span>
       </a>
     </div>
+  </div>
+
+  <!-- PLATBY -->
+  <div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <div class="section-label" style="margin-bottom:0">💰 Pohledávky B2B</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <button id="btn-hide-paid" onclick="platbyToggleHide()" style="font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;padding:5px 12px;border-radius:14px;border:1.5px solid #c8976a;background:white;color:#83502e;cursor:pointer;transition:all .15s">Skrýt zaplacené</button>
+        <span id="platby-updated" style="font-size:11px;color:#a08060">Akt. 13. 11. 2026</span>
+      </div>
+    </div>
+
+    <div class="pt-tiles">
+      <div class="pt-tile"><div class="pt-lbl">Po splatnosti · CZK</div><div class="pt-val">970 862 Kč</div></div>
+      <div class="pt-tile"><div class="pt-lbl">Po splatnosti · EUR</div><div class="pt-val">1 280 EUR</div></div>
+      <div class="pt-tile"><div class="pt-lbl">Do 5 dní · CZK</div><div class="pt-val am">1 328 522 Kč</div></div>
+      <div class="pt-tile"><div class="pt-lbl">Do 5 dní · EUR</div><div class="pt-val am">3 396 EUR</div></div>
+      <div class="pt-tile"><div class="pt-lbl">6 dní + · EUR</div><div class="pt-val gr">5 704 EUR</div></div>
+    </div>
+
+    <div style="background:white;border-radius:12px;padding:16px 18px;box-shadow:0 1px 6px rgba(0,0,0,.07)">
+      <div class="p-tabs">
+        <button class="p-tab active" onclick="pTab('over',this)">Po splatnosti <span class="p-pill ppi-r" id="pill-over">970 862 Kč</span></button>
+        <button class="p-tab" onclick="pTab('soon',this)">Do 5 dní <span class="p-pill ppi-a">13.–18. 11.</span></button>
+        <button class="p-tab" onclick="pTab('later',this)">Delší splatnosti <span class="p-pill ppi-g">po 18. 11.</span></button>
+      </div>
+      <div id="p-panel-over" class="p-panel active"></div>
+      <div id="p-panel-soon" class="p-panel"></div>
+      <div id="p-panel-later" class="p-panel"></div>
+    </div>
+
+    <div class="p-upd">K2 export · bez B2C zákazníků · Ruční aktualizace: říct Claudovi "aktualizuj platby"</div>
   </div>
 
   <!-- ROZVRH -->
@@ -1227,6 +1300,298 @@ function fmtD(iso){if(!iso)return'';const[y,m,dd]=iso.split('-');return`${dd}.${
 
   // Init progress na stránce (i bez otevření)
   updateProgress();
+})();
+
+// ── PLATBY ──────────────────────────────────────────────────────────────────
+(function(){
+  const LS = 'nw_platby_v1';
+  function loadPaid(){ try{return JSON.parse(localStorage.getItem(LS)||'{}');}catch{return {};} }
+  function savePaid(o){ try{localStorage.setItem(LS,JSON.stringify(o));}catch{} }
+
+  // ── DATA ──
+  const OV_CZK = [
+    {id:'ov_alza',    n:'Alza.cz a.s.',                sub:'2 faktury + 2 dobropisy', amt:'33 352',    days:26, pri:'r', plbl:'Urgentní', due:'18. 10.'},
+    {id:'ov_reda',    n:'REDA a.s.',                   sub:'5 faktur · č. 277–287',   amt:'127 098',   days:22, pri:'r', plbl:'Urgentní', due:'22. 10.'},
+    {id:'ov_speed',   n:'SPEED PRESS Plus a.s.',       sub:'4 faktury · č. 328, 377, 388, 402', amt:'98 857', days:22, pri:'r', plbl:'Urgentní', due:'22. 10.'},
+    {id:'ov_kasal',   n:'Jana Kasalová',               sub:'1 faktura · č. 12497',    amt:'2 772',     days:21, pri:'r', plbl:'Urgentní', due:'23. 10.'},
+    {id:'ov_vitr',    n:'Vítr v kapse s.r.o.',         sub:'1 faktura · č. 12337',    amt:'397',       days:25, pri:'r', plbl:'Urgentní', due:'19. 10.'},
+    {id:'ov_kolar',   n:'Michal Kolář',                sub:'1 faktura · č. 359',      amt:'52 630',    days:11, pri:'a', plbl:'Pozor',    due:'02. 11.'},
+    {id:'ov_kram',    n:'Farmářskej krámek s.r.o.',    sub:'1 faktura · č. 12897',    amt:'7 984',     days:10, pri:'a', plbl:'Pozor',    due:'03. 11.'},
+    {id:'ov_emedis',  n:'EMEDIS s.r.o.',               sub:'6 faktur · č. 371–411',   amt:'133 117',   days:9,  pri:'a', plbl:'Pozor',    due:'04. 11.'},
+    {id:'ov_benkor',  n:'B E N K O R s.r.o.',          sub:'1 faktura · č. 380',      amt:'27 787',    days:8,  pri:'a', plbl:'Pozor',    due:'05. 11.'},
+    {id:'ov_jested',  n:'Výrobní podnik Ještěd s.r.o.',sub:'1 faktura · č. 379',      amt:'11 312',    days:8,  pri:'a', plbl:'Pozor',    due:'05. 11.'},
+    {id:'ov_linet',   n:'L I N E T spol. s r.o.',      sub:'1 faktura · č. 375',      amt:'9 688',     days:8,  pri:'a', plbl:'Pozor',    due:'05. 11.'},
+    {id:'ov_nakup',   n:'Nakup na Dobro s.r.o.',       sub:'1 faktura · č. 387',      amt:'152 038',   days:7,  pri:'a', plbl:'Pozor',    due:'06. 11.'},
+    {id:'ov_vonavy',  n:'Muj vonávy kramek',           sub:'1 faktura · č. 12989',    amt:'739',       days:7,  pri:'a', plbl:'Pozor',    due:'06. 11.'},
+    {id:'ov_helik',   n:'Markéta Helikárová',          sub:'1 faktura · č. 13061',    amt:'8 828',     days:4,  pri:'n', plbl:'4 dny',    due:'09. 11.'},
+    {id:'ov_ardix',   n:'ARDIX spol. s r.o.',          sub:'1 faktura · č. 395',      amt:'13 798',    days:4,  pri:'n', plbl:'4 dny',    due:'09. 11.'},
+    {id:'ov_huber',   n:'HUBER CS spol. s r.o.',       sub:'1 faktura · č. 391',      amt:'13 048',    days:4,  pri:'n', plbl:'4 dny',    due:'09. 11.'},
+    {id:'ov_syrarna', n:'Sýrárna Broumov s.r.o.',      sub:'1 faktura · č. 396',      amt:'8 109',     days:3,  pri:'n', plbl:'3 dny',    due:'10. 11.'},
+    {id:'ov_cpr',     n:'CPR HK s.r.o.',               sub:'3 faktury · č. 398, 400, 401', amt:'6 568', days:3,  pri:'n', plbl:'3 dny',    due:'10. 11.'},
+    {id:'ov_zlkl',    n:'ZLKL, s. r. o.',              sub:'1 faktura · č. 404',      amt:'140 235',   days:2,  pri:'n', plbl:'2 dny',    due:'11. 11.'},
+    {id:'ov_vilgain', n:'Vilgain s.r.o.',              sub:'1 faktura · č. 309',      amt:'75 322',    days:2,  pri:'n', plbl:'2 dny',    due:'11. 11.'},
+    {id:'ov_arch',    n:'Arch.Design, s.r.o.',         sub:'1 faktura · č. 406',      amt:'20 328',    days:2,  pri:'n', plbl:'2 dny',    due:'11. 11.'},
+    {id:'ov_tes',     n:'TES Consulting s.r.o.',       sub:'1 faktura · č. 13230',    amt:'25 300',    days:1,  pri:'n', plbl:'1 den',    due:'12. 11.'},
+    {id:'ov_dfszk',   n:'DFSZK, s.r.o.',               sub:'1 faktura · č. 13260',    amt:'1 554',     days:1,  pri:'n', plbl:'1 den',    due:'12. 11.'},
+  ];
+  const OV_EUR = [
+    {id:'oe_moss',    n:'MOSS.SK s.r.o.',              fakt:'č. 162', days:28, pri:'r', plbl:'Urgentní', due:'16. 10.', amt:'10,23'},
+    {id:'oe_pavuk',   n:'Marián Pavúk',                fakt:'č. 182', days:8,  pri:'a', plbl:'Pozor',    due:'05. 11.', amt:'57,36'},
+    {id:'oe_orig',    n:'Originale production s.r.o.', fakt:'č. 183', days:8,  pri:'a', plbl:'Pozor',    due:'05. 11.', amt:'88,12'},
+    {id:'oe_nelli',   n:'NELLI oblátky s.r.o.',        fakt:'č. 186', days:4,  pri:'n', plbl:'4 dny',    due:'09. 11.', amt:'165,30'},
+    {id:'oe_sketch',  n:'Sketch s. r. o.',             fakt:'č. 188', days:3,  pri:'n', plbl:'3 dny',    due:'10. 11.', amt:'261,80'},
+    {id:'oe_post',    n:'POST Servis s.r.o.',          fakt:'č. 190', days:3,  pri:'n', plbl:'3 dny',    due:'10. 11.', amt:'177,86'},
+    {id:'oe_lamelland',n:'LAMELLAND, s.r.o.',          fakt:'č. 47',  days:1,  pri:'n', plbl:'1 den',    due:'12. 11.', amt:'519,60'},
+  ];
+  const SOON_CZK = [
+    {date:'13. 11. 2026', lbl:'DNES', cls:'t', rows:[
+      {id:'sc_certis',  n:'Certis Belchim Czech Republic',    fakt:'414',          amt:'111 104,00'},
+      {id:'sc_reda13',  n:'REDA a.s.',                        fakt:'318, 324, 325', amt:'74 930,24'},
+      {id:'sc_vilg13',  n:'Vilgain s.r.o.',                   fakt:'327',          amt:'50 158,08'},
+      {id:'sc_vuuo',    n:'VÚÚO Holovousy',                   fakt:'12985',        amt:'46 087,00'},
+      {id:'sc_bmt',     n:'BMT Medical Technology',           fakt:'417',          amt:'46 233,60'},
+      {id:'sc_vaillant',n:'Vaillant Group Czech',             fakt:'413',          amt:'28 333,76'},
+      {id:'sc_saar',    n:'Saar Gummi Czech',                 fakt:'418',          amt:'23 448,32'},
+      {id:'sc_jana13',  n:'Ing. Jana Malá',                   fakt:'13292',        amt:'7 577,00'},
+      {id:'sc_hsekomin',n:'HS EkoMin s.r.o.',                 fakt:'13280',        amt:'4 557,00'},
+      {id:'sc_stepek',  n:'Jiří Štěpek',                      fakt:'13273',        amt:'2 258,00'},
+      {id:'sc_cpr13',   n:'CPR HK s.r.o.',                    fakt:'415, 416',     amt:'4 192,16'},
+    ]},
+    {date:'14. 11. 2026', lbl:'ZÍTRA', cls:'s', rows:[
+      {id:'sc_emedis14',n:'EMEDIS s.r.o.',                    fakt:'421',          amt:'18 459,81'},
+    ]},
+    {date:'15. 11. 2026', lbl:'', cls:'', rows:[
+      {id:'sc_alza15',  n:'Alza.cz a.s.',                     fakt:'133',          amt:'45 098,70'},
+    ]},
+    {date:'16. 11. 2026', lbl:'', cls:'', rows:[
+      {id:'sc_alza16',  n:'Alza.cz a.s.',                     fakt:'134, 419',     amt:'286 649,44'},
+      {id:'sc_heineken',n:'Heineken ČR',                      fakt:'428',          amt:'79 195,20'},
+      {id:'sc_chem',    n:'AS CHEMOPRAG',                     fakt:'427',          amt:'24 202,98'},
+      {id:'sc_brand',   n:'BRAND CONCEPT',                    fakt:'423, 424',     amt:'17 722,88'},
+      {id:'sc_cpr16',   n:'CPR HK s.r.o.',                    fakt:'429–433',      amt:'11 690,25'},
+      {id:'sc_ikv',     n:'I.K.V., s.r.o.',                   fakt:'422',          amt:'8 232,00'},
+      {id:'sc_geum',    n:'GEUM s.r.o.',                      fakt:'13429',        amt:'7 954,00'},
+      {id:'sc_kasper',  n:'Eliška Kasper',                    fakt:'13401',        amt:'6 544,00'},
+      {id:'sc_helik16', n:'Markéta Helikárová',               fakt:'13411',        amt:'4 533,00'},
+      {id:'sc_kavanova',n:'Veronika Kavanová',                 fakt:'13400',        amt:'2 384,00'},
+      {id:'sc_dasicka', n:'Dašická s.r.o.',                   fakt:'425',          amt:'2 184,00'},
+      {id:'sc_olympic16',n:'Olympic Palace',                  fakt:'392',          amt:'6 265,84'},
+    ]},
+    {date:'17. 11. 2026', lbl:'', cls:'', rows:[
+      {id:'sc_greenswan',n:'Green-Swan Pharmaceuticals',      fakt:'438',          amt:'102 821,60'},
+      {id:'sc_imi17',   n:'IMI Partner',                      fakt:'440',          amt:'29 388,80'},
+      {id:'sc_nachod',  n:'MĚSTO NÁCHOD',                     fakt:'436',          amt:'28 112,00'},
+      {id:'sc_kovintrade',n:'KOVINTRADE Praha',               fakt:'437',          amt:'13 832,00'},
+      {id:'sc_ikme',    n:'Institut klinické a exp. medicíny', fakt:'435',         amt:'12 526,08'},
+      {id:'sc_olympic17',n:'Olympic Palace',                  fakt:'399',          amt:'7 526,40'},
+      {id:'sc_amt',     n:'AMT AUTO - SKLA',                  fakt:'13485',        amt:'6 510,00'},
+      {id:'sc_jana17',  n:'Ing. Jana Malá',                   fakt:'13440',        amt:'5 027,00'},
+      {id:'sc_cpr17',   n:'CPR HK s.r.o.',                    fakt:'434',          amt:'2 968,00'},
+      {id:'sc_tsp',     n:'TSP DATA',                         fakt:'13474',        amt:'1 602,31'},
+      {id:'sc_banalita',n:'Banalita s.r.o.',                  fakt:'13452',        amt:'955,00'},
+      {id:'sc_benkor17',n:'BENKOR (dobropis)',                 fakt:'439',          amt:'−8 338,40', credit:true},
+    ]},
+    {date:'18. 11. 2026', lbl:'', cls:'', rows:[
+      {id:'sc_iframix', n:'IFRAMIX',                          fakt:'442',          amt:'58 800,00'},
+      {id:'sc_alza18',  n:'Alza.cz a.s.',                     fakt:'135, 136',     amt:'48 429,70'},
+      {id:'sc_schinkmann',n:'SCHINKMANN',                     fakt:'443',          amt:'20 328,00'},
+      {id:'sc_kas',     n:'K a S, s.r.o.',                    fakt:'451',          amt:'16 184,00'},
+      {id:'sc_emedis18',n:'EMEDIS s.r.o.',                    fakt:'444',          amt:'14 053,92'},
+      {id:'sc_euro_pool',n:'Euro Pool System CZ',             fakt:'445',          amt:'14 488,32'},
+      {id:'sc_imi18',   n:'IMI Partner',                      fakt:'447',          amt:'12 073,60'},
+      {id:'sc_ms_pod',  n:'MŠ Poděbrady',                     fakt:'446, 448, 449', amt:'7 084,00'},
+      {id:'sc_sport',   n:'SPORT HOTÁREK',                    fakt:'13518',        amt:'7 832,00'},
+      {id:'sc_cpr18',   n:'CPR HK s.r.o.',                    fakt:'441',          amt:'3 284,74'},
+      {id:'sc_waxwing', n:'WAXWING',                          fakt:'13517',        amt:'3 038,00'},
+    ]},
+  ];
+  const SOON_EUR = [
+    {id:'se_metrostav',n:'METROSTAV ESTATE A.S.',  fakt:'48',  due:'13. 11.', amt:'1 824,00'},
+    {id:'se_elpatt',   n:'ELPATT spol. s r.o.',    fakt:'49',  due:'13. 11.', amt:'451,00'},
+    {id:'se_pd_vajnory',n:'PD Vajnory',            fakt:'194', due:'13. 11.', amt:'90,68'},
+    {id:'se_sketch17', n:'Sketch s.r.o.',          fakt:'196', due:'17. 11.', amt:'507,20'},
+    {id:'se_jufa',     n:'JUFA s.r.o.',            fakt:'197', due:'17. 11.', amt:'226,40'},
+    {id:'se_solarny',  n:'SOLARNY DOM',            fakt:'50',  due:'18. 11.', amt:'297,20'},
+  ];
+  const LATER_CZK = [
+    {id:'la_alza',    n:'Alza.cz a.s.',            fakt:'137–183 (40+ fakt.)', due:'19.11–12.12',  amt:'miliony Kč', approx:true},
+    {id:'la_reda',    n:'REDA a.s.',               fakt:'342–471 (10+ fakt.)', due:'19. 11.',       amt:'~404 000+',  approx:true},
+    {id:'la_vilgain', n:'Vilgain s.r.o.',          fakt:'383, 384, 453',       due:'—',             amt:'281 413,44'},
+    {id:'la_candex',  n:'Candex Solutions',        fakt:'463',                 due:'20. 11.',       amt:'87 180,80'},
+    {id:'la_brno',    n:'Statutární město Brno',   fakt:'407',                 due:'04. 12.',       amt:'64 344,00'},
+    {id:'la_speed',   n:'SPEED PRESS Plus a.s.',   fakt:'462, 468',            due:'20. 11.',       amt:'39 483,92'},
+    {id:'la_strojy',  n:'Strojárny Třinec',        fakt:'403',                 due:'04. 12.',       amt:'31 920,00'},
+    {id:'la_inafy',   n:'Inafy Estates',           fakt:'351, 409',            due:'—',             amt:'25 716,92'},
+    {id:'la_pematex', n:'Pematex',                 fakt:'12821, 13367, 13374', due:'—',             amt:'8 630,00'},
+  ];
+  const LATER_EUR = [
+    {id:'le_proreco', n:'PRORECO s.r.o.',  fakt:'52',  due:'20. 11.', amt:'3 435,60'},
+    {id:'le_rechtys', n:'Rechtys spol.',   fakt:'51',  due:'19. 11.', amt:'1 814,00'},
+    {id:'le_sketch',  n:'Sketch s.r.o.',  fakt:'199', due:'19. 11.', amt:'165,30'},
+    {id:'le_dez',     n:'DeZ spol.',       fakt:'200', due:'20. 11.', amt:'161,10'},
+    {id:'le_arma',    n:'Armaplast',       fakt:'198', due:'19. 11.', amt:'128,45'},
+  ];
+
+  // ── RENDER helpers ──
+  const PRI_CLS = {r:'pbg-r', a:'pbg-a', n:'pbg-n'};
+  const PRI_COL = {r:'#b01040', a:'#c27a00', n:'#2a1a0e'};
+
+  function btnHtml(id){
+    const p = loadPaid();
+    const done = !!p[id];
+    return `<button class="btn-paid${done?' done':''}" onclick="platbyPaid('${id}',this)">${done?'✓ Zaplaceno':'Zaplatit'}</button>`;
+  }
+  function trClass(id){ return loadPaid()[id] ? ' class="paid-row"' : ''; }
+
+  function tableOvCZK(){
+    let rows = OV_CZK.map(r=>`
+      <tr${trClass(r.id)} data-pid="${r.id}">
+        <td><span class="pname">${r.n}</span><div style="font-size:11px;color:#a08060;margin-top:1px">${r.sub}</div></td>
+        <td class="r">${r.amt} Kč</td>
+        <td>${r.due}</td>
+        <td class="r" style="color:${PRI_COL[r.pri]}">${r.days}d</td>
+        <td><span class="pbg ${PRI_CLS[r.pri]}">${r.plbl}</span></td>
+        <td>${btnHtml(r.id)}</td>
+      </tr>`).join('');
+    return `<div class="p-wrap"><table class="p-tbl">
+      <thead><tr><th>Firma / zákazník</th><th class="r">Částka</th><th>Splatnost</th><th class="r">Dní</th><th>Stav</th><th></th></tr></thead>
+      <tbody>${rows}</tbody>
+      <tfoot><tr><td class="lbl" colspan="4">Celkem CZK po splatnosti</td><td colspan="2" class="r">970 862 Kč</td></tr></tfoot>
+    </table></div>`;
+  }
+
+  function tableOvEUR(){
+    let rows = OV_EUR.map(r=>`
+      <tr${trClass(r.id)} data-pid="${r.id}">
+        <td><span class="pname">${r.n}</span><div style="font-size:11px;color:#a08060;margin-top:1px">${r.fakt}</div></td>
+        <td class="r">${r.amt} EUR</td>
+        <td>${r.due}</td>
+        <td class="r" style="color:${PRI_COL[r.pri]}">${r.days}d</td>
+        <td><span class="pbg ${PRI_CLS[r.pri]}">${r.plbl}</span></td>
+        <td>${btnHtml(r.id)}</td>
+      </tr>`).join('');
+    return `<div class="p-wrap"><table class="p-tbl">
+      <thead><tr><th>Firma / zákazník</th><th class="r">Částka</th><th>Splatnost</th><th class="r">Dní</th><th>Stav</th><th></th></tr></thead>
+      <tbody>${rows}</tbody>
+      <tfoot><tr><td class="lbl" colspan="4">Celkem EUR po splatnosti</td><td colspan="2" class="r">1 280,27 EUR</td></tr></tfoot>
+    </table></div>`;
+  }
+
+  function tableSoonCZK(){
+    let html = '';
+    SOON_CZK.forEach(g => {
+      let badge = g.lbl ? `<span class="p-dbg dbg-${g.cls}">${g.lbl}</span>` : '';
+      html += `<td class="p-dg" colspan="4">${g.date}${badge}</td>`;
+      html = html.replace('<td class="p-dg"','<tr><td class="p-dg"').replace('</td>','</td></tr>');
+      g.rows.forEach(r => {
+        html += `<tr${trClass(r.id)} data-pid="${r.id}">
+          <td><span class="pname">${r.n}</span></td>
+          <td style="font-size:11.5px;color:#a08060">č. ${r.fakt}</td>
+          <td class="r${r.credit?' p-credit':''}">${r.amt} Kč</td>
+          <td>${btnHtml(r.id)}</td>
+        </tr>`;
+      });
+    });
+    return `<div class="p-wrap"><table class="p-tbl">
+      <thead><tr><th>Firma / zákazník</th><th>Faktura</th><th class="r">Částka</th><th></th></tr></thead>
+      <tbody>${html}</tbody>
+      <tfoot><tr><td class="lbl" colspan="2">Celkem CZK do 5 dní</td><td class="r" colspan="2">1 328 522 Kč</td></tr></tfoot>
+    </table></div>`;
+  }
+
+  function tableSoonEUR(){
+    let rows = SOON_EUR.map(r=>`
+      <tr${trClass(r.id)} data-pid="${r.id}">
+        <td><span class="pname">${r.n}</span></td>
+        <td style="font-size:11.5px;color:#a08060">č. ${r.fakt}</td>
+        <td>${r.due}</td>
+        <td class="r">${r.amt} EUR</td>
+        <td>${btnHtml(r.id)}</td>
+      </tr>`).join('');
+    return `<div class="p-wrap"><table class="p-tbl">
+      <thead><tr><th>Firma / zákazník</th><th>Faktura</th><th>Splatnost</th><th class="r">Částka</th><th></th></tr></thead>
+      <tbody>${rows}</tbody>
+      <tfoot><tr><td class="lbl" colspan="3">Celkem EUR do 5 dní</td><td class="r" colspan="2">3 396,48 EUR</td></tr></tfoot>
+    </table></div>`;
+  }
+
+  function tableLaterCZK(){
+    let rows = LATER_CZK.map(r=>`
+      <tr${trClass(r.id)} data-pid="${r.id}">
+        <td><span class="pname">${r.n}</span><div style="font-size:11px;color:#a08060;margin-top:1px">${r.fakt}</div></td>
+        <td>${r.due}</td>
+        <td class="r${r.approx?' p-credit':''}">${r.amt}${!r.approx?' Kč':''}</td>
+        <td>${btnHtml(r.id)}</td>
+      </tr>`).join('');
+    return `<div class="p-wrap"><table class="p-tbl">
+      <thead><tr><th>Firma / zákazník</th><th>Splatnost</th><th class="r">Částka</th><th></th></tr></thead>
+      <tbody>${rows}</tbody>
+      <tfoot><tr><td class="lbl" colspan="2">Celkem CZK 6+ dní</td><td class="r" colspan="2">943 tis.+ Kč (bez Alzy)</td></tr></tfoot>
+    </table></div>`;
+  }
+
+  function tableLaterEUR(){
+    let rows = LATER_EUR.map(r=>`
+      <tr${trClass(r.id)} data-pid="${r.id}">
+        <td><span class="pname">${r.n}</span></td>
+        <td style="font-size:11.5px;color:#a08060">č. ${r.fakt}</td>
+        <td>${r.due}</td>
+        <td class="r">${r.amt} EUR</td>
+        <td>${btnHtml(r.id)}</td>
+      </tr>`).join('');
+    return `<div class="p-wrap"><table class="p-tbl">
+      <thead><tr><th>Firma / zákazník</th><th>Faktura</th><th>Splatnost</th><th class="r">Částka</th><th></th></tr></thead>
+      <tbody>${rows}</tbody>
+      <tfoot><tr><td class="lbl" colspan="3">Celkem EUR 6+ dní</td><td class="r" colspan="2">5 704,45 EUR</td></tr></tfoot>
+    </table></div>`;
+  }
+
+  function renderAll(){
+    document.getElementById('p-panel-over').innerHTML =
+      '<div class="p-sec">🇨🇿 CZK — české faktury</div>' + tableOvCZK() +
+      '<div class="p-sec">🇸🇰 EUR — slovenské faktury</div>' + tableOvEUR();
+    document.getElementById('p-panel-soon').innerHTML =
+      '<div class="p-sec">🇨🇿 CZK — splatnost 13.–18. 11.</div>' + tableSoonCZK() +
+      '<div class="p-sec">🇸🇰 EUR — splatnost 13.–18. 11.</div>' + tableSoonEUR();
+    document.getElementById('p-panel-later').innerHTML =
+      '<div class="p-sec">🇨🇿 CZK — splatnost po 18. 11.</div>' + tableLaterCZK() +
+      '<div class="p-sec">🇸🇰 EUR — splatnost po 18. 11.</div>' + tableLaterEUR();
+  }
+
+  // ── PUBLIC API ──
+  let _hiding = false;
+
+  window.platbyPaid = function(id, btn){
+    const paid = loadPaid();
+    paid[id] = !paid[id];
+    savePaid(paid);
+    const tr = btn.closest('tr');
+    tr.classList.toggle('paid-row', !!paid[id]);
+    btn.textContent = paid[id] ? '✓ Zaplaceno' : 'Zaplatit';
+    btn.classList.toggle('done', !!paid[id]);
+    if(_hiding && paid[id]) tr.style.display = 'none';
+  };
+
+  window.platbyToggleHide = function(){
+    _hiding = !_hiding;
+    const b = document.getElementById('btn-hide-paid');
+    if(b) b.textContent = _hiding ? 'Zobrazit vše' : 'Skrýt zaplacené';
+    const paid = loadPaid();
+    document.querySelectorAll('[data-pid]').forEach(tr=>{
+      if(paid[tr.dataset.pid]) tr.style.display = _hiding ? 'none' : '';
+    });
+  };
+
+  window.pTab = function(id, btn){
+    ['over','soon','later'].forEach(t=>{
+      const p = document.getElementById('p-panel-'+t);
+      if(p) p.classList.toggle('active', t===id);
+    });
+    document.querySelectorAll('.p-tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+  };
+
+  renderAll();
 })();
 
 </script>
