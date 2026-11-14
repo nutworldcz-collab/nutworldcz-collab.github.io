@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Delší splatnosti — Pohledávky B2B</title>
+<link rel="stylesheet" href="platby.css">
+</head>
+<body>
+<div class="page-wrap">
+
+  <div class="top-bar">
+    <a class="back-link" href="index.html">← Přehled plateb</a>
+    <div class="page-title">📅 Delší splatnosti</div>
+    <div class="page-sub">Splatnost po 18. 11. 2026 · Akt. <span id="upd-date"></span></div>
+  </div>
+
+  <div class="tiles">
+    <div class="tile"><div class="tile-lbl">CZK celkem</div><div class="tile-val gr">943 tis.+ Kč</div><div style="font-size:10px;color:#a08060;margin-top:2px">bez Alzy (miliony)</div></div>
+    <div class="tile"><div class="tile-lbl">EUR celkem</div><div class="tile-val gr">5 704 EUR</div></div>
+    <div class="tile"><div class="tile-lbl">Firem CZK</div><div class="tile-val" style="color:var(--bd)" id="cnt-czk">—</div></div>
+    <div class="tile"><div class="tile-lbl">Firem EUR</div><div class="tile-val" style="color:var(--bd)" id="cnt-eur">—</div></div>
+  </div>
+
+  <div class="card">
+    <div class="ctrl-row">
+      <div class="ctrl-title">🇨🇿 CZK — české faktury</div>
+      <button class="btn-hide" onclick="nwToggleHide()">Skrýt zaplacené</button>
+    </div>
+    <div id="tbl-later-czk"></div>
+
+    <div class="sec-lbl" style="margin-top:20px">🇸🇰 EUR — slovenské faktury</div>
+    <div id="tbl-later-eur"></div>
+  </div>
+
+  <div class="page-footer">K2 export · bez B2C zákazníků</div>
+</div>
+<script src="data.js"></script>
+<script src="platby.js"></script>
+<script>
+  document.getElementById('upd-date').textContent = NW_PLATBY_UPDATED;
+  document.getElementById('tbl-later-czk').innerHTML = buildLaterCZK();
+  document.getElementById('tbl-later-eur').innerHTML = buildLaterEUR();
+  document.getElementById('cnt-czk').textContent = LATER_CZK.length;
+  document.getElementById('cnt-eur').textContent = LATER_EUR.length;
+</script>
+</body>
+</html>

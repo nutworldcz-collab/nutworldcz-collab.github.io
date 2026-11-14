@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pohledávky B2B — Nutworld</title>
+<link rel="stylesheet" href="platby.css">
+</head>
+<body>
+<div class="page-wrap">
+
+  <div class="top-bar">
+    <a class="back-link" href="/ja.html">← Dashboard</a>
+    <div class="page-title">💰 Pohledávky B2B</div>
+    <div class="page-sub">Akt. <span id="upd-date"></span></div>
+  </div>
+
+  <!-- Summary tiles -->
+  <div class="tiles">
+    <div class="tile"><div class="tile-lbl">Po splatnosti · CZK</div><div class="tile-val">970 862 Kč</div></div>
+    <div class="tile"><div class="tile-lbl">Po splatnosti · EUR</div><div class="tile-val">1 280 EUR</div></div>
+    <div class="tile"><div class="tile-lbl">Do 5 dní · CZK</div><div class="tile-val am">1 328 522 Kč</div></div>
+    <div class="tile"><div class="tile-lbl">Do 5 dní · EUR</div><div class="tile-val am">3 396 EUR</div></div>
+    <div class="tile"><div class="tile-lbl">6 dní + · EUR</div><div class="tile-val gr">5 704 EUR</div></div>
+  </div>
+
+  <!-- Nav cards -->
+  <div class="nav-cards">
+    <a class="nav-card red" href="po-splatnosti.html">
+      <div class="nav-card-icon">🚨</div>
+      <div class="nav-card-title">Po splatnosti</div>
+      <div class="nav-card-sub">Faktury s prošlou splatností — priorita urgentní + pozor</div>
+      <div class="nav-card-amount">970 862 Kč</div>
+      <div class="nav-card-eur">+ 1 280,27 EUR (SK)</div>
+      <div class="nav-card-arrow">Otevřít →</div>
+    </a>
+    <a class="nav-card amber" href="do-5-dni.html">
+      <div class="nav-card-icon">⏰</div>
+      <div class="nav-card-title">Do 5 dní</div>
+      <div class="nav-card-sub">Faktury se splatností 13.–18. 11. 2026</div>
+      <div class="nav-card-amount am">1 328 522 Kč</div>
+      <div class="nav-card-eur">+ 3 396,48 EUR (SK)</div>
+      <div class="nav-card-arrow">Otevřít →</div>
+    </a>
+    <a class="nav-card green" href="delsi-splatnosti.html">
+      <div class="nav-card-icon">📅</div>
+      <div class="nav-card-title">Delší splatnosti</div>
+      <div class="nav-card-sub">Faktury se splatností po 18. 11. 2026</div>
+      <div class="nav-card-amount gr">943 tis.+ Kč</div>
+      <div class="nav-card-eur">+ 5 704,45 EUR (SK)</div>
+      <div class="nav-card-arrow">Otevřít →</div>
+    </a>
+  </div>
+
+  <div class="page-footer">K2 export · bez B2C zákazníků · Říct Claudovi "aktualizuj platby" pro nový export</div>
+</div>
+<script src="data.js"></script>
+<script>
+  document.getElementById('upd-date').textContent = NW_PLATBY_UPDATED;
+</script>
+</body>
+</html>

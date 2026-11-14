@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Do 5 dní — Pohledávky B2B</title>
+<link rel="stylesheet" href="platby.css">
+</head>
+<body>
+<div class="page-wrap">
+
+  <div class="top-bar">
+    <a class="back-link" href="index.html">← Přehled plateb</a>
+    <div class="page-title">⏰ Do 5 dní</div>
+    <div class="page-sub">Splatnost 13.–18. 11. 2026 · Akt. <span id="upd-date"></span></div>
+  </div>
+
+  <div class="tiles">
+    <div class="tile"><div class="tile-lbl">CZK celkem</div><div class="tile-val am">1 328 522 Kč</div></div>
+    <div class="tile"><div class="tile-lbl">EUR celkem</div><div class="tile-val am">3 396 EUR</div></div>
+    <div class="tile"><div class="tile-lbl">Dnes splatné</div><div class="tile-val" style="color:var(--bd)" id="cnt-dnes">—</div></div>
+  </div>
+
+  <div class="card">
+    <div class="ctrl-row">
+      <div class="ctrl-title">🇨🇿 CZK — české faktury</div>
+      <button class="btn-hide" onclick="nwToggleHide()">Skrýt zaplacené</button>
+    </div>
+    <div id="tbl-soon-czk"></div>
+
+    <div class="sec-lbl" style="margin-top:20px">🇸🇰 EUR — slovenské faktury</div>
+    <div id="tbl-soon-eur"></div>
+  </div>
+
+  <div class="page-footer">K2 export · bez B2C zákazníků</div>
+</div>
+<script src="data.js"></script>
+<script src="platby.js"></script>
+<script>
+  document.getElementById('upd-date').textContent = NW_PLATBY_UPDATED;
+  document.getElementById('tbl-soon-czk').innerHTML = buildSoonCZK();
+  document.getElementById('tbl-soon-eur').innerHTML = buildSoonEUR();
+  const dnesGroup = SOON_CZK.find(g => g.lbl === 'DNES');
+  document.getElementById('cnt-dnes').textContent = dnesGroup ? dnesGroup.rows.length + ' faktur' : '—';
+</script>
+</body>
+</html>

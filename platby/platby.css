@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600&display=swap');
+
+:root{
+  --bd:#5c381f;--br:#83502e;--kraft:#f1e6da;--acc:#da1668;--amb:#f7ab31;--leaf:#6fa044;
+  --bg:#e8ddd4;--card:#fff;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Source Sans 3',sans-serif;font-size:14px;background:var(--bg);color:#2a1a0e;min-height:100vh}
+
+/* Layout */
+.page-wrap{max-width:960px;margin:0 auto;padding:16px max(16px,env(safe-area-inset-left,0px))}
+.top-bar{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.back-link{font-family:'Exo 2',sans-serif;font-size:12px;font-weight:700;color:#83502e;text-decoration:none;display:flex;align-items:center;gap:5px;padding:7px 14px;border-radius:14px;background:white;box-shadow:0 1px 4px rgba(0,0,0,.08);transition:all .15s}
+.back-link:hover{background:#f1e6da}
+.page-title{font-family:'Exo 2',sans-serif;font-size:20px;font-weight:800;color:var(--bd)}
+.page-sub{font-size:12px;color:#a08060;margin-left:auto}
+
+/* Tiles */
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:20px}
+.tile{background:white;border-radius:12px;padding:12px 16px;box-shadow:0 1px 5px rgba(0,0,0,.07)}
+.tile-lbl{font-family:'Exo 2',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#a08060;margin-bottom:4px}
+.tile-val{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:800;color:#da1668;line-height:1.2}
+.tile-val.am{color:#c27a00}.tile-val.gr{color:#4a7c2f}
+
+/* Nav cards (index) */
+.nav-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:20px}
+.nav-card{display:flex;flex-direction:column;background:white;border-radius:14px;padding:18px 20px;box-shadow:0 1px 6px rgba(0,0,0,.07);text-decoration:none;color:inherit;border-top:4px solid #c8976a;transition:all .15s;cursor:pointer}
+.nav-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.12)}
+.nav-card.red{border-top-color:#da1668}
+.nav-card.amber{border-top-color:#f7ab31}
+.nav-card.green{border-top-color:#6fa044}
+.nav-card-icon{font-size:28px;margin-bottom:10px}
+.nav-card-title{font-family:'Exo 2',sans-serif;font-size:16px;font-weight:800;color:var(--bd);margin-bottom:4px}
+.nav-card-sub{font-size:12px;color:#a08060;margin-bottom:14px;flex:1}
+.nav-card-amount{font-family:'Exo 2',sans-serif;font-size:22px;font-weight:800;color:#da1668}
+.nav-card-amount.am{color:#c27a00}.nav-card-amount.gr{color:#4a7c2f}
+.nav-card-eur{font-size:12px;color:#a08060;margin-top:2px}
+.nav-card-arrow{font-size:12px;color:#83502e;font-weight:700;margin-top:12px;font-family:'Exo 2',sans-serif}
+
+/* Card wrapper */
+.card{background:white;border-radius:14px;padding:18px 20px;box-shadow:0 1px 6px rgba(0,0,0,.07);margin-bottom:16px}
+
+/* Section headers */
+.sec-lbl{font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:#a08060;margin:16px 0 8px;padding-left:8px;border-left:3px solid #c8976a}
+.sec-lbl:first-child{margin-top:0}
+
+/* Table */
+.tbl-wrap{overflow-x:auto;border-radius:10px;border:1px solid #e8ddd4;background:white;margin-bottom:12px}
+.tbl{width:100%;border-collapse:collapse;min-width:460px;font-size:13px}
+.tbl thead th{background:#f1e6da;font-family:'Exo 2',sans-serif;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#a08060;font-weight:700;padding:9px 12px;text-align:left;border-bottom:1px solid #e8ddd4;white-space:nowrap}
+.tbl thead th.r{text-align:right}
+.tbl tbody tr{border-bottom:1px solid #f5ede3;transition:background .1s}
+.tbl tbody tr:last-child{border-bottom:none}
+.tbl tbody tr:hover{background:#fdfaf7}
+.tbl tbody tr.paid{opacity:.3}
+.tbl tbody tr.paid .pname{text-decoration:line-through}
+.tbl td{padding:8px 12px;vertical-align:middle}
+.tbl td.r{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.tbl tfoot td{padding:9px 12px;font-weight:700;font-family:'Exo 2',sans-serif;font-size:12px;background:#f1e6da;border-top:2px solid #e8ddd4;color:#83502e;font-variant-numeric:tabular-nums}
+.tbl tfoot td.lbl{color:#a08060;font-weight:600}
+.sub-txt{font-size:11px;color:#a08060;margin-top:1px}
+.credit{color:#4a7c2f}
+
+/* Priority badges */
+.pbg{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;white-space:nowrap}
+.pbg-r{background:#fce8ef;color:#b01040;border:1px solid #da1668}
+.pbg-a{background:#fff4df;color:#c27a00;border:1px solid #f7ab31}
+.pbg-n{background:#f1e6da;color:#a08060;border:1px solid #c8976a}
+
+/* Date group rows */
+.dg-row td{font-family:'Exo 2',sans-serif;font-weight:700;font-size:11px;color:#5c381f;padding:7px 12px;background:#f1e6da;border-bottom:1px solid #e8ddd4}
+.dg-badge{display:inline-block;font-size:9px;font-weight:800;padding:1px 6px;border-radius:8px;margin-left:7px;vertical-align:middle}
+.dg-t{background:#da1668;color:white}.dg-s{background:#f7ab31;color:white}
+
+/* Buttons */
+.btn-paid{font-family:'Exo 2',sans-serif;font-size:10px;font-weight:700;padding:4px 9px;border-radius:7px;border:none;cursor:pointer;background:#f1e6da;color:#83502e;transition:all .15s;white-space:nowrap}
+.btn-paid:hover{background:#e0cfc0}.btn-paid.done{background:#d4ebbd;color:#3a6a1a}
+.btn-hide{font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;padding:5px 14px;border-radius:14px;border:1.5px solid #c8976a;background:white;color:#83502e;cursor:pointer;transition:all .15s;margin-left:auto}
+.btn-hide:hover{background:#f1e6da}
+
+/* Top controls */
+.ctrl-row{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.ctrl-title{font-family:'Exo 2',sans-serif;font-size:14px;font-weight:800;color:var(--bd)}
+.upd-note{font-size:11px;color:#a08060}
+
+/* Footer */
+.page-footer{font-size:11px;color:#a08060;text-align:center;padding:20px 0 32px}
