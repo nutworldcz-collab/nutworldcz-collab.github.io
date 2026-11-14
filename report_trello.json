@@ -1,647 +1,77 @@
 {
-  "generated": "2026-11-13T04:38:27",
-  "date": "2026-11-12",
-  "total": 64,
+  "generated": "2026-11-14T04:00:08",
+  "date": "2026-11-13",
+  "total": 7,
   "notifications": [
     {
-      "type": "addAttachmentToCard",
-      "label": "addAttachmentToCard",
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "Impregnace",
+      "card_url": "https://trello.com/c/o1XzqqL6",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Renata Pošepná",
+      "comment": "",
+      "time": "2026-11-13T11:34:18.861Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "Sketch",
+      "card_url": "https://trello.com/c/lVrxlLJN",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Jana Nývltová",
+      "comment": "",
+      "time": "2026-11-13T11:05:47.436Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "VILGAIN objednávka 24.11.2026",
+      "card_url": "https://trello.com/c/OFPD5jg7",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Jana Nývltová",
+      "comment": "",
+      "time": "2026-11-13T10:40:18.894Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
+      "card": "Atlas Copco s.r.o. — 45 ks — 16.11.2026",
+      "card_url": "https://trello.com/c/PBcU6NFJ",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Doprava NutWorld",
+      "comment": "",
+      "time": "2026-11-13T05:03:27.829Z"
+    },
+    {
+      "type": "markedCompleteCard",
+      "label": "markedCompleteCard",
+      "card": "Atlas Copco s.r.o. — 45 ks — 16.11.2026",
+      "card_url": "https://trello.com/c/PBcU6NFJ",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Doprava NutWorld",
+      "comment": "",
+      "time": "2026-11-13T05:03:22.879Z"
+    },
+    {
+      "type": "commentCard",
+      "label": "Nový komentář",
+      "card": "Impregnace",
+      "card_url": "https://trello.com/c/o1XzqqL6",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Markéta Costachová",
+      "comment": "@darky70 já to kopírovala od ní, ona je taková zmatkářka docela, že pak jsi z ní zmatená taky, ale já to ověřím, budeš v kopii, podle mě to info si psala pro sebe, loni měli neobvázané vše",
+      "time": "2026-11-13T04:25:14.107Z"
+    },
+    {
+      "type": "changeCard",
+      "label": "Změna na kartě",
       "card": "Atlas Copco s.r.o. — 45 ks — 16.11.2026",
       "card_url": "https://trello.com/c/PBcU6NFJ",
       "board": "Firmy dárky + objednávky",
       "creator": "Renata Pošepná",
       "comment": "",
-      "time": "2026-11-12T15:55:47.101Z"
-    },
-    {
-      "type": "addAttachmentToCard",
-      "label": "addAttachmentToCard",
-      "card": "Atlas Copco s.r.o. — 45 ks — 16.11.2026",
-      "card_url": "https://trello.com/c/PBcU6NFJ",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Renata Pošepná",
-      "comment": "",
-      "time": "2026-11-12T15:55:41.640Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "ABS Jets, a.s. — 401 ks — 25.11.2026",
-      "card_url": "https://trello.com/c/Hohqzv6P",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "",
-      "time": "2026-11-12T14:24:22.787Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "Heineken Česká republika, a.s. — 665 ks — 10.11.2026",
-      "card_url": "https://trello.com/c/nFvVYkdl",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "",
-      "time": "2026-11-12T13:42:25.431Z"
-    },
-    {
-      "type": "markedCompleteCard",
-      "label": "markedCompleteCard",
-      "card": "Heineken Česká republika, a.s. — 665 ks — 10.11.2026",
-      "card_url": "https://trello.com/c/nFvVYkdl",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "",
-      "time": "2026-11-12T13:42:20.635Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "Benkor",
-      "card_url": "https://trello.com/c/0lpIU0g0",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "",
-      "time": "2026-11-12T13:39:12.979Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "B-ing,s.r.o.",
-      "card_url": "https://trello.com/c/ieGeH8QD",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Markéta Costachová",
-      "comment": "@darky70 házím logo, bude na každém tom kelímku, asi k tomu můžeš připsat vždy druh ořechu našim psacím písmem, bude pak ráda za náhled až bude se dělat na této obj, jestli nebudou pak ty pečetě hod m",
-      "time": "2026-11-12T13:17:31.903Z"
-    },
-    {
-      "type": "addAttachmentToCard",
-      "label": "addAttachmentToCard",
-      "card": "B-ing,s.r.o.",
-      "card_url": "https://trello.com/c/ieGeH8QD",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Markéta Costachová",
-      "comment": "",
-      "time": "2026-11-12T13:16:16.758Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "CORPIN, a.s. — Černá dárková ořechová krabice s překvapením pro muže - LIMITOVANÁ …",
-      "card_url": "https://trello.com/c/VAJvArgK",
-      "board": "Tvorba štítků CANVA",
-      "creator": "Jiřina Hamerníková",
-      "comment": "",
-      "time": "2026-11-12T13:05:00.995Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "CORPIN, a.s. — Černá dárková ořechová krabice s překvapením pro muže - LIMITOVANÁ …",
-      "card_url": "https://trello.com/c/VAJvArgK",
-      "board": "Tvorba štítků CANVA",
-      "creator": "Jiřina Hamerníková",
-      "comment": "@darky70 Černá i Červená krabice uložena do Avery",
-      "time": "2026-11-12T13:04:51.705Z"
-    },
-    {
-      "type": "addedToCard",
-      "label": "Přidán/a na kartu",
-      "card": "B-ing,s.r.o.",
-      "card_url": "https://trello.com/c/ieGeH8QD",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Markéta Costachová",
-      "comment": "",
-      "time": "2026-11-12T13:02:51.879Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "Hu-Fa Dental a.s. — 150 ks — OV-5088/2026",
-      "card_url": "https://trello.com/c/fpoh7nhY",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "",
-      "time": "2026-11-12T12:38:48.802Z"
-    },
-    {
-      "type": "markedCompleteCard",
-      "label": "markedCompleteCard",
-      "card": "Hu-Fa Dental a.s. — 150 ks — OV-5088/2026",
-      "card_url": "https://trello.com/c/fpoh7nhY",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "",
-      "time": "2026-11-12T12:38:45.353Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "HABERL WEALTH MANAGEMENT",
-      "card_url": "https://trello.com/c/3Do6SaUh",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "",
-      "time": "2026-11-12T12:38:35.624Z"
-    },
-    {
-      "type": "markedCompleteCard",
-      "label": "markedCompleteCard",
-      "card": "HABERL WEALTH MANAGEMENT",
-      "card_url": "https://trello.com/c/3Do6SaUh",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "",
-      "time": "2026-11-12T12:38:32.416Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "Sketch",
-      "card_url": "https://trello.com/c/lVrxlLJN",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Markéta Costachová",
-      "comment": "@darky70 ty pečetě dál platí což? říkám jim to, že nebudou",
-      "time": "2026-11-12T11:57:21.229Z"
-    },
-    {
-      "type": "addedToCard",
-      "label": "Přidán/a na kartu",
-      "card": "Sketch",
-      "card_url": "https://trello.com/c/lVrxlLJN",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Markéta Costachová",
-      "comment": "",
-      "time": "2026-11-12T11:36:05.503Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "HABERL WEALTH MANAGEMENT",
-      "card_url": "https://trello.com/c/3Do6SaUh",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Markéta Costachová",
-      "comment": "@gabrielapohlova jé mi vypadlo z kopie, promin\n\n[jakub.zeman@haberl.sk](mailto:jakub.zeman@haberl.sk \"‌\")\n\nv K2 by pak snad mělo být, nevím, kde je sever :D",
-      "time": "2026-11-12T11:10:03.056Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "Energotel sk",
-      "card_url": "https://trello.com/c/XTTgMPM1",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Markéta Costachová",
-      "comment": "@jananyvltova Jani poslali objednávku, tak prosím čislo jejich ob do faktury",
-      "time": "2026-11-12T11:03:16.687Z"
-    },
-    {
-      "type": "addAttachmentToCard",
-      "label": "addAttachmentToCard",
-      "card": "Energotel sk",
-      "card_url": "https://trello.com/c/XTTgMPM1",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Markéta Costachová",
-      "comment": "",
-      "time": "2026-11-12T11:02:42.509Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "Česká bankovní asociace — Dárková krabice s pečetí vlasní MIX –  2x250g, zpracován…",
-      "card_url": "https://trello.com/c/NGUVnFq8",
-      "board": "Tvorba štítků CANVA",
-      "creator": "Renata Pošepná",
-      "comment": "@jirahame psala jsem tu do poznámky, že jen na tu pečeť, ostatní je už hotové. Jsou to naše produkty.",
-      "time": "2026-11-12T10:05:06.349Z"
-    },
-    {
-      "type": "cardDueSoon",
-      "label": "Karta má brzy termín",
-      "card": "Československá obchodní banka, a. s. — Slaný MIX VÁNOČNÍ v celofánku a kelímku 180…",
-      "card_url": "https://trello.com/c/6U9rVVpo",
-      "board": "Tvorba štítků CANVA",
-      "creator": "",
-      "comment": "",
-      "time": "2026-11-12T10:01:12.277Z"
-    },
-    {
-      "type": "cardDueSoon",
-      "label": "Karta má brzy termín",
-      "card": "REDA a.s. — Reda krabička 2x40g s kometou + textem Veselé Vánoce + samolepkou s lo…",
-      "card_url": "https://trello.com/c/rAxHsyQd",
-      "board": "Tvorba štítků CANVA",
-      "creator": "",
-      "comment": "",
-      "time": "2026-11-12T10:01:11.059Z"
-    },
-    {
-      "type": "cardDueSoon",
-      "label": "Karta má brzy termín",
-      "card": "Mateřská škola Poděbrady, příspěvková organizace — Sklzas_mini mrshmallows 2026 04…",
-      "card_url": "https://trello.com/c/dWcc3ccs",
-      "board": "Tvorba štítků CANVA",
-      "creator": "",
-      "comment": "",
-      "time": "2026-11-12T10:01:10.267Z"
-    },
-    {
-      "type": "cardDueSoon",
-      "label": "Karta má brzy termín",
-      "card": "A1 com s.r.o. — Vlastní složení. Dárková krabice s pečetí – Malý MIX, Vlastní slož…",
-      "card_url": "https://trello.com/c/yDNFNT6n",
-      "board": "Tvorba štítků CANVA",
-      "creator": "",
-      "comment": "",
-      "time": "2026-11-12T10:01:04.306Z"
-    },
-    {
-      "type": "cardDueSoon",
-      "label": "Karta má brzy termín",
-      "card": "SPEED PRESS Plus a.s. — Speed Press 5076XMMIX · Dárková krabice s pečetí, Speed Pr…",
-      "card_url": "https://trello.com/c/Mo2r8WA1",
-      "board": "Tvorba štítků CANVA",
-      "creator": "",
-      "comment": "",
-      "time": "2026-11-12T10:01:02.980Z"
-    },
-    {
-      "type": "cardDueSoon",
-      "label": "Karta má brzy termín",
-      "card": "Rechtys spol. s.r.o — Rechtys Dárková krabička 6x50g – Mandlový mix (+ Vázání stuhou)",
-      "card_url": "https://trello.com/c/8xyMftZy",
-      "board": "Tvorba štítků CANVA",
-      "creator": "",
-      "comment": "",
-      "time": "2026-11-12T10:01:02.787Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "Česká bankovní asociace — Dárková krabice s pečetí vlasní MIX –  2x250g, zpracován…",
-      "card_url": "https://trello.com/c/NGUVnFq8",
-      "board": "Tvorba štítků CANVA",
-      "creator": "Jiřina Hamerníková",
-      "comment": "",
-      "time": "2026-11-12T09:57:34.493Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "Česká bankovní asociace — Dárková krabice s pečetí vlasní MIX –  2x250g, zpracován…",
-      "card_url": "https://trello.com/c/NGUVnFq8",
-      "board": "Tvorba štítků CANVA",
-      "creator": "Jiřina Hamerníková",
-      "comment": "@darky70 Pečeť+Stromeček+Sněhulák - uloženo do Avery",
-      "time": "2026-11-12T09:57:11.356Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "Impregnace",
-      "card_url": "https://trello.com/c/o1XzqqL6",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Renata Pošepná",
-      "comment": "@marketacostachova to máš psaný u odnosky, to chápu, ale u té krabice máš napsaný stuha červená a krabice tím bude obvázaná 🤷🏻‍♀️ ",
-      "time": "2026-11-12T09:35:27.138Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "Impregnace",
-      "card_url": "https://trello.com/c/o1XzqqL6",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Markéta Costachová",
-      "comment": "@darky70 na fotce na paštice není žádný štítek a mašle dáváme k tomu, to píšu v textu, mašle, kterou si dáme sami, když tak volám :)",
-      "time": "2026-11-12T09:04:26.871Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "Impregnace",
-      "card_url": "https://trello.com/c/o1XzqqL6",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Markéta Costachová",
-      "comment": "@darky70 jdu na to mrknout, ona je sama mega složitá ta klientka, dost jsem měnila v jejím obsahu, tak jsem asi někde něco nesmazala nebo nevysvětlila, písnu",
-      "time": "2026-11-12T09:02:27.310Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "KNAUF INSULATION, spol. s r.o. — Vánoční ořechová krabička SOB - 4x80g",
-      "card_url": "https://trello.com/c/InE5VwxZ",
-      "board": "Tvorba štítků CANVA",
-      "creator": "Jiřina Hamerníková",
-      "comment": "",
-      "time": "2026-11-12T08:51:28.078Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "KNAUF INSULATION, spol. s r.o. — Vánoční ořechová krabička SOB - 4x80g",
-      "card_url": "https://trello.com/c/InE5VwxZ",
-      "board": "Tvorba štítků CANVA",
-      "creator": "Jiřina Hamerníková",
-      "comment": "@darky70 Uloženo do Avery",
-      "time": "2026-11-12T08:51:07.366Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "HABERL WEALTH MANAGEMENT",
-      "card_url": "https://trello.com/c/3Do6SaUh",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "@marketacostachova potřebuji prosim jejich email",
-      "time": "2026-11-12T08:48:46.800Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "Vlastimil Porkert — 70 ks — 12.11.2026",
-      "card_url": "https://trello.com/c/CSHMtInF",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "",
-      "time": "2026-11-12T08:38:54.866Z"
-    },
-    {
-      "type": "markedCompleteCard",
-      "label": "markedCompleteCard",
-      "card": "Vlastimil Porkert — 70 ks — 12.11.2026",
-      "card_url": "https://trello.com/c/CSHMtInF",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "",
-      "time": "2026-11-12T08:38:48.082Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "VILGAIN objednávka 12.11. větší množství",
-      "card_url": "https://trello.com/c/yEOr2w8j",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "",
-      "time": "2026-11-12T08:24:35.982Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "PRORECO s.r.o. — Dárková krabice MIX DRUHŮ L – Edice 1, zpracování tiskových dat p…",
-      "card_url": "https://trello.com/c/VzjqatTM",
-      "board": "Tvorba štítků CANVA",
-      "creator": "Jiřina Hamerníková",
-      "comment": "",
-      "time": "2026-11-12T08:08:36.127Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "PRORECO s.r.o. — Dárková krabice MIX DRUHŮ L – Edice 1, zpracování tiskových dat p…",
-      "card_url": "https://trello.com/c/VzjqatTM",
-      "board": "Tvorba štítků CANVA",
-      "creator": "Jiřina Hamerníková",
-      "comment": "@darky70 uloženo do Avery",
-      "time": "2026-11-12T08:05:34.730Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "Vlastimil Porkert — 70 ks — 12.11.2026",
-      "card_url": "https://trello.com/c/CSHMtInF",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Renata Pošepná",
-      "comment": "",
-      "time": "2026-11-12T07:36:40.330Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "HABERL WEALTH MANAGEMENT",
-      "card_url": "https://trello.com/c/3Do6SaUh",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "",
-      "time": "2026-11-12T07:34:23.901Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "Benkor",
-      "card_url": "https://trello.com/c/0lpIU0g0",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Balírna",
-      "comment": "",
-      "time": "2026-11-12T07:31:39.819Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "Olympic Palace",
-      "card_url": "https://trello.com/c/GsJBHGHy",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Balírna",
-      "comment": "",
-      "time": "2026-11-12T07:30:54.803Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "OLYMPIC PALACE",
-      "card_url": "https://trello.com/c/uivT7IyU",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Balírna",
-      "comment": "",
-      "time": "2026-11-12T07:30:43.662Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "HABERL WEALTH MANAGEMENT",
-      "card_url": "https://trello.com/c/3Do6SaUh",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "@marketacostachova máme 10kg skladem, jinak to je Holandsko, tak od objednání minimálně týden pak",
-      "time": "2026-11-12T07:28:18.161Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "VILGAIN objednávka 12.11. větší množství",
-      "card_url": "https://trello.com/c/yEOr2w8j",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "",
-      "time": "2026-11-12T07:25:22.867Z"
-    },
-    {
-      "type": "markedCompleteCard",
-      "label": "markedCompleteCard",
-      "card": "VILGAIN objednávka 12.11. větší množství",
-      "card_url": "https://trello.com/c/yEOr2w8j",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "",
-      "time": "2026-11-12T07:25:15.622Z"
-    },
-    {
-      "type": "mentionedOnCard",
-      "label": "Zmíněn/a v komentáři",
-      "card": "VILGAIN objednávka 12.11. větší množství",
-      "card_url": "https://trello.com/c/yEOr2w8j",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "@card odchází dnes na dvou mix paletach Geis",
-      "time": "2026-11-12T07:25:11.735Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "HABERL WEALTH MANAGEMENT",
-      "card_url": "https://trello.com/c/3Do6SaUh",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Markéta Costachová",
-      "comment": "@jananyvltova Jani, pls chtějí jeden ks vzorek poslat na tuto adesu, bude tam na základě toho řešit počet ks k objednávce, hodíme to pak do faktury i dvojí dopravu společně pak s objednávkou, jen toto",
-      "time": "2026-11-12T07:22:44.042Z"
-    },
-    {
-      "type": "addedToCard",
-      "label": "Přidán/a na kartu",
-      "card": "HABERL WEALTH MANAGEMENT",
-      "card_url": "https://trello.com/c/3Do6SaUh",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Markéta Costachová",
-      "comment": "",
-      "time": "2026-11-12T07:21:41.436Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "Impregnace",
-      "card_url": "https://trello.com/c/o1XzqqL6",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Renata Pošepná",
-      "comment": "@marketacostachova Markét, to je tak strašně nesrozumitelný. Ten kelímek v průhledné krabičce s paštikou má náš přední štítek jako je na fotce?",
-      "time": "2026-11-12T07:11:42.171Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "GAZZETA Group s.r.o. — 160 ks — 12.11.2026",
-      "card_url": "https://trello.com/c/KCXS1WUJ",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "",
-      "time": "2026-11-12T06:54:41.829Z"
-    },
-    {
-      "type": "markedCompleteCard",
-      "label": "markedCompleteCard",
-      "card": "GAZZETA Group s.r.o. — 160 ks — 12.11.2026",
-      "card_url": "https://trello.com/c/KCXS1WUJ",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "",
-      "time": "2026-11-12T06:54:37.243Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "Impregnace",
-      "card_url": "https://trello.com/c/o1XzqqL6",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Renata Pošepná",
-      "comment": "@marketacostachova  markét, ta krabice průhledná, tam si oni budou dávat ještě svoje víno, takže ta stuha taky mimo. Tam píšeš, že bude obvázána červenou mašlí, takže na oboje si navážou tu červenou m",
-      "time": "2026-11-12T06:40:12.511Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "CORPIN, a.s. — Černá dárková ořechová krabice s překvapením pro muže - LIMITOVANÁ …",
-      "card_url": "https://trello.com/c/VAJvArgK",
-      "board": "Tvorba štítků CANVA",
-      "creator": "Renata Pošepná",
-      "comment": "",
-      "time": "2026-11-12T04:37:22.933Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "CORPIN, a.s. — Černá dárková ořechová krabice s překvapením pro muže - LIMITOVANÁ …",
-      "card_url": "https://trello.com/c/VAJvArgK",
-      "board": "Tvorba štítků CANVA",
-      "creator": "Renata Pošepná",
-      "comment": "",
-      "time": "2026-11-12T04:36:48.695Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "CORPIN, a.s. — Černá dárková ořechová krabice s překvapením pro muže - LIMITOVANÁ …",
-      "card_url": "https://trello.com/c/VAJvArgK",
-      "board": "Tvorba štítků CANVA",
-      "creator": "Renata Pošepná",
-      "comment": "@jirahame prosím štítky, děkuji",
-      "time": "2026-11-12T04:36:42.470Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "Česká bankovní asociace — Dárková krabice s pečetí vlasní MIX –  2x250g, zpracován…",
-      "card_url": "https://trello.com/c/NGUVnFq8",
-      "board": "Tvorba štítků CANVA",
-      "creator": "Renata Pošepná",
-      "comment": "",
-      "time": "2026-11-12T04:30:38.601Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "Česká bankovní asociace — Dárková krabice s pečetí vlasní MIX –  2x250g, zpracován…",
-      "card_url": "https://trello.com/c/NGUVnFq8",
-      "board": "Tvorba štítků CANVA",
-      "creator": "Renata Pošepná",
-      "comment": "",
-      "time": "2026-11-12T04:30:31.374Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "Česká bankovní asociace — Dárková krabice s pečetí vlasní MIX –  2x250g, zpracován…",
-      "card_url": "https://trello.com/c/NGUVnFq8",
-      "board": "Tvorba štítků CANVA",
-      "creator": "Renata Pošepná",
-      "comment": "@jirahame prosím pouze štítek na mix s pečetí, děkuji",
-      "time": "2026-11-12T04:30:25.708Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "KNAUF INSULATION, spol. s r.o. — Vánoční ořechová krabička SOB - 4x80g",
-      "card_url": "https://trello.com/c/InE5VwxZ",
-      "board": "Tvorba štítků CANVA",
-      "creator": "Renata Pošepná",
-      "comment": "",
-      "time": "2026-11-12T04:21:06.332Z"
-    },
-    {
-      "type": "commentCard",
-      "label": "Nový komentář",
-      "card": "KNAUF INSULATION, spol. s r.o. — Vánoční ořechová krabička SOB - 4x80g",
-      "card_url": "https://trello.com/c/InE5VwxZ",
-      "board": "Tvorba štítků CANVA",
-      "creator": "Renata Pošepná",
-      "comment": "@jirahame prosím štítek, děkuji",
-      "time": "2026-11-12T04:20:13.659Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "KNAUF INSULATION, spol. s r.o. — Vánoční ořechová krabička SOB - 4x80g",
-      "card_url": "https://trello.com/c/InE5VwxZ",
-      "board": "Tvorba štítků CANVA",
-      "creator": "Renata Pošepná",
-      "comment": "",
-      "time": "2026-11-12T04:19:47.775Z"
+      "time": "2026-11-13T04:16:03.256Z"
     }
   ]
 }
