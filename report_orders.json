@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-14T09:49:41",
+  "generated": "2026-11-14T09:51:06",
   "days": [
     "2026-11-12",
     "2026-11-13",
@@ -1186,6 +1186,37 @@
             ]
           },
           {
+            "group": "Makadamie",
+            "emoji": "🫚",
+            "variants": [
+              {
+                "variant": "Makadamie",
+                "items": [
+                  {
+                    "name": "Makadamový ořech — Množství:: 200g",
+                    "code": "146/200",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-12": 1,
+                      "2026-11-13": 0,
+                      "2026-11-14": 0
+                    }
+                  },
+                  {
+                    "name": "Makadamové ořechy pražené solené — Množství:: 100g",
+                    "code": "4893/100",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-12": 1,
+                      "2026-11-13": 0,
+                      "2026-11-14": 0
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
             "group": "Lískové ořechy",
             "emoji": "🌰",
             "variants": [
@@ -1573,6 +1604,37 @@
                   {
                     "name": "Jablka sušená kroužky — Množství:: 200g",
                     "code": "3540/200",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-12": 0,
+                      "2026-11-13": 1,
+                      "2026-11-14": 0
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Hrušky",
+            "emoji": "🍐",
+            "variants": [
+              {
+                "variant": "Hrušky",
+                "items": [
+                  {
+                    "name": "Babiččin ovocný čaj - hruška se zázvorem 60ml",
+                    "code": "1432",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-12": 1,
+                      "2026-11-13": 0,
+                      "2026-11-14": 0
+                    }
+                  },
+                  {
+                    "name": "Hrušky bez přidaného cukru — Množství:: 500g",
+                    "code": "3537/500",
                     "qty": 1,
                     "by_date": {
                       "2026-11-12": 0,
@@ -2820,16 +2882,6 @@
                     }
                   },
                   {
-                    "name": "Makadamový ořech — Množství:: 200g",
-                    "code": "146/200",
-                    "qty": 1,
-                    "by_date": {
-                      "2026-11-12": 1,
-                      "2026-11-13": 0,
-                      "2026-11-14": 0
-                    }
-                  },
-                  {
                     "name": "Milly Lilly´s kakaové černé 200 g",
                     "code": "1549/200",
                     "qty": 1,
@@ -2842,16 +2894,6 @@
                   {
                     "name": "Rýžové krekry s příchutí chilli — Množství:: 300g",
                     "code": "10558/300",
-                    "qty": 1,
-                    "by_date": {
-                      "2026-11-12": 1,
-                      "2026-11-13": 0,
-                      "2026-11-14": 0
-                    }
-                  },
-                  {
-                    "name": "Babiččin ovocný čaj - hruška se zázvorem 60ml",
-                    "code": "1432",
                     "qty": 1,
                     "by_date": {
                       "2026-11-12": 1,
@@ -2880,16 +2922,6 @@
                     }
                   },
                   {
-                    "name": "Makadamové ořechy pražené solené — Množství:: 100g",
-                    "code": "4893/100",
-                    "qty": 1,
-                    "by_date": {
-                      "2026-11-12": 1,
-                      "2026-11-13": 0,
-                      "2026-11-14": 0
-                    }
-                  },
-                  {
                     "name": "Corn flakes v jogurtové polevě — Množství:: 200g",
                     "code": "4296/200",
                     "qty": 1,
@@ -2906,16 +2938,6 @@
                     "by_date": {
                       "2026-11-12": 1,
                       "2026-11-13": 0,
-                      "2026-11-14": 0
-                    }
-                  },
-                  {
-                    "name": "Hrušky bez přidaného cukru — Množství:: 500g",
-                    "code": "3537/500",
-                    "qty": 1,
-                    "by_date": {
-                      "2026-11-12": 0,
-                      "2026-11-13": 1,
                       "2026-11-14": 0
                     }
                   },
@@ -2939,11 +2961,11 @@
   },
   "sk": {
     "summary": {
-      "count": 27,
-      "total": 2007.0,
+      "count": 28,
+      "total": 2047.0,
       "currency": "EUR",
       "paid": 17,
-      "unpaid": 10,
+      "unpaid": 11,
       "dobir": 0
     },
     "confirmed": 17,
@@ -3116,6 +3138,27 @@
                   {
                     "name": "Pistácie v škrupine pražené a solené — Množství:: 200g",
                     "code": "SKX134/200",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-12": 1,
+                      "2026-11-13": 0,
+                      "2026-11-14": 0
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Makadamie",
+            "emoji": "🫚",
+            "variants": [
+              {
+                "variant": "Makadamie",
+                "items": [
+                  {
+                    "name": "Makadamové oriešky — Množství:: 3 Kg",
+                    "code": "SKX146/3 K",
                     "qty": 1,
                     "by_date": {
                       "2026-11-12": 1,
@@ -3427,16 +3470,6 @@
                   {
                     "name": "FITNESS zmes jadier a sušeného ovocia — Množství:: 500g",
                     "code": "SKX3094/500",
-                    "qty": 1,
-                    "by_date": {
-                      "2026-11-12": 1,
-                      "2026-11-13": 0,
-                      "2026-11-14": 0
-                    }
-                  },
-                  {
-                    "name": "Makadamové oriešky — Množství:: 3 Kg",
-                    "code": "SKX146/3 K",
                     "qty": 1,
                     "by_date": {
                       "2026-11-12": 1,
