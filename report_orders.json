@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-16T06:34:04",
+  "generated": "2026-11-16T06:39:02",
   "days": [
     "2026-11-14",
     "2026-11-15",
@@ -2548,6 +2548,58 @@
             ]
           },
           {
+            "group": "Pendreks",
+            "emoji": "🍭",
+            "variants": [
+              {
+                "variant": "Pendreks",
+                "items": [
+                  {
+                    "name": "Pendrek kyselý ovocný mix — Množství:: 1 Kg",
+                    "code": "8758/1 K",
+                    "qty": 2,
+                    "by_date": {
+                      "2026-11-14": 0,
+                      "2026-11-15": 2,
+                      "2026-11-16": 0
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Maliny & ostružiny",
+            "emoji": "🫐",
+            "variants": [
+              {
+                "variant": "Maliny & ostružiny",
+                "items": [
+                  {
+                    "name": "Maliny a ostružiny směs — Množství:: 1 Kg",
+                    "code": "1808/1 K",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-14": 1,
+                      "2026-11-15": 0,
+                      "2026-11-16": 0
+                    }
+                  },
+                  {
+                    "name": "Maliny a ostružiny směs — Množství:: 230g",
+                    "code": "1808/230",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-14": 1,
+                      "2026-11-15": 0,
+                      "2026-11-16": 0
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
             "group": "Želé bonbony",
             "emoji": "🍬",
             "variants": [
@@ -3020,6 +3072,102 @@
                 ]
               },
               {
+                "variant": "fitness směs",
+                "items": [
+                  {
+                    "name": "FITNESS směs jader a sušeného ovoce — Množství:: 3 Kg",
+                    "code": "3094/3 K",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-14": 0,
+                      "2026-11-15": 1,
+                      "2026-11-16": 0
+                    }
+                  }
+                ]
+              },
+              {
+                "variant": "chipsy",
+                "items": [
+                  {
+                    "name": "Banánové chipsy v jogurtu — Množství:: 200g",
+                    "code": "2294/200",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-14": 1,
+                      "2026-11-15": 0,
+                      "2026-11-16": 0
+                    }
+                  },
+                  {
+                    "name": "Chipsy ovocné mix — Množství:: 100g",
+                    "code": "9572/100",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-14": 1,
+                      "2026-11-15": 0,
+                      "2026-11-16": 0
+                    }
+                  }
+                ]
+              },
+              {
+                "variant": "japonská směs",
+                "items": [
+                  {
+                    "name": "Japonská směs JUMBO — Množství:: 500g",
+                    "code": "2102/500",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-14": 0,
+                      "2026-11-15": 1,
+                      "2026-11-16": 0
+                    }
+                  }
+                ]
+              },
+              {
+                "variant": "směs jader",
+                "items": [
+                  {
+                    "name": "Prémiový ořechový mix 150g",
+                    "code": "155",
+                    "qty": 2,
+                    "by_date": {
+                      "2026-11-14": 0,
+                      "2026-11-15": 2,
+                      "2026-11-16": 0
+                    },
+                    "is_gift": true
+                  },
+                  {
+                    "name": "Směs jader — Množství:: 3 Kg",
+                    "code": "158/3 K",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-14": 0,
+                      "2026-11-15": 1,
+                      "2026-11-16": 0
+                    }
+                  }
+                ]
+              },
+              {
+                "variant": "semínková směs",
+                "items": [
+                  {
+                    "name": "Semínková směs — Množství:: 1 Kg",
+                    "code": "2474/1 K",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-14": 0,
+                      "2026-11-15": 1,
+                      "2026-11-16": 0
+                    }
+                  }
+                ]
+              },
+              {
                 "variant": "ostatní",
                 "items": [
                   {
@@ -3033,99 +3181,8 @@
                     }
                   },
                   {
-                    "name": "Prémiový ořechový mix 150g",
-                    "code": "155",
-                    "qty": 2,
-                    "by_date": {
-                      "2026-11-14": 0,
-                      "2026-11-15": 2,
-                      "2026-11-16": 0
-                    },
-                    "is_gift": true
-                  },
-                  {
-                    "name": "Pendrek kyselý ovocný mix — Množství:: 1 Kg",
-                    "code": "8758/1 K",
-                    "qty": 2,
-                    "by_date": {
-                      "2026-11-14": 0,
-                      "2026-11-15": 2,
-                      "2026-11-16": 0
-                    }
-                  },
-                  {
-                    "name": "Chipsy ovocné mix — Množství:: 100g",
-                    "code": "9572/100",
-                    "qty": 1,
-                    "by_date": {
-                      "2026-11-14": 1,
-                      "2026-11-15": 0,
-                      "2026-11-16": 0
-                    }
-                  },
-                  {
-                    "name": "Maliny a ostružiny směs — Množství:: 1 Kg",
-                    "code": "1808/1 K",
-                    "qty": 1,
-                    "by_date": {
-                      "2026-11-14": 1,
-                      "2026-11-15": 0,
-                      "2026-11-16": 0
-                    }
-                  },
-                  {
-                    "name": "Maliny a ostružiny směs — Množství:: 230g",
-                    "code": "1808/230",
-                    "qty": 1,
-                    "by_date": {
-                      "2026-11-14": 1,
-                      "2026-11-15": 0,
-                      "2026-11-16": 0
-                    }
-                  },
-                  {
-                    "name": "FITNESS směs jader a sušeného ovoce — Množství:: 3 Kg",
-                    "code": "3094/3 K",
-                    "qty": 1,
-                    "by_date": {
-                      "2026-11-14": 0,
-                      "2026-11-15": 1,
-                      "2026-11-16": 0
-                    }
-                  },
-                  {
                     "name": "Směs ořechů a rozinek — Množství:: 1 Kg",
                     "code": "3097/1 K",
-                    "qty": 1,
-                    "by_date": {
-                      "2026-11-14": 0,
-                      "2026-11-15": 1,
-                      "2026-11-16": 0
-                    }
-                  },
-                  {
-                    "name": "Japonská směs JUMBO — Množství:: 500g",
-                    "code": "2102/500",
-                    "qty": 1,
-                    "by_date": {
-                      "2026-11-14": 0,
-                      "2026-11-15": 1,
-                      "2026-11-16": 0
-                    }
-                  },
-                  {
-                    "name": "Semínková směs — Množství:: 1 Kg",
-                    "code": "2474/1 K",
-                    "qty": 1,
-                    "by_date": {
-                      "2026-11-14": 0,
-                      "2026-11-15": 1,
-                      "2026-11-16": 0
-                    }
-                  },
-                  {
-                    "name": "Směs jader — Množství:: 3 Kg",
-                    "code": "158/3 K",
                     "qty": 1,
                     "by_date": {
                       "2026-11-14": 0,
@@ -3229,16 +3286,6 @@
                     "by_date": {
                       "2026-11-14": 0,
                       "2026-11-15": 2,
-                      "2026-11-16": 0
-                    }
-                  },
-                  {
-                    "name": "Banánové chipsy v jogurtu — Množství:: 200g",
-                    "code": "2294/200",
-                    "qty": 1,
-                    "by_date": {
-                      "2026-11-14": 1,
-                      "2026-11-15": 0,
                       "2026-11-16": 0
                     }
                   },
@@ -4090,6 +4137,21 @@
                 ]
               },
               {
+                "variant": "směs jader",
+                "items": [
+                  {
+                    "name": "Prémiový orechový mix — Množství:: 50g",
+                    "code": "SKX155/50G",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-14": 0,
+                      "2026-11-15": 1,
+                      "2026-11-16": 0
+                    }
+                  }
+                ]
+              },
+              {
                 "variant": "ostatní",
                 "items": [
                   {
@@ -4099,16 +4161,6 @@
                     "by_date": {
                       "2026-11-14": 39,
                       "2026-11-15": 0,
-                      "2026-11-16": 0
-                    }
-                  },
-                  {
-                    "name": "Prémiový orechový mix — Množství:: 50g",
-                    "code": "SKX155/50G",
-                    "qty": 1,
-                    "by_date": {
-                      "2026-11-14": 0,
-                      "2026-11-15": 1,
                       "2026-11-16": 0
                     }
                   }
