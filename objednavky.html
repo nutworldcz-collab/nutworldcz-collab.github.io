@@ -189,6 +189,7 @@ mark { background: rgba(247,171,49,.4); color: inherit; border-radius: 2px; padd
 .qty-badge { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 13px; min-width: 26px; flex-shrink: 0; line-height: 1; }
 .prod-name { font-size: 12px; color: var(--fg2); flex: 1; min-width: 0; line-height: 1.35; }
 .prod-code { font-size: 10px; color: var(--fg3); flex-shrink: 0; font-family: monospace; opacity: .7; }
+.gift-badge { font-size: 10px; opacity: .7; vertical-align: middle; }
 /* ── View toggle (Druh / Výroba) ── */
 .view-bar {
   display: flex; gap: 4px;
@@ -367,7 +368,7 @@ function renderProcessView(shopKey) {
       <div class="product-row" data-code="${it.code}" data-qty="${it.qty_active}" onclick="toggleDone('${it.code}')">
         <span class="done-check">✓</span>
         <span class="qty-badge" style="color:${pg.color}">${it.qty_active}×</span>
-        <span class="prod-name">${it.name}</span>
+        <span class="prod-name">${it.name}${it.is_gift ? ' <span class="gift-badge">🎁</span>' : ''}</span>
         <span class="prod-code">${it.code}</span>
       </div>`).join('');
 
@@ -492,7 +493,7 @@ function renderSections(shopKey) {
           return `<div class="product-row" data-code="${it.code}" data-qty="${qty}" onclick="toggleDone('${it.code}')">
             <span class="done-check">✓</span>
             <span class="qty-badge" style="color:${p.color}">${qty}×</span>
-            <span class="prod-name">${it.name}</span>
+            <span class="prod-name">${it.name}${it.is_gift ? ' <span class="gift-badge">🎁</span>' : ''}</span>
             <span class="prod-code">${it.code}</span>
           </div>`;
         }).join('');
