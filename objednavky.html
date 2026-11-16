@@ -811,7 +811,7 @@ function applySearch(raw) {
   const activeTab = document.querySelector('.tab-content.active');
   if (!activeTab) return;
 
-  activeTab.querySelectorAll('.prod-name, .prod-code, .variant-title, .group-sub-title').forEach(el => {
+  activeTab.querySelectorAll('.prod-name, .prod-code, .prod-code-inline, .variant-title, .group-sub-title').forEach(el => {
     if (el._orig !== undefined) el.innerHTML = el._orig;
   });
 
@@ -857,12 +857,24 @@ function applySearch(raw) {
         }
       });
 
-      block.hidden = !blockVis;
-      if (blockVis) {
+      // Bloky bez variant-card (Přehled kombinací) nikdy neschovávat
+      const hasCards = block.querySelectorAll('.variant-card').length > 0;
+      block.hidden = hasCards && !blockVis;
+      if (blockVis || !hasCards) {
         sectionVis = true;
         if (groupEl._orig === undefined) groupEl._orig = groupEl.innerHTML;
         groupEl.innerHTML = highlight(groupEl._orig, q);
       }
+    });
+
+    // Výroba view: .process-block má ploché .product-row (bez .group-block nesting)
+    section.querySelectorAll('.process-block .product-row').forEach(row => {
+      const nameEl = row.querySelector('.prod-name');
+      const codeEl = row.querySelector('.prod-code') || row.querySelector('.prod-code-inline');
+      const rowText = (nameEl ? nameEl.textContent : '') + ' ' + (codeEl ? codeEl.textContent : '');
+      const show   = parentMatch || rowText.toLowerCase().includes(q);
+      row.hidden = !show; totalRows++;
+      if (show) { visibleRows++; sectionVis = true; }
     });
     section.hidden = !sectionVis;
   });
