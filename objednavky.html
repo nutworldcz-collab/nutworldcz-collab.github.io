@@ -571,6 +571,8 @@ function renderSummary(shopKey) {
     <div class="stat-pill"><span class="sp-val">${s.paid}</span><span class="sp-lbl">Zaplaceno</span></div>
     <div class="stat-pill"><span class="sp-val">${s.dobir}</span><span class="sp-lbl">Dobírky</span></div>
     ${wait > 0 ? `<div class="stat-pill"><span class="sp-val" style="color:var(--accent)">${wait}</span><span class="sp-lbl">Čeká platbu</span></div>` : ''}
+    ${s.vyrizena > 0 ? `<div class="stat-pill"><span class="sp-val" style="color:var(--leaf)">✓ ${s.vyrizena}</span><span class="sp-lbl">Vyřízena</span></div>` : ''}
+    ${s.stornovana > 0 ? `<div class="stat-pill"><span class="sp-val" style="color:var(--fg3)">${s.stornovana}</span><span class="sp-lbl">Stornována</span></div>` : ''}
   `;
 
   const badge = document.getElementById(`${shopKey}-badge`);
