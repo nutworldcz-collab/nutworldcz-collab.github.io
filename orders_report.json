@@ -1,24 +1,24 @@
 Stahuju CZ objednávky pro 2026-11-16...
-  Nalezeno 25 objednávek — stahuji detail... 10... 20... OK
+  Nalezeno 26 objednávek — stahuji detail... 10... 20... OK
 Stahuju SK objednávky pro 2026-11-16...
   Nalezeno 7 objednávek — stahuji detail... OK
 {
-  "generated": "2026-11-16T12:22:46",
+  "generated": "2026-11-16T12:28:48",
   "days": [
     "2026-11-16"
   ],
   "cz": {
     "summary": {
-      "count": 25,
-      "total": 31947.0,
+      "count": 26,
+      "total": 33660.0,
       "currency": "CZK",
       "paid": 16,
-      "unpaid": 9,
-      "dobir": 6,
+      "unpaid": 10,
+      "dobir": 7,
       "vyrizena": 0,
       "stornovana": 0
     },
-    "confirmed": 22,
+    "confirmed": 23,
     "rozklad": [
       {
         "parent": "Ořechy",
@@ -63,6 +63,15 @@ Stahuju SK objednávky pro 2026-11-16...
                     "qty": 2,
                     "by_date": {
                       "2026-11-16": 2
+                    },
+                    "is_gift": true
+                  },
+                  {
+                    "name": "Klaun Eko kelímek a celofánek - Arašídy v barevné krustě - 180g",
+                    "code": "955029",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-16": 1
                     },
                     "is_gift": true
                   },
@@ -172,6 +181,14 @@ Stahuju SK objednávky pro 2026-11-16...
                     "qty": 2,
                     "by_date": {
                       "2026-11-16": 2
+                    }
+                  },
+                  {
+                    "name": "Směs kešu a mandle uzené — Množství:: 200g",
+                    "code": "5508/200",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-16": 1
                     }
                   },
                   {
@@ -435,7 +452,7 @@ Stahuju SK objednávky pro 2026-11-16...
             "emoji": "🌰",
             "variants": [
               {
-                "variant": "ostatní",
+                "variant": "tříbarevné",
                 "items": [
                   {
                     "name": "Lískové ořechy tříbarevné — Množství:: 500g",
@@ -444,7 +461,12 @@ Stahuju SK objednávky pro 2026-11-16...
                     "by_date": {
                       "2026-11-16": 1
                     }
-                  },
+                  }
+                ]
+              },
+              {
+                "variant": "pražené/natural",
+                "items": [
                   {
                     "name": "Lískové oříšky - jádra 13/15 — Množství:: 200g",
                     "code": "125/200",
@@ -469,7 +491,7 @@ Stahuju SK objednávky pro 2026-11-16...
             "emoji": "🌻",
             "variants": [
               {
-                "variant": "ostatní",
+                "variant": "tříbarevná",
                 "items": [
                   {
                     "name": "Slunečnice tří barev — Množství:: 200g",
@@ -688,6 +710,20 @@ Stahuju SK objednávky pro 2026-11-16...
                 ]
               },
               {
+                "variant": "kazetky",
+                "items": [
+                  {
+                    "name": "Dárková kazetka VÁNOČNÍ - Mix ořechů v medu a soli 50g",
+                    "code": "4794X06XV",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-16": 1
+                    },
+                    "is_gift": true
+                  }
+                ]
+              },
+              {
                 "variant": "ostatní",
                 "items": [
                   {
@@ -696,6 +732,14 @@ Stahuju SK objednávky pro 2026-11-16...
                     "qty": 2,
                     "by_date": {
                       "2026-11-16": 2
+                    }
+                  },
+                  {
+                    "name": "Černá dárková ořechová krabice s překvapením pro muže - LIMITOVANÁ EDICE",
+                    "code": "4621XBLACK",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-16": 1
                     }
                   },
                   {
@@ -848,6 +892,22 @@ Stahuju SK objednávky pro 2026-11-16...
                     "qty": 2,
                     "by_date": {
                       "2026-11-16": 2
+                    }
+                  },
+                  {
+                    "name": "Bonboniera fondánovo - nugátový sník",
+                    "code": "2480",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-16": 1
+                    }
+                  },
+                  {
+                    "name": "Bonboniera nutworld s mašlí",
+                    "code": "1755",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-16": 1
                     }
                   },
                   {
