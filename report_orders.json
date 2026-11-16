@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-16T06:39:02",
+  "generated": "2026-11-16T06:42:07",
   "days": [
     "2026-11-14",
     "2026-11-15",
@@ -3127,8 +3127,33 @@
                 ]
               },
               {
+                "variant": "směs ořechů a rozinek",
+                "items": [
+                  {
+                    "name": "Směs ořechů a rozinek — Množství:: 1 Kg",
+                    "code": "3097/1 K",
+                    "qty": 1,
+                    "by_date": {
+                      "2026-11-14": 0,
+                      "2026-11-15": 1,
+                      "2026-11-16": 0
+                    }
+                  }
+                ]
+              },
+              {
                 "variant": "směs jader",
                 "items": [
+                  {
+                    "name": "Směs ořechů — Množství:: 50g",
+                    "code": "155/50G",
+                    "qty": 2,
+                    "by_date": {
+                      "2026-11-14": 2,
+                      "2026-11-15": 0,
+                      "2026-11-16": 0
+                    }
+                  },
                   {
                     "name": "Prémiový ořechový mix 150g",
                     "code": "155",
@@ -3158,31 +3183,6 @@
                   {
                     "name": "Semínková směs — Množství:: 1 Kg",
                     "code": "2474/1 K",
-                    "qty": 1,
-                    "by_date": {
-                      "2026-11-14": 0,
-                      "2026-11-15": 1,
-                      "2026-11-16": 0
-                    }
-                  }
-                ]
-              },
-              {
-                "variant": "ostatní",
-                "items": [
-                  {
-                    "name": "Směs ořechů — Množství:: 50g",
-                    "code": "155/50G",
-                    "qty": 2,
-                    "by_date": {
-                      "2026-11-14": 2,
-                      "2026-11-15": 0,
-                      "2026-11-16": 0
-                    }
-                  },
-                  {
-                    "name": "Směs ořechů a rozinek — Množství:: 1 Kg",
-                    "code": "3097/1 K",
                     "qty": 1,
                     "by_date": {
                       "2026-11-14": 0,
