@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-16T06:06:31",
+  "generated": "2026-11-16T06:34:04",
   "days": [
     "2026-11-14",
     "2026-11-15",
@@ -2839,6 +2839,39 @@
                 "variant": "v medu a soli",
                 "items": [
                   {
+                    "name": "Medová směs se solí 50g",
+                    "code": "4794",
+                    "qty": 16,
+                    "by_date": {
+                      "2026-11-14": 8,
+                      "2026-11-15": 8,
+                      "2026-11-16": 0
+                    },
+                    "is_gift": true
+                  },
+                  {
+                    "name": "Medová směs se solí 180g",
+                    "code": "4794",
+                    "qty": 3,
+                    "by_date": {
+                      "2026-11-14": 1,
+                      "2026-11-15": 2,
+                      "2026-11-16": 0
+                    },
+                    "is_gift": true
+                  },
+                  {
+                    "name": "Medová směs se solí 80g",
+                    "code": "4794",
+                    "qty": 2,
+                    "by_date": {
+                      "2026-11-14": 2,
+                      "2026-11-15": 0,
+                      "2026-11-16": 0
+                    },
+                    "is_gift": true
+                  },
+                  {
                     "name": "Mix ořechů v medu a soli — Množství:: 50g",
                     "code": "4794/50G",
                     "qty": 2,
@@ -2989,39 +3022,6 @@
               {
                 "variant": "ostatní",
                 "items": [
-                  {
-                    "name": "Medová směs se solí 50g",
-                    "code": "4794",
-                    "qty": 16,
-                    "by_date": {
-                      "2026-11-14": 8,
-                      "2026-11-15": 8,
-                      "2026-11-16": 0
-                    },
-                    "is_gift": true
-                  },
-                  {
-                    "name": "Medová směs se solí 180g",
-                    "code": "4794",
-                    "qty": 3,
-                    "by_date": {
-                      "2026-11-14": 1,
-                      "2026-11-15": 2,
-                      "2026-11-16": 0
-                    },
-                    "is_gift": true
-                  },
-                  {
-                    "name": "Medová směs se solí 80g",
-                    "code": "4794",
-                    "qty": 2,
-                    "by_date": {
-                      "2026-11-14": 2,
-                      "2026-11-15": 0,
-                      "2026-11-16": 0
-                    },
-                    "is_gift": true
-                  },
                   {
                     "name": "Směs ořechů — Množství:: 50g",
                     "code": "155/50G",
@@ -3405,6 +3405,303 @@
                 ]
               }
             ]
+          }
+        ]
+      }
+    ],
+    "darky_kombinovane": [
+      {
+        "gift_name": "Vánoční dárková krabička 4 x MIX - SE STROMEČKEM",
+        "gift_code": "480XVXSTR",
+        "qty": 17,
+        "by_date": {
+          "2026-11-14": 2,
+          "2026-11-15": 15,
+          "2026-11-16": 0
+        },
+        "ingredients": [
+          {
+            "code": "89",
+            "name": "Mandle uzené 80g",
+            "grams": 80
+          },
+          {
+            "code": "9604",
+            "name": "Karamelizované arašídy se sezamem 80g",
+            "grams": 80
+          },
+          {
+            "code": "547",
+            "name": "Kukuřice pražená s medem a hořčicí 60g",
+            "grams": 60
+          },
+          {
+            "code": "3111",
+            "name": "Meruňky v polevě s jogurtovou příchutí 80g",
+            "grams": 80
+          }
+        ]
+      },
+      {
+        "gift_name": "Vánoční ořechový sáček SOB s kolíčkem - 180g VÍCE DRUHŮ",
+        "gift_code": "4725/MAN3",
+        "qty": 13,
+        "by_date": {
+          "2026-11-14": 8,
+          "2026-11-15": 5,
+          "2026-11-16": 0
+        },
+        "ingredients": [
+          {
+            "code": "89",
+            "name": "Mandle uzené 180g",
+            "grams": 180
+          },
+          {
+            "code": "4038",
+            "name": "Mandlová jádra pražená v mléčné čokoládě 180g",
+            "grams": 180
+          },
+          {
+            "code": "116",
+            "name": "Kešu jádra pražená solená 180g",
+            "grams": 180
+          },
+          {
+            "code": "1958",
+            "name": "Mandlová jádra pražená v mléčné čokoládě a skořici 180g",
+            "grams": 180
+          }
+        ]
+      },
+      {
+        "gift_name": "Vánoční ořechový sáček SOB s kolíčkem - 180g VÍCE DRUHŮ",
+        "gift_code": "4725/MAN",
+        "qty": 12,
+        "by_date": {
+          "2026-11-14": 8,
+          "2026-11-15": 4,
+          "2026-11-16": 0
+        },
+        "ingredients": [
+          {
+            "code": "89",
+            "name": "Mandle uzené 180g",
+            "grams": 180
+          },
+          {
+            "code": "4038",
+            "name": "Mandlová jádra pražená v mléčné čokoládě 180g",
+            "grams": 180
+          },
+          {
+            "code": "116",
+            "name": "Kešu jádra pražená solená 180g",
+            "grams": 180
+          },
+          {
+            "code": "1958",
+            "name": "Mandlová jádra pražená v mléčné čokoládě a skořici 180g",
+            "grams": 180
+          }
+        ]
+      },
+      {
+        "gift_name": "Vánoční ořechová krabička SOB - 4x80g",
+        "gift_code": "8555",
+        "qty": 8,
+        "by_date": {
+          "2026-11-14": 7,
+          "2026-11-15": 1,
+          "2026-11-16": 0
+        },
+        "ingredients": [
+          {
+            "code": "89",
+            "name": "Mandle uzené 80g",
+            "grams": 80
+          },
+          {
+            "code": "101",
+            "name": "Mandle pražené solené 80g",
+            "grams": 80
+          },
+          {
+            "code": "1952",
+            "name": "Čokoládové mandle karamel mořská sůl 80g",
+            "grams": 80
+          },
+          {
+            "code": "9604",
+            "name": "Karamelizované arašídy se sezamem 80g",
+            "grams": 80
+          }
+        ]
+      },
+      {
+        "gift_name": "Vánoční dárková ořechová krabička 2 x 50 g SE STROMEČKEM 1",
+        "gift_code": "11351",
+        "qty": 6,
+        "by_date": {
+          "2026-11-14": 0,
+          "2026-11-15": 6,
+          "2026-11-16": 0
+        },
+        "ingredients": [
+          {
+            "code": "3993",
+            "name": "Mandle exclusive mix 50g",
+            "grams": 50
+          },
+          {
+            "code": "101",
+            "name": "Mandle pražené solené 50g",
+            "grams": 50
+          }
+        ]
+      },
+      {
+        "gift_name": "DÁRKOVÁ KRABIČKA 4X80g OSLAĎ SI ŽIVOT",
+        "gift_code": "3517/OSLA",
+        "qty": 5,
+        "by_date": {
+          "2026-11-14": 0,
+          "2026-11-15": 5,
+          "2026-11-16": 0
+        },
+        "ingredients": [
+          {
+            "code": "107",
+            "name": "Mandlová jádra v bílé čokoládě 80g",
+            "grams": 80
+          },
+          {
+            "code": "1964",
+            "name": "Mandle tiramisu 80g",
+            "grams": 80
+          },
+          {
+            "code": "1955",
+            "name": "Mandlová jádra pražená v hořké čokoládě 80g",
+            "grams": 80
+          },
+          {
+            "code": "1952",
+            "name": "Čokoládové mandle karamel mořská sůl 80g",
+            "grams": 80
+          }
+        ]
+      },
+      {
+        "gift_name": "Vánoční ořechový sáček SOB s kolíčkem - 180g VÍCE DRUHŮ",
+        "gift_code": "4725/MAN2",
+        "qty": 3,
+        "by_date": {
+          "2026-11-14": 3,
+          "2026-11-15": 0,
+          "2026-11-16": 0
+        },
+        "ingredients": [
+          {
+            "code": "89",
+            "name": "Mandle uzené 180g",
+            "grams": 180
+          },
+          {
+            "code": "4038",
+            "name": "Mandlová jádra pražená v mléčné čokoládě 180g",
+            "grams": 180
+          },
+          {
+            "code": "116",
+            "name": "Kešu jádra pražená solená 180g",
+            "grams": 180
+          },
+          {
+            "code": "1958",
+            "name": "Mandlová jádra pražená v mléčné čokoládě a skořici 180g",
+            "grams": 180
+          }
+        ]
+      },
+      {
+        "gift_name": "Vánoční ořechová krabička  SOB - 2x50g",
+        "gift_code": "4728",
+        "qty": 3,
+        "by_date": {
+          "2026-11-14": 2,
+          "2026-11-15": 1,
+          "2026-11-16": 0
+        },
+        "ingredients": [
+          {
+            "code": "89",
+            "name": "Mandle uzené 50g",
+            "grams": 50
+          },
+          {
+            "code": "4038",
+            "name": "Mandlová jádra pražená v mléčné čokoládě 47g",
+            "grams": 47
+          },
+          {
+            "code": "4212",
+            "name": "Mandle jahodové bílá čokoláda 3g",
+            "grams": 3
+          }
+        ]
+      },
+      {
+        "gift_name": "Dárková krabička 4x80g MIX K NAROZENINÁM",
+        "gift_code": "917N10",
+        "qty": 2,
+        "by_date": {
+          "2026-11-14": 2,
+          "2026-11-15": 0,
+          "2026-11-16": 0
+        },
+        "ingredients": [
+          {
+            "code": "161",
+            "name": "Slaný párty mix 80g",
+            "grams": 80
+          },
+          {
+            "code": "4896",
+            "name": "Směs mandlí v čokoládě brown 80g",
+            "grams": 80
+          },
+          {
+            "code": "1985",
+            "name": "Mandle tříbarevné 80g",
+            "grams": 80
+          },
+          {
+            "code": "4794",
+            "name": "Medová směs se solí 80g",
+            "grams": 80
+          }
+        ]
+      },
+      {
+        "gift_name": "Dárková ořechová krabička 2x50g VEVERKA",
+        "gift_code": "9935",
+        "qty": 1,
+        "by_date": {
+          "2026-11-14": 0,
+          "2026-11-15": 1,
+          "2026-11-16": 0
+        },
+        "ingredients": [
+          {
+            "code": "4794",
+            "name": "Medová směs se solí 50g",
+            "grams": 50
+          },
+          {
+            "code": "1952",
+            "name": "Čokoládové mandle karamel mořská sůl 50g",
+            "grams": 50
           }
         ]
       }
@@ -3929,6 +4226,7 @@
           }
         ]
       }
-    ]
+    ],
+    "darky_kombinovane": []
   }
 }
