@@ -261,6 +261,51 @@ details.gift-prehled[open] > summary::before { content: "▾ "; }
   .header-stats { gap: 12px; }
   .header-stat .val { font-size: 14px; }
 }
+/* ── Velké objednávky ── */
+.velke-wrap {
+  padding: 10px max(20px, env(safe-area-inset-left, 0px));
+  border-bottom: 2px solid var(--border);
+}
+.velke-header {
+  display: flex; align-items: center; gap: 8px; cursor: pointer;
+  padding: 4px 0 8px;
+}
+.velke-header-title {
+  font-family: 'Exo 2', sans-serif; font-size: 13px; font-weight: 700;
+  color: var(--fg2); text-transform: uppercase; letter-spacing: .5px; flex: 1;
+}
+.velke-header-count {
+  font-size: 12px; font-weight: 700; color: var(--accent);
+  background: rgba(218,22,104,.1); border-radius: 10px; padding: 1px 8px;
+}
+.velke-header-toggle { font-size: 11px; color: var(--fg3); }
+.velke-list { display: flex; flex-direction: column; gap: 8px; }
+.velke-row {
+  background: var(--bg2); border-radius: 8px; overflow: hidden;
+  border: 1px solid var(--border);
+}
+.velke-row-head {
+  display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+  flex-wrap: wrap;
+}
+.velke-tag {
+  font-size: 10px; font-weight: 700; border-radius: 4px; padding: 2px 6px;
+  flex-shrink: 0;
+}
+.velke-tag.qty  { background: rgba(247,171,49,.2); color: #a07000; }
+.velke-tag.val  { background: rgba(218,22,104,.12); color: var(--accent); }
+.velke-code { font-family: monospace; font-size: 11px; color: var(--fg3); flex-shrink: 0; }
+.velke-customer { font-size: 13px; font-weight: 600; color: var(--fg); flex: 1; min-width: 0; }
+.velke-date { font-size: 11px; color: var(--fg3); flex-shrink: 0; }
+.velke-total { font-size: 13px; font-weight: 700; color: var(--brown-dk); flex-shrink: 0; }
+.velke-items { padding: 0 12px 8px; display: flex; flex-direction: column; gap: 3px; }
+.velke-item {
+  display: flex; align-items: center; gap: 8px; font-size: 12px;
+  padding: 3px 0; border-top: 1px solid var(--border); color: var(--fg2);
+}
+.velke-item-qty { font-weight: 700; color: var(--accent); flex-shrink: 0; min-width: 32px; }
+.velke-item-name { flex: 1; min-width: 0; }
+.velke-item-code { font-family: monospace; font-size: 10px; color: var(--fg3); }
 </style>
 </head>
 <body>
@@ -296,6 +341,7 @@ details.gift-prehled[open] > summary::before { content: "▾ "; }
 <div id="tab-cz" class="tab-content active">
   <div class="shop-summary" id="cz-summary"></div>
   <div id="cz-badge" style="padding:6px max(20px,env(safe-area-inset-left,0px));background:var(--bg);border-bottom:1px solid var(--border);font-size:11px;color:var(--fg3);display:none;align-items:center;gap:6px"></div>
+  <div id="cz-velke-objednavky"></div>
   <div id="cz-darky-kombinovane"></div>
   <div id="cz-sections"></div>
   <div class="totals-bar" id="cz-total"></div>
@@ -304,6 +350,7 @@ details.gift-prehled[open] > summary::before { content: "▾ "; }
 <div id="tab-sk" class="tab-content">
   <div class="shop-summary" id="sk-summary"></div>
   <div id="sk-badge" style="padding:6px max(20px,env(safe-area-inset-left,0px));background:var(--bg);border-bottom:1px solid var(--border);font-size:11px;color:var(--fg3);display:none;align-items:center;gap:6px"></div>
+  <div id="sk-velke-objednavky"></div>
   <div id="sk-darky-kombinovane"></div>
   <div id="sk-sections"></div>
   <div class="totals-bar" id="sk-total"></div>
@@ -529,6 +576,7 @@ function setView(view, btn) {
 }
 
 function renderCurrentView(shopKey) {
+  renderVelkeObjednavky(shopKey);
   renderDarkyKombinovane(shopKey);
   if (activeView === 'druh') renderSections(shopKey);
   else renderProcessView(shopKey);
@@ -539,6 +587,57 @@ const TODAY = new Date().toISOString().slice(0, 10);
 const LS_KEY = 'nw_done_' + TODAY;
 let doneSet = new Set();
 let hideDone = false;
+
+/* ── Velké objednávky ───────────────────────────────────── */
+function renderVelkeObjednavky(shopKey) {
+  const container = document.getElementById(`${shopKey}-velke-objednavky`);
+  if (!container) return;
+  const data = (REPORT[shopKey] || {}).velke_objednavky || [];
+  if (!data.length) { container.hidden = true; return; }
+  container.hidden = false;
+
+  const cur = shopKey === 'cz' ? 'Kč' : '€';
+  const fmt = v => Math.round(v).toLocaleString('cs-CZ');
+
+  const rows = data.map(o => {
+    const tags = [
+      o.big_value ? `<span class="velke-tag val">💰 ${fmt(o.total)} ${cur}</span>` : '',
+      o.big_items.length ? `<span class="velke-tag qty">📦 velké množství</span>` : '',
+    ].filter(Boolean).join('');
+
+    const itemRows = o.big_items.map(it =>
+      `<div class="velke-item">
+        <span class="velke-item-qty">${it.qty}×</span>
+        <span class="velke-item-name">${it.name}</span>
+        <span class="velke-item-code">${it.code}</span>
+      </div>`
+    ).join('');
+
+    const [,m,dd] = o.date.split('-');
+    return `
+      <div class="velke-row">
+        <div class="velke-row-head">
+          ${tags}
+          <span class="velke-code">#${o.code}</span>
+          <span class="velke-customer">${o.customer || o.email}</span>
+          <span class="velke-date">${dd}. ${m}.</span>
+          <span class="velke-total">${fmt(o.total)} ${cur}</span>
+        </div>
+        ${itemRows ? `<div class="velke-items">${itemRows}</div>` : ''}
+      </div>`;
+  }).join('');
+
+  container.innerHTML = `
+    <div class="velke-wrap">
+      <div class="velke-header" onclick="this.nextElementSibling.hidden=!this.nextElementSibling.hidden; this.querySelector('.velke-header-toggle').textContent=this.nextElementSibling.hidden?'▶':'▼'">
+        <span style="font-size:16px">🔍</span>
+        <span class="velke-header-title">Velké objednávky — 20+ ks nebo 20 000+ Kč</span>
+        <span class="velke-header-count">${data.length}</span>
+        <span class="velke-header-toggle">▼</span>
+      </div>
+      <div class="velke-list">${rows}</div>
+    </div>`;
+}
 
 function loadDone() {
   try { doneSet = new Set(JSON.parse(localStorage.getItem(LS_KEY) || '[]')); } catch {}
