@@ -3,7 +3,7 @@ const NW_PLATBY_UPDATED = '16. 11. 2026 (bank-matched)';
 
 const OV_CZK = [
   /* === 25+ dní — Urgentní === */
-  {id:'ov_alza',    n:'Alza.cz a.s.',                 sub:'2 faktury + 2 dobropisy (č.133 uhrazeno)', amt:'33 352',    days:29, pri:'r', plbl:'Urgentní', due:'18. 10.'},
+  /* ov_alza — Alza.cz všechny faktury uhrazeny: č.133 uhrazena 16.11, č.131 (31 828 Kč) + č.132 (23 827 Kč) uhrazeny 12.11 — zbývají jen 2 dobropisy jako kredity */
   {id:'ov_vitr',    n:'Vítr v kapse s.r.o.',          sub:'1 faktura · č. 12337',    amt:'397',       days:28, pri:'r', plbl:'Urgentní', due:'19. 10.'},
   {id:'ov_speed',   n:'SPEED PRESS Plus a.s.',        sub:'4 faktury · č. 328, 377, 388, 402', amt:'98 857', days:25, pri:'r', plbl:'Urgentní', due:'22. 10.'},
   {id:'ov_reda',    n:'REDA a.s.',                    sub:'1 faktura · č. 283 (7 uhrazeno 16.11)', amt:'57 490',    days:25, pri:'r', plbl:'Urgentní', due:'22. 10.'},
@@ -15,16 +15,16 @@ const OV_CZK = [
   /* ov_benkor — BENKOR uhrazen 12.11 net 19 449 Kč (č.380 − dobropis č.439) */
   /* ov_jested — Ještěd uhrazen 12.11 (11 312 Kč) */
   /* ov_linet — LINET uhrazen 13.11 (9 688 Kč) */
-  {id:'ov_nakup',   n:'Nakup na Dobro s.r.o.',        sub:'1 faktura · č. 387',      amt:'152 038',   days:10, pri:'a', plbl:'Pozor',    due:'06. 11.'},
+  /* ov_nakup — Nakup na Dobro uhrazena 16.11 (152 037,76 Kč) */
   {id:'ov_vonavy',  n:'Muj vonávy kramek',            sub:'1 faktura · č. 12989',    amt:'739',       days:10, pri:'a', plbl:'Pozor',    due:'06. 11.'},
   /* === 5–9 dní — Pozor === */
   /* ov_helik — Helikárová uhrazena 16.11 (8 828 Kč) */
-  {id:'ov_ardix',   n:'ARDIX spol. s r.o.',           sub:'1 faktura · č. 395',      amt:'13 798',    days:7,  pri:'a', plbl:'Pozor',    due:'09. 11.'},
+  /* ov_ardix — ARDIX uhrazena 16.11 (13 798,40 Kč) */
   /* ov_huber — HUBER CS uhrazen 16.11 (13 048 Kč) */
   {id:'ov_syrarna', n:'Sýrárna Broumov s.r.o.',       sub:'1 faktura · č. 396',      amt:'8 109',     days:6,  pri:'a', plbl:'6 dní',    due:'10. 11.'},
   {id:'ov_cpr',     n:'CPR HK s.r.o.',                sub:'5 faktur · č. 398–416',   amt:'10 760',    days:6,  pri:'a', plbl:'6 dní',    due:'10. 11.'},
   {id:'ov_zlkl',    n:'ZLKL, s. r. o.',               sub:'1 faktura · č. 404',      amt:'140 235',   days:5,  pri:'a', plbl:'5 dní',    due:'11. 11.'},
-  {id:'ov_vilgain', n:'Vilgain s.r.o.',               sub:'2 faktury · č. 309, 327', amt:'125 480',   days:5,  pri:'a', plbl:'5 dní',    due:'11. 11.'},
+  {id:'ov_vilgain', n:'Vilgain s.r.o.',               sub:'1 faktura · č. 327 (č.309 uhrazena 16.11)', amt:'50 158', days:5, pri:'a', plbl:'5 dní', due:'11. 11.'},
   /* ov_arch — Arch.Design uhrazen 13.11 (20 328 Kč) */
   /* === 4 dny === */
   /* ov_tes — TES Consulting uhrazen 12.11 (25 300 Kč) */
@@ -45,12 +45,12 @@ const OV_EUR = [
   {id:'oe_pavuk',     n:'Marián Pavúk',                  fakt:'č. 182', days:11, pri:'a', plbl:'Pozor',    due:'05. 11.', amt:'57,36'},
   {id:'oe_orig',      n:'Originale production s.r.o.',   fakt:'č. 183', days:11, pri:'a', plbl:'Pozor',    due:'05. 11.', amt:'88,12'},
   {id:'oe_nelli',     n:'NELLI oblátky s.r.o.',          fakt:'č. 186', days:7,  pri:'a', plbl:'Pozor',    due:'09. 11.', amt:'165,30'},
-  {id:'oe_sketch',    n:'Sketch s. r. o.',               fakt:'č. 188', days:6,  pri:'a', plbl:'6 dní',    due:'10. 11.', amt:'261,80'},
-  {id:'oe_post',      n:'POST Servis s.r.o.',            fakt:'č. 190', days:6,  pri:'a', plbl:'6 dní',    due:'10. 11.', amt:'177,86'},
-  {id:'oe_lamelland', n:'LAMELLAND, s.r.o.',             fakt:'č. 47',  days:4,  pri:'n', plbl:'4 dny',    due:'12. 11.', amt:'519,60'},
+  /* oe_sketch — Sketch uhrazena 12.11 (261,80 EUR) */
+  /* oe_post — POST Servis uhrazena 16.11 (177,86 EUR) */
+  /* oe_lamelland — LAMELLAND uhrazena 16.11 (519,60 EUR) */
   /* přešlo z "do 5 dní" 13.11 */
   {id:'oe_metrostav', n:'METROSTAV ESTATE A.S.',         fakt:'č. 48',  days:3,  pri:'n', plbl:'3 dny',    due:'13. 11.', amt:'1 824,00'},
-  {id:'oe_elpatt',    n:'ELPATT spol. s r. o.',          fakt:'č. 49',  days:3,  pri:'n', plbl:'3 dny',    due:'13. 11.', amt:'451,00'},
+  /* oe_elpatt — ELPATT uhrazena 12.11 (451,00 EUR) */
   {id:'oe_pd_vajnory',n:'PD Vajnory',                    fakt:'č. 194', days:3,  pri:'n', plbl:'3 dny',    due:'13. 11.', amt:'90,68'},
 ];
 
