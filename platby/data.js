@@ -1,33 +1,33 @@
 /* Nutworld — B2B platby data. Aktualizovat při každém novém K2 exportu. */
-const NW_PLATBY_UPDATED = '16. 11. 2026';
+const NW_PLATBY_UPDATED = '16. 11. 2026 (bank-matched)';
 
 const OV_CZK = [
   /* === 25+ dní — Urgentní === */
-  {id:'ov_alza',    n:'Alza.cz a.s.',                 sub:'2 faktury + 2 dobropisy + č.133', amt:'78 451',    days:29, pri:'r', plbl:'Urgentní', due:'18. 10.'},
+  {id:'ov_alza',    n:'Alza.cz a.s.',                 sub:'2 faktury + 2 dobropisy (č.133 uhrazeno)', amt:'33 352',    days:29, pri:'r', plbl:'Urgentní', due:'18. 10.'},
   {id:'ov_vitr',    n:'Vítr v kapse s.r.o.',          sub:'1 faktura · č. 12337',    amt:'397',       days:28, pri:'r', plbl:'Urgentní', due:'19. 10.'},
   {id:'ov_speed',   n:'SPEED PRESS Plus a.s.',        sub:'4 faktury · č. 328, 377, 388, 402', amt:'98 857', days:25, pri:'r', plbl:'Urgentní', due:'22. 10.'},
-  {id:'ov_reda',    n:'REDA a.s.',                    sub:'8 faktur · č. 277–325',   amt:'202 028',   days:25, pri:'r', plbl:'Urgentní', due:'22. 10.'},
+  {id:'ov_reda',    n:'REDA a.s.',                    sub:'1 faktura · č. 283 (7 uhrazeno 16.11)', amt:'57 490',    days:25, pri:'r', plbl:'Urgentní', due:'22. 10.'},
   {id:'ov_kasal',   n:'Jana Kasalová',                sub:'1 faktura · č. 12497',    amt:'2 772',     days:24, pri:'r', plbl:'Urgentní', due:'23. 10.'},
   /* === 10–19 dní — Pozor === */
   {id:'ov_kolar',   n:'Michal Kolář',                 sub:'1 faktura · č. 359',      amt:'52 630',    days:14, pri:'a', plbl:'Pozor',    due:'02. 11.'},
-  {id:'ov_kram',    n:'Farmářskej krámek s.r.o.',     sub:'1 faktura · č. 12897',    amt:'7 984',     days:13, pri:'a', plbl:'Pozor',    due:'03. 11.'},
+  /* ov_kram — Farmářskej krámek uhrazen 12.11 (7 984 Kč) */
   {id:'ov_emedis',  n:'EMEDIS s.r.o.',                sub:'7 faktur · č. 371–421',   amt:'151 577',   days:12, pri:'a', plbl:'Pozor',    due:'04. 11.'},
-  {id:'ov_benkor',  n:'B E N K O R s.r.o.',           sub:'1 faktura · č. 380',      amt:'27 787',    days:11, pri:'a', plbl:'Pozor',    due:'05. 11.'},
-  {id:'ov_jested',  n:'Výrobní podnik Ještěd s.r.o.', sub:'1 faktura · č. 379',      amt:'11 312',    days:11, pri:'a', plbl:'Pozor',    due:'05. 11.'},
-  {id:'ov_linet',   n:'L I N E T spol. s r.o.',       sub:'1 faktura · č. 375',      amt:'9 688',     days:11, pri:'a', plbl:'Pozor',    due:'05. 11.'},
+  /* ov_benkor — BENKOR uhrazen 12.11 net 19 449 Kč (č.380 − dobropis č.439) */
+  /* ov_jested — Ještěd uhrazen 12.11 (11 312 Kč) */
+  /* ov_linet — LINET uhrazen 13.11 (9 688 Kč) */
   {id:'ov_nakup',   n:'Nakup na Dobro s.r.o.',        sub:'1 faktura · č. 387',      amt:'152 038',   days:10, pri:'a', plbl:'Pozor',    due:'06. 11.'},
   {id:'ov_vonavy',  n:'Muj vonávy kramek',            sub:'1 faktura · č. 12989',    amt:'739',       days:10, pri:'a', plbl:'Pozor',    due:'06. 11.'},
   /* === 5–9 dní — Pozor === */
-  {id:'ov_helik',   n:'Markéta Helikárová',           sub:'1 faktura · č. 13061',    amt:'8 828',     days:7,  pri:'a', plbl:'Pozor',    due:'09. 11.'},
+  /* ov_helik — Helikárová uhrazena 16.11 (8 828 Kč) */
   {id:'ov_ardix',   n:'ARDIX spol. s r.o.',           sub:'1 faktura · č. 395',      amt:'13 798',    days:7,  pri:'a', plbl:'Pozor',    due:'09. 11.'},
-  {id:'ov_huber',   n:'HUBER CS spol. s r.o.',        sub:'1 faktura · č. 391',      amt:'13 048',    days:7,  pri:'a', plbl:'Pozor',    due:'09. 11.'},
+  /* ov_huber — HUBER CS uhrazen 16.11 (13 048 Kč) */
   {id:'ov_syrarna', n:'Sýrárna Broumov s.r.o.',       sub:'1 faktura · č. 396',      amt:'8 109',     days:6,  pri:'a', plbl:'6 dní',    due:'10. 11.'},
   {id:'ov_cpr',     n:'CPR HK s.r.o.',                sub:'5 faktur · č. 398–416',   amt:'10 760',    days:6,  pri:'a', plbl:'6 dní',    due:'10. 11.'},
   {id:'ov_zlkl',    n:'ZLKL, s. r. o.',               sub:'1 faktura · č. 404',      amt:'140 235',   days:5,  pri:'a', plbl:'5 dní',    due:'11. 11.'},
   {id:'ov_vilgain', n:'Vilgain s.r.o.',               sub:'2 faktury · č. 309, 327', amt:'125 480',   days:5,  pri:'a', plbl:'5 dní',    due:'11. 11.'},
-  {id:'ov_arch',    n:'Arch.Design, s.r.o.',          sub:'1 faktura · č. 406',      amt:'20 328',    days:5,  pri:'a', plbl:'5 dní',    due:'11. 11.'},
+  /* ov_arch — Arch.Design uhrazen 13.11 (20 328 Kč) */
   /* === 4 dny === */
-  {id:'ov_tes',     n:'TES Consulting s.r.o.',        sub:'1 faktura · č. 13230',    amt:'25 300',    days:4,  pri:'n', plbl:'4 dny',    due:'12. 11.'},
+  /* ov_tes — TES Consulting uhrazen 12.11 (25 300 Kč) */
   {id:'ov_dfszk',   n:'DFSZK, s.r.o.',                sub:'1 faktura · č. 13260',    amt:'1 554',     days:4,  pri:'n', plbl:'4 dny',    due:'12. 11.'},
   /* === 3 dny — přešlo z "do 5 dní" 13.11 === */
   {id:'ov_certis',  n:'Certis Belchim Czech Republic', sub:'1 faktura · č. 414',      amt:'111 104',   days:3,  pri:'n', plbl:'3 dny',    due:'13. 11.'},
@@ -35,9 +35,9 @@ const OV_CZK = [
   {id:'ov_vuuo',    n:'VÚÚO Holovousy s.r.o.',        sub:'1 faktura · č. 12985',    amt:'46 087',    days:3,  pri:'n', plbl:'3 dny',    due:'13. 11.'},
   {id:'ov_vaillant',n:'Vaillant Group Czech Republic', sub:'1 faktura · č. 413',      amt:'28 334',    days:3,  pri:'n', plbl:'3 dny',    due:'13. 11.'},
   {id:'ov_saar',    n:'Saar Gummi Czech s.r.o.',      sub:'1 faktura · č. 418',      amt:'23 448',    days:3,  pri:'n', plbl:'3 dny',    due:'13. 11.'},
-  {id:'ov_janamala',n:'Ing. Jana Malá',               sub:'1 faktura · č. 13292',    amt:'7 577',     days:3,  pri:'n', plbl:'3 dny',    due:'13. 11.'},
+  /* ov_janamala — Jana Malá uhrazena 13.11 (7 577 Kč) */
   {id:'ov_hsekomin',n:'HS EkoMin s.r.o.',             sub:'1 faktura · č. 13280',    amt:'4 557',     days:3,  pri:'n', plbl:'3 dny',    due:'13. 11.'},
-  {id:'ov_stepek',  n:'Jiří Štěpek',                  sub:'1 faktura · č. 13273',    amt:'2 258',     days:3,  pri:'n', plbl:'3 dny',    due:'13. 11.'},
+  /* ov_stepek — Jiří Štěpek uhrazen 12.11 (2 258 Kč) */
 ];
 
 const OV_EUR = [
