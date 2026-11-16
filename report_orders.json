@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-16T13:08:19",
+  "generated": "2026-11-16T13:47:37",
   "days": [
     "2026-11-10",
     "2026-11-11",
@@ -11,16 +11,16 @@
   ],
   "cz": {
     "summary": {
-      "count": 388,
-      "total": 792825.0,
+      "count": 389,
+      "total": 793762.0,
       "currency": "CZK",
       "paid": 279,
-      "unpaid": 109,
-      "dobir": 84,
+      "unpaid": 110,
+      "dobir": 85,
       "vyrizena": 54,
       "stornovana": 5
     },
-    "confirmed": 308,
+    "confirmed": 309,
     "rozklad": [
       {
         "parent": "Ořechy",
@@ -7103,7 +7103,7 @@
                   {
                     "name": "Černá dárková ořechová krabice s překvapením pro muže - LIMITOVANÁ EDICE",
                     "code": "4621XBLACK",
-                    "qty": 51,
+                    "qty": 52,
                     "by_date": {
                       "2026-11-10": 6,
                       "2026-11-11": 10,
@@ -7111,7 +7111,7 @@
                       "2026-11-13": 9,
                       "2026-11-14": 5,
                       "2026-11-15": 7,
-                      "2026-11-16": 1
+                      "2026-11-16": 2
                     }
                   },
                   {
@@ -9722,6 +9722,403 @@
             "code": "1952",
             "name": "Čokoládové mandle karamel mořská sůl 50g",
             "grams": 50
+          }
+        ]
+      }
+    ],
+    "velke_objednavky": [
+      {
+        "code": "2600013923",
+        "date": "2026-11-11",
+        "customer": "VÝZKUMNÝ A ŠLECHTITELSKÝ ÚSTAV OVOCNÁŘSKÝ HOLOVOUSY s.r.o.",
+        "email": "havelkova@vsuo.cz",
+        "total": 74603.0,
+        "currency": "CZK",
+        "big_value": true,
+        "big_items": [
+          {
+            "name": "Arašídy pražené nesolené",
+            "code": "44/200",
+            "qty": 20,
+            "item_total": 880.0
+          },
+          {
+            "name": "Arašídy pražené solené",
+            "code": "56/200",
+            "qty": 20,
+            "item_total": 720.0
+          },
+          {
+            "name": "Arašídy v karamelu s vanilkovou příchutí",
+            "code": "9598/100",
+            "qty": 20,
+            "item_total": 720.0
+          },
+          {
+            "name": "Brusinky sušené nesířené",
+            "code": "179/200",
+            "qty": 20,
+            "item_total": 1200.0
+          },
+          {
+            "name": "Chia semínka",
+            "code": "6000/200",
+            "qty": 20,
+            "item_total": 780.0
+          },
+          {
+            "name": "Datle vypeckované nesířené",
+            "code": "185/500",
+            "qty": 20,
+            "item_total": 1100.0
+          },
+          {
+            "name": "Duhové mini pendreky",
+            "code": "8751/230",
+            "qty": 20,
+            "item_total": 1040.0
+          },
+          {
+            "name": "Hrušky bez přidaného cukru",
+            "code": "3537/200",
+            "qty": 20,
+            "item_total": 1360.0
+          },
+          {
+            "name": "Kešu karamelizované s příchutí banánu a čokolády",
+            "code": "10270/200",
+            "qty": 20,
+            "item_total": 2160.0
+          },
+          {
+            "name": "Kešu pražené solené ww320",
+            "code": "116/200",
+            "qty": 20,
+            "item_total": 1840.0
+          },
+          {
+            "name": "Kešu uzené",
+            "code": "728/200",
+            "qty": 20,
+            "item_total": 2000.0
+          },
+          {
+            "name": "Kešu v bílé čokoládě s kokosem - Raffaello",
+            "code": "10262/200",
+            "qty": 20,
+            "item_total": 2480.0
+          },
+          {
+            "name": "Kokos chips s karamelem a mořskou solí",
+            "code": "7564/200",
+            "qty": 20,
+            "item_total": 1520.0
+          },
+          {
+            "name": "Kokosové chipsy",
+            "code": "152/200",
+            "qty": 20,
+            "item_total": 1040.0
+          },
+          {
+            "name": "Lískové oříšky - jádra 13/15",
+            "code": "125/200",
+            "qty": 20,
+            "item_total": 2160.0
+          },
+          {
+            "name": "Mandle loupané jumbo",
+            "code": "83/200",
+            "qty": 30,
+            "item_total": 2850.0
+          },
+          {
+            "name": "Mandle loupané pražené solené JUMBO",
+            "code": "101/200",
+            "qty": 20,
+            "item_total": 2000.0
+          },
+          {
+            "name": "Mandle natural JUMBO",
+            "code": "2486/200",
+            "qty": 30,
+            "item_total": 2610.0
+          },
+          {
+            "name": "Meruňky sušené I. jakost",
+            "code": "218/200",
+            "qty": 20,
+            "item_total": 2320.0
+          },
+          {
+            "name": "Studentská směs",
+            "code": "2702/500",
+            "qty": 20,
+            "item_total": 2700.0
+          },
+          {
+            "name": "Švestky sušené",
+            "code": "236/200",
+            "qty": 20,
+            "item_total": 940.0
+          }
+        ]
+      },
+      {
+        "code": "2600013863",
+        "date": "2026-11-10",
+        "customer": "EFDK s.r.o.",
+        "email": "machalova@efdk.cz",
+        "total": 42734.0,
+        "currency": "CZK",
+        "big_value": true,
+        "big_items": [
+          {
+            "name": "Dárková krabice - MIX DRUHŮ - L / Edice 2",
+            "code": "4565XMIXXE2",
+            "qty": 54,
+            "item_total": 30186.0
+          },
+          {
+            "name": "Dárková krabička 4x80g SLANÁ",
+            "code": "3520/V",
+            "qty": 32,
+            "item_total": 9568.0
+          },
+          {
+            "name": "Slaný MIX VÁNOČNÍ v celofánku a kelímku 180g - VESELÉ VÁNOCE",
+            "code": "5414",
+            "qty": 20,
+            "item_total": 2980.0
+          }
+        ]
+      },
+      {
+        "code": "2600014064",
+        "date": "2026-11-13",
+        "customer": "Česká spořitelna, a.s.",
+        "email": "nnoumibelzova@csas.cz",
+        "total": 17940.0,
+        "currency": "CZK",
+        "big_value": false,
+        "big_items": [
+          {
+            "name": "Dárková krabička 4x80g SLANÁ",
+            "code": "3520/V",
+            "qty": 60,
+            "item_total": 17940.0
+          }
+        ]
+      },
+      {
+        "code": "2600013887",
+        "date": "2026-11-10",
+        "customer": "Bankovní identita, a.s.",
+        "email": "zuzana.dobsovicova@bankid.cz",
+        "total": 17784.0,
+        "currency": "CZK",
+        "big_value": false,
+        "big_items": [
+          {
+            "name": "Kešu pražené solené ww320",
+            "code": "116/200",
+            "qty": 30,
+            "item_total": 3450.0
+          },
+          {
+            "name": "Lámaná čokoláda mléčná - Holandsko - 200g",
+            "code": "5514",
+            "qty": 30,
+            "item_total": 2550.0
+          },
+          {
+            "name": "Mandle uzené",
+            "code": "89/200",
+            "qty": 30,
+            "item_total": 3450.0
+          },
+          {
+            "name": "Preclíky v mléčné čokoládě",
+            "code": "3978/200",
+            "qty": 30,
+            "item_total": 2850.0
+          },
+          {
+            "name": "Směs ořechů",
+            "code": "155/200",
+            "qty": 30,
+            "item_total": 4350.0
+          }
+        ]
+      },
+      {
+        "code": "2600013858",
+        "date": "2026-11-10",
+        "customer": "Fashion-work s.r.o.",
+        "email": "zuzana.pernicka@finish-work.cz",
+        "total": 16698.0,
+        "currency": "CZK",
+        "big_value": false,
+        "big_items": [
+          {
+            "name": "Dárková krabička 4x80 MIX s průhledným víčkem",
+            "code": "4707",
+            "qty": 33,
+            "item_total": 7590.0
+          }
+        ]
+      },
+      {
+        "code": "2600013867",
+        "date": "2026-11-10",
+        "customer": "Zahradnictví Šťastný spol. s r. o.",
+        "email": "prodej@zahradnictvistastny.cz",
+        "total": 14546.0,
+        "currency": "CZK",
+        "big_value": false,
+        "big_items": [
+          {
+            "name": "Arašídy v čokoládě a barevné krustě",
+            "code": "3714/100",
+            "qty": 20,
+            "item_total": 1040.0
+          },
+          {
+            "name": "Slunečnice v barevné krustě",
+            "code": "1991/50G",
+            "qty": 20,
+            "item_total": 460.0
+          }
+        ]
+      },
+      {
+        "code": "2600014198",
+        "date": "2026-11-15",
+        "customer": "Pavlína Volejníková",
+        "email": "volejnikova.p@seznam.cz",
+        "total": 13402.0,
+        "currency": "CZK",
+        "big_value": false,
+        "big_items": [
+          {
+            "name": "Mandle v medu a soli",
+            "code": "95/100",
+            "qty": 26,
+            "item_total": 1768.0
+          },
+          {
+            "name": "Mandle v medu a soli",
+            "code": "95/50G",
+            "qty": 50,
+            "item_total": 2200.0
+          },
+          {
+            "name": "Mandle v medu a soli",
+            "code": "95/200",
+            "qty": 26,
+            "item_total": 2808.0
+          }
+        ]
+      },
+      {
+        "code": "2600014040",
+        "date": "2026-11-12",
+        "customer": "Tomáš Lerch",
+        "email": "obchod@syrarna-podebrady.cz",
+        "total": 9605.0,
+        "currency": "CZK",
+        "big_value": false,
+        "big_items": [
+          {
+            "name": "Směs ořechů",
+            "code": "155/50G",
+            "qty": 50,
+            "item_total": 2200.0
+          }
+        ]
+      },
+      {
+        "code": "2600013990",
+        "date": "2026-11-12",
+        "customer": "MÜLLER GROUP AG s.r.o.",
+        "email": "doskocilovaerika1@seznam.cz",
+        "total": 7385.3,
+        "currency": "CZK",
+        "big_value": false,
+        "big_items": [
+          {
+            "name": "Dárková krabička 4x80g SLANÁ",
+            "code": "3520/V",
+            "qty": 26,
+            "item_total": 7385.3
+          }
+        ]
+      },
+      {
+        "code": "2600013902",
+        "date": "2026-11-10",
+        "customer": "Bogner Edelstahl Czech Republic s.r.o.",
+        "email": "robertcech17@seznam.cz",
+        "total": 5180.0,
+        "currency": "CZK",
+        "big_value": false,
+        "big_items": [
+          {
+            "name": "Vánoční dárková krabička 4 x MIX - SE STROMEČKEM",
+            "code": "480XVXSTR",
+            "qty": 20,
+            "item_total": 5180.0
+          }
+        ]
+      },
+      {
+        "code": "2600014059",
+        "date": "2026-11-13",
+        "customer": "Kateřina Páralová",
+        "email": "vystrcilovakatka@seznam.cz",
+        "total": 4525.0,
+        "currency": "CZK",
+        "big_value": false,
+        "big_items": [
+          {
+            "name": "Mandle uzené",
+            "code": "89/50G",
+            "qty": 20,
+            "item_total": 700.0
+          }
+        ]
+      },
+      {
+        "code": "2600014099",
+        "date": "2026-11-13",
+        "customer": "NR projekt s.r.o.",
+        "email": "mizerova.v@email.com",
+        "total": 3225.0,
+        "currency": "CZK",
+        "big_value": false,
+        "big_items": [
+          {
+            "name": "Vánoční ořechový sáček SOB s kolíčkem - 180g VÍCE DRUHŮ",
+            "code": "4725/MAN3",
+            "qty": 25,
+            "item_total": 3225.0
+          }
+        ]
+      },
+      {
+        "code": "2600014098",
+        "date": "2026-11-13",
+        "customer": "NR projekt s.r.o.",
+        "email": "rosinova@nrprojekt.cz",
+        "total": 0.0,
+        "currency": "CZK",
+        "big_value": false,
+        "big_items": [
+          {
+            "name": "Vánoční ořechový sáček SOB s kolíčkem - 180g VÍCE DRUHŮ",
+            "code": "4725/MAN3",
+            "qty": 25,
+            "item_total": 3225.0
           }
         ]
       }
@@ -12787,6 +13184,162 @@
         ]
       }
     ],
-    "darky_kombinovane": []
+    "darky_kombinovane": [],
+    "velke_objednavky": [
+      {
+        "code": "2026003309",
+        "date": "2026-11-13",
+        "customer": "Y-corp s.r.o.",
+        "email": "zuzana@rufus.eu",
+        "total": 520.0,
+        "currency": "EUR",
+        "big_value": false,
+        "big_items": [
+          {
+            "name": "Mandle v bielej čokoláde obalené kokosom",
+            "code": "SKX1988/50G",
+            "qty": 100,
+            "item_total": 114.0
+          },
+          {
+            "name": "Mandle zasnežené v mliečnej čokoláde",
+            "code": "SKX10011/50G",
+            "qty": 100,
+            "item_total": 81.0
+          },
+          {
+            "name": "Slaný mix exclusive",
+            "code": "SKX5511/50G",
+            "qty": 250,
+            "item_total": 325.0
+          }
+        ]
+      },
+      {
+        "code": "2026003346",
+        "date": "2026-11-16",
+        "customer": "Pivnica Radošina, s.r.o.",
+        "email": "arybanska@pivnicaradosina.sk",
+        "total": 370.8,
+        "currency": "EUR",
+        "big_value": false,
+        "big_items": [
+          {
+            "name": "Arašidy lúpané pražené solené",
+            "code": "SKX56/200",
+            "qty": 60,
+            "item_total": 73.2
+          },
+          {
+            "name": "Orechy DELUXE v skle 180g — VIAC DRUHOV",
+            "code": "SKX2531/MAN3",
+            "qty": 60,
+            "item_total": 297.6
+          }
+        ]
+      },
+      {
+        "code": "2026003347",
+        "date": "2026-11-16",
+        "customer": "JUHAL consult s.r.o.",
+        "email": "juhal@nr.psg.sk",
+        "total": 353.85,
+        "currency": "EUR",
+        "big_value": false,
+        "big_items": [
+          {
+            "name": "Vianočný darček plný orechov 2×50g Stromček 2 — Mandle slaný karamel & Mix orieškov v mede a soli",
+            "code": "SKX99853",
+            "qty": 40,
+            "item_total": 214.8
+          }
+        ]
+      },
+      {
+        "code": "2026003348",
+        "date": "2026-11-16",
+        "customer": "Sketch, s.r.o.",
+        "email": "ekonom@sketch.sk",
+        "total": 318.6,
+        "currency": "EUR",
+        "big_value": false,
+        "big_items": [
+          {
+            "name": "Darčeková krabica MIX DRUHOV L – Edícia 2",
+            "code": "SKX4565XMIXXE2",
+            "qty": 20,
+            "item_total": 318.6
+          }
+        ]
+      },
+      {
+        "code": "2026003317",
+        "date": "2026-11-13",
+        "customer": "Irena Janščová",
+        "email": "janscova@pobox.sk",
+        "total": 239.4,
+        "currency": "EUR",
+        "big_value": false,
+        "big_items": [
+          {
+            "name": "Orechy DELUXE v skle - Mix orechov v mede a soli 180g",
+            "code": "SKX4890",
+            "qty": 42,
+            "item_total": 239.4
+          }
+        ]
+      },
+      {
+        "code": "2026003284",
+        "date": "2026-11-11",
+        "customer": "Impera s.r.o.",
+        "email": "eva.cikova@imperaindustrial.sk",
+        "total": 192.65,
+        "currency": "EUR",
+        "big_value": false,
+        "big_items": [
+          {
+            "name": "Vianočné orechové vrecko SOB s kolíčkom - 180g VIAC DRUHOV",
+            "code": "SKX4725/MAN3",
+            "qty": 25,
+            "item_total": 200.0
+          }
+        ]
+      },
+      {
+        "code": "2026003305",
+        "date": "2026-11-12",
+        "customer": "ZOTT s.r.o.",
+        "email": "dominika.svarcbacherova@zott.sk",
+        "total": 179.0,
+        "currency": "EUR",
+        "big_value": false,
+        "big_items": [
+          {
+            "name": "Darčekový pohár EXCLUSIVE - Mandle solené Valencia 70g",
+            "code": "SKX5013",
+            "qty": 50,
+            "item_total": 179.0
+          }
+        ]
+      },
+      {
+        "code": "2026003322",
+        "date": "2026-11-14",
+        "customer": "Reventia s. r. o.",
+        "email": "melichova.barbora@gmail.com",
+        "total": 101.4,
+        "currency": "EUR",
+        "big_value": false,
+        "big_items": [
+          {
+            "name": "Vianočné orechy v sáčku 80g - viacero druhov",
+            "code": "SKX38952/4794",
+            "qty": 39,
+            "item_total": 101.4
+          }
+        ]
+      }
+    ]
   }
 }
