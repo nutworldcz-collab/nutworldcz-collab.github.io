@@ -376,20 +376,27 @@ let activeView = 'druh'; // 'druh' | 'vyroba'
 
 /* ── Výrobní skupiny ─────────────────────────────────────── */
 const PROCESS_GROUPS = [
-  // ---- Solené — PRVNÍ: slaný/solený vždy sem, bez ohledu na "exclusive" apod. ----
-  { label: "Solené",             emoji: "🧂", color: "#9e7a56",
-    kw: ["solen", "slaný", "slaně", "se solí", " sůl", "& sůl", "& sol", "himalájsk", "mořsk"] },
-  // ---- Čokoláda & Dražované ----
-  // "kamínk" = čokoládové kamínky; "dražov" = dražované obecně
-  // "raffaell","tiramisu","jogurt","hrudky","krust","exclusive","tříbarev","zasnežen" = specifické produkty
+  // ---- Čokoláda & Dražované — PRVNÍ ----
+  // Musí být před Soleným, aby ČOKOLÁDOVÉ produkty s "mořská sůl" neskončily v Soleném.
+  // "kakaov"=kakaové čočky; "nugát"=nugátové mandle; "lentilk"=mini lentilky;
+  // "čokam"=čokameny; "straciat"=straciatella; "obalované"=king nuts obalované
+  // "třpytiv"=třpytivé mandle; "vídeňsk"=vídeňské mandle (cukrová krusta)
   { label: "Čokoláda",           emoji: "🍫", color: "#5c381f",
     kw: ["čokolád", "dražov", "kamínk", "v bílé", "v mléčné", "v hořké", "bílá čok", "mléčná čok", "hořká čok",
-         "raffaell", "tiramisu", "jogurt", "hrudky", "krust", "exclusive", "tříbarev", "tří barev", "zasnežen"] },
+         "raffaell", "tiramisu", "jogurt", "hrudky", "krust", "tříbarev", "tří barev", "zasnežen",
+         "kakaov", "nugát", "lentilk", "straciat", "cappuccino", "čokam", "třpytiv", "vídeňsk", "obalované",
+         "mandle exclusive", "kešu exclusive", "sněhov"] },
+  // ---- Solené ----
+  // " solen" (s mezerou před) → chytí "pražené solené" ale NE "pražené nesolené"
+  // "slan" → chytí slaný/slaná/slané/slaném
+  // "mořsk" ODSTRANĚNO — false positive z textu ingrediencí ("mořská řasa")
+  { label: "Solené",             emoji: "🧂", color: "#9e7a56",
+    kw: [" solen", "slan", "se solí", " sůl", "& sůl", "& sol", "himalájsk"] },
   // ---- Wasabi ----
   { label: "Wasabi",             emoji: "🌿", color: "#6fa044",
     kw: ["wasabi"] },
   // ---- Med & Karamel ----
-  // POZOR: "med" samo chytí "medvídci" a "medjool" — používáme jen konkrétní tvary
+  // "med" samo chytí "medvídci"/"medjool" — jen konkrétní tvary
   { label: "Med & Karamel",      emoji: "🍯", color: "#f7ab31",
     kw: ["v medu", "s medem", "& med", "medová", "medov", "karamel", "toffee", "honey"] },
   // ---- Uzené ----
@@ -397,9 +404,8 @@ const PROCESS_GROUPS = [
     kw: ["uzen"] },
   // ---- Chili & Pálivé ----
   { label: "Chili & Pálivé",     emoji: "🌶️", color: "#da1668",
-    kw: ["chili", "pálivé", "jalapeño", "habanero", "sriracha", "limetk"] },
+    kw: ["chili", "chilli", "pálivé", "jalapeño", "habanero", "sriracha", "limetk"] },
   // ---- V těstíčku ----
-  // "obalované" je příliš obecné — ponecháváme jen těstíčko/tempura
   { label: "V těstíčku",         emoji: "🥐", color: "#c8976a",
     kw: ["těstíčk", "tempura"] },
   // ---- Se sezamem ----
@@ -412,18 +418,18 @@ const PROCESS_GROUPS = [
   { label: "Skořice & Koření",   emoji: "🌿", color: "#c8976a",
     kw: ["skořic", "koření", "curry", "kurkum", "zázvor", "kardamom"] },
   // ---- Cukrovinky & Želé ----
-  // medvídci, pendreky, lipo, lékořice, bonbóny, upíří zuby, ostružiny atd.
+  // "marshm"=marshmallows; "marcipán"=marcipánové kuličky/vajíčka
   { label: "Cukrovinky & Želé",  emoji: "🍬", color: "#da1668",
     kw: ["medvídci", "pendrek", "lipo ", "bonbón", "bonbon", "želé", "gumov",
-         "lékořic", "upíří", "ostružin", "maliny & ost"] },
+         "lékořic", "upíří", "ostružin", "marshm", "marcipán"] },
   // ---- Sušené ovoce ----
-  // datle (medjool!), brusinky, meruňky, švestky, fíky, rozinky, mango, ananas, banán,
-  // kiwi, papaya, borůvky, kustovnice, mochyně, jablka, hrušky, ibišek, kokos, moruše
+  // "papáj"=papája kandovaná; "třešn"=třešně; "višn"=višně;
+  // "pomelo"=pomelo plátky; "klikv"=klikva/brusinky velkoplodé; "broskvov"=broskve
   { label: "Sušené ovoce",       emoji: "🍇", color: "#da1668",
-    kw: ["datl", "datlí", "brusink", "meruňk", "švestk", "fík", "rozink", "hrozink",
-         "mango", "ananas", "banán", "kiwi", "papaya", "borůvk", "kustovnic",
+    kw: ["datl", "datlí", "brusink", "meruňk", "švestk", "fík", "rozin", "hrozin",
+         "mango", "ananas", "banán", "kiwi", "papaya", "papáj", "borůvk", "kustovnic",
          "mochyn", "jablk", "hrušk", "ibiš", "cantaloupe", "moruš", "kokos chips",
-         "kokosov"] },
+         "kokosov", "pomelo", "třešn", "višn", "klikv", "broskvov"] },
   // ---- Přírodní / Natural — fallback ----
   { label: "Přírodní / Natural", emoji: "🌿", color: "#83502e",
     kw: [] },
@@ -460,7 +466,7 @@ const PRODUCT_GROUPS_KW = [
   { label: "Meruňky",         kw: ["meruňk"] },
   { label: "Švestky",         kw: ["švestk"] },
   { label: "Fíky",            kw: ["fík"] },
-  { label: "Rozinky",         kw: ["rozink", "hrozink"] },
+  { label: "Rozinky",         kw: ["rozin", "hrozin"] },
   { label: "Mango",           kw: ["mango"] },
   { label: "Ananas",          kw: ["ananas"] },
   { label: "Banán",           kw: ["banán"] },
