@@ -190,6 +190,16 @@ mark { background: rgba(247,171,49,.4); color: inherit; border-radius: 2px; padd
 .prod-name { font-size: 12px; color: var(--fg2); flex: 1; min-width: 0; line-height: 1.35; }
 .prod-code { font-size: 10px; color: var(--fg3); flex-shrink: 0; font-family: monospace; opacity: .7; }
 .gift-badge { font-size: 10px; opacity: .7; vertical-align: middle; }
+/* ── Kombinované dárky ── */
+.gift-combos { padding: 0 max(16px, env(safe-area-inset-left, 0px)); display: flex; flex-direction: column; gap: 6px; padding-bottom: 10px; }
+.gift-combo-card { background: var(--bg3); border: 1px solid #e8d8a0; border-radius: 8px; overflow: hidden; }
+.gift-combo-header { display: flex; align-items: center; gap: 8px; padding: 7px 12px; background: rgba(247,171,49,.08); }
+.gift-combo-name { flex: 1; font-size: 12px; font-weight: 600; color: var(--fg2); min-width: 0; }
+.gift-ing-list { padding: 4px 12px 8px 12px; display: flex; flex-direction: column; gap: 3px; }
+.gift-ing-row { display: flex; align-items: center; gap: 6px; }
+.gift-ing-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.gift-ing-name { flex: 1; font-size: 11px; color: var(--fg2); }
+.gift-ing-code { font-size: 10px; color: var(--fg3); font-family: monospace; opacity: .7; }
 /* ── View toggle (Druh / Výroba) ── */
 .view-bar {
   display: flex; gap: 4px;
@@ -277,6 +287,7 @@ mark { background: rgba(247,171,49,.4); color: inherit; border-radius: 2px; padd
 <div id="tab-cz" class="tab-content active">
   <div class="shop-summary" id="cz-summary"></div>
   <div id="cz-badge" style="padding:6px max(20px,env(safe-area-inset-left,0px));background:var(--bg);border-bottom:1px solid var(--border);font-size:11px;color:var(--fg3);display:none;align-items:center;gap:6px"></div>
+  <div id="cz-darky-kombinovane"></div>
   <div id="cz-sections"></div>
   <div class="totals-bar" id="cz-total"></div>
 </div>
@@ -284,6 +295,7 @@ mark { background: rgba(247,171,49,.4); color: inherit; border-radius: 2px; padd
 <div id="tab-sk" class="tab-content">
   <div class="shop-summary" id="sk-summary"></div>
   <div id="sk-badge" style="padding:6px max(20px,env(safe-area-inset-left,0px));background:var(--bg);border-bottom:1px solid var(--border);font-size:11px;color:var(--fg3);display:none;align-items:center;gap:6px"></div>
+  <div id="sk-darky-kombinovane"></div>
   <div id="sk-sections"></div>
   <div class="totals-bar" id="sk-total"></div>
 </div>
@@ -387,6 +399,53 @@ function renderProcessView(shopKey) {
   totalEl.innerHTML = `Celkem položek k výrobě: <strong>${grandTotal} ks</strong>`;
 }
 
+/* ── Kombinované dárky ───────────────────────────────────── */
+function renderDarkyKombinovane(shopKey) {
+  const dk = (REPORT[shopKey] || {}).darky_kombinovane || [];
+  const color = '#f7ab31';
+  const container = document.getElementById(`${shopKey}-darky-kombinovane`);
+  if (!container) return;
+
+  const visible = dk.filter(g => {
+    if (activeDate === 'all') return g.qty > 0;
+    return (g.by_date && g.by_date[activeDate]) > 0;
+  });
+
+  if (!visible.length) { container.hidden = true; return; }
+  container.hidden = false;
+
+  const cards = visible.map(g => {
+    const qty = activeDate === 'all' ? g.qty : (g.by_date[activeDate] || 0);
+    const ings = g.ingredients.map(i =>
+      `<div class="gift-ing-row">
+        <span class="gift-ing-dot" style="background:${color}"></span>
+        <span class="gift-ing-name">${i.name}</span>
+        <span class="gift-ing-code">${i.code}</span>
+      </div>`
+    ).join('');
+    return `
+      <div class="gift-combo-card">
+        <div class="gift-combo-header">
+          <span class="qty-badge" style="color:${color}">${qty}×</span>
+          <span class="gift-combo-name">${g.gift_name}</span>
+          <span class="prod-code">${g.gift_code}</span>
+        </div>
+        <div class="gift-ing-list">${ings}</div>
+      </div>`;
+  }).join('');
+
+  container.innerHTML = `
+    <div class="parent-section">
+      <div class="parent-header">
+        <div class="parent-stripe" style="background:${color}"></div>
+        <span class="parent-emoji">🎁</span>
+        <span class="parent-title" style="color:${color}">Kombinované dárky</span>
+        <span class="parent-total" style="color:${color}">${visible.reduce((s,g) => s + (activeDate==='all'?g.qty:(g.by_date[activeDate]||0)), 0)}<small>ks</small></span>
+      </div>
+      <div class="gift-combos">${cards}</div>
+    </div>`;
+}
+
 function setView(view, btn) {
   activeView = view;
   document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
@@ -399,6 +458,7 @@ function setView(view, btn) {
 }
 
 function renderCurrentView(shopKey) {
+  renderDarkyKombinovane(shopKey);
   if (activeView === 'druh') renderSections(shopKey);
   else renderProcessView(shopKey);
 }
