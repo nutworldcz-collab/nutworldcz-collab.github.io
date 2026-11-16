@@ -376,6 +376,9 @@ let activeView = 'druh'; // 'druh' | 'vyroba'
 
 /* ── Výrobní skupiny ─────────────────────────────────────── */
 const PROCESS_GROUPS = [
+  // ---- Solené — PRVNÍ: slaný/solený vždy sem, bez ohledu na "exclusive" apod. ----
+  { label: "Solené",             emoji: "🧂", color: "#9e7a56",
+    kw: ["solen", "slaný", "slaně", "se solí", " sůl", "& sůl", "& sol", "himalájsk", "mořsk"] },
   // ---- Čokoláda & Dražované ----
   // "kamínk" = čokoládové kamínky; "dražov" = dražované obecně
   // "raffaell","tiramisu","jogurt","hrudky","krust","exclusive","tříbarev","zasnežen" = specifické produkty
@@ -385,9 +388,6 @@ const PROCESS_GROUPS = [
   // ---- Wasabi ----
   { label: "Wasabi",             emoji: "🌿", color: "#6fa044",
     kw: ["wasabi"] },
-  // ---- Solené ----
-  { label: "Solené",             emoji: "🧂", color: "#9e7a56",
-    kw: ["solen", "se solí", " sůl", "& sůl", "& sol", "himalájsk", "mořsk"] },
   // ---- Med & Karamel ----
   // POZOR: "med" samo chytí "medvídci" a "medjool" — používáme jen konkrétní tvary
   { label: "Med & Karamel",      emoji: "🍯", color: "#f7ab31",
