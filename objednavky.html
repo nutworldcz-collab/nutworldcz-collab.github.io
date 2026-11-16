@@ -569,7 +569,8 @@ function getQty(it, date) {
   return (it.by_date && it.by_date[date]) ? it.by_date[date] : 0;
 }
 
-// Builds ingCode → [{name, code, qty}] from darky_kombinovane
+// Builds "ingCode:grams" → [{name, code, qty}] from darky_kombinovane
+// Key includes grams aby 50g a 80g mandle nedostaly stejné sources
 function buildGiftSources(shopKey) {
   const dk = (REPORT[shopKey] || {}).darky_kombinovane || [];
   const map = {};
@@ -578,14 +579,15 @@ function buildGiftSources(shopKey) {
     const qty = getQ(g);
     if (qty <= 0) continue;
     for (const i of g.ingredients) {
-      if (!map[i.code]) map[i.code] = {};
+      const key = `${i.code}:${i.grams || 0}`;
+      if (!map[key]) map[key] = {};
       const gk = g.gift_code;
-      if (!map[i.code][gk]) map[i.code][gk] = { name: g.gift_name, code: gk, qty: 0 };
-      map[i.code][gk].qty += qty;
+      if (!map[key][gk]) map[key][gk] = { name: g.gift_name, code: gk, qty: 0 };
+      map[key][gk].qty += qty;
     }
   }
   const result = {};
-  for (const [c, gifts] of Object.entries(map)) result[c] = Object.values(gifts);
+  for (const [k, gifts] of Object.entries(map)) result[k] = Object.values(gifts);
   return result;
 }
 
@@ -601,9 +603,15 @@ function giftSrcHtml(sources, color) {
 }
 
 function makeProductRow(it, qty, color, giftSrc) {
-  const src = (it.is_gift && giftSrc) ? giftSrcHtml(giftSrc[it.code], color) : '';
-  const hasGift = it.is_gift;
-  const giftBadge = hasGift ? ' <span class="gift-badge">🎁</span>' : '';
+  // Lookup jen pro expandované složky kombinovaných dárků (base kód bez lomítka)
+  // Jednodruhové dárky (kód s lomítkem jako "101/50") sources nepotřebují
+  let src = '';
+  if (it.is_gift && giftSrc && !it.code.includes('/')) {
+    const gramsM = it.name.match(/(\d+)g(?:\s|$)/);
+    const grams  = gramsM ? parseInt(gramsM[1]) : 0;
+    src = giftSrcHtml(giftSrc[`${it.code}:${grams}`], color);
+  }
+  const giftBadge = it.is_gift ? ' <span class="gift-badge">🎁</span>' : '';
   if (src) {
     return `<div class="product-row ing-row" data-code="${it.code}" data-qty="${qty}" onclick="toggleDone('${it.code}')">
       <span class="done-check">✓</span>
