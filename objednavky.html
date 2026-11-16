@@ -225,7 +225,17 @@ details.gift-prehled[open] > summary::before { content: "▾ "; }
 .view-btn.active { background: var(--brown); border-color: var(--brown); color: #fff; }
 .view-btn:hover:not(.active) { border-color: var(--brown); color: var(--brown); }
 /* ── Process view ── */
-.process-block { margin-bottom: 14px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.process-block { margin-bottom: 6px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.prod-subgroup { margin-bottom: 10px; }
+.prod-subgroup-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 5px 12px 5px 10px; margin-bottom: 2px;
+  border-left: 3px solid #c8976a;
+  background: var(--bg2); border-radius: 0 6px 6px 0;
+}
+.prod-subgroup-name { font-size: 12px; font-weight: 700; color: var(--fg2); letter-spacing: .3px; text-transform: uppercase; }
+.prod-subgroup-qty { font-size: 12px; font-weight: 700; }
+.prod-subgroup-qty small { font-size: 9px; margin-left: 2px; opacity: .7; }
 /* ── Skrýt hotové ── */
 .hide-done-btn {
   font-family: 'Exo 2', sans-serif; font-size: 11px; font-weight: 600;
@@ -427,6 +437,51 @@ function classifyProcess(name) {
   return "Přírodní / Natural";
 }
 
+// Pod-skupiny výrobku uvnitř každé procesní sekce (zrcadlí Python GROUPS)
+const PRODUCT_GROUPS_KW = [
+  { label: "Arašídy",         kw: ["arašíd"] },
+  { label: "Mandle",          kw: ["mandle", "mandl"] },
+  { label: "Kešu",            kw: ["kešu"] },
+  { label: "Para ořechy",     kw: ["para oř", "para n", "para p"] },
+  { label: "Pistácie",        kw: ["pistác"] },
+  { label: "Makadamie",       kw: ["makadami", "makadam"] },
+  { label: "Lískové ořechy",  kw: ["lískov"] },
+  { label: "Pekanové ořechy", kw: ["pekan"] },
+  { label: "Vlašské ořechy",  kw: ["vlašsk"] },
+  { label: "Dýňová semínka",  kw: ["dýňov"] },
+  { label: "Slunečnicová",    kw: ["slunečnic"] },
+  { label: "Lněná semínka",   kw: ["lněn"] },
+  { label: "Chia semínka",    kw: ["chia"] },
+  { label: "Konopné",         kw: ["konopn"] },
+  { label: "Sezam",           kw: ["sezam"] },
+  { label: "Mák",             kw: ["mák"] },
+  { label: "Datle",           kw: ["datl", "datlí"] },
+  { label: "Brusinky",        kw: ["brusink"] },
+  { label: "Meruňky",         kw: ["meruňk"] },
+  { label: "Švestky",         kw: ["švestk"] },
+  { label: "Fíky",            kw: ["fík"] },
+  { label: "Rozinky",         kw: ["rozink", "hrozink"] },
+  { label: "Mango",           kw: ["mango"] },
+  { label: "Ananas",          kw: ["ananas"] },
+  { label: "Banán",           kw: ["banán"] },
+  { label: "Kiwi",            kw: ["kiwi"] },
+  { label: "Kokos",           kw: ["kokos"] },
+  { label: "Medvídci",        kw: ["medvídci"] },
+  { label: "Pendreky",        kw: ["pendrek"] },
+  { label: "Lékořice",        kw: ["lékořic"] },
+  { label: "Lyofilizované",   kw: ["lyofiliz"] },
+  { label: "Dárky",           kw: ["dárkov", "krabic", "krabičk", "kazetka", "kornout", "adventní"] },
+  { label: "MIX / Směsi",     kw: ["mix", "směs"] },
+];
+
+function classifyProductGroup(name) {
+  const n = name.toLowerCase();
+  for (const g of PRODUCT_GROUPS_KW) {
+    if (g.kw.some(kw => n.includes(kw))) return g.label;
+  }
+  return "Ostatní";
+}
+
 function getAllItems(shopKey) {
   const parents = REPORT[shopKey].rozklad || [];
   const out = [];
@@ -449,24 +504,45 @@ function renderProcessView(shopKey) {
   const totalEl   = document.getElementById(`${shopKey}-total`);
   const giftSrc   = buildGiftSources(shopKey);
 
-  // Seskupit podle výrobního procesu
+  // Seskupit: procLabel → { prodGroup → [items] }
   const byProc = {};
-  for (const pg of PROCESS_GROUPS) byProc[pg.label] = [];
+  for (const pg of PROCESS_GROUPS) byProc[pg.label] = {};
   for (const it of allItems) {
     const proc = classifyProcess(it.name);
-    byProc[proc].push(it);
+    const prod = classifyProductGroup(it.name);
+    if (!byProc[proc][prod]) byProc[proc][prod] = [];
+    byProc[proc][prod].push(it);
   }
 
   let grandTotal = 0;
   container.innerHTML = PROCESS_GROUPS.map(pg => {
-    const items = byProc[pg.label] || [];
-    if (!items.length) return '';
-    const total = items.reduce((s, it) => s + it.qty_active, 0);
+    const prodMap = byProc[pg.label] || {};
+    const allProdItems = Object.values(prodMap).flat();
+    if (!allProdItems.length) return '';
+    const total = allProdItems.reduce((s, it) => s + it.qty_active, 0);
     grandTotal += total;
 
-    const rows = items.map(it =>
-      makeProductRow(it, it.qty_active, pg.color, giftSrc)
-    ).join('');
+    // Pod-skupiny seřazené dle qty sestupně
+    const subGroups = Object.entries(prodMap)
+      .map(([pname, items]) => ({ pname, items, qty: items.reduce((s, i) => s + i.qty_active, 0) }))
+      .sort((a, b) => b.qty - a.qty);
+
+    const multiProd = subGroups.length > 1;
+
+    const innerHtml = subGroups.map(({ pname, items, qty }) => {
+      const rows = items
+        .slice().sort((a, b) => b.qty_active - a.qty_active)
+        .map(it => makeProductRow(it, it.qty_active, pg.color, giftSrc)).join('');
+      if (!multiProd) return `<div class="process-block">${rows}</div>`;
+      return `
+        <div class="prod-subgroup">
+          <div class="prod-subgroup-header" style="border-left-color:${pg.color}">
+            <span class="prod-subgroup-name">${pname}</span>
+            <span class="prod-subgroup-qty" style="color:${pg.color}">${qty}<small>ks</small></span>
+          </div>
+          <div class="process-block">${rows}</div>
+        </div>`;
+    }).join('');
 
     return `
       <div class="parent-section">
@@ -476,7 +552,7 @@ function renderProcessView(shopKey) {
           <span class="parent-title" style="color:${pg.color}">${pg.label}</span>
           <span class="parent-total" style="color:${pg.color}">${total}<small>ks</small></span>
         </div>
-        <div class="process-block">${rows}</div>
+        ${innerHtml}
       </div>`;
   }).join('');
 
