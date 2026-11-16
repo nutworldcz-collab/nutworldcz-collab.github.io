@@ -366,29 +366,44 @@ let activeView = 'druh'; // 'druh' | 'vyroba'
 
 /* ── Výrobní skupiny ─────────────────────────────────────── */
 const PROCESS_GROUPS = [
+  // ---- Čokoláda & Dražované ----
+  // "kamínk" = čokoládové kamínky; "dražov" = dražované obecně
+  // "raffaell","tiramisu","jogurt","hrudky","krust","exclusive","tříbarev","zasnežen" = specifické produkty
   { label: "Čokoláda",           emoji: "🍫", color: "#5c381f",
     kw: ["čokolád", "dražov", "kamínk", "v bílé", "v mléčné", "v hořké", "bílá čok", "mléčná čok", "hořká čok",
-         "raffaell", "hrudky", "krust", "exclusive", "tříbarev", "tří barev", "zasnežen"] },
+         "raffaell", "tiramisu", "jogurt", "hrudky", "krust", "exclusive", "tříbarev", "tří barev", "zasnežen"] },
+  // ---- Wasabi ----
   { label: "Wasabi",             emoji: "🌿", color: "#6fa044",
     kw: ["wasabi"] },
+  // ---- Solené ----
   { label: "Solené",             emoji: "🧂", color: "#9e7a56",
     kw: ["solen", "se solí", " sůl", "& sůl", "& sol", "himalájsk", "mořsk"] },
+  // ---- Med & Karamel ----
+  // POZOR: "med" samo chytí "medvídci" a "medjool" — používáme jen konkrétní tvary
   { label: "Med & Karamel",      emoji: "🍯", color: "#f7ab31",
-    kw: ["med", "karamel", "medov", "toffee", "honey"] },
+    kw: ["v medu", "s medem", "& med", "medová", "medov", "karamel", "toffee", "honey"] },
+  // ---- Uzené ----
   { label: "Uzené",              emoji: "💨", color: "#6b4b2f",
     kw: ["uzen"] },
+  // ---- Chili & Pálivé ----
   { label: "Chili & Pálivé",     emoji: "🌶️", color: "#da1668",
-    kw: ["chili", "pálivé", "jalapeño", "habanero", "sriracha"] },
+    kw: ["chili", "pálivé", "jalapeño", "habanero", "sriracha", "limetk"] },
+  // ---- V těstíčku ----
+  // "obalované" je příliš obecné — ponecháváme jen těstíčko/tempura
   { label: "V těstíčku",         emoji: "🥐", color: "#c8976a",
-    kw: ["těstíčk", "tempura", "obalované"] },
+    kw: ["těstíčk", "tempura"] },
+  // ---- Se sezamem ----
   { label: "Se sezamem",         emoji: "🫘", color: "#6fa044",
     kw: ["sezam"] },
+  // ---- Lyofilizované ----
   { label: "Lyofilizované",      emoji: "❄️", color: "#6b9fd4",
     kw: ["lyofiliz"] },
+  // ---- Skořice & Koření ----
   { label: "Skořice & Koření",   emoji: "🌿", color: "#c8976a",
-    kw: ["skořic", "koření", "curry", "kurkum", "zázvor", "kardamom", "vanilk"] },
+    kw: ["skořic", "koření", "curry", "kurkum", "zázvor", "kardamom"] },
+  // ---- Přírodní / Natural — fallback ----
   { label: "Přírodní / Natural", emoji: "🌿", color: "#83502e",
-    kw: [] }, // fallback
+    kw: [] },
 ];
 
 function classifyProcess(name) {
