@@ -498,25 +498,14 @@ function renderDarkyKombinovane(shopKey) {
       </div>
 
       <div class="group-block">
-        <div class="group-subheader">
-          <span class="group-sub-emoji">🧩</span>
-          <span class="group-sub-title">Složky k přípravě</span>
-          <span class="group-sub-total" style="color:${color}">${totalIng}<small>ks</small></span>
-        </div>
-        <div class="variant-card">
-          <div class="variant-items">${ingRows}</div>
-        </div>
-      </div>
-
-      <div class="group-block">
         <div class="group-subheader" style="cursor:default">
           <span class="group-sub-emoji">📦</span>
           <span class="group-sub-title">Přehled kombinací</span>
           <span class="group-sub-total" style="color:${color}">${visible.length}<small> typ${visible.length > 4 ? 'ů' : visible.length > 1 ? 'y' : ''}</small></span>
         </div>
         <div class="gift-combos-wrap">
-          <details class="gift-prehled">
-            <summary>Zobrazit rozklad každé kombinace</summary>
+          <details class="gift-prehled" open>
+            <summary>Rozklad každé kombinace</summary>
             <div class="gift-combos">${cards}</div>
           </details>
         </div>
