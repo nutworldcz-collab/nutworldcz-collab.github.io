@@ -200,15 +200,11 @@ mark { background: rgba(247,171,49,.4); color: inherit; border-radius: 2px; padd
 .product-row.done .ing-src-list { opacity: .3; }
 .gift-badge { font-size: 10px; opacity: .7; vertical-align: middle; }
 /* ── Kombinované dárky ── */
-.gift-combos { display: flex; flex-direction: column; gap: 6px; padding-bottom: 6px; }
+.gift-combos { display: flex; flex-direction: column; gap: 4px; padding-bottom: 6px; }
 .gift-combo-card { background: var(--bg3); border: 1px solid #e8d8a0; border-radius: 8px; overflow: hidden; }
-.gift-combo-header { display: flex; align-items: center; gap: 8px; padding: 7px 12px; background: rgba(247,171,49,.08); }
+.gift-combo-header { display: flex; align-items: center; gap: 8px; padding: 7px 12px; }
 .gift-combo-name { flex: 1; font-size: 12px; font-weight: 600; color: var(--fg2); min-width: 0; }
-.gift-ing-list { padding: 4px 12px 8px 12px; display: flex; flex-direction: column; gap: 3px; }
-.gift-ing-row { display: flex; align-items: center; gap: 6px; }
-.gift-ing-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
-.gift-ing-name { flex: 1; font-size: 11px; color: var(--fg2); }
-.gift-ing-code { font-size: 10px; color: var(--fg3); font-family: monospace; opacity: .7; }
+.gift-combo-subline { font-size: 10px; color: var(--fg3); padding: 0 12px 7px 44px; opacity: .8; }
 .gift-combos-wrap { padding: 0 max(16px, env(safe-area-inset-left, 0px)); }
 details.gift-prehled > summary { cursor: pointer; font-size: 12px; color: var(--fg3); padding: 6px 0; list-style: none; }
 details.gift-prehled > summary::before { content: "▸ "; }
@@ -373,6 +369,7 @@ function renderProcessView(shopKey) {
   const allItems  = getAllItems(shopKey);
   const container = document.getElementById(`${shopKey}-sections`);
   const totalEl   = document.getElementById(`${shopKey}-total`);
+  const giftSrc   = buildGiftSources(shopKey);
 
   // Seskupit podle výrobního procesu
   const byProc = {};
@@ -389,13 +386,9 @@ function renderProcessView(shopKey) {
     const total = items.reduce((s, it) => s + it.qty_active, 0);
     grandTotal += total;
 
-    const rows = items.map(it => `
-      <div class="product-row" data-code="${it.code}" data-qty="${it.qty_active}" onclick="toggleDone('${it.code}')">
-        <span class="done-check">✓</span>
-        <span class="qty-badge" style="color:${pg.color}">${it.qty_active}×</span>
-        <span class="prod-name">${it.name}${it.is_gift ? ' <span class="gift-badge">🎁</span>' : ''}</span>
-        <span class="prod-code">${it.code}</span>
-      </div>`).join('');
+    const rows = items.map(it =>
+      makeProductRow(it, it.qty_active, pg.color, giftSrc)
+    ).join('');
 
     return `
       <div class="parent-section">
@@ -427,23 +420,17 @@ function renderDarkyKombinovane(shopKey) {
 
   const totalGifts = visible.reduce((s, g) => s + getQ(g), 0);
 
-  // --- Přehled krabic (collapsible) ---
+  // --- Přehled krabic: jen kolik kusů sestavit, složky jsou v hlavních sekcích ---
   const cards = visible.map(g => {
     const qty = getQ(g);
-    const ings = g.ingredients.map(i =>
-      `<div class="gift-ing-row">
-        <span class="gift-ing-dot" style="background:${color}"></span>
-        <span class="gift-ing-name">${i.name}</span>
-        <span class="gift-ing-code">${i.code}</span>
-      </div>`
-    ).join('');
+    const ingNames = g.ingredients.map(i => i.name).join(' · ');
     return `<div class="gift-combo-card">
       <div class="gift-combo-header">
         <span class="qty-badge" style="color:${color}">${qty}×</span>
         <span class="gift-combo-name">${g.gift_name}</span>
         <span class="prod-code">${g.gift_code}</span>
       </div>
-      <div class="gift-ing-list">${ings}</div>
+      <div class="gift-combo-subline">${ingNames}</div>
     </div>`;
   }).join('');
 
@@ -582,6 +569,60 @@ function getQty(it, date) {
   return (it.by_date && it.by_date[date]) ? it.by_date[date] : 0;
 }
 
+// Builds ingCode → [{name, code, qty}] from darky_kombinovane
+function buildGiftSources(shopKey) {
+  const dk = (REPORT[shopKey] || {}).darky_kombinovane || [];
+  const map = {};
+  const getQ = g => activeDate === 'all' ? g.qty : ((g.by_date && g.by_date[activeDate]) || 0);
+  for (const g of dk) {
+    const qty = getQ(g);
+    if (qty <= 0) continue;
+    for (const i of g.ingredients) {
+      if (!map[i.code]) map[i.code] = {};
+      const gk = g.gift_code;
+      if (!map[i.code][gk]) map[i.code][gk] = { name: g.gift_name, code: gk, qty: 0 };
+      map[i.code][gk].qty += qty;
+    }
+  }
+  const result = {};
+  for (const [c, gifts] of Object.entries(map)) result[c] = Object.values(gifts);
+  return result;
+}
+
+function giftSrcHtml(sources, color) {
+  if (!sources || !sources.length) return '';
+  return `<div class="ing-src-list">${sources.map(s =>
+    `<div class="ing-src-row">
+      <span class="ing-src-qty" style="color:${color}">${s.qty}×</span>
+      <span class="ing-src-name">${s.name}</span>
+      <span class="ing-src-code">${s.code}</span>
+    </div>`
+  ).join('')}</div>`;
+}
+
+function makeProductRow(it, qty, color, giftSrc) {
+  const src = (it.is_gift && giftSrc) ? giftSrcHtml(giftSrc[it.code], color) : '';
+  const hasGift = it.is_gift;
+  const giftBadge = hasGift ? ' <span class="gift-badge">🎁</span>' : '';
+  if (src) {
+    return `<div class="product-row ing-row" data-code="${it.code}" data-qty="${qty}" onclick="toggleDone('${it.code}')">
+      <span class="done-check">✓</span>
+      <span class="qty-badge" style="color:${color}">${qty}×</span>
+      <div class="ing-name-wrap">
+        <span class="prod-name">${it.name}${giftBadge}</span>
+        <span class="prod-code-inline">${it.code}</span>
+        ${src}
+      </div>
+    </div>`;
+  }
+  return `<div class="product-row" data-code="${it.code}" data-qty="${qty}" onclick="toggleDone('${it.code}')">
+    <span class="done-check">✓</span>
+    <span class="qty-badge" style="color:${color}">${qty}×</span>
+    <span class="prod-name">${it.name}${giftBadge}</span>
+    <span class="prod-code">${it.code}</span>
+  </div>`;
+}
+
 function esc(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 function highlight(text, q) {
   if (!q) return text;
@@ -598,6 +639,7 @@ function renderSections(shopKey) {
   const parents   = REPORT[shopKey].rozklad || [];
   const container = document.getElementById(`${shopKey}-sections`);
   const totalEl   = document.getElementById(`${shopKey}-total`);
+  const giftSrc   = buildGiftSources(shopKey);
   let grandTotal  = 0;
 
   container.innerHTML = parents.map(p => {
@@ -617,12 +659,7 @@ function renderSections(shopKey) {
         if (vTotal === 0) return '';
         const rows = v.items.filter(it => getQty(it, activeDate) > 0).map(it => {
           const qty = getQty(it, activeDate);
-          return `<div class="product-row" data-code="${it.code}" data-qty="${qty}" onclick="toggleDone('${it.code}')">
-            <span class="done-check">✓</span>
-            <span class="qty-badge" style="color:${p.color}">${qty}×</span>
-            <span class="prod-name">${it.name}${it.is_gift ? ' <span class="gift-badge">🎁</span>' : ''}</span>
-            <span class="prod-code">${it.code}</span>
-          </div>`;
+          return makeProductRow(it, qty, p.color, giftSrc);
         }).join('');
         return `
           <div class="variant-card">
