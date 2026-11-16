@@ -189,6 +189,11 @@ mark { background: rgba(247,171,49,.4); color: inherit; border-radius: 2px; padd
 .qty-badge { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 13px; min-width: 26px; flex-shrink: 0; line-height: 1; }
 .prod-name { font-size: 12px; color: var(--fg2); flex: 1; min-width: 0; line-height: 1.35; }
 .prod-code { font-size: 10px; color: var(--fg3); flex-shrink: 0; font-family: monospace; opacity: .7; }
+.ing-row { align-items: flex-start; padding-top: 6px; padding-bottom: 6px; }
+.ing-name-wrap { flex: 1; min-width: 0; }
+.ing-sources { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 3px; }
+.ing-src-tag { font-size: 10px; color: var(--fg3); background: var(--bg2); border: 1px solid var(--border); border-radius: 3px; padding: 1px 5px; white-space: nowrap; }
+.product-row.done .ing-src-tag { opacity: .3; }
 .gift-badge { font-size: 10px; opacity: .7; vertical-align: middle; }
 /* ── Kombinované dárky ── */
 .gift-combos { display: flex; flex-direction: column; gap: 6px; padding-bottom: 6px; }
@@ -438,25 +443,40 @@ function renderDarkyKombinovane(shopKey) {
     </div>`;
   }).join('');
 
-  // --- Souhrn složek — seskupeno dle code+grams, seřazeno abecedně ---
+  // --- Souhrn složek — seskupeno dle code+grams, sources tracked ---
   const ingAgg = {};
   for (const g of visible) {
     const qty = getQ(g);
     for (const i of g.ingredients) {
       const key = `${i.code}:${i.grams}`;
-      if (!ingAgg[key]) ingAgg[key] = { name: i.name, code: i.code, qty: 0 };
+      if (!ingAgg[key]) ingAgg[key] = { name: i.name, code: i.code, grams: i.grams || 0, qty: 0, sources: [] };
       ingAgg[key].qty += qty;
+      ingAgg[key].sources.push({ name: g.gift_name, qty });
     }
   }
-  const sorted = Object.values(ingAgg).sort((a, b) => a.name.localeCompare(b.name, 'cs'));
+  // Sort: druh (bez gramáže) → gramáž vzestupně → stejné druhy u sebe
+  const sorted = Object.values(ingAgg).sort((a, b) => {
+    const baseA = a.name.replace(/ \d+g$/, '').trim();
+    const baseB = b.name.replace(/ \d+g$/, '').trim();
+    const cmp = baseA.localeCompare(baseB, 'cs');
+    return cmp !== 0 ? cmp : (a.grams || 0) - (b.grams || 0);
+  });
   const totalIng = sorted.reduce((s, i) => s + i.qty, 0);
 
   const ingRows = sorted.map(i => {
     const doneKey = `giftslozka_${i.code}_${i.grams || 0}`;
-    return `<div class="product-row" data-code="${doneKey}" data-qty="${i.qty}" onclick="toggleDone('${doneKey}')">
+    // Zdrojové krabičky — ukáže se jen pokud pochází z více typů
+    const srcHtml = i.sources.length > 1
+      ? `<div class="ing-sources">${i.sources.map(s =>
+          `<span class="ing-src-tag">${s.qty}× ${s.name}</span>`).join('')}</div>`
+      : '';
+    return `<div class="product-row ing-row" data-code="${doneKey}" data-qty="${i.qty}" onclick="toggleDone('${doneKey}')">
       <span class="done-check">✓</span>
       <span class="qty-badge" style="color:${color}">${i.qty}×</span>
-      <span class="prod-name">${i.name}</span>
+      <div class="ing-name-wrap">
+        <span class="prod-name">${i.name}</span>
+        ${srcHtml}
+      </div>
       <span class="prod-code">${i.code}</span>
     </div>`;
   }).join('');
