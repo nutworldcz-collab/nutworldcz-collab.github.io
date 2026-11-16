@@ -840,9 +840,9 @@ function applySearch(raw) {
 
         card.querySelectorAll('.product-row').forEach(row => {
           const nameEl = row.querySelector('.prod-name');
-          const codeEl = row.querySelector('.prod-code');
-          const show   = varMatch || nameEl.textContent.toLowerCase().includes(q)
-                                  || codeEl.textContent.toLowerCase().includes(q);
+          const codeEl = row.querySelector('.prod-code') || row.querySelector('.prod-code-inline');
+          const rowText = (nameEl ? nameEl.textContent : '') + ' ' + (codeEl ? codeEl.textContent : '');
+          const show   = varMatch || rowText.toLowerCase().includes(q);
           row.hidden = !show; totalRows++;
           if (show) { visibleRows++; cardVis = true; }
         });
@@ -867,7 +867,7 @@ function applySearch(raw) {
     section.hidden = !sectionVis;
   });
 
-  activeTab.querySelectorAll('.product-row:not([hidden]) .prod-name, .product-row:not([hidden]) .prod-code')
+  activeTab.querySelectorAll('.product-row:not([hidden]) .prod-name, .product-row:not([hidden]) .prod-code, .product-row:not([hidden]) .prod-code-inline')
     .forEach(el => {
       if (el._orig === undefined) el._orig = el.innerHTML;
       el.innerHTML = highlight(el._orig, q);
