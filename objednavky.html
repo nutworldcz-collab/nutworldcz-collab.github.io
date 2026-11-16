@@ -190,10 +190,14 @@ mark { background: rgba(247,171,49,.4); color: inherit; border-radius: 2px; padd
 .prod-name { font-size: 12px; color: var(--fg2); flex: 1; min-width: 0; line-height: 1.35; }
 .prod-code { font-size: 10px; color: var(--fg3); flex-shrink: 0; font-family: monospace; opacity: .7; }
 .ing-row { align-items: flex-start; padding-top: 6px; padding-bottom: 6px; }
-.ing-name-wrap { flex: 1; min-width: 0; }
-.ing-sources { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 3px; }
-.ing-src-tag { font-size: 10px; color: var(--fg3); background: var(--bg2); border: 1px solid var(--border); border-radius: 3px; padding: 1px 5px; white-space: nowrap; }
-.product-row.done .ing-src-tag { opacity: .3; }
+.ing-name-wrap { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.prod-code-inline { font-size: 10px; color: var(--fg3); font-family: monospace; opacity: .65; }
+.ing-src-list { margin-top: 4px; display: flex; flex-direction: column; gap: 2px; padding-left: 4px; border-left: 2px solid var(--border); }
+.ing-src-row { display: flex; align-items: center; gap: 5px; }
+.ing-src-qty { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 11px; min-width: 22px; flex-shrink: 0; }
+.ing-src-name { font-size: 11px; color: var(--fg3); flex: 1; min-width: 0; }
+.ing-src-code { font-size: 10px; color: var(--fg3); font-family: monospace; opacity: .6; flex-shrink: 0; }
+.product-row.done .ing-src-list { opacity: .3; }
 .gift-badge { font-size: 10px; opacity: .7; vertical-align: middle; }
 /* ── Kombinované dárky ── */
 .gift-combos { display: flex; flex-direction: column; gap: 6px; padding-bottom: 6px; }
@@ -443,7 +447,7 @@ function renderDarkyKombinovane(shopKey) {
     </div>`;
   }).join('');
 
-  // --- Souhrn složek — seskupeno dle code+grams, sources tracked ---
+  // --- Souhrn složek — seskupeno dle code+grams, sources s kódy krabiček ---
   const ingAgg = {};
   for (const g of visible) {
     const qty = getQ(g);
@@ -451,7 +455,7 @@ function renderDarkyKombinovane(shopKey) {
       const key = `${i.code}:${i.grams}`;
       if (!ingAgg[key]) ingAgg[key] = { name: i.name, code: i.code, grams: i.grams || 0, qty: 0, sources: [] };
       ingAgg[key].qty += qty;
-      ingAgg[key].sources.push({ name: g.gift_name, qty });
+      ingAgg[key].sources.push({ name: g.gift_name, code: g.gift_code, qty });
     }
   }
   // Sort: druh (bez gramáže) → gramáž vzestupně → stejné druhy u sebe
@@ -465,19 +469,22 @@ function renderDarkyKombinovane(shopKey) {
 
   const ingRows = sorted.map(i => {
     const doneKey = `giftslozka_${i.code}_${i.grams || 0}`;
-    // Zdrojové krabičky — ukáže se jen pokud pochází z více typů
-    const srcHtml = i.sources.length > 1
-      ? `<div class="ing-sources">${i.sources.map(s =>
-          `<span class="ing-src-tag">${s.qty}× ${s.name}</span>`).join('')}</div>`
-      : '';
+    // Zdrojové krabičky — každá na vlastním řádku s kódem
+    const srcHtml = i.sources.map(s =>
+      `<div class="ing-src-row">
+        <span class="ing-src-qty" style="color:${color}">${s.qty}×</span>
+        <span class="ing-src-name">${s.name}</span>
+        <span class="ing-src-code">${s.code}</span>
+      </div>`
+    ).join('');
     return `<div class="product-row ing-row" data-code="${doneKey}" data-qty="${i.qty}" onclick="toggleDone('${doneKey}')">
       <span class="done-check">✓</span>
       <span class="qty-badge" style="color:${color}">${i.qty}×</span>
       <div class="ing-name-wrap">
         <span class="prod-name">${i.name}</span>
-        ${srcHtml}
+        <span class="prod-code-inline">${i.code}</span>
+        <div class="ing-src-list">${srcHtml}</div>
       </div>
-      <span class="prod-code">${i.code}</span>
     </div>`;
   }).join('');
 
