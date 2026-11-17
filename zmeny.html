@@ -101,6 +101,10 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;min-height:
 .warn.show{display:block}
 
 .footer{text-align:center;font-size:11px;color:#b09070;margin-top:36px}
+
+.sync{max-width:880px;margin:0 auto 14px;font-size:12px;color:#a07850;display:flex;align-items:center;gap:8px}
+.sync.offline{background:#fee2e2;color:#9b1c1c;border-radius:10px;padding:10px 14px;font-weight:600}
+.btn-ok:disabled,.btn-add:disabled{opacity:.5;cursor:not-allowed}
 </style>
 </head>
 <body>
@@ -108,9 +112,10 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;min-height:
 <div class="topbar">
   <a href="/" class="back">← Zpět</a>
   <div class="page-title">🔄 Změny produktů</div>
-  <button class="btn-add" onclick="openModal()">+ Nová změna</button>
+  <button class="btn-add" id="btn-add" onclick="openModal()">+ Nová změna</button>
 </div>
 
+<div class="sync" id="sync">⏳ Načítám sdílená data…</div>
 <div class="stats" id="stats"></div>
 
 <div class="section-label" id="pending-label">Čekají na dokončení</div>
@@ -162,16 +167,18 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;min-height:
     </div>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeModal()">Zrušit</button>
-      <button class="btn-ok" onclick="addChange()">Přidat</button>
+      <button class="btn-ok" id="btn-ok" onclick="addChange()">Přidat</button>
     </div>
   </div>
 </div>
 
 <div class="footer">nutworldcz-collab.github.io · Nutworld s.r.o.</div>
 
+<script src="nw-data.js"></script>
 <script>
-const KEY = 'nw_zmeny_v3';
-// Po nasazení Apps Scriptu sem vlož URL:
+const NS = 'zmeny';
+const OLD_LOCAL_KEY = 'nw_zmeny_v3';
+const CACHE_KEY = 'nw_zmeny_cache';
 const NOTIFY_URL = 'https://script.google.com/macros/s/AKfycbwhjr-WcdWjfwctHBqyfh7VsVN8dLl8EW08mH2mai6t7Na9CFCbdDZsEevBm6gWvWk5rA/exec';
 
 const CHECKS_BASE = [
@@ -190,8 +197,58 @@ const TYPE_LABELS = {
   gramaz:'Gramáž', cena:'NC cena', certifikat:'Certifikát', jine:'Jiné',
 };
 
-function load(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch{return []}}
-function save(d){localStorage.setItem(KEY,JSON.stringify(d))}
+let data=[];
+let offline=true;
+
+function lsGet(k){try{return localStorage.getItem(k)}catch{return null}}
+function lsSet(k,v){try{localStorage.setItem(k,v)}catch{}}
+
+function setSync(){
+  const el=document.getElementById('sync');
+  if(offline){
+    el.className='sync offline';
+    el.textContent='⚠️ Nelze se připojit ke sdíleným datům — zobrazuji poslední načtený stav, ukládání je vypnuté. Zkouším znovu…';
+  } else {
+    el.className='sync';
+    el.textContent='✓ Sdílená data — vidí je všichni · aktualizováno '+new Date().toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'});
+  }
+  document.getElementById('btn-add').disabled=offline;
+}
+
+async function refresh(){
+  try{
+    const items=await NWData.list(NS);
+    data=items.map(it=>({...it.data,id:it.id,updatedBy:it.updatedBy}))
+              .sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+    offline=false;
+    lsSet(CACHE_KEY,JSON.stringify(data));
+  }catch(e){
+    console.error('[zmeny] load failed',e);
+    offline=true;
+    try{data=JSON.parse(lsGet(CACHE_KEY)||'[]')}catch{data=[]}
+  }
+  setSync();render();
+}
+
+// One-time copy of records saved in this browser before the shared store existed; the original stays untouched.
+async function migrateOldLocal(){
+  if(offline||lsGet(OLD_LOCAL_KEY+'_migrated'))return;
+  let old;try{old=JSON.parse(lsGet(OLD_LOCAL_KEY)||'[]')}catch{old=[]}
+  old=old.filter(c=>c&&c.id&&c.id!=='seed1');
+  const have=new Set(data.map(c=>c.id));
+  const missing=old.filter(c=>!have.has(c.id));
+  for(const c of missing){
+    const {id,...rest}=c;
+    await NWData.put(NS,id,rest);
+  }
+  lsSet(OLD_LOCAL_KEY+'_migrated',new Date().toISOString());
+  if(missing.length)await refresh();
+}
+
+function isBusy(){
+  const a=document.activeElement;
+  return document.getElementById('overlay').classList.contains('open')||(a&&a.classList.contains('notes-area'));
+}
 
 function progress(checks){
   const keys=Object.keys(checks);
@@ -232,7 +289,7 @@ function renderCard(ch){
           ${badges}
         </div>
         <div class="card-desc">${escHtml(ch.popis)}</div>
-        <div class="card-date">📅 ${fmtDate(ch.date)}</div>
+        <div class="card-date">📅 ${fmtDate(ch.date)}${ch.updatedBy?` · naposledy upravil(a): ${escHtml(ch.updatedBy)}`:''}</div>
       </div>
       <button class="card-del" onclick="del('${ch.id}')" title="Smazat">🗑</button>
     </div>
@@ -250,7 +307,6 @@ function escHtml(s){
 }
 
 function render(){
-  const data=load();
   const pending=data.filter(ch=>!isDone(ch.checks));
   const resolved=data.filter(ch=>isDone(ch.checks));
 
@@ -280,25 +336,40 @@ function render(){
   }
 }
 
-function toggle(id,checkId,val){
-  const data=load();
+async function toggle(id,checkId,val){
   const ch=data.find(c=>c.id===id);
   if(!ch)return;
+  if(offline){alert('Nejsi připojený ke sdíleným datům — změna se neuložila.');render();return;}
   ch.checks[checkId]=val;
-  if(isDone(ch.checks))ch.resolvedDate=new Date().toISOString();
-  else ch.resolvedDate=null;
-  save(data);render();
+  const resolvedDate=isDone(ch.checks)?new Date().toISOString():null;
+  ch.resolvedDate=resolvedDate;
+  render();
+  try{
+    await NWData.patch(NS,id,{checks:{[checkId]:val},resolvedDate});
+  }catch(e){
+    ch.checks[checkId]=!val;render();
+    alert('Uložení se nepovedlo: '+e.message);
+  }
 }
 
+const noteTimers={};
 function note(id,val){
-  const data=load();
   const ch=data.find(c=>c.id===id);
-  if(ch){ch.notes=val;save(data);}
+  if(!ch||offline)return;
+  ch.notes=val;
+  clearTimeout(noteTimers[id]);
+  noteTimers[id]=setTimeout(()=>{
+    NWData.patch(NS,id,{notes:val}).catch(e=>alert('Poznámka se neuložila: '+e.message));
+  },1000);
 }
 
-function del(id){
-  if(!confirm('Smazat tuto změnu?'))return;
-  save(load().filter(c=>c.id!==id));render();
+async function del(id){
+  if(offline){alert('Nejsi připojený ke sdíleným datům.');return;}
+  if(!confirm('Smazat tuto změnu? (Zůstane v historii v Google tabulce.)'))return;
+  try{
+    await NWData.remove(NS,id);
+    data=data.filter(c=>c.id!==id);render();
+  }catch(e){alert('Smazání se nepovedlo: '+e.message);}
 }
 
 let resolvedOpen=false;
@@ -323,7 +394,8 @@ function onTypChange(){
   document.getElementById('alg-warn').classList.toggle('show',t==='alergeny');
 }
 
-function addChange(){
+async function addChange(){
+  if(offline){alert('Nejsi připojený ke sdíleným datům — nelze uložit.');return;}
   const kod=document.getElementById('f-kod').value.trim();
   const nazev=document.getElementById('f-nazev').value.trim();
   const typ=document.getElementById('f-typ').value;
@@ -336,9 +408,19 @@ function addChange(){
   if(hasDarky)checks.darky=false;
   if(hasCanva)checks.canva=false;
 
-  const data=load();
-  data.unshift({id:Date.now().toString(),date:new Date().toISOString(),kod,nazev,typ,popis,checks,notes:'',resolvedDate:null});
-  save(data);closeModal();render();
+  const btn=document.getElementById('btn-ok');
+  btn.disabled=true;btn.textContent='Ukládám…';
+  const id=Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+  try{
+    await NWData.put(NS,id,{date:new Date().toISOString(),kod,nazev,typ,popis,checks,notes:'',resolvedDate:null});
+  }catch(e){
+    alert('Uložení se nepovedlo: '+e.message);
+    btn.disabled=false;btn.textContent='Přidat';
+    return;
+  }
+  btn.disabled=false;btn.textContent='Přidat';
+  closeModal();
+  await refresh();
 
   // Email notifikace
   if(NOTIFY_URL&&NOTIFY_URL!=='VLOZ_APPS_SCRIPT_URL'){
@@ -352,19 +434,13 @@ function addChange(){
   }
 }
 
-// First-run: seed example if empty
-if(load().length===0){
-  save([{
-    id:'seed1',
-    date:'2026-08-07T08:00:00.000Z',
-    kod:'218',nazev:'Meruňky',typ:'dodavatel',
-    popis:'Změna dodavatele z K-servis na Ochutnej',
-    checks:{web_cz:false,web_sk:false,etiketa:false,trello:false},
-    notes:'',resolvedDate:null
-  }]);
-}
+(async()=>{
+  await refresh();
+  try{await migrateOldLocal();}catch(e){console.error('[zmeny] migration failed',e);}
+})();
 
-render();
+setInterval(()=>{if(!document.hidden&&!isBusy())refresh();},30000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!isBusy())refresh();});
 </script>
 <script src="pin-guard.js"></script>
 </body>

@@ -196,6 +196,7 @@ tr.ship-row td{padding:0;}
 </div>
 <p class="footnote">Data se ukládají automaticky v prohlížeči. Klikni na ▼ pro zásilky.</p>
 
+<script>window.EXP_HAD_LOCAL=(function(){try{return !!localStorage.getItem('nw_albi_v1')}catch(e){return false}})();</script>
 <script>
 const STORE = 'nw_albi_v1';
 const N_SLOTS = 6;
@@ -433,4 +434,6 @@ load();
 document.getElementById('sheetTitle').value=state.title||'';
 render();
 </script>
+<script src="../nw-data.js"></script>
+<script src="exp-sync.js" data-key="albi" data-store="nw_albi_v1"></script>
 <script src="../pin-guard.js"></script>

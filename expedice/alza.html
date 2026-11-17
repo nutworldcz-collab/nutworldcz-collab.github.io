@@ -255,6 +255,7 @@ tr.ship-row td{padding:0;}
 <p class="footnote">Data se ukládají automaticky v prohlížeči. Klikni na ▼ pro zásilky.</p>
 <div class="mix-box" id="mixBox"></div>
 
+<script>window.EXP_HAD_LOCAL=(function(){try{return !!localStorage.getItem('nw_exp_v3')}catch(e){return false}})();</script>
 <script>
 const STORE = 'nw_exp_v3';
 const N_SLOTS = 6;
@@ -708,4 +709,6 @@ load();
 document.getElementById('sheetTitle').value=state.title||'';
 render();
 </script>
+<script src="../nw-data.js"></script>
+<script src="exp-sync.js" data-key="alza" data-store="nw_exp_v3"></script>
 <script src="../pin-guard.js"></script>
