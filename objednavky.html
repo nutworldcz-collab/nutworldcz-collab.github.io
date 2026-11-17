@@ -373,6 +373,7 @@ details.gift-prehled[open] > summary::before { content: "▾ "; }
 let REPORT = null;
 let activeDate = 'all';
 let activeView = 'druh'; // 'druh' | 'vyroba'
+let SNAPSHOT_ACTIVE = false;
 
 /* ── Výrobní skupiny ─────────────────────────────────────── */
 const PROCESS_GROUPS = [
@@ -1119,12 +1120,43 @@ function showTab(id, btn) {
   if (q) applySearch(q);
 }
 
+/* ── Snapshot badge ──────────────────────────────────────── */
+function showSnapshotBadge(lockedUntil) {
+  const t = lockedUntil ? lockedUntil.slice(11, 16) : '14:00';
+  const html = `🔒 <strong>Plán uzamčen od 6:00 do ${t}</strong> — živá data se obnoví automaticky`;
+  ['cz', 'sk'].forEach(k => {
+    const el = document.getElementById(`${k}-badge`);
+    if (el) { el.innerHTML = html; el.style.display = 'flex'; }
+  });
+}
+
 /* ── Load data ───────────────────────────────────────────── */
 async function loadData() {
   try {
-    const r = await fetch('/report_orders.json?t=' + Date.now());
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    REPORT = await r.json();
+    const ts = Date.now();
+    // Fetch live data + snapshot concurrently
+    const [liveRes, snapRes] = await Promise.all([
+      fetch('/report_orders.json?t=' + ts),
+      fetch('/snapshot_orders.json?t=' + ts).catch(() => null),
+    ]);
+    if (!liveRes.ok) throw new Error(`HTTP ${liveRes.status}`);
+    const liveData = await liveRes.json();
+
+    // Check if snapshot is valid: same date + before locked_until
+    let snapData = null;
+    if (snapRes && snapRes.ok) {
+      try { snapData = await snapRes.json(); } catch {}
+    }
+    const today = new Date().toISOString().slice(0, 10);
+    if (snapData && snapData.snapshot_date === today &&
+        snapData.locked_until && new Date() < new Date(snapData.locked_until)) {
+      REPORT = snapData;
+      SNAPSHOT_ACTIVE = true;
+      showSnapshotBadge(snapData.locked_until);
+    } else {
+      REPORT = liveData;
+      SNAPSHOT_ACTIVE = false;
+    }
 
     document.getElementById('state-msg').hidden = true;
     loadDone();
@@ -1140,7 +1172,8 @@ async function loadData() {
     const days = REPORT.days || [];
     const foot = document.getElementById('footer');
     foot.hidden = false;
-    foot.textContent = `Poslední aktualizace: ${gen.replace('T', ' ')} · Dní v přehledu: ${days.length} · nutworldcz-collab.github.io`;
+    const snapNote = SNAPSHOT_ACTIVE ? ' · 🔒 snapshot' : '';
+    foot.textContent = `Poslední aktualizace: ${gen.replace('T', ' ')} · Dní v přehledu: ${days.length}${snapNote} · nutworldcz-collab.github.io`;
 
   } catch(e) {
     const msg = document.getElementById('state-msg');
