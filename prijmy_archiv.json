@@ -3077,5 +3077,127 @@
         "cenik_kg": 64.5
       }
     ]
+  },
+  {
+    "id": "368260246",
+    "cislo_dodavky": "700262183",
+    "dodavatel": "Hosova obchodní společnost, spol. s r. o.",
+    "datum": "2026-11-13",
+    "datum_ulozeni": "2026-11-18",
+    "poznamka": "Faktura 368260246. DL 700262183. Splatnost 27.11.2026. Mandle loupané — 2 šarže (L06102026 + L09112026).",
+    "ulozeni": "",
+    "celkove_kg": 1436.12,
+    "items": [
+      {
+        "nazev": "Mandle jádra natural 22,68kg",
+        "kod": "004 00525",
+        "sarze": "L09112026",
+        "dmt": "2027-08-09",
+        "mnozstvi": 204.12,
+        "stav": "OK",
+        "cena_kg": 190.11,
+        "nw_kod": "2486",
+        "cenik_kg": 190.09
+      },
+      {
+        "nazev": "Mandle loupané 25kg",
+        "kod": "004 00526",
+        "sarze": "L06102026",
+        "dmt": "2027-07-06",
+        "mnozstvi": 100.0,
+        "stav": "OK",
+        "cena_kg": 215.73,
+        "nw_kod": "83",
+        "cenik_kg": 215.72
+      },
+      {
+        "nazev": "Mandle loupané 25kg",
+        "kod": "004 00526",
+        "sarze": "L09112026",
+        "dmt": "2027-08-09",
+        "mnozstvi": 100.0,
+        "stav": "OK",
+        "cena_kg": 215.73,
+        "nw_kod": "83",
+        "cenik_kg": 215.72
+      },
+      {
+        "nazev": "Kešu jádra pražená solená 25kg",
+        "kod": "004 00527",
+        "sarze": "L16102026",
+        "dmt": "2027-07-16",
+        "mnozstvi": 50.0,
+        "stav": "OK",
+        "cena_kg": 213.7,
+        "nw_kod": "116",
+        "cenik_kg": 213.68
+      },
+      {
+        "nazev": "Mandle jádra praž. loup. solená 25kg",
+        "kod": "004 00591",
+        "sarze": "L27102026",
+        "dmt": "2027-07-27",
+        "mnozstvi": 300.0,
+        "stav": "OK",
+        "cena_kg": 228.25,
+        "nw_kod": "101",
+        "cenik_kg": 228.25
+      },
+      {
+        "nazev": "Arašídy ve Wasabi 7,5kg",
+        "kod": "004 00593",
+        "sarze": "L09112026",
+        "dmt": "2027-08-09",
+        "mnozstvi": 30.0,
+        "stav": "OK",
+        "cena_kg": 115.24,
+        "nw_kod": "354",
+        "cenik_kg": 115.24
+      },
+      {
+        "nazev": "Kešu chilli 3kg",
+        "kod": "004 00839",
+        "sarze": "L09112026",
+        "dmt": "2027-08-09",
+        "mnozstvi": 6.0,
+        "stav": "OK",
+        "cena_kg": 242.93,
+        "nw_kod": "2537",
+        "cenik_kg": 242.93
+      },
+      {
+        "nazev": "Mandle jádra pražená hořčice 3kg",
+        "kod": "004 00897",
+        "sarze": "L10112026",
+        "dmt": "2027-08-10",
+        "mnozstvi": 21.0,
+        "stav": "OK",
+        "cena_kg": 223.07,
+        "nw_kod": "9945",
+        "cenik_kg": 223.07
+      },
+      {
+        "nazev": "Kukuřice pražená s medem a hořčicí 25kg",
+        "kod": "004 00969",
+        "sarze": "L09112026",
+        "dmt": "2027-08-09",
+        "mnozstvi": 25.0,
+        "stav": "OK",
+        "cena_kg": 107.02,
+        "nw_kod": "547",
+        "cenik_kg": 107.02
+      },
+      {
+        "nazev": "Mandle jádra pražená uzená 5kg NUTW 1,2% soli",
+        "kod": "004 01027",
+        "sarze": "L04112026",
+        "dmt": "2027-08-04",
+        "mnozstvi": 600.0,
+        "stav": "OK",
+        "cena_kg": 218.0,
+        "nw_kod": "89",
+        "cenik_kg": 218.0
+      }
+    ]
   }
 ]
