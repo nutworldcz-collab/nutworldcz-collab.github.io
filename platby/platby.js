@@ -47,7 +47,7 @@ function buildOvCZK(){
       <td>${btnHtml(r.id)}</td>
     </tr>`).join('');
   return wrap(`<thead><tr><th>Firma / zákazník</th><th class="r">Částka</th><th>Splatnost</th><th class="r">Dní</th><th>Stav</th><th></th></tr></thead>
-    <tbody>${rows}</tbody><tfoot><tr><td class="lbl" colspan="4">Celkem CZK po splatnosti</td><td class="r" colspan="2">835 042 Kč</td></tr></tfoot>`);
+    <tbody>${rows}</tbody><tfoot><tr><td class="lbl" colspan="4">Celkem CZK po splatnosti</td><td class="r" colspan="2">736 185 Kč</td></tr></tfoot>`);
 }
 
 function buildOvEUR(){

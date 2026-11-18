@@ -1,11 +1,11 @@
 /* Nutworld — B2B platby data. Aktualizovat při každém novém K2 exportu. */
-const NW_PLATBY_UPDATED = '16. 11. 2026 (bank-matched)';
+const NW_PLATBY_UPDATED = '18. 11. 2026 (bank-matched)';
 
 const OV_CZK = [
   /* === 25+ dní — Urgentní === */
   /* ov_alza — Alza.cz všechny faktury uhrazeny: č.133 uhrazena 16.11, č.131 (31 828 Kč) + č.132 (23 827 Kč) uhrazeny 12.11 — zbývají jen 2 dobropisy jako kredity */
   {id:'ov_vitr',    n:'Vítr v kapse s.r.o.',          sub:'1 faktura · č. 12337',    amt:'397',       days:28, pri:'r', plbl:'Urgentní', due:'19. 10.'},
-  {id:'ov_speed',   n:'SPEED PRESS Plus a.s.',        sub:'4 faktury · č. 328, 377, 388, 402', amt:'98 857', days:25, pri:'r', plbl:'Urgentní', due:'22. 10.'},
+  /* ov_speed — SPEED PRESS Plus uhrazen 18.11 (98 856,80 Kč) — VS 202600328/377/388/402 */
   {id:'ov_reda',    n:'REDA a.s.',                    sub:'1 faktura · č. 283 (7 uhrazeno 16.11)', amt:'57 490',    days:25, pri:'r', plbl:'Urgentní', due:'22. 10.'},
   {id:'ov_kasal',   n:'Jana Kasalová',                sub:'1 faktura · č. 12497',    amt:'2 772',     days:24, pri:'r', plbl:'Urgentní', due:'23. 10.'},
   /* === 10–19 dní — Pozor === */
