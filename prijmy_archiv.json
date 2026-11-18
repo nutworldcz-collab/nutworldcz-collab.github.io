@@ -2966,5 +2966,116 @@
         "cenik_kg": null
       }
     ]
+  },
+  {
+    "id": "2652005120",
+    "cislo_dodavky": "2610404270",
+    "dodavatel": "ENCINGER SK s.r.o.",
+    "datum": "2026-11-12",
+    "datum_ulozeni": "2026-11-18",
+    "poznamka": "Faktúra 2652005120. DL 2610404270. Splatnosť 03.12.2026. Dodanie do EÚ oslobodené od DPH. Mandle mliečná (Nová) 195 Kč a Mandle mliečná škorica (Nová) 205 Kč — nižšie ceny vs. ceník (210/215), aktualizovať v K2.",
+    "ulozeni": "",
+    "celkove_kg": 344.0,
+    "items": [
+      {
+        "nazev": "Banán chips v bielej čokoláde 4kg",
+        "kod": "30800887",
+        "sarze": "D0V260192B",
+        "dmt": "2027-03-05",
+        "mnozstvi": 4.0,
+        "stav": "OK",
+        "cena_kg": 165.0,
+        "nw_kod": "2789",
+        "cenik_kg": 165.0
+      },
+      {
+        "nazev": "Kešu v horkej čokoláde á 5kg (Nová)",
+        "kod": "30801519",
+        "sarze": "E0R260524B",
+        "dmt": "2027-08-05",
+        "mnozstvi": 25.0,
+        "stav": "OK",
+        "cena_kg": 209.0,
+        "nw_kod": "4035",
+        "cenik_kg": 209.0
+      },
+      {
+        "nazev": "Lieskovce v mliečnej čokoláde so škoricou á 5kg (Nová)",
+        "kod": "30801525",
+        "sarze": "E0R260525B",
+        "dmt": "2027-08-05",
+        "mnozstvi": 5.0,
+        "stav": "OK",
+        "cena_kg": 239.0,
+        "nw_kod": "510",
+        "cenik_kg": 239.0
+      },
+      {
+        "nazev": "Mandle v bielej čokoláde s lyofilizovanými malinami á 5kg (Nová)",
+        "kod": "30801528",
+        "sarze": "E0R260521B",
+        "dmt": "2027-08-05",
+        "mnozstvi": 20.0,
+        "stav": "OK",
+        "cena_kg": 252.0,
+        "nw_kod": "",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Mandle v horkej čokoláde á 5kg (Nová)",
+        "kod": "30801530",
+        "sarze": "E13260466D",
+        "dmt": "2027-07-21",
+        "mnozstvi": 30.0,
+        "stav": "OK",
+        "cena_kg": 205.0,
+        "nw_kod": "1955",
+        "cenik_kg": 205.0
+      },
+      {
+        "nazev": "Mandle v mliečnej čokoláde á 5kg (Nová)",
+        "kod": "30801531",
+        "sarze": "E13260513A",
+        "dmt": "2027-08-09",
+        "mnozstvi": 100.0,
+        "stav": "OK",
+        "cena_kg": 195.0,
+        "nw_kod": "4038",
+        "cenik_kg": 210.0
+      },
+      {
+        "nazev": "Mandle v mliečnej čokoláde so škoricou á 5kg (Nová)",
+        "kod": "30801533",
+        "sarze": "E13260502D",
+        "dmt": "2027-08-03",
+        "mnozstvi": 100.0,
+        "stav": "OK",
+        "cena_kg": 205.0,
+        "nw_kod": "1958",
+        "cenik_kg": 215.0
+      },
+      {
+        "nazev": "Slaný praclík v mliečnej čokoláde",
+        "kod": "30801483",
+        "sarze": "D0V260912A",
+        "dmt": "2027-10-30",
+        "mnozstvi": 10.0,
+        "stav": "OK",
+        "cena_kg": 175.0,
+        "nw_kod": "3978",
+        "cenik_kg": 175.0
+      },
+      {
+        "nazev": "Hrozienka sušené Typ 10 á 12,5kg",
+        "kod": "10300605",
+        "sarze": "LSSK260898",
+        "dmt": "2027-11-30",
+        "mnozstvi": 50.0,
+        "stav": "OK",
+        "cena_kg": 64.5,
+        "nw_kod": "230",
+        "cenik_kg": 64.5
+      }
+    ]
   }
 ]
