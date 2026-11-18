@@ -3244,5 +3244,39 @@
         "cenik_kg": 252.0
       }
     ]
+  },
+  {
+    "id": "26290149",
+    "cislo_dodavky": "2026-OP50-1522",
+    "dodavatel": "POEX Velké Meziříčí, a.s.",
+    "datum": "2026-10-19",
+    "datum_ulozeni": "2026-11-18",
+    "poznamka": "Zálohová faktura 26290149 (vystavena 12.10.2026). Záloha zaplacena 11.11.2026. Fyzický příjem viz 262203035 (DL 2026-P15-6052, 12.11.2026) — stejné zboží, LOT/DMT tam. Celkem uhrazeno 129 584 Kč s DPH.",
+    "ulozeni": "",
+    "celkove_kg": 520.0,
+    "items": [
+      {
+        "nazev": "Mandle v jog.pol.s jahod.přích.vkg (10kg)",
+        "kod": "21720120",
+        "sarze": "",
+        "dmt": null,
+        "mnozstvi": 200.0,
+        "stav": "OK",
+        "cena_kg": 194.5,
+        "nw_kod": "5852",
+        "cenik_kg": 194.95
+      },
+      {
+        "nazev": "Preclíky v bílé čokoládě (1x)8kg",
+        "kod": "21869335",
+        "sarze": "",
+        "dmt": null,
+        "mnozstvi": 320.0,
+        "stav": "OK",
+        "cena_kg": 240.0,
+        "nw_kod": "4449",
+        "cenik_kg": 252.0
+      }
+    ]
   }
 ]
