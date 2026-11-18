@@ -215,6 +215,8 @@ tr.ship-row td{padding:0;}
 .sum-sent{text-align:right;font-variant-numeric:tabular-nums;color:var(--amber);font-size:12px;font-weight:600;}
 .sum-rem{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;color:var(--fg);font-size:13px;}
 .sum-empty{padding:10px 14px;font-size:13px;color:var(--leaf);font-style:italic;}
+.sum-row.is-done{opacity:.55;}
+.sum-row.is-done .sum-rem{color:var(--leaf);font-size:14px;}
 </style>
 
 <div class="topbar">
@@ -223,7 +225,7 @@ tr.ship-row td{padding:0;}
   <button class="btn-add" onclick="addRow()">+ Přidat produkt</button>
 </div>
 <div class="summary" id="summaryBox">
-  <div class="summary-hdr">Souhrn výroby — co zbývá nadělat</div>
+  <div class="summary-hdr">Konsolidovaný přehled dle produktu</div>
   <div id="summaryBody"><div class="sum-empty">Načítám…</div></div>
 </div>
 <div class="stats">
@@ -505,17 +507,21 @@ function renderSummary(){
     const sep=r.name.indexOf(' — ');
     const code=sep>-1?r.name.slice(0,sep).trim():r.name.trim()||'—';
     const name=sep>-1?r.name.slice(sep+3).trim():r.name.trim();
-    const key=name||code;
+    const key=code;
     if(!map[key]){map[key]={code,name,total:0,sent:0};ord.push(key);}
-    else if(map[key].code!==code)map[key].code='';
     map[key].total+=r.total;
     map[key].sent+=r.manualDone?r.total:sentSum(r);
   }
-  const items=ord.map(k=>map[k]).filter(x=>x.total-x.sent>0);
-  if(items.length===0){body.innerHTML='<div class="sum-empty">✓ Vše odesláno nebo v pořádku</div>';return;}
+  const items=ord.map(k=>map[k]);
+  if(items.length===0){body.innerHTML='<div class="sum-empty">Žádné produkty</div>';return;}
+  items.sort((a,b)=>{
+    const ra=Math.max(a.total-a.sent,0),rb=Math.max(b.total-b.sent,0);
+    if(ra>0&&rb===0)return -1;if(rb>0&&ra===0)return 1;return rb-ra;
+  });
   body.innerHTML=items.map(x=>{
-    const rem=x.total-x.sent;
-    return `<div class="sum-row"><div class="sum-code">${esc(x.code||'—')}</div><div class="sum-name">${esc(x.name)}</div><div class="sum-total">${x.total} ks</div><div class="sum-sent">${x.sent} odesláno</div><div class="sum-rem">${rem} ks</div></div>`;
+    const rem=Math.max(x.total-x.sent,0);
+    const done=rem===0&&x.total>0;
+    return `<div class="sum-row${done?' is-done':''}"><div class="sum-code">${esc(x.code||'—')}</div><div class="sum-name">${esc(x.name)}</div><div class="sum-total">${x.total} ks</div><div class="sum-sent">${x.sent} odesláno</div><div class="sum-rem">${done?'✓':rem+' ks'}</div></div>`;
   }).join('');
 }
 
