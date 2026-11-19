@@ -1,100 +1,181 @@
 {
-  "generated": "2026-11-19T07:30:36",
-  "total": 8,
+  "generated": "2026-11-19T12:00:48",
+  "total": 14,
   "spam_skipped": 0,
   "emails": [
     {
       "account": "Exchange",
-      "sender": "Simona <simi.zlaticko@seznam.cz>",
-      "subject": "Re: Zajem o praci",
-      "date": "čtvrtek 19. listopadu 2026 6:20:12",
+      "sender": "HaasMont s.r.o. <faktury@superfaktura.cz>",
+      "subject": "Vydaná faktura",
+      "date": "čtvrtek 19. listopadu 2026 11:02:22",
       "unread": true,
-      "preview": "Dobrý den ráda bych se zeptala",
-      "category": "ostatni",
-      "sender_short": "Simona",
-      "sender_email": "simi.zlaticko@seznam.cz",
+      "preview": "￼ Toto je automaticky generovaný email",
+      "category": "dodavatel",
+      "sender_short": "HaasMont s.r.o.",
+      "sender_email": "faktury@superfaktura.cz",
       "ai": {
-        "shrn": "Simona se zajímá o práci v Nutworld.cz a chce se zeptat na další informace.",
-        "tyka_se": true,
-        "akce": "Přečíst celý email a odpovědět Simoně na její otázku ohledně pracovní pozice"
+        "shrn": "Automaticky generovaný email s vydanou fakturou od dodavatele HaasMont.",
+        "tyka_se": false,
+        "akce": null
       }
     },
     {
-      "account": "Kateřina\" <Katerina.Lelkova@saargummi.com>",
-      "sender": "RE: 1.Upomínka Saar Gummi Czech s.r.o.",
-      "subject": "čtvrtek 19. listopadu 2026 6:04:34",
-      "date": "false",
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Na nástěnce Tvorba štítků CANVA máš 4 upozornění od poslední návštěvy 11:00 (19. listopadu 2026)",
+      "date": "čtvrtek 19. listopadu 2026 11:02:20",
+      "unread": true,
+      "preview": "￼ Termín je brzy... SPEED PRESS Plus a.s. — Speed Press 4452 Preclíky 3 barev 200g s logem NW na nástěnce Tvorba štítků CANVA s termínem splnění má termín za den Odpovědět e-mailem PRAGOCLIMA",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Michal z Pobo <info@pobo.cz>",
+      "subject": "Jak Češi vybírají na Black Friday + novinky v Pobo 🔥",
+      "date": "čtvrtek 19. listopadu 2026 10:52:47",
+      "unread": true,
+      "preview": "￼ Jak Češi vybírají na Black Friday? Čím dál častěji s AI Podle listopadového průzkumu BCG 58 % českých respondentů už při nákupech kolem Black Friday využilo AI nebo ji využít plánuje. Loni to bylo 41 %. Nejčastěji ji používají k porovnávání produktů",
+      "category": "ostatni",
+      "sender_short": "Michal z Pobo",
+      "sender_email": "info@pobo.cz",
+      "ai": {
+        "shrn": "Newsletter o tom, jak Češi využívají AI při nákupech na Black Friday, se statistikami a novinkami z Pobo.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Markéta Costachová tě přidal/a ke kartě Haberl na nástěnce Firmy dárky + objednávky",
+      "date": "čtvrtek 19. listopadu 2026 10:25:33",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Markéta Costachová vás přidal(a) na kartu Haberl na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svoje nastavení a přizpůsobte si upozornění",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Pratik Sonawane <pratik.s@jktfoods.com>",
+      "subject": "JKT FOODS – Organic Stock & Price Update",
+      "date": "čtvrtek 19. listopadu 2026 10:22:18",
+      "unread": true,
+      "preview": "Dear Jan, Please find our updated offer for Organic Chia Seeds available in our Netherlands warehouse. 1. Organic Black Chia Seeds • Origin: Uganda • Purity: 99.95% • Quality: EU compliant",
+      "category": "ostatni",
+      "sender_short": "Pratik Sonawane",
+      "sender_email": "pratik.s@jktfoods.com",
+      "ai": {
+        "shrn": "Nabídka organických chia semen od JKT Foods s informacemi o kvalitě a skladištění.",
+        "tyka_se": true,
+        "akce": "Zvážit nákup organických chia semen od JKT Foods nebo odpovědět na nabídku"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Jana Nývltová <jana.nyvltova@nutworld.cz>",
+      "subject": "saar gummi",
+      "date": "čtvrtek 19. listopadu 2026 10:07:36",
       "unread": false,
-      "preview": "",
-      "category": "ostatni",
-      "sender_short": "RE: 1.Upomínka Saar Gummi Czech s.r.o.",
-      "sender_email": "RE: 1.Upomínka Saar Gummi Czech s.r.o.",
-      "ai": {
-        "shrn": "Email od Saar Gummi Czech s.r.o. se jeví jako upomínka, obsah není viditelný.",
-        "tyka_se": true,
-        "akce": "Ověřit obsah upomínky a vyřešit finanční či dodavatelský závazek vůči firmě"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Česká spořitelna <ceskasporitelna@info.csas.cz>",
-      "subject": "Pořád odkládáte rekonstrukci domu? (OS)",
-      "date": "čtvrtek 19. listopadu 2026 6:01:47",
-      "unread": true,
-      "preview": "￼ ￼ Zobrazit na webu ￼ ￼ ￼ ￼ ￼ ￼ ￼ Odkládáte rekonstrukci domu? Už nemusíte ￼ Úroky může zaplatit stát ￼ ￼ Nepotřebujete vlastní úspory ￼ ￼ Se vším Vám pomůžeme ￼ ￼ Zjistit víc Dobrý den",
-      "category": "ostatni",
-      "sender_short": "Česká spořitelna",
-      "sender_email": "ceskasporitelna@info.csas.cz",
-      "ai": {
-        "shrn": "Česká spořitelna zasílá marketingový email o půjčce na rekonstrukci domu.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Miloš Kamitz <milos.kamitz@mekrs.cz>",
-      "subject": "Accepted: K2 sesion",
-      "date": "čtvrtek 19. listopadu 2026 5:38:09",
-      "unread": true,
-      "preview": "",
+      "preview": "Ing. Jana Nývltová Nut World s.r.o. ￼ Email: fakturace@nutworld.cz Website: www.nutworld.cz Phone: 736548439 Mobile: 603271202 Address:",
       "category": "tym",
-      "sender_short": "Miloš Kamitz",
-      "sender_email": "milos.kamitz@mekrs.cz",
+      "sender_short": "Jana Nývltová",
+      "sender_email": "jana.nyvltova@nutworld.cz",
       "ai": {
-        "shrn": "Miloš Kamitz potvrzuje účast na K2 session - pracovní schůzka.",
+        "shrn": "Interní email od Jany Nývltové s kontaktními údaji Nutworld.",
         "tyka_se": false,
         "akce": null
       }
     },
     {
       "account": "Exchange",
-      "sender": "Radka Goderová <radka.goderova@mekrs.cz>",
-      "subject": "Accepted: K2 sesion",
-      "date": "čtvrtek 19. listopadu 2026 4:43:20",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Balírna vložil/a komentář na kartu Benkor na nástěnce Firmy dárky + objednávky",
+      "date": "čtvrtek 19. listopadu 2026 10:04:24",
       "unread": true,
-      "preview": "",
-      "category": "tym",
-      "sender_short": "Radka Goderová",
-      "sender_email": "radka.goderova@mekrs.cz",
-      "ai": {
-        "shrn": "Radka Goderová potvrzuje účast na K2 session - pracovní schůzka.",
-        "tyka_se": false,
-        "akce": null
-      }
+      "preview": "￼ Zde je nejnovější... ￼ Balírna okomentoval(a) kartu Benkor na nástěnce Firmy dárky + objednávky @jananyvltova jdou to dělat Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svoje nastavení a přizpůsobte si upozornění",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
     },
     {
       "account": "Exchange",
-      "sender": "Martin | Pethardware <info@news.pethardware.com>",
-      "subject": "Zlatá horečka. Bez cesty na Klondike. 🟡",
-      "date": "čtvrtek 19. listopadu 2026 0:01:31",
+      "sender": "Everbot <info@everbot.cz>",
+      "subject": "🎙️ Novinky v Everbotu: nahrávání schůzek a hlasové zadávání",
+      "date": "čtvrtek 19. listopadu 2026 10:01:20",
       "unread": true,
-      "preview": "￼ ￼ Listopad 2026 ￼ ￼ ★ ZLATÁ HOREČKA Nemusíte do Klondiku. Stačí otevřít náš e-shop. Ve zlatém odstínu už máme kroužky",
+      "preview": "￼ ￼ Sedíte na poradě",
       "category": "ostatni",
-      "sender_short": "Martin | Pethardware",
-      "sender_email": "info@news.pethardware.com",
+      "sender_short": "Everbot",
+      "sender_email": "info@everbot.cz",
       "ai": {
-        "shrn": "PetHardware zasílá marketingový email o zlatých kroužcích v e-shopu.",
+        "shrn": "Newsletter o nových funkcích v Everbotu — nahrávání schůzek a hlasové zadávání.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "Žijte ve své zahradě <info@kurzy.zijtevesvezahrade.cz>",
+      "subject": "Rok a půl s kurzem a tohle je výsledek",
+      "date": "čtvrtek 19. listopadu 2026 11:45:34",
+      "unread": true,
+      "preview": "￼ 6 790 Kč 4 500 Kč ￼ Plánujte a ušetřete CHCI KURZ SE SLEVOU Přiznejme si pravdu, můžeme vám tu povídat",
+      "category": "ostatni",
+      "sender_short": "Žijte ve své zahradě",
+      "sender_email": "info@kurzy.zijtevesvezahrade.cz",
+      "ai": {
+        "shrn": "Propagační email o online kurzu zahradničení se slevou.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "MP Toner <newsletter@mptoner.cz>",
+      "subject": "Cenové trháky! listopad 2026",
+      "date": "čtvrtek 19. listopadu 2026 10:46:18",
+      "unread": true,
+      "preview": "V případě",
+      "category": "ostatni",
+      "sender_short": "MP Toner",
+      "sender_email": "newsletter@mptoner.cz",
+      "ai": {
+        "shrn": "Newsletter o listopadových cenových trhácích z MP Toner.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "\"DJI\" <enews@e.dji.com>",
+      "subject": "DJI Black Friday Is Now Live!",
+      "date": "čtvrtek 19. listopadu 2026 10:27:37",
+      "unread": true,
+      "preview": "￼ Key Dates for Black Friday ￼ More Perks You Can Enjoy ￼ Boosted DJI Credit ￼ 5% DJI Credit Back New Arrivals ￼ Osmo Pocket 4P Buy Now ￼ DJI Power Auro 2000 Elite Buy Now ￼ DJI Lito X1 Buy Now ￼ DJI ROMO P2 Buy Now Explore this year's Black Friday offers. ￼ DJI Mini 5 Pro Buy Now ￼ DJI Neo 2 Buy No",
+      "category": "ostatni",
+      "sender_short": "DJI",
+      "sender_email": "enews@e.dji.com",
+      "ai": {
+        "shrn": "Black Friday promo email od DJI s nabídkou dronů a příslušenství.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "Lucie Vlčková <info@fitlines.cz>",
+      "subject": "Vánoční dárková poukázka do Fitlines",
+      "date": "čtvrtek 19. listopadu 2026 9:00:32",
+      "unread": true,
+      "preview": "Ahoj, Vánoce se blíží a pokud ještě nevíš",
+      "category": "ostatni",
+      "sender_short": "Lucie Vlčková",
+      "sender_email": "info@fitlines.cz",
+      "ai": {
+        "shrn": "Nabídka vánočních dárkových poukazů do fitness studia Fitlines.",
         "tyka_se": false,
         "akce": null
       }
@@ -110,7 +191,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "CrossFit newsletter s motivačním obsahem a komunitními příběhy.",
+        "shrn": "Týdenní update o CrossFitu s příběhem a komunitními novinkami.",
         "tyka_se": false,
         "akce": null
       }
@@ -126,7 +207,7 @@
       "sender_short": "AliExpress",
       "sender_email": "ae-style-finds37@deals.aliexpress.com",
       "ai": {
-        "shrn": "AliExpress zasílá propagační email s nabídkou zlevněných produktů.",
+        "shrn": "Inspirační email z AliExpress s výběrem produktů a nabídkou slev.",
         "tyka_se": false,
         "akce": null
       }
