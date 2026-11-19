@@ -1,5 +1,5 @@
 /* Nutworld — B2B platby data. Aktualizovat při každém novém K2 exportu. */
-const NW_PLATBY_UPDATED = '18. 11. 2026 (bank-matched)';
+const NW_PLATBY_UPDATED = '19. 11. 2026 (bank-matched)';
 
 const OV_CZK = [
   /* === 25+ dní — Urgentní === */
@@ -21,9 +21,9 @@ const OV_CZK = [
   /* ov_helik — Helikárová uhrazena 16.11 (8 828 Kč) */
   /* ov_ardix — ARDIX uhrazena 16.11 (13 798,40 Kč) */
   /* ov_huber — HUBER CS uhrazen 16.11 (13 048 Kč) */
-  {id:'ov_syrarna', n:'Sýrárna Broumov s.r.o.',       sub:'1 faktura · č. 396',      amt:'8 109',     days:6,  pri:'a', plbl:'6 dní',    due:'10. 11.'},
+  /* ov_syrarna — Sýrárna Broumov uhrazena 19.11 (8 108,80 Kč) — VS 202600396 */
   {id:'ov_cpr',     n:'CPR HK s.r.o.',                sub:'5 faktur · č. 398–416',   amt:'10 760',    days:6,  pri:'a', plbl:'6 dní',    due:'10. 11.'},
-  {id:'ov_zlkl',    n:'ZLKL, s. r. o.',               sub:'1 faktura · č. 404',      amt:'140 235',   days:5,  pri:'a', plbl:'5 dní',    due:'11. 11.'},
+  /* ov_zlkl — ZLKL uhrazen 18.11 (140 235,20 Kč) — VS 030272502 */
   {id:'ov_vilgain', n:'Vilgain s.r.o.',               sub:'1 faktura · č. 327 (č.309 uhrazena 16.11)', amt:'50 158', days:5, pri:'a', plbl:'5 dní', due:'11. 11.'},
   /* ov_arch — Arch.Design uhrazen 13.11 (20 328 Kč) */
   /* === 4 dny === */
@@ -99,9 +99,9 @@ const SOON_CZK = [
 ];
 
 const SOON_EUR = [
-  {id:'se_sketch17',  n:'Sketch s.r.o.',  fakt:'196', due:'17. 11.', amt:'507,20'},
-  {id:'se_jufa',      n:'JUFA s.r.o.',    fakt:'197', due:'17. 11.', amt:'226,40'},
-  {id:'se_solarny',   n:'SOLARNY DOM',    fakt:'50',  due:'18. 11.', amt:'297,20'},
+  /* se_sketch17 — Sketch uhrazen 18.11 (507,20 EUR) */
+  /* se_jufa — JUFA uhrazen 17.11 (226,40 EUR) */
+  /* se_solarny — SOLARNY DOM uhrazen 17.11 (297,20 EUR) */
 ];
 
 const LATER_CZK = [

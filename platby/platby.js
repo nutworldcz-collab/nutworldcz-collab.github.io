@@ -47,7 +47,7 @@ function buildOvCZK(){
       <td>${btnHtml(r.id)}</td>
     </tr>`).join('');
   return wrap(`<thead><tr><th>Firma / zákazník</th><th class="r">Částka</th><th>Splatnost</th><th class="r">Dní</th><th>Stav</th><th></th></tr></thead>
-    <tbody>${rows}</tbody><tfoot><tr><td class="lbl" colspan="4">Celkem CZK po splatnosti</td><td class="r" colspan="2">736 185 Kč</td></tr></tfoot>`);
+    <tbody>${rows}</tbody><tfoot><tr><td class="lbl" colspan="4">Celkem CZK po splatnosti</td><td class="r" colspan="2">587 841 Kč</td></tr></tfoot>`);
 }
 
 function buildOvEUR(){
@@ -92,7 +92,7 @@ function buildSoonEUR(){
       <td>${btnHtml(r.id)}</td>
     </tr>`).join('');
   return wrap(`<thead><tr><th>Firma / zákazník</th><th>Faktura</th><th>Splatnost</th><th class="r">Částka</th><th></th></tr></thead>
-    <tbody>${rows}</tbody><tfoot><tr><td class="lbl" colspan="3">Celkem EUR do 5 dní</td><td class="r" colspan="2">1 030,80 EUR</td></tr></tfoot>`);
+    <tbody>${rows}</tbody><tfoot><tr><td class="lbl" colspan="3">Celkem EUR do 5 dní</td><td class="r" colspan="2">0 EUR</td></tr></tfoot>`);
 }
 
 function buildLaterCZK(){
