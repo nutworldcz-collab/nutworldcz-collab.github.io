@@ -1,6 +1,9 @@
 // Syncs an expedice sheet (page globals: state, save, render, nextId) with the shared store.
-// Jan's browser creates the master copy; everyone else follows it. Each row is its own record,
-// so people editing different rows never overwrite each other.
+// Jan's browser creates the master copy; everyone else follows it. Each row is its own record.
+// Every save is a three-way merge (last synced copy / this browser / current shared copy), field by
+// field, so two people editing the same row (different checkboxes, shipments...) never overwrite
+// each other, and defaults a newer page version adds are never pushed over someone's real edits.
+// An open tab reloads itself when a newer version of the page is published.
 (function () {
   const me = document.currentScript;
   const KEY = me.dataset.key;
@@ -75,6 +78,34 @@
     for (const id in a.rows) if (!(id in b.rows)) out.push({ action: 'delete', id: ROW + id });
     return out;
   }
+  const isObj = v => v && typeof v === 'object';
+  // A value that appeared where there was nothing before and is empty/false is a page default, not an edit.
+  const blank = v => v == null || v === '' || v === false || v === 0 ||
+    (isObj(v) && Object.values(v).every(blank));
+  function mergeVal(base, mine, theirs) {
+    if (isObj(mine) && isObj(theirs) && Array.isArray(mine) === Array.isArray(theirs)) {
+      const b = isObj(base) ? base : (Array.isArray(mine) ? [] : {});
+      const out = Array.isArray(mine) ? [] : {};
+      new Set([...Object.keys(mine), ...Object.keys(theirs)]).forEach(k => {
+        const v = mergeVal(b[k], mine[k], theirs[k]);
+        if (v !== undefined) out[k] = v;
+      });
+      return out;
+    }
+    if (stable(mine) === stable(base)) return theirs === undefined ? mine : theirs;   // not edited here
+    if (base === undefined && blank(mine) && theirs !== undefined) return theirs;     // only a default
+    return mine;                                                                       // edited here
+  }
+  // Shared copy + only what changed in this browser since `base`.
+  function merge(base, mine, theirs) {
+    const rows = {};
+    for (const id in theirs.rows) {
+      if (!(id in mine.rows) && id in base.rows) continue;                  // deleted here
+      rows[id] = id in mine.rows ? mergeVal(base.rows[id], mine.rows[id], theirs.rows[id]) : theirs.rows[id];
+    }
+    for (const id in mine.rows) if (!(id in theirs.rows) && !(id in base.rows)) rows[id] = mine.rows[id];  // added here
+    return { title: mergeVal(base.title, mine.title, theirs.title), rows };
+  }
   async function fetchMaster() {
     const items = (await NWData.list(NS)).filter(i => i.id.startsWith(KEY + '__'));
     return fromItems(items);
@@ -101,12 +132,13 @@
     if (!live) return;
     if (pushing) { schedule(); return; }
     const cur = toShared(state, synced);
-    const ops = diffOps(synced, cur);
-    if (!ops.length) return;
+    if (!diffOps(synced, cur).length) return;
     pushing = true;
     try {
-      await NWData.batch(NS, ops);
-      synced = cur;
+      const master = (await fetchMaster()) || { title: '', rows: {} };
+      const ops = diffOps(master, merge(synced, cur, master));
+      if (ops.length) await NWData.batch(NS, ops);
+      synced = cur;                          // what this browser shows; the next poll brings others' changes
       lsSet(SYNCED_KEY, JSON.stringify(cur));
       okStatus();
     } catch (e) {
@@ -158,10 +190,13 @@
       try {
         if (lastSynced) {
           // Edits made here while offline since the last sync go on top of the master, row by row.
-          const ops = diffOps(lastSynced, toShared(state, lastSynced));
-          if (ops.length) {
-            await NWData.batch(NS, ops);
-            master = await fetchMaster();
+          const mine = toShared(state, lastSynced);
+          if (diffOps(lastSynced, mine).length) {
+            const ops = diffOps(master, merge(lastSynced, mine, master));
+            if (ops.length) {
+              await NWData.batch(NS, ops);
+              master = await fetchMaster();
+            }
           }
         } else if (window.EXP_HAD_LOCAL && stable(fromShared(master).rows) !== stable(state.rows)) {
           await NWData.put(NS, KEY + '__zaloha__' + Date.now(), { title: state.title, rows: state.rows });
@@ -204,7 +239,26 @@
     okStatus();
   }
 
-  setInterval(poll, 20000);
+  // Reload an open tab when a newer version of the page is published (old tabs kept old sync code).
+  let pageSig = null;
+  async function checkVersion() {
+    try {
+      const get = u => fetch(u + '?v=' + Date.now(), { cache: 'no-store' }).then(r => r.ok ? r.text() : Promise.reject());
+      const txt = (await get(location.pathname)) + (await get(me.src.split('?')[0]));
+      let h = 0;
+      for (let k = 0; k < txt.length; k++) h = (h * 31 + txt.charCodeAt(k)) | 0;
+      const sig = txt.length + ':' + h;
+      if (pageSig && sig !== pageSig && !timer && !pushing && !dirty()) {
+        const a = document.activeElement;
+        if (!(a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))) { location.reload(); return; }
+      }
+      if (!pageSig) pageSig = sig;
+    } catch (e) {}
+  }
+  checkVersion();
+  setInterval(checkVersion, 3 * 60000);
+
+  setInterval(poll, 15000);
   document.addEventListener('visibilitychange', () => { if (!document.hidden) poll(); });
   init();
 })();
