@@ -84,6 +84,15 @@ body{font-family:'Source Sans 3',sans-serif;font-size:14px;background:var(--bg);
 .ctrl-title{font-family:'Exo 2',sans-serif;font-size:14px;font-weight:800;color:var(--bd)}
 .upd-note{font-size:11px;color:#a08060}
 
+/* Sync info bar */
+.sync-info{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:#f1e6da;border:1px solid #d9c8b4;border-radius:10px;padding:9px 14px;margin-bottom:14px;font-size:12px;color:#83502e}
+.sync-icon{font-size:14px;flex-shrink:0}
+.sync-label{font-family:'Exo 2',sans-serif;font-weight:700;color:#5c381f;white-space:nowrap}
+.sync-times{display:flex;align-items:center;gap:5px}
+.sync-time{font-family:'Exo 2',sans-serif;font-weight:800;font-size:13px;color:#5c381f;background:white;padding:2px 8px;border-radius:6px;border:1px solid #c8976a}
+.sync-sep{color:#c8976a}
+.sync-note{font-size:11px;color:#a08060;margin-left:auto}
+
 /* Footer */
 .page-footer{font-size:11px;color:#a08060;text-align:center;padding:20px 0 32px}
 
