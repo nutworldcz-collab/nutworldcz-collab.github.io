@@ -9,7 +9,7 @@ const OV_CZK = [
   {id:'ov_reda',    n:'REDA a.s.',                    sub:'1 faktura · č. 283 (7 uhrazeno 16.11)', amt:'57 490',    days:25, pri:'r', plbl:'Urgentní', due:'22. 10.', oz:'Tomáš H.'},
   {id:'ov_kasal',   n:'Jana Kasalová',                sub:'1 faktura · č. 12497',    amt:'2 772',     days:24, pri:'r', plbl:'Urgentní', due:'23. 10.', oz:''},
   /* === 10–19 dní — Pozor === */
-  {id:'ov_kolar',   n:'Michal Kolář',                 sub:'1 faktura · č. 359',      amt:'52 630',    days:14, pri:'a', plbl:'Pozor',    due:'02. 11.', oz:''},
+  {id:'ov_kolar',   n:'Michal Kolář',                 sub:'1 faktura · č. 359',      amt:'52 630',    days:14, pri:'a', plbl:'Pozor',    due:'02. 11.', oz:'Martin W.'},
   /* ov_kram — Farmářskej krámek uhrazen 12.11 (7 984 Kč) */
   {id:'ov_emedis',  n:'EMEDIS s.r.o.',                sub:'5 faktur · č. 374–421 (2 uh. 13.11 — 52 999 Kč)',        amt:'98 578,60', days:12, pri:'a', plbl:'Pozor',    due:'04. 11.', oz:'Jana N.'},
   /* ov_benkor — BENKOR uhrazen 12.11 net 19 449 Kč (č.380 − dobropis č.439) */
