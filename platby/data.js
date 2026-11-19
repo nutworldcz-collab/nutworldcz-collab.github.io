@@ -31,7 +31,7 @@ const OV_CZK = [
   {id:'ov_dfszk',   n:'DFSZK, s.r.o.',                sub:'1 faktura · č. 13260',    amt:'1 554',     days:4,  pri:'n', plbl:'4 dny',    due:'12. 11.', oz:''},
   /* === 3 dny — přešlo z "do 5 dní" 13.11 === */
   {id:'ov_certis',  n:'Certis Belchim Czech Republic', sub:'1 faktura · č. 414',      amt:'111 104',   days:3,  pri:'n', plbl:'3 dny',    due:'13. 11.', oz:'Martin W.'},
-  {id:'ov_bmt',     n:'BMT Medical Technology s.r.o.', sub:'1 faktura · č. 417',      amt:'46 234',    days:3,  pri:'n', plbl:'3 dny',    due:'13. 11.', oz:''},
+  {id:'ov_bmt',     n:'BMT Medical Technology s.r.o.', sub:'1 faktura · č. 417',      amt:'46 234',    days:3,  pri:'n', plbl:'3 dny',    due:'13. 11.', oz:'Jan V.'},
   {id:'ov_vuuo',    n:'VÚÚO Holovousy s.r.o.',        sub:'1 faktura · č. 12985',    amt:'46 087',    days:3,  pri:'n', plbl:'3 dny',    due:'13. 11.', oz:''},
   {id:'ov_vaillant',n:'Vaillant Group Czech Republic', sub:'1 faktura · č. 413',      amt:'28 334',    days:3,  pri:'n', plbl:'3 dny',    due:'13. 11.', oz:'Martin W.'},
   {id:'ov_saar',    n:'Saar Gummi Czech s.r.o.',      sub:'1 faktura · č. 418',      amt:'23 448',    days:3,  pri:'n', plbl:'3 dny',    due:'13. 11.', oz:'Jan V.'},
@@ -101,7 +101,7 @@ const OV_EUR = [
 const SOON_CZK = [
   {date:'19. 11. 2026', lbl:'DNES', cls:'t', rows:[
     {id:'sc_alza19',      n:'Alza.cz a.s.',                     fakt:'137, 138',      amt:'111 265,28', oz:'Tomáš H.'},
-    {id:'sc_a1com',       n:'A1 com s.r.o.',                    fakt:'455',           amt:'43 769,60', oz:''},
+    {id:'sc_a1com',       n:'A1 com s.r.o.',                    fakt:'455',           amt:'43 769,60', oz:'Martin W.'},
     {id:'sc_porkert',     n:'Vlastimil Porkert',                fakt:'454',           amt:'17 640,00', oz:'Jan V.'},
     {id:'sc_hufa',        n:'Hu-Fa Dental',                     fakt:'456',           amt:'9 800,00', oz:'Jana N.'},
     {id:'sc_cpr19',       n:'CPR HK s.r.o.',                    fakt:'457, 459, 460', amt:'6 829,07', oz:'Jana N.'},
