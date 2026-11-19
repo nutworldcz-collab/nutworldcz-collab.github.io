@@ -86,3 +86,6 @@ body{font-family:'Source Sans 3',sans-serif;font-size:14px;background:var(--bg);
 
 /* Footer */
 .page-footer{font-size:11px;color:#a08060;text-align:center;padding:20px 0 32px}
+
+/* OZ separator rows */
+.oz-sep td{font-family:'Exo 2',sans-serif;letter-spacing:.4px}
