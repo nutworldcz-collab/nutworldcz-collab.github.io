@@ -50,17 +50,31 @@
       <div class="nav-card-eur">+ 0 EUR (SK)</div>
       <div class="nav-card-arrow">Otevřít →</div>
     </a>
+    <a class="nav-card blue" href="b2c-sk.html">
+      <div class="nav-card-icon">🇸🇰</div>
+      <div class="nav-card-title">B2C SK převody</div>
+      <div class="nav-card-sub">Objednávky zákazníků čekající na platbu převodem (Shoptet SK)</div>
+      <div class="nav-card-amount blue" id="b2c-sk-pending">—</div>
+      <div class="nav-card-eur" id="b2c-sk-info">načítám…</div>
+      <div class="nav-card-arrow">Otevřít →</div>
+    </a>
   </div>
 
   <div class="sync-info">
     <span class="sync-icon">🔄</span>
     <span class="sync-label">Automatická synchronizace Fio banky:</span>
     <span class="sync-times">
+      <span class="sync-time">04:00</span>
+      <span class="sync-sep">·</span>
       <span class="sync-time">08:00</span>
       <span class="sync-sep">·</span>
       <span class="sync-time">12:00</span>
       <span class="sync-sep">·</span>
-      <span class="sync-time">18:00</span>
+      <span class="sync-time">16:00</span>
+      <span class="sync-sep">·</span>
+      <span class="sync-time">20:00</span>
+      <span class="sync-sep">·</span>
+      <span class="sync-time">00:00</span>
     </span>
     <span class="sync-note">Platby jsou automaticky označeny po každém syncu</span>
   </div>
@@ -70,6 +84,16 @@
 <script src="data.js"></script>
 <script>
   document.getElementById('upd-date').textContent = NW_PLATBY_UPDATED;
+  // B2C SK karta
+  if (typeof B2C_SK_PENDING !== 'undefined') {
+    const pending = B2C_SK_PENDING.filter(o => !o.paid);
+    const total   = B2C_SK_PENDING.length;
+    const sumEur  = pending.reduce((s, o) => s + parseFloat(o.amt || 0), 0);
+    document.getElementById('b2c-sk-pending').textContent =
+      pending.length + ' čeká · ' + sumEur.toFixed(2) + ' EUR';
+    document.getElementById('b2c-sk-info').textContent =
+      (total - pending.length) + '/' + total + ' zaplaceno';
+  }
 </script>
 </body>
 </html>

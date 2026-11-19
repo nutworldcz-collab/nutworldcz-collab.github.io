@@ -30,6 +30,8 @@ body{font-family:'Source Sans 3',sans-serif;font-size:14px;background:var(--bg);
 .nav-card.red{border-top-color:#da1668}
 .nav-card.amber{border-top-color:#f7ab31}
 .nav-card.green{border-top-color:#6fa044}
+.nav-card.blue{border-top-color:#4a7cba}
+.nav-card-amount.blue{color:#4a7cba}
 .nav-card-icon{font-size:28px;margin-bottom:10px}
 .nav-card-title{font-family:'Exo 2',sans-serif;font-size:16px;font-weight:800;color:var(--bd);margin-bottom:4px}
 .nav-card-sub{font-size:12px;color:#a08060;margin-bottom:14px;flex:1}

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B2C SK převody — Nutworld</title>
+<link rel="stylesheet" href="platby.css">
+</head>
+<body>
+<div class="page-wrap">
+
+  <div class="top-bar">
+    <a class="back-link" href="index.html">← Přehled</a>
+    <div class="page-title">🇸🇰 B2C SK převody</div>
+    <div class="page-sub">Akt. <span id="upd-date"></span></div>
+  </div>
+
+  <!-- Summary tiles -->
+  <div class="tiles" id="tiles">
+    <div class="tile"><div class="tile-lbl">Čeká na platbu</div><div class="tile-val" id="t-pending">—</div></div>
+    <div class="tile"><div class="tile-lbl">Zaplaceno</div><div class="tile-val gr" id="t-paid">—</div></div>
+    <div class="tile"><div class="tile-lbl">Čeká celkem EUR</div><div class="tile-val am" id="t-sum">—</div></div>
+    <div class="tile"><div class="tile-lbl">Celkem objednávek</div><div class="tile-val" id="t-total">—</div></div>
+  </div>
+
+  <!-- Čeká na platbu -->
+  <div id="sec-pending"></div>
+
+  <!-- Zaplaceno -->
+  <div id="sec-paid"></div>
+
+  <div class="page-footer">Shoptet SK · objednávky převodem · párováno s Fio EUR účtem</div>
+</div>
+
+<script src="data.js"></script>
+<script>
+document.getElementById('upd-date').textContent = NW_PLATBY_UPDATED;
+
+if (typeof B2C_SK_PENDING === 'undefined' || !B2C_SK_PENDING.length) {
+  document.getElementById('sec-pending').innerHTML =
+    '<div class="card" style="text-align:center;color:#a08060;padding:32px">Žádné objednávky převodem</div>';
+} else {
+  const pending = B2C_SK_PENDING.filter(o => !o.paid);
+  const paid    = B2C_SK_PENDING.filter(o => o.paid);
+  const sumEur  = pending.reduce((s, o) => s + parseFloat(o.amt || 0), 0);
+
+  document.getElementById('t-pending').textContent = pending.length;
+  document.getElementById('t-paid').textContent    = paid.length;
+  document.getElementById('t-sum').textContent     = sumEur.toFixed(2) + ' EUR';
+  document.getElementById('t-total').textContent   = B2C_SK_PENDING.length;
+
+  function fmt(o) {
+    const dateStr = o.date ? o.date.replace(/(\d{4})-(\d{2})-(\d{2})/, '$3. $2.') : '—';
+    const bankStr = o.bank_date ? o.bank_date.replace(/(\d{4})-(\d{2})-(\d{2})/, '$3. $2.') : '';
+    return `<tr>
+      <td><strong>${o.code}</strong><div class="sub-txt">${o.n || '—'}</div></td>
+      <td class="r"><strong>${parseFloat(o.amt || 0).toFixed(2)} ${o.ccy || 'EUR'}</strong></td>
+      <td>${dateStr}</td>
+      <td>${bankStr ? '<span style="color:#4a7c2f;font-weight:700">✅ ' + bankStr + '</span>' : '<span style="color:#a08060">⏳ čeká</span>'}</td>
+      <td class="sub-txt">${o.bank_sender || ''}</td>
+    </tr>`;
+  }
+
+  if (pending.length) {
+    document.getElementById('sec-pending').innerHTML = `
+      <div class="sec-lbl">⏳ Čeká na platbu (${pending.length})</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr>
+            <th>Objednávka</th>
+            <th class="r">Částka</th>
+            <th>Objednáno</th>
+            <th>Platba</th>
+            <th>Plátce</th>
+          </tr></thead>
+          <tbody>${pending.map(fmt).join('')}</tbody>
+        </table>
+      </div>`;
+  }
+
+  if (paid.length) {
+    document.getElementById('sec-paid').innerHTML = `
+      <div class="sec-lbl">✅ Zaplaceno (${paid.length})</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr>
+            <th>Objednávka</th>
+            <th class="r">Částka</th>
+            <th>Objednáno</th>
+            <th>Platba</th>
+            <th>Plátce</th>
+          </tr></thead>
+          <tbody>${paid.map(fmt).join('')}</tbody>
+        </table>
+      </div>`;
+  }
+}
+</script>
+</body>
+</html>
