@@ -11,7 +11,7 @@ const OV_CZK = [
   /* === 10–19 dní — Pozor === */
   {id:'ov_kolar',   n:'Michal Kolář',                 sub:'1 faktura · č. 359',      amt:'52 630',    days:14, pri:'a', plbl:'Pozor',    due:'02. 11.'},
   /* ov_kram — Farmářskej krámek uhrazen 12.11 (7 984 Kč) */
-  {id:'ov_emedis',  n:'EMEDIS s.r.o.',                sub:'7 faktur · č. 371–421',   amt:'151 577',   days:12, pri:'a', plbl:'Pozor',    due:'04. 11.'},
+  {id:'ov_emedis',  n:'EMEDIS s.r.o.',                sub:'5 faktur · č. 374–421 (č.371+372 uh. 13.11 — 52 999 Kč)', amt:'98 578,60', days:12, pri:'a', plbl:'Pozor',    due:'04. 11.'},
   /* ov_benkor — BENKOR uhrazen 12.11 net 19 449 Kč (č.380 − dobropis č.439) */
   /* ov_jested — Ještěd uhrazen 12.11 (11 312 Kč) */
   /* ov_linet — LINET uhrazen 13.11 (9 688 Kč) */
@@ -42,26 +42,26 @@ const OV_CZK = [
   /* === přešlo z "do 5 dní" 19.11 (spl. 16. 11.) — 3 dny === */
   {id:'ov_alza16',     n:'Alza.cz a.s.',                 sub:'2 faktury · č. 134, 419',      amt:'286 649,44', days:3, pri:'n', plbl:'3 dny', due:'16. 11.'},
   {id:'ov_heineken',   n:'Heineken ČR',                  sub:'1 faktura · č. 428',           amt:'79 195,20',  days:3, pri:'n', plbl:'3 dny', due:'16. 11.'},
-  {id:'ov_chem',       n:'AS CHEMOPRAG',                 sub:'1 faktura · č. 427',           amt:'24 202,98',  days:3, pri:'n', plbl:'3 dny', due:'16. 11.'},
+  /* ov_chem — AS CHEMOPRAG uhrazen 16.11 (24 202,98 Kč) — Fio VS=202600427 */
   {id:'ov_brand',      n:'BRAND CONCEPT',                sub:'2 faktury · č. 423, 424',      amt:'17 722,88',  days:3, pri:'n', plbl:'3 dny', due:'16. 11.'},
   {id:'ov_cpr16',      n:'CPR HK s.r.o.',                sub:'5 faktur · č. 429–433',        amt:'11 690,25',  days:3, pri:'n', plbl:'3 dny', due:'16. 11.'},
-  {id:'ov_ikv',        n:'I.K.V., s.r.o.',               sub:'1 faktura · č. 422',           amt:'8 232',      days:3, pri:'n', plbl:'3 dny', due:'16. 11.'},
-  {id:'ov_geum',       n:'GEUM s.r.o.',                  sub:'1 faktura · č. 13429',         amt:'7 954',      days:3, pri:'n', plbl:'3 dny', due:'16. 11.'},
+  /* ov_ikv — I.K.V. uhrazen 16.11 (8 232 Kč) — Fio VS=202600422 */
+  /* ov_geum — GEUM uhrazen 12.11 (7 954 Kč) — Fio bank-match */
   {id:'ov_kasper16',   n:'Eliška Kasper',                sub:'1 faktura · č. 13401',         amt:'6 544',      days:3, pri:'n', plbl:'3 dny', due:'16. 11.'},
   {id:'ov_olympic16',  n:'Olympic Palace',               sub:'1 faktura · č. 392',           amt:'6 265,84',   days:3, pri:'n', plbl:'3 dny', due:'16. 11.'},
   {id:'ov_helik16',    n:'Markéta Helikárová',           sub:'1 faktura · č. 13411',         amt:'4 533',      days:3, pri:'n', plbl:'3 dny', due:'16. 11.'},
   {id:'ov_kavanova',   n:'Veronika Kavanová',            sub:'1 faktura · č. 13400',         amt:'2 384',      days:3, pri:'n', plbl:'3 dny', due:'16. 11.'},
-  {id:'ov_dasicka',    n:'Dašická s.r.o.',               sub:'1 faktura · č. 425',           amt:'2 184',      days:3, pri:'n', plbl:'3 dny', due:'16. 11.'},
+  /* ov_dasicka — Dašická uhrazena 12.11 (2 184 Kč) — Fio VS=202600425 */
 
   /* === přešlo z "do 5 dní" 19.11 (spl. 17. 11.) — 2 dny === */
   {id:'ov_greenswan',  n:'Green-Swan Pharmaceuticals',   sub:'1 faktura · č. 438',           amt:'102 821,60', days:2, pri:'n', plbl:'2 dny', due:'17. 11.'},
   {id:'ov_imi17',      n:'IMI Partner',                  sub:'1 faktura · č. 440',           amt:'29 388,80',  days:2, pri:'n', plbl:'2 dny', due:'17. 11.'},
-  {id:'ov_nachod',     n:'MĚSTO NÁCHOD',                 sub:'1 faktura · č. 436',           amt:'28 112',     days:2, pri:'n', plbl:'2 dny', due:'17. 11.'},
-  {id:'ov_kovintrade', n:'KOVINTRADE Praha',             sub:'1 faktura · č. 437',           amt:'13 832',     days:2, pri:'n', plbl:'2 dny', due:'17. 11.'},
+  /* ov_nachod — MĚSTO NÁCHOD uhrazeno 16.11 (28 112 Kč) — Fio VS=202600436 */
+  /* ov_kovintrade — KOVINTRADE Praha uhrazen 18.11 (13 832 Kč) — Fio VS=202600437 */
   {id:'ov_ikme',       n:'Institut klinické a exp. med.', sub:'1 faktura · č. 435',          amt:'12 526,08',  days:2, pri:'n', plbl:'2 dny', due:'17. 11.'},
   {id:'ov_olympic17',  n:'Olympic Palace',               sub:'1 faktura · č. 399',           amt:'7 526,40',   days:2, pri:'n', plbl:'2 dny', due:'17. 11.'},
   {id:'ov_amt',        n:'AMT AUTO - SKLA',              sub:'1 faktura · č. 13485',         amt:'6 510',      days:2, pri:'n', plbl:'2 dny', due:'17. 11.'},
-  {id:'ov_jana17',     n:'Ing. Jana Malá',               sub:'1 faktura · č. 13440',         amt:'5 027',      days:2, pri:'n', plbl:'2 dny', due:'17. 11.'},
+  /* ov_jana17 — Ing. Jana Malá uhrazena 17.11 (5 027 Kč) — Fio jméno+částka */
   {id:'ov_cpr17',      n:'CPR HK s.r.o.',                sub:'1 faktura · č. 434',           amt:'2 968',      days:2, pri:'n', plbl:'2 dny', due:'17. 11.'},
   {id:'ov_tsp',        n:'TSP DATA',                     sub:'1 faktura · č. 13474',         amt:'1 602,31',   days:2, pri:'n', plbl:'2 dny', due:'17. 11.'},
   {id:'ov_banalita',   n:'Banalita s.r.o.',              sub:'1 faktura · č. 13452',         amt:'955',        days:2, pri:'n', plbl:'2 dny', due:'17. 11.'},
@@ -70,7 +70,7 @@ const OV_CZK = [
   /* === přešlo z "do 5 dní" 19.11 (spl. 18. 11.) — 1 den === */
   {id:'ov_iframix',    n:'IFRAMIX',                      sub:'1 faktura · č. 442',           amt:'58 800',     days:1, pri:'n', plbl:'1 den', due:'18. 11.'},
   {id:'ov_alza18',     n:'Alza.cz a.s.',                 sub:'2 faktury · č. 135, 136',      amt:'48 429,70',  days:1, pri:'n', plbl:'1 den', due:'18. 11.'},
-  {id:'ov_schinkmann', n:'SCHINKMANN',                   sub:'1 faktura · č. 443',           amt:'20 328',     days:1, pri:'n', plbl:'1 den', due:'18. 11.'},
+  /* ov_schinkmann — SCHINKMANN uhrazen 18.11 (20 328 Kč) — Fio VS=0202600443 */
   {id:'ov_kas',        n:'K a S, s.r.o.',                sub:'1 faktura · č. 451',           amt:'16 184',     days:1, pri:'n', plbl:'1 den', due:'18. 11.'},
   {id:'ov_euro_pool',  n:'Euro Pool System CZ',          sub:'1 faktura · č. 445',           amt:'14 488,32',  days:1, pri:'n', plbl:'1 den', due:'18. 11.'},
   {id:'ov_emedis18',   n:'EMEDIS s.r.o.',                sub:'1 faktura · č. 444',           amt:'14 053,92',  days:1, pri:'n', plbl:'1 den', due:'18. 11.'},
