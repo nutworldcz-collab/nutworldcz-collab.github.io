@@ -47,7 +47,7 @@ const OV_CZK = [
   {id:'ov_cpr16',      n:'CPR HK s.r.o.',                sub:'5 faktur · č. 429–433',        amt:'11 690,25',  days:3, pri:'n', plbl:'3 dny', due:'16. 11.', oz:'Jana N.'},
   /* ov_ikv — I.K.V. uhrazen 16.11 (8 232 Kč) — Fio VS=202600422 */
   /* ov_geum — GEUM uhrazen 12.11 (7 954 Kč) — Fio bank-match */
-  {id:'ov_kasper16',   n:'Eliška Kasper',                sub:'1 faktura · č. 13401',         amt:'6 544',      days:3, pri:'n', plbl:'3 dny', due:'16. 11.', oz:''},
+  {id:'ov_kasper16',   n:'Eliška Kasper',                sub:'1 faktura · č. 13401',         amt:'6 544',      days:3, pri:'n', plbl:'3 dny', due:'16. 11.', oz:'Jana N.'},
   {id:'ov_olympic16',  n:'Olympic Palace',               sub:'1 faktura · č. 392',           amt:'6 265,84',   days:3, pri:'n', plbl:'3 dny', due:'16. 11.', oz:'Renata P.'},
   {id:'ov_helik16',    n:'Markéta Helikárová',           sub:'1 faktura · č. 13411',         amt:'4 533',      days:3, pri:'n', plbl:'3 dny', due:'16. 11.', oz:''},
   {id:'ov_kavanova',   n:'Veronika Kavanová',            sub:'1 faktura · č. 13400',         amt:'2 384',      days:3, pri:'n', plbl:'3 dny', due:'16. 11.', oz:''},
@@ -72,7 +72,7 @@ const OV_CZK = [
   {id:'ov_alza18',     n:'Alza.cz a.s.',                 sub:'2 faktury · č. 135, 136',      amt:'48 429,70',  days:1, pri:'n', plbl:'1 den', due:'18. 11.', oz:'Jana N.'},
   /* ov_schinkmann — SCHINKMANN uhrazen 18.11 (20 328 Kč) — Fio VS=0202600443 */
   {id:'ov_kas',        n:'K a S, s.r.o.',                sub:'1 faktura · č. 451',           amt:'16 184',     days:1, pri:'n', plbl:'1 den', due:'18. 11.', oz:''},
-  {id:'ov_euro_pool',  n:'Euro Pool System CZ',          sub:'1 faktura · č. 445',           amt:'14 488,32',  days:1, pri:'n', plbl:'1 den', due:'18. 11.', oz:''},
+  {id:'ov_euro_pool',  n:'Euro Pool System CZ',          sub:'1 faktura · č. 445',           amt:'14 488,32',  days:1, pri:'n', plbl:'1 den', due:'18. 11.', oz:'Renata P.'},
   {id:'ov_emedis18',   n:'EMEDIS s.r.o.',                sub:'1 faktura · č. 444',           amt:'14 053,92',  days:1, pri:'n', plbl:'1 den', due:'18. 11.', oz:'Jana N.'},
   {id:'ov_imi18',      n:'IMI Partner',                  sub:'1 faktura · č. 447',           amt:'12 073,60',  days:1, pri:'n', plbl:'1 den', due:'18. 11.', oz:'Renata P.'},
   {id:'ov_sport',      n:'SPORT HOTÁREK',                sub:'1 faktura · č. 13518',         amt:'7 832',      days:1, pri:'n', plbl:'1 den', due:'18. 11.', oz:''},
@@ -142,7 +142,7 @@ const SOON_CZK = [
     {id:'sc_zimova',      n:'Jiřina Zimová',                    fakt:'13807',         amt:'18 592,00', oz:''},
     {id:'sc_zahradn',     n:'Zahradnické centrum Brabec',       fakt:'13822',         amt:'6 750,00', oz:'Renata P.'},
     {id:'sc_bogner',      n:'Bogner Edelstahl',                 fakt:'13809',         amt:'5 180,00', oz:''},
-    {id:'sc_kasper25',    n:'Eliška Kasper',                    fakt:'13824',         amt:'4 886,00', oz:''},
+    {id:'sc_kasper25',    n:'Eliška Kasper',                    fakt:'13824',         amt:'4 886,00', oz:'Jana N.'},
     {id:'sc_preralova',   n:'Kateřina Přeralová',               fakt:'13794',         amt:'4 525,00', oz:''},
     {id:'sc_audit',       n:'AUDIT FM',                         fakt:'13808',         amt:'3 785,00', oz:''},
     {id:'sc_pulkrabkova', n:'Renata Půlkrábková',               fakt:'13826',         amt:'2 595,00', oz:''},
