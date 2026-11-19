@@ -11,7 +11,7 @@ const OV_CZK = [
   /* === 10–19 dní — Pozor === */
   {id:'ov_kolar',   n:'Michal Kolář',                 sub:'1 faktura · č. 359',      amt:'52 630',    days:14, pri:'a', plbl:'Pozor',    due:'02. 11.'},
   /* ov_kram — Farmářskej krámek uhrazen 12.11 (7 984 Kč) */
-  {id:'ov_emedis',  n:'EMEDIS s.r.o.',                sub:'5 faktur · č. 374–421 (č.371+372 uh. 13.11 — 52 999 Kč)', amt:'98 578,60', days:12, pri:'a', plbl:'Pozor',    due:'04. 11.'},
+  {id:'ov_emedis',  n:'EMEDIS s.r.o.',                sub:'5 faktur · č. 374–421 (2 uh. 13.11 — 52 999 Kč)',        amt:'98 578,60', days:12, pri:'a', plbl:'Pozor',    due:'04. 11.'},
   /* ov_benkor — BENKOR uhrazen 12.11 net 19 449 Kč (č.380 − dobropis č.439) */
   /* ov_jested — Ještěd uhrazen 12.11 (11 312 Kč) */
   /* ov_linet — LINET uhrazen 13.11 (9 688 Kč) */
@@ -24,7 +24,7 @@ const OV_CZK = [
   /* ov_syrarna — Sýrárna Broumov uhrazena 19.11 (8 108,80 Kč) — VS 202600396 */
   {id:'ov_cpr',     n:'CPR HK s.r.o.',                sub:'5 faktur · č. 398–416',   amt:'10 760',    days:6,  pri:'a', plbl:'6 dní',    due:'10. 11.'},
   /* ov_zlkl — ZLKL uhrazen 18.11 (140 235,20 Kč) — VS 030272502 */
-  {id:'ov_vilgain', n:'Vilgain s.r.o.',               sub:'1 faktura · č. 327 (č.309 uhrazena 16.11)', amt:'50 158', days:5, pri:'a', plbl:'5 dní', due:'11. 11.'},
+  {id:'ov_vilgain', n:'Vilgain s.r.o.',               sub:'1 faktura · č. 327 (předchozí uh. 16.11)',  amt:'50 158', days:5, pri:'a', plbl:'5 dní', due:'11. 11.'},
   /* ov_arch — Arch.Design uhrazen 13.11 (20 328 Kč) */
   /* === 4 dny === */
   /* ov_tes — TES Consulting uhrazen 12.11 (25 300 Kč) */
