@@ -37,14 +37,13 @@ window.nwToggleHide = function(){
 
 /* OZ — obchodní zástupci: barvy a řazení */
 const OZ_COLOR = {
-  'Renata P.': '#7b3fbe',
   'Jana N.':   '#1a7abf',
   'Tomáš H.':  '#d47e00',
   'Jan V.':    '#2a8f5a',
   'Martin W.': '#b03050',
   'Markéta C.':'#c05080',
 };
-const OZ_ORDER = ['Renata P.','Jana N.','Tomáš H.','Jan V.','Martin W.','Markéta C.',''];
+const OZ_ORDER = ['Jana N.','Tomáš H.','Jan V.','Martin W.','Markéta C.',''];
 
 function ozBadge(oz){
   if(!oz) return '';
