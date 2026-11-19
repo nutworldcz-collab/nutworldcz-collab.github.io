@@ -217,6 +217,16 @@ tr.ship-row td{padding:0;}
 .sum-empty{padding:10px 14px;font-size:13px;color:var(--leaf);font-style:italic;}
 .sum-row.is-done{opacity:.55;}
 .sum-row.is-done .sum-rem{color:var(--leaf);font-size:14px;}
+/* Task pills */
+.task-row{display:flex;gap:4px;margin-top:5px;flex-wrap:wrap;}
+.task-btn{
+  border:1.5px solid var(--border);background:transparent;color:var(--fg-muted);
+  font-size:10px;font-family:var(--font-ui);font-weight:700;letter-spacing:0.3px;
+  padding:2px 8px;border-radius:99px;cursor:pointer;line-height:1.5;
+  transition:all .15s;white-space:nowrap;
+}
+.task-btn:hover{border-color:var(--brown);color:var(--brown);}
+.task-btn.tb-on{border-color:var(--leaf);background:var(--leaf-bg);color:var(--leaf);}
 </style>
 
 <div class="topbar">
@@ -379,6 +389,7 @@ function load() {
         state = parsed;
         nextId = state.rows.reduce((m,r)=>Math.max(m,r.id+1),1);
         state.rows.forEach(r=>{ if(!r.order) r.order=''; });
+        state.rows.forEach(r=>{ if(!r.tasks) r.tasks={label:false,bag:false,mix:false}; });
         state.rows.forEach(r=>{
           if(!Array.isArray(r.shipments)) r.shipments=[];
           while(r.shipments.length<6) r.shipments.push({date:'',amount:0});
@@ -495,6 +506,13 @@ function toggleManualDone(id){
   const r=state.rows.find(r=>r.id===id);if(!r)return;
   r.manualDone=!r.manualDone;save();refreshRow(id);renderStats();
 }
+function toggleTask(id,key){
+  const r=state.rows.find(r=>r.id===id);if(!r)return;
+  if(!r.tasks)r.tasks={label:false,bag:false,mix:false};
+  r.tasks[key]=!r.tasks[key];save();
+  const btn=document.querySelector(`.task-btn[data-id="${id}"][data-key="${key}"]`);
+  if(btn)btn.classList.toggle('tb-on',r.tasks[key]);
+}
 function rowMeta(r){
   const sent=sentSum(r);
   const over=sent>r.total&&r.total>0&&!r.manualDone;
@@ -610,10 +628,14 @@ function rowHtml(r,idx){
   else if(sent>0){bCls='badge b-mid';bTxt='Probíhá';}
   else{bCls='badge b-new';bTxt='Nezahájeno';}
 
+  const tasks=r.tasks||{label:false,bag:false,mix:false};
+  const taskBtns=[['label','Štítek'],['bag','Polepení'],['mix','Míchání']].map(([k,lbl])=>`<button class="task-btn${tasks[k]?' tb-on':''}" data-id="${r.id}" data-key="${k}" onclick="event.stopPropagation();toggleTask(${r.id},'${k}')">${lbl}</button>`).join('');
+
   const main=`<tr class="${rowCls}" data-id="${r.id}" onclick="handleRowClick(event,${r.id})">
     <td class="num-col c-center">${idx+1}</td>
     <td><input class="name-inp" type="text" value="${esc(r.name)}" placeholder="Název produktu"
-      oninput="onName(${r.id},this.value)" onclick="event.stopPropagation()"></td>
+      oninput="onName(${r.id},this.value)" onclick="event.stopPropagation()">
+      <div class="task-row">${taskBtns}</div></td>
     <td><input class="total-inp" type="number" min="0" value="${r.total}"
       onchange="onTotal(${r.id},this.value)" oninput="onTotal(${r.id},this.value)" onclick="event.stopPropagation()"></td>
     <td><span class="sent-sum">${sent}</span></td>
