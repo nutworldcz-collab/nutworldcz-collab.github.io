@@ -1,8 +1,24 @@
 {
-  "generated": "2026-11-20T07:30:22",
-  "total": 3,
+  "generated": "2026-11-20T12:00:48",
+  "total": 4,
   "spam_skipped": 0,
   "emails": [
+    {
+      "account": "Google",
+      "sender": "Temu <temu@eu.temuemail.com>",
+      "subject": "Místní sklad | Rychlé doručení",
+      "date": "pátek 20. listopadu 2026 10:32:48",
+      "unread": true,
+      "preview": "Nakupujte teď",
+      "category": "zakaznik",
+      "sender_short": "Temu",
+      "sender_email": "temu@eu.temuemail.com",
+      "ai": {
+        "shrn": "Propagační email od konkurenční platformy Temu nabízející místní sklad a rychlé doručení.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
     {
       "account": "Google",
       "sender": "CrossFit <crossfit@mail.crossfit.com>",
@@ -14,7 +30,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "CrossFit newsletter s workout plánem na pátek. Není relevantní pro Nutworld.",
+        "shrn": "Cvičební program (Workout of the Day) od CrossFit, zpráva pro členy komunity.",
         "tyka_se": false,
         "akce": null
       }
@@ -30,7 +46,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "Vzdělávací kurz pro CrossFit trenéry o onboardingu nových členů. Není relevantní pro Nutworld.",
+        "shrn": "CrossFit nabízí vzdělávací kurz pro trenéry zaměřený na práci s novými členy.",
         "tyka_se": false,
         "akce": null
       }
@@ -46,7 +62,7 @@
       "sender_short": "AliExpress",
       "sender_email": "ae-style-finds37@deals.aliexpress.com",
       "ai": {
-        "shrn": "Promotional email od AliExpress s nabídkou slev na produkty. Není relevantní pro Nutworld.",
+        "shrn": "Propagační email od AliExpress s nabídkou slev na různé produkty.",
         "tyka_se": false,
         "akce": null
       }
