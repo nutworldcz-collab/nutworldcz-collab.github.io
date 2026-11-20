@@ -707,7 +707,8 @@ function parseCard(card){
       const hm=line.match(/^\*\*(.+?)\*\*(\s*[*_]\(služba\)[*_])?\s*$/);
       if(hm){ if(cur)produkty.push(cur); cur={nazev:hm[1].trim(),isSluzba:!!hm[2],ks:0,slozeni:[]}; continue; }
       if(!cur) continue;
-      const km=line.match(/[-\s]*(\d+)\s*ks/); if(km) cur.ks=parseInt(km[1]);
+      // Quantity only from the "- N ks" line; composition lines (📦) may contain e.g. "3ks s pečetí"
+      if(!/📦/.test(line)){ const km=line.match(/^\s*[-*]?\s*(\d+)\s*ks\b/); if(km) cur.ks=parseInt(km[1]); }
       const sm=line.match(/📦\s+(.+)/);
       if(sm) cur.slozeni=sm[1].split(', ').map(parseComp).filter(x=>x.nazev||x.kod);
     }
