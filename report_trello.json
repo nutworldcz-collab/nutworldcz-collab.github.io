@@ -1,17 +1,47 @@
 {
-  "generated": "2026-11-20T04:00:21",
-  "date": "2026-11-19",
-  "total": 20,
+  "generated": "2026-11-21T04:00:20",
+  "date": "2026-11-20",
+  "total": 18,
   "notifications": [
+    {
+      "type": "addAttachmentToCard",
+      "label": "addAttachmentToCard",
+      "card": "CARBIDE, s.r.o. — 225 ks — 17.11.2026",
+      "card_url": "https://trello.com/c/lxY0JHtl",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Renata Pošepná",
+      "comment": "",
+      "time": "2026-11-20T15:09:19.024Z"
+    },
     {
       "type": "changeCard",
       "label": "Změna na kartě",
-      "card": "CARBIDE, s.r.o. — Odnoska na víno s vlastní etiketou a pečetí (jedno okno . druhé …",
-      "card_url": "https://trello.com/c/oEZXFYHy",
-      "board": "Tvorba štítků CANVA",
-      "creator": "Renata Pošepná",
+      "card": "ALZA - EDI/2026/46",
+      "card_url": "https://trello.com/c/CCWPzBnD",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Doprava NutWorld",
       "comment": "",
-      "time": "2026-11-19T20:00:24.617Z"
+      "time": "2026-11-20T10:36:19.919Z"
+    },
+    {
+      "type": "markedCompleteCard",
+      "label": "markedCompleteCard",
+      "card": "ALZA - EDI/2026/46",
+      "card_url": "https://trello.com/c/CCWPzBnD",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Doprava NutWorld",
+      "comment": "",
+      "time": "2026-11-20T10:36:07.696Z"
+    },
+    {
+      "type": "mentionedOnCard",
+      "label": "Zmíněn/a v komentáři",
+      "card": "ALZA - EDI/2026/46",
+      "card_url": "https://trello.com/c/CCWPzBnD",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Doprava NutWorld",
+      "comment": "@card dnes odchází poslední tři položky na mix paletě ",
+      "time": "2026-11-20T10:35:59.008Z"
     },
     {
       "type": "addAttachmentToCard",
@@ -21,187 +51,137 @@
       "board": "ALZA",
       "creator": "Renata Pošepná",
       "comment": "",
-      "time": "2026-11-19T16:25:01.037Z"
+      "time": "2026-11-20T10:15:43.621Z"
     },
     {
-      "type": "addedToCard",
-      "label": "Přidán/a na kartu",
+      "type": "addAttachmentToCard",
+      "label": "addAttachmentToCard",
       "card": "EDI/2026/47",
       "card_url": "https://trello.com/c/sZnhL091",
       "board": "ALZA",
       "creator": "Renata Pošepná",
       "comment": "",
-      "time": "2026-11-19T16:24:18.719Z"
+      "time": "2026-11-20T10:15:31.421Z"
     },
     {
-      "type": "addedToCard",
-      "label": "Přidán/a na kartu",
+      "type": "addAttachmentToCard",
+      "label": "addAttachmentToCard",
       "card": "EDI/2026/47",
-      "card_url": "https://trello.com/c/qznkNmJv",
+      "card_url": "https://trello.com/c/sZnhL091",
       "board": "ALZA",
       "creator": "Renata Pošepná",
       "comment": "",
-      "time": "2026-11-19T16:22:41.518Z"
+      "time": "2026-11-20T10:15:16.862Z"
+    },
+    {
+      "type": "addAttachmentToCard",
+      "label": "addAttachmentToCard",
+      "card": "EDI/2026/46",
+      "card_url": "https://trello.com/c/WWQdeJas",
+      "board": "ALZA",
+      "creator": "Renata Pošepná",
+      "comment": "",
+      "time": "2026-11-20T10:15:06.568Z"
+    },
+    {
+      "type": "addAttachmentToCard",
+      "label": "addAttachmentToCard",
+      "card": "EDI/2026/46",
+      "card_url": "https://trello.com/c/WWQdeJas",
+      "board": "ALZA",
+      "creator": "Renata Pošepná",
+      "comment": "",
+      "time": "2026-11-20T10:14:44.448Z"
     },
     {
       "type": "changeCard",
       "label": "Změna na kartě",
-      "card": "ALZA - EDI/2026/47",
-      "card_url": "https://trello.com/c/l5dufVui",
+      "card": "ALBI objednávka na 18.11.2026",
+      "card_url": "https://trello.com/c/okFmS3bV",
       "board": "Firmy dárky + objednávky",
       "creator": "Doprava NutWorld",
       "comment": "",
-      "time": "2026-11-19T13:49:49.111Z"
+      "time": "2026-11-20T09:18:30.046Z"
     },
     {
       "type": "markedCompleteCard",
       "label": "markedCompleteCard",
-      "card": "ALZA - EDI/2026/47",
-      "card_url": "https://trello.com/c/l5dufVui",
+      "card": "ALBI objednávka na 18.11.2026",
+      "card_url": "https://trello.com/c/okFmS3bV",
       "board": "Firmy dárky + objednávky",
       "creator": "Doprava NutWorld",
       "comment": "",
-      "time": "2026-11-19T13:49:40.064Z"
-    },
-    {
-      "type": "mentionedOnCard",
-      "label": "Zmíněn/a v komentáři",
-      "card": "ALZA - EDI/2026/47",
-      "card_url": "https://trello.com/c/l5dufVui",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "@card zítra odchází na mix paletě poslední dve položky ",
-      "time": "2026-11-19T13:49:37.021Z"
-    },
-    {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "Benkor",
-      "card_url": "https://trello.com/c/0lpIU0g0",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "",
-      "time": "2026-11-19T13:30:29.950Z"
-    },
-    {
-      "type": "markedCompleteCard",
-      "label": "markedCompleteCard",
-      "card": "Benkor",
-      "card_url": "https://trello.com/c/0lpIU0g0",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "",
-      "time": "2026-11-19T13:29:37.026Z"
-    },
-    {
-      "type": "cardDueSoon",
-      "label": "Karta má brzy termín",
-      "card": "Studio PLUS - reklamní agentura, s.r.o. — KESU_PRAZENE_SOLENE 100g, LÁMANÁ ČOKOLÁD…",
-      "card_url": "https://trello.com/c/KQ6GrSKN",
-      "board": "Tvorba štítků CANVA",
-      "creator": "",
-      "comment": "",
-      "time": "2026-11-19T10:00:56.262Z"
-    },
-    {
-      "type": "cardDueSoon",
-      "label": "Karta má brzy termín",
-      "card": "OG s.r.o. — Zmes orechov pražená nesolená 180g v kelímku a celofánku, Slaný mix pr…",
-      "card_url": "https://trello.com/c/MQM2yrKe",
-      "board": "Tvorba štítků CANVA",
-      "creator": "",
-      "comment": "",
-      "time": "2026-11-19T10:00:46.737Z"
-    },
-    {
-      "type": "cardDueSoon",
-      "label": "Karta má brzy termín",
-      "card": "PRAGOCLIMA,  spol. s r.o. — Dárkové EKO kelímky s pečetí – Slaná",
-      "card_url": "https://trello.com/c/N5sR3fIi",
-      "board": "Tvorba štítků CANVA",
-      "creator": "",
-      "comment": "",
-      "time": "2026-11-19T10:00:34.743Z"
-    },
-    {
-      "type": "cardDueSoon",
-      "label": "Karta má brzy termín",
-      "card": "SPEED PRESS Plus a.s. — Speed Press  4452 Preclíky 3 barev 200g s logem NW",
-      "card_url": "https://trello.com/c/fBC9UGrU",
-      "board": "Tvorba štítků CANVA",
-      "creator": "",
-      "comment": "",
-      "time": "2026-11-19T10:00:34.631Z"
+      "time": "2026-11-20T09:18:26.488Z"
     },
     {
       "type": "addedToCard",
       "label": "Přidán/a na kartu",
-      "card": "Haberl",
-      "card_url": "https://trello.com/c/4GvuHtld",
-      "board": "Firmy dárky + objednávky",
-      "creator": "Markéta Costachová",
+      "card": "EDI/2026/46",
+      "card_url": "https://trello.com/c/WWQdeJas",
+      "board": "ALZA",
+      "creator": "Renata Pošepná",
       "comment": "",
-      "time": "2026-11-19T09:24:01.193Z"
+      "time": "2026-11-20T08:43:52.821Z"
     },
     {
       "type": "commentCard",
       "label": "Nový komentář",
-      "card": "Benkor",
-      "card_url": "https://trello.com/c/0lpIU0g0",
+      "card": "ALZA - EDI/2026/53",
+      "card_url": "https://trello.com/c/SPYFWDwV",
       "board": "Firmy dárky + objednávky",
-      "creator": "Balírna",
-      "comment": "@jananyvltova jdou to dělat",
-      "time": "2026-11-19T09:02:31.773Z"
+      "creator": "Hamerník Tomáš",
+      "comment": "@jananyvltova opět mají chybné ceny v objednávce.\n\nProsím, fakturovat všechny další objednávky dle ceníku platného od 1.10.2026.\n\nna této objednávce by měly být tyto ceny:\n\nBJ-MX-250B02 Ořechy Bery Jo",
+      "time": "2026-11-20T08:06:33.867Z"
     },
     {
       "type": "mentionedOnCard",
       "label": "Zmíněn/a v komentáři",
-      "card": "Ekvita spol. s r.o. — 65ks — 23.11.2026",
-      "card_url": "https://trello.com/c/dYa1w8hM",
+      "card": "ALZA- EDI/2026/52",
+      "card_url": "https://trello.com/c/FVg7vJNX",
       "board": "Firmy dárky + objednávky",
-      "creator": "Markéta Costachová",
-      "comment": "@wolf1988 @darky70 jj my jsme si domluvili právě toho 23.11. prvně, to jsem do systému psala, ale pak to chtěl jinak, tak jsem už upravovala tady v trellu, nevšimla jsem si, že to tak zůstalo viset v ",
-      "time": "2026-11-19T08:46:05.509Z"
+      "creator": "Hamerník Tomáš",
+      "comment": "@card Po dohodě s Honzou se krabička 380g se dělat nebude.",
+      "time": "2026-11-20T07:47:18.343Z"
     },
     {
       "type": "changeCard",
       "label": "Změna na kartě",
-      "card": "Alcometal s.r.o. — 150 ks — 18.11.2026",
-      "card_url": "https://trello.com/c/Jmxom5P7",
+      "card": "ABS Jets, a.s. — 401 ks — 25.11.2026",
+      "card_url": "https://trello.com/c/Hohqzv6P",
       "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
+      "creator": "Renata Pošepná",
       "comment": "",
-      "time": "2026-11-19T07:42:47.851Z"
+      "time": "2026-11-20T06:56:46.828Z"
     },
     {
-      "type": "markedCompleteCard",
-      "label": "markedCompleteCard",
-      "card": "Alcometal s.r.o. — 150 ks — 18.11.2026",
-      "card_url": "https://trello.com/c/Jmxom5P7",
+      "type": "mentionedOnCard",
+      "label": "Zmíněn/a v komentáři",
+      "card": "SCENARIO - CINEMA CITY",
+      "card_url": "https://trello.com/c/05CUDEga",
       "board": "Firmy dárky + objednávky",
-      "creator": "Doprava NutWorld",
-      "comment": "",
-      "time": "2026-11-19T07:42:44.046Z"
+      "creator": "Markéta Costachová",
+      "comment": "@jananyvltova @wolf1988 pošlu s vámi v kopii na fiori požadavek na tisk vyjímečně sama, volali jsme si, logo u sebe má z loňska, tak že to zprocesuju tentokrát sama.",
+      "time": "2026-11-20T06:10:35.363Z"
     },
     {
       "type": "commentCard",
       "label": "Nový komentář",
-      "card": "Benkor",
-      "card_url": "https://trello.com/c/0lpIU0g0",
+      "card": "SCENARIO - CINEMA CITY",
+      "card_url": "https://trello.com/c/05CUDEga",
       "board": "Firmy dárky + objednávky",
-      "creator": "Jana Nývltová",
-      "comment": "@balirna2 prosím je to 8dní po dodání, prosím připravit",
-      "time": "2026-11-19T07:03:16.044Z"
+      "creator": "Markéta Costachová",
+      "comment": "@jananyvltova Jani,pokud nejde do faktury dát ta tisková příprava, tak klidně naúčtuj cenu 126 Kč za ks, já to musela rozepsat, taky dopravu mají rozpočítanou, chtějí u nás náhradní plnění, tak to na ",
+      "time": "2026-11-20T06:06:48.190Z"
     },
     {
-      "type": "changeCard",
-      "label": "Změna na kartě",
-      "card": "OG s.r.o. — Zmes orechov pražená nesolená 180g v kelímku a celofánku, Slaný mix pr…",
-      "card_url": "https://trello.com/c/MQM2yrKe",
-      "board": "Tvorba štítků CANVA",
-      "creator": "Renata Pošepná",
+      "type": "addedToCard",
+      "label": "Přidán/a na kartu",
+      "card": "SCENARIO - CINEMA CITY",
+      "card_url": "https://trello.com/c/05CUDEga",
+      "board": "Firmy dárky + objednávky",
+      "creator": "Markéta Costachová",
       "comment": "",
-      "time": "2026-11-19T04:28:32.955Z"
+      "time": "2026-11-20T06:04:22.050Z"
     }
   ]
 }
