@@ -143,7 +143,7 @@ td.baleni{color:var(--tx2);font-size:11.5px}
 <script>
 const STORE_KEY = 'nw_bulk_pracovni_v1';
 
-// NC from cenik.csv — auto-filled
+// NC from cenik.csv — auto-filled by generate_bulk_cenik.py (server)
 const NC_MAP = {
   '1949':199.0,'1991':119.0,'89':218.0,'2708':241.55,'6462':170.0,'1988':289.0,
   '2702':153.93,'3729':210.0,'10558':120.0,'6456':317.5,'8977':252.0,'9543':346.25,
@@ -355,8 +355,8 @@ try { saved = JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); } catch(e){}
 
 function getNC(r) {
   const key = r.c + '|' + r.n;
+  if (r.c && NC_MAP[r.c]) return NC_MAP[r.c];   // automatic NC (cenik.csv) wins
   if (saved[key] && saved[key].nc !== undefined) return saved[key].nc;
-  if (r.c && NC_MAP[r.c]) return NC_MAP[r.c];
   return null;
 }
 function getNota(r) {
@@ -484,8 +484,8 @@ function render() {
     tr.innerHTML = `
       <td class="nazev">${r.n}</td>
       <td class="kod">${r.c || '<span style="color:#ddd">—</span>'}</td>
-      <td class="baleni">${r.b ? r.b + ' kg' : '—'}</td>
-      <td class="cena-prod">${r.p ? r.p.toLocaleString('cs') + ' Kč' : '<span style="color:#c0392b;font-size:11px">nedostupné</span>'}</td>
+      <td class="baleni">${r.b ? (r.b < 1 ? Math.round(r.b * 1000) + ' g' : r.b.toLocaleString('cs') + ' kg') : '—'}</td>
+      <td class="cena-prod">${r.p ? Math.round(r.p).toLocaleString('cs') + ' Kč' : '<span style="color:#c0392b;font-size:11px">nedostupné</span>'}</td>
       <td class="nc-cell">
         <input type="number" step="0.01" placeholder="doplnit"
           value="${nc !== null ? nc : ''}"
