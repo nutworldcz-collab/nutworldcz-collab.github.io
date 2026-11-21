@@ -273,6 +273,47 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
     </div>
   </div>
 
+  <!-- OBCHODNICI (zakazky_sync.py -> NWData ns prehled, jen Jan) -->
+  <div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:10px;flex-wrap:wrap">
+      <div class="section-label" style="margin-bottom:0">👤 Obchodníci — obrat a zisk ze zakázek</div>
+      <div id="obch-obdobi" style="display:flex;gap:6px"></div>
+    </div>
+    <div id="obch-panel" style="background:white;border-radius:14px;padding:14px 16px;box-shadow:0 1px 6px rgba(0,0,0,.07);border-top:4px solid var(--br);overflow-x:auto">
+      <div style="color:#a08060;font-size:13px">Načítám přehled obchodníků…</div>
+    </div>
+  </div>
+  <script>
+  (function(){
+    let data = null, sel = null;
+    const fmt = v => v == null ? '—' : Math.round(v).toLocaleString('cs-CZ');
+    const btn = (k, l) => `<button onclick="window._obchSel('${k}')" style="font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;padding:4px 10px;border-radius:14px;border:none;cursor:pointer;background:${k===sel?'#83502e':'#f1e6da'};color:${k===sel?'#fff':'#83502e'}">${l}</button>`;
+    function render(){
+      const now = new Date(), m = now.toISOString().slice(0,7), y = m.slice(0,4);
+      const prev = new Date(now.getFullYear(), now.getMonth()-1, 1).toISOString().slice(0,7);
+      sel = sel || m;
+      document.getElementById('obch-obdobi').innerHTML = btn(m,'Tento měsíc') + btn(prev,'Minulý měsíc') + btn(y,'Rok '+y);
+      const rows = Object.entries((data.obdobi||{})[sel] || {}).sort((a,b)=>b[1].obrat-a[1].obrat);
+      const mc = v => v == null ? '<span style="color:#b0a090">—</span>' : `<b style="color:${v<30?'#da1668':'#4a7c2f'}">${v.toFixed(1).replace('.',',')} %</b>`;
+      document.getElementById('obch-panel').innerHTML = rows.length ? `<table style="width:100%;border-collapse:collapse;font-size:13px">
+        <tr style="text-align:left;color:#a08060;font-size:11px"><th style="padding:4px 6px">Obchodník</th><th style="padding:4px 6px;text-align:right">Obrat (Kč bez DPH)</th><th style="padding:4px 6px;text-align:right">Zisk</th><th style="padding:4px 6px;text-align:right">Marže</th><th style="padding:4px 6px;text-align:right">Nabídky → zakázky</th></tr>
+        ${rows.map(([r,v])=>`<tr style="border-top:1px solid #f0e8e0"><td style="padding:6px">${r}</td><td style="padding:6px;text-align:right">${fmt(v.obrat)}</td><td style="padding:6px;text-align:right">${fmt(v.zisk)}</td><td style="padding:6px;text-align:right">${mc(v.marze)}</td><td style="padding:6px;text-align:right">${v.nabidky} → ${v.zakazky}</td></tr>`).join('')}
+        </table><div style="font-size:11px;color:#a08060;margin-top:8px">${data.pozn||''} Aktualizace ${String(data.vygenerovano||'').slice(0,16)}.</div>`
+        : '<div style="color:#a08060;font-size:13px">V tomto období zatím žádné nabídky ani zakázky.</div>';
+    }
+    window._obchSel = k => { sel = k; render(); };
+    function load(){
+      if (!window.NWData) return setTimeout(load, 300);
+      NWData.list('prehled').then(items => {
+        const it = items.find(i => i.id === 'obchodnici');
+        if (!it) throw new Error('přehled zatím nevznikl');
+        data = it.data; render();
+      }).catch(e => { document.getElementById('obch-panel').innerHTML = `<div style="color:#a08060;font-size:13px">Přehled obchodníků je jen pro Jana (${e.message}).</div>`; });
+    }
+    load();
+  })();
+  </script>
+
   <!-- PLATBY -->
   <div>
     <div class="section-label">💰 Pohledávky B2B</div>
@@ -1287,6 +1328,7 @@ function fmtD(iso){if(!iso)return'';const[y,m,dd]=iso.split('-');return`${dd}.${
 
 
 </script>
+<script src="nw-data.js"></script>
 <script src="pin-guard.js"></script>
 </body>
 </html>
