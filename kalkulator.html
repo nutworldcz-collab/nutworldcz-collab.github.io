@@ -865,6 +865,7 @@ const PRODUKTY = [{"kod": "185", "nazev": "Datle vypeckované nesířené", "kg_
 const DOYPACK_OBAL   = [{max:50,v:2},{max:100,v:2.5},{max:250,v:3.5},{max:550,v:4.5},{max:1000,v:7.5},{max:99999,v:9}];
 const DOYPACK_PRACE  = [{max:50,v:2.5},{max:100,v:3.5},{max:250,v:3.9},{max:550,v:4.5},{max:1000,v:5},{max:99999,v:6}];
 const DOYPACK_TAVENI = [{max:250,v:1},{max:1000,v:1.5},{max:99999,v:2}];
+const DOYPACK_ETIKETA = [{max:250,v:1},{max:99999,v:2}];  // obaly.csv (generate_kalkulator.py)
 // Potisk — finální zákazníkova cena Kč/ks
 const DOYPACK_POTISK_BRK = [
   {max:50,   logo:1.5, celo:2.0},
@@ -988,7 +989,8 @@ function packCost(g) {
   const o = DOYPACK_OBAL.find(t => g <= t.max)?.v ?? 9;
   const p = DOYPACK_PRACE.find(t => g <= t.max)?.v ?? 6;
   const t = DOYPACK_TAVENI.find(x => g <= x.max)?.v ?? 2;
-  return o + p + (g <= 250 ? 1 : 2) + t;
+  const e = DOYPACK_ETIKETA.find(x => g <= x.max)?.v ?? 2;
+  return o + p + e + t;
 }
 function floorPrice(costNet, dph) { return costNet / (1 - MIN_MARGIN) * (dph || 1.12); }
 function moCZ(g, kc) {
