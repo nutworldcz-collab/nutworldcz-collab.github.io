@@ -47,6 +47,8 @@ tr:hover td{background:#faf4ee}
 .low{background:#fde8ef!important}
 .low .m{color:var(--acc)}
 .none{color:#c8b8a8}
+.cell .f{display:block;font-size:10px;color:#b0a090}
+.cell .fpod{color:var(--acc);font-weight:700}
 .dim{color:#9a8470;font-size:11px}
 .held{background:#fff8e1;border:1.5px solid var(--amb);border-radius:10px;padding:10px 14px;margin-bottom:12px;color:#5c381f}
 .up{color:var(--acc);font-weight:700}.down{color:#2e7d32;font-weight:700}
@@ -57,7 +59,7 @@ tr:hover td{background:#faf4ee}
 <div class="topbar">
   <span class="topbar-title">🐿 Nutworld · Skutečné marže</span>
   <a class="topbar-back" href="/">← Zpět na rozcestník</a>
-  <span class="topbar-sub">Ceny z e-shopů a nákupní ceny k: 21.11.2026 07:24</span>
+  <span class="topbar-sub">Ceny z e-shopů a nákupní ceny k: 21.11.2026 07:25</span>
 </div>
 <div class="tabs">
   <div class="tab active" data-tab="darky" onclick="showTab('darky')">🎁 Dárky <span id="t-darky"></span></div>
@@ -71,6 +73,7 @@ tr:hover td{background:#faf4ee}
     <input class="search" id="d-search" placeholder="Hledat název nebo kód…" oninput="render('darky')"/>
     <select class="filter" id="d-obal" onchange="render('darky')"><option value="">Všechny obaly</option></select>
     <label class="chk"><input type="checkbox" id="d-low" onchange="render('darky')"/> Jen pod limitem</label>
+    <label class="chk"><input type="checkbox" id="d-pod" onchange="render('darky')"/> Jen levněji než vzorec</label>
     <span class="count" id="d-count"></span>
   </div>
   <div class="tbl-wrap"><table><thead><tr id="d-head"></tr></thead><tbody id="d-body"></tbody></table></div>
@@ -82,6 +85,7 @@ tr:hover td{background:#faf4ee}
     <input class="search" id="s-search" placeholder="Hledat produkt nebo kód…" oninput="render('sacky')"/>
     <select class="filter" id="s-gram" onchange="render('sacky')"><option value="">Všechny gramáže</option></select>
     <label class="chk"><input type="checkbox" id="s-low" onchange="render('sacky')"/> Jen pod limitem</label>
+    <label class="chk"><input type="checkbox" id="s-pod" onchange="render('sacky')"/> Jen levněji než vzorec</label>
     <span class="count" id="s-count"></span>
   </div>
   <div class="tbl-wrap"><table><thead><tr id="s-head"></tr></thead><tbody id="s-body"></tbody></table></div>
@@ -112,7 +116,8 @@ function cell(r, key, typ) {
   if (!c) return `<td class="cell none">—</td>`;
   const lim = LIMITS[typ][key.split('_')[1]];
   const cls = c.m < lim ? 'low' : c.m < lim + 10 ? 'near' : 'ok';
-  return `<td class="cell ${cls}" title="Limit ${lim} %"><span class="m">${c.m.toFixed(1).replace('.', ',')} %</span><span class="p">${fmtP(key, c.p)}</span></td>`;
+  const f = c.f ? `<span class="f${c.pod ? ' fpod' : ''}" title="Cena podle vzorce">${c.pod ? '⚠ ' : ''}vzorec ${fmtP(key, c.f)}</span>` : '';
+  return `<td class="cell ${cls}" title="Limit ${lim} %"><span class="m">${c.m.toFixed(1).replace('.', ',')} %</span><span class="p">${fmtP(key, c.p)}</span>${f}</td>`;
 }
 
 function info(typ) {
@@ -126,6 +131,7 @@ function info(typ) {
     · pod limitem teď <b style="color:#da1668">${low}</b> z ${rows.length}<br>
     Marže = (cena v e-shopu bez DPH − náklady) / cena bez DPH. Ceny jsou s DPH, jak je vidí zákazník; SK přepočet ${KURZ} Kč/€.
     ${typ === 'darky' ? 'Náklady = obsah (nákup z ceníku) + obal + práce.' : 'Náklady = nákup z ceníku + doypack, etiketa, práce.'}
+    Pod cenou je i <b>cena podle vzorce</b> (${typ === 'darky' ? 'darky.csv, SK = CZ × 1,23/1,12 / 25' : 'mo_cz / vo_cz / mo_sk / vo_sk'}); <span style="color:#da1668;font-weight:700">⚠ vzorec</span> = v e-shopu levněji než vzorec.<br>
     <span style="color:#2e7d32;font-weight:700">zelená</span> OK · <span style="color:#e65100;font-weight:700">oranžová</span> do 10 bodů nad limitem · <span style="color:#da1668;font-weight:700">růžová</span> pod limitem`;
 }
 
@@ -152,10 +158,12 @@ function render(typ) {
   const p = d ? 'd' : 's';
   const q = document.getElementById(p + '-search').value.toLowerCase().trim();
   const onlyLow = document.getElementById(p + '-low').checked;
+  const onlyPod = document.getElementById(p + '-pod').checked;
   const extra = document.getElementById(d ? 'd-obal' : 's-gram').value;
   let rows = (d ? DARKY : SACKY).filter(r =>
     (!q || r.nazev.toLowerCase().includes(q) || (d ? r.kod : r.code).toLowerCase().includes(q)) &&
     (!onlyLow || r.low.length) &&
+    (!onlyPod || Object.values(r.ch).some(c => c.pod)) &&
     (!extra || (d ? r.obal === extra : String(r.gram) === extra)));
   const s = sortState[typ];
   if (s) rows = [...rows].sort((a, b) => {
