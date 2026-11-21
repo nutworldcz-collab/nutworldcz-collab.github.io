@@ -824,9 +824,9 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
           </tr>
           <tr style="background:var(--kraft)">
             <td style="padding:8px 12px;font-weight:700;white-space:nowrap">VO nad 1 kg</td>
-            <td style="padding:8px 12px;font-family:monospace;font-size:12px">(NC × kg × <b>1,13</b> + 20) × 1,12</td>
-            <td style="padding:8px 12px;text-align:center;font-weight:700;color:#5c381f">1,13×</td>
-            <td style="padding:8px 12px;color:#888">+ 20 Kč (+ DPH), marže B2B ≥ 10 %</td>
+            <td style="padding:8px 12px;font-family:monospace;font-size:12px">(NC × kg + 19) / <b>0,9</b> × 1,12</td>
+            <td style="padding:8px 12px;text-align:center;font-weight:700;color:#5c381f">10 %</td>
+            <td style="padding:8px 12px;color:#888">19 Kč obal+práce, marže B2B přesně 10 %, zaokr. nahoru</td>
           </tr>
           <tr style="background:#fff8e1;border-top:2px solid var(--amb)">
             <td style="padding:8px 12px;font-weight:700;color:var(--br);white-space:nowrap">Vlastní g</td>
@@ -1011,7 +1011,7 @@ function moCZ(g, kc) {
 function voCZ(g, kc, mo) {
   if ([50,100,200,230,500].includes(g)) return Math.round(mo * 0.8);
   if (g === 1000) return Math.round((kc * 1.2 + 10) * 1.12);
-  return Math.round((kc * (g / 1000) * 1.13 + 20) * 1.12);   // 1.13 -> B2B margin >= 10 % (2026-11-21)
+  return Math.ceil((kc * (g / 1000) + 19) / 0.9 * 1.12);   // exactly 10 % B2B margin incl. 19 Kč bulk packing (2026-11-21)
 }
 function nakupCena(g, kc) { return kc * g / 1000; }
 function roundTo9(x) {
