@@ -1,8 +1,56 @@
 {
-  "generated": "2026-11-21T07:30:22",
-  "total": 4,
+  "generated": "2026-11-21T12:00:36",
+  "total": 12,
   "spam_skipped": 0,
   "emails": [
+    {
+      "account": "Exchange",
+      "sender": "\"Wellness Hotel Step - CZECH LEADING HOTELS - operated by Czech Inn přes Booking.com\" <noreply@booking.com>",
+      "subject": "Máte zprávu od ubytování Wellness Hotel Step - CZECH LEADING HOTELS - operated by Czech Inn",
+      "date": "sobota 21. listopadu 2026 10:13:51",
+      "unread": true,
+      "preview": "￼ Confirmation number: 6281383687 Máte novou zprávu od ubytování Wellness Hotel Step - CZECH LEADING HOTELS - operated by Czech Inn Zpráva od ubytování: ￼ Hello Jan We are delighted that you have selected Wellness Hotel Step. On behalf of the entire team",
+      "category": "ostatni",
+      "sender_short": "Wellness Hotel Step - CZECH LEADING HOTELS - operated by Czech Inn přes Booking.com",
+      "sender_email": "noreply@booking.com",
+      "ai": {
+        "shrn": "Hotel Wellness Step odpovídá na Janovu zprávu a požaduje jeho emailovou adresu pro fakturu.",
+        "tyka_se": true,
+        "akce": "Poslat emailovou adresu hotelu pro fakturu"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Legislativa Nutworld <legislativa@nutworld.cz>",
+      "subject": "ALbi",
+      "date": "sobota 21. listopadu 2026 10:13:15",
+      "unread": true,
+      "preview": "Zkoukni to pls. Děkuju",
+      "category": "tym",
+      "sender_short": "Legislativa Nutworld",
+      "sender_email": "legislativa@nutworld.cz",
+      "ai": {
+        "shrn": "Kolega z legislativy požaduje kontrolu něčeho vztahujícího se k ALbi.",
+        "tyka_se": true,
+        "akce": "Zkontrolovat a vyřešit ALbi záležitost"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Bennon <info@news.bennon.cz>",
+      "subject": "👀 Už máte vybráno? Black Friday s 20% slevou stále běží!",
+      "date": "sobota 21. listopadu 2026 7:37:41",
+      "unread": true,
+      "preview": "Parádní boty i funkční oblečení s 20% slevou! On-line verze ￼ ￼ BLACK FRIDAY JE V PLNÉM PROUDU! 🖤 Už máte svůj Black Friday úlovek? 🥾 Jestli ještě váháte",
+      "category": "ostatni",
+      "sender_short": "Bennon",
+      "sender_email": "info@news.bennon.cz",
+      "ai": {
+        "shrn": "Bennon propaguje Black Friday slevu 20% na obuv a oblečení.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
     {
       "account": "Exchange",
       "sender": "Trello <do-not-reply@trello.com>",
@@ -25,9 +73,89 @@
       "sender_short": "Wellness Hotel Step - CZECH LEADING HOTELS - operated by Czech Inn přes Booking.com",
       "sender_email": "noreply@booking.com",
       "ai": {
-        "shrn": "Hotel potvrzuje příjem zprávy a žádá Janův email pro zaslání faktury k rezervaci.",
+        "shrn": "Hotel Wellness Step odpovídá na Janovu zprávu a požaduje jeho emailovou adresu pro fakturu.",
         "tyka_se": true,
-        "akce": "Odeslat email adresu hotelu na vyžádanou fakturu"
+        "akce": "Poslat emailovou adresu hotelu pro fakturu"
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "AliExpress <ae-style-finds37@deals.aliexpress.com>",
+      "subject": "Duty-Free. Fee-Free. Worry-Free.",
+      "date": "sobota 21. listopadu 2026 10:36:22",
+      "unread": true,
+      "preview": "Buy 3+ and all import charges are on us. ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ￼ ￼ Check savings . You may also like ￼ . . -59% CZK119.77 . . -52% C",
+      "category": "ostatni",
+      "sender_short": "AliExpress",
+      "sender_email": "ae-style-finds37@deals.aliexpress.com",
+      "ai": {
+        "shrn": "AliExpress nabízí slevu na import poplatky při nákupu 3+ produktů.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "Temu <temu@eu.temuemail.com>",
+      "subject": "Trochu blíž k domovu 🏠",
+      "date": "sobota 21. listopadu 2026 10:32:38",
+      "unread": true,
+      "preview": "Nakupujte tady! Udělejte si cestu k vám mnohem plynulejší>> ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ ￼ Najdete nás na ￼ ￼ ￼ POZNÁMKA: Toto je automaticky generovaný e-mail",
+      "category": "ostatni",
+      "sender_short": "Temu",
+      "sender_email": "temu@eu.temuemail.com",
+      "ai": {
+        "shrn": "Temu propaguje nákupy s rychlejší doručením do domova.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "\"DJI\" <enews@e.dji.com>",
+      "subject": "Black Friday: Up to 16% Off DJI Mic & Osmo Mobile",
+      "date": "sobota 21. listopadu 2026 10:15:44",
+      "unread": true,
+      "preview": "￼ Visuals and Audio",
+      "category": "ostatni",
+      "sender_short": "DJI",
+      "sender_email": "enews@e.dji.com",
+      "ai": {
+        "shrn": "DJI inzeruje Black Friday slevu do 16% na Mic a Osmo Mobile.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "\"AliExpress.seller\" <promotion@aliexpress.com>",
+      "subject": "Our daily picks at US $3.00 off",
+      "date": "sobota 21. listopadu 2026 9:40:32",
+      "unread": true,
+      "preview": "Collect coupons inside & shop now ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ Daily specials in our store ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ",
+      "category": "ostatni",
+      "sender_short": "AliExpress.seller",
+      "sender_email": "promotion@aliexpress.com",
+      "ai": {
+        "shrn": "AliExpress opakuje nabídku denních výběrů s kuponem na slevu 3 USD.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "\"AliExpress.seller\" <promotion@aliexpress.com>",
+      "subject": "🤑 Special CODE for you",
+      "date": "sobota 21. listopadu 2026 8:20:51",
+      "unread": true,
+      "preview": "‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ￼ Dear - user name US $1.00 US $1.00 When value up to US $3.00 Use code: P4SSA3D37O1G 2026-11-18 18:00:00 - 20",
+      "category": "ostatni",
+      "sender_short": "AliExpress.seller",
+      "sender_email": "promotion@aliexpress.com",
+      "ai": {
+        "shrn": "AliExpress poskytuje speciální promo kód na nákup s hodnotou do 3 USD.",
+        "tyka_se": false,
+        "akce": null
       }
     },
     {
@@ -41,7 +169,7 @@
       "sender_short": "AliExpress.seller",
       "sender_email": "promotion@aliexpress.com",
       "ai": {
-        "shrn": "Propagační email od AliExpressu s nabídkou slevových kupónů na produkty.",
+        "shrn": "AliExpress opakuje nabídku denních výběrů s kuponem na slevu 3 USD.",
         "tyka_se": false,
         "akce": null
       }
@@ -57,7 +185,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "CrossFit notifikace s denním tréninkovým plánem.",
+        "shrn": "CrossFit posílá cvičení dne (Workout of the Day).",
         "tyka_se": false,
         "akce": null
       }
