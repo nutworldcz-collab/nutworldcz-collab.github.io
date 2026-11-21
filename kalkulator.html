@@ -982,6 +982,7 @@ function priceRoundMO(x) {
 }
 // Nothing may be sold under 10 % margin (Jan 2026-11-21) — same as nw_core.MIN_MARGIN
 const MIN_MARGIN = 0.10;
+const GIFT_MIN_MARGIN = 0.30;
 function packCost(g) {
   const o = DOYPACK_OBAL.find(t => g <= t.max)?.v ?? 9;
   const p = DOYPACK_PRACE.find(t => g <= t.max)?.v ?? 6;
@@ -1455,8 +1456,8 @@ function dCalculate() {
   // floor price (např. 4×80g min 299 Kč)
   if (vzorCfg.floor && mo < vzorCfg.floor) mo = vzorCfg.floor;
 
-  // 10 % margin floor (retail and wholesale)
-  const minPrice = Math.ceil(floorPrice(naklady, dph));
+  // gifts: 30 % margin floor (retail and wholesale), Jan 2026-11-21
+  const minPrice = Math.ceil(naklady / (1 - GIFT_MIN_MARGIN) * dph);
   mo = Math.max(mo, roundTo9(minPrice));
   const vo = Math.max(Math.round(mo * voFakt), minPrice);
   const moExVat = mo / dph;
