@@ -154,7 +154,22 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;min-height:
         <option value="certifikat">Certifikát / původ</option>
         <option value="jine">Jiné</option>
       </select>
-      <div class="warn" id="alg-warn">⚠️ Změna alergenů je kritická — musí se okamžitě opravit etiketa i weby!</div>
+      <div class="warn" id="alg-warn">⚠️ Kritická změna — musí se okamžitě opravit etiketa i weby! Nový štítek (CZ + SK) se vygeneruje automaticky do 5 minut a přijde emailem balírně a legislativě.</div>
+    </div>
+    <div class="frow" id="stitky-fields" style="display:none">
+      <div class="fg">
+        <label class="fl">Gramáže na štítek</label>
+        <input type="text" class="fi" id="f-gram" placeholder="např. 100, 180"/>
+      </div>
+      <div class="fg">
+        <label class="fl">Velikost štítku</label>
+        <select class="fs" id="f-size">
+          <option value="105x148">A6 — 105×148</option>
+          <option value="74x105">74×105</option>
+          <option value="70x50">70×50</option>
+          <option value="69x75">69×75</option>
+        </select>
+      </div>
     </div>
     <div class="fg">
       <label class="fl">Popis změny</label>
@@ -289,6 +304,8 @@ function renderCard(ch){
           ${badges}
         </div>
         <div class="card-desc">${escHtml(ch.popis)}</div>
+        ${ch.stitkyKarta?`<div class="card-date">🏷️ Štítek ${escHtml((ch.stitky&&ch.stitky.gramaze||[]).join(' g, '))} g se generuje automaticky — <a href="${escHtml(ch.stitkyKarta)}" target="_blank" rel="noopener" style="color:#83502e">karta v Trellu</a></div>`:''}
+        ${ch.stitkyChyba?`<div class="card-date" style="color:#9b1c1c;font-weight:700">⚠️ Kartu na štítek se nepodařilo založit (${escHtml(ch.stitkyChyba)}) — založ ji ručně na štítkovém boardu.</div>`:''}
         <div class="card-date">📅 ${fmtDate(ch.date)}${ch.updatedBy?` · naposledy upravil(a): ${escHtml(ch.updatedBy)}`:''}</div>
       </div>
       <button class="card-del" onclick="del('${ch.id}')" title="Smazat">🗑</button>
@@ -387,11 +404,16 @@ function closeModal(){
   document.getElementById('f-darky').checked=false;
   document.getElementById('f-canva').checked=false;
   document.getElementById('alg-warn').classList.remove('show');
+  document.getElementById('stitky-fields').style.display='none';
+  document.getElementById('f-gram').value='';
+  document.getElementById('f-size').value='105x148';
 }
 function overlayClick(e){if(e.target===document.getElementById('overlay'))closeModal();}
+function isCriticalTyp(t){return t==='alergeny'||t==='slozeni';}
 function onTypChange(){
-  const t=document.getElementById('f-typ').value;
-  document.getElementById('alg-warn').classList.toggle('show',t==='alergeny');
+  const crit=isCriticalTyp(document.getElementById('f-typ').value);
+  document.getElementById('alg-warn').classList.toggle('show',crit);
+  document.getElementById('stitky-fields').style.display=crit?'':'none';
 }
 
 async function addChange(){
@@ -403,6 +425,13 @@ async function addChange(){
   const hasDarky=document.getElementById('f-darky').checked;
   const hasCanva=document.getElementById('f-canva').checked;
   if(!kod||!nazev||!popis){alert('Vyplň kód, název a popis.');return;}
+  let stitky=null;
+  if(isCriticalTyp(typ)){
+    const gramaze=(document.getElementById('f-gram').value.match(/\d+/g)||[]).map(Number).filter(g=>g>0);
+    if(!gramaze.length){alert('U změny alergenů nebo složení vyplň gramáže na štítek (např. 100, 180).');return;}
+    if(!/^\d+$/.test(kod)&&!confirm('Kód „'+kod+'“ není číslo — štítek se automaticky nevygeneruje a budeš ho muset založit ručně. Pokračovat?'))return;
+    stitky={gramaze,size:document.getElementById('f-size').value};
+  }
 
   const checks={web_cz:false,web_sk:false,etiketa:false,trello:false};
   if(hasDarky)checks.darky=false;
@@ -412,7 +441,7 @@ async function addChange(){
   btn.disabled=true;btn.textContent='Ukládám…';
   const id=Date.now().toString(36)+Math.random().toString(36).slice(2,6);
   try{
-    await NWData.put(NS,id,{date:new Date().toISOString(),kod,nazev,typ,popis,checks,notes:'',resolvedDate:null});
+    await NWData.put(NS,id,{date:new Date().toISOString(),kod,nazev,typ,popis,checks,notes:'',resolvedDate:null,...(stitky?{stitky}:{})});
   }catch(e){
     alert('Uložení se nepovedlo: '+e.message);
     btn.disabled=false;btn.textContent='Přidat';
