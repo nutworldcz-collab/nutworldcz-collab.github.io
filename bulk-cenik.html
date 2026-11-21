@@ -590,7 +590,7 @@ const DATA = [
   {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Chipsy",n:"Chipsy jablečné se skořicí",c:"9571",b:6,p:409},
   {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Chipsy",n:"Chipsy ovocné mix",c:"9572",b:8.4,p:479},
   {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Chipsy",n:"Chipsy zeleninové mix",c:"9570",b:8.4,p:379},
-  {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Chipsy",n:"Chipsy zeleninové mix — WASABI",c:"9673",b:8.4,p:409},
+  {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Chipsy",n:"Chipsy zeleninové mix — WASABI",c:"9573",b:8.4,p:409},
   {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Chipsy luštěninové",n:"Česnekové",c:"99XCES",b:0.18,p:75},
   {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Chipsy luštěninové",n:"Kmínové",c:"99XKMIN",b:0.18,p:75},
   {l:"TĚSTÍČKO, KREKRY, CHIPSY",k:"Chipsy luštěninové",n:"Chilli",c:"99XCHIL",b:0.18,p:75},
@@ -645,15 +645,15 @@ function filter(){
       sep.innerHTML = `<td colspan="6">${esc(r.k)}</td>`;
       tbody.appendChild(sep);
     }
-    const cenabal = r.p && r.b ? (r.p * r.b).toLocaleString('cs') + ' Kč' : '—';
+    const cenabal = r.p && r.b ? Math.round(r.p * r.b).toLocaleString('cs') + ' Kč' : '—';
     const tr = document.createElement('tr');
     tr.className = 'data-row';
     tr.innerHTML = `
       <td class="nazev">${esc(r.n)}</td>
       <td class="kod">${esc(r.c) || '<span style="color:var(--ln)">—</span>'}</td>
       <td class="list-badge"><span>${esc(r.l.split(',')[0])}</span></td>
-      <td class="baleni">${r.b ? r.b + ' kg' : '—'}</td>
-      ${r.p ? `<td class="cena-kg">${r.p.toLocaleString('cs')} Kč</td>` : '<td class="nedostupne">nedostupné</td>'}
+      <td class="baleni">${r.b ? (r.b < 1 ? Math.round(r.b * 1000) + ' g' : r.b.toLocaleString('cs') + ' kg') : '—'}</td>
+      ${r.p ? `<td class="cena-kg">${Math.round(r.p).toLocaleString('cs')} Kč</td>` : '<td class="nedostupne">nedostupné</td>'}
       <td class="cena-bal">${cenabal}</td>
     `;
     tbody.appendChild(tr);
