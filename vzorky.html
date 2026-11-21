@@ -253,12 +253,13 @@ select option { background: var(--surface); }
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
+<script src="trello-proxy.js"></script>
 <script>
 const SK = 'nw_vzorky_v1';
 
 // Trello
-const TK = '0363ebb149df04d' + '1285672a3080160a2';
-const TT = 'ATTA7b1b8a1cedc122827' + 'fdb2f80dc24b58d10855d967' + 'e0045b5e4d7d6fd340c2feaC4F111FE';
+const TK = 'via-proxy';
+const TT = 'via-proxy';
 const T_LIST = '65ae2174c564aeaec070bc25'; // Firmy list ID
 const T_MEMBERS = [
   '637f8efd088ca800a01b00a9', // Jana Nývltová
@@ -820,5 +821,6 @@ async function init() {
 init();
 </script>
 
+<script src="pin-guard.js"></script>
 </body>
 </html>

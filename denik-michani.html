@@ -718,6 +718,7 @@ body.mode-surovina .section-dmt { display: none; }
 
 </div><!-- /page -->
 
+<script src="trello-proxy.js"></script>
 <script>
   // Auto-set today's date
   document.getElementById('datum').valueAsDate = new Date();
@@ -1055,8 +1056,8 @@ body.mode-surovina .section-dmt { display: none; }
 
   // ── Trello save ──────────────────────────────────────────
   // Trello save
-  const TK = '0363ebb149df04d' + '1285672a3080160a2';
-  const TT = 'ATTA7b1b8a1cedc122827' + 'fdb2f80dc24b58d10855d967' + 'e0045b5e4d7d6fd340c2feaC4F111FE';
+  const TK = 'via-proxy';
+  const TT = 'via-proxy';
 
   window.saveToTrello = async function() {
     const btn = document.getElementById('btn-save');
@@ -1391,5 +1392,6 @@ ${pozn || '—'}`;
   </div>
 </div>
 
+<script src="pin-guard.js"></script>
 </body>
 </html>

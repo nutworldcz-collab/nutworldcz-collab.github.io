@@ -320,6 +320,7 @@ h1,h2,h3,h4{font-family:'Exo 2',sans-serif}
 
 </div>
 
+<script src="trello-proxy.js"></script>
 <script>
 let offerData = null;
 const OWNER_PIN = 'nw2026';
@@ -634,8 +635,8 @@ function getSlozeniText(cid) {
   }).filter(Boolean).join(', ');
 }
 
-const T_KEY   = atob('MDM2M2ViYjE0OWRmMDRkMTI4NTY3MmEzMDgwMTYwYTI=');
-const T_TOKEN = atob('QVRUQTdiMWI4YTFjZWRjMTIyODI3ZmRiMmY4MGRjMjRiNThkMTA4NTVkOTY3ZTAwNDViNWU0ZDdkNmZkMzQwYzJmZWFDNEYxMTFGRQ==');
+const T_KEY   = 'via-proxy';
+const T_TOKEN = 'via-proxy';
 const T_LIST  = '6a1d1f2f0dd6bfcd79326c55';
 
 const ALWAYS_ASSIGN = [

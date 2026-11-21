@@ -9,7 +9,8 @@
   const KEY = me.dataset.key;
   const STORE = me.dataset.store;
   const NS = 'expedice';
-  const MASTER_PIN = 'jerab47';
+  // Jan's master rights are confirmed by the server (pin-guard.js whoami), no PIN in this public file
+  const isMaster = () => { try { return localStorage.getItem('nw_master') === '1'; } catch (e) { return false; } };
   const ROW = KEY + '__r__';
   const META = KEY + '__meta';
   const SYNCED_KEY = 'nw_exp_synced_' + KEY;
@@ -212,7 +213,7 @@
       return;
     }
 
-    if (NWData.pin() !== MASTER_PIN) {
+    if (!isMaster()) {
       status('warn', 'Sdílená verze zatím neexistuje — čeká se, až ji nahraje Jan. Do té doby pracuješ jen ve svém prohlížeči.');
       setTimeout(init, 60000);
       return;

@@ -4,7 +4,8 @@
 // Other browsers' previous data is never deleted: kept locally (<key>_pred_sdilenim) + uploaded as backup.
 (function () {
   const NS = 'vyroba';
-  const MASTER_PIN = 'jerab47';
+  // Jan's master rights are confirmed by the server (pin-guard.js whoami), no PIN in this public file
+  const isMaster = () => { try { return localStorage.getItem('nw_master') === '1'; } catch (e) { return false; } };
   const META = 'v__meta';
   const SYNCED_KEY = 'nw_vyroba_synced';
   const STORES = [  // localStorage key, record prefix, kind
@@ -179,7 +180,7 @@
       apply(master); live = true; okStatus(); return;
     }
 
-    if (NWData.pin() !== MASTER_PIN) {
+    if (!isMaster()) {
       status('warn', 'Sdílená výroba zatím neexistuje — čeká se, až ji nahraje Jan. Do té doby se ukládá jen v tomto prohlížeči.');
       setTimeout(init, 60000); return;
     }

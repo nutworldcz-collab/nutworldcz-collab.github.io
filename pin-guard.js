@@ -1,20 +1,32 @@
 (function(){
-  const KODY = [
-    'jerab47',   // Jan Vlček
-    'sliva83',   // Jana Nývltová
-    'hrach29',   // Martin Werner
-    'kopec61',   // Markéta Costachová
-    'vrana54',   // Tomáš Hamerník
-    'skala38',   // Jiřina Hamerníková
-    'morak72',   // Lucie Turková
-    'jablon16',  // Renata Pošepná
-    'ryba95',    // Rita Vozáková
-    'louka43',   // Simca
-  ];
-
+  // PINs are verified ONLY by the server (nw_data Apps Script "whoami") — no PIN list in this public file
+  // (security 2026-11-21). The verified PIN + name are cached; re-checked every 12 h, so a changed PIN stops working.
+  const API = 'https://script.google.com/macros/s/AKfycbxK5FYBYGYsf9Hh9ueahqi0FhCDhaoxTkhzpFM3retvDBKvbOUJ1-YxSQurR2MQB2OT/exec';
   const KEY = 'nw_access';
-  const stored = localStorage.getItem(KEY);
-  if (stored && KODY.includes(stored)) return; // přihlášen, pokračuj
+  const ls = {
+    get: k => { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} },
+    del: k => { try { localStorage.removeItem(k); } catch (e) {} },
+  };
+  async function whoami(pin) {
+    const r = await fetch(API + '?action=whoami&pin=' + encodeURIComponent(pin));
+    return r.json();
+  }
+  function remember(pin, j) {
+    ls.set(KEY, pin); ls.set('nw_me', j.name || ''); ls.set('nw_master', j.master ? '1' : '');
+    ls.set('nw_pin_checked', String(Date.now()));
+  }
+  const stored = ls.get(KEY);
+  if (stored) {
+    // already signed in (also people signed in before 2026-11-21: their PIN is verified once in the background)
+    if (!ls.get('nw_me') || Date.now() - Number(ls.get('nw_pin_checked') || 0) > 12 * 3600e3) {
+      whoami(stored).then(j => {
+        if (j.ok) remember(stored, j);
+        else { ls.del(KEY); ls.del('nw_me'); ls.del('nw_master'); location.reload(); }
+      }).catch(() => {});   // offline -> keep working
+    }
+    return; // přihlášen, pokračuj
+  }
 
   // Injektuj overlay
   const css = `
@@ -57,18 +69,23 @@
     </div>
   `;
 
-  function check(){
-    const val = document.getElementById('nw-pin-inp').value.trim();
-    if(KODY.includes(val)){
-      localStorage.setItem(KEY, val);
+  async function check(){
+    const inp = document.getElementById('nw-pin-inp'), err = document.getElementById('nw-pin-err');
+    const val = inp.value.trim();
+    if (!val) return;
+    err.style.color = '#8a6040'; err.textContent = 'Ověřuji…';
+    let j = null;
+    try { j = await whoami(val); } catch (e) { err.style.color = '#da1668'; err.textContent = '✕ Bez spojení — zkus znovu'; return; }
+    if (j && j.ok) {
+      remember(val, j);
       overlay.style.opacity = '0';
       overlay.style.transition = 'opacity .35s';
-      setTimeout(()=>overlay.remove(), 380);
+      setTimeout(()=>{ overlay.remove(); location.reload(); }, 380);
     } else {
-      const err = document.getElementById('nw-pin-err');
+      err.style.color = '#da1668';
       err.textContent = '✕ Nesprávný kód';
-      document.getElementById('nw-pin-inp').value = '';
-      document.getElementById('nw-pin-inp').focus();
+      inp.value = '';
+      inp.focus();
       setTimeout(()=>{ err.textContent=''; }, 3000);
     }
   }

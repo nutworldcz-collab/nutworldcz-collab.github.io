@@ -177,9 +177,10 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:var(--bg);color:var
   </div>
 </div>
 
+<script src="trello-proxy.js"></script>
 <script>
-const KEY   = atob('MDM2M2ViYjE0OWRmMDRkMTI4NTY3MmEzMDgwMTYwYTI=');
-const TOKEN = atob('QVRUQTdiMWI4YTFjZWRjMTIyODI3ZmRiMmY4MGRjMjRiNThkMTA4NTVkOTY3ZTAwNDViNWU0ZDdkNmZkMzQwYzJmZWFDNEYxMTFGRQ==');
+const KEY   = 'via-proxy';
+const TOKEN = 'via-proxy';
 const BOARD = '637f702c5e323c01d42feeac';
 
 // Archive lists to exclude
@@ -523,5 +524,6 @@ function esc(s) {
 
 init();
 </script>
+<script src="pin-guard.js"></script>
 </body>
 </html>

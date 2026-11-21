@@ -8,11 +8,6 @@ window.NWPartneri = (function () {
   const NS = 'partneri';
   const CACHE = 'nw_partneri_cache';
   const REPS = ['Martin Werner', 'Tomáš Hamerník', 'Markéta Costachová', 'Jan Vlček'];
-  const PIN_NAMES = {
-    jerab47: 'Jan Vlček', sliva83: 'Jana Nývltová', hrach29: 'Martin Werner', kopec61: 'Markéta Costachová',
-    vrana54: 'Tomáš Hamerník', skala38: 'Jiřina Hamerníková', morak72: 'Lucie Turková',
-    jablon16: 'Renata Pošepná', ryba95: 'Rita Vozáková', louka43: 'Simca',
-  };
   const ALIASES = { 'jan': 'Jan Vlček', 'martin': 'Martin Werner', 'marin werner': 'Martin Werner',
     'hamerník': 'Tomáš Hamerník', 'hamerník tomáš': 'Tomáš Hamerník', 'tomáš': 'Tomáš Hamerník',
     'markéta': 'Markéta Costachová', 'costachová': 'Markéta Costachová' };
@@ -37,7 +32,8 @@ window.NWPartneri = (function () {
     const exact = REPS.find(r => r.toLowerCase() === s.toLowerCase());
     return exact || ALIASES[s.toLowerCase()] || s;
   }
-  function me() { return PIN_NAMES[(window.NWData && NWData.pin()) || ''] || ''; }
+  // name of the signed-in person — verified by the server in pin-guard.js (no PIN list in public files)
+  function me() { try { return localStorage.getItem('nw_me') || ''; } catch (e) { return ''; } }
 
   function base() { return typeof BASE_DATA !== 'undefined' ? BASE_DATA : []; }
 
