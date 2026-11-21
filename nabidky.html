@@ -117,7 +117,9 @@ table.pt input.inp-cena{width:100px;text-align:right}
 .tab-btn{padding:10px 22px;background:none;border:none;border-bottom:3px solid transparent;margin-bottom:-2px;font-family:'Exo 2',sans-serif;font-weight:700;font-size:13px;color:#83502e;cursor:pointer;letter-spacing:.3px;transition:background .12s}
 .tab-btn.active{color:#5c381f;border-bottom-color:#5c381f;background:white}
 .tab-btn:hover:not(.active){background:#ede0d4}
-#archiv-panel{display:none;max-width:960px;margin:0 auto;padding:20px 16px}
+#archiv-panel{display:none;grid-column:1/-1;width:100%;max-width:1100px;margin:0 auto;padding:0}
+.archiv-row{flex-wrap:wrap}
+.archiv-row>div:first-child{min-width:240px}
 .archiv-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
 .archiv-search{flex:1;min-width:200px;border:1.5px solid #d4c0a8;border-radius:8px;padding:8px 12px;font-size:13px;font-family:inherit;background:white}
 .archiv-select{border:1.5px solid #d4c0a8;border-radius:8px;padding:8px 12px;font-size:13px;font-family:inherit;background:white;color:#444;cursor:pointer}
@@ -177,8 +179,9 @@ table.pt input.inp-cena{width:100px;text-align:right}
     <!-- Obchodní zástupce -->
     <div class="sec">Obchodní zástupce</div>
     <div class="row2">
-      <div class="field"><label>Jméno</label><input id="rep-name" placeholder="Vaše jméno" /></div>
-      <div class="field"><label>Email</label><input id="rep-email" placeholder="vas@nutworld.cz" /></div>
+      <div class="field"><label>Jméno</label><input id="rep-name" placeholder="Vaše jméno" list="rep-names" autocomplete="off" oninput="repNameInput()" /></div>
+      <div class="field"><label>Email</label><input id="rep-email" placeholder="vas@nutworld.cz" list="rep-emails" autocomplete="off" /></div>
+      <datalist id="rep-names"></datalist><datalist id="rep-emails"></datalist>
     </div>
 
     <!-- Klient -->
@@ -288,9 +291,19 @@ table.pt input.inp-cena{width:100px;text-align:right}
     <select class="archiv-select" id="archiv-rep-filter" onchange="renderArchiv()">
       <option value="">Všichni OZ</option>
     </select>
-    <button onclick="if(confirm('Opravdu smazat celý archiv zakázek z tohoto prohlížeče?')){clearArchiv()}" style="background:none;border:1.5px solid #d4c0a8;color:#888;border-radius:8px;padding:7px 12px;font-size:12px;cursor:pointer;font-family:inherit">🗑 Vymazat archiv</button>
+    <span id="archiv-st" style="font-size:12px;color:#83502e"></span>
   </div>
   <div id="archiv-list"></div>
+  <div id="archiv-confirm" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:500;align-items:center;justify-content:center" onclick="if(event.target===this)archivConfirmClose()">
+    <div style="background:white;border-radius:16px;width:420px;max-width:92vw;padding:26px;box-shadow:0 8px 40px rgba(0,0,0,.2)">
+      <div style="font-family:'Exo 2',sans-serif;font-size:18px;font-weight:800;color:#5c381f;margin-bottom:12px">⚠️ Smazat nabídku z archivu?</div>
+      <div id="archiv-confirm-txt" style="font-size:14px;color:#5c381f;line-height:1.5;margin-bottom:18px"></div>
+      <div style="display:flex;gap:10px;justify-content:flex-end">
+        <button onclick="archivConfirmClose()" style="background:none;border:1.5px solid #d0c0b0;color:#a08060;font-weight:700;padding:8px 18px;border-radius:10px;cursor:pointer;font-family:inherit">Zrušit</button>
+        <button onclick="archivConfirmDelete()" style="background:#da1668;color:white;border:none;font-weight:700;padding:8px 22px;border-radius:10px;cursor:pointer;font-family:inherit">Smazat</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 </div>
@@ -490,6 +503,34 @@ function populateForm(data) {
   recalcDoprava();
   _trelloCardId = data._cardId || null;
   _savedCislo   = data._cislo  || null;
+  verifyOfferCard();
+}
+
+// An offer that already became an order (card left the Nabídky list) is never overwritten —
+// saving it creates a new offer instead.
+async function verifyOfferCard() {
+  const id = _trelloCardId;
+  if (!id) return;
+  try {
+    const r = await fetch(`https://api.trello.com/1/cards/${id}?fields=idList,closed&key=${NW_KEY}&token=${NW_TOKEN}`);
+    const c = r.ok ? await r.json() : null;
+    if (c && c.idList === NW_LIST_NABIDKY && !c.closed) return;
+    if (_trelloCardId !== id) return;
+    _trelloCardId = null;
+    _savedCislo = null;
+    offerNotice('ℹ️ Tahle nabídka už je převedená do zakázky (nebo karta v Trellu neexistuje). Po vygenerování se uloží jako <strong>nová nabídka</strong> — původní zakázka zůstane beze změny.');
+  } catch (e) {}
+}
+function offerNotice(html) {
+  let el = document.getElementById('offer-notice');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'offer-notice';
+    el.style.cssText = 'background:#fff8e1;border:1.5px solid #f7ab31;color:#5c381f;border-radius:10px;padding:10px 14px;margin:0 0 12px;font-size:13px;line-height:1.45';
+    const fp = document.getElementById('form-panel');
+    fp.insertBefore(el, fp.firstChild);
+  }
+  el.innerHTML = html;
 }
 
 function loadFromHash() {
@@ -1100,6 +1141,7 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
   }).then(card => {
     if (!card.id) throw new Error('no card id');
     registerOfferCustomer(firma, ico, adresa, repName);
+    rememberRep();
     _trelloCardId = card.id;
     _savedCislo = cislo;
     // Aktualizuj URL hash s card ID a číslem nabídky
@@ -1111,6 +1153,7 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
     const zakazkaUrlFinal = 'https://nutworldcz-collab.github.io/zakazka.html#' + btoa(unescape(encodeURIComponent(JSON.stringify(zakazkaDataFinal))));
     const editUrlFinal = 'https://nutworldcz-collab.github.io/nabidky.html#' + editHashFinal;
     window._zakazkaUrl = zakazkaUrlFinal;
+    saveToArchiv(collectFormData(), cislo, zakazkaUrlFinal, card.id, card.url || card.shortUrl || '');
     // Při prvním vytvoření (ne editaci) aktualizuj popis karty — zakazka a edit linky teď obsahují _cardId
     if (!isEdit) {
       const updatedDesc = cardDesc.replace(zakazkaUrl, zakazkaUrlFinal).replace(editUrl, editUrlFinal);
@@ -1129,6 +1172,7 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
     document.getElementById('btn-link').style.display = 'none';
   }).catch(err => {
     console.error('Trello karta se neuložila:', err);
+    saveToArchiv(collectFormData(), cislo, zakazkaUrl, null, '');
     document.getElementById('link-copied').style.display = 'block';
     document.getElementById('link-copied').innerHTML =
       `⚠️ Trello karta se neuložila (${err.message}). Nabídka je vygenerovaná, ale zkontroluj Trello ručně nebo klikni Generovat znovu.`;
@@ -1192,114 +1236,144 @@ if (rowCount === 0) addRow();
 // ══════════════════════════════════════════════
 //  ARCHIV ZAKÁZEK — localStorage
 // ══════════════════════════════════════════════
-const ARCHIV_KEY = 'nw_archiv_zakazky';
+const ARCHIV_KEY = 'nw_archiv_zakazky';           // old per-browser archive (migrated once)
+const ARCHIV_CACHE = 'nw_archiv_cache';
+const ARCHIV_NS = 'nabidky';
 const REP_COLORS = ['#1565c0','#2e7d32','#6a1b9a','#b71c1c','#e65100','#00695c','#4527a0','#4a148c','#1b5e20','#bf360c'];
 const _repColorMap = {};
 let _repColorIdx = 0;
+let _archiv = [];
+let _archivDelete = null;
+try { _archiv = JSON.parse(localStorage.getItem(ARCHIV_CACHE) || '[]'); } catch(e) {}
 
 function repColor(key) {
   const k = (key || 'unknown').toLowerCase().trim();
   if (!_repColorMap[k]) { _repColorMap[k] = REP_COLORS[_repColorIdx % REP_COLORS.length]; _repColorIdx++; }
   return _repColorMap[k];
 }
+function archivSt(t) { const el = document.getElementById('archiv-st'); if (el) el.textContent = t; }
+function archivId(cislo) { return ('nab_' + String(cislo || '').replace(/[^\w-]/g, '_')).slice(0, 100); }
+function archivLoad() { return _archiv; }
+function archivCache() { try { localStorage.setItem(ARCHIV_CACHE, JSON.stringify(_archiv)); } catch(e) {} }
 
-function archivLoad() {
-  try { return JSON.parse(localStorage.getItem(ARCHIV_KEY) || '[]'); } catch(e) { return []; }
-}
-
-function archivSave(entries) {
-  try { localStorage.setItem(ARCHIV_KEY, JSON.stringify(entries)); } catch(e) {}
-}
-
-function saveToArchiv(data, cislo, url) {
-  const entries = archivLoad();
-  const dph = data.trh === 'SK' ? 0.23 : 0.12;
-  const totalBez = data.produkty.reduce((s,p) => s + (p.ks||1) * (p.cena||0), 0);
-  entries.unshift({
-    id: cislo + '_' + Date.now(),
-    cislo,
-    firma: data.firma,
-    repName:  data.repName  || '—',
-    repEmail: data.repEmail || '',
-    datum:    new Date().toISOString(),
-    trh:      data.trh || 'CZ',
-    totalBez,
-    totalSDph: totalBez * (1 + dph),
-    url,
-    data
-  });
-  archivSave(entries);
+async function archivRefresh() {
+  try {
+    const items = await NWData.list(ARCHIV_NS);
+    _archiv = items.map(i => ({ id: i.id, ...i.data, _by: i.updatedBy }))
+      .sort((a, b) => String(b.upraveno || b.datum || '').localeCompare(String(a.upraveno || a.datum || '')));
+    archivCache();
+    await archivMigrateLocal();
+    archivSt('✓ Sdílený archiv — vidí ho všichni');
+  } catch (e) {
+    archivSt('⚠️ Archiv se nenačetl (' + e.message + ') — zobrazuji poslední uloženou verzi');
+  }
   updateArchivCount();
+  if (document.getElementById('archiv-panel').style.display === 'block') renderArchiv();
+}
+
+// Every generated offer is stored (new or edited — same number = same record).
+async function saveToArchiv(data, cislo, url, cardId, cardUrl) {
+  const id = archivId(cislo);
+  const prev = _archiv.find(e => e.id === id);
+  const dph = data.trh === 'SK' ? 0.23 : 0.12;
+  const totalBez = data.produkty.reduce((s,p) => s + (p.ks||1) * (p.cena||0), 0) + (data.doprava || 0);
+  const now = new Date().toISOString();
+  const rec = {
+    cislo, firma: data.firma, ico: data.ico || '',
+    repName: data.repName || '—', repEmail: data.repEmail || '',
+    trh: data.trh || 'CZ', totalBez, totalSDph: totalBez * (1 + dph),
+    url, cardId: cardId || (prev && prev.cardId) || '', cardUrl: cardUrl || (prev && prev.cardUrl) || '',
+    datum: (prev && prev.datum) || now, upraveno: now, data,
+  };
+  _archiv = [{ id, ...rec }, ..._archiv.filter(e => e.id !== id)];
+  archivCache();
+  updateArchivCount();
+  try {
+    await NWData.put(ARCHIV_NS, id, rec);
+    archivSt('✓ Nabídka uložena do archivu');
+  } catch (e) {
+    archivSt('⚠️ Nabídku se nepodařilo uložit do sdíleného archivu: ' + e.message);
+  }
+}
+
+async function archivMigrateLocal() {
+  let old = [];
+  try { old = JSON.parse(localStorage.getItem(ARCHIV_KEY) || '[]'); } catch(e) {}
+  if (!old.length) return;
+  const ops = old.filter(e => e.data && e.cislo && !_archiv.some(x => x.id === archivId(e.cislo))).map(e => ({
+    action: 'put', id: archivId(e.cislo),
+    data: { cislo: e.cislo, firma: e.firma, ico: e.data.ico || '', repName: e.repName, repEmail: e.repEmail,
+      trh: e.trh, totalBez: e.totalBez, totalSDph: e.totalSDph, url: e.url,
+      cardId: e.data._cardId || '', cardUrl: '', datum: e.datum, upraveno: e.datum, data: e.data },
+  }));
+  if (ops.length) {
+    await NWData.batch(ARCHIV_NS, ops);
+    ops.forEach(o => _archiv.push({ id: o.id, ...o.data }));
+    archivCache();
+  }
+  try { localStorage.setItem(ARCHIV_KEY + '_presunuto', localStorage.getItem(ARCHIV_KEY)); localStorage.removeItem(ARCHIV_KEY); } catch(e) {}
 }
 
 function updateArchivCount() {
-  const cnt = archivLoad().length;
+  const cnt = _archiv.length;
   const el = document.getElementById('archiv-cnt');
   if (el) el.textContent = cnt ? '(' + cnt + ')' : '';
-}
-
-function clearArchiv() {
-  localStorage.removeItem(ARCHIV_KEY);
-  updateArchivCount();
-  renderArchiv();
 }
 
 function switchTab(tab) {
   const toArchiv = tab === 'archiv';
   document.getElementById('form-panel').style.display    = toArchiv ? 'none' : '';
   document.getElementById('preview-wrap').style.display  = toArchiv ? 'none' : '';
-  document.getElementById('archiv-panel').style.display  = toArchiv ? '' : 'none';
+  document.getElementById('archiv-panel').style.display  = toArchiv ? 'block' : 'none';
   if (!toArchiv) document.getElementById('load-section').style.display = 'none';
   document.getElementById('tab-form').classList.toggle('active', !toArchiv);
   document.getElementById('tab-archiv').classList.toggle('active', toArchiv);
-  if (toArchiv) renderArchiv();
+  if (toArchiv) { renderArchiv(); archivRefresh(); }
 }
 
 function renderArchiv() {
-  const entries = archivLoad();
+  const entries = _archiv;
   const q   = (document.getElementById('archiv-search').value || '').toLowerCase();
   const repF = document.getElementById('archiv-rep-filter').value;
 
-  // Naplň rep filtr
-  const reps = [...new Map(entries.map(e => [e.repEmail || e.repName, e.repName])).entries()];
+  const reps = [...new Map(entries.map(e => [e.repName || '—', e.repName || '—'])).entries()];
   const sel = document.getElementById('archiv-rep-filter');
   const cur = sel.value;
   sel.innerHTML = '<option value="">Všichni OZ</option>';
   reps.forEach(([key, name]) => {
     sel.innerHTML += `<option value="${escH(key)}" ${cur===key?'selected':''}>${escH(name)}</option>`;
   });
-
   updateArchivCount();
 
   let list = entries;
-  if (q)    list = list.filter(e => e.firma.toLowerCase().includes(q));
-  if (repF) list = list.filter(e => (e.repEmail||e.repName) === repF);
+  if (q)    list = list.filter(e => (e.firma||'').toLowerCase().includes(q) || (e.cislo||'').toLowerCase().includes(q) || (e.ico||'').includes(q));
+  if (repF) list = list.filter(e => (e.repName || '—') === repF);
 
   const el = document.getElementById('archiv-list');
   if (list.length === 0) {
     el.innerHTML = '<div style="text-align:center;color:#bbb;padding:60px 0;font-size:14px">' +
-      (entries.length === 0 ? '📭 Archiv je prázdný. Zakázky se sem ukládají automaticky při kliknutí na <strong>Zkopírovat odkaz zakázky</strong>.' : '🔍 Žádné výsledky.') +
+      (entries.length === 0 ? '📭 Archiv je prázdný. Každá vygenerovaná nabídka se sem uloží automaticky.' : '🔍 Žádné výsledky.') +
       '</div>';
     return;
   }
-
+  const fd = iso => { const d = new Date(iso); return isNaN(d) ? '' : d.getDate() + '. ' + (d.getMonth()+1) + '. ' + d.getFullYear(); };
   el.innerHTML = list.map(e => {
-    const clr   = repColor(e.repEmail || e.repName);
-    const d     = new Date(e.datum);
-    const dStr  = d.getDate() + '. ' + (d.getMonth()+1) + '. ' + d.getFullYear();
-    const cur   = e.trh === 'SK' ? 'EUR' : 'Kč';
+    const clr   = repColor(e.repName);
+    const curr  = e.trh === 'SK' ? 'EUR' : 'Kč';
     const total = e.totalSDph ? Math.round(e.totalSDph).toLocaleString('cs-CZ') : '—';
     const pCnt  = e.data?.produkty?.length || 0;
+    const upr   = e.upraveno && fd(e.upraveno) !== fd(e.datum) ? ' · upraveno ' + fd(e.upraveno) : '';
     return `
     <div class="archiv-row" style="border-left-color:${clr}">
       <div style="flex:1;min-width:0">
         <div class="ar-firma">${escH(e.firma)}</div>
-        <div class="ar-meta">${escH(e.cislo)} · ${dStr} · ${pCnt} položek</div>
+        <div class="ar-meta">${escH(e.cislo)} · ${fd(e.datum)}${upr} · ${pCnt} položek</div>
       </div>
       <div class="ar-rep" style="background:${clr}22;color:${clr}">${escH(e.repName)}</div>
-      <div class="ar-total">${total} ${cur}</div>
-      <div style="display:flex;gap:8px;flex-shrink:0">
-        <a class="ar-btn" href="${e.url}" target="_blank" style="background:#f1e6da;color:#83502e">📋 Zobrazit</a>
+      <div class="ar-total">${total} ${curr}</div>
+      <div style="display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap">
+        ${e.cardUrl ? `<a class="ar-btn" href="${escH(e.cardUrl)}" target="_blank" rel="noopener" style="background:#f1e6da;color:#83502e" title="Karta v Trellu">Trello ↗</a>` : ''}
+        ${e.url ? `<a class="ar-btn" href="${escH(e.url)}" target="_blank" rel="noopener" style="background:#f1e6da;color:#83502e">📋 Zakázka</a>` : ''}
         <button class="ar-btn" onclick="loadFromArchiv('${escH(e.id)}')" style="background:#5c381f;color:white">✏️ Upravit</button>
         <button class="ar-btn" onclick="deleteFromArchiv('${escH(e.id)}')" style="background:none;border:1.5px solid #e0cfc4;color:#aaa" title="Smazat">✕</button>
       </div>
@@ -1312,23 +1386,82 @@ function escH(s) {
 }
 
 function loadFromArchiv(id) {
-  const entry = archivLoad().find(e => e.id === id);
+  const entry = _archiv.find(e => e.id === id);
   if (!entry) return;
-  populateForm(entry.data);
-  window._savedCislo = entry.cislo;
-  window._trelloCardId = entry.data._cardId || null;
+  const old = document.getElementById('offer-notice'); if (old) old.remove();
+  populateForm({ ...entry.data, _cardId: entry.cardId || entry.data._cardId || null, _cislo: entry.cislo });
   switchTab('form');
   window.scrollTo(0, 0);
 }
 
 function deleteFromArchiv(id) {
-  if (!confirm('Smazat tuto zakázku z archivu?')) return;
-  archivSave(archivLoad().filter(e => e.id !== id));
-  renderArchiv();
+  const e = _archiv.find(x => x.id === id);
+  if (!e) return;
+  _archivDelete = id;
+  document.getElementById('archiv-confirm-txt').innerHTML =
+    `Nabídka <strong>${escH(e.cislo)}</strong> pro <strong>${escH(e.firma)}</strong> zmizí z archivu pro všechny. ` +
+    `Karta v Trellu zůstane beze změny a záznam zůstane v historii sdílených dat.`;
+  document.getElementById('archiv-confirm').style.display = 'flex';
+}
+function archivConfirmClose() { _archivDelete = null; document.getElementById('archiv-confirm').style.display = 'none'; }
+async function archivConfirmDelete() {
+  const id = _archivDelete;
+  archivConfirmClose();
+  if (!id) return;
+  try {
+    await NWData.remove(ARCHIV_NS, id);
+    _archiv = _archiv.filter(e => e.id !== id);
+    archivCache();
+    renderArchiv();
+    archivSt('✓ Smazáno z archivu');
+  } catch (e) { archivSt('⚠️ Smazání se nepovedlo: ' + e.message); }
+}
+
+// ── Obchodní zástupce: našeptávání + předvyplnění ──
+const NW_PEOPLE = [
+  ['Jan Vlček', 'jan.vlcek@nutworld.cz'], ['Martin Werner', 'martin.werner@nutworld.cz'],
+  ['Tomáš Hamerník', 'tomas.hamernik@nutworld.cz'], ['Markéta Costachová', 'marketa.costachova@nutworld.cz'],
+  ['Jana Nývltová', 'jana.nyvltova@nutworld.cz'], ['Renata Pošepná', 'renata.posepna@nutworld.cz'],
+  ['Lucie Turková', 'lucie.turkova@nutworld.cz'], ['Pavlína Procházková', 'pavlina.prochazkova@nutworld.cz'],
+];
+const REP_LAST = 'nw_rep_last';
+function repPeople() {
+  const m = new Map(NW_PEOPLE);
+  _archiv.forEach(e => { if (e.repName && e.repName !== '—' && e.repEmail && !m.has(e.repName)) m.set(e.repName, e.repEmail); });
+  return m;
+}
+function fillRepLists() {
+  const m = repPeople();
+  document.getElementById('rep-names').innerHTML = [...m.keys()].map(n => `<option value="${escH(n)}">`).join('');
+  document.getElementById('rep-emails').innerHTML = [...new Set(m.values())].map(e => `<option value="${escH(e)}">`).join('');
+}
+function repNameInput() {
+  const name = document.getElementById('rep-name').value.trim();
+  const email = repPeople().get(name);
+  if (email) document.getElementById('rep-email').value = email;
+}
+function rememberRep() {
+  const name = document.getElementById('rep-name').value.trim();
+  const email = document.getElementById('rep-email').value.trim();
+  if (name) try { localStorage.setItem(REP_LAST, JSON.stringify({ name, email })); } catch(e) {}
+}
+function prefillRep() {
+  const n = document.getElementById('rep-name'), em = document.getElementById('rep-email');
+  if (n.value.trim()) return;                       // loaded offer keeps its own rep
+  let last = null;
+  try { last = JSON.parse(localStorage.getItem(REP_LAST) || 'null'); } catch(e) {}
+  const me = window.NWPartneri ? NWPartneri.me() : '';
+  const name = (last && last.name) || me;
+  if (!name) return;
+  n.value = name;
+  em.value = (last && last.name === name && last.email) || repPeople().get(name) || '';
 }
 
 // ── Init ──
 updateArchivCount();
+fillRepLists();
+prefillRep();
+archivRefresh().then(fillRepLists);
 </script>
 <script src="pin-guard.js"></script>
 </body></html>
