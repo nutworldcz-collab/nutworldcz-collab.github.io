@@ -974,13 +974,11 @@ function switchTab(tab) {
 }
 
 // ══ CENOVÉ VZORCE ══
+// Same as the e-shop (nw_core.price_round_mo): whole crowns, then up to the nearest ending 5 or 9
+// (123 → 125, 126 → 129, 339.8 → 339)
 function priceRoundMO(x) {
-  const base = Math.ceil(x);
-  for (let c = base; c < base + 10; c++) {
-    const r = c % 10;
-    if ((r === 5 || r === 9) && c >= x) return c;
-  }
-  return base + (9 - (base % 10));
+  const n = Math.floor(x);
+  return Math.floor(n / 10) * 10 + (n % 10 <= 5 ? 5 : 9);
 }
 function moCZ(g, kc) {
   if (g === 50)   return priceRoundMO(((kc * 1.12) / 20) * 3 + 7);
