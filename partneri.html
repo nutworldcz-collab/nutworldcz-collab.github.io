@@ -93,6 +93,17 @@ td.td-actions{white-space:nowrap}
 .empty-state .es-icon{font-size:48px;margin-bottom:10px}
 .empty-state p{font-size:14px}
 
+/* REP */
+.rep-sel{border:1.5px solid #e0d0c0;border-radius:14px;padding:3px 8px;font-family:inherit;font-size:12px;color:var(--bd);background:#fff;cursor:pointer;max-width:170px}
+.rep-sel.rep-none{color:#b09070;border-style:dashed}
+.rep-sel:focus{outline:none;border-color:var(--br)}
+.filter-sel{border:1.5px solid #d0c0b0;border-radius:8px;padding:7px 10px;font-family:inherit;font-size:13px;color:var(--bd);background:#fff}
+.form-row select{border:1.5px solid #d0c0b0;border-radius:8px;padding:9px 12px;font-family:"Source Sans 3",sans-serif;font-size:14px;background:#fff}
+.sync-st{font-size:12px;padding:6px 20px;background:#f1e6da;color:#83502e}
+.sync-st.err{background:#fee2e2;color:#9b1c1c}
+.badge-src{font-size:10px;color:#a08060;margin-left:6px}
+.confirm-txt{font-size:14px;color:#5c381f;line-height:1.5;margin-bottom:18px}
+.btn-danger{background:var(--acc);color:white;border:none;font-family:"Exo 2",sans-serif;font-weight:700;font-size:13px;padding:8px 22px;border-radius:10px;cursor:pointer}
 @media(max-width:700px){
   .search-ico{width:120px}
   td.td-adresa,td.td-kod{display:none}
@@ -114,17 +125,23 @@ td.td-actions{white-space:nowrap}
 <div class="searchbar">
   <input class="search-input" id="searchQ" placeholder="🔍 Hledat podle názvu nebo adresy…" oninput="onSearch()" />
   <input class="search-ico" id="searchICO" placeholder="IČO: 12345678" maxlength="8" oninput="onSearch()" />
+  <select class="filter-sel" id="repFilter" onchange="onSearch()" title="Obchodník">
+    <option value="">Všichni obchodníci</option>
+  </select>
   <label class="filter-check">
     <input type="checkbox" id="onlyICO" onchange="onSearch()" /> Jen s IČO
+  </label>
+  <label class="filter-check">
+    <input type="checkbox" id="onlyNew" onchange="onSearch()" /> Jen nové (mimo K2)
   </label>
   <span class="stats" id="stats">Načítám…</span>
 </div>
 
+<div class="sync-st" id="syncSt">⏳ Načítám sdílený registr…</div>
 <div class="wrap">
   <div class="export-bar" id="exportBar">
-    <span>📋 Máte <span id="localCount">0</span> lokálně přidaných záznamy</span>
-    <button class="btn-export" onclick="exportLocal()">⬇ Export CSV</button>
-    <button class="btn-export" style="background:#fde8ef;color:var(--acc)" onclick="clearLocal()">✕ Smazat lokální</button>
+    <span>📋 <span id="localCount">0</span> firem zatím není v K2 (přidané z nabídek, zakázek nebo ručně)</span>
+    <button class="btn-export" onclick="exportNew()">⬇ Export CSV pro K2</button>
   </div>
 
   <div class="tbl-wrap">
@@ -135,6 +152,7 @@ td.td-actions{white-space:nowrap}
           <th onclick="sortBy(1)">IČO</th>
           <th onclick="sortBy(2)">Adresa</th>
           <th onclick="sortBy(3)">K2 kód</th>
+          <th onclick="sortBy(4)">Obchodník</th>
           <th></th>
         </tr>
       </thead>
@@ -146,6 +164,18 @@ td.td-actions{white-space:nowrap}
     </div>
   </div>
   <div class="pagination" id="pagination"></div>
+</div>
+
+<!-- CONFIRM DELETE -->
+<div class="modal-bg" id="confirmModal" onclick="if(event.target===this)closeConfirm()">
+  <div class="modal">
+    <div class="modal-title">⚠️ Smazat firmu z registru?</div>
+    <div class="confirm-txt" id="confirmTxt"></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeConfirm()">Zrušit</button>
+      <button class="btn-danger" onclick="confirmDelete()">Smazat</button>
+    </div>
+  </div>
 </div>
 
 <!-- ADD MODAL -->
@@ -168,6 +198,10 @@ td.td-actions{white-space:nowrap}
       <label>K2 kód</label>
       <input id="f-kod" placeholder="Zkratka v K2" />
     </div>
+    <div class="form-row">
+      <label>Obchodník</label>
+      <select id="f-rep"></select>
+    </div>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeModal()">Zrušit</button>
       <button class="btn-save" onclick="saveEntry()">Uložit</button>
@@ -176,157 +210,157 @@ td.td-actions{white-space:nowrap}
 </div>
 
 <script src="/partneri-data.js"></script>
+<script src="/nw-data.js"></script>
+<script src="/partneri-sync.js"></script>
 <script>
-// [id, kod, nazev, ico, adresa]
-const IDX = {ID:0, KOD:1, NAZEV:2, ICO:3, ADR:4};
-
 let currentPage = 1;
 const PER_PAGE = 60;
 let filteredData = [];
 let sortCol = -1;
 let sortDir = 1;
+let pendingDelete = null;
 
-function getLocal() {
-  try { return JSON.parse(localStorage.getItem('nw_partneri') || '[]'); } catch { return []; }
-}
-function setLocal(arr) {
-  localStorage.setItem('nw_partneri', JSON.stringify(arr));
-}
-
-function getAllData() {
-  const local = getLocal().map(e => ({...e, _local: true}));
-  const base = BASE_DATA.map(r => ({
-    id: r[0], kod: r[1], nazev: r[2], ico: r[3], adresa: r[4], _local: false
-  }));
-  return [...local, ...base];
-}
-
-function onSearch() {
-  currentPage = 1;
-  render();
-}
+function onSearch() { currentPage = 1; render(); }
 
 function normalize(s) {
-  return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  return (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+}
+function escHtml(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function syncStatus(text, err) {
+  const el = document.getElementById('syncSt');
+  el.textContent = text; el.classList.toggle('err', !!err);
+}
+
+function repOptions(sel, withEmpty) {
+  return (withEmpty ? `<option value="">— nepřiřazeno —</option>` : '') +
+    NWPartneri.reps().map(r => `<option${r===sel?' selected':''}>${escHtml(r)}</option>`).join('');
+}
+function fillRepFilter() {
+  const f = document.getElementById('repFilter');
+  const cur = f.value;
+  const me = NWPartneri.me();
+  f.innerHTML = `<option value="">Všichni obchodníci</option>` +
+    (me ? `<option value="__me">⭐ Moje firmy (${escHtml(me)})</option>` : '') +
+    `<option value="__none">Nepřiřazené</option>` +
+    NWPartneri.reps().map(r => `<option value="${escHtml(r)}">${escHtml(r)}</option>`).join('');
+  f.value = cur;
 }
 
 function render() {
   const q = normalize(document.getElementById('searchQ').value.trim());
   const icoQ = document.getElementById('searchICO').value.trim().replace(/\s/g,'');
   const onlyICO = document.getElementById('onlyICO').checked;
-  
-  const all = getAllData();
-  const local = getLocal();
-  
-  // Update export bar
-  const expBar = document.getElementById('exportBar');
-  document.getElementById('localCount').textContent = local.length;
-  expBar.classList.toggle('show', local.length > 0);
+  const onlyNew = document.getElementById('onlyNew').checked;
+  const repF = document.getElementById('repFilter').value;
+  const me = NWPartneri.me();
+
+  const all = NWPartneri.all();
+  const news = all.filter(e => e.isNew);
+  document.getElementById('localCount').textContent = news.length;
+  document.getElementById('exportBar').classList.toggle('show', news.length > 0);
 
   filteredData = all.filter(e => {
     if (onlyICO && !e.ico) return false;
-    if (icoQ) {
-      return (e.ico || '').startsWith(icoQ);
-    }
+    if (onlyNew && !e.isNew) return false;
+    if (repF === '__me' && e.rep !== me) return false;
+    if (repF === '__none' && e.rep) return false;
+    if (repF && repF[0] !== '_' && e.rep !== repF) return false;
+    if (icoQ) return (e.ico || '').startsWith(icoQ);
     if (!q) return true;
-    return normalize(e.nazev).includes(q) ||
-           normalize(e.adresa).includes(q) ||
-           normalize(e.ico).includes(q) ||
-           normalize(e.kod).includes(q);
+    return normalize(e.nazev).includes(q) || normalize(e.adresa).includes(q) ||
+           normalize(e.ico).includes(q) || normalize(e.kod).includes(q) || normalize(e.rep).includes(q);
   });
 
   if (sortCol >= 0) {
-    const cols = ['nazev','ico','adresa','kod'];
-    const col = cols[sortCol];
+    const col = ['nazev','ico','adresa','kod','rep'][sortCol];
     filteredData.sort((a,b) => {
-      const av = (a[col]||'').toLowerCase();
-      const bv = (b[col]||'').toLowerCase();
+      const av = (a[col]||'').toLowerCase(), bv = (b[col]||'').toLowerCase();
       return av < bv ? -sortDir : av > bv ? sortDir : 0;
     });
+  } else {
+    filteredData.sort((a,b) => (b.isNew - a.isNew));
   }
 
   const total = filteredData.length;
-  document.getElementById('stats').textContent = 
+  document.getElementById('stats').textContent =
     total === all.length ? `${total.toLocaleString('cs')} záznamů celkem` :
     `${total.toLocaleString('cs')} z ${all.length.toLocaleString('cs')} záznamů`;
 
   const start = (currentPage - 1) * PER_PAGE;
   const page = filteredData.slice(start, start + PER_PAGE);
-
   const tbody = document.getElementById('tbody');
   const empty = document.getElementById('emptyState');
-  
+
   if (page.length === 0) {
     tbody.innerHTML = '';
     empty.style.display = '';
   } else {
     empty.style.display = 'none';
     tbody.innerHTML = page.map(e => {
-      const aresLink = e.ico ? 
-        `<a class="link-ares" href="https://ares.gov.cz/ekonomicke-subjekty-v-be/rest/ekonomicke-subjekty/${e.ico}" target="_blank" rel="noopener">ARES ↗</a>` : '';
-      const delBtn = e._local ? 
-        `<button class="btn-del-local" onclick="delLocal('${escHtml(e.nazev)}')" title="Smazat lokální záznam">✕</button>` : '';
-      const localBadge = e._local ? '<span class="badge-local">NOVÝ</span>' : '';
-      return `<tr class="${e._local ? 'local-row' : ''}">
-        <td class="td-nazev">${escHtml(e.nazev)}${localBadge}</td>
+      const aresLink = e.ico ?
+        `<a class="link-ares" href="https://ares.gov.cz/ekonomicke-subjekty-v-be/rest/ekonomicke-subjekty/${escHtml(e.ico)}" target="_blank" rel="noopener">ARES ↗</a>` : '';
+      const delBtn = e.isNew ?
+        `<button class="btn-del-local" onclick="askDelete('${escHtml(e.id)}')" title="Smazat z registru">✕</button>` : '';
+      const badge = e.isNew ? `<span class="badge-local">NOVÝ</span>${e.zdroj ? `<span class="badge-src">${escHtml(e.zdroj)}</span>` : ''}` : '';
+      return `<tr class="${e.isNew ? 'local-row' : ''}">
+        <td class="td-nazev">${escHtml(e.nazev)}${badge}</td>
         <td class="td-ico">${e.ico ? escHtml(e.ico) : '<span style="color:#ccc">—</span>'}${e.ico ? ' ' + aresLink : ''}</td>
         <td class="td-adresa">${escHtml(e.adresa||'')}</td>
         <td class="td-kod">${escHtml(e.kod||'')}</td>
+        <td><select class="rep-sel${e.rep?'':' rep-none'}" data-id="${escHtml(e.id)}" onchange="changeRep(this)">${repOptions(e.rep, true)}</select></td>
         <td class="td-actions">${delBtn}</td>
       </tr>`;
     }).join('');
   }
-
   renderPagination(total);
 }
 
-function escHtml(s) {
-  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+async function changeRep(sel) {
+  sel.disabled = true;
+  try {
+    await NWPartneri.setRep(sel.dataset.id, sel.value);
+    sel.classList.toggle('rep-none', !sel.value);
+    syncStatus('✓ Uloženo — obchodníka vidí všichni');
+    fillRepFilter();
+  } catch (e) {
+    syncStatus('⚠️ Obchodníka se nepodařilo uložit: ' + e.message, true);
+    render();
+  } finally { sel.disabled = false; }
 }
 
 function renderPagination(total) {
   const pages = Math.ceil(total / PER_PAGE);
   const p = document.getElementById('pagination');
   if (pages <= 1) { p.innerHTML = ''; return; }
-  
   let html = `<button class="page-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹ Předchozí</button>`;
-  
-  // Show smart range of pages
   let start = Math.max(1, currentPage - 2);
   let end = Math.min(pages, currentPage + 2);
   if (start > 1) html += `<button class="page-btn" onclick="goPage(1)">1</button>${start > 2 ? '<span class="page-info">…</span>' : ''}`;
-  for (let i = start; i <= end; i++) {
-    html += `<button class="page-btn ${i===currentPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
-  }
+  for (let i = start; i <= end; i++) html += `<button class="page-btn ${i===currentPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
   if (end < pages) html += `${end < pages-1 ? '<span class="page-info">…</span>' : ''}<button class="page-btn" onclick="goPage(${pages})">${pages}</button>`;
-  
   html += `<button class="page-btn" onclick="goPage(${currentPage+1})" ${currentPage===pages?'disabled':''}>Další ›</button>`;
   html += `<span class="page-info">strana ${currentPage} / ${pages}</span>`;
   p.innerHTML = html;
 }
-
 function goPage(n) {
   const pages = Math.ceil(filteredData.length / PER_PAGE);
   currentPage = Math.max(1, Math.min(pages, n));
   render();
   window.scrollTo({top: 100, behavior: 'smooth'});
 }
-
 function sortBy(col) {
   const heads = document.querySelectorAll('th');
-  heads.forEach((h,i) => { h.classList.remove('sort-asc','sort-desc'); });
-  if (sortCol === col) {
-    sortDir = -sortDir;
-  } else {
-    sortCol = col;
-    sortDir = 1;
-  }
+  heads.forEach(h => h.classList.remove('sort-asc','sort-desc'));
+  if (sortCol === col) sortDir = -sortDir; else { sortCol = col; sortDir = 1; }
   heads[col].classList.add(sortDir === 1 ? 'sort-asc' : 'sort-desc');
   currentPage = 1;
   render();
 }
 
 function openModal() {
+  document.getElementById('f-rep').innerHTML = repOptions(NWPartneri.me(), true);
   document.getElementById('modal').classList.add('open');
   document.getElementById('f-nazev').focus();
 }
@@ -334,60 +368,83 @@ function closeModal() {
   document.getElementById('modal').classList.remove('open');
   ['f-nazev','f-ico','f-adresa','f-kod'].forEach(id => document.getElementById(id).value = '');
 }
-
-function saveEntry() {
+async function saveEntry() {
   const nazev = document.getElementById('f-nazev').value.trim();
   if (!nazev) { document.getElementById('f-nazev').focus(); return; }
-  const entry = {
-    id: 'local_' + Date.now(),
-    kod: document.getElementById('f-kod').value.trim(),
-    nazev,
-    ico: document.getElementById('f-ico').value.trim(),
-    adresa: document.getElementById('f-adresa').value.trim(),
-    addedAt: new Date().toISOString()
-  };
-  const local = getLocal();
-  local.unshift(entry);
-  setLocal(local);
-  closeModal();
-  render();
+  const btn = document.querySelector('#modal .btn-save');
+  btn.disabled = true;
+  try {
+    await NWPartneri.add({
+      nazev,
+      kod: document.getElementById('f-kod').value.trim(),
+      ico: document.getElementById('f-ico').value.trim(),
+      adresa: document.getElementById('f-adresa').value.trim(),
+      rep: document.getElementById('f-rep').value,
+    }, 'ručně');
+    closeModal();
+    syncStatus('✓ Firma přidána — vidí ji všichni');
+    fillRepFilter();
+    render();
+  } catch (e) {
+    syncStatus('⚠️ Firmu se nepodařilo uložit: ' + e.message, true);
+  } finally { btn.disabled = false; }
 }
 
-function delLocal(nazev) {
-  if (!confirm(`Smazat lokální záznam "${nazev}"?`)) return;
-  const local = getLocal().filter(e => e.nazev !== nazev);
-  setLocal(local);
-  render();
+function askDelete(id) {
+  const e = NWPartneri.all().find(x => x.id === id);
+  if (!e) return;
+  pendingDelete = id;
+  document.getElementById('confirmTxt').innerHTML =
+    `Firma <strong>${escHtml(e.nazev)}</strong> zmizí z registru i z našeptávání v nabídkách pro všechny. ` +
+    `Záznam zůstane v historii sdílených dat.`;
+  document.getElementById('confirmModal').classList.add('open');
+}
+function closeConfirm() { pendingDelete = null; document.getElementById('confirmModal').classList.remove('open'); }
+async function confirmDelete() {
+  const id = pendingDelete;
+  closeConfirm();
+  if (!id) return;
+  try { await NWPartneri.remove(id); syncStatus('✓ Smazáno'); render(); }
+  catch (e) { syncStatus('⚠️ Smazání se nepovedlo: ' + e.message, true); }
 }
 
-function clearLocal() {
-  if (!confirm('Smazat všechny lokálně přidané záznamy?')) return;
-  setLocal([]);
-  render();
-}
-
-function exportLocal() {
-  const local = getLocal();
-  if (!local.length) return;
-  const header = 'Název;IČO;Adresa;K2 kód;Přidáno';
-  const rows = local.map(e => [e.nazev, e.ico, e.adresa, e.kod, e.addedAt.slice(0,10)].map(v => `"${(v||'').replace(/"/g,'""')}"`).join(';'));
-  const csv = '\uFEFF' + header + '\n' + rows.join('\n');
+function exportNew() {
+  const news = NWPartneri.all().filter(e => e.isNew);
+  if (!news.length) return;
+  const header = 'Název;IČO;Adresa;K2 kód;Obchodník;Zdroj';
+  const rows = news.map(e => [e.nazev, e.ico, e.adresa, e.kod, e.rep, e.zdroj].map(v => `"${(v||'').replace(/"/g,'""')}"`).join(';'));
+  const csv = '﻿' + header + '\n' + rows.join('\n');
   const a = document.createElement('a');
   a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-  a.download = 'noví_partneři_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.download = 'novi_partneri_' + new Date().toISOString().slice(0,10) + '.csv';
   a.click();
 }
 
-// Keyboard shortcut: / focuses search
 document.addEventListener('keydown', e => {
   if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
     e.preventDefault();
     document.getElementById('searchQ').focus();
   }
+  if (e.key === 'Escape') { closeModal(); closeConfirm(); }
 });
 
-// Initial render
+async function refresh() {
+  try {
+    await NWPartneri.load();
+    const moved = await NWPartneri.migrateLocal();
+    if (moved) await NWPartneri.load();
+    syncStatus('✓ Sdílený registr — vidí ho všichni' + (moved ? ` · přesunuto ${moved} firem z tohoto prohlížeče` : ''));
+  } catch (e) {
+    syncStatus('⚠️ Sdílený registr se nenačetl (' + e.message + ') — zobrazuji poslední uloženou verzi.', true);
+  }
+  fillRepFilter();
+  if (!document.querySelector('.rep-sel:focus')) render();
+}
+
+fillRepFilter();
 render();
+refresh();
+document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
 </script>
 <script src="pin-guard.js"></script>
 </body>
