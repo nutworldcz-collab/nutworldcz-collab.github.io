@@ -1,8 +1,62 @@
 {
-  "generated": "2026-11-21T12:00:36",
-  "total": 12,
+  "generated": "2026-11-21T17:00:52",
+  "total": 17,
   "spam_skipped": 0,
   "emails": [
+    {
+      "account": "Exchange",
+      "sender": "Lucie Vlckova <lvlckova00@gmail.com>",
+      "subject": "Brigáda",
+      "date": "sobota 21. listopadu 2026 16:46:37",
+      "unread": true,
+      "preview": "Dobrý den Chtěla bych se optat zda je vaše brigáda aktuální.Baleni ořechů,a kompletace balíčku. Děkuji za odpověď... Z pozdravem Vlčková Lucie Tel:793945184",
+      "category": "ostatni",
+      "sender_short": "Lucie Vlckova",
+      "sender_email": "lvlckova00@gmail.com",
+      "ai": {
+        "shrn": "Lucie Vlčková se ptá na aktuálnost brigády v balení ořechů a kompletaci balíčků. Poskytuje kontaktní telefonní číslo.",
+        "tyka_se": true,
+        "akce": "Odpovědět Lucii na email nebo zavolat na 793945184 s informací o stavu volných brigád"
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 3 upozornění od poslední návštěvy 16:34 (21. listopadu 2026)",
+      "date": "sobota 21. listopadu 2026 16:36:36",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová okomentoval(a) kartu Officeo na nástěnce Firmy dárky + objednávky @marketacostachova prosím e-mail na to SKONTO Odpovědět e-mailem ￼ Jana Nývltová přesunul(a) kartu Officeo do sloupce Je zadáno v k2 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem ￼ Jana",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "\"fakturace@nutworld.cz\" <fakturace@nutworld.cz>",
+      "subject": "Odblokování zákazníka na VIP",
+      "date": "sobota 21. listopadu 2026 16:19:06",
+      "unread": true,
+      "preview": "Uživatel NYVLTOVAJ odblokoval zákazníka: REDA a.s. (zkratka REDA a.s.)",
+      "category": "tym",
+      "sender_short": "fakturace@nutworld.cz",
+      "sender_email": "fakturace@nutworld.cz",
+      "ai": {
+        "shrn": "Vnitřní notifikace - uživatel NYVLTOVAJ odblokoval zákazníka REDA a.s. na VIP. Jde o běžný operativní proces v týmu.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 14:44 (21. listopadu 2026)",
+      "date": "sobota 21. listopadu 2026 14:45:43",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová změnil(a) termín splnění na kartě Čajovna u Bílého draka na nástěnce Firmy dárky + objednávky Odpovědět e-mailem ￼ Jana Nývltová přesunul(a) kartu Čajovna u Bílého draka do sloupce Je zadáno v k2 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívej",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
     {
       "account": "Exchange",
       "sender": "\"Wellness Hotel Step - CZECH LEADING HOTELS - operated by Czech Inn přes Booking.com\" <noreply@booking.com>",
@@ -14,9 +68,9 @@
       "sender_short": "Wellness Hotel Step - CZECH LEADING HOTELS - operated by Czech Inn přes Booking.com",
       "sender_email": "noreply@booking.com",
       "ai": {
-        "shrn": "Hotel Wellness Step odpovídá na Janovu zprávu a požaduje jeho emailovou adresu pro fakturu.",
+        "shrn": "Wellness Hotel Step reaguje na Janovu zprávu a požaduje email adresu pro zaslání faktury. Vyžaduje Janovu odpověď.",
         "tyka_se": true,
-        "akce": "Poslat emailovou adresu hotelu pro fakturu"
+        "akce": "Poslat email adresu ubytování pro obdržení faktury"
       }
     },
     {
@@ -30,9 +84,9 @@
       "sender_short": "Legislativa Nutworld",
       "sender_email": "legislativa@nutworld.cz",
       "ai": {
-        "shrn": "Kolega z legislativy požaduje kontrolu něčeho vztahujícího se k ALbi.",
+        "shrn": "Vnitřní email od legislativy s vágní žádostí 'Zkoukni to pls' bez konkrétního obsahu. Vyžaduje objasnění.",
         "tyka_se": true,
-        "akce": "Zkontrolovat a vyřešit ALbi záležitost"
+        "akce": "Kontaktovat autora emailu a zjistit, co konkrétně se týká 'ALbi'"
       }
     },
     {
@@ -46,7 +100,7 @@
       "sender_short": "Bennon",
       "sender_email": "info@news.bennon.cz",
       "ai": {
-        "shrn": "Bennon propaguje Black Friday slevu 20% na obuv a oblečení.",
+        "shrn": "Bennon propaguje Black Friday slevu 20% na boty a funkční oblečení. Jde o marketingový email třetí strany.",
         "tyka_se": false,
         "akce": null
       }
@@ -73,9 +127,25 @@
       "sender_short": "Wellness Hotel Step - CZECH LEADING HOTELS - operated by Czech Inn přes Booking.com",
       "sender_email": "noreply@booking.com",
       "ai": {
-        "shrn": "Hotel Wellness Step odpovídá na Janovu zprávu a požaduje jeho emailovou adresu pro fakturu.",
+        "shrn": "Wellness Hotel Step reaguje na Janovu zprávu a požaduje email adresu pro zaslání faktury. Vyžaduje Janovu odpověď.",
         "tyka_se": true,
-        "akce": "Poslat emailovou adresu hotelu pro fakturu"
+        "akce": "Poslat email adresu ubytování pro obdržení faktury"
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "AliExpress <ae-style-finds37@deals.aliexpress.com>",
+      "subject": "Get coupon codes today",
+      "date": "sobota 21. listopadu 2026 16:46:40",
+      "unread": true,
+      "preview": "Big sale shopping spree now ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ￼ . . -49% . CZK359.77 . -70% . CZK503.50 . -75% . CZK727.08 . Explore deals . . -",
+      "category": "ostatni",
+      "sender_short": "AliExpress",
+      "sender_email": "ae-style-finds37@deals.aliexpress.com",
+      "ai": {
+        "shrn": "AliExpress propaguje nákupní sadu se slevami. Jde o standardní marketingový email.",
+        "tyka_se": false,
+        "akce": null
       }
     },
     {
@@ -89,7 +159,7 @@
       "sender_short": "AliExpress",
       "sender_email": "ae-style-finds37@deals.aliexpress.com",
       "ai": {
-        "shrn": "AliExpress nabízí slevu na import poplatky při nákupu 3+ produktů.",
+        "shrn": "AliExpress informuje o akci 'Duty-Free' - zdarma doprava při nákupu 3+ položek. Marketingový email.",
         "tyka_se": false,
         "akce": null
       }
@@ -105,7 +175,7 @@
       "sender_short": "Temu",
       "sender_email": "temu@eu.temuemail.com",
       "ai": {
-        "shrn": "Temu propaguje nákupy s rychlejší doručením do domova.",
+        "shrn": "Temu vyzývá k nákupu s informací o doručení. Jde o propagační email.",
         "tyka_se": false,
         "akce": null
       }
@@ -121,7 +191,7 @@
       "sender_short": "DJI",
       "sender_email": "enews@e.dji.com",
       "ai": {
-        "shrn": "DJI inzeruje Black Friday slevu do 16% na Mic a Osmo Mobile.",
+        "shrn": "DJI propaguje Black Friday slevu na drony a stabilizéry. Marketingový email třetí strany.",
         "tyka_se": false,
         "akce": null
       }
@@ -137,7 +207,7 @@
       "sender_short": "AliExpress.seller",
       "sender_email": "promotion@aliexpress.com",
       "ai": {
-        "shrn": "AliExpress opakuje nabídku denních výběrů s kuponem na slevu 3 USD.",
+        "shrn": "AliExpress nabízí denní výběr produktů se slevou $3 (duplikát emailu #11). Marketingový email.",
         "tyka_se": false,
         "akce": null
       }
@@ -153,7 +223,7 @@
       "sender_short": "AliExpress.seller",
       "sender_email": "promotion@aliexpress.com",
       "ai": {
-        "shrn": "AliExpress poskytuje speciální promo kód na nákup s hodnotou do 3 USD.",
+        "shrn": "AliExpress poskytuje speciální kód slev s max. hodnotou $3 platný do listopadu 2026. Marketingový email.",
         "tyka_se": false,
         "akce": null
       }
@@ -169,7 +239,7 @@
       "sender_short": "AliExpress.seller",
       "sender_email": "promotion@aliexpress.com",
       "ai": {
-        "shrn": "AliExpress opakuje nabídku denních výběrů s kuponem na slevu 3 USD.",
+        "shrn": "AliExpress nabízí denní výběr produktů se slevou $3 (duplikát emailu #11). Marketingový email.",
         "tyka_se": false,
         "akce": null
       }
@@ -185,7 +255,7 @@
       "sender_short": "CrossFit",
       "sender_email": "crossfit@mail.crossfit.com",
       "ai": {
-        "shrn": "CrossFit posílá cvičení dne (Workout of the Day).",
+        "shrn": "CrossFit posílá denní workout 'A Grind'. Jde o notifikaci z fitness platformy.",
         "tyka_se": false,
         "akce": null
       }
