@@ -980,7 +980,19 @@ function priceRoundMO(x) {
   const n = Math.floor(x);
   return Math.floor(n / 10) * 10 + (n % 10 <= 5 ? 5 : 9);
 }
+// Nothing may be sold under 10 % margin (Jan 2026-11-21) — same as nw_core.MIN_MARGIN
+const MIN_MARGIN = 0.10;
+function packCost(g) {
+  const o = DOYPACK_OBAL.find(t => g <= t.max)?.v ?? 9;
+  const p = DOYPACK_PRACE.find(t => g <= t.max)?.v ?? 6;
+  const t = DOYPACK_TAVENI.find(x => g <= x.max)?.v ?? 2;
+  return o + p + (g <= 250 ? 1 : 2) + t;
+}
+function floorPrice(costNet, dph) { return costNet / (1 - MIN_MARGIN) * (dph || 1.12); }
 function moCZ(g, kc) {
+  return Math.max(_moCZ(g, kc), priceRoundMO(Math.ceil(floorPrice(kc * g / 1000 + packCost(g)))));
+}
+function _moCZ(g, kc) {
   if (g === 50)   return priceRoundMO(((kc * 1.12) / 20) * 3 + 7);
   if (g === 100)  return priceRoundMO(((kc * 1.12) / 10) * 2.5 + 9);
   if (g === 200)  return priceRoundMO(((kc / 5) * 2 + 15) * 1.12);
@@ -1007,6 +1019,9 @@ function moCZ(g, kc) {
   return priceRoundMO(lo.v(kc) * (1 - t) + hi.v(kc) * t);
 }
 function voCZ(g, kc, mo) {
+  return Math.max(_voCZ(g, kc, mo), Math.ceil(floorPrice(kc * g / 1000 + packCost(g))));
+}
+function _voCZ(g, kc, mo) {
   if ([50,100,200,230,500].includes(g)) return Math.round(mo * 0.8);
   if (g === 1000) return Math.round((kc * 1.2 + 10) * 1.12);
   return Math.ceil((kc * (g / 1000) + 19) / 0.9 * 1.12);   // exactly 10 % B2B margin incl. 19 Kč bulk packing (2026-11-21)
@@ -1440,7 +1455,10 @@ function dCalculate() {
   // floor price (např. 4×80g min 299 Kč)
   if (vzorCfg.floor && mo < vzorCfg.floor) mo = vzorCfg.floor;
 
-  const vo = Math.round(mo * voFakt);
+  // 10 % margin floor (retail and wholesale)
+  const minPrice = Math.ceil(floorPrice(naklady, dph));
+  mo = Math.max(mo, roundTo9(minPrice));
+  const vo = Math.max(Math.round(mo * voFakt), minPrice);
   const moExVat = mo / dph;
   const voExVat = Math.round(vo / dph);
   const realMarze = dFormula === 'marze' ? dMarze : Math.round(((moExVat - naklady) / moExVat) * 100);
