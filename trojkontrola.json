@@ -1,10 +1,10 @@
 {
-  "generated": "2026-11-22T06:52:14",
+  "generated": "2026-11-22T06:55:19",
   "souhrn": {
     "produkty": 326,
-    "ok": 177,
-    "spec": 14,
-    "stitek": 48,
+    "ok": 189,
+    "spec": 9,
+    "stitek": 39,
     "web": 111
   },
   "web": true,
@@ -13,14 +13,14 @@
       "cz": [
         {
           "sekce": "stitek",
-          "uroven": "chyba",
+          "uroven": "varovani",
           "text": "součet živin 110.6 g je víc než 100 g"
         }
       ],
       "sk": [
         {
           "sekce": "stitek",
-          "uroven": "chyba",
+          "uroven": "varovani",
           "text": "součet živin 110.6 g je víc než 100 g"
         }
       ],
@@ -30,14 +30,14 @@
       "cz": [
         {
           "sekce": "stitek",
-          "uroven": "chyba",
+          "uroven": "varovani",
           "text": "součet živin 106.0 g je víc než 100 g"
         }
       ],
       "sk": [
         {
           "sekce": "stitek",
-          "uroven": "chyba",
+          "uroven": "varovani",
           "text": "součet živin 106.0 g je víc než 100 g"
         }
       ],
@@ -118,7 +118,7 @@
         },
         {
           "sekce": "stitek",
-          "uroven": "chyba",
+          "uroven": "varovani",
           "text": "součet živin 110.5 g je víc než 100 g"
         }
       ],
@@ -130,7 +130,7 @@
         },
         {
           "sekce": "stitek",
-          "uroven": "chyba",
+          "uroven": "varovani",
           "text": "součet živin 110.5 g je víc než 100 g"
         }
       ],
@@ -230,14 +230,14 @@
       "cz": [
         {
           "sekce": "stitek",
-          "uroven": "chyba",
+          "uroven": "varovani",
           "text": "součet živin 111.4 g je víc než 100 g"
         }
       ],
       "sk": [
         {
           "sekce": "stitek",
-          "uroven": "chyba",
+          "uroven": "varovani",
           "text": "součet živin 111.4 g je víc než 100 g"
         }
       ],
@@ -315,14 +315,14 @@
       "cz": [
         {
           "sekce": "stitek",
-          "uroven": "chyba",
+          "uroven": "varovani",
           "text": "součet živin 107.4 g je víc než 100 g"
         }
       ],
       "sk": [
         {
           "sekce": "stitek",
-          "uroven": "chyba",
+          "uroven": "varovani",
           "text": "součet živin 107.4 g je víc než 100 g"
         }
       ],
@@ -503,14 +503,14 @@
       "cz": [
         {
           "sekce": "stitek",
-          "uroven": "chyba",
+          "uroven": "varovani",
           "text": "součet živin 116.7 g je víc než 100 g"
         }
       ],
       "sk": [
         {
           "sekce": "stitek",
-          "uroven": "chyba",
+          "uroven": "varovani",
           "text": "součet živin 116.7 g je víc než 100 g"
         }
       ],
@@ -1852,7 +1852,7 @@
       "cz": [
         {
           "sekce": "stitek",
-          "uroven": "chyba",
+          "uroven": "varovani",
           "text": "součet živin 117.8 g je víc než 100 g"
         },
         {
@@ -1864,7 +1864,7 @@
       "sk": [
         {
           "sekce": "stitek",
-          "uroven": "chyba",
+          "uroven": "varovani",
           "text": "součet živin 117.8 g je víc než 100 g"
         },
         {
@@ -2204,7 +2204,7 @@
         },
         {
           "sekce": "stitek",
-          "uroven": "chyba",
+          "uroven": "varovani",
           "text": "součet živin 106.7 g je víc než 100 g"
         },
         {
@@ -2236,7 +2236,7 @@
         },
         {
           "sekce": "stitek",
-          "uroven": "chyba",
+          "uroven": "varovani",
           "text": "součet živin 106.7 g je víc než 100 g"
         },
         {
@@ -3121,16 +3121,21 @@
     "5852": {
       "cz": [
         {
-          "sekce": "stitek",
+          "sekce": "spec",
+          "uroven": "varovani",
+          "text": "štítek se liší od zápisu specifikace v poli zeme_puvodu — spec: „“ · štítek: „Česká republika“ (ověřit, co platí)"
+        },
+        {
+          "sekce": "web",
           "uroven": "chyba",
-          "text": "chybí údaj „zeme_puvodu“"
+          "text": "země původu: web „“ · spec „Česká republika“"
         }
       ],
       "sk": [
         {
-          "sekce": "stitek",
-          "uroven": "chyba",
-          "text": "chybí údaj „zeme_puvodu“"
+          "sekce": "spec",
+          "uroven": "varovani",
+          "text": "štítek se liší od zápisu specifikace v poli zeme_puvodu — spec: „“ · štítek: „Česká republika“ (ověřit, co platí)"
         },
         {
           "sekce": "web",
@@ -4044,11 +4049,6 @@
     "SEKT_PINK": {
       "cz": [
         {
-          "sekce": "spec",
-          "uroven": "chyba",
-          "text": "pro kód není ve složce specifikace/ žádný soubor specifikace"
-        },
-        {
           "sekce": "web",
           "uroven": "info",
           "text": "produkt není na webu samostatně (nebo není v cache kódů)"
@@ -4111,11 +4111,6 @@
     "COXY_POSYP": {
       "cz": [
         {
-          "sekce": "spec",
-          "uroven": "chyba",
-          "text": "pro kód není ve složce specifikace/ žádný soubor specifikace"
-        },
-        {
           "sekce": "web",
           "uroven": "info",
           "text": "produkt není na webu samostatně (nebo není v cache kódů)"
@@ -4173,11 +4168,6 @@
     "FONDAN_MIX": {
       "cz": [
         {
-          "sekce": "spec",
-          "uroven": "chyba",
-          "text": "pro kód není ve složce specifikace/ žádný soubor specifikace"
-        },
-        {
           "sekce": "web",
           "uroven": "info",
           "text": "produkt není na webu samostatně (nebo není v cache kódů)"
@@ -4232,40 +4222,8 @@
       ],
       "nazev": "MIX KARAMELOVÝCH FONDÁNŮ"
     },
-    "COKOLADA_30G": {
-      "cz": [
-        {
-          "sekce": "spec",
-          "uroven": "chyba",
-          "text": "pro kód není ve složce specifikace/ žádný soubor specifikace"
-        },
-        {
-          "sekce": "web",
-          "uroven": "info",
-          "text": "produkt není na webu samostatně (nebo není v cache kódů)"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "spec",
-          "uroven": "chyba",
-          "text": "pro kód není ve složce specifikace/ žádný soubor specifikace"
-        },
-        {
-          "sekce": "web",
-          "uroven": "info",
-          "text": "produkt není na webu samostatně (nebo není v cache kódů)"
-        }
-      ],
-      "nazev": "ČOKOLÁDA S POSYPEM 30g"
-    },
     "SEKT_BOHEMIA": {
       "cz": [
-        {
-          "sekce": "spec",
-          "uroven": "chyba",
-          "text": "pro kód není ve složce specifikace/ žádný soubor specifikace"
-        },
         {
           "sekce": "web",
           "uroven": "info",
@@ -4323,11 +4281,6 @@
     },
     "COKOLADA_RUBY": {
       "cz": [
-        {
-          "sekce": "spec",
-          "uroven": "chyba",
-          "text": "pro kód není ve složce specifikace/ žádný soubor specifikace"
-        },
         {
           "sekce": "web",
           "uroven": "info",
@@ -4391,11 +4344,6 @@
     "COXY_COKOLADA": {
       "cz": [
         {
-          "sekce": "spec",
-          "uroven": "chyba",
-          "text": "pro kód není ve složce specifikace/ žádný soubor specifikace"
-        },
-        {
           "sekce": "web",
           "uroven": "info",
           "text": "produkt není na webu samostatně (nebo není v cache kódů)"
@@ -4449,60 +4397,6 @@
         }
       ],
       "nazev": "ČOXY ČOKOLÁDA SLAZENÁ XYLITHOLEM"
-    },
-    "SVICKA_EMOCIO": {
-      "cz": [
-        {
-          "sekce": "spec",
-          "uroven": "chyba",
-          "text": "pro kód není ve složce specifikace/ žádný soubor specifikace"
-        },
-        {
-          "sekce": "web",
-          "uroven": "info",
-          "text": "produkt není na webu samostatně (nebo není v cache kódů)"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "spec",
-          "uroven": "chyba",
-          "text": "pro kód není ve složce specifikace/ žádný soubor specifikace"
-        },
-        {
-          "sekce": "web",
-          "uroven": "info",
-          "text": "produkt není na webu samostatně (nebo není v cache kódů)"
-        }
-      ],
-      "nazev": "VONNÁ SVÍČKA EMOCIO"
-    },
-    "SKLENICKA_SEKT": {
-      "cz": [
-        {
-          "sekce": "spec",
-          "uroven": "chyba",
-          "text": "pro kód není ve složce specifikace/ žádný soubor specifikace"
-        },
-        {
-          "sekce": "web",
-          "uroven": "info",
-          "text": "produkt není na webu samostatně (nebo není v cache kódů)"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "spec",
-          "uroven": "chyba",
-          "text": "pro kód není ve složce specifikace/ žádný soubor specifikace"
-        },
-        {
-          "sekce": "web",
-          "uroven": "info",
-          "text": "produkt není na webu samostatně (nebo není v cache kódů)"
-        }
-      ],
-      "nazev": "SKLENIČKA PLASTOVÁ PERLEŤOVÁ"
     },
     "SVICKA_BOLSIUS": {
       "cz": [
@@ -4697,60 +4591,6 @@
         }
       ],
       "nazev": "VONNÁ SVÍČKA SANDALO NOIR"
-    },
-    "SVICKA_MAGNOLIE": {
-      "cz": [
-        {
-          "sekce": "spec",
-          "uroven": "chyba",
-          "text": "pro kód není ve složce specifikace/ žádný soubor specifikace"
-        },
-        {
-          "sekce": "web",
-          "uroven": "info",
-          "text": "produkt není na webu samostatně (nebo není v cache kódů)"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "spec",
-          "uroven": "chyba",
-          "text": "pro kód není ve složce specifikace/ žádný soubor specifikace"
-        },
-        {
-          "sekce": "web",
-          "uroven": "info",
-          "text": "produkt není na webu samostatně (nebo není v cache kódů)"
-        }
-      ],
-      "nazev": "VONNÁ SVÍČKA VE SKLE MAGNOLIE"
-    },
-    "SKLENICKA_RUZOVA": {
-      "cz": [
-        {
-          "sekce": "spec",
-          "uroven": "chyba",
-          "text": "pro kód není ve složce specifikace/ žádný soubor specifikace"
-        },
-        {
-          "sekce": "web",
-          "uroven": "info",
-          "text": "produkt není na webu samostatně (nebo není v cache kódů)"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "spec",
-          "uroven": "chyba",
-          "text": "pro kód není ve složce specifikace/ žádný soubor specifikace"
-        },
-        {
-          "sekce": "web",
-          "uroven": "info",
-          "text": "produkt není na webu samostatně (nebo není v cache kódů)"
-        }
-      ],
-      "nazev": "SKLENIČKA PLASTOVÁ RŮŽOVÁ"
     }
   }
 }
