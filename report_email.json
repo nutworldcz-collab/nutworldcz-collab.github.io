@@ -1,6 +1,93 @@
 {
-  "generated": "2026-11-22T07:30:22",
-  "total": 0,
-  "spam_skipped": 0,
-  "emails": []
+  "generated": "2026-11-22T12:00:30",
+  "total": 6,
+  "spam_skipped": 1,
+  "emails": [
+    {
+      "account": "Exchange",
+      "sender": "\"Shoptet.cz\" <notification@shoptet.cz>",
+      "subject": "[johnwolf.cz] ❗4. upomínka platby č. 2608246854 (předsoudní výzva)",
+      "date": "neděle 22. listopadu 2026 11:24:58",
+      "unread": true,
+      "preview": "￼ 4. upomínka",
+      "category": "sluzby",
+      "sender_short": "Shoptet.cz",
+      "sender_email": "notification@shoptet.cz"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Na nástěnce Tvorba štítků CANVA máš 13 upozornění od poslední návštěvy 11:00 (22. listopadu 2026)",
+      "date": "neděle 22. listopadu 2026 11:02:36",
+      "unread": true,
+      "preview": "￼ Termín je brzy... SPEED PRESS Plus a.s. — 89 MANDLE JADRA PRAZENA SOLENA S UZENOU PRICHUTI 200g v ce… na nástěnce Tvorba štítků CANVA s termínem splnění má termín za den Odpovědět e-mailem ČSOB Pojišťovna",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Allegro <info@notifikace.allegro.cz>",
+      "subject": "DNES O PŮLNOCI: Váš kupón na 200 Kč končí 🚨",
+      "date": "neděle 22. listopadu 2026 10:29:59",
+      "unread": true,
+      "preview": "￼ ￼ Dobrý den",
+      "category": "ostatni",
+      "sender_short": "Allegro",
+      "sender_email": "info@notifikace.allegro.cz",
+      "ai": {
+        "shrn": "Allegro oznamuje vypršení kupónu na 200 Kč do půlnoci. Jedná se o běžnou notifikaci o slevě.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Laba <info@l-a-b-a.cz>",
+      "subject": "AI pro váš tým: Od výběru nástroje k praxi 💡",
+      "date": "neděle 22. listopadu 2026 10:19:55",
+      "unread": true,
+      "preview": "￼ ￼ ￼ ￼ Dobrý den! 👋 Porady",
+      "category": "ostatni",
+      "sender_short": "Laba",
+      "sender_email": "info@l-a-b-a.cz",
+      "ai": {
+        "shrn": "Laba nabízí školení o AI nástrojích pro tým. Jedná se o marketingový email s nabídkou služby.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Markéta z ALORI <marketa@novinky.alori.cz>",
+      "subject": "Poslední šance vyzvednout si dárek",
+      "date": "neděle 22. listopadu 2026 9:16:50",
+      "unread": true,
+      "preview": "Dobrý den, dnes o půlnoci končí čistič sporáku a trouby zdarma. Stačí",
+      "category": "ostatni",
+      "sender_short": "Markéta z ALORI",
+      "sender_email": "marketa@novinky.alori.cz",
+      "ai": {
+        "shrn": "ALORI informuje o konci platnosti bezplatného dárku (čistič sporáku) do půlnoci. Jedná se o urgentní marketingový email.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "\"Samsung\" <no-reply@m1.email.samsung.com>",
+      "subject": "Využij EXTRA slevu 5 % jen do dnešní půlnoci",
+      "date": "neděle 22. listopadu 2026 10:19:30",
+      "unread": true,
+      "preview": "￼￼ Kombinuj Black Friday a extra slevu a nakup ještě výhodněji Zobrazit online verzi ￼ ￼ Získej Samsung Rewards Zjisti více zde. Získej Rewards body při každém nákupu přímo od Samsungu ￼ Už jen pár hodin! Ušetři dalších 5 % jen do dnešní půlnoci ￼ Využij Black Friday naplno a ušetři ještě více. S kó",
+      "category": "ostatni",
+      "sender_short": "Samsung",
+      "sender_email": "no-reply@m1.email.samsung.com",
+      "ai": {
+        "shrn": "Samsung nabízí extra slevu 5% do půlnoci při Black Friday nákupu. Jedná se o běžnou notifikaci slevy.",
+        "tyka_se": false,
+        "akce": null
+      }
+    }
+  ]
 }
