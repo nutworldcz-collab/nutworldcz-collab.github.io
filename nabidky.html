@@ -1375,6 +1375,7 @@ function renderArchiv() {
       <div style="display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap">
         ${e.cardUrl ? `<a class="ar-btn" href="${escH(e.cardUrl)}" target="_blank" rel="noopener" style="background:#f1e6da;color:#83502e" title="Karta v Trellu">Trello ↗</a>` : ''}
         ${e.url ? `<a class="ar-btn" href="${escH(e.url)}" target="_blank" rel="noopener" style="background:#f1e6da;color:#83502e">📋 Zakázka</a>` : ''}
+        <button class="ar-btn" onclick="reorderFromArchiv('${escH(e.id)}')" style="background:#6fa044;color:white" title="Nová nabídka se stejnými položkami — původní zůstane beze změny">🔁 Objednat znovu</button>
         <button class="ar-btn" onclick="loadFromArchiv('${escH(e.id)}')" style="background:#5c381f;color:white">✏️ Upravit</button>
         <button class="ar-btn" onclick="deleteFromArchiv('${escH(e.id)}')" style="background:none;border:1.5px solid #e0cfc4;color:#aaa" title="Smazat">✕</button>
       </div>
@@ -1391,6 +1392,33 @@ function loadFromArchiv(id) {
   if (!entry) return;
   const old = document.getElementById('offer-notice'); if (old) old.remove();
   populateForm({ ...entry.data, _cardId: entry.cardId || entry.data._cardId || null, _cislo: entry.cislo });
+  switchTab('form');
+  window.scrollTo(0, 0);
+}
+
+// Repeat order: same customer + items as a NEW offer (new number, new Trello card); the original stays untouched.
+// Prices are kept as agreed last time — differences to today's gift price list are only shown, never changed.
+function reorderFromArchiv(id) {
+  const entry = _archiv.find(e => e.id === id);
+  if (!entry || !entry.data) return;
+  const old = document.getElementById('offer-notice'); if (old) old.remove();
+  const data = JSON.parse(JSON.stringify(entry.data));
+  delete data._cardId; delete data._cislo;
+  populateForm({ ...data, _cardId: null, _cislo: null });
+  _trelloCardId = null; _savedCislo = null;
+  const dph = data.trh === 'SK' ? 0.23 : 0.12;
+  const diffs = [];
+  (data.produkty || []).forEach(p => {
+    const d = typeof DARKY_DATA !== 'undefined' ? DARKY_DATA[p.kod] : null;
+    if (!d || !d.vo || !p.cena) return;
+    const now = Math.round(d.vo / (1 + dph) * 100) / 100;
+    if (Math.abs(now - p.cena) >= 0.5) diffs.push(`${escH(p.nazev || p.kod)}: minule <strong>${p.cena}</strong>, dnešní ceník <strong>${now}</strong> bez DPH`);
+  });
+  const fd = iso => { const x = new Date(iso); return isNaN(x) ? '' : x.getDate() + '. ' + (x.getMonth()+1) + '. ' + x.getFullYear(); };
+  offerNotice(`🔁 <strong>Opakovaná objednávka</strong> podle ${escH(entry.cislo)} z ${fd(entry.datum)}. ` +
+    `Po vygenerování vznikne <strong>nová nabídka s novým číslem</strong> a nová karta v Trellu — původní zůstane beze změny. ` +
+    `Zkontroluj počty kusů, termín dodání a ceny (zůstaly z minula).` +
+    (diffs.length ? `<div style="margin-top:6px"><strong>⚠️ Ceny se od minula změnily:</strong><br>${diffs.join('<br>')}</div>` : ''));
   switchTab('form');
   window.scrollTo(0, 0);
 }
