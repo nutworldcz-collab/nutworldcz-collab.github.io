@@ -352,12 +352,25 @@ function renderObch() {
   $('ob-p').textContent = pick;
   const rows = Object.entries(OB.obdobi[pick] || {}).sort((a,b) => (b[1].obrat||0) - (a[1].obrat||0));
   const pct = (a, b) => b ? Math.round(a / b * 100) : 0;
-  $('obch').innerHTML = `<table class="rep"><tr><th>Obchodník</th><th>Nabídky</th><th>Zakázky</th><th>Obrat</th><th>Marže</th><th>Zisk (odhad)</th></tr>`
+  $('obch').innerHTML = `<table class="rep"><tr><th>Obchodník</th><th>Nabídky</th><th>Zakázky</th><th>Obrat</th><th>Marže</th><th>Zisk (odhad)</th><th>Slevy &gt;20 %</th></tr>`
     + rows.map(([r, v]) => `<tr><td><b>${esc(r === '—' ? 'bez obchodníka' : r)}</b></td><td>${v.nabidky||0}</td><td>${v.zakazky||0}</td><td>${kc(v.obrat)}</td>`
       + `<td style="color:${v.marze==null?'#8a6a4e':v.marze<30?'#da1668':'#6fa044'};font-weight:700">${v.marze==null?'—':v.marze.toFixed(1).replace('.',',')+' %'}</td>`
-      + `<td>${v.marze==null?'—':'≈ '+kc(v.obrat*v.marze/100)}<div class="muted" style="font-size:11px">ověřeno z ${pct(v.obrat_se_ziskem||0, v.obrat)} % obratu</div></td></tr>`).join('')
+      + `<td>${v.marze==null?'—':'≈ '+kc(v.obrat*v.marze/100)}<div class="muted" style="font-size:11px">ověřeno z ${pct(v.obrat_se_ziskem||0, v.obrat)} % obratu</div></td>`
+      + `<td style="color:${v.slevy20?'#da1668':'#6fa044'};font-weight:700">${v.slevy20||0}</td></tr>`).join('')
     + `</table><p class="muted" style="margin:6px 0 0">⚠ Zatím jen zakázky se zapsanou částkou (karty z formuláře zakázky od 8/2026). Marže jen ze zakázek propojených s nabídkou, zisk = obrat × marže.
-       Přesný obrat a zisk dodá export faktur z K2. Podrobně v <a href="ja.html" style="color:#83502e">klasickém dashboardu</a>.</p>`;
+       Přesný obrat a zisk dodá export faktur z K2. Podrobně v <a href="ja.html" style="color:#83502e">klasickém dashboardu</a>.</p>`
+    + slevyHtml(OB.slevy || [], OB.max_sleva || 20);
+}
+
+function slevyHtml(list, max) {
+  if (!list.length) return `<p class="ok" style="margin-top:10px">✓ Žádná sleva nad ${max} % oproti našemu ceníku.</p>`;
+  const st = {nabidka:'nabídka', zakazka:'zakázka', k2:'K2', vyroba:'výroba', hotovo:'hotovo', dokonceno:'dokončeno', archiv:'archiv'};
+  return `<div class="grp" style="color:#da1668;margin-top:14px">🏷️ Slevy nad ${max} % oproti našemu ceníku (${list.length})</div>
+    <table class="rep"><tr><th>Firma</th><th>Obchodník</th><th>Položka</th><th>Cena</th><th>Ceník</th><th>Sleva</th><th>Stav</th></tr>`
+    + list.slice(0, 15).map(x => `<tr><td><a href="${esc(x.odkaz)}" style="color:#83502e;font-weight:700;text-decoration:none">${esc(x.firma)}</a><div class="muted" style="font-size:11px">${dm(x.datum)} · ${esc(x.kde)}</div></td>`
+      + `<td>${esc(x.rep)}</td><td>${esc(x.nazev)}</td><td>${kc(x.cena)}</td><td>${kc(x.cenik)}</td>`
+      + `<td style="color:#da1668;font-weight:700">−${Math.round(x.sleva)} %</td><td>${esc(st[x.stav]||x.stav||'')}</td></tr>`).join('')
+    + `</table><p class="muted" style="margin:6px 0 0">Ceník = velkoobchodní cena podle našeho vzorce (bez DPH). Nová sleva nad ${max} % přijde emailem tobě i obchodníkovi.</p>`;
 }
 
 async function loadPublic() {
