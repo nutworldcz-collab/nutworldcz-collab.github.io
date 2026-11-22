@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wolf Leader Board — Nutworld</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+:root{--br:#83502e;--bd:#5c381f;--soft:#f1e6da;--acc:#da1668;--amb:#f7ab31;--leaf:#6fa044;--ink:#2a1a0e;--mut:#8a6a4e;--line:#e6d6c4;--card:#fff;--bg:#faf6f1}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 'Source Sans 3',Arial,sans-serif}
+h1,h2,h3{font-family:'Exo 2',Arial,sans-serif;margin:0}
+.wrap{max-width:1280px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left)) 40px}
+header{background:linear-gradient(135deg,#2b1a0e 0%,#5c381f 45%,#83502e 100%);color:#fff;position:relative;overflow:hidden}
+header .wrap{padding-top:22px;padding-bottom:20px;display:flex;gap:16px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap}
+header:after{content:"";position:absolute;right:-40px;top:-60px;width:260px;height:260px;border-radius:50%;background:rgba(247,171,49,.14)}
+.kick{color:var(--amb);font:700 12px 'Exo 2';letter-spacing:3px;text-transform:uppercase}
+header h1{font-size:30px;font-weight:800;letter-spacing:.5px}
+header .sub{opacity:.75;font-size:14px}
+.hbtn{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:7px 14px;font:700 12px 'Exo 2';cursor:pointer;text-decoration:none}
+.hbtn:hover{background:rgba(255,255,255,.22)}
+.grid{display:grid;gap:16px;margin-top:18px}
+.kpis{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.kpi{background:var(--card);border-radius:14px;padding:14px 16px;box-shadow:0 1px 6px rgba(60,30,10,.07);border-top:4px solid var(--br);min-width:0}
+.kpi .l{font:700 11px 'Exo 2';letter-spacing:1.5px;text-transform:uppercase;color:var(--mut)}
+.kpi .v{font:800 24px 'Exo 2';color:var(--bd);margin-top:4px}
+.kpi .s{font-size:12px;color:var(--mut)}
+.cols{grid-template-columns:minmax(0,1.55fr) minmax(0,1fr)}
+@media (max-width:900px){.cols{grid-template-columns:1fr}}
+.card{background:var(--card);border-radius:16px;padding:16px 18px;box-shadow:0 1px 6px rgba(60,30,10,.07);min-width:0}
+.card h2{font-size:17px;color:var(--bd);display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.card h2 .n{background:var(--soft);color:var(--br);border-radius:10px;padding:0 8px;font-size:12px}
+.alert{display:flex;gap:10px;align-items:flex-start;padding:9px 10px;border-radius:10px;margin-bottom:6px;background:#fff8ec;border-left:4px solid var(--amb);font-size:14px}
+.alert.chyba{background:#fff5f7;border-left-color:var(--acc)}
+.alert a{color:var(--br);font-weight:700;margin-left:auto;white-space:nowrap;text-decoration:none}
+.tag{font:700 10px 'Exo 2';letter-spacing:1px;text-transform:uppercase;color:var(--mut);min-width:78px}
+.ok{color:var(--leaf);font-weight:700}
+/* calendar */
+.calhead{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.calhead b{font:700 16px 'Exo 2';color:var(--bd);min-width:150px}
+.pill{border:1px solid var(--line);background:#fff;border-radius:16px;padding:4px 11px;cursor:pointer;font:600 12px 'Source Sans 3';color:var(--br)}
+.pill.on{background:var(--bd);color:#fff;border-color:var(--bd)}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.cal .dn{font:700 11px 'Exo 2';color:var(--mut);text-align:center;padding:2px 0}
+.day{background:#fdfaf6;border:1px solid var(--line);border-radius:9px;min-height:86px;padding:4px 5px;cursor:pointer;overflow:hidden;min-width:0}
+.day.out{opacity:.4}.day.today{border:2px solid var(--amb);background:#fffaf0}
+.day .d{font:700 12px 'Exo 2';color:var(--bd)}
+.ev{font-size:11px;line-height:1.25;border-radius:5px;padding:1px 4px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ev.kalendar{background:#e8f0fb;color:#24508a}.ev.zakazka{background:#fde9d6;color:#7a3b10}.ev.ukol{background:#f1e6da;color:var(--bd)}
+.ev.rutina{background:#eaf4e1;color:#3d6b1f}.ev.system{background:#f3e8f7;color:#6b3a85}.ev.late{background:#fde3ec;color:#a0104a}
+@media (max-width:640px){.day{min-height:54px}.ev{font-size:0;height:6px;padding:0}}
+.agenda .row{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px}
+.agenda .row .t{font:700 12px 'Exo 2';color:var(--br);min-width:86px}
+/* tasks */
+form.add{display:grid;grid-template-columns:minmax(0,1fr) 130px 90px;gap:6px;margin-bottom:8px}
+form.add .more{grid-column:1/-1;display:flex;gap:6px;flex-wrap:wrap}
+input,select,button{font:inherit}
+input[type=text],input[type=date],input[type=time],select{border:1.5px solid var(--line);border-radius:9px;padding:7px 9px;background:#fff;color:var(--ink);min-width:0}
+.btn{background:var(--bd);color:#fff;border:0;border-radius:9px;padding:8px 14px;font:700 13px 'Exo 2';cursor:pointer}
+.btn:hover{background:var(--br)}
+.grp{font:700 11px 'Exo 2';letter-spacing:1.6px;text-transform:uppercase;margin:12px 0 4px}
+.task{display:flex;align-items:center;gap:9px;padding:7px 4px;border-bottom:1px solid var(--line);font-size:14px}
+.task input[type=checkbox]{width:18px;height:18px;accent-color:var(--leaf);flex:none}
+.task .tx{flex:1;min-width:0}
+.task .meta{font-size:12px;color:var(--mut)}
+.task .x{border:0;background:none;color:#c9a88a;cursor:pointer;font-size:16px}
+.task .x:hover{color:var(--acc)}
+.urg{color:var(--acc);font-weight:700}
+.links{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.links a{display:block;background:var(--soft);border:1.5px solid #c8976a;border-radius:12px;padding:10px 12px;color:var(--bd);text-decoration:none;font-weight:700;font-size:14px}
+.links a small{display:block;font-weight:400;color:var(--mut);font-size:12px}
+.links a:hover{background:#ead9c6}
+table.rep{width:100%;border-collapse:collapse;font-size:13px}
+table.rep th{text-align:left;font:700 11px 'Exo 2';letter-spacing:1px;text-transform:uppercase;color:var(--mut);padding:4px 6px;border-bottom:2px solid var(--line)}
+table.rep td{padding:6px;border-bottom:1px solid var(--line)}
+.scroll{overflow-x:auto}
+#lock{display:none;max-width:420px;margin:80px auto;text-align:center;background:#fff;border-radius:16px;padding:30px}
+dialog{border:0;border-radius:16px;padding:18px;max-width:420px;width:calc(100% - 32px);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+dialog::backdrop{background:rgba(40,20,8,.55)}
+.muted{color:var(--mut);font-size:13px}
+</style>
+</head>
+<body>
+<div id="lock"><h2 style="color:#5c381f">🔒 Jen pro Jana</h2><p class="muted">Wolf Leader Board je soukromý — přihlas se svým hlavním PINem.</p></div>
+<div id="app">
+<header><div class="wrap">
+  <div><div class="kick">Nutworld · řídicí centrum</div><h1>🐺 Wolf Leader Board</h1>
+  <div class="sub" id="hdate"></div></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;position:relative;z-index:1">
+    <button class="hbtn" onclick="loadAll()">↻ Obnovit</button>
+    <a class="hbtn" href="ja.html">Klasický dashboard</a>
+    <a class="hbtn" href="index.html">Rozcestník týmu</a>
+  </div>
+</div></header>
+
+<div class="wrap">
+  <div class="grid kpis" id="kpis"></div>
+
+  <div class="grid cols">
+    <div class="card"><h2>🚨 Potřebuje tebe <span class="n" id="al-n">…</span></h2><div id="alerts" class="muted">Načítám…</div></div>
+    <div class="card" id="ukoly"><h2>✅ Úkoly a rutiny <span class="n" id="uk-n">…</span></h2>
+      <form class="add" id="addf">
+        <input type="text" id="f-text" placeholder="Nový úkol… (Enter uloží)" required>
+        <input type="date" id="f-due">
+        <input type="time" id="f-cas">
+        <div class="more">
+          <select id="f-rep" title="Opakování">
+            <option value="">jednorázově</option><option value="denne">každý den</option><option value="pracovni">každý pracovní den</option>
+            <option value="tydne">každý týden</option><option value="mesicne">každý měsíc</option><option value="rocne">každý rok</option>
+          </select>
+          <select id="f-obl" title="Oblast">
+            <option value="">oblast…</option><option>zakazky</option><option>firmy</option><option>vyroba</option><option>legislativa</option>
+            <option>marketing</option><option>finance</option><option>tym</option><option>osobni</option><option>John Wolf</option>
+          </select>
+          <label class="muted"><input type="checkbox" id="f-urg"> urgentní</label>
+          <button class="btn" type="submit">Přidat</button>
+        </div>
+      </form>
+      <div id="tasks" class="muted">Načítám…</div>
+    </div>
+  </div>
+
+  <div class="grid cols">
+    <div class="card"><div class="calhead">
+        <h2 style="margin:0">📅 Kalendář</h2>
+        <button class="pill" onclick="shift(-1)">‹</button><b id="cal-t"></b><button class="pill" onclick="shift(1)">›</button>
+        <button class="pill" onclick="calRef=new Date();renderCal()">Dnes</button>
+        <span style="flex:1"></span>
+        <span class="muted" id="cal-src"></span>
+      </div>
+      <div class="cal" id="cal"></div>
+      <p class="muted" style="margin:8px 0 0">Klikni na den → přidáš úkol na ten den. Barvy: <span class="ev kalendar" style="display:inline">Google kalendář</span> <span class="ev zakazka" style="display:inline">termín zakázky</span> <span class="ev ukol" style="display:inline">úkol</span> <span class="ev rutina" style="display:inline">rutina</span> <span class="ev system" style="display:inline">automat</span></p>
+    </div>
+    <div class="card agenda"><h2>🗓 Příštích 14 dní</h2><div id="agenda" class="muted">Načítám…</div></div>
+  </div>
+
+  <div class="grid cols">
+    <div class="card"><h2>🤝 Obchodníci <span class="n" id="ob-p"></span></h2><div class="scroll" id="obch" class="muted">Načítám…</div></div>
+    <div class="card"><h2>📣 Reklamy a e-shop</h2><div id="ads" class="muted">Načítám…</div></div>
+  </div>
+
+  <div class="card" style="margin-top:16px"><h2>🧭 Přehledy</h2>
+    <div class="links">
+      <a href="zakazy.html">Zakázky<small>nabídka → výroba → faktura</small></a>
+      <a href="marze.html">Marže<small>e-shop CZ + SK, = vzorec</small></a>
+      <a href="firmy-ceniky.html">Firemní ceníky<small>hlídání + měsíční rozesílka</small></a>
+      <a href="stitky-kontrola.html">Spec ↔ štítek ↔ web<small>trojkontrola legislativy</small></a>
+      <a href="vyroba.html">Výroba<small>plán a průvodky</small></a>
+      <a href="expedice/">Expedice<small>firmy, dopravci</small></a>
+      <a href="partneri.html">Partneři<small>registr firem a obchodník</small></a>
+      <a href="dokumenty.html">Dokumenty a smlouvy<small>složky firem</small></a>
+      <a href="bulk-cenik.html">Bulk ceník<small>vzorec dle balení</small></a>
+      <a href="kalkulator.html">Kalkulátor<small>obaly z obaly.csv</small></a>
+      <a href="ja.html">Rozvrh, emaily, poznámky<small>klasický dashboard</small></a>
+      <a href="index.html">Rozcestník týmu<small>pracovní nástroje (PIN)</small></a>
+    </div>
+  </div>
+  <p class="muted" id="gen" style="margin-top:14px"></p>
+</div>
+</div>
+
+<dialog id="dlg"><h3 style="color:#5c381f;margin-bottom:8px" id="dlg-t">Den</h3><div id="dlg-b"></div>
+  <form id="dlgf" style="display:flex;gap:6px;margin-top:10px"><input type="text" id="dlg-text" placeholder="Úkol na tento den…" style="flex:1"><input type="time" id="dlg-cas" style="width:100px"><button class="btn">Přidat</button></form>
+  <p style="text-align:right;margin:10px 0 0"><button class="pill" onclick="dlg.close()">Zavřít</button></p></dialog>
+
+<script src="nw-data.js"></script>
+<script src="pin-guard.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const DNY = ['po','út','st','čt','pá','so','ne'];
+const DNY_L = ['neděle','pondělí','úterý','středa','čtvrtek','pátek','sobota'];
+const MES = ['leden','únor','březen','duben','květen','červen','červenec','srpen','září','říjen','listopad','prosinec'];
+const OBL = {zakazky:'Zakázky',firmy:'Firmy',vyroba:'Výroba',legislativa:'Legislativa',marketing:'Marketing',finance:'Finance',tym:'Tým',osobni:'Osobní',system:'Systém',marze:'Marže'};
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const iso = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const dm = s => s ? `${+s.slice(8,10)}. ${+s.slice(5,7)}.` : '';
+const kc = v => (Math.round(v||0)).toLocaleString('cs-CZ') + ' Kč';
+let W = {}, TASKS = [], OB = null, calRef = new Date();
+const TODAY = () => iso(new Date());
+
+// same rule as ukoly_morning.py occurs_on()
+function occursOn(r, d) {
+  const o = r.opakovani || {}, s = iso(d);
+  if (r.od && s < r.od) return false;
+  const den = +(o.den || 0), wd = (d.getDay() + 6) % 7;
+  switch (o.freq) {
+    case 'denne': return true;
+    case 'pracovni': return wd < 5;
+    case 'tydne': return wd === den;
+    case 'mesicne': { const last = new Date(d.getFullYear(), d.getMonth()+1, 0).getDate(); return d.getDate() === Math.min(den || 1, last); }
+    case 'rocne': return d.getMonth()+1 === +(o.mesic || 1) && d.getDate() === (den || 1);
+  }
+  return false;
+}
+function lastOcc(r, d) { for (let i = 0; i < 40; i++) { const x = new Date(d); x.setDate(x.getDate() - i); if (occursOn(r, x)) return iso(x); } return null; }
+function repText(o) {
+  if (!o) return '';
+  const d = +(o.den||0);
+  return {denne:'každý den', pracovni:'pracovní dny', tydne:'každé '+(['pondělí','úterý','středu','čtvrtek','pátek','sobotu','neděli'][d]),
+          mesicne:`každého ${d||1}.`, rocne:`každý rok ${d||1}. ${o.mesic||1}.`}[o.freq] || '';
+}
+
+async function loadAll() {
+  $('hdate').textContent = DNY_L[new Date().getDay()] + ' ' + new Date().toLocaleDateString('cs-CZ', {day:'numeric', month:'long', year:'numeric'});
+  const [pre, uk] = await Promise.allSettled([NWData.list('prehled'), NWData.list('ukoly')]);
+  if (pre.status === 'rejected' && /jen pro Jana|pin/.test(pre.reason?.message || '')) { $('app').style.display='none'; $('lock').style.display='block'; return; }
+  const items = pre.status === 'fulfilled' ? pre.value : [];
+  W = (items.find(i => i.id === 'wolf') || {}).data || {};
+  OB = (items.find(i => i.id === 'obchodnici') || {}).data || null;
+  TASKS = uk.status === 'fulfilled' ? uk.value.map(i => ({...i.data, id: i.id})) : [];
+  $('gen').textContent = W.vygenerovano ? `Data serveru: ${W.vygenerovano.replace('T',' ')} · obnovuje se každých 15 min` : 'Server zatím data nepřipravil.';
+  renderAlerts(); renderTasks(); renderCal(); renderAgenda(); renderObch(); loadPublic();
+}
+
+function renderAlerts() {
+  const a = W.alerts || [];
+  $('al-n').textContent = a.length;
+  if (!a.length) { $('alerts').innerHTML = '<span class="ok">✓ Nic nehoří — vše hlídané běží.</span>'; return; }
+  const ord = {chyba:0, varovani:1};
+  $('alerts').innerHTML = a.slice().sort((x,y) => (ord[x.uroven]??2) - (ord[y.uroven]??2)).map(x =>
+    `<div class="alert ${x.uroven}"><span class="tag">${esc(OBL[x.oblast]||x.oblast)}</span><span>${esc(x.text)}</span>${x.odkaz?`<a href="${esc(x.odkaz)}">otevřít →</a>`:''}</div>`).join('');
+}
+
+function bucket() {
+  const t = TODAY(), now = new Date();
+  const wEnd = new Date(); wEnd.setDate(wEnd.getDate() + 7);
+  const open = TASKS.filter(x => (x.typ||'ukol') === 'ukol' && !x.done);
+  const rut = TASKS.filter(x => x.typ === 'rutina' && !x.pauza);
+  const late = open.filter(x => x.due && x.due < t);
+  rut.forEach(r => { if (['denne','pracovni'].includes(r.opakovani?.freq)) return;
+    const y = new Date(); y.setDate(y.getDate()-1); const lo = lastOcc(r, y);
+    if (lo && (r.posledni||'') < lo && (!r.od || lo >= r.od)) late.push({...r, _occ: lo, due: lo}); });
+  const today = open.filter(x => x.due === t).concat(rut.filter(r => occursOn(r, now) && (r.posledni||'') < t).map(r => ({...r, _occ: t, due: t})));
+  const week = open.filter(x => x.due > t && x.due <= iso(wEnd));
+  const later = open.filter(x => !x.due || x.due > iso(wEnd));
+  return {late, today, week, later, rut};
+}
+function taskRow(x) {
+  const r = x.typ === 'rutina';
+  const meta = [x.cas, x.due && x.due !== TODAY() ? dm(x.due) : '', r ? '🔁 ' + repText(x.opakovani) : '', OBL[x.oblast]||x.oblast||''].filter(Boolean).join(' · ');
+  return `<div class="task"><input type="checkbox" onchange="done('${esc(x.id)}','${x._occ||''}',this)" ${x._occ===undefined && r ? 'disabled' : ''}>
+    <div class="tx">${x.priorita==='urgent'?'<span class="urg">URGENT · </span>':''}${esc(x.text)}<div class="meta">${esc(meta)}</div></div>
+    <button class="x" title="Smazat" onclick="askDel('${esc(x.id)}')">×</button></div>`;
+}
+function renderTasks() {
+  const b = bucket();
+  $('uk-n').textContent = b.late.length + b.today.length;
+  const g = (t, c, a) => a.length ? `<div class="grp" style="color:${c}">${t} (${a.length})</div>` + a.map(taskRow).join('') : '';
+  const byT = a => a.sort((x,y) => (x.cas||'99').localeCompare(y.cas||'99'));
+  $('tasks').innerHTML = (g('⚠ Po termínu', '#da1668', b.late.sort((x,y)=>x.due.localeCompare(y.due)))
+    + g('Dnes', '#b8860b', byT(b.today)) + g('Tento týden', '#83502e', b.week.sort((x,y)=>x.due.localeCompare(y.due)))
+    + g('Později / bez data', '#8a6a4e', b.later)
+    + (b.rut.length ? `<details style="margin-top:10px"><summary class="grp" style="color:#6fa044;cursor:pointer">🔁 Všechny rutiny (${b.rut.length})</summary>${b.rut.map(r => taskRow({...r, _occ: undefined})).join('')}</details>` : ''))
+    || '<span class="ok">✓ Hotovo, nic nečeká.</span>';
+}
+async function done(id, occ, el) {
+  const x = TASKS.find(t => t.id === id); if (!x) return;
+  el.disabled = true;
+  const patch = x.typ === 'rutina' ? {posledni: occ || TODAY()} : {done: true, doneDate: TODAY()};
+  Object.assign(x, patch); renderTasks(); renderCal(); renderAgenda();
+  try { await NWData.patch('ukoly', id, patch); } catch (e) { alertMsg('Uložení selhalo: ' + e.message); }
+}
+let delId = null;
+function askDel(id) {
+  const x = TASKS.find(t => t.id === id); delId = id;
+  $('dlg-t').textContent = 'Smazat?';
+  $('dlg-b').innerHTML = `<p>Opravdu smazat <b>${esc(x?.text)}</b>${x?.typ==='rutina'?' (celou rutinu)':''}? Nejde vrátit.</p>
+    <button class="btn" style="background:#da1668" onclick="reallyDel()">Ano, smazat</button>`;
+  $('dlgf').style.display = 'none'; dlg.showModal();
+}
+async function reallyDel() {
+  const id = delId; dlg.close(); TASKS = TASKS.filter(t => t.id !== id); renderTasks(); renderCal(); renderAgenda();
+  try { await NWData.remove('ukoly', id); } catch (e) { alertMsg('Smazání selhalo: ' + e.message); }
+}
+function alertMsg(m) { $('dlg-t').textContent = 'Upozornění'; $('dlg-b').innerHTML = `<p>${esc(m)}</p>`; $('dlgf').style.display='none'; dlg.showModal(); }
+
+async function addTask(text, due, cas, rep, obl, urg) {
+  const id = (rep ? 'r_' : 'u_') + Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+  let data = {typ: rep ? 'rutina' : 'ukol', text, cas: cas || '', oblast: obl || '', priorita: urg ? 'urgent' : 'normal', vytvoreno: TODAY(), zdroj: 'wolf'};
+  if (rep) {
+    const d = due ? new Date(due + 'T12:00') : new Date();
+    const o = {freq: rep};
+    if (rep === 'tydne') o.den = (d.getDay() + 6) % 7;
+    if (rep === 'mesicne') o.den = d.getDate();
+    if (rep === 'rocne') { o.den = d.getDate(); o.mesic = d.getMonth() + 1; }
+    Object.assign(data, {opakovani: o, od: due || TODAY(), posledni: '', pripomenout: true});
+  } else Object.assign(data, {due: due || '', done: false, pripomenout: !!cas});
+  TASKS.push({...data, id}); renderTasks(); renderCal(); renderAgenda();
+  try { await NWData.put('ukoly', id, data); } catch (e) { alertMsg('Uložení selhalo: ' + e.message); }
+}
+$('addf').addEventListener('submit', e => { e.preventDefault();
+  const t = $('f-text').value.trim(); if (!t) return;
+  addTask(t, $('f-due').value, $('f-cas').value, $('f-rep').value, $('f-obl').value, $('f-urg').checked);
+  $('f-text').value = ''; $('f-cas').value = ''; $('f-urg').checked = false; $('f-rep').value = '';
+});
+
+// calendar = Google events + order deadlines + system dates (server) + tasks + routines (here)
+function eventsOn(d) {
+  const s = iso(d), out = [];
+  (W.kalendar || []).filter(e => e.d === s).forEach(e => out.push({cls: e.zdroj, t: e.t, text: e.text + (e.rep ? ' · ' + e.rep : '')}));
+  TASKS.forEach(x => {
+    if ((x.typ||'ukol') === 'ukol' && x.due === s) out.push({cls: x.done ? 'ukol' : (s < TODAY() ? 'late' : 'ukol'), t: x.cas, text: (x.done ? '✓ ' : '') + x.text});
+    if (x.typ === 'rutina' && !x.pauza && occursOn(x, d) && !['denne','pracovni'].includes(x.opakovani?.freq))
+      out.push({cls: 'rutina', t: x.cas, text: ((x.posledni||'') >= s ? '✓ ' : '🔁 ') + x.text});
+  });
+  return out.sort((a,b) => (a.t||'99').localeCompare(b.t||'99'));
+}
+function shift(n) { calRef = new Date(calRef.getFullYear(), calRef.getMonth() + n, 1); renderCal(); }
+function renderCal() {
+  const y = calRef.getFullYear(), m = calRef.getMonth();
+  $('cal-t').textContent = MES[m] + ' ' + y;
+  $('cal-src').textContent = W.kalendar_google ? '✓ Google kalendář napojen' : 'Google kalendář zatím nenapojen';
+  const first = new Date(y, m, 1), start = new Date(first); start.setDate(1 - ((first.getDay() + 6) % 7));
+  let h = DNY.map(d => `<div class="dn">${d}</div>`).join('');
+  for (let i = 0; i < 42; i++) {
+    const d = new Date(start); d.setDate(start.getDate() + i);
+    if (i >= 35 && d.getMonth() !== m) break;
+    const ev = eventsOn(d);
+    h += `<div class="day ${d.getMonth()!==m?'out':''} ${iso(d)===TODAY()?'today':''}" onclick="openDay('${iso(d)}')"><div class="d">${d.getDate()}</div>`
+      + ev.slice(0,4).map(e => `<div class="ev ${e.cls}" title="${esc((e.t?e.t+' ':'')+e.text)}">${e.t?esc(e.t)+' ':''}${esc(e.text)}</div>`).join('')
+      + (ev.length > 4 ? `<div class="muted" style="font-size:11px">+${ev.length-4}</div>` : '') + '</div>';
+  }
+  $('cal').innerHTML = h;
+}
+let dlgDay = null;
+function openDay(s) {
+  dlgDay = s; const d = new Date(s + 'T12:00'), ev = eventsOn(d);
+  $('dlg-t').textContent = DNY_L[d.getDay()] + ' ' + dm(s);
+  $('dlg-b').innerHTML = ev.length ? ev.map(e => `<div class="ev ${e.cls}" style="font-size:13px;white-space:normal;padding:4px 7px">${e.t?'<b>'+esc(e.t)+'</b> ':''}${esc(e.text)}</div>`).join('') : '<p class="muted">Nic naplánováno.</p>';
+  $('dlgf').style.display = 'flex'; $('dlg-text').value = ''; dlg.showModal(); $('dlg-text').focus();
+}
+$('dlgf').addEventListener('submit', e => { e.preventDefault(); const t = $('dlg-text').value.trim(); if (!t) return;
+  addTask(t, dlgDay, $('dlg-cas').value, '', '', false); dlg.close(); });
+
+function renderAgenda() {
+  let h = '';
+  for (let i = 0; i < 14; i++) {
+    const d = new Date(); d.setDate(d.getDate() + i);
+    const ev = eventsOn(d); if (!ev.length) continue;
+    h += `<div class="grp" style="color:${i?'#83502e':'#b8860b'}">${i===0?'Dnes':i===1?'Zítra':DNY_L[d.getDay()]+' '+dm(iso(d))}</div>`
+      + ev.map(e => `<div class="row"><span class="t">${esc(e.t||'')}</span><span class="ev ${e.cls}" style="font-size:13px;white-space:normal">${esc(e.text)}</span></div>`).join('');
+  }
+  $('agenda').innerHTML = h || '<span class="muted">Příštích 14 dní je volno.</span>';
+}
+
+function renderObch() {
+  if (!OB || !OB.obdobi) { $('obch').innerHTML = '<span class="muted">Data obchodníků zatím nejsou.</span>'; return; }
+  const per = Object.keys(OB.obdobi).sort().reverse();
+  const pick = per.find(p => p.length === 4) || per[0];
+  $('ob-p').textContent = pick;
+  const rows = Object.entries(OB.obdobi[pick] || {}).sort((a,b) => (b[1].obrat||0) - (a[1].obrat||0));
+  $('obch').innerHTML = `<table class="rep"><tr><th>Obchodník</th><th>Nabídky</th><th>Zakázky</th><th>Obrat</th><th>Zisk</th></tr>`
+    + rows.map(([r, v]) => `<tr><td><b>${esc(r)}</b></td><td>${v.nabidky||0}</td><td>${v.zakazky||0}</td><td>${kc(v.obrat)}</td><td>${v.zisk!=null?kc(v.zisk):'—'}</td></tr>`).join('')
+    + `</table><p class="muted" style="margin:6px 0 0">Podrobně po měsících v <a href="ja.html" style="color:#83502e">klasickém dashboardu</a>.</p>`;
+}
+
+async function loadPublic() {
+  const get = u => fetch(u + '?_=' + Date.now()).then(r => r.ok ? r.json() : null).catch(() => null);
+  const [st, ads, tk] = await Promise.all([get('shoptet-stats.json'), get('report_ads.json'), get('trojkontrola.json')]);
+  const z = W.zakazky || {}, s = z.stavy || {};
+  const k = [];
+  if (st) k.push(['Tržby dnes', kc(st.today?.revenue), `${st.today?.count||0} obj. · včera ${kc(st.yesterday?.revenue)}`]);
+  if (ads) { const c = Object.values(ads.channels||{}); const sp = c.reduce((a,x)=>a+(x.spend||0),0), rv = c.reduce((a,x)=>a+(x.revenue||0),0);
+    k.push(['Reklamy 7 dní', rv ? (sp/rv*100).toFixed(1).replace('.',',') + ' % PNO' : '—', `útrata ${kc(sp)} · tržby ${kc(rv)}`]); }
+  k.push(['Zakázky', (s.zakazka||0)+(s.k2||0)+(s.vyroba||0), `nabídky ${s.nabidka||0} · výroba ${s.vyroba||0} · hotovo ${s.hotovo||0}`]);
+  const ts = (tk && tk.souhrn) || W.trojkontrola || {};
+  if (ts.produkty) k.push(['Spec ↔ štítek ↔ web', `${ts.ok}/${ts.produkty}`, `nesedí: spec ${ts.spec} · štítek ${ts.stitek} · web ${ts.web}`]);
+  k.push(['Měsíční ceníky', (W.ceniky_mesicni||[]).length + ' firem', 'odchází 1. v měsíci v 7:30']);
+  $('kpis').innerHTML = k.map(([l,v,s]) => `<div class="kpi"><div class="l">${esc(l)}</div><div class="v">${esc(v)}</div><div class="s">${esc(s)}</div></div>`).join('');
+  if (ads) {
+    $('ads').innerHTML = `<table class="rep"><tr><th>Kanál</th><th>Útrata</th><th>Tržby</th><th>PNO</th></tr>` + Object.entries(ads.channels||{}).map(([n,c]) =>
+      `<tr><td><b>${esc(n)}</b></td><td>${kc(c.spend)}</td><td>${kc(c.revenue)}</td><td style="color:${c.pno<20?'#6fa044':c.pno<40?'#b8860b':'#da1668'};font-weight:700">${(c.pno??0).toString().replace('.',',')} %</td></tr>`).join('')
+      + `</table><p class="muted" style="margin:6px 0 0">${esc(ads.period||'')} · ${esc((ads.anomalies||[]).join(' · '))}</p>`;
+  }
+}
+
+if (localStorage.getItem('nw_master') === '' && localStorage.getItem('nw_me')) { $('app').style.display='none'; $('lock').style.display='block'; }
+else loadAll();
+setInterval(() => { if (!document.hidden) loadAll(); }, 15 * 60e3);
+</script>
+</body>
+</html>
