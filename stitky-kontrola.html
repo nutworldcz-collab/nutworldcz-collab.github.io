@@ -91,6 +91,19 @@ textarea{resize:vertical;min-height:130px;font-family:monospace;font-size:12px;l
 
 <div class="container">
 
+  <!-- Trojkontrola (server, každé ráno 6:10 + při změně specifikací) -->
+  <div class="card" id="troj">
+    <div class="card-title">⚖️ Trojkontrola: specifikace ↔ štítek ↔ web <span id="troj-gen" style="font-weight:400;font-size:12px;color:#a08060"></span></div>
+    <div id="troj-sum" style="font-size:13px;margin:4px 0 8px">Načítám…</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
+      <input type="text" id="troj-q" placeholder="Hledat kód nebo název…" style="flex:1;min-width:160px;padding:7px 10px;border:1.5px solid #e0cdb8;border-radius:8px" oninput="trojRender()">
+      <select id="troj-s" onchange="trojRender()" style="padding:7px;border:1.5px solid #e0cdb8;border-radius:8px">
+        <option value="">vše</option><option value="spec">specifikace</option><option value="stitek">štítek</option><option value="web">web</option></select>
+    </div>
+    <div id="troj-list" style="max-height:520px;overflow:auto;font-size:13px"></div>
+    <div style="font-size:12px;color:#a08060;margin-top:8px">⛔ Chyba ve specifikaci nebo štítku = štítek se nevytiskne (karta v Trellu dostane komentář). Chyba na webu = štítek se vytiskne, ale popis na e-shopu je potřeba opravit.</div>
+  </div>
+
   <!-- Krok 1: Produkty -->
   <div class="card">
     <div class="card-title">1. Vyber produkty ze specifikace (max 10)</div>
@@ -441,6 +454,29 @@ function clearAll() {
   document.getElementById('pdf-preview-wrap').style.display = 'none';
   document.getElementById('pdf-status').style.display = 'none';
   document.getElementById('result-card').style.display = 'none';
+}
+</script>
+<script>
+let TROJ = null;
+const T_SEC = {spec: 'Specifikace', stitek: 'Štítek', web: 'Web'};
+fetch('trojkontrola.json?_=' + Date.now()).then(r => r.ok ? r.json() : null).then(j => { TROJ = j; trojRender(); }).catch(() => {});
+function trojRender() {
+  const el = document.getElementById('troj-list');
+  if (!TROJ) { document.getElementById('troj-sum').textContent = 'Výsledky zatím nejsou.'; return; }
+  const s = TROJ.souhrn || {};
+  document.getElementById('troj-gen').textContent = '· ' + (TROJ.generated || '').replace('T', ' ');
+  document.getElementById('troj-sum').innerHTML = `<b style="color:#6fa044">${s.ok} / ${s.produkty} v pořádku</b> · nesedí specifikace <b>${s.spec}</b> · štítek <b>${s.stitek}</b> · web <b>${s.web}</b>`;
+  const q = document.getElementById('troj-q').value.trim().toLowerCase(), sec = document.getElementById('troj-s').value;
+  const esc = x => String(x ?? '').replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  const rows = [];
+  Object.entries(TROJ.polozky || {}).forEach(([kod, it]) => {
+    if (q && !(kod.toLowerCase().includes(q) || (it.nazev || '').toLowerCase().includes(q))) return;
+    const ps = ['cz', 'sk'].flatMap(l => (it[l] || []).filter(p => p.uroven !== 'info' && (!sec || p.sekce === sec)).map(p => ({...p, l})));
+    if (!ps.length) return;
+    rows.push(`<div style="padding:8px 0;border-bottom:1px solid #f0e4d6"><b>${esc(kod)}</b> ${esc(it.nazev)}` + ps.map(p =>
+      `<div style="margin:3px 0 0 10px;color:${p.uroven === 'chyba' ? (p.sekce === 'web' ? '#b8860b' : '#da1668') : '#8a6a4e'}">${p.l.toUpperCase()} · <b>${T_SEC[p.sekce]}</b> · ${esc(p.text)}</div>`).join('') + '</div>');
+  });
+  el.innerHTML = rows.join('') || '<div style="color:#6fa044;font-weight:700">✓ Nic nenalezeno.</div>';
 }
 </script>
 </body>
