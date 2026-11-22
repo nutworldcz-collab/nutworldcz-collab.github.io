@@ -351,9 +351,13 @@ function renderObch() {
   const pick = per.find(p => p.length === 4) || per[0];
   $('ob-p').textContent = pick;
   const rows = Object.entries(OB.obdobi[pick] || {}).sort((a,b) => (b[1].obrat||0) - (a[1].obrat||0));
-  $('obch').innerHTML = `<table class="rep"><tr><th>Obchodník</th><th>Nabídky</th><th>Zakázky</th><th>Obrat</th><th>Zisk</th></tr>`
-    + rows.map(([r, v]) => `<tr><td><b>${esc(r)}</b></td><td>${v.nabidky||0}</td><td>${v.zakazky||0}</td><td>${kc(v.obrat)}</td><td>${v.zisk!=null?kc(v.zisk):'—'}</td></tr>`).join('')
-    + `</table><p class="muted" style="margin:6px 0 0">Podrobně po měsících v <a href="ja.html" style="color:#83502e">klasickém dashboardu</a>.</p>`;
+  const pct = (a, b) => b ? Math.round(a / b * 100) : 0;
+  $('obch').innerHTML = `<table class="rep"><tr><th>Obchodník</th><th>Nabídky</th><th>Zakázky</th><th>Obrat</th><th>Marže</th><th>Zisk (odhad)</th></tr>`
+    + rows.map(([r, v]) => `<tr><td><b>${esc(r === '—' ? 'bez obchodníka' : r)}</b></td><td>${v.nabidky||0}</td><td>${v.zakazky||0}</td><td>${kc(v.obrat)}</td>`
+      + `<td style="color:${v.marze==null?'#8a6a4e':v.marze<30?'#da1668':'#6fa044'};font-weight:700">${v.marze==null?'—':v.marze.toFixed(1).replace('.',',')+' %'}</td>`
+      + `<td>${v.marze==null?'—':'≈ '+kc(v.obrat*v.marze/100)}<div class="muted" style="font-size:11px">ověřeno z ${pct(v.obrat_se_ziskem||0, v.obrat)} % obratu</div></td></tr>`).join('')
+    + `</table><p class="muted" style="margin:6px 0 0">⚠ Zatím jen zakázky se zapsanou částkou (karty z formuláře zakázky od 8/2026). Marže jen ze zakázek propojených s nabídkou, zisk = obrat × marže.
+       Přesný obrat a zisk dodá export faktur z K2. Podrobně v <a href="ja.html" style="color:#83502e">klasickém dashboardu</a>.</p>`;
 }
 
 async function loadPublic() {
