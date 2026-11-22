@@ -1,11 +1,11 @@
 {
-  "generated": "2026-11-22T07:19:44",
+  "generated": "2026-11-22T17:41:41",
   "souhrn": {
     "produkty": 311,
-    "ok": 179,
-    "spec": 4,
+    "ok": 181,
+    "spec": 5,
     "stitek": 34,
-    "web": 111,
+    "web": 109,
     "vypnute": 15
   },
   "web": true,
@@ -1282,6 +1282,11 @@
       ],
       "sk": [
         {
+          "sekce": "spec",
+          "uroven": "chyba",
+          "text": "novější specifikace není zpracovaná: 1823_Sklzas_twist mix 2026 04 -Diana"
+        },
+        {
           "sekce": "stitek",
           "uroven": "chyba",
           "text": "chybí údaj „energie“"
@@ -1930,43 +1935,6 @@
         }
       ],
       "nazev": "FITNESS SMĚS JADER A SUŠENÉHO OVOCE"
-    },
-    "3110": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „SÓJY“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "energie: web chybí · spec 1929 kJ / 460 kcal"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "nasycene: na webu chybí (spec 19,0 g)"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 87 %) — web: „POLEVA S JOGURTOVOU PRÍCHUŤOU 54 ± 3 % (cukor, plne stužený palmovojadrový tuk, sušená SYROVÁTKA , sušený jogurt 2 % ( MLIEKO , jogurtová kultúra), regulátor ky“ · spec: „POLEVA S JOGURTOVOU PRÍCHUŤOU 54 ± 3 % – cukor, plne stužený palmojaderný tuk, sušená srvátka (MLIEKO), sušený jogurt 2 % (MLIEKO, jogurtová kultúra), regulátor“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "energie: web chybí · spec 1929 kJ / 460 kcal"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "nasycene: na webu chybí (spec 19,0 g)"
-        }
-      ],
-      "nazev": "ANANAS V POLEVĚ S JOGURTOVOU PŘÍCHUTÍ"
     },
     "3111": {
       "cz": [
@@ -2689,73 +2657,6 @@
         }
       ],
       "nazev": "ARAŠÍDY V KARAMELU S CHILLI"
-    },
-    "4182": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 69 %) — web: „: Bílá čokoláda 91% (cukr, kakaové máslo ,sušené plnotučné MLÉKO , sušená SYROVÁTKA (MLÉKO) ,emulgátor: SOJOVÝ lecitin, přírodní vanilkové aroma), jahody 5%, gl“ · spec: „Bílá čokoláda 91 % (cukr, kakaové máslo, sušené plnotučné MLÉKO, sušená SYROVÁTKA (MLÉKO), emulgátor: SOJOVÝ lecitin, přírodní vanilkové aroma), mrazem sušené j“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „OBILOVINY OBSAHUJÍCÍ LEPEK“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „SO2/SIŘIČITANY“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "energie: web 2187kj /524kcal · spec 2133 kJ / 510 kcal"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "tuky: web 30.7 g · spec 26.8 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "nasycene: web 9.8 g · spec 16 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "sacharidy: na webu chybí (spec 61,4 g)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "cukry: web 42 g · spec 60.4 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "bilkoviny: web 6.6 g · spec 4.9 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "sul: web 0.02 g · spec 0.26 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "země původu: web „: Holandsko Alergeny: Může obsahovat stopy lepku, ostatních “ · spec „Nizozemsko“"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "nazev": "LYOFILIZOVANÉ JAHODY V JOGURTOVÉ ČOKOLÁDĚ"
     },
     "4296": {
       "cz": [],
