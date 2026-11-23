@@ -1,11 +1,11 @@
 {
-  "generated": "2026-11-23T12:12:38",
+  "generated": "2026-11-23T12:17:31",
   "souhrn": {
     "produkty": 352,
-    "ok": 207,
+    "ok": 211,
     "spec": 5,
     "stitek": 33,
-    "web": 121,
+    "web": 117,
     "vypnute": 16
   },
   "web": true,
@@ -601,17 +601,6 @@
         }
       ],
       "nazev": "MANDLOVÁ MOUKA BLANŠÍROVANÁ, EXTRA JEMNĚ MLETÁ"
-    },
-    "305": {
-      "cz": [],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "nazev": "KEŠU MOUKA"
     },
     "311": {
       "cz": [
@@ -1599,13 +1588,7 @@
           "text": "vlaknina: na webu chybí (spec 4,4 g)"
         }
       ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
+      "sk": [],
       "nazev": "ARAŠÍDY LOUPANÉ PRAŽENÉ V BÍLÉ ČOKOLÁDĚ S KARAMELEM A SOLÍ"
     },
     "1985": {
@@ -1613,7 +1596,7 @@
         {
           "sekce": "web",
           "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
+          "text": "složení „MANDLOVÁ JÁDRA PRAŽENÁ V MLÉČNÉ ČOKOLÁDĚ“ na webu neodpovídá specifikaci (shoda 82 %) — spec: „MLÉČNÁ ČOKOLÁDA 79 % (cukr, kakaové máslo, SUŠENÉ MLÉKO, SUŠENÁ SYROVÁTKA, kakaová hmota, emulgátor: lecitiny (SÓJA), aróma (vanilín)), MAND“"
         }
       ],
       "sk": [
@@ -1805,13 +1788,7 @@
           "text": "sacharidy: na webu chybí (spec 93 g)"
         }
       ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
+      "sk": [],
       "nazev": "PAPAYA KOSTKY BEZ SO2"
     },
     "2307": {
@@ -1890,23 +1867,6 @@
         }
       ],
       "nazev": "SEMÍNKOVÁ SMĚS"
-    },
-    "2504": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "nazev": "LÍSKOVÉ OŘECHY TŘÍBAREVNÉ"
     },
     "2537": {
       "cz": [
@@ -2011,17 +1971,6 @@
         }
       ],
       "nazev": "SLADKÁ SMĚS DELUXE"
-    },
-    "2738": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "sk": [],
-      "nazev": "MANDLE A MERUŇKY DRAŽOVANÉ"
     },
     "2747": {
       "cz": [
@@ -2248,53 +2197,20 @@
           "sekce": "stitek",
           "uroven": "info",
           "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
         }
       ],
       "nazev": "ČOKOLÁDOVÉ MANDLE FIALOVÉ BORŮVKOVÉ MLÉČNÉ VÍDEŇSKÉ"
     },
     "3661": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
+      "cz": [],
       "sk": [
         {
           "sekce": "web",
           "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
+          "text": "SK stránka má české legislativní nadpisy: Složení:, Může obsahovat stopy, Bílkoviny, Aktuální trvanlivost, Země původu"
         }
       ],
       "nazev": "MANDLE MALINOVÉ"
-    },
-    "3702": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        }
-      ],
-      "nazev": "ČOKOLÁDOVÉ ARAŠÍDOVÉ KOUSKY KARAMEL MOŘSKÁ SŮL"
     },
     "3703": {
       "cz": [
@@ -2306,7 +2222,7 @@
         {
           "sekce": "web",
           "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
+          "text": "složení „ČOKOLÁDOVÉ ARAŠÍDOVÉ KOUSKY BÍLÉ“ na webu neodpovídá specifikaci (shoda 85 %) — spec: „ARAŠÍDY (50 %), cukr (26,5 %), kakaové máslo (12,5 %), celé MLÉKO v prášku (7,3 %), laktóza (z MLÉKA) (2,5 %), odtučněné MLÉKO v prášku (1 %“"
         }
       ],
       "sk": [
@@ -2333,7 +2249,7 @@
         {
           "sekce": "web",
           "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
+          "text": "složení „ČOKOLÁDOVÉ ARAŠÍDOVÉ KOUSKY MLÉČNÉ“ na webu neodpovídá specifikaci (shoda 87 %) — spec: „ARAŠÍDY (50 %), cukr (24,5 %), kakaové máslo (10,3 %), celé sušené MLÉKO (6,8 %), kakaová hmota (3,5 %), syrovátkový prášek (obsahuje MLÉKO)“"
         }
       ],
       "sk": [
@@ -2345,7 +2261,12 @@
         {
           "sekce": "web",
           "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
+          "text": "složení „ČOKOLÁDOVÉ ARAŠÍDOVÉ KÚSKY MLIEČNE“ na webu neodpovídá specifikaci (shoda 79 %) — spec: „ARAŠIDY (50 %), cukor (24,5 %), kakaové maslo (10,3 %), celé sušené MLIEKO (6,8 %), kakaová hmota (3,5 %), srvátkovný prášok (obsahuje MLIEK“"
+        },
+        {
+          "sekce": "web",
+          "uroven": "chyba",
+          "text": "SK stránka má české legislativní nadpisy: Složení:, Může obsahovat stopy, Bílkoviny, Aktuální trvanlivost, Země původu"
         }
       ],
       "nazev": "ČOKOLÁDOVÉ ARAŠÍDOVÉ KOUSKY MLÉČNÉ"
@@ -2356,11 +2277,6 @@
           "sekce": "stitek",
           "uroven": "info",
           "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
         }
       ],
       "sk": [
@@ -2372,7 +2288,7 @@
         {
           "sekce": "web",
           "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
+          "text": "SK stránka má české legislativní nadpisy: Složení:, Může obsahovat stopy, Bílkoviny, Aktuální trvanlivost, Země původu"
         }
       ],
       "nazev": "ČOKOLÁDOVÉ ARAŠÍDOVÉ KOUSKY HOŘKÉ"
@@ -2665,11 +2581,6 @@
           "sekce": "stitek",
           "uroven": "info",
           "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
         }
       ],
       "nazev": "ČOKOLÁDOVÉ MANDLE VÍDEŇSKÉ - RŮŽOVÁ/BÍLÁ"
@@ -2860,18 +2771,12 @@
       "nazev": "ARAŠÍDOVÉ HRUDKY MIX BAREV"
     },
     "4446": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
+      "cz": [],
       "sk": [
         {
           "sekce": "web",
           "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
+          "text": "SK stránka má české legislativní nadpisy: Složení:, Může obsahovat stopy, Bílkoviny, Aktuální trvanlivost, Země původu"
         }
       ],
       "nazev": "KEŠU TŘÍ BAREV"
@@ -2962,31 +2867,19 @@
         {
           "sekce": "web",
           "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
+          "text": "složení „BANÁN KANDOVANÝ FRITOVANÝ (CHIPS) V BÍLÉ“ na webu neodpovídá specifikaci (shoda 88 %) — spec: „Banán kandovaný fritovaný plátky 50 % (banán, kokosový olej, cukr, banánové aroma), bílá čokoláda 49 % (cukr, kakaové máslo, SUŠENÉ MLÉKO, e“"
         }
       ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
+      "sk": [],
       "nazev": "BANÁNOVÉ CHIPSY TŘÍBAREVNÉ"
     },
     "5484": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
+      "cz": [],
       "sk": [
         {
           "sekce": "web",
           "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
+          "text": "SK stránka má české legislativní nadpisy: Složení:, Může obsahovat stopy, Bílkoviny, Aktuální trvanlivost, Země původu"
         }
       ],
       "nazev": "ARAŠÍDY TŘÍ BAREV"
@@ -3228,11 +3121,6 @@
           "sekce": "stitek",
           "uroven": "chyba",
           "text": "alergen ve složení není zvýrazněn VELKÝM písmem: mléko"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
         }
       ],
       "sk": [
@@ -3249,7 +3137,7 @@
         {
           "sekce": "web",
           "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
+          "text": "SK stránka má české legislativní nadpisy: Složení:, Může obsahovat stopy, Bílkoviny, Aktuální trvanlivost, Země původu"
         }
       ],
       "nazev": "ŽELÉ SRDÍČKA S OVOCNOU PŘÍCHUTÍ"
@@ -4740,7 +4628,7 @@
         {
           "sekce": "web",
           "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
+          "text": "stopové alergeny: „SUCHÉ SKOŘÁPKOVÉ PLODY“ chybí na webu"
         }
       ],
       "sk": [
@@ -4752,7 +4640,12 @@
         {
           "sekce": "web",
           "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
+          "text": "stopové alergeny: „SUCHÉ ŠKRUPINOVÉ PLODY“ chybí na webu"
+        },
+        {
+          "sekce": "web",
+          "uroven": "chyba",
+          "text": "SK stránka má české legislativní nadpisy: Složení:, Může obsahovat stopy, Bílkoviny, Aktuální trvanlivost, Země původu"
         }
       ],
       "nazev": "ARAŠÍDY WASABI MIX"
