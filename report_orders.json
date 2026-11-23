@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-23T17:01:39",
+  "generated": "2026-11-23T18:01:32",
   "days": [
     "2026-11-17",
     "2026-11-18",
@@ -11,16 +11,16 @@
   ],
   "cz": {
     "summary": {
-      "count": 421,
-      "total": 771657.0,
+      "count": 423,
+      "total": 773719.0,
       "currency": "CZK",
-      "paid": 287,
+      "paid": 289,
       "unpaid": 134,
       "dobir": 98,
       "vyrizena": 56,
       "stornovana": 2
     },
-    "confirmed": 331,
+    "confirmed": 333,
     "rozklad": [
       {
         "parent": "Ořechy",
@@ -3361,6 +3361,21 @@
                     }
                   },
                   {
+                    "name": "Kešu jádra pražená solená s uzenou příchutí 60g",
+                    "code": "728",
+                    "qty": 2,
+                    "by_date": {
+                      "2026-11-17": 0,
+                      "2026-11-18": 0,
+                      "2026-11-19": 0,
+                      "2026-11-20": 0,
+                      "2026-11-21": 0,
+                      "2026-11-22": 1,
+                      "2026-11-23": 1
+                    },
+                    "is_gift": true
+                  },
+                  {
                     "name": "Ořechy DELUXE ve skle - více druhů 180g — Co dáme?: Kešu uzené WW320",
                     "code": "2531/KES2",
                     "qty": 1,
@@ -3387,21 +3402,6 @@
                       "2026-11-22": 0,
                       "2026-11-23": 0
                     }
-                  },
-                  {
-                    "name": "Kešu jádra pražená solená s uzenou příchutí 60g",
-                    "code": "728",
-                    "qty": 1,
-                    "by_date": {
-                      "2026-11-17": 0,
-                      "2026-11-18": 0,
-                      "2026-11-19": 0,
-                      "2026-11-20": 0,
-                      "2026-11-21": 0,
-                      "2026-11-22": 1,
-                      "2026-11-23": 0
-                    },
-                    "is_gift": true
                   }
                 ]
               },
@@ -3454,7 +3454,7 @@
                   {
                     "name": "Kešu ořechy suché pražení s česnekem a rozmarýnem 60g",
                     "code": "5364",
-                    "qty": 6,
+                    "qty": 7,
                     "by_date": {
                       "2026-11-17": 0,
                       "2026-11-18": 1,
@@ -3462,7 +3462,7 @@
                       "2026-11-20": 1,
                       "2026-11-21": 1,
                       "2026-11-22": 1,
-                      "2026-11-23": 0
+                      "2026-11-23": 1
                     },
                     "is_gift": true
                   },
@@ -3543,6 +3543,21 @@
                     }
                   },
                   {
+                    "name": "Kešu s příchutí chilli 60g",
+                    "code": "2537",
+                    "qty": 2,
+                    "by_date": {
+                      "2026-11-17": 0,
+                      "2026-11-18": 0,
+                      "2026-11-19": 0,
+                      "2026-11-20": 0,
+                      "2026-11-21": 0,
+                      "2026-11-22": 1,
+                      "2026-11-23": 1
+                    },
+                    "is_gift": true
+                  },
+                  {
                     "name": "Kešu chilli PRO MUŽE s knírem 180g",
                     "code": "4389",
                     "qty": 1,
@@ -3553,21 +3568,6 @@
                       "2026-11-20": 0,
                       "2026-11-21": 0,
                       "2026-11-22": 0,
-                      "2026-11-23": 0
-                    },
-                    "is_gift": true
-                  },
-                  {
-                    "name": "Kešu s příchutí chilli 60g",
-                    "code": "2537",
-                    "qty": 1,
-                    "by_date": {
-                      "2026-11-17": 0,
-                      "2026-11-18": 0,
-                      "2026-11-19": 0,
-                      "2026-11-20": 0,
-                      "2026-11-21": 0,
-                      "2026-11-22": 1,
                       "2026-11-23": 0
                     },
                     "is_gift": true
@@ -3717,7 +3717,7 @@
                   {
                     "name": "Kešu jádra pražená solená 60g",
                     "code": "116",
-                    "qty": 6,
+                    "qty": 7,
                     "by_date": {
                       "2026-11-17": 0,
                       "2026-11-18": 1,
@@ -3725,7 +3725,7 @@
                       "2026-11-20": 1,
                       "2026-11-21": 1,
                       "2026-11-22": 1,
-                      "2026-11-23": 0
+                      "2026-11-23": 1
                     },
                     "is_gift": true
                   },
@@ -3772,6 +3772,21 @@
                     }
                   },
                   {
+                    "name": "Kešu pražené a solené s kari kořením 60g",
+                    "code": "3013",
+                    "qty": 2,
+                    "by_date": {
+                      "2026-11-17": 0,
+                      "2026-11-18": 0,
+                      "2026-11-19": 0,
+                      "2026-11-20": 0,
+                      "2026-11-21": 0,
+                      "2026-11-22": 1,
+                      "2026-11-23": 1
+                    },
+                    "is_gift": true
+                  },
+                  {
                     "name": "Kešu pražené solené ww320 — Množství:: 1 Kg",
                     "code": "116/1 K",
                     "qty": 1,
@@ -3798,21 +3813,6 @@
                       "2026-11-22": 0,
                       "2026-11-23": 0
                     }
-                  },
-                  {
-                    "name": "Kešu pražené a solené s kari kořením 60g",
-                    "code": "3013",
-                    "qty": 1,
-                    "by_date": {
-                      "2026-11-17": 0,
-                      "2026-11-18": 0,
-                      "2026-11-19": 0,
-                      "2026-11-20": 0,
-                      "2026-11-21": 0,
-                      "2026-11-22": 1,
-                      "2026-11-23": 0
-                    },
-                    "is_gift": true
                   },
                   {
                     "name": "Kešu karamelizované solené — Množství:: 200g",
@@ -4083,6 +4083,21 @@
                     }
                   },
                   {
+                    "name": "Kešu ořechy bbq 60g",
+                    "code": "5358",
+                    "qty": 2,
+                    "by_date": {
+                      "2026-11-17": 0,
+                      "2026-11-18": 0,
+                      "2026-11-19": 0,
+                      "2026-11-20": 0,
+                      "2026-11-21": 0,
+                      "2026-11-22": 1,
+                      "2026-11-23": 1
+                    },
+                    "is_gift": true
+                  },
+                  {
                     "name": "Kešu tří barev — Množství:: 200g",
                     "code": "4446/200",
                     "qty": 2,
@@ -4165,21 +4180,6 @@
                       "2026-11-22": 1,
                       "2026-11-23": 0
                     }
-                  },
-                  {
-                    "name": "Kešu ořechy bbq 60g",
-                    "code": "5358",
-                    "qty": 1,
-                    "by_date": {
-                      "2026-11-17": 0,
-                      "2026-11-18": 0,
-                      "2026-11-19": 0,
-                      "2026-11-20": 0,
-                      "2026-11-21": 0,
-                      "2026-11-22": 1,
-                      "2026-11-23": 0
-                    },
-                    "is_gift": true
                   },
                   {
                     "name": "Kešu ořechy v těstíčku BBQ v celofánku a kelímku 180g",
@@ -8893,6 +8893,20 @@
                     "is_gift": true
                   },
                   {
+                    "name": "Mini marshmallows — Množství:: 1 Kg",
+                    "code": "4512/1 K",
+                    "qty": 13,
+                    "by_date": {
+                      "2026-11-17": 0,
+                      "2026-11-18": 0,
+                      "2026-11-19": 0,
+                      "2026-11-20": 0,
+                      "2026-11-21": 0,
+                      "2026-11-22": 1,
+                      "2026-11-23": 12
+                    }
+                  },
+                  {
                     "name": "Babiččin ovocný čaj - vanilková jahoda 60 ml",
                     "code": "1433",
                     "qty": 11,
@@ -8933,20 +8947,6 @@
                       "2026-11-21": 3,
                       "2026-11-22": 1,
                       "2026-11-23": 0
-                    }
-                  },
-                  {
-                    "name": "Mini marshmallows — Množství:: 1 Kg",
-                    "code": "4512/1 K",
-                    "qty": 8,
-                    "by_date": {
-                      "2026-11-17": 0,
-                      "2026-11-18": 0,
-                      "2026-11-19": 0,
-                      "2026-11-20": 0,
-                      "2026-11-21": 0,
-                      "2026-11-22": 1,
-                      "2026-11-23": 7
                     }
                   },
                   {
@@ -10458,6 +10458,52 @@
         ]
       },
       {
+        "gift_name": "Dárkový box s kešu – 6x sklenička Exclusive",
+        "gift_code": "4598XEXKES",
+        "qty": 2,
+        "by_date": {
+          "2026-11-17": 0,
+          "2026-11-18": 0,
+          "2026-11-19": 0,
+          "2026-11-20": 0,
+          "2026-11-21": 0,
+          "2026-11-22": 1,
+          "2026-11-23": 1
+        },
+        "ingredients": [
+          {
+            "code": "2537",
+            "name": "Kešu s příchutí chilli 60g",
+            "grams": 60
+          },
+          {
+            "code": "728",
+            "name": "Kešu jádra pražená solená s uzenou příchutí 60g",
+            "grams": 60
+          },
+          {
+            "code": "5364",
+            "name": "Kešu ořechy suché pražení s česnekem a rozmarýnem 60g",
+            "grams": 60
+          },
+          {
+            "code": "116",
+            "name": "Kešu jádra pražená solená 60g",
+            "grams": 60
+          },
+          {
+            "code": "5358",
+            "name": "Kešu ořechy bbq 60g",
+            "grams": 60
+          },
+          {
+            "code": "3013",
+            "name": "Kešu pražené a solené s kari kořením 60g",
+            "grams": 60
+          }
+        ]
+      },
+      {
         "gift_name": "Dárková krabice SLANÁ 3x180g - OŘECHY VE SKLE",
         "gift_code": "4562XSLAN",
         "qty": 1,
@@ -10547,52 +10593,6 @@
             "code": "9601",
             "name": "Karamelizované mandle s vanilkovou příchutí 80g",
             "grams": 80
-          }
-        ]
-      },
-      {
-        "gift_name": "Dárkový box s kešu – 6x sklenička Exclusive",
-        "gift_code": "4598XEXKES",
-        "qty": 1,
-        "by_date": {
-          "2026-11-17": 0,
-          "2026-11-18": 0,
-          "2026-11-19": 0,
-          "2026-11-20": 0,
-          "2026-11-21": 0,
-          "2026-11-22": 1,
-          "2026-11-23": 0
-        },
-        "ingredients": [
-          {
-            "code": "2537",
-            "name": "Kešu s příchutí chilli 60g",
-            "grams": 60
-          },
-          {
-            "code": "728",
-            "name": "Kešu jádra pražená solená s uzenou příchutí 60g",
-            "grams": 60
-          },
-          {
-            "code": "5364",
-            "name": "Kešu ořechy suché pražení s česnekem a rozmarýnem 60g",
-            "grams": 60
-          },
-          {
-            "code": "116",
-            "name": "Kešu jádra pražená solená 60g",
-            "grams": 60
-          },
-          {
-            "code": "5358",
-            "name": "Kešu ořechy bbq 60g",
-            "grams": 60
-          },
-          {
-            "code": "3013",
-            "name": "Kešu pražené a solené s kari kořením 60g",
-            "grams": 60
           }
         ]
       }
