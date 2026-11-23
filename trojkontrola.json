@@ -1,9 +1,9 @@
 {
-  "generated": "2026-11-23T08:13:40",
+  "generated": "2026-11-23T08:20:30",
   "souhrn": {
     "produkty": 349,
     "ok": 182,
-    "spec": 6,
+    "spec": 5,
     "stitek": 33,
     "web": 146,
     "vypnute": 15
@@ -3876,19 +3876,14 @@
     "8656": {
       "cz": [
         {
-          "sekce": "spec",
+          "sekce": "web",
           "uroven": "chyba",
-          "text": "novější specifikace není zpracovaná: 8656_NW_Specifikace_Kesu_prazene_s_lanyzi_NW12_2026_02"
+          "text": "stopové alergeny: „JINÝCH SKOŘÁPKOVÝCH PLODŮ“ chybí na webu"
         },
         {
           "sekce": "web",
           "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 73 %) — web: „: KEŠU OŘECHY, lanýžové aroma (2 %), dehydrovaný prášek z letních lanýžů (0,2 %), tekuté lanýžové aroma (0,02 %), cukr.“ · spec: „KEŠU ořechy, příchuť lanýže (2 %), sušený letní lanýž v prášku (0,2 %), tekuté lanýžové aroma (0,02 %), cukr“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „JINÝCH OŘECHŮ“ chybí na webu"
+          "text": "stopové alergeny: „OXIDU SIŘIČITÉHO“ chybí na webu"
         },
         {
           "sekce": "web",
@@ -3898,19 +3893,19 @@
       ],
       "sk": [
         {
-          "sekce": "spec",
+          "sekce": "web",
           "uroven": "chyba",
-          "text": "novější specifikace není zpracovaná: 8656_NW_Specifikace_Kesu_prazene_s_lanyzi_NW12_2026_02"
+          "text": "složení na webu se liší od specifikace (shoda 97 %) — web: „: KEŠU ORECHY, hľuzovková aróma (2 %), dehydrovaný prášok z letných hľuzoviek (0,2 %), tekutá hľuzovková aróma (0,02 %), cukor.“ · spec: „KEŠU ORECHY, hľuzovkové aróma (2 %), dehydrovaný prášok z letných hľuzoviek (0,2 %), tekuté hľuzovkové aróma (0,02 %), cukor“"
         },
         {
           "sekce": "web",
           "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 55 %) — web: „: KEŠU ORECHY, hľuzovková aróma (2 %), dehydrovaný prášok z letných hľuzoviek (0,2 %), tekutá hľuzovková aróma (0,02 %), cukor.“ · spec: „KEŠU orechy, príchuť hlízovky (2 %), sušená letná hlízovka v prášku (0,2 %), tekutá aróma hlízovky (0,02 %), cukor“"
+          "text": "stopové alergeny: „INÝCH ŠKRUPINOVÝCH PLODOV“ chybí na webu"
         },
         {
           "sekce": "web",
           "uroven": "chyba",
-          "text": "stopové alergeny: „INÝCH ORECHOV“ chybí na webu"
+          "text": "stopové alergeny: „OXIDU SIRIČITÉHO“ chybí na webu"
         },
         {
           "sekce": "web",
@@ -3918,7 +3913,7 @@
           "text": "sacharidy: na webu chybí (spec 29 g)"
         }
       ],
-      "nazev": "PRAŽENÉ KEŠU OŘECHY S LANÝŽI"
+      "nazev": "PRAŽENÉ KEŠU S LANÝŽI"
     },
     "8659": {
       "cz": [
