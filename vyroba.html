@@ -356,6 +356,11 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
   #print-root .nota-body{display:block!important;padding:8px 18px 12px;border-top:2px solid #f7ab31;background:#fffbf4;font-size:13px;color:#5c381f;white-space:pre-wrap}
   .firma-card,icard{box-shadow:none!important;border-radius:0!important;page-break-inside:avoid}
 }
+.obal-vyroba{margin:6px 0 4px;padding:8px 10px;background:#fff8ec;border:1.5px dashed #f7ab31;border-radius:8px;font-size:12px}
+.obal-vyroba-h{font-weight:700;color:#5c381f;margin-bottom:4px}
+.obal-vyroba-l{display:flex;flex-wrap:wrap;gap:4px 6px}
+.obal-vyroba-l span{background:#f1e6da;border-radius:5px;padding:2px 7px;color:#2a1a0e}
+.obal-vyroba-w{margin-top:4px;color:#83502e;font-size:11px}
 </style>
 </head>
 <body>
@@ -712,6 +717,8 @@ function parseCard(card){
       if(!/📦/.test(line)){ const km=line.match(/^\s*[-*]?\s*(\d+)\s*ks\b/); if(km) cur.ks=parseInt(km[1]); }
       const sm=line.match(/📦\s+(.+)/);
       if(sm) cur.slozeni=sm[1].split(', ').map(parseComp).filter(x=>x.nazev||x.kod);
+      const om=line.match(/🧰\s+(.+)/);   // packaging components × pcs (zakazka.html, Jan 2026-11-23)
+      if(om) cur.obal=om[1].trim();
     }
     if(cur) produkty.push(cur);
   }
@@ -1060,6 +1067,16 @@ function buildFirmaCard(card){
         block.appendChild(row);
       });
 
+      if(prod.obal){
+        const [co, vaha] = prod.obal.split(' | ');
+        const m = co.match(/^Obal (.+?): (.+)$/);
+        const ob=document.createElement('div');
+        ob.className='obal-vyroba';
+        ob.innerHTML=`<div class="obal-vyroba-h">🧰 Obalový materiál${m?' — '+vzEsc(m[1]):''}</div>`+
+          `<div class="obal-vyroba-l">${(m?m[2]:co).split(', ').map(x=>`<span>${vzEsc(x)}</span>`).join('')}</div>`+
+          (vaha?`<div class="obal-vyroba-w">${vzEsc(vaha)}</div>`:'');
+        block.appendChild(ob);
+      }
       if(darekKg){
         const foot=document.createElement('div');
         foot.className='darek-footer';

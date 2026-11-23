@@ -526,15 +526,59 @@ function togglePopisProd(i, prefillRows) {
       </div>
       <div class="slozeni-rows" id="slozeni-rows-sp-${i}"></div>
       <button class="slozeni-add-btn" type="button" onclick="addSlozeniRow('sp-${i}')">+ Přidat produkt</button>
+      <div id="obal-box-sp-${i}"></div>
     </div>
   </td>`;
   mainRow.after(tr);
   if (prefillRows && prefillRows.length) {
-    prefillRows.forEach(row => addSlozeniRow('sp-'+i, row));
+    // missing gram / packaging -> from the gift definition (darky.csv)
+    const dk = (typeof DARKY_DATA !== 'undefined' && offerData) ? DARKY_DATA[offerData.produkty[i]?.kod] : null;
+    prefillRows.forEach(row => {
+      const r = { ...row };
+      if (dk && !r.gram) { const o = (dk.obsah || []).find(x => String(x.kod) === String(r.kod)); if (o) r.gram = o.gram + 'g'; }
+      if (dk && !r.obal) r.obal = dk.obal || '';
+      addSlozeniRow('sp-'+i, r);
+    });
   } else {
     addSlozeniRow('sp-'+i);
   }
+  renderObalSp(i);
 }
+
+// ── Obal dárku: komponenty × ks objednávky (obaly-data.js, Jan 2026-11-23) ──
+function obalKeySp(i) {
+  if (typeof NW_OBALY === 'undefined' || !offerData) return null;
+  const p = offerData.produkty[i] || {};
+  const rows = Array.from(document.querySelectorAll('#slozeni-rows-sp-'+i+' .slozeni-row'));
+  const obsah = rows.reduce((s, r) => s + (parseFloat(r.querySelector('.slozeni-gram')?.value) || 0), 0);
+  const first = rows.map(r => r.querySelector('.slozeni-obal')?.value.trim()).find(Boolean);
+  const name = p.obal_sablona || (typeof DARKY_DATA !== 'undefined' && DARKY_DATA[p.kod]?.obal) || first || '';
+  return { key: NW_OBALY.sablona(name, obsah), obsah, ks: p.ks || 1 };
+}
+function renderObalSp(i) {
+  const box = document.getElementById('obal-box-sp-'+i);
+  if (!box || typeof NW_OBALY === 'undefined') return;
+  const o = obalKeySp(i);
+  const key = o && o.key;
+  const nazev = key ? NW_OBALY.sablony[key]?.nazev || '' : '';
+  if (nazev) document.querySelectorAll('#slozeni-rows-sp-'+i+' .slozeni-obal').forEach(inp => { if (!inp.value.trim()) inp.value = nazev; });
+  box.innerHTML = NW_OBALY.select(key, `setObalSp(${i}, this.value)`) + (key ? NW_OBALY.html(key, o.obsah, o.ks) : '');
+}
+function setObalSp(i, key) {
+  if (offerData && offerData.produkty[i]) offerData.produkty[i].obal_sablona = key;
+  const nazev = NW_OBALY.sablony[key]?.nazev || '';
+  document.querySelectorAll('#slozeni-rows-sp-'+i+' .slozeni-obal').forEach(inp => inp.value = nazev);
+  renderObalSp(i);
+}
+function obalTextSp(i) {
+  const o = obalKeySp(i);
+  return o && o.key ? NW_OBALY.text(o.key, o.obsah, o.ks) : '';
+}
+document.addEventListener('input', e => {
+  if (!e.target.matches?.('.slozeni-gram, .slozeni-obal')) return;
+  const wrap = e.target.closest('.slozeni-rows');
+  if (wrap && wrap.id.startsWith('slozeni-rows-sp-')) renderObalSp(+wrap.id.replace('slozeni-rows-sp-', ''));
+});
 
 function addSlozeniRow(cid, prefill) {
   const rows = document.getElementById('slozeni-rows-'+cid);
@@ -725,9 +769,10 @@ async function createTrelloCard() {
   const prodDesc = d.produkty.map((p, idx) => {
     const c = p.ks * p.cena; totalBez += c;
     const slozeni = getSlozeniText('sp-'+idx);
+    const obalTxt = p.sluzba ? '' : obalTextSp(idx);
     const sluLabel = p.sluzba ? ' *(služba)*' : '';
     return `**${p.nazev}**${sluLabel}\n- ${p.ks} ks | prod. ${p.cena.toFixed(2)} ${curSym} | celkem ${num(c.toFixed(0))} ${curSym}` +
-      (slozeni ? `\n  📦 ${slozeni}` : '');
+      (slozeni ? `\n  📦 ${slozeni}` : '') + (obalTxt ? `\n  🧰 ${obalTxt}` : '');
   }).join('\n\n');
 
   const dopravaNabidkaZ = d.doprava || 0;
@@ -935,6 +980,7 @@ function showError(msg) {
 function hideError() { document.getElementById('link-error').style.display = 'none'; }
 </script>
 <script src="darky-data.js"></script>
+<script src="obaly-data.js"></script>
 <script src="pin-guard.js"></script>
 </body>
 </html>

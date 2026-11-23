@@ -474,6 +474,7 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
           </optgroup>
         </select>
       </div>
+      <div id="d-obal-rozpis"></div>
       <div class="grid2">
         <div class="field">
           <label>Obal (Kč bez DPH)</label>
@@ -1419,6 +1420,12 @@ function dCalculate() {
   const valid = dRows.filter(r => r && r.product && r.gramaz > 0);
 
   const totalG = valid.reduce((s, r) => s + r.gramaz, 0);
+  // packaging bill of materials of the chosen template (obaly-data.js)
+  const _rz = document.getElementById('d-obal-rozpis');
+  if (_rz && typeof NW_OBALY !== 'undefined') {
+    const _k = document.getElementById('d-vzorec-sel').value;
+    _rz.innerHTML = _k ? NW_OBALY.html(_k, totalG, parseInt(document.getElementById('d-kalk-ks')?.value) || 1) : '';
+  }
   const prodCost = valid.reduce((s, r) => s + r.product.kg_czk * r.gramaz / 1000, 0);
 
   if (totalG > 0) {
@@ -1637,6 +1644,10 @@ function dkShow() {
       </div>
     </div>`;
   detail.style.display = 'block';
+  if (typeof NW_OBALY !== 'undefined') {
+    const _k = NW_OBALY.sablona(d.obal, totalGram);
+    if (_k) detail.insertAdjacentHTML('beforeend', NW_OBALY.html(_k, totalGram, parseInt(document.getElementById('d-kalk-ks')?.value) || 1));
+  }
 
   // Předvyplnit pole "Přidat do kalkulace" a uložit složení pro košík
   dkSlozeni  = items.map(x => ({ kod: x.kod, nazev: x.nazev, gram: x.gram, obal: d.obal || '' }));
@@ -1895,15 +1906,21 @@ function kalkAddItem() {
   } else {
     const naklEl = document.getElementById('dr-nakl');
     nakl    = parseFloat(naklEl?.textContent) || 0;
+    const _sel = document.getElementById('d-vzorec-sel').value;
+    const _on = (typeof NW_OBALY !== 'undefined' && NW_OBALY.sablony[_sel]?.nazev) || '';
     slozeni = dRows.filter(r => r && r.product && r.gramaz > 0)
-      .map(r => ({ kod: r.product.kod, nazev: r.product.nazev, gram: r.gramaz, obal: '' }));
+      .map(r => ({ kod: r.product.kod, nazev: r.product.nazev, gram: r.gramaz, obal: _on }));
   }
+  const obal_sablona = dkSlozeni !== null
+    ? ((typeof NW_OBALY !== 'undefined' && dkCurrent) ? (NW_OBALY.sablona(dkCurrent.obal, slozeni.reduce((s, x) => s + (+x.gram || 0), 0)) || '') : '')
+    : document.getElementById('d-vzorec-sel').value;
+  const kod = dkSlozeni !== null && dkCurrent ? dkCurrent.kod : '';
 
   // d-kalk-mo/vo jsou již aktualizovány dkUpdateKalkFields (zahrnují nadstavby)
   const moFinal = mo;
   const voFinal = vo;
 
-  KALK_ITEMS.push({ nazev, ks, mo: moFinal, vo: voFinal, nakl, nadstavby, pripravy, slozeni });
+  KALK_ITEMS.push({ nazev, kod, ks, mo: moFinal, vo: voFinal, nakl, nadstavby, pripravy, slozeni, obal_sablona });
   kalkRender();
   document.getElementById('d-kalk-nazev').value = '';
   document.getElementById('d-kalk-ks').value = '1';
@@ -1993,7 +2010,8 @@ function _buildHash() {
     ks: item.ks,
     cena: item.mo,   // zákaznická cena bez DPH (po slevě + potisk)
     nakup: item.nakl || '',
-    slozeni: item.slozeni || []
+    slozeni: item.slozeni || [],
+    obal_sablona: item.obal_sablona || ''
   }));
   const _bSeen = new Set();
   KALK_ITEMS.forEach(item => {
@@ -2055,6 +2073,7 @@ async function kalkUlozit() {
   }
 }
 </script>
+<script src="obaly-data.js"></script>
 <script src="pin-guard.js"></script>
 </body>
 </html>

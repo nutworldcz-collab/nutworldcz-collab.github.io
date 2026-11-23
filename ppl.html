@@ -191,15 +191,9 @@
 
 </div>
 
+<script src="doprava-ceniky.js"></script>
 <script>
-const SVCS = {
-  'cz-home': {name:'CZ domů',cls:'cz-home',mytne:'cz',dob:26.50,maxKg:31.5,
-    bands:[{max:2,price:76.47,est:false},{max:5,price:78.30,est:false},{max:10,price:85.77,est:false},{max:20,price:89.67,est:false},{max:31.5,price:124.82,est:false}]},
-  'cz-pbox':{name:'CZ výdejna',cls:'cz-pbox',mytne:'cz',dob:26.50,maxKg:20,
-    bands:[{max:2,price:55.05,est:false},{max:5,price:65.23,est:false},{max:10,price:73.36,est:false},{max:20,price:88.50,est:true}]},
-  'sk':{name:'SK',cls:'sk',mytne:'sk',dob:54.20,maxKg:20,
-    bands:[{max:2,price:76.00,est:true},{max:5,price:95.00,est:true},{max:10,price:99.50,est:false},{max:20,price:101.97,est:false}]}
-};
+const SVCS = NWDoprava.PPL.svcs;  // ceník: doprava-ceniky.js
 const BANDS=[2,5,10,20,31.5];
 
 function fmt(v){return v.toLocaleString('cs-CZ',{minimumFractionDigits:2,maximumFractionDigits:2})+' Kč'}
