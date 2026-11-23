@@ -1,9 +1,9 @@
 {
-  "generated": "2026-11-22T17:47:45",
+  "generated": "2026-11-23T05:07:40",
   "souhrn": {
     "produkty": 311,
     "ok": 182,
-    "spec": 4,
+    "spec": 5,
     "stitek": 33,
     "web": 108,
     "vypnute": 15
@@ -62,8 +62,19 @@
       "nazev": "MANDLOVÉ PLÁTKY"
     },
     "89": {
-      "cz": [],
+      "cz": [
+        {
+          "sekce": "spec",
+          "uroven": "chyba",
+          "text": "novější specifikace není zpracovaná: 89_Mandle jádra pražená solená s uzenou příchutí snížený obsah soli NOVÉ 2026 02 23 -HOS"
+        }
+      ],
       "sk": [
+        {
+          "sekce": "spec",
+          "uroven": "chyba",
+          "text": "novější specifikace není zpracovaná: 89_Mandle jádra pražená solená s uzenou příchutí snížený obsah soli NOVÉ 2026 02 23 -HOS"
+        },
         {
           "sekce": "web",
           "uroven": "chyba",
