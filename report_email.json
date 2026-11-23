@@ -1,151 +1,85 @@
 {
-  "generated": "2026-11-22T17:00:40",
-  "total": 12,
-  "spam_skipped": 0,
+  "generated": "2026-11-23T07:30:27",
+  "total": 6,
+  "spam_skipped": 1,
   "emails": [
     {
       "account": "Exchange",
-      "sender": "InfoNutWorld <info@nutworld.cz>",
-      "subject": "Fw: Poptávka 900 ks",
-      "date": "neděle 22. listopadu 2026 16:54:05",
+      "sender": "Augustovičová Adriana <Adriana.Augustovicova@geis.cz>",
+      "subject": "5092300005087;5092300005085",
+      "date": "pondělí 23. listopadu 2026 6:59:16",
       "unread": true,
-      "preview": "Zasláno z Outlooku pro Android From: Eva Maresova <maresova@giftbaskets.cz> Sent: Saturday",
-      "category": "b2b",
-      "sender_short": "InfoNutWorld",
-      "sender_email": "info@nutworld.cz",
-      "ai": {
-        "shrn": "B2B poptávka od společnosti Gift Baskets na 900 ks produktů. Vyžaduje ověření zájmu a zpracování objednávky.",
-        "tyka_se": true,
-        "akce": "Kontaktovat Evu Maresovou, vyjasnit specifikaci produktů a podmínky B2B spolupráce"
-      }
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Jana Nývltová přesunul/a kartu SCENARIO - CINEMA CITY do sloupce Je zadáno v k2 na nástěnce Firmy dárky + objednávky",
-      "date": "neděle 22. listopadu 2026 16:51:25",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová přesunul(a) kartu SCENARIO - CINEMA CITY do sloupce Je zadáno v k2 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svoje nastavení a přizpůsobte si upozornění",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Jana Nývltová přesunul/a kartu LA CAVE do sloupce Je zadáno v k2 na nástěnce Firmy dárky + objednávky",
-      "date": "neděle 22. listopadu 2026 16:23:32",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová přesunul(a) kartu LA CAVE do sloupce Je zadáno v k2 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svoje nastavení a přizpůsobte si upozornění",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Jana Nývltová přesunul/a kartu EMEDIS - 800260059 do sloupce Je zadáno v k2 na nástěnce Firmy dárky + objednávky",
-      "date": "neděle 22. listopadu 2026 15:37:42",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová přesunul(a) kartu EMEDIS - 800260059 do sloupce Je zadáno v k2 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svoje nastavení a přizpůsobte si upozornění",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Jana Nývltová tě přidal/a ke kartě EMEDIS - 800260059 na nástěnce Firmy dárky + objednávky",
-      "date": "neděle 22. listopadu 2026 15:34:06",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová vás přidal(a) na kartu EMEDIS - 800260059 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svoje nastavení a přizpůsobte si upozornění",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Jana Nývltová přesunul/a kartu DVA do sloupce Je zadáno v k2 na nástěnce Firmy dárky + objednávky",
-      "date": "neděle 22. listopadu 2026 15:29:43",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová přesunul(a) kartu DVA do sloupce Je zadáno v k2 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svoje nastavení a přizpůsobte si upozornění",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Jana Nývltová přesunul/a kartu MARRIOTT do sloupce Je zadáno v k2 na nástěnce Firmy dárky + objednávky",
-      "date": "neděle 22. listopadu 2026 15:18:32",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová přesunul(a) kartu MARRIOTT do sloupce Je zadáno v k2 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svoje nastavení a přizpůsobte si upozornění",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Jana Nývltová tě přidal/a ke kartě MARRIOTT na nástěnce Firmy dárky + objednávky",
-      "date": "neděle 22. listopadu 2026 15:08:41",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová vás přidal(a) na kartu MARRIOTT na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svoje nastavení a přizpůsobte si upozornění",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Jana Nývltová tě přidal/a ke kartě DVA na nástěnce Firmy dárky + objednávky",
-      "date": "neděle 22. listopadu 2026 15:05:06",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová vás přidal(a) na kartu DVA na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svoje nastavení a přizpůsobte si upozornění",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Exchange",
-      "sender": "Trello <do-not-reply@trello.com>",
-      "subject": "Jana Nývltová přesunul/a kartu Vladimír Rýznar — 25 ks — 04.12.2026 do sloupce Je zadáno v k2 na nástěnce Firmy dárky + objednávky",
-      "date": "neděle 22. listopadu 2026 14:40:08",
-      "unread": true,
-      "preview": "￼ Zde je nejnovější... ￼ Jana Nývltová přesunul(a) kartu Vladimír Rýznar — 25 ks — 04.12.2026 do sloupce Je zadáno v k2 na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svoje nastavení a přizpůsobte si upozornění",
-      "category": "sluzby",
-      "sender_short": "Trello",
-      "sender_email": "do-not-reply@trello.com"
-    },
-    {
-      "account": "Google",
-      "sender": "Temu <temu@eu.temuemail.com>",
-      "subject": "Místní sklad | Rychlé doručení",
-      "date": "neděle 22. listopadu 2026 12:48:13",
-      "unread": true,
-      "preview": "Nakupujte teď",
-      "category": "zakaznik",
-      "sender_short": "Temu",
-      "sender_email": "temu@eu.temuemail.com",
-      "ai": {
-        "shrn": "Marketingová zpráva od Temu o lokálním skladu a rychlém doručení. Jedná se o konkurenční e-shop.",
-        "tyka_se": false,
-        "akce": null
-      }
-    },
-    {
-      "account": "Google",
-      "sender": "\"Samsung\" <no-reply@m1.email.samsung.com>",
-      "subject": "Využij EXTRA slevu 5 % jen do dnešní půlnoci",
-      "date": "neděle 22. listopadu 2026 10:19:30",
-      "unread": true,
-      "preview": "￼￼ Kombinuj Black Friday a extra slevu a nakup ještě výhodněji Zobrazit online verzi ￼ ￼ Získej Samsung Rewards Zjisti více zde. Získej Rewards body při každém nákupu přímo od Samsungu ￼ Už jen pár hodin! Ušetři dalších 5 % jen do dnešní půlnoci ￼ Využij Black Friday naplno a ušetři ještě více. S kó",
+      "preview": "Dobrý deň Prosím o doposlanie čísla objednávky pre Alzu. Ďakujem S pozdravom Adriana Augustovičová Administrativní pracovnice ve spedici ￼ Branch Office / Pobočka Head Office / Sídlo AOS II.",
       "category": "ostatni",
-      "sender_short": "Samsung",
-      "sender_email": "no-reply@m1.email.samsung.com",
+      "sender_short": "Augustovičová Adriana",
+      "sender_email": "Adriana.Augustovicova@geis.cz",
       "ai": {
-        "shrn": "Propagační email od Samsungu s nabídkou slevy na svoje produkty. Není relevantní pro Nutworld.",
+        "shrn": "Spedice GEIS žádá o poslání čísla objednávky pro Alzu. Jedná se o administrativní dotaz týkající se expedice.",
+        "tyka_se": true,
+        "akce": "Poslat číslo objednávky 5092300005087 a 5092300005085 adresátu."
+      }
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Markéta Costachová vložil/a komentář na kartu Officeo na nástěnce Firmy dárky + objednávky",
+      "date": "pondělí 23. listopadu 2026 6:51:07",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Markéta Costachová okomentoval(a) kartu Officeo na nástěnce Firmy dárky + objednávky @jananyvltova dám vědět. Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro týmovou spolupráci. Aktualizujte svoje nastavení a přizpůsobte si upozornění",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Na nástěnce Firmy dárky + objednávky máš 2 upozornění od poslední návštěvy 6:44 (23. listopadu 2026)",
+      "date": "pondělí 23. listopadu 2026 6:45:27",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Markéta Costachová vás přidal(a) na kartu Dám si kafe na nástěnce Firmy dárky + objednávky Odpovědět e-mailem ￼ Markéta Costachová přidal(a) termín splnění na kartu Dám si kafe na nástěnce Firmy dárky + objednávky Odpovědět e-mailem 👀 Podívejte se na naše nejlepší zdroje pro",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "Trello <do-not-reply@trello.com>",
+      "subject": "Markéta Costachová vložil/a komentář na kartu Haberl na nástěnce Firmy dárky + objednávky",
+      "date": "pondělí 23. listopadu 2026 6:36:36",
+      "unread": true,
+      "preview": "￼ Zde je nejnovější... ￼ Markéta Costachová okomentoval(a) kartu Haberl na nástěnce Firmy dárky + objednávky @jananyvltova jejda",
+      "category": "sluzby",
+      "sender_short": "Trello",
+      "sender_email": "do-not-reply@trello.com"
+    },
+    {
+      "account": "Exchange",
+      "sender": "NakupNutWorld <nakup@nutworld.cz>",
+      "subject": "Fw: Atesty pro dodací list FT01-4470/2026",
+      "date": "pondělí 23. listopadu 2026 4:21:51",
+      "unread": true,
+      "preview": "Zasláno z Outlooku pro Android From: Fakturace K-SERVIS <fakturace@k-servis.com> Sent: Friday",
+      "category": "dodavatel",
+      "sender_short": "NakupNutWorld",
+      "sender_email": "nakup@nutworld.cz",
+      "ai": {
+        "shrn": "Přeposlaný email od dodavatele K-SERVIS ohledně atestů pro dodací list FT01-4470/2026.",
+        "tyka_se": true,
+        "akce": "Prověřit dostupnost atestů u dodavatele K-SERVIS a vyřešit jejich odesílání."
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "\"CrossFit\" <crossfit@mail.crossfit.com>",
+      "subject": "261123 Workout of the Day: Power Snatch",
+      "date": "pondělí 23. listopadu 2026 2:31:27",
+      "unread": true,
+      "preview": "￼ ￼ ￼ MONDAY",
+      "category": "ostatni",
+      "sender_short": "CrossFit",
+      "sender_email": "crossfit@mail.crossfit.com",
+      "ai": {
+        "shrn": "Automatický email s denním tréninkovým plánem z CrossFit. Jde o marketingový či informační obsah.",
         "tyka_se": false,
         "akce": null
       }
