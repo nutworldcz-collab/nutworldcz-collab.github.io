@@ -1,12 +1,12 @@
 {
-  "generated": "2026-11-23T08:27:07",
+  "generated": "2026-11-23T12:12:38",
   "souhrn": {
-    "produkty": 349,
-    "ok": 182,
+    "produkty": 352,
+    "ok": 207,
     "spec": 5,
     "stitek": 33,
-    "web": 146,
-    "vypnute": 15
+    "web": 121,
+    "vypnute": 16
   },
   "web": true,
   "polozky": {
@@ -74,11 +74,6 @@
           "sekce": "spec",
           "uroven": "chyba",
           "text": "novější specifikace není zpracovaná: 89_Mandle jádra pražená solená s uzenou příchutí snížený obsah soli NOVÉ 2026 02 23 -HOS"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
         }
       ],
       "nazev": "MANDLE UZENÉ"
@@ -255,17 +250,6 @@
       ],
       "nazev": "KOKOS CHIPS"
     },
-    "155": {
-      "cz": [],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "nazev": "PRÉMIOVÝ OŘECHOVÝ MIX"
-    },
     "158": {
       "cz": [
         {
@@ -279,46 +263,6 @@
           "sekce": "stitek",
           "uroven": "chyba",
           "text": "kJ a kcal si neodpovídají (2577 kJ / 637 kcal)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 30 %) — web: „: MANDLE natural 25% (USA), KEŠU 25% (Afrika), PARA 25% (Bolívia, Brazília), LIESKOVÉ ORECHY 25% (Turecko)“ · spec: „KEŠU orechy jadrá 30 % (pôvod: Pobrežie slonoviny), PARA orechy jadrá 30 % (pôvod: Bolívia), LIESKOVÉ jadrá 20 % (pôvod: Turecko, Azerbajdžan), MANDĽOVÉ jadrá 2“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „OXIDU SIRIČITÉHO A SIRIČITANOV“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "energie: web 2657kj /635kcal · spec 2577 kJ / 637 kcal"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "tuky: web 56 g · spec 56.3 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "nasycene: web 8 g · spec 10.3 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "sacharidy: na webu chybí (spec 18,3 g)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "bilkoviny: web 16 g · spec 17.2 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "země původu: web „“ · spec „Česká republika“"
         }
       ],
       "nazev": "SMĚS JADER"
@@ -394,23 +338,6 @@
         }
       ],
       "nazev": "PŘÍRODNÍ DATLE MEDJOUL"
-    },
-    "194": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "nazev": "SUŠENÉ FÍKY"
     },
     "200": {
       "cz": [
@@ -617,31 +544,8 @@
       ],
       "nazev": "OSTRUŽINY LYOFILIZOVANÉ"
     },
-    "281": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "nazev": "JAHODY PLÁTKY LYOFILIZOVANÉ"
-    },
     "284": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
+      "cz": [],
       "sk": [
         {
           "sekce": "web",
@@ -681,34 +585,12 @@
       ],
       "nazev": "MALINY CELÉ LYOFILIZOVANÉ 1 KG"
     },
-    "299": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "nazev": "VLAŠSKÁ JÁDRA MOUKA"
-    },
     "302": {
       "cz": [
         {
           "sekce": "stitek",
           "uroven": "varovani",
           "text": "součet živin 102.5 g je víc než 100 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
         }
       ],
       "sk": [
@@ -716,11 +598,6 @@
           "sekce": "stitek",
           "uroven": "varovani",
           "text": "součet živin 102.5 g je víc než 100 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
         }
       ],
       "nazev": "MANDLOVÁ MOUKA BLANŠÍROVANÁ, EXTRA JEMNĚ MLETÁ"
@@ -736,79 +613,12 @@
       ],
       "nazev": "KEŠU MOUKA"
     },
-    "308": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 30 %) — web: „: Podzemnice olejná nasucho pražená a namletá Výrobek může obsahovat skořápkové plody, oxid siřičitý nebo sezam“ · spec: „Pražené loupané ARAŠÍDY (100 %)“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "energie: web 2609kj /623kcal · spec 2535 kJ / 612 kcal"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "tuky: na webu chybí (spec 49,7 g)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "nasycene: web 9 g · spec 6.9 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "sacharidy: na webu chybí (spec 13,5 g)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "cukry: web 6 g · spec 4.2 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "vlaknina: na webu chybí (spec 8 g)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "bilkoviny: na webu chybí (spec 23,7 g)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "sul: na webu chybí (spec 0,015 g)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "země původu: web „: USA, Argentina Balení: Znovuuzavíratelný PP obal nebo vaku“ · spec „mimo EU“"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "nazev": "ARAŠÍDOVÁ MOUKA"
-    },
     "311": {
       "cz": [
         {
           "sekce": "stitek",
           "uroven": "varovani",
           "text": "součet živin 104.4 g je víc než 100 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
         }
       ],
       "sk": [
@@ -816,11 +626,6 @@
           "sekce": "stitek",
           "uroven": "varovani",
           "text": "součet živin 104.4 g je víc než 100 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
         }
       ],
       "nazev": "LÍSKOVÁ MOUKA"
@@ -852,33 +657,6 @@
         }
       ],
       "nazev": "ARAŠÍDY VE WASABI"
-    },
-    "381": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 73 %) — web: „: ARAŠÍDY jemně namleté pražené 100%“ · spec: „ARAŠÍDY loupané pražené (100 %)“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „JINÝCH OŘECHŮ“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "sacharidy: na webu chybí (spec 9,6 g)"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "nazev": "ARAŠÍDOVÁ PASTA"
     },
     "546": {
       "cz": [],
@@ -925,7 +703,7 @@
       ],
       "nazev": "KEŠU JÁDRA PRAŽENÁ SOLENÁ S UZENOU PŘÍCHUTÍ"
     },
-    "917": {
+    "914": {
       "cz": [
         {
           "sekce": "web",
@@ -933,6 +711,17 @@
           "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
         }
       ],
+      "sk": [
+        {
+          "sekce": "web",
+          "uroven": "chyba",
+          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
+        }
+      ],
+      "nazev": "LYOFILIZOVANÉ MALINY V BÍLÉ ČOKOLÁDĚ"
+    },
+    "917": {
+      "cz": [],
       "sk": [
         {
           "sekce": "web",
@@ -941,23 +730,6 @@
         }
       ],
       "nazev": "SUŠENÉ SEKANÉ ŠVESTKY V HOŘKÉ ČOKOLÁDĚ"
-    },
-    "920": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "nazev": "LYOFILIZOVANÉ MALINY V BÍLÉ ČOKOLÁDĚ (BÍLÉ)"
     },
     "1028": {
       "cz": [],
@@ -1766,11 +1538,6 @@
           "sekce": "spec",
           "uroven": "varovani",
           "text": "štítek se liší od zápisu specifikace v poli nazev, slozeni, stopy, zeme_puvodu — spec: „BRUSINKY PŘESLAZENÉ V MLÉČNÉ ČOKOLÁDĚ“ · štítek: „BRUSINKY V MLÉČNÉ ČOKOLÁDĚ“ (ověřit, co platí)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
         }
       ],
       "sk": [
@@ -1778,11 +1545,6 @@
           "sekce": "spec",
           "uroven": "varovani",
           "text": "štítek se liší od zápisu specifikace v poli nazev, slozeni, stopy, zeme_puvodu — spec: „BRUSNICE PRESLADENÉ V MLIEČNEJ ČOKOLÁDE“ · štítek: „BRUSNICE V MLIEČNEJ ČOKOLÁDE“ (ověřit, co platí)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
         }
       ],
       "nazev": "BRUSINKY V MLÉČNÉ ČOKOLÁDĚ"
@@ -1912,28 +1674,6 @@
         }
       ],
       "nazev": "MANDLE TŘÍBAREVNÉ"
-    },
-    "1988": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "nazev": "MANDLE V BÍLÉ ČOKOLÁDĚ OBALENÉ KOKOSEM"
     },
     "2000": {
       "cz": [
@@ -2074,6 +1814,23 @@
       ],
       "nazev": "PAPAYA KOSTKY BEZ SO2"
     },
+    "2307": {
+      "cz": [
+        {
+          "sekce": "web",
+          "uroven": "chyba",
+          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
+        }
+      ],
+      "sk": [
+        {
+          "sekce": "web",
+          "uroven": "chyba",
+          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
+        }
+      ],
+      "nazev": "LYOFILIZOVANÉ MALINY V HOŘKÉ ČOKOLÁDĚ"
+    },
     "2333": {
       "cz": [],
       "sk": [
@@ -2084,17 +1841,6 @@
         }
       ],
       "nazev": "MANDLE V KARAMELOVÉ POLEVĚ"
-    },
-    "2336": {
-      "cz": [],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "nazev": "KYSELÉ ŽELÉ MIX"
     },
     "2357": {
       "cz": [
@@ -2274,13 +2020,7 @@
           "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
         }
       ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
+      "sk": [],
       "nazev": "MANDLE A MERUŇKY DRAŽOVANÉ"
     },
     "2747": {
@@ -2349,23 +2089,6 @@
       ],
       "nazev": "KANDOVANÝ SMAŽENÝ BANÁN (CHIPS) V HOŘKÉ ČOKOLÁDĚ"
     },
-    "2791": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "nazev": "PENDREK S BROSKVOVOU PŘÍCHUTÍ V MLÉČNÉ ČOKOLÁDĚ"
-    },
     "3013": {
       "cz": [],
       "sk": [
@@ -2376,23 +2099,6 @@
         }
       ],
       "nazev": "KEŠU PRAŽENÉ A SOLENÉ S KARI KOŘENÍM"
-    },
-    "3073": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "nazev": "ALOE VERA"
     },
     "3094": {
       "cz": [
@@ -2894,21 +2600,10 @@
         {
           "sekce": "web",
           "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
+          "text": "složení na webu se liší od specifikace (shoda 91 %) — web: „Valencijské MANDLE 96 %, jemné bylinky 2 % (rozmarín, tymián, oregano, saturejka, majoránka, bazalka), slnečnicový olej 1,5 %, morská soľ 0,5 %“ · spec: „MANDLE valencijské 96 %, jemné bylinky 2 % (rozmarín, tymian, oregano, saturejka letná, majorán, bazalka), slnečnicový olej 1,5 %, morská soľ 0,5 %“"
         }
       ],
       "nazev": "BLANŠÍROVANÉ SMAŽENÉ VALENCIJSKÉ MANDLE S JEMNÝMI BYLINKAMI"
-    },
-    "3722": {
-      "cz": [],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "nazev": "BLANŠÍROVANÉ SMAŽENÉ VALENCIJSKÉ LANÝŽOVÉ MANDLE"
     },
     "3723": {
       "cz": [
@@ -3099,51 +2794,6 @@
           "sekce": "stitek",
           "uroven": "info",
           "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 2 %) — web: „: MANDLE natural 25% (USA), KEŠU 25% (Afrika), PARA 25% (Bolívia, Brazília), LIESKOVÉ ORECHY 25% (Turecko)“ · spec: „Mandle v jogurtu: poleva s jogurtovou příchutí 79 % (cukr, částečně ztužený rostlinný tuk [palmový, SÓJOVÝ (plně rafinovaný), řepkový], sušená SYROVÁTKA (MLÉKO)“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „LEPOK“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "energie: web 2657kj /635kcal · spec 2274 kJ / 546 kcal"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "tuky: web 56 g · spec 35.6 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "nasycene: web 8 g · spec 13.2 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "sacharidy: na webu chybí (spec 45,6)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "cukry: web 4 g · spec 43.8 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "bilkoviny: web 16 g · spec 9 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "sul: web 0.03 g · spec 0.25 g"
         }
       ],
       "nazev": "MANDLE EXCLUSIVE MIX"
@@ -3253,17 +2903,6 @@
       ],
       "nazev": "PRECLÍKY V BÍLÉ ČOKOLÁDĚ"
     },
-    "4512": {
-      "cz": [],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "nazev": "MINI MARSHMALLOWS 1 KG"
-    },
     "4794": {
       "cz": [
         {
@@ -3286,148 +2925,10 @@
         {
           "sekce": "web",
           "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 23 %) — web: „: MANDLE natural 25% (USA), KEŠU 25% (Afrika), PARA 25% (Bolívia, Brazília), LIESKOVÉ ORECHY 25% (Turecko)“ · spec: „ARAŠIDY (34 %), cukor (28 %), KEŠU ORECHY (17 %), MANDLE (17 %), glukóza (2 %), slnečnicový olej (1,1 %), soľ (1 %), emulgátor (E414) (<1 %), emulgátor (E322) s“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „VLAŠSKÝCH ORECHOV“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „PEKANOVÝCH ORECHOV“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „PISTÁCIÍ“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „MAKADAMOVÝCH ORECHOV“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "energie: web 2657kj /635kcal · spec 2351 kJ / 565 kcal"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "tuky: web 56 g · spec 37 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "nasycene: web 8 g · spec 4.8 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "sacharidy: na webu chybí (spec 39,9 g)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "cukry: web 4 g · spec 33.4 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "vlaknina: na webu chybí (spec 4,1 g)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "bilkoviny: web 16 g · spec 15.9 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "sul: web 0.03 g · spec 0.98 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "země původu: web „“ · spec „Holandsko“"
+          "text": "složení na webu se liší od specifikace (shoda 81 %) — web: „ARAŠIDY (34 %), cukor (28 %), KEŠU ORECHY (17 %), MANDLE (17 %), glukóza (2 %), slnečnicový olej (1,1 %), soľ (1 %), emulgátor (E414) (“ · spec: „ARAŠIDY (34 %), cukor (28 %), KEŠU ORECHY (17 %), MANDLE (17 %), glukóza (2 %), slnečnicový olej (1,1 %), soľ (1 %), emulgátor (E414) (<1 %), emulgátor (E322) s“"
         }
       ],
       "nazev": "MEDOVÁ SMĚS SE SOLÍ"
-    },
-    "4797": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 57 %) — web: „: glukózový sirup, cukor, želatína, voda, koncentrát šťavy z hrozna 1,3%, zvlhčujúca látka: sorbitol, regulátor kyslosti: kyselina citrónová, aróma, leštiaca zm“ · spec: „Glukózový sirup, cukor, želatína, voda, hroznová šťava z koncentrátu 5 %, regulátor kyslosti (kyselina citrónová), kokosový olej, aróma, farbivá (kurkumín, medn“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "energie: web 1348kj /317kcal · spec 1330 kJ / 314 kcal"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "tuky: na webu chybí (spec 0,1 g)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "nasycene: web 0.2 g · spec 0.1 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "sacharidy: na webu chybí (spec 71,2 g)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "cukry: web 55 g · spec 50.7 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "bilkoviny: na webu chybí (spec 5,8 g)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "sul: na webu chybí (spec 0,03 g)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "země původu: web „“ · spec „Česká republika“"
-        }
-      ],
-      "nazev": "ŽABKY ŽELÉ"
-    },
-    "4896": {
-      "cz": [],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "nazev": "SMĚS MANDLÍ V ČOKOLÁDĚ BROWN"
     },
     "5358": {
       "cz": [
@@ -3451,32 +2952,10 @@
         {
           "sekce": "web",
           "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
+          "text": "složení na webu se liší od specifikace (shoda 94 %) — web: „KEŠU ORECHY (74 %), PŠENIČNÁ múka (12,8 %), zemiakový škrob (6 %), BBQ korenie (srvátkový prášok ( MLIEKO ), cukor, soľ, rajčinový prášok, zvýrazňovač chuti (E6“ · spec: „KEŠU ORECHY (74 %), PŠENIČNÁ múka (12,8 %), zemiakový škrob (6 %), BBQ korenie (srvátkový prášok (MLIEKO), cukor, soľ, rajčinový prášok, zvýrazňovač chuti (E621“"
         }
       ],
       "nazev": "KEŠU OŘECHY BBQ"
-    },
-    "5364": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "nazev": "KEŠU OŘECHY SUCHÉ PRAŽENÍ S ČESNEKEM A ROZMARÝNEM"
     },
     "5481": {
       "cz": [
@@ -3529,11 +3008,6 @@
           "sekce": "stitek",
           "uroven": "info",
           "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
         }
       ],
       "sk": [
@@ -3610,27 +3084,10 @@
         {
           "sekce": "web",
           "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
+          "text": "země původu: web „“ · spec „Česká republika“"
         }
       ],
       "nazev": "MANDLE S PŘÍCHUTÍ JOGURT & JAHODA"
-    },
-    "6000": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "nazev": "CHIA SEMÍNKA"
     },
     "6453": {
       "cz": [
@@ -3856,23 +3313,6 @@
       ],
       "nazev": "MANDLE V BABY BLUE KRUSTĚ"
     },
-    "8654": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "nazev": "PRAŽENÉ KEŠU OŘECHY S JEMNÝMI BYLINKAMI"
-    },
     "8656": {
       "cz": [
         {
@@ -4016,48 +3456,6 @@
       ],
       "nazev": "KEŠU OŘECHY S PŘÍCHUTÍ SÝRA GOUDA"
     },
-    "8739": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 68 %) — web: „: glukózový sirup, cukor, voda, želatína, regulátor kyslosti (kyselina citrónová), koncentrát šťavy z hrozna 1,25%*, zahusťovadlo (pektín), arómy, leštiaca zmes“ · spec: „Glukózový sirup, cukor, voda, hroznová šťava z koncentrátu 5 %, želatína, regulátor kyslosti (kyselina citrónová), zahusťovadlo (pektíny), farbivo (paprikový ex“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "cukry: web 50.02 g · spec 50.6 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "vlaknina: na webu chybí (spec 0,3 g)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "bilkoviny: web 4.2 g · spec 4.1 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "země původu: web „“ · spec „Česká republika“"
-        }
-      ],
-      "nazev": "VEJCE ŽELÉ"
-    },
     "8742": {
       "cz": [
         {
@@ -4091,19 +3489,9 @@
           "sekce": "stitek",
           "uroven": "chyba",
           "text": "chybí údaj „zeme_puvodu“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
         }
       ],
       "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "chyba",
-          "text": "chybí údaj „zeme_puvodu“"
-        },
         {
           "sekce": "web",
           "uroven": "chyba",
@@ -4133,23 +3521,6 @@
         }
       ],
       "nazev": "DUHOVÉ MINI PENDREKY"
-    },
-    "8965": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "nazev": "FÍKY SUŠENÉ"
     },
     "9544": {
       "cz": [
@@ -4527,7 +3898,7 @@
         {
           "sekce": "web",
           "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
+          "text": "sul: na webu chybí (spec <0,19 g)"
         }
       ],
       "nazev": "MANDLE V MLÉČNÉ ČOKOLÁDĚ A MALINOVÉM PRÁŠKU"
@@ -4555,11 +3926,6 @@
           "sekce": "stitek",
           "uroven": "chyba",
           "text": "alergen ve složení není zvýrazněn VELKÝM písmem: horčica"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
         }
       ],
       "nazev": "MANDLE JÁDRA PRAŽENÁ SOLENÁ S PŘÍCHUTÍ HOŘČICE"
@@ -4637,28 +4003,6 @@
         }
       ],
       "nazev": "PEČENÉ KULATÉ RÝŽOVÉ KŘUPKY S BYLINKAMI"
-    },
-    "10233": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "nazev": "MAXI MEDVĚDI ŽELÉ"
     },
     "10250": {
       "cz": [
@@ -5037,7 +4381,7 @@
       ],
       "nazev": "KLIKVA CELÁ LYOFILIZOVANÁ"
     },
-    "10264": {
+    "10272": {
       "cz": [
         {
           "sekce": "web",
@@ -5049,10 +4393,35 @@
         {
           "sekce": "web",
           "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
+          "text": "složení na webu se liší od specifikace (shoda 96 %) — web: „: Mliečna čokoláda 90% (cukor, kakaová hmota, kakaové maslo, sušené plnotučné mlieko, sušená srvátka (MLIEKO ), emulgátor: sójový lecitín, prírodná vanilková ar“ · spec: „Mliečna čokoláda 90% (cukor, kakaová hmota, kakaové maslo, sušené plnotučné MLIEKO, sušená srvátka (MLIEKO), emulgátor: SÓJOVÝ lecitín, prírodná vanilková aróma“"
+        },
+        {
+          "sekce": "web",
+          "uroven": "chyba",
+          "text": "stopové alergeny: „OBILNÍN OBSAHUJÚCICH LEPOK“ chybí na webu"
+        },
+        {
+          "sekce": "web",
+          "uroven": "chyba",
+          "text": "stopové alergeny: „ŠKRUPINOVÝCH PLODOV“ chybí na webu"
+        },
+        {
+          "sekce": "web",
+          "uroven": "chyba",
+          "text": "stopové alergeny: „OXIDU SIRIČITÉHO“ chybí na webu"
+        },
+        {
+          "sekce": "web",
+          "uroven": "chyba",
+          "text": "nasycene: na webu chybí (spec 14,7 g)"
+        },
+        {
+          "sekce": "web",
+          "uroven": "chyba",
+          "text": "sacharidy: na webu chybí (spec 56,9 g)"
         }
       ],
-      "nazev": "ARAŠÍDY V BÍLÉ ČOKOLÁDĚ"
+      "nazev": "LYOFILIZOVANÉ MALINY V MLÉČNÉ ČOKOLÁDĚ"
     },
     "10278": {
       "cz": [
