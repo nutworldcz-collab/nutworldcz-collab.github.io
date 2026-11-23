@@ -1,12 +1,12 @@
 {
-  "generated": "2026-11-23T12:17:31",
+  "generated": "2026-11-23T12:38:01",
   "souhrn": {
     "produkty": 352,
-    "ok": 211,
+    "ok": 282,
     "spec": 5,
     "stitek": 33,
-    "web": 117,
-    "vypnute": 16
+    "web": 44,
+    "vypnute": 41
   },
   "web": true,
   "polozky": {
@@ -84,11 +84,6 @@
           "sekce": "spec",
           "uroven": "varovani",
           "text": "štítek se liší od zápisu specifikace v poli zeme_puvodu, trvanlivost — spec: „“ · štítek: „Česká republika“ (ověřit, co platí)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „SUCHÝCH SKOŘÁPKOVÝCH PLODŮ“ chybí na webu"
         }
       ],
       "sk": [
@@ -100,21 +95,20 @@
         {
           "sekce": "web",
           "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "nazev": "MANDLE PRAŽENÉ V MEDU A SOLI"
-    },
-    "122": {
-      "cz": [],
-      "sk": [
+          "text": "složení na webu se liší od specifikace (shoda 90 %) — web: „pražená jádra MANDLÍ 83 %, cukr, ARAŠÍDOVÝ olej, med 1,7 %, sůl 1 %, modifikovaný škrob“ · spec: „Pražené jadrá MANDLÍ 83 %, cukor, ARAŠIDOVÝ olej, med 1,7 %, soľ 1 %, modifikovaný škrob“"
+        },
         {
           "sekce": "web",
           "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 73 %) — web: „VLAŠSKÉ JADRÁ 100 %“ · spec: „VLAŠSKÉ ORECHY (100 %)“"
+          "text": "stopové alergeny: „OBILNÍN OBSAHUJÚCICH LEPOK“ chybí na webu"
+        },
+        {
+          "sekce": "web",
+          "uroven": "chyba",
+          "text": "stopové alergeny: „SUCHÝCH ŠKRUPINOVÝCH PLODOV“ chybí na webu"
         }
       ],
-      "nazev": "VLAŠSKÁ JÁDRA CHILE"
+      "nazev": "MANDLE PRAŽENÉ V MEDU A SOLI"
     },
     "125": {
       "cz": [
@@ -224,11 +218,6 @@
           "sekce": "stitek",
           "uroven": "varovani",
           "text": "součet živin 103.2 g je víc než 100 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 95 %) — web: „PINIOVÉ JADRÁ lúpané 100 %“ · spec: „PÍNIOVÉ JADRÁ LÚPANÉ 100 %“"
         }
       ],
       "nazev": "PINIOVÁ JÁDRA LOUPANÁ"
@@ -284,34 +273,6 @@
       ],
       "nazev": "BANÁN SUŠENÉ PLÁTKY"
     },
-    "182": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 98 %) — web: „Borůvky (57 %), cukr (21,5 %), fruktózo-glukózový sirup (21,5 %), slunečnicový olej (“ · spec: „Borůvky (57 %), cukr (21,5 %), fruktózo-glukózový sirup (21,5 %), slunečnicový olej (<1 %)“"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 98 %) — web: „Čučoriedky (57 %), cukor (21,5 %), fruktózo-glukózový sirup (21,5 %), slnečnicový olej (“ · spec: „Čučoriedky (57 %), cukor (21,5 %), fruktózo-glukózový sirup (21,5 %), slnečnicový olej (<1 %)“"
-        }
-      ],
-      "nazev": "BORŮVKY SUŠENÉ"
-    },
-    "188": {
-      "cz": [],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 89 %) — web: „Datle (100 %)“ · spec: „DATĽE (100 %)“"
-        }
-      ],
-      "nazev": "DATLE DEGLET NOUR"
-    },
     "191": {
       "cz": [
         {
@@ -339,33 +300,6 @@
       ],
       "nazev": "PŘÍRODNÍ DATLE MEDJOUL"
     },
-    "200": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 90 %) — web: „ibišek 50,77 %, cukr 48 %, antioxidant: kyselina citronová E330 1,2 %, barvivo: E129 0,02 %, konzervant: OXID SIŘIČITÝ E220 0,01 %. Původ: Thajsko.“ · spec: „Ibišek (50,77 %), cukr (48 %), antioxidant kyselina citrónová E330 (1,2 %), barvivo E129 (0,02 %), konzervant E220: OXID SIŘIČITÝ (0,01 %)“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "země původu: web „Thajsko“ · spec „mimo EU“"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 91 %) — web: „ibištek 50,77 %, cukor 48 %, antioxidant: kyselina citrónová E330 1,2 %, farbivo: E129 0,02 %, konzervant: OXID SIRIČITÝ E220 0,01 %. Pôvod: Thajsko.“ · spec: „Ibištek (50,77 %), cukor (48 %), antioxidant kyselina citrónová E330 (1,2 %), farbivo E129 (0,02 %), konzervant E220: OXID SIRIČITÝ (0,01 %)“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "země původu: web „Thajsko“ · spec „mimo EÚ“"
-        }
-      ],
-      "nazev": "IBIŠEK"
-    },
     "206": {
       "cz": [
         {
@@ -382,105 +316,6 @@
         }
       ],
       "nazev": "GOJI (KUSTOVNICE)"
-    },
-    "218": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 81 %) — web: „Meruňky 99,8 %, konzervant: OXID SIŘIČITÝ“ · spec: „Sušené meruňky, konzervant E220 OXID SIŘIČITÝ“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "energie: web 1199 kJ / 283 kcal · spec 1010 kJ / 241 kcal"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "vlaknina: web 0 g · spec 7.3 g"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 81 %) — web: „Marhule 99,8 %, konzervant: OXID SIRIČITÝ“ · spec: „Sušené marhule, konzervant E220 OXID SIRIČITÝ“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "energie: web 1199 kJ / 283 kcal · spec 1010 kJ / 241 kcal"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "vlaknina: web 0 g · spec 7.3 g"
-        }
-      ],
-      "nazev": "SUŠENÉ MERUŇKY"
-    },
-    "227": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 71 %) — web: „rozinky – sušené hrozny révy vinné (99,7 %), rostlinný (slunečnicový) olej (max. 0,3 %)“ · spec: „rozinky – sušené hrozny révy vinné 99,7 %, slunečnicový olej max. 0,3 %. Může obsahovat stopy SKOŘÁPKOVÝCH PLODŮ.“"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 70 %) — web: „hrozienka – sušené hrozno viniča (99,7 %), rastlinný (slnečnicový) olej (max. 0,3 %)“ · spec: „hrozienka – sušené hrozno viniča 99,7 %, slnečnicový olej max. 0,3 %. Môže obsahovať stopy ŠKRUPINOVÝCH PLODOV.“"
-        }
-      ],
-      "nazev": "SUŠENÉ ROZINKY NESÍŘENÉ (RTU)"
-    },
-    "236": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "tuky: na webu chybí (spec 0,5 g)"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "tuky: na webu chybí (spec 0,5 g)"
-        }
-      ],
-      "nazev": "SUŠENÉ ŠVESTKY"
-    },
-    "239": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 96 %) — web: „višně 74,5 %, cukr 25 %, slunečnicový olej“ · spec: „višně 74,5 %, cukr 25 %, slunečnicový olej <0,5 %“"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 96 %) — web: „višne 74,5 %, cukor 25 %, slnečnicový olej“ · spec: „višne 74,5 %, cukor 25 %, slnečnicový olej <0,5 %“"
-        }
-      ],
-      "nazev": "VIŠNĚ"
-    },
-    "248": {
-      "cz": [],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 94 %) — web: „Semienka konopy (100 %)“ · spec: „Semienka konope (100 %)“"
-        }
-      ],
-      "nazev": "LOUPANÉ KONOPNÉ SEMÍNKO"
     },
     "251": {
       "cz": [
@@ -499,17 +334,6 @@
       ],
       "nazev": "LNĚNÉ SEMÍNKO"
     },
-    "254": {
-      "cz": [],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 96 %) — web: „Ľanové semienka zlaté 100 %“ · spec: „ľanové semienko zlaté 100 %“"
-        }
-      ],
-      "nazev": "ZLATÉ LNĚNÉ SEMÍNKO"
-    },
     "263": {
       "cz": [
         {
@@ -526,23 +350,6 @@
         }
       ],
       "nazev": "SEZAMOVÁ SEMÍNKA"
-    },
-    "278": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "sul: na webu chybí (spec <0,03 g)"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "sul: na webu chybí (spec <0,03 g)"
-        }
-      ],
-      "nazev": "OSTRUŽINY LYOFILIZOVANÉ"
     },
     "284": {
       "cz": [],
@@ -658,40 +465,6 @@
       ],
       "nazev": "KUKUŘICE PRAŽENÁ S PŘÍCHUTÍ BBQ (BEZ KOUŘOVÉHO AROMA)"
     },
-    "547": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 97 %) — web: „Kukuřice 78 %, slunečnicový olej 15 %, koření s medovo-hořčičnou příchutí 7 % (sůl 2,3 %, cukr, přírodní aroma HOŘČICE ), zvýrazňovač chuti: E621, fruktózový, d“ · spec: „Kukuřice 78 %, slunečnicový olej 15 %, koření s medovo-hořčičnou příchutí 7 % (sůl 2,3 %, cukr, přírodní aroma < 1 % – obsahuje med, HOŘČICE), zvýrazňovač chuti“"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 97 %) — web: „Kukurica 78 %, slnečnicový olej 15 %, korenie s medovo-horčicovou príchuťou 7 % (soľ 2,3 %, cukor, prírodná aróma HORČICU ), zvýrazňovač chuti: E621, fruktózový“ · spec: „Kukurica 78 %, slnečnicový olej 15 %, korenie s medovo-horčicovou príchuťou 7 % (soľ 2,3 %, cukor, prírodná aróma < 1 % – obsahuje med, HORČICU), zvýrazňovač ch“"
-        }
-      ],
-      "nazev": "KUKUŘICE PRAŽENÁ S MEDEM A HOŘČICÍ"
-    },
-    "728": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "země původu: web „Indie / Vietnam / Afrika / Pobřeží slonoviny“ · spec „Česká republika“"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "země původu: web „India / Vietnam / Afrika / Pobrežie slonoviny“ · spec „Česká republika“"
-        }
-      ],
-      "nazev": "KEŠU JÁDRA PRAŽENÁ SOLENÁ S UZENOU PŘÍCHUTÍ"
-    },
     "914": {
       "cz": [
         {
@@ -730,17 +503,6 @@
         }
       ],
       "nazev": "SLANÝ MIX ALL IN ONE"
-    },
-    "1418": {
-      "cz": [],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 77 %) — web: „sušený zázvor (90 %), fruktóza (10 %)“ · spec: „ZÁZVOR sušený (90 %), fruktóza (10 %)“"
-        }
-      ],
-      "nazev": "ZÁZVOR KOUSKY BEZ SO2"
     },
     "1520": {
       "cz": [
@@ -836,23 +598,6 @@
         }
       ],
       "nazev": "KARAMELIZOVANÉ KEŠU SE SEZAMEM"
-    },
-    "1530": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 84 %) — web: „KEŠU OŘECHY (58,06 %), cukr, sůl“ · spec: „KEŠU (58,06 %), cukr, sůl“"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 85 %) — web: „KEŠU ORECHY (58,06 %), cukor, soľ“ · spec: „KEŠU (58,06 %), cukor, soľ“"
-        }
-      ],
-      "nazev": "KARAMELIZOVANÉ KEŠU SLANÉ"
     },
     "1531": {
       "cz": [
@@ -1346,72 +1091,6 @@
       ],
       "nazev": "BROSKVOVÁ SRDÍČKA"
     },
-    "1832": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "nazev": "ŽÍŽALKY ŽELÉ"
-    },
-    "1949": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "země původu: web „Česká republika“ · spec „ČR“"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 36 %) — web: „zmesi ✓ LÚPANÉ SEMIENKA SLNEČNICE 49 % ✓ HORKÁ ČOKOLÁDA 16.5 % ✓ BIELA ČOKOLÁDA 16.5 % Mixy sa miešajú vo väčšom množstve. Výsledný pomer zložiek sa môže mierne“ · spec: „LÚPANÉ SEMIENKA SLNEČNICE 49 % ± 3 %, MLIEČNA ČOKOLÁDA 16,5 % ± 3 % (cukor, kakaové maslo, sušené MLIEKO, kakaová hmota, emulgátor: lecitíny; prírodná vanilková“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "země původu: web „Česká republika“ · spec „ČR“"
-        }
-      ],
-      "nazev": "SLUNEČNICE TŘÍBAREVNÁ"
-    },
-    "1952": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „LÍSTKOVÝCH OŘECHŮ“ chybí na webu"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        }
-      ],
-      "nazev": "ČOKOLÁDOVÉ MANDLE KARAMEL MOŘSKÁ SŮL"
-    },
     "1961": {
       "cz": [
         {
@@ -1498,28 +1177,6 @@
         }
       ],
       "nazev": "MANDLE V POLEVĚ Z JAHOD A BÍLÉ ČOKOLÁDY"
-    },
-    "1970": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 88 %) — web: „55,7 % MLÉČNÁ ČOKOLÁDA (cukr, SUŠENÉ PLNOTUČNÉ MLÉKO , kakaová hmota, kakaové máslo, SYROVÁTKA Z MLÉKA , SÓJOVÝ LECITIN E322, přírodní vanilkové aroma), 23,56 %“ · spec: „55,7 % MLÉČNÁ ČOKOLÁDA (cukr, SUŠENÉ PLNOTUČNÉ MLÉKO, kakaová hmota, kakaové máslo, SYROVÁTKA Z MLÉKA, SÓJOVÝ LECITIN E322, přírodní vanilkové aroma), 23,56 % c“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „JÁDRA PODZEMNICE OLEJNÉ“ chybí na webu"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „JADRÁ PODZEMNICE OLEJNEJ“ chybí na webu"
-        }
-      ],
-      "nazev": "MANDLE V BAREVNÉ KRUSTĚ 5 KG"
     },
     "1972": {
       "cz": [
@@ -1664,16 +1321,6 @@
           "sekce": "stitek",
           "uroven": "varovani",
           "text": "energie 203 kcal nesedí s živinami (≈ 322 kcal) — ověř ve spec"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "tuky: na webu chybí (spec <0,5 g)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "cukry: na webu chybí (spec <0,5 g)"
         }
       ],
       "sk": [
@@ -1681,104 +1328,9 @@
           "sekce": "stitek",
           "uroven": "varovani",
           "text": "energie 203 kcal nesedí s živinami (≈ 322 kcal) — ověř ve spec"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "tuky: na webu chybí (spec <0,5 g)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "cukry: na webu chybí (spec <0,5 g)"
         }
       ],
       "nazev": "ŽELÉ STEVIA MEDVÍDCI BEZ CUKRU SE SLADIDLY"
-    },
-    "2018": {
-      "cz": [],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 48 %) — web: „zmesi ✓ jogurtová poleva 70% ✓ marhuľe 30% Mixy sa miešajú vo väčšom množstve. Výsledný pomer zložiek sa môže mierne líšiť. Zloženie jogurtová poleva 70% (cukor“ · spec: „jogurtová poleva 70% (cukor, rastlinný tuk palmový, SRVÁTKA Z MLIEKA, ryžová múka, JOGURTOVÝ PRÁŠOK Z MLIEKA 3%, slnečnicový lecitín E322, arabská guma, šelak E“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „ARAŠÍDOV“ chybí na webu"
-        }
-      ],
-      "nazev": "MERUŇKY V JAHODOVÉM JOGURTU"
-    },
-    "2024": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 78 %) — web: „rozinky (49,5 %), cukr (24,26 %), kakaová hmota (20 %), kakaové máslo (5,2 %), emulgátor (E322) SÓJOVÝ lecitin (“ · spec: „rozinky (49,5 %), cukr (24,26 %), kakaová hmota (20 %), kakaové máslo (5,2 %), emulgátor (E322) SÓJOVÝ lecitin (<1 %), glazovací látka (E414) (0,5 %), slunečnic“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „LEPKU“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „LÍSKOVCOVÝCH OŘECHŮ“ chybí na webu"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 79 %) — web: „hrozienka (49,5 %), cukor (24,26 %), kakaová hmota (20 %), kakaové maslo (5,2 %), emulgátor (E322) SÓJOVÝ lecitín (“ · spec: „hrozienka (49,5 %), cukor (24,26 %), kakaová hmota (20 %), kakaové maslo (5,2 %), emulgátor (E322) SÓJOVÝ lecitín (<1 %), glazovacia látka (E414) (0,5 %), slneč“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „LEPKU“ chybí na webu"
-        }
-      ],
-      "nazev": "ČOKOLÁDOVÉ ROZINKY DARK JUMBO"
-    },
-    "2102": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 95 %) — web: „ARAŠÍDY (25,64 %), pšeničná mouka (24,16 %), kukuřičný škrob (18,74 %), cukr (16,43 %), kukuřičná mouka (8,08 %), SEZAMOVÁ semínka (3,06 %), bramborový škrob (2“ · spec: „ARAŠÍDY (25,64 %), PŠENIČNÁ mouka (24,16 %), kukuřičný škrob (18,74 %), cukr (16,43 %), kukuřičná mouka (8,08 %), SEZAMOVÁ semínka (3,06 %), bramborový škrob (2“"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 97 %) — web: „ARAŠÍDY (25,64 %), pšeničná múka (24,16 %), kukuričný škrob (18,74 %), cukor (16,43 %), kukuričná múka (8,08 %), SEZAMOVÉ semienka (3,06 %), zemiakový škrob (2,“ · spec: „ARAŠIDY (25,64 %), PŠENIČNÁ múka (24,16 %), kukuričný škrob (18,74 %), cukor (16,43 %), kukuričná múka (8,08 %), SEZAMOVÉ semienka (3,06 %), zemiakový škrob (2,“"
-        }
-      ],
-      "nazev": "KING NUTS OBALOVANÉ ARAŠÍDY MIX"
     },
     "2261": {
       "cz": [
@@ -1807,39 +1359,6 @@
         }
       ],
       "nazev": "LYOFILIZOVANÉ MALINY V HOŘKÉ ČOKOLÁDĚ"
-    },
-    "2333": {
-      "cz": [],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „ARAŠÍDOV“ chybí na webu"
-        }
-      ],
-      "nazev": "MANDLE V KARAMELOVÉ POLEVĚ"
-    },
-    "2357": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „SÓJI“ chybí na webu"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 97 %) — web: „MLIEČNA ČOKOLÁDA 57 ± 3 % (cukor, kakaové maslo, sušené plnotučné MLIEKO , kakaová hmota, rastlinné tuky (palmový olej, olej z máslovníka), sušená SRVÁTKA , MLI“ · spec: „MLIEČNA ČOKOLÁDA 57 ± 3 % (cukor, kakaové maslo, sušené plnotučné MLIEKO, kakaová hmota, rastlinné tuky (palmový olej, olej z máslovníka), sušená SRVÁTKA, MLIEČ“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „SÓJE“ chybí na webu"
-        }
-      ],
-      "nazev": "CORNFLAKES V MLÉČNÉ ČOKOLÁDĚ"
     },
     "2474": {
       "cz": [
@@ -1902,54 +1421,6 @@
       ],
       "nazev": "KEŠU JÁDRA PRAŽENÁ NESOLENÁ"
     },
-    "2573": {
-      "cz": [],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 90 %) — web: „mrlík čílsky (quinoa) 100 %“ · spec: „Mrlík čilský (Quinoa) 100 %“"
-        }
-      ],
-      "nazev": "MERLÍK CHILSKÝ (QUINOA) – BÍLÁ"
-    },
-    "2663": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „JADER Z PODZEMNICE OLEJNÉ“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „SÓJOVÝCH BOBŮ“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "sul: na webu chybí (spec <0,01 g)"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „JADIER Z PODZEMNICE OLEJNEJ“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „SÓJOVÝCH BÔBOV“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "sul: na webu chybí (spec <0,01 g)"
-        }
-      ],
-      "nazev": "DATLE V HOŘKÉ ČOKOLÁDĚ A SKOŘICI"
-    },
     "2693": {
       "cz": [],
       "sk": [
@@ -1971,23 +1442,6 @@
         }
       ],
       "nazev": "SLADKÁ SMĚS DELUXE"
-    },
-    "2747": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "nasycene: na webu chybí (spec < 0,1 g)"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "nasycene: na webu chybí (spec < 0,1 g)"
-        }
-      ],
-      "nazev": "PAPÁJA KANDOVANÁ, KOSTKY"
     },
     "2753": {
       "cz": [
@@ -2015,39 +1469,6 @@
         }
       ],
       "nazev": "KOKOSOVÉ KOSTKY"
-    },
-    "2756": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 98 %) — web: „Hořká čokoláda 54 % (kakaová hmota, cukr, kakaové máslo, emulgátor: lecitiny ( SÓJA ), (vanilkový extrakt)), ARAŠÍDY jádra pražená ve slupce 45 %, leštící směs “ · spec: „Hořká čokoláda 54 % (kakaová hmota, cukr, kakaové máslo, emulgátor: lecitiny (SÓJA), (vanilkový extrakt)), ARAŠÍDY jádra pražená v slupce 45 %, leštící směs 1 %“"
-        }
-      ],
-      "sk": [],
-      "nazev": "ARAŠÍDY LOUPANÉ PRAŽENÉ V HOŘKÉ ČOKOLÁDĚ"
-    },
-    "2759": {
-      "cz": [],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 22 %) — web: „zmesi ✓ Banán kandizovaný fritovaný plátky 50 % ✓ Horká čokoláda 49 % ✓ leštiaca zmes 1 % Mixy sa miešajú vo väčšom množstve. Výsledný pomer zložiek sa môže mie“ · spec: „Kandizovaný fritovaný banán plátky 50 % (banán, kokosový olej, cukor, banánová aróma), horká čokoláda 49 % (kakaová hmota, cukor, kakaové maslo, emulgátor: leci“"
-        }
-      ],
-      "nazev": "KANDOVANÝ SMAŽENÝ BANÁN (CHIPS) V HOŘKÉ ČOKOLÁDĚ"
-    },
-    "3013": {
-      "cz": [],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 98 %) — web: „KEŠU ORECHY jadrá 97,1 %, soľ 1,60 %, kari koreniaca zmes (kurkuma, koriander, senovka grécka, zázvor, rímska rasca, kukuričný škrob, kajenské korenie, soľ), ar“ · spec: „KEŠU ORECHY jadrá 97,1 %, soľ 1,60 %, kari korenná zmes (kurkuma, koriander, senovka grécka, zázvor, rímska rasca, kukuričný škrob, kajenské korenie, soľ), arab“"
-        }
-      ],
-      "nazev": "KEŠU PRAŽENÉ A SOLENÉ S KARI KOŘENÍM"
     },
     "3094": {
       "cz": [
@@ -2077,11 +1498,6 @@
           "sekce": "spec",
           "uroven": "varovani",
           "text": "štítek se liší od zápisu specifikace v poli zeme_puvodu — spec: „Thajsko“ · štítek: „mimo EU“ (ověřit, co platí)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "země původu: web „Thajsko“ · spec „mimo EU“"
         }
       ],
       "sk": [
@@ -2089,117 +1505,9 @@
           "sekce": "spec",
           "uroven": "varovani",
           "text": "štítek se liší od zápisu specifikace v poli nazev, zeme_puvodu — spec: „POMELO PLÁTKY“ · štítek: „POMELO PLIESKY“ (ověřit, co platí)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "země původu: web „Thajsko“ · spec „mimo EÚ“"
         }
       ],
       "nazev": "POMELO PLÁTKY"
-    },
-    "3111": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "země původu: web „ČR“ · spec „Česká republika“"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 95 %) — web: „POLEVA S JOGURTOVOU PRÍCHUŤOU 68 % ± 3 %: cukor, plne stužený palmojadrovový tuk, sušená SRVÁTKA , sušený JOGURT 2 % ( MLIEKO , jogurtová kultúra), regulátor ky“ · spec: „POLEVA S JOGURTOVOU PRÍCHUŤOU 68 % ± 3 % – cukor, plne stužený palmojadrovový tuk, sušená SRVÁTKA, sušený JOGURT 2 % (MLIEKO, jogurtová kultúra), regulátor kysl“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "země původu: web „ČR“ · spec „Česká republika“"
-        }
-      ],
-      "nazev": "MERUŇKY V POLEVĚ S JOGURTOVOU PŘÍCHUTÍ"
-    },
-    "3537": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "tuky: na webu chybí (spec <0,5 g)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "nasycene: na webu chybí (spec <0,5 g)"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "tuky: na webu chybí (spec <0,5 g)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "nasycene: na webu chybí (spec <0,5 g)"
-        }
-      ],
-      "nazev": "HRUŠKY BEZ PŘIDANÉHO CUKRU"
-    },
-    "3648": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „LÍSTKOVÝCH OŘECHŮ“ chybí na webu"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        }
-      ],
-      "nazev": "ČOKOLÁDOVÉ MANDLE LIMONCELLO"
-    },
-    "3651": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 97 %) — web: „cukr, MANDLE (15,58 %), celé MLÉKO v prášku, kakaová hmota, kakaové máslo, syrovátka v prášku (obsahuje MLÉKO ), rýžový škrob, zahušťovadlo (E414), barvivo (E51“ · spec: „cukr, MANDLE (15,58 %), celé MLÉKO v prášku, kakaová hmota, kakaové máslo, syrovátkový prášek (obsahuje MLÉKO), rýžový škrob, zahušťovadlo (E414), barvivo (E516“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „LÍSKOVÝMI OŘECHY“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „BRAZILSKÝCH OŘECHŮ“ chybí na webu"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        }
-      ],
-      "nazev": "ČOKOLÁDOVÉ MANDLE FIALOVÉ BORŮVKOVÉ MLÉČNÉ VÍDEŇSKÉ"
     },
     "3661": {
       "cz": [],
@@ -2230,11 +1538,6 @@
           "sekce": "stitek",
           "uroven": "info",
           "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
         }
       ],
       "nazev": "ČOKOLÁDOVÉ ARAŠÍDOVÉ KOUSKY BÍLÉ"
@@ -2261,37 +1564,10 @@
         {
           "sekce": "web",
           "uroven": "chyba",
-          "text": "složení „ČOKOLÁDOVÉ ARAŠÍDOVÉ KÚSKY MLIEČNE“ na webu neodpovídá specifikaci (shoda 79 %) — spec: „ARAŠIDY (50 %), cukor (24,5 %), kakaové maslo (10,3 %), celé sušené MLIEKO (6,8 %), kakaová hmota (3,5 %), srvátkovný prášok (obsahuje MLIEK“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "SK stránka má české legislativní nadpisy: Složení:, Může obsahovat stopy, Bílkoviny, Aktuální trvanlivost, Země původu"
+          "text": "složení „ČOKOLÁDOVÉ ARAŠÍDOVÉ KÚSKY MLIEČNE“ na webu neodpovídá specifikaci (shoda 77 %) — spec: „ARAŠIDY (50 %), cukor (24,5 %), kakaové maslo (10,3 %), celé sušené MLIEKO (6,8 %), kakaová hmota (3,5 %), srvátkovný prášok (obsahuje MLIEK“"
         }
       ],
       "nazev": "ČOKOLÁDOVÉ ARAŠÍDOVÉ KOUSKY MLÉČNÉ"
-    },
-    "3705": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "SK stránka má české legislativní nadpisy: Složení:, Může obsahovat stopy, Bílkoviny, Aktuální trvanlivost, Země původu"
-        }
-      ],
-      "nazev": "ČOKOLÁDOVÉ ARAŠÍDOVÉ KOUSKY HOŘKÉ"
     },
     "3714": {
       "cz": [
@@ -2304,26 +1580,6 @@
           "sekce": "stitek",
           "uroven": "varovani",
           "text": "součet živin 106.7 g je víc než 100 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 95 %) — web: „cukr, ARAŠÍDY , celé sušené MLÉKO , kakaová hmota, kakaové máslo, syrovátkový prášek (obsahuje MLÉKO ), glazurovací látka (E904), glazurovací látka (E903), glaz“ · spec: „cukr, ARAŠÍDY, plnotučné MLÉKO v prášku, kakaová hmota, kakaové máslo, syrovátka v prášku (obsahuje MLÉKO), glazurovací látka (E904), glazurovací látka (E903), “"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „LÍSKOVÝCH OŘECHŮ“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „PARA OŘECHŮ“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „JINÝCH OŘECHŮ“ chybí na webu"
         }
       ],
       "sk": [
@@ -2336,156 +1592,9 @@
           "sekce": "stitek",
           "uroven": "varovani",
           "text": "součet živin 106.7 g je víc než 100 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 40 %) — web: „cukor, ARAŠIDY , sušené plnotučné MLIEKO , kakaová hmota, kakaové maslo, ryžový škrob, sušená SRVÁTKA (obsahuje MLIEKO ), zahusťovadlo (E414), leštiaca látka (E“ · spec: „cukor, ARAŠIDY, plnotučné MLIEKO v prášku, kakaová hmota, kakaové maslo, srvátka v prášku (obsahuje MLIEKO), glazovacia látka (E904), glazovacia látka (E903), g“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „PŠENICE“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „JAČMEŇA“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „OVSA“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „ŠPALDY“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „MANDLÍ“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „LIESKOVÝCH ORECHOV“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „VLAŠSKÝCH ORECHOV“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „KEŠU“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „PEKANOVÝCH ORECHOV“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „PARA ORECHOV“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „PISTÁCIÍ“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „MAKADAMIOVÝCH ORECHOV“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „INÝCH ORECHOV“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "energie: web 2243 kJ / 535 kcal · spec 2299 kJ / 549 kcal"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "tuky: web 24.2 g · spec 25.5 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "nasycene: web 8.2 g · spec 8.7 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "sacharidy: web 69 g · spec 69.6 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "cukry: web 57 g · spec 57.7 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "vlaknina: web 2.5 g · spec 2.6 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "bilkoviny: web 8.5 g · spec 8.9 g"
         }
       ],
       "nazev": "ČOKOLÁDOVÉ DRAŽÉ PRO DĚTI"
-    },
-    "3717": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 64 %) — web: „rozinky (45 %), cukr (28,08 %), kakaové máslo (14,04 %), celé MLÉKO v prášku (8,1 %), laktóza (z MLÉKA ) (2,7 %), odtučněné MLÉKO v prášku (1,08 %), emulgátor (“ · spec: „rozinky (45 %), cukr (28,08 %), kakaové máslo (14,04 %), celé MLÉKO v prášku (8,1 %), laktóza (z MLÉKA) (2,7 %), odtučněné MLÉKO v prášku (1,08 %), emulgátor (E“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „LÍSKŮ“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „JINÝCH OŘECHŮ“ chybí na webu"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 63 %) — web: „hrozienka (45 %), cukor (28,08 %), kakaové maslo (14,04 %), celé MLIEKO v prášku (8,1 %), laktóza (z MLIEKA ) (2,7 %), odtučnené MLIEKO v prášku (1,08 %), emulg“ · spec: „hrozienka (45 %), cukor (28,08 %), kakaové maslo (14,04 %), plnotučné MLIEKO v prášku (8,1 %), laktóza (z MLIEKA) (2,7 %), odtučnené MLIEKO v prášku (1,08 %), e“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „INÝCH ORECHOV“ chybí na webu"
-        }
-      ],
-      "nazev": "BAREVNÁ SMĚS ROZINEK"
     },
     "3720": {
       "cz": [
@@ -2503,23 +1612,6 @@
         }
       ],
       "nazev": "BLANŠÍROVANÉ SMAŽENÉ VALENCIJSKÉ MANDLE"
-    },
-    "3721": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 93 %) — web: „Valencijské MANDLE 96 %, jemné bylinky 2 % (rozmarýn, tymián, oregano, saturejka, majoránka, bazalka), slunečnicový olej 1,5 %, mořská sůl 0,5 %“ · spec: „MANDLE valencijské 96 %, jemné bylinky 2 % (rozmarýn, tymián, oregano, saturejka letní, majoránka, bazalka), slunečnicový olej 1,5 %, mořská sůl 0,5 %“"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 91 %) — web: „Valencijské MANDLE 96 %, jemné bylinky 2 % (rozmarín, tymián, oregano, saturejka, majoránka, bazalka), slnečnicový olej 1,5 %, morská soľ 0,5 %“ · spec: „MANDLE valencijské 96 %, jemné bylinky 2 % (rozmarín, tymian, oregano, saturejka letná, majorán, bazalka), slnečnicový olej 1,5 %, morská soľ 0,5 %“"
-        }
-      ],
-      "nazev": "BLANŠÍROVANÉ SMAŽENÉ VALENCIJSKÉ MANDLE S JEMNÝMI BYLINKAMI"
     },
     "3723": {
       "cz": [
@@ -2548,54 +1640,12 @@
       ],
       "nazev": "MANDLE LOUPANÉ S PŘÍCHUTÍ ČERVENÉ PAPRIKY A CHILLI"
     },
-    "3726": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 59 %) — web: „cukr (49,91 %), MANDLE (14,85 %), kakaová hmota (9,40 %), kakaové máslo (8,49 %), syrovátkový prášek (obsahuje MLÉKO ) (3,03 %), zahušťovadlo (E414) (1,81 %), p“ · spec: „cukr, MANDLE (14,85 %), kakaová hmota, kakaové máslo, syrovátkový prášek (obsahuje MLÉKO), zahušťovadlo (E414), prášek z celého MLÉKA, barvivo (E516), emulgátor“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "alergeny ze specifikace chybí na webu: MLÉKA"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „LÍSTKOVÝCH OŘECHŮ“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „OSTATNÍCH OŘECHŮ“ chybí na webu"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        }
-      ],
-      "nazev": "ČOKOLÁDOVÉ MANDLE VÍDEŇSKÉ - RŮŽOVÁ/BÍLÁ"
-    },
     "3732": {
       "cz": [
         {
           "sekce": "stitek",
           "uroven": "info",
           "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 85 %) — web: „ARAŠÍDY (29,37 %), pšeničná MOUKA (24,07 %), kukuřičný škrob (15,73 %), cukr (14,31 %), kukuřičná mouka (6,74 %), kokosový olej (4,34 %), sečuánské koření (cukr“ · spec: „ARAŠÍDY (29,37 %), PŠENIČNÁ mouka (24,07 %), kukuřičný škrob (15,73 %), cukr (14,31 %), kukuřičná mouka (6,74 %), kokosový olej (4,34 %), sečuánské koření (cukr“"
         }
       ],
       "sk": [
@@ -2639,44 +1689,6 @@
       ],
       "nazev": "ARAŠÍDY S PŘÍCHUTÍ SÝRA A RAJČETE (RAVIOLI)"
     },
-    "3978": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „ŠKRUPINOVÝCH PLODŮ“ chybí na webu"
-        }
-      ],
-      "sk": [],
-      "nazev": "SLANÝ PRECLÍK V MLÉČNÉ ČOKOLÁDĚ"
-    },
-    "3979": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „MLÉKA A VÝROBKŮ Z NICH“ chybí na webu"
-        }
-      ],
-      "sk": [],
-      "nazev": "MINI PRECLÍKY"
-    },
-    "3980": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 94 %) — web: „Slaný preclík 50 % ( PŠENIČNÁ mouka, řepkový olej, sůl 3,5 %, extrakt z JEČMENNÉHO sladu, cukr, kypřicí látka: uhličitan sodný, regulátor kyselosti: hydroxid so“ · spec: „Slaný preclík 50 % (PŠENIČNÁ mouka, řepkový olej, sůl 3,5 %, extrakt z JEČMENNÉHO sladu, cukr, kypřicí látka: uhličitan sodný, regulátor kyselosti: hydroxid sod“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „ŠKRUPINOVÝCH PLODŮ (OŘECHŮ)“ chybí na webu"
-        }
-      ],
-      "sk": [],
-      "nazev": "SLANÝ PRECLÍK V MLÉČNÉ ČOKOLÁDĚ SE SLANÝM KARAMELEM"
-    },
     "3993": {
       "cz": [
         {
@@ -2708,67 +1720,6 @@
         }
       ],
       "nazev": "MANDLE EXCLUSIVE MIX"
-    },
-    "4146": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 82 %) — web: „ARAŠÍDY (65 %), karamelizovaný cukr (33 %), sůl (1 %), extrakt z chilli papriček (“ · spec: „ARAŠÍDY (65 %), karamelizovaný cukr (33 %), sůl (1 %), extrakt z chilli papriček (<1 %), barvivo: paprikový extrakt“"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 83 %) — web: „ARAŠÍDY (65 %), karamelizovaný cukor (33 %), soľ (1 %), extrakt z chilli papričiek (“ · spec: „ARAŠÍDY (65 %), karamelizovaný cukor (33 %), soľ (1 %), extrakt z chilli papričiek (<1 %), farbivo: paprikový extrakt“"
-        }
-      ],
-      "nazev": "ARAŠÍDY V KARAMELU S CHILLI"
-    },
-    "4296": {
-      "cz": [],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 95 %) — web: „POLEVA S JOGURTOVOU PRÍCHUŤOU 57 % ± 3 % - cukor, plne stužený palmojadrovový tuk, sušená SRVÁTKA , sušený JOGURT 2 % ( MLIEKO , jogurtová kultúra), regulátor k“ · spec: „POLEVA S JOGURTOVOU PRÍCHUŤOU 57 % ± 3 % - cukor, plne stužený palmojadrovový tuk, sušená SRVÁTKA, sušený JOGURT 2 % (MLIEKO, jogurtová kultúra), regulátor kysl“"
-        }
-      ],
-      "nazev": "KUKUŘIČNÉ LUPÍNKY V POLEVĚ S JOGURTOVOU PŘÍCHUTÍ"
-    },
-    "4440": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „OBILOVIN OBSAHUJÍCÍCH LEPEK“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „OXIDU SIŘIČITÉHO A SIŘIČITANŮ“ chybí na webu"
-        }
-      ],
-      "sk": [],
-      "nazev": "MINI LENTILKY BEZ „PALMÁČE“"
-    },
-    "4443": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 55 %) — web: „směsi ✓ Arašídové hrudky v bílé čokoládě 25 % ✓ arašídové hrudky v mléčné čokoládě 25 % ✓ arašídové hrudky v hořké čokoládě 25 % ✓ arašídové hrudky slaný karame“ · spec: „Arašídové hrudky v bílé čokoládě 25 % (ARAŠÍDY 50 %, cukr 26,5 %, kakaové máslo 12,5 %, celé MLÉKO v prášku 7,3 %, laktóza (z MLÉKA) 2,5 %, odtučněné MLÉKO v pr“"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 73 %) — web: „zmesi ✓ Arašídové hrudky v bielej čokoláde 25 % ✓ arašídové hrudky v mliečnej čokoláde 25 % ✓ arašídové hrudky v horkej čokoláde 25 % ✓ arašídové hrudky slaný k“ · spec: „Arašídové hrudky v bielej čokoláde 25 % (ARAŠIDY 50 %, cukor 26,5 %, kakaové maslo 12,5 %, celé MLIEKO v prášku 7,3 %, laktóza (z MLIEKA) 2,5 %, odtučnené MLIEK“"
-        }
-      ],
-      "nazev": "ARAŠÍDOVÉ HRUDKY MIX BAREV"
     },
     "4446": {
       "cz": [],
@@ -2808,60 +1759,6 @@
       ],
       "nazev": "PRECLÍKY V BÍLÉ ČOKOLÁDĚ"
     },
-    "4794": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 81 %) — web: „ARAŠÍDY (34 %), cukr (28 %), KEŠU OŘECHY (17 %), MANDLE (17 %), glukóza (2 %), slunečnicový olej (1,1 %), sůl (1 %), emulgátor (E414) (“ · spec: „ARAŠÍDY (34 %), cukr (28 %), KEŠU OŘECHY (17 %), MANDLE (17 %), glukóza (2 %), slunečnicový olej (1,1 %), sůl (1 %), emulgátor (E414) (<1 %), emulgátor (E322) s“"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 81 %) — web: „ARAŠIDY (34 %), cukor (28 %), KEŠU ORECHY (17 %), MANDLE (17 %), glukóza (2 %), slnečnicový olej (1,1 %), soľ (1 %), emulgátor (E414) (“ · spec: „ARAŠIDY (34 %), cukor (28 %), KEŠU ORECHY (17 %), MANDLE (17 %), glukóza (2 %), slnečnicový olej (1,1 %), soľ (1 %), emulgátor (E414) (<1 %), emulgátor (E322) s“"
-        }
-      ],
-      "nazev": "MEDOVÁ SMĚS SE SOLÍ"
-    },
-    "5358": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 95 %) — web: „KEŠU OŘECHY (74 %), PŠENIČNÁ mouka (12,8 %), bramborový škrob (6 %), BBQ koření (syrovátkový prášek ( MLÉKO ), cukr, sůl, rajčatový prášek, zvýrazňovač chuti (E“ · spec: „KEŠU OŘECHY (74 %), PŠENIČNÁ mouka (12,8 %), bramborový škrob (6 %), BBQ koření (syrovátkový prášek (MLÉKO), cukr, sůl, rajčatový prášek, zvýrazňovač chuti (E62“"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 94 %) — web: „KEŠU ORECHY (74 %), PŠENIČNÁ múka (12,8 %), zemiakový škrob (6 %), BBQ korenie (srvátkový prášok ( MLIEKO ), cukor, soľ, rajčinový prášok, zvýrazňovač chuti (E6“ · spec: „KEŠU ORECHY (74 %), PŠENIČNÁ múka (12,8 %), zemiakový škrob (6 %), BBQ korenie (srvátkový prášok (MLIEKO), cukor, soľ, rajčinový prášok, zvýrazňovač chuti (E621“"
-        }
-      ],
-      "nazev": "KEŠU OŘECHY BBQ"
-    },
     "5481": {
       "cz": [
         {
@@ -2872,17 +1769,6 @@
       ],
       "sk": [],
       "nazev": "BANÁNOVÉ CHIPSY TŘÍBAREVNÉ"
-    },
-    "5484": {
-      "cz": [],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "SK stránka má české legislativní nadpisy: Složení:, Může obsahovat stopy, Bílkoviny, Aktuální trvanlivost, Země původu"
-        }
-      ],
-      "nazev": "ARAŠÍDY TŘÍ BAREV"
     },
     "5511": {
       "cz": [],
@@ -2895,62 +1781,13 @@
       ],
       "nazev": "SLANÝ MIX EXCLUSIVE"
     },
-    "5514": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
-      "nazev": "ČOKOLÁDOVÁ KŮRA MLÉČNÁ"
-    },
-    "5515": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "sul: na webu chybí (spec <0,01 g)"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "sul: na webu chybí (spec <0,01 g)"
-        }
-      ],
-      "nazev": "ČOKOLÁDOVÉ KŘUPAVÉ PLÁTKY HOŘKÉ"
-    },
     "5551": {
       "cz": [],
       "sk": [
         {
           "sekce": "stitek",
           "uroven": "chyba",
-          "text": "kód chybí ve vstup_sk.csv — štítek SK nejde vytisknout"
+          "text": "kód chybí ve vstup_sk.csv — štítek SK nejde vytisknout — specifikace je ve složce, doplnit: python3 Nutworld/scripts/vstup_navrh.py"
         }
       ],
       "nazev": "BÍLÝ NUGÁT S MANDLEMI VE SKLE Z LÁSKY"
@@ -2961,11 +1798,6 @@
           "sekce": "spec",
           "uroven": "varovani",
           "text": "štítek se liší od zápisu specifikace v poli zeme_puvodu — spec: „“ · štítek: „Česká republika“ (ověřit, co platí)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "země původu: web „“ · spec „Česká republika“"
         }
       ],
       "sk": [
@@ -2973,137 +1805,9 @@
           "sekce": "spec",
           "uroven": "varovani",
           "text": "štítek se liší od zápisu specifikace v poli zeme_puvodu — spec: „“ · štítek: „Česká republika“ (ověřit, co platí)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "země původu: web „“ · spec „Česká republika“"
         }
       ],
       "nazev": "MANDLE S PŘÍCHUTÍ JOGURT & JAHODA"
-    },
-    "6453": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 95 %) — web: „cukr, ARAŠÍDY , kakaové máslo, rozinky, plnotučné MLÉKO v prášku, kakaová hmota, měkké kokosové kostičky (37 % kokos, PŠENIČNÝ škrob, glukózo-fruktózový sirup, “ · spec: „cukr, ARAŠÍDY, kakaové máslo, rozinky, plnotučné MLÉKO v prášku, kakaová hmota, měkké kokosové kostky (37 % kokos, PŠENIČNÝ škrob, glukózo-fruktózový sirup, cuk“"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 96 %) — web: „cukor, ARAŠIDY , kakaové maslo, hrozienka, plnotučné MLIEKO v prášku, kakaová hmota, mäkké kokosové kocky (37 % kokos, PŠENIČNÝ škrob, glukózo-fruktózový sirup,“ · spec: „cukor, ARAŠIDY, kakaové maslo, hrozienka, plnotučné MLIEKO v prášku, kakaová hmota, mäkké kokosové kocky (37 % kokos, PŠENIČNÝ škrob, glukózo-fruktózový sirup, “"
-        }
-      ],
-      "nazev": "ČOKOLÁDOVÝ OŘECHOVÝ MIX ROYAL"
-    },
-    "6456": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 97 %) — web: „cukr, kakaové máslo, kakaová hmota, MANDLE , celé MLÉKO v prášku, LÍSKOVÉ OŘECHY , PARA OŘECHY , KEŠU OŘECHY , glukózový sirup, glazurovací látka (E904), glazur“ · spec: „cukr, kakaové máslo, kakaová hmota, MANDLE, celé MLÉKO v prášku, LÍSKOVÉ OŘECHY, PARA OŘECHY, KEŠU OŘECHY, glukózový sirup, glazurovací látka (E904), glazurovac“"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 79 %) — web: „cukor, kakaové maslo, kakaová hmota, MANDLE , celé MLIEKO v prášku, LIESKOVÉ ORECHY , PARA ORECHY , KEŠU ORECHY , glukózový sirup, glazovacia látka (E904), glaz“ · spec: „cukor, kakaové maslo, kakaová hmota, MANDLE, celé MLIEKO v prášku, LIESKOVÉ ORECHY, PARA ORECHY, KEŠU ORECHY, glukózový sirup, glazovacie látka (E904), glazovac“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „ARAŠÍDOV“ chybí na webu"
-        }
-      ],
-      "nazev": "ČOKOLÁDOVÝ OŘECHOVÝ MIX VELKÝ SMÍŠENÝ"
-    },
-    "6459": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 93 %) — web: „ARAŠÍDY (73,93 %), KEŠU OŘECHY (11,33 %), PŠENIČNÁ mouka (3,90 %), cukr (2,53 %), dýňová semena (2,36 %), kukuřičný škrob (1,89 %), arašídový olej ( ARAŠÍDY ) (“ · spec: „ARAŠÍDY (73,93 %), KEŠU OŘECHY (11,33 %), PŠENIČNÁ mouka (3,90 %), cukr (2,53 %), dýňová semínka (2,36 %), kukuřičný škrob (1,89 %), arašídový olej (ARAŠÍDY) (0“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „PARA OŘECHY“ chybí na webu"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 90 %) — web: „ARAŠIDY (73,93 %), KEŠU ORECHY (11,33 %), PŠENIČNÁ múka (3,90 %), cukor (2,53 %), tekvicové semienka (2,36 %), kukuričný škrob (1,89 %), arašidový olej ( ARAŠID“ · spec: „ARAŠIDY (73,93 %), KEŠU ORECHY (11,33 %), PŠENIČNÁ múka (3,90 %), cukor (2,53 %), tekvicové semienka (2,36 %), kukuričný škrob (1,89 %), arašidový olej (ARAŠIDY“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „PARA ORECHY“ chybí na webu"
-        }
-      ],
-      "nazev": "MIX ITALSKÝ STYL"
-    },
-    "6462": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „PARA OŘECHY“ chybí na webu"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „PARA ORECHY“ chybí na webu"
-        }
-      ],
-      "nazev": "MIX MEXICANA STYL"
     },
     "6573": {
       "cz": [
@@ -3183,23 +1887,6 @@
         }
       ],
       "nazev": "FLAMENGO MIX"
-    },
-    "8542": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „JÁDRA PODZEMNICE OLEJNÉ“ chybí na webu"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „JADRÁ PODZEMNICE OLEJNEJ“ chybí na webu"
-        }
-      ],
-      "nazev": "MANDLE V BABY BLUE KRUSTĚ"
     },
     "8656": {
       "cz": [
@@ -3379,13 +2066,7 @@
           "text": "chybí údaj „zeme_puvodu“"
         }
       ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "popis na webu nemá sekce Složení / Výživové údaje — legislativní blok chybí"
-        }
-      ],
+      "sk": [],
       "nazev": "MIX KYSELÉHO ŽELÉ"
     },
     "8751": {
@@ -3604,193 +2285,6 @@
       ],
       "nazev": "COCOBITES BANÁN"
     },
-    "9552": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 96 %) — web: „Sýrové kousky [ PŠENIČNÁ mouka, rostlinný olej (řepkový, palmový*), Gouda sýr 14% ( MLÉKO , sůl, startér, syřidlo, barvivo (E160b(ii), E160a), konzervant (E251)“ · spec: „Sýrové kuličky [PŠENIČNÁ mouka, rostlinný olej (řepkový, palmový*), Gouda sýr 14% (MLÉKO, sůl, startovací kultura, syřidlo, barvivo (E160b(ii), E160a), konzerva“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „LÍSTKOVÝCH OŘECHŮ“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „JINÝCH OŘECHŮ“ chybí na webu"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 97 %) — web: „Syrové guľky [ PŠENIČNÁ múka, rastlinný olej (repkový, palmový*), Gouda syr 14% ( MLIEKO , soľ, štartér, syridlo, farbivo (E160b(ii), E160a), konzervant (E251))“ · spec: „Syrové guľôčky [PŠENIČNÁ múka, rastlinný olej (repkový, palmový*), Gouda syr 14% (MLIEKO, soľ, štartovacia kultúra, syridlo, farbivo (E160b(ii), E160a), konzerv“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „OVSA“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „ARAŠÍDOV“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „INÝCH ORECHOV“ chybí na webu"
-        }
-      ],
-      "nazev": "GOUDA SÝROVÉ KŘUPKY"
-    },
-    "9570": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 90 %) — web: „sladké brambory (30,6 %), dýně (21,9 %), taro (13,1 %), mrkev (13,1 %), zelené fazolky (máslové fazole) (8,8 %), kokosový olej (8,0 %), dextrin (4,0 %), mořská “ · spec: „sladké brambory (30,6 %), dýně (21,9 %), taro (13,1 %), mrkev (13,1 %), zelené fazolky (butterbean) (8,8 %), kokosový olej (8,0 %), dextrin (4,0 %), mořská sůl “"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „LÍSKOVÝCH OŘECHŮ“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "země původu: web „Tchaj-wan“ · spec „Taiwan“"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 90 %) — web: „sladké zemiaky (30,6 %), tekvica (21,9 %), taro (13,1 %), mrkva (13,1 %), zelené fazuľky (maslové fazuľky) (8,8 %), kokosový olej (8,0 %), dextrín (4,0 %), mors“ · spec: „sladké zemiaky (30,6 %), tekvica (21,9 %), taro (13,1 %), mrkva (13,1 %), zelené fazuľky (butterbean) (8,8 %), kokosový olej (8,0 %), dextrín (4,0 %), morská so“"
-        }
-      ],
-      "nazev": "SMÍŠENÉ ZELENINOVÉ CHIPSY"
-    },
-    "9573": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 94 %) — web: „sladká brambora (28,7 %), dýně (20,5 %), taro (12,3 %), mrkev (12,3 %), palmový olej (RSPO) (12 %), zelené fazolky (butterbean) (8,2 %), dextrin (4 %), wasabi k“ · spec: „sladké brambory (28,7 %), dýně (20,5 %), taro (12,3 %), mrkev (12,3 %), palmový olej (RSPO) (12,0 %), zelené fazolky (8,2 %), dextrin (4,0 %), wasabi koření (2,“"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 96 %) — web: „sladká zemiaky (28,7 %), tekvica (20,5 %), taro (12,3 %), mrkva (12,3 %), palmový olej (RSPO) (12 %), zelené fazuľky (butterbean) (8,2 %), dextrín (4 %), wasabi“ · spec: „sladké zemiaky (28,7 %), tekvica (20,5 %), taro (12,3 %), mrkva (12,3 %), palmový olej (RSPO) (12,0 %), zelené fazuľky (8,2 %), dextrín (4,0 %), wasabi korenie “"
-        }
-      ],
-      "nazev": "ZELENINOVÉ CHIPSY WASABI"
-    },
-    "9598": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 97 %) — web: „ARAŠÍDY (65 %), cukr (35 %), vanilková příchuť (“ · spec: „ARAŠÍDY (65 %), cukr (35 %), vanilková příchuť (<1 %)“"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 97 %) — web: „ARAŠIDY (65 %), cukor (35 %), vanilková príchuť (“ · spec: „ARAŠIDY (65 %), cukor (35 %), vanilková príchuť (<1 %)“"
-        }
-      ],
-      "nazev": "KARAMELIZOVANÉ ARAŠÍDY S VANILKOVOU PŘÍCHUTÍ"
-    },
-    "9601": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 97 %) — web: „MANDLE (65 %), cukr (35 %), vanilkové aroma (“ · spec: „MANDLE (65 %), cukr (35 %), vanilkové aroma (<1 %)“"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 97 %) — web: „MANDLE (65 %), cukor (35 %), vanilková aróma (“ · spec: „MANDLE (65 %), cukor (35 %), vanilková aróma (<1 %)“"
-        }
-      ],
-      "nazev": "KARAMELIZOVANÉ MANDLE S VANILKOVOU PŘÍCHUTÍ"
-    },
-    "9921": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "sul: na webu chybí (spec <0,19 g)"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "sul: na webu chybí (spec <0,19 g)"
-        }
-      ],
-      "nazev": "MANDLE V MLÉČNÉ ČOKOLÁDĚ A MALINOVÉM PRÁŠKU"
-    },
     "9945": {
       "cz": [
         {
@@ -3846,21 +2340,6 @@
           "sekce": "stitek",
           "uroven": "info",
           "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 95 %) — web: „rýžová mouka (68,9 %), slunečnicový olej (13,2 %), cukr (8,07 %), modifikovaný tapiokový škrob (5,9 %), sůl (1,22 %), prášek ze SOJ ové omáčky ( SÓJOVÉ BOBY , P“ · spec: „rýžová mouka (68,9 %), slunečnicový olej (13,2 %), cukr (8,07 %), modifikovaný tapioková škrob (5,9 %), sůl (1,22 %), prášek ze SÓJOVÉ omáčky (SÓJOVÉ BOBY, PŠEN“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „LÍSKOVÝCH OŘECHŮ“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „JINÝCH OŘECHŮ“ chybí na webu"
         }
       ],
       "sk": [
@@ -4501,16 +2980,6 @@
           "sekce": "stitek",
           "uroven": "info",
           "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „LÍSKOVÝCH OŘECHŮ“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „JINÝCH OŘECHŮ“ chybí na webu"
         }
       ],
       "sk": [
@@ -4523,41 +2992,9 @@
           "sekce": "stitek",
           "uroven": "info",
           "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „INÝCH ORECHOV“ chybí na webu"
         }
       ],
       "nazev": "PEČENÉ KULATÉ CHILLI"
-    },
-    "10564": {
-      "cz": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „LÍSKOVÝCH OŘECHŮ“ chybí na webu"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 97 %) — web: „Ryžová múka (64,17 %), slnečnicový olej (13,01 %), cukor (12,57 %), modifikovaný tapiokovový škrob (5,53 %), SÓJOVÁ omáčka (voda, SÓJOVÉ BÔBY, PŠENICA , soľ) (2“ · spec: „ryžová múka (64,17 %), slnečnicový olej (13,01 %), cukor (12,57 %), modifikovaný tapiokovský škrob (5,53 %), SÓJOVÁ omáčka (voda, SÓJOVÉ BÔBY, PŠENICA, soľ) (2,“"
-        }
-      ],
-      "nazev": "PEČENÉ KULATÉ BARBECUE"
     },
     "10570": {
       "cz": [
@@ -4570,11 +3007,6 @@
           "sekce": "stitek",
           "uroven": "info",
           "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „PARA OŘECHŮ“ chybí na webu"
         }
       ],
       "sk": [
@@ -4587,11 +3019,6 @@
           "sekce": "stitek",
           "uroven": "info",
           "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „PARA ORECHOV“ chybí na webu"
         }
       ],
       "nazev": "PEČENÉ KULATÉ RÝŽOVÉ CHIPSY ORIGINÁL"
@@ -4602,11 +3029,6 @@
           "sekce": "stitek",
           "uroven": "info",
           "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 37 %) — web: „PŠENIČNÁ mouka (26,69 %), ARAŠÍDY (23,65 %), kukuřičný škrob (18,50 %), cukr (17,34 %), kukuřičná mouka (7,93 %), palmový olej (RSPO SG) (3,72 %), sůl (0,60 %),“ · spec: „PŠENIČNÁ mouka (26,685 %), ARAŠÍDY (23,653 %), kukuřičný škrob (18,505 %), cukr (17,338 %), kukuřičná mouka (7,931 %), palmový olej (RSPO SG) (3,717 %), sůl (0,“"
         }
       ],
       "sk": [
@@ -4641,11 +3063,6 @@
           "sekce": "web",
           "uroven": "chyba",
           "text": "stopové alergeny: „SUCHÉ ŠKRUPINOVÉ PLODY“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "SK stránka má české legislativní nadpisy: Složení:, Může obsahovat stopy, Bílkoviny, Aktuální trvanlivost, Země původu"
         }
       ],
       "nazev": "ARAŠÍDY WASABI MIX"
@@ -4673,11 +3090,6 @@
           "sekce": "stitek",
           "uroven": "varovani",
           "text": "součet živin 102.5 g je víc než 100 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 83 %) — web: „JÁDRA MANDLÍ 100 %“ · spec: „MANDLE (jádra mandlí) 100 %“"
         }
       ],
       "sk": [
@@ -4685,25 +3097,9 @@
           "sekce": "stitek",
           "uroven": "varovani",
           "text": "součet živin 102.5 g je víc než 100 g"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 83 %) — web: „JADRÁ MANDLÍ 100 %“ · spec: „MANDLE (jadrá mandlí) 100 %“"
         }
       ],
       "nazev": "MANDLE TŘÍSKY, HRANOLKY"
-    },
-    "27562": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „ŠKRUPINOVÉ PLODY“ chybí na webu"
-        }
-      ],
-      "sk": [],
-      "nazev": "ARAŠÍDY LOUPANÉ PRAŽENÉ V MLÉČNÉ ČOKOLÁDĚ"
     },
     "COXY_POSYP": {
       "cz": [
