@@ -472,6 +472,15 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
             <option value="prekvapeni">Krabice s překvapením — obal 132 + práce 75 Kč</option>
             <option value="odnoska_vino">Odnoska na tři vína — obal 58 + práce 43 Kč</option>
           </optgroup>
+          <optgroup label="Další krabice (obaly.csv)">
+            <option value="krabicka_4doypack">Dárková krabička 4× doypack s pečetí — obal 20 + práce 35 Kč</option>
+            <option value="krabicka_pecet_8x80">Krabička s pečetí 8×80g (18×18) — obal 31.8 + práce 68 Kč</option>
+            <option value="top_vyber">Krabička TOP VÝBĚR 8 druhů — obal 32.48 + práce 58 Kč</option>
+            <option value="pecet_maly_mix">Odnoska 1 okno s pečetí (4 sáčky) — obal 20.79 + práce 49 Kč</option>
+            <option value="pecet_double">Odnoska 2 okna s pečetí (2 sáčky) — obal 25.12 + práce 41 Kč</option>
+            <option value="pecet_vyber_mixu">Odnoska 3 okna s pečetí (6 sáčků) — obal 34.34 + práce 57 Kč</option>
+            <option value="krabice_3druhy">Ořechová krabice 3 druhy (sklenička + 2 sáčky) — obal 43.33 + práce 34 Kč</option>
+          </optgroup>
         </select>
       </div>
       <div id="d-obal-rozpis"></div>
@@ -1267,6 +1276,13 @@ document.addEventListener('click', e => {
 // TAB DÁRKY — stav + logika
 // ══════════════════════════════════════════════
 const D_VZORCE = {
+  krabicka_4doypack: { obal: 20, prace: 35, marze: 50, vo: 0.7 },  // obaly.csv
+  krabicka_pecet_8x80: { obal: 31.8, prace: 68, marze: 50, vo: 0.8 },  // obaly.csv
+  top_vyber: { obal: 32.48, prace: 58, marze: 50, vo: 0.8 },  // obaly.csv
+  pecet_maly_mix: { obal: 20.79, prace: 49, marze: 50, vo: 0.8 },  // obaly.csv
+  pecet_double: { obal: 25.12, prace: 41, marze: 50, vo: 0.8 },  // obaly.csv
+  pecet_vyber_mixu: { obal: 34.34, prace: 57, marze: 50, vo: 0.8 },  // obaly.csv
+  krabice_3druhy: { obal: 43.33, prace: 34, marze: 50, vo: 0.8 },  // obaly.csv
   // Sáčky — násobek ×2
   sacek_knir:        { obal: 9,     prace: 8,    formula: 'nasobek', N: 2,   vo: 0.8 },
   sacek_kolick:      { obal: 10,    prace: 8,    formula: 'nasobek', N: 2,   vo: 0.8 },
