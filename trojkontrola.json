@@ -1,11 +1,11 @@
 {
-  "generated": "2026-11-24T09:12:41",
+  "generated": "2026-11-24T10:21:52",
   "souhrn": {
     "produkty": 352,
-    "ok": 310,
+    "ok": 311,
     "spec": 4,
     "stitek": 23,
-    "web": 22,
+    "web": 21,
     "vypnute": 41
   },
   "web": true,
@@ -561,7 +561,7 @@
           "text": "spec ve složce nebyla zpracována přes spec-import: „1520_Pistácie karamelizované solené 2026 05 -MrRizos”"
         }
       ],
-      "nazev": "KARAMELIZOVANÉ PISTÁCIE SE SOLÍ"
+      "nazev": "KARAMELIZOVANÉ PISTÁCIE SOLENÉ"
     },
     "1525": {
       "cz": [
@@ -1179,38 +1179,6 @@
       ],
       "nazev": "MANDLE LOUPANÉ S PŘÍCHUTÍ ČERVENÉ PAPRIKY A CHILLI"
     },
-    "3732": {
-      "cz": [
-        {
-          "sekce": "spec",
-          "uroven": "info",
-          "text": "spec ve složce nebyla zpracována přes spec-import: „3732_Fire mix 2026 05 -King”"
-        },
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "spec",
-          "uroven": "info",
-          "text": "spec ve složce nebyla zpracována přes spec-import: „3732_Fire mix 2026 05 -King”"
-        },
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 69 %) — web: „ARAŠIDY (29,37 %), pšeničná MÚKA (24,07 %), kukuričný škrob (15,73 %), cukor (14,31 %), kukuričná múka (6,74 %), kokosový olej (4,34 %), sečuánske korenie (cuko“ · spec: „ARAŠIDY (29,37 %), PŠENIČNÁ múka (24,07 %), kukuričný škrob (15,73 %), cukor (14,31 %), kukuričná múka (6,74 %), kokosový olej (4,34 %), sečuánske korenie (cuko“"
-        }
-      ],
-      "nazev": "OHNIVÁ SMĚS"
-    },
     "3993": {
       "cz": [
         {
@@ -1382,16 +1350,6 @@
           "sekce": "stitek",
           "uroven": "info",
           "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "stitek",
-          "uroven": "chyba",
-          "text": "alergen ve složení není zvýrazněn VELKÝM písmem: sója, hořčice"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 55 %) — web: „ARAŠÍDY (31,87 %), bramborový škrob (25,05 %), palmový olej (RSPO SG) (18,76 %), kukuřičný škrob (10,95 %), cukr (8,96 %), sečuánské koření (cukr, dextrin, sůl,“ · spec: „ARAŠÍDY (31,87 %), bramborový škrob (25,05 %), palmový olej (RSPO SG) (18,76 %), kukuřičný škrob (10,95 %), cukr (8,96 %), koření sečuan (cukr, dextrin, sůl, ml“"
         }
       ],
       "sk": [
@@ -1413,12 +1371,7 @@
         {
           "sekce": "web",
           "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 61 %) — web: „ARAŠIDY (31,87 %), zemiakový škrob (25,05 %), palmový olej (RSPO SG) (18,76 %), kukuričný škrob (10,95 %), cukor (8,96 %), sečuánske korenie (cukor, dextrín, so“ · spec: „ARAŠIDY (31,87 %), zemiakový škrob (25,05 %), palmový olej (RSPO SG) (18,76 %), kukuričný škrob (10,95 %), cukor (8,96 %), korenie sečuan (cukor, dextrín, soľ, “"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „SÉZAM“ chybí na webu"
+          "text": "složení na webu se liší od specifikace (shoda 96 %) — web: „ARAŠIDY (31,87 %), zemiakový škrob (25,05 %), palmový olej (RSPO SG) (18,76 %), kukuričný škrob (10,95 %), cukor (8,96 %), korenie sečuan (cukor, dextrín, soľ, “ · spec: „ARAŠIDY (31,87 %), zemiakový škrob (25,05 %), palmový olej (RSPO SG) (18,76 %), kukuričný škrob (10,95 %), cukor (8,96 %), korenie sečuan (cukor, dextrín, soľ, “"
         }
       ],
       "nazev": "FLAMENGO MIX"
