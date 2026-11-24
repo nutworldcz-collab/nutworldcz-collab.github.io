@@ -1,11 +1,11 @@
 {
-  "generated": "2026-11-24T10:21:52",
+  "generated": "2026-11-24T10:23:34",
   "souhrn": {
     "produkty": 352,
-    "ok": 311,
+    "ok": 320,
     "spec": 4,
-    "stitek": 23,
-    "web": 21,
+    "stitek": 17,
+    "web": 16,
     "vypnute": 41
   },
   "web": true,
@@ -514,99 +514,6 @@
       ],
       "nazev": "LÍSKOVÁ MOUKA"
     },
-    "315": {
-      "cz": [
-        {
-          "sekce": "spec",
-          "uroven": "info",
-          "text": "spec ve složce nebyla zpracována přes spec-import: „315_Ananas sušený bez přidaného cukru a SO2 100_KS”"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "energie: web chybí · spec 1395 kJ / 333 kcal"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "spec",
-          "uroven": "info",
-          "text": "spec ve složce nebyla zpracována přes spec-import: „315_Ananas sušený bez přidaného cukru a SO2 100_KS”"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "energie: web chybí · spec 1395 kJ / 333 kcal"
-        }
-      ],
-      "nazev": "ANANAS SUŠENÝ BEZ PŘIDANÉHO CUKRU A SO2"
-    },
-    "1520": {
-      "cz": [
-        {
-          "sekce": "spec",
-          "uroven": "info",
-          "text": "spec ve složce nebyla zpracována přes spec-import: „1520_Pistácie karamelizované solené 2026 05 -MrRizos”"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 56 %) — web: „PISTÁCIE (58,06 %), cukr, sůl, barvivo: zelená.“ · spec: „PISTÁCIE (58,06 %), cukr, sůl, barvivo: zelená. Barvivo může mít škodlivé účinky na aktivitu a pozornost dětí.“"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "spec",
-          "uroven": "info",
-          "text": "spec ve složce nebyla zpracována přes spec-import: „1520_Pistácie karamelizované solené 2026 05 -MrRizos”"
-        }
-      ],
-      "nazev": "KARAMELIZOVANÉ PISTÁCIE SOLENÉ"
-    },
-    "1525": {
-      "cz": [
-        {
-          "sekce": "spec",
-          "uroven": "info",
-          "text": "spec ve složce nebyla zpracována přes spec-import: „1525_Mandle karamelizované s příchutí ostružin 2026 05 -MrRizos”"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 63 %) — web: „MANDLE (58,06 %), cukr, ostružinové aroma, barvivo: karmín.“ · spec: „MANDLE (58,06 %), cukr, ostružinové aroma, barvivo: karmín. Barvivo může mít škodlivé účinky na aktivitu a pozornost dětí.“"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "spec",
-          "uroven": "info",
-          "text": "spec ve složce nebyla zpracována přes spec-import: „1525_Mandle karamelizované s příchutí ostružin 2026 05 -MrRizos”"
-        }
-      ],
-      "nazev": "KARAMELIZOVANÉ MANDLE S PŘÍCHUTÍ OSTRUŽINY"
-    },
-    "1534": {
-      "cz": [
-        {
-          "sekce": "spec",
-          "uroven": "info",
-          "text": "spec ve složce nebyla zpracována přes spec-import: „1534_Arašídy karamelizované s jahodovou příchutí 2026 05 -MrRizos”"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 62 %) — web: „ARAŠÍDY (58,06 %), cukr, jahodové aroma, barvivo: karmín.“ · spec: „ARAŠÍDY (58,06 %), cukr, jahodové aroma, barvivo: karmín. Barvivo může mít škodlivé účinky na aktivitu a pozornost dětí.“"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "spec",
-          "uroven": "info",
-          "text": "spec ve složce nebyla zpracována přes spec-import: „1534_Arašídy karamelizované s jahodovou příchutí 2026 05 -MrRizos”"
-        }
-      ],
-      "nazev": "KARAMELIZOVANÉ ARAŠÍDY S JAHODOVOU PŘÍCHUTÍ"
-    },
     "1553": {
       "cz": [
         {
@@ -705,11 +612,6 @@
           "sekce": "spec",
           "uroven": "info",
           "text": "spec ve složce nebyla zpracována přes spec-import: „1802_Broskvova srdicka Pedro”"
-        },
-        {
-          "sekce": "stitek",
-          "uroven": "chyba",
-          "text": "alergen ve složení není zvýrazněn VELKÝM písmem: mléko"
         }
       ],
       "sk": [
@@ -717,11 +619,6 @@
           "sekce": "spec",
           "uroven": "info",
           "text": "spec ve složce nebyla zpracována přes spec-import: „1802_Broskvova srdicka Pedro”"
-        },
-        {
-          "sekce": "stitek",
-          "uroven": "chyba",
-          "text": "alergen ve složení není zvýrazněn VELKÝM písmem: mlieko"
         },
         {
           "sekce": "web",
@@ -858,11 +755,6 @@
           "sekce": "stitek",
           "uroven": "varovani",
           "text": "součet živin 102.2 g je víc než 100 g"
-        },
-        {
-          "sekce": "stitek",
-          "uroven": "chyba",
-          "text": "alergen ve složení není zvýrazněn VELKÝM písmem: para ořechy"
         }
       ],
       "sk": [
@@ -870,11 +762,6 @@
           "sekce": "stitek",
           "uroven": "varovani",
           "text": "součet živin 102.2 g je víc než 100 g"
-        },
-        {
-          "sekce": "stitek",
-          "uroven": "chyba",
-          "text": "alergen ve složení není zvýrazněn VELKÝM písmem: para orechy"
         }
       ],
       "nazev": "SEMÍNKOVÁ SMĚS"
@@ -932,28 +819,6 @@
         }
       ],
       "nazev": "KEŠU JÁDRA PRAŽENÁ NESOLENÁ"
-    },
-    "2693": {
-      "cz": [],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "chyba",
-          "text": "alergen ve složení není zvýrazněn VELKÝM písmem: mandle"
-        }
-      ],
-      "nazev": "SKOŘICOVÝ MIX"
-    },
-    "2708": {
-      "cz": [],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "chyba",
-          "text": "alergen ve složení není zvýrazněn VELKÝM písmem: mandle"
-        }
-      ],
-      "nazev": "SLADKÁ SMĚS DELUXE"
     },
     "2753": {
       "cz": [
@@ -1269,17 +1134,6 @@
       "sk": [],
       "nazev": "BANÁNOVÉ CHIPSY TŘÍBAREVNÉ"
     },
-    "5511": {
-      "cz": [],
-      "sk": [
-        {
-          "sekce": "stitek",
-          "uroven": "chyba",
-          "text": "alergen ve složení není zvýrazněn VELKÝM písmem: mandle"
-        }
-      ],
-      "nazev": "SLANÝ MIX EXCLUSIVE"
-    },
     "5551": {
       "cz": [
         {
@@ -1313,11 +1167,6 @@
           "sekce": "stitek",
           "uroven": "info",
           "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "stitek",
-          "uroven": "chyba",
-          "text": "alergen ve složení není zvýrazněn VELKÝM písmem: mléko"
         }
       ],
       "sk": [
@@ -1338,43 +1187,6 @@
         }
       ],
       "nazev": "ŽELÉ SRDÍČKA S OVOCNOU PŘÍCHUTÍ"
-    },
-    "7569": {
-      "cz": [
-        {
-          "sekce": "spec",
-          "uroven": "info",
-          "text": "spec ve složce nebyla zpracována přes spec-import: „7569_Flamengo Mix 2026 05 -King”"
-        },
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "spec",
-          "uroven": "info",
-          "text": "spec ve složce nebyla zpracována přes spec-import: „7569_Flamengo Mix 2026 05 -King”"
-        },
-        {
-          "sekce": "stitek",
-          "uroven": "info",
-          "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
-        },
-        {
-          "sekce": "stitek",
-          "uroven": "chyba",
-          "text": "alergen ve složení není zvýrazněn VELKÝM písmem: sója, horčica"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 96 %) — web: „ARAŠIDY (31,87 %), zemiakový škrob (25,05 %), palmový olej (RSPO SG) (18,76 %), kukuričný škrob (10,95 %), cukor (8,96 %), korenie sečuan (cukor, dextrín, soľ, “ · spec: „ARAŠIDY (31,87 %), zemiakový škrob (25,05 %), palmový olej (RSPO SG) (18,76 %), kukuričný škrob (10,95 %), cukor (8,96 %), korenie sečuan (cukor, dextrín, soľ, “"
-        }
-      ],
-      "nazev": "FLAMENGO MIX"
     },
     "8742": {
       "cz": [
