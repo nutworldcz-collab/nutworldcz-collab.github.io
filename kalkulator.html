@@ -476,9 +476,9 @@ input:focus,select:focus{outline:none;border-color:var(--br)}
             <option value="krabicka_4doypack">Dárková krabička 4× doypack s pečetí — obal 20 + práce 35 Kč</option>
             <option value="krabicka_pecet_8x80">Krabička s pečetí 8×80g (18×18) — obal 31.8 + práce 68 Kč</option>
             <option value="top_vyber">Krabička TOP VÝBĚR 8 druhů — obal 32.48 + práce 58 Kč</option>
-            <option value="pecet_maly_mix">Odnoska 1 okno s pečetí (4 sáčky) — obal 20.79 + práce 49 Kč</option>
-            <option value="pecet_double">Odnoska 2 okna s pečetí (2 sáčky) — obal 25.12 + práce 41 Kč</option>
-            <option value="pecet_vyber_mixu">Odnoska 3 okna s pečetí (6 sáčků) — obal 34.34 + práce 57 Kč</option>
+            <option value="pecet_maly_mix">Odnoska 1 okno s pečetí (sáčky podle obsahu) — krabice 15 + práce 33 Kč + za každý sáček</option>
+            <option value="pecet_double">Odnoska 2 okna s pečetí (sáčky podle obsahu) — krabice 21.72 + práce 33 Kč + za každý sáček</option>
+            <option value="pecet_vyber_mixu">Odnoska 3 okna s pečetí (sáčky podle obsahu) — krabice 25.65 + práce 33 Kč + za každý sáček</option>
             <option value="krabice_3druhy">Ořechová krabice 3 druhy (sklenička + 2 sáčky) — obal 43.33 + práce 34 Kč</option>
           </optgroup>
         </select>
@@ -1279,9 +1279,9 @@ const D_VZORCE = {
   krabicka_4doypack: { obal: 20, prace: 35, marze: 50, vo: 0.7 },  // obaly.csv
   krabicka_pecet_8x80: { obal: 31.8, prace: 68, marze: 50, vo: 0.8 },  // obaly.csv
   top_vyber: { obal: 32.48, prace: 58, marze: 50, vo: 0.8 },  // obaly.csv
-  pecet_maly_mix: { obal: 20.79, prace: 49, marze: 50, vo: 0.8 },  // obaly.csv
-  pecet_double: { obal: 25.12, prace: 41, marze: 50, vo: 0.8 },  // obaly.csv
-  pecet_vyber_mixu: { obal: 34.34, prace: 57, marze: 50, vo: 0.8 },  // obaly.csv
+  pecet_maly_mix: { obal: 15, prace: 33, marze: 50, vo: 0.8 },  // obaly.csv
+  pecet_double: { obal: 21.72, prace: 33, marze: 50, vo: 0.8 },  // obaly.csv
+  pecet_vyber_mixu: { obal: 25.65, prace: 33, marze: 50, vo: 0.8 },  // obaly.csv
   krabice_3druhy: { obal: 43.33, prace: 34, marze: 50, vo: 0.8 },  // obaly.csv
   // Sáčky — násobek ×2
   sacek_knir:        { obal: 9,     prace: 8,    formula: 'nasobek', N: 2,   vo: 0.8 },
@@ -1440,7 +1440,16 @@ function dCalculate() {
   const _rz = document.getElementById('d-obal-rozpis');
   if (_rz && typeof NW_OBALY !== 'undefined') {
     const _k = document.getElementById('d-vzorec-sel').value;
-    _rz.innerHTML = _k ? NW_OBALY.html(_k, totalG, parseInt(document.getElementById('d-kalk-ks')?.value) || 1) : '';
+    const _grams = valid.map(r => r.gramaz);
+    // per-bag templates (odnosky): packaging + work grow with the number of bags (Jan 2026-11-24)
+    const _zs = _k && NW_OBALY.za_sacek && NW_OBALY.za_sacek[_k];
+    if (_zs && D_VZORCE[_k]) {
+      const bagKc = _grams.reduce((s, g) => s + ((_zs.obal.find(t => g <= t[0]) || [0, 0])[1]), 0);
+      document.getElementById('d-obal-cena').value = Math.round((D_VZORCE[_k].obal + bagKc) * 100) / 100;
+      document.getElementById('d-prace-cena').value = Math.round((D_VZORCE[_k].prace + _zs.prace * _grams.length) * 100) / 100;
+    }
+    _rz.innerHTML = _k ? NW_OBALY.html(_k, totalG, parseInt(document.getElementById('d-kalk-ks')?.value) || 1, _grams)
+      + (_zs ? `<div style="font-size:11px;color:#83502e;margin:-2px 0 6px">Obal a práce počítám na ${_grams.length} sáčk${_grams.length === 1 ? 'ek' : _grams.length < 5 ? 'y' : 'ů'}: krabice ${D_VZORCE[_k].obal} + sáčky, práce ${D_VZORCE[_k].prace} + ${_zs.prace} Kč za sáček (plnění + tavení)</div>` : '') : '';
   }
   const prodCost = valid.reduce((s, r) => s + r.product.kg_czk * r.gramaz / 1000, 0);
 

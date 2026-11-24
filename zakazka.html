@@ -550,10 +550,11 @@ function obalKeySp(i) {
   if (typeof NW_OBALY === 'undefined' || !offerData) return null;
   const p = offerData.produkty[i] || {};
   const rows = Array.from(document.querySelectorAll('#slozeni-rows-sp-'+i+' .slozeni-row'));
-  const obsah = rows.reduce((s, r) => s + (parseFloat(r.querySelector('.slozeni-gram')?.value) || 0), 0);
+  const grams = rows.map(r => parseFloat(r.querySelector('.slozeni-gram')?.value) || 0).filter(g => g > 0);
+  const obsah = grams.reduce((s, g) => s + g, 0);
   const first = rows.map(r => r.querySelector('.slozeni-obal')?.value.trim()).find(Boolean);
   const name = p.obal_sablona || (typeof DARKY_DATA !== 'undefined' && DARKY_DATA[p.kod]?.obal) || first || '';
-  return { key: NW_OBALY.sablona(name, obsah), obsah, ks: p.ks || 1 };
+  return { key: NW_OBALY.sablona(name, obsah), obsah, grams, ks: p.ks || 1 };
 }
 function renderObalSp(i) {
   const box = document.getElementById('obal-box-sp-'+i);
@@ -562,7 +563,7 @@ function renderObalSp(i) {
   const key = o && o.key;
   const nazev = key ? NW_OBALY.sablony[key]?.nazev || '' : '';
   if (nazev) document.querySelectorAll('#slozeni-rows-sp-'+i+' .slozeni-obal').forEach(inp => { if (!inp.value.trim()) inp.value = nazev; });
-  box.innerHTML = NW_OBALY.select(key, `setObalSp(${i}, this.value)`) + (key ? NW_OBALY.html(key, o.obsah, o.ks) : '');
+  box.innerHTML = NW_OBALY.select(key, `setObalSp(${i}, this.value)`) + (key ? NW_OBALY.html(key, o.obsah, o.ks, o.grams) : '');
 }
 function setObalSp(i, key) {
   if (offerData && offerData.produkty[i]) offerData.produkty[i].obal_sablona = key;
@@ -572,7 +573,7 @@ function setObalSp(i, key) {
 }
 function obalTextSp(i) {
   const o = obalKeySp(i);
-  return o && o.key ? NW_OBALY.text(o.key, o.obsah, o.ks) : '';
+  return o && o.key ? NW_OBALY.text(o.key, o.obsah, o.ks, o.grams) : '';
 }
 document.addEventListener('input', e => {
   if (!e.target.matches?.('.slozeni-gram, .slozeni-obal')) return;

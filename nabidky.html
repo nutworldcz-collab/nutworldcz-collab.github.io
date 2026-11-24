@@ -645,7 +645,7 @@ function dnWeight() {   // gift: content + packaging of its type (obaly.csv); cl
     if (P && P.g) kus = P.g;
     if (kus == null && typeof NW_OBALY !== 'undefined') {   // custom gift: content rows + chosen packaging
       const o = obalKey(id);
-      const r = o && o.key && o.obsah ? NW_OBALY.rozpis(o.key, o.obsah) : null;
+      const r = o && o.key && o.obsah ? NW_OBALY.rozpis(o.key, o.obsah, o.grams) : null;
       if (r && r.g != null) kus = o.obsah + r.g;
     }
     if (kus != null) {}
@@ -702,10 +702,11 @@ function obalKey(id) {
   if (typeof NW_OBALY === 'undefined') return null;
   const row = document.getElementById('row-'+id);
   const kod = document.getElementById('kod-'+id)?.value.trim();
-  const obsah = getSlozeniRows(id).reduce((s, r) => s + (parseFloat(r.gram) || 0), 0);
+  const grams = getSlozeniRows(id).map(r => parseFloat(r.gram) || 0).filter(g => g > 0);
+  const obsah = grams.reduce((s, g) => s + g, 0);
   const first = getSlozeniRows(id).map(r => r.obal).find(Boolean);
   const name = row?.dataset.obalSablona || (typeof DARKY_DATA !== 'undefined' && DARKY_DATA[kod]?.obal) || first || '';
-  return { key: NW_OBALY.sablona(name, obsah), obsah };
+  return { key: NW_OBALY.sablona(name, obsah), obsah, grams };
 }
 function renderObal(id) {
   const box = document.getElementById('obal-box-'+id);
@@ -722,7 +723,7 @@ function renderObal(id) {
   const nazev = dk?.obal || (key && NW_OBALY.sablony[key]?.nazev) || '';
   if (nazev) document.querySelectorAll('#slozeni-rows-'+id+' .slozeni-obal').forEach(inp => { if (!inp.value.trim()) inp.value = nazev; });
   const ks = parseFloat(document.getElementById('ks-'+id)?.value) || 1;
-  box.innerHTML = NW_OBALY.select(key, `setObal('${id}', this.value)`) + (key ? NW_OBALY.html(key, o.obsah, ks) : '');
+  box.innerHTML = NW_OBALY.select(key, `setObal('${id}', this.value)`) + (key ? NW_OBALY.html(key, o.obsah, ks, o.grams) : '');
 }
 function setObal(id, key) {
   const row = document.getElementById('row-'+id);
@@ -1037,7 +1038,7 @@ function collectFormData() {
     if (!nazev || isNaN(cena) || cena <= 0) return;
     const _o = sluzba ? null : obalKey(id);
     const obal_sablona = _o?.key || '';
-    const obal_text = obal_sablona ? NW_OBALY.text(obal_sablona, _o.obsah, ks) : '';
+    const obal_text = obal_sablona ? NW_OBALY.text(obal_sablona, _o.obsah, ks, _o.grams) : '';
     produkty.push({ kod, nazev, ks, cena, nakup, popis, slozeni, sluzba, obal_sablona, obal_text });
   });
   return {
