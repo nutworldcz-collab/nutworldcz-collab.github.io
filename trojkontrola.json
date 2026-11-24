@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-24T06:12:09",
+  "generated": "2026-11-24T07:25:06",
   "souhrn": {
     "produkty": 352,
     "ok": 307,
@@ -66,14 +66,14 @@
         {
           "sekce": "spec",
           "uroven": "chyba",
-          "text": "novější specifikace není zpracovaná: 89_Mandle jádra pražená solená s uzenou příchutí snížený obsah soli NOVÉ 2026 02 23 -HOS"
+          "text": "novější specifikace není zpracovaná: 89_Mandle jádra pražená solená s uzenou příchutí snížený obsah soli NOVÉ 2026 02 23 -HOS, 89_Mandle uzene sniz sol NW02 2026 02 -HOS"
         }
       ],
       "sk": [
         {
           "sekce": "spec",
           "uroven": "chyba",
-          "text": "novější specifikace není zpracovaná: 89_Mandle jádra pražená solená s uzenou příchutí snížený obsah soli NOVÉ 2026 02 23 -HOS"
+          "text": "novější specifikace není zpracovaná: 89_Mandle jádra pražená solená s uzenou příchutí snížený obsah soli NOVÉ 2026 02 23 -HOS, 89_Mandle uzene sniz sol NW02 2026 02 -HOS"
         }
       ],
       "nazev": "MANDLE UZENÉ"
@@ -352,7 +352,13 @@
       "nazev": "ANANAS SUŠENÝ BEZ PŘIDANÉHO CUKRU A SO2"
     },
     "354": {
-      "cz": [],
+      "cz": [
+        {
+          "sekce": "stitek",
+          "uroven": "chyba",
+          "text": "alergen ve složení není zvýrazněn VELKÝM písmem: hořčice"
+        }
+      ],
       "sk": [
         {
           "sekce": "stitek",
@@ -363,7 +369,13 @@
       "nazev": "ARAŠÍDY VE WASABI"
     },
     "1028": {
-      "cz": [],
+      "cz": [
+        {
+          "sekce": "stitek",
+          "uroven": "chyba",
+          "text": "alergen ve složení není zvýrazněn VELKÝM písmem: hořčice"
+        }
+      ],
       "sk": [
         {
           "sekce": "stitek",
@@ -1348,6 +1360,11 @@
           "sekce": "stitek",
           "uroven": "info",
           "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
+        },
+        {
+          "sekce": "stitek",
+          "uroven": "chyba",
+          "text": "alergen ve složení není zvýrazněn VELKÝM písmem: hořčice"
         }
       ],
       "sk": [
@@ -1618,11 +1635,6 @@
           "sekce": "stitek",
           "uroven": "chyba",
           "text": "chybí údaj „zeme_puvodu“"
-        },
-        {
-          "sekce": "stitek",
-          "uroven": "chyba",
-          "text": "alergen ve složení není zvýrazněn VELKÝM písmem: hořčice"
         }
       ],
       "sk": [
@@ -1630,11 +1642,6 @@
           "sekce": "stitek",
           "uroven": "chyba",
           "text": "chybí údaj „zeme_puvodu“"
-        },
-        {
-          "sekce": "stitek",
-          "uroven": "chyba",
-          "text": "alergen ve složení není zvýrazněn VELKÝM písmem: horčica"
         }
       ],
       "nazev": "MANDLE JÁDRA PRAŽENÁ SOLENÁ S PŘÍCHUTÍ HOŘČICE"
@@ -1885,6 +1892,11 @@
           "sekce": "stitek",
           "uroven": "info",
           "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
+        },
+        {
+          "sekce": "stitek",
+          "uroven": "chyba",
+          "text": "alergen ve složení není zvýrazněn VELKÝM písmem: hořčice"
         }
       ],
       "sk": [
@@ -1903,6 +1915,11 @@
     },
     "10585": {
       "cz": [
+        {
+          "sekce": "stitek",
+          "uroven": "chyba",
+          "text": "alergen ve složení není zvýrazněn VELKÝM písmem: hořčice"
+        },
         {
           "sekce": "web",
           "uroven": "chyba",
