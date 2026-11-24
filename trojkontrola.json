@@ -1,11 +1,11 @@
 {
-  "generated": "2026-11-24T05:49:27",
+  "generated": "2026-11-24T06:12:09",
   "souhrn": {
     "produkty": 352,
-    "ok": 305,
+    "ok": 307,
     "spec": 5,
     "stitek": 30,
-    "web": 21,
+    "web": 19,
     "vypnute": 41
   },
   "web": true,
@@ -1552,33 +1552,6 @@
       ],
       "nazev": "FLAMENGO MIX"
     },
-    "8662": {
-      "cz": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 53 %) — web: „: KEŠU OŘECHY (95 %), sýr Gouda (2,5 % ( KRAVSKÉ MLÉKO , sůl, mikrobiální syřidlo, kvásková kultura, LYSOZYM Z VAJÍČKA , dusičnan sodný)), kurkuma, bramborový š“ · spec: „KEŠU OŘECHY (95 %), sýr Gouda (2,5 %) (KRAVSKÉ MLÉKO, sůl, mikrobiální syřidlo, startovací kultura, lysozym z VAJEC, dusičnan sodný), kurkuma, bramborový škrob,“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "sacharidy: na webu chybí (spec 24 g)"
-        }
-      ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 59 %) — web: „: KEŠU ORECHY (95 %), syr Gouda (2,5 % ( KRAVSKÉ MLIEKO , soľ, mikrobiálne syridlo, kvásková kultúra, LYSOZYM Z VAJÍČKA , dusičnan sodný)), kurkuma, zemiakový š“ · spec: „KEŠU ORECHY (95 %), syr Gouda (2,5 %) (KRAVSKÉ MLIEKO, soľ, mikrobiálne syridlo, štartovacia kultúra, lyzozým z VAJEC, dusičnan sodný), kurkuma, zemiakový škrob“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "sacharidy: na webu chybí (spec 24 g)"
-        }
-      ],
-      "nazev": "KEŠU OŘECHY S PŘÍCHUTÍ SÝRA GOUDA"
-    },
     "8742": {
       "cz": [
         {
@@ -1720,47 +1693,6 @@
       ],
       "nazev": "PEČENÉ KULATÉ RÝŽOVÉ KŘUPKY S BYLINKAMI"
     },
-    "10253": {
-      "cz": [],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 81 %) — web: „: Černý rybíz lyofilizovaný 100%“ · spec: „Čierne ríbezle lyofilizované (100 %)“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „ARACHIDOV“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „ORECHOV“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "stopové alergeny: „OXIDU SIRIČITÉHO“ chybí na webu"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "sacharidy: na webu chybí (spec 32,6 g)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "vlaknina: na webu chybí (spec 35,2 g)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "země původu: web „: Poľsko Alergény: Môže obsahovať stopy lepku, ostatných škr“ · spec „Nemecko, Slovensko, Poľsko“"
-        }
-      ],
-      "nazev": "ČERNÝ RYBÍZ LYOFILIZOVANÝ"
-    },
     "10255": {
       "cz": [
         {
@@ -1806,28 +1738,7 @@
           "text": "země původu: web „: Čína Alergeny: Může obsahovat stopy lepku, ostatních skořá“ · spec „Německo, Polsko, Srbsko, Slovensko, Čína“"
         }
       ],
-      "sk": [
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "složení na webu se liší od specifikace (shoda 36 %) — web: „: Brusnice celé sušené mrazom 100%“ · spec: „Kľukva celá lyofilizovaná 100 %“"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "sacharidy: na webu chybí (spec 67,2 g)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "vlaknina: na webu chybí (spec 24 g)"
-        },
-        {
-          "sekce": "web",
-          "uroven": "chyba",
-          "text": "země původu: web „: Čína Alergény: Môže obsahovať stopy lepku, ostatných škrup“ · spec „Nemecko, Poľsko, Srbsko, Slovensko, Čína“"
-        }
-      ],
+      "sk": [],
       "nazev": "KLIKVA CELÁ LYOFILIZOVANÁ"
     },
     "10278": {
