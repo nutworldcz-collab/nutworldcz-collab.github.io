@@ -1,6 +1,39 @@
 {
-  "generated": "2026-11-23T17:01:20",
-  "total": 0,
+  "generated": "2026-11-24T07:30:23",
+  "total": 2,
   "spam_skipped": 0,
-  "emails": []
+  "emails": [
+    {
+      "account": "Google",
+      "sender": "AliExpress.seller <promotion@aliexpress.com>",
+      "subject": "Our daily picks at US $2.00 off",
+      "date": "úterý 24. listopadu 2026 3:00:40",
+      "unread": true,
+      "preview": "Collect coupons inside & shop now ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ Daily specials in our store ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ",
+      "category": "ostatni",
+      "sender_short": "AliExpress.seller",
+      "sender_email": "promotion@aliexpress.com",
+      "ai": {
+        "shrn": "Propagační email od AliExpress s nabídkou slev a kupónů. Jedná se o běžný marketing, který se Nutworld.cz netýká.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "CrossFit <crossfit@mail.crossfit.com>",
+      "subject": "261124 Workout of the Day: Owen",
+      "date": "úterý 24. listopadu 2026 2:31:00",
+      "unread": true,
+      "preview": "￼ ￼ ￼ TUESDAY",
+      "category": "ostatni",
+      "sender_short": "CrossFit",
+      "sender_email": "crossfit@mail.crossfit.com",
+      "ai": {
+        "shrn": "Email z CrossFit s denním tréninkovým plánem. Není relevantní pro provoz e-shopu Nutworld.cz.",
+        "tyka_se": false,
+        "akce": null
+      }
+    }
+  ]
 }
