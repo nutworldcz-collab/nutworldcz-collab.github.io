@@ -258,6 +258,27 @@ textarea{resize:vertical;min-height:70px}
 </div>
 
 <script>
+// Záložní extrakce výživových hodnot z raw textu (regex) — pro případ, kdy API nevrátí hodnoty
+function extractNutriFromText(text) {
+  if (!text) return {};
+  const r = {};
+  const fst = re => { const m = text.match(re); return m ? m[1] : null; };
+
+  const eM = text.match(/(\d{3,5})\s*[kK][jJ]\s*[\/|]\s*(\d{2,4})\s*[kK][cC][aA][lL]/);
+  if (eM) r.energie = `${eM[1]} kJ / ${eM[2]} kcal`;
+
+  r.tuky        = fst(/(?:fat\b|tuky|λιπαρά)[^0-9a-zA-Z]{0,30}(\d+[,.]\d+)/i);
+  r.nasycene_mk = fst(/(?:saturated|nasycen|κορεσμ)[^0-9a-zA-Z]{0,30}(\d+[,.]\d+)/i);
+  r.sacharidy   = fst(/(?:carbohydrate|sacharid|υδατάνθρ)[^0-9a-zA-Z]{0,30}(\d+[,.]\d+)/i);
+  r.cukry       = fst(/(?:of which sugars?|z toho cukr|ζάχαρ)[^0-9a-zA-Z]{0,30}(\d+[,.]\d+)/i);
+  r.vlaknina    = fst(/(?:fib(?:re|er)|vláknina|εδώδιμ)[^0-9a-zA-Z]{0,30}(\d+[,.]\d+)/i);
+  r.bilkoviny   = fst(/(?:protein|bílkovin|πρωτε)[^0-9a-zA-Z]{0,30}(\d+[,.]\d+)/i);
+  r.sul         = fst(/(?:salt\b|sůl|αλάτ)[^0-9a-zA-Z]{0,30}(\d+[,.]\d+)/i);
+
+  Object.keys(r).forEach(k => { if (r[k] === null) delete r[k]; });
+  return r;
+}
+
 // ── TRELLO ──
 const LIST_TODO = '6af2d9f4001ae0f020370a8e';
 const TK = 'dummy';
@@ -331,6 +352,23 @@ async function extractFromSpec() {
     const data = await resp.json();
     if (!data.success) throw new Error(data.error || 'Chyba serveru');
     fillFormFromSpec(data.spec);
+
+    // Záloha: dopln výživa z raw textu, pokud API pole vynechalo
+    if (specText) {
+      const nutri = extractNutriFromText(specText);
+      const map = { energie:'energie', tuky:'tuky', nasycene_mk:'nasycene',
+                    sacharidy:'sacharidy', cukry:'cukry', vlaknina:'vlaknina',
+                    bilkoviny:'bilkoviny', sul:'sul' };
+      for (const [sk, fk] of Object.entries(map)) {
+        if (nutri[sk]) {
+          const czEl = document.getElementById(fk + '_cz');
+          const skEl = document.getElementById(fk + '_sk');
+          if (czEl && !czEl.value.trim()) czEl.value = nutri[sk];
+          if (skEl && !skEl.value.trim()) skEl.value = nutri[sk];
+        }
+      }
+    }
+
     document.getElementById('btn-translate-sk').style.display = 'inline-block';
     document.getElementById('btn-extract').disabled = false;
     showExtractionChecklist();
