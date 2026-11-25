@@ -60,7 +60,7 @@ textarea{resize:vertical;min-height:70px}
 .spec-zone:hover,.spec-zone.drag-over{border-color:var(--br);background:#f5ede4}
 .spec-zone-icon{font-size:26px;margin-bottom:6px}
 .spec-zone-text{font-size:13px;color:#999}
-.spec-status{margin-top:10px;font-size:13px;padding:8px 12px;border-radius:6px;display:none}
+.spec-status{margin-top:10px;font-size:13px;padding:10px 14px;border-radius:8px;display:none;line-height:1.6}
 .spec-status.loading{display:block;background:#fff8e1;color:#856404;border:1px solid #ffc107}
 .spec-status.ok{display:block;background:#e8f5e9;color:#2e7d32;border:1px solid #4caf50}
 .spec-status.err{display:block;background:#fce4ec;color:#c62828;border:1px solid #ef9a9a}
@@ -312,11 +312,11 @@ async function extractFromSpec() {
     const data = await resp.json();
     if (!data.success) throw new Error(data.error || 'Chyba serveru');
     fillFormFromSpec(data.spec);
-    setSpecStatus('ok', '✅ Hotovo! Zkontroluj data a klikni "Přeložit do SK" pro slovenštinu.');
     document.getElementById('btn-translate-sk').style.display = 'inline-block';
     document.getElementById('btn-extract').disabled = false;
+    showExtractionChecklist();
   } catch (e) {
-    setSpecStatus('err', 'Chyba: ' + e.message);
+    setSpecStatus('err', '❌ Chyba extrakce: ' + e.message);
     document.getElementById('btn-extract').disabled = false;
   }
 }
@@ -327,20 +327,66 @@ const ALERGEN_SHORT_CZ_SPEC = [
   'OŘECHŮ','CELERU','SEZAMU','LUPINY'
 ];
 
+// Záložní extrakce stopy přímo z textu specifikace (pokud structured extraction nepomohlo)
+function extractStopyFromText(text) {
+  const hits = [];
+  const patterns = [
+    [/LEPEK|GLUTEN|PŠENIC[EAI]|ŽITA|JEČMEN|OVSA/i, 'LEPKU'],
+    [/VEJC[EI]|VAJEČN|EGGS?/i, 'VAJEC'],
+    [/MLÉKO|MLÉČN|LAKTÓZ|MILK|DAIRY/i, 'MLÉKA'],
+    [/ARAŠÍD/i, 'ARAŠÍDŮ'],
+    [/HOŘČIC[EI]/i, 'HOŘČICE'],
+    [/OXID SIŘIČIT|SO2|SULFITY|SIŘIČIT/i, 'OXIDU SIŘIČITÉHO'],
+    [/MĚKKÝŠ/i, 'MĚKKÝŠŮ'],
+    [/KORÝŠ/i, 'KORÝŠŮ'],
+    [/RYBY|RYBA|FISH/i, 'RYB'],
+    [/SÓJA|SOJA|SOY/i, 'SÓJI'],
+    [/OŘECH[ŮY]|MANDLE|KEŠU|VLAŠSK|LÍSKOV|PISTÁCI|MAKADAMI|PEKAN|BRAZIL/i, 'OŘECHŮ'],
+    [/CELER/i, 'CELERU'],
+    [/SEZAM/i, 'SEZAMU'],
+    [/LUPIN[AY]/i, 'LUPINY'],
+  ];
+  // Hledej věty s "může obsahovat", "stopy", "traces", "may contain"
+  const traceSection = text.match(/(?:může obsahovat|stopy|traces?|may contain)[^.]{0,200}/gi) || [];
+  const traceText = traceSection.join(' ');
+  if (traceText) {
+    patterns.forEach(([re, label]) => { if (re.test(traceText) && !hits.includes(label)) hits.push(label); });
+  }
+  return hits.join(', ');
+}
+
+// Záložní trvanlivost: zkusí různé formáty
+function parseTrvanlivost(sklList, rawText) {
+  const allTexts = [...(sklList || []), rawText || ''].join(' ');
+  // "12 měsíců", "12 months", "1 rok", "365 dní", "24 M", "12M"
+  const m = allTexts.match(/(\d+)\s*(?:měsíc[ůíce]*|month[s]?|M\b)|(\d+)\s*(?:rok[ůu]?|year[s]?)|(\d+)\s*(?:týdn[ůí]*|týden|week[s]?)|(\d+)\s*(?:dn[ůíe]*|den|day[s]?)/i);
+  if (!m) return '';
+  const num = m[1]||m[2]||m[3]||m[4];
+  if (m[1]) return num + ' měsíců';
+  if (m[2]) return num + ' ' + (num === '1' ? 'rok' : 'roky');
+  if (m[3]) return num + ' týdnů';
+  if (m[4]) return num + ' dní';
+  return '';
+}
+
 function fillFormFromSpec(spec) {
   const vy = spec.vyziva || {};
   const stripHtml = s => (s || '').replace(/<[^>]+>/g, '');
-  const stopy_cz = (spec.alergeny || [])
+
+  // Stopy — structured + záložní z textu
+  let stopy_cz = (spec.alergeny || [])
     .map((a, i) => a.z_prenosu === 'ano' ? ALERGEN_SHORT_CZ_SPEC[i] : null)
     .filter(Boolean).join(', ');
-  const trvItem = (spec.skladovatelnost || []).find(s => /měsíc|rok|týden|den/i.test(s)) || '';
-  const trvMatch = trvItem.match(/\d+\s*(?:měsíc[ůíce]*|rok[ůu]?|týdn[ůůy]*|týden|dn[ůůí]*|den)/i);
+  if (!stopy_cz && specText) stopy_cz = extractStopyFromText(specText);
+
+  // Trvanlivost — robustnější parser
+  const trvanlivost = parseTrvanlivost(spec.skladovatelnost, specText);
 
   const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
   const noOverwrite = (id, val) => { const el = document.getElementById(id); if (el && !el.value.trim()) el.value = val || ''; };
 
   noOverwrite('kod', spec._nw_code);
-  set('trvanlivost', trvMatch ? trvMatch[0] : '');
+  set('trvanlivost', trvanlivost);
   set('nazev_cz', spec.nazev || '');
   set('druh_cz', spec.druh_produktu || '');
   set('slozeni_cz', stripHtml(spec.slozeni || ''));
@@ -351,6 +397,54 @@ function fillFormFromSpec(spec) {
     set(k + '_cz', vy[key] || '');
     set(k + '_sk', vy[key] || '');
   });
+}
+
+// Checklist: zobrazí co bylo/nebylo extraováno
+function showExtractionChecklist() {
+  const v = id => (document.getElementById(id)?.value || '').trim();
+  const nutri = ['energie','tuky','nasycene','sacharidy','cukry','vlaknina','bilkoviny','sul'];
+  const nutriLabels = ['Energie','Tuky','Nasycené MK','Sacharidy','Cukry','Vláknina','Bílkoviny','Sůl'];
+
+  const fields = [
+    { label: 'Název', ok: !!v('nazev_cz') },
+    { label: 'Druh výrobku', ok: !!v('druh_cz') },
+    { label: 'Složení', ok: !!v('slozeni_cz') },
+    { label: 'Stopy', ok: !!v('stopy_cz'), optional: true },
+    { label: 'Země původu', ok: !!v('zeme') },
+    { label: 'Trvanlivost', ok: !!v('trvanlivost') },
+    ...nutri.map((k, i) => ({ label: nutriLabels[i], ok: !!v(k + '_cz') })),
+  ];
+
+  const missing = fields.filter(f => !f.ok && !f.optional);
+  const missingOpt = fields.filter(f => !f.ok && f.optional);
+
+  const rows = fields.map(f =>
+    `<span style="margin-right:12px;white-space:nowrap">${f.ok ? '✅' : (f.optional ? '⚠️' : '❌')} ${f.label}</span>`
+  ).join('');
+
+  let msg = `<div style="line-height:2">${rows}</div>`;
+  if (missing.length) {
+    msg += `<div style="margin-top:8px;color:#c0134f;font-weight:600">❌ Chybí: ${missing.map(f=>f.label).join(', ')} — doplň ručně!</div>`;
+    // Zvýrazni prázdná povinná pole červeně
+    const idMap = {
+      'Název':'nazev_cz','Druh výrobku':'druh_cz','Složení':'slozeni_cz',
+      'Země původu':'zeme','Trvanlivost':'trvanlivost',
+      'Energie':'energie_cz','Tuky':'tuky_cz','Nasycené MK':'nasycene_cz',
+      'Sacharidy':'sacharidy_cz','Cukry':'cukry_cz','Vláknina':'vlaknina_cz',
+      'Bílkoviny':'bilkoviny_cz','Sůl':'sul_cz',
+    };
+    missing.forEach(f => {
+      const el = document.getElementById(idMap[f.label]);
+      if (el) { el.style.borderColor = '#da1668'; el.style.background = '#fff5f7'; }
+    });
+    setSpecStatus('err', msg);
+  } else if (missingOpt.length) {
+    msg += `<div style="margin-top:8px;color:#856404">⚠️ Stopy prázdné — doplň pokud jsou na obale dodavatele.</div>`;
+    setSpecStatus('ok', msg);
+  } else {
+    msg += `<div style="margin-top:8px;color:#2e7d32;font-weight:600">✅ Vše extraováno. Zkontroluj složení (ALERGENY VELKÝMI) a klikni "Přeložit do SK".</div>`;
+    setSpecStatus('ok', msg);
+  }
 }
 
 async function doTranslateSK() {
@@ -391,7 +485,9 @@ async function doTranslateSK() {
 function setSpecStatus(type, msg) {
   const el = document.getElementById('spec-status');
   el.className = 'spec-status ' + type;
-  el.textContent = msg;
+  // Pokud msg obsahuje HTML tagy, použij innerHTML
+  if (msg.includes('<')) el.innerHTML = msg;
+  else el.textContent = msg;
 }
 
 // ── FORM ──
