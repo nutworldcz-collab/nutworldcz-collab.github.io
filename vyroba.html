@@ -1229,6 +1229,26 @@ function buildSmesCard(smesName,usages){
   return card;
 }
 
+/* ═══ MÍCHÁNÍ: rozpad směsí na suroviny (smesi-data.js, Jan 2026-11-25) ═══ */
+function mixExpand(kod,kg,out,via,depth){
+  const S=(window.NW_S&&NW_S.get(kod));
+  if(!S||depth>3){ // base product
+    if(!out.has(kod)) out.set(kod,{kod,nazev:(window.NW_P?NW_P.nazev(kod):kod),kg:0,via:new Set()});
+    const o=out.get(kod); o.kg+=kg; if(via) o.via.add(via); return;
+  }
+  S.slozeni.forEach(c=>mixExpand(c.kod,kg*c.podil/100,out,via||S.kod,(depth||0)+1));
+}
+function mixBlockHtml(kod,kgLeft){
+  const out=new Map(); mixExpand(kod,kgLeft,out,null,0);
+  const S=NW_S.get(kod);
+  const rows=[...out.values()].sort((a,b)=>b.kg-a.kg).map(c=>{
+    const pct=(S.slozeni.find(x=>x.kod===c.kod)||{}).podil;
+    return `<div class="smes-comp-row" style="cursor:default;padding-left:24px"><div class="smes-comp-name">${c.nazev}<span class="smes-comp-kod">kód ${c.kod}</span></div>`+
+      `<span class="smes-comp-gram">${pct!=null?pct.toLocaleString('cs')+' %':''}</span><div class="smes-comp-kg">${fmtKg(c.kg)}</div></div>`;
+  }).join('');
+  return `<div class="pack-hdr" style="background:#fff8e1"><span class="pack-darek">🥣 Namíchat ${fmtKg(kgLeft)} — recept ze smesi.csv</span></div>${rows}`;
+}
+
 function renderVyroba(cards){
   const mc=document.getElementById('main-content');
 
@@ -1298,6 +1318,7 @@ function renderVyroba(cards){
   const grid=document.createElement('div');
   grid.className='vyroba-grid'+(localStorage.getItem('vyroba_hide_done')==='1'?' hide-done':'');
 
+  const mixNeed=new Map();   // component -> kg still to mix over all orders
   sorted.forEach(([,ing])=>{
     // Celkové kg + stav pro celou surovinu
     let totalKg=0, doneC=0, totalC=0;
@@ -1309,6 +1330,10 @@ function renderVyroba(cards){
       });
     });
     const allDone=totalC>0&&doneC===totalC;
+    let leftKg=0;
+    ing.byPack.forEach(pack=>pack.usages.forEach(u=>{ if(!isDone(u.cardId,u.pi,u.ci)) leftKg+=gramToKg(pack.gram)*u.ks; }));
+    const isMix=!!(window.NW_S&&ing.kod&&NW_S.get(ing.kod));
+    if(isMix&&leftKg>0) mixExpand(ing.kod,leftKg,mixNeed,null,0);
 
     const card=document.createElement('div');
     card.className='icard'+(allDone?' all-done':'');
@@ -1327,6 +1352,7 @@ function renderVyroba(cards){
       </div>
     `;
     card.appendChild(hdr);
+    if(isMix&&leftKg>0){ const mb=document.createElement('div'); mb.className='pack-section'; mb.innerHTML=mixBlockHtml(ing.kod,leftKg); card.appendChild(mb); }
 
     // Pack sekce seřazeny podle gramáže
     const sortedPacks=[...ing.byPack.entries()].sort((a,b)=>{
@@ -1453,6 +1479,17 @@ function renderVyroba(cards){
     grid.insertBefore(buildSmesCard(smesName,usages),grid.firstChild);
   });
   mc.innerHTML=''; mc.appendChild(grid);
+  if(mixNeed.size){
+    const tot=[...mixNeed.values()].reduce((a,c)=>a+c.kg,0);
+    const panel=document.createElement('details');
+    panel.className='icard smes-icard'; panel.open=true; panel.style.marginBottom='14px';
+    panel.innerHTML=`<summary class="ihdr" style="cursor:pointer;list-style:none"><div class="iname-wrap"><div class="iname">🥣 Míchání — suroviny celkem<span class="smes-badge">zbývá</span></div>`+
+      `<div class="ikod">součet za všechny nehotové zakázky se směsmi · recepty ze smesi.csv</div></div><div class="itotal-kg">${fmtKg(tot)}</div></summary>`+
+      [...mixNeed.values()].sort((a,b)=>a.nazev.localeCompare(b.nazev,'cs')).map(c=>
+        `<div class="smes-comp-row" style="cursor:default;padding-left:14px"><div class="smes-comp-name"><b>${c.nazev}</b><span class="smes-comp-kod">kód ${c.kod}</span></div>`+
+        `<span class="smes-comp-gram">do směsí ${[...c.via].join(', ')}</span><div class="smes-comp-kg">${fmtKg(c.kg)}</div></div>`).join('');
+    mc.insertBefore(panel,grid);
+  }
 }
 
 /* ═══ VZORKY VIEW ═══ */
