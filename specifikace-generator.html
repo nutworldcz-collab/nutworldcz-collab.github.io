@@ -231,6 +231,12 @@ input[type=text]:focus { border-color: var(--brown); }
 
     <button class="btn-primary" id="btn-generate" disabled>Generovat specifikaci →</button>
     <div class="status" id="status"></div>
+    <div id="debug-section" style="display:none;margin-top:12px">
+      <details>
+        <summary style="cursor:pointer;font-size:12px;color:#888;padding:6px 0">🔍 Extrahovaný text z PDF (diagnostika)</summary>
+        <textarea id="debug-text" readonly style="width:100%;height:200px;font-size:11px;font-family:monospace;margin-top:8px;border:1px solid #d4c0a8;border-radius:6px;padding:8px;background:#f9f5f1;color:#333;resize:vertical"></textarea>
+      </details>
+    </div>
 
   </div>
 </div>
@@ -341,6 +347,9 @@ async function extractPDF(file) {
     }
     extractedText = text;
     setStatus("loading", `✅ PDF přečten (${pdf.numPages} stran, ${text.length} znaků)`);
+    // Debug: show extracted text
+    const dbg = document.getElementById('debug-text');
+    if (dbg) { dbg.value = text; document.getElementById('debug-section').style.display = ''; }
     checkReady();
   } catch (e) {
     setStatus("error", "Chyba při čtení PDF: " + e.message);
