@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Archiv štítků | Nutworld</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bd:#5c381f;--br:#83502e;--kraft:#f1e6da;--acc:#da1668;--amb:#f7ab31;--leaf:#6fa044;
+  --muted:#8a6a50;--bg:#e8ddd4;--card-bg:#fff;--border:#d4c0a8;--fg:#2a1a0e
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){
+  --bg:#1a1108;--card-bg:#2a1e12;--border:#4a3420;--fg:#e8d5be;--muted:#a08060;color-scheme:dark
+}}
+:root[data-theme=dark]{--bg:#1a1108;--card-bg:#2a1e12;--border:#4a3420;--fg:#e8d5be;--muted:#a08060;color-scheme:dark}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:var(--bg);color:var(--fg);font-size:14px;min-height:100vh}
+
+.topbar{background:var(--bd);padding:12px 24px;display:flex;align-items:center;gap:14px}
+.topbar-title{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:800;color:white;flex:1}
+.topbar a{color:rgba(255,255,255,.65);font-size:12px;text-decoration:none}
+.topbar a:hover{color:white}
+
+.container{max-width:860px;margin:24px auto;padding:0 16px 48px}
+
+.search-row{display:flex;gap:10px;margin-bottom:16px;align-items:center}
+.search-wrap{flex:1;position:relative}
+.search-wrap span{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none}
+.search-wrap input{
+  width:100%;padding:10px 12px 10px 36px;font-size:14px;font-family:inherit;
+  border:1.5px solid var(--border);border-radius:10px;background:var(--card-bg);color:var(--fg);
+  transition:border-color .15s
+}
+.search-wrap input:focus{outline:none;border-color:var(--br)}
+.meta-row{font-size:12px;color:var(--muted);display:flex;gap:16px;align-items:center;margin-bottom:4px}
+
+.empty{text-align:center;padding:48px 24px;color:var(--muted)}
+.empty h3{font-family:'Exo 2',sans-serif;font-size:18px;margin-bottom:8px;color:var(--bd)}
+
+.list{display:flex;flex-direction:column;gap:10px}
+.entry{background:var(--card-bg);border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.entry-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.entry-name{font-family:'Exo 2',sans-serif;font-weight:700;font-size:14px;color:var(--bd)}
+.entry-ts{font-size:11px;color:var(--muted);white-space:nowrap;margin-top:2px}
+.codes{display:flex;flex-wrap:wrap;gap:6px}
+.code-chip{
+  background:var(--kraft);border:1px solid var(--border);border-radius:16px;
+  padding:3px 10px;font-size:12px;font-weight:600;color:var(--bd);cursor:pointer;
+  transition:background .12s
+}
+.code-chip:hover{background:#e0cdb8}
+.entry-meta{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;text-transform:uppercase;letter-spacing:.3px}
+.badge.lang{background:#e6f3dc;color:#2d5a1b}
+.badge.size{background:#fdf0e0;color:#7a5200}
+.pdf-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+.pdf-btn{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:12px;font-weight:600;color:var(--bd);text-decoration:none;
+  border:1.5px solid var(--border);border-radius:8px;padding:5px 11px;
+  background:var(--card-bg);transition:background .12s,border-color .12s
+}
+.pdf-btn:hover{background:var(--kraft);border-color:var(--br)}
+.pdf-btn.na{color:var(--muted);cursor:default;pointer-events:none;opacity:.5}
+
+.btn-objednat{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:12px;font-weight:600;color:white;
+  background:var(--br);border:none;border-radius:8px;padding:5px 12px;cursor:pointer;
+  transition:background .12s;text-decoration:none
+}
+.btn-objednat:hover{background:var(--bd)}
+.trello-link{font-size:11px;color:var(--muted);text-decoration:none}
+.trello-link:hover{color:var(--br)}
+
+.spinner{display:flex;justify-content:center;padding:40px}
+.spinner::after{content:'';width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--br);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.info-box{background:var(--card-bg);border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;font-size:12px;color:var(--muted);margin-bottom:16px}
+.info-box b{color:var(--bd)}
+
+.err-box{background:#fff5f7;border:1.5px solid var(--acc);border-radius:10px;padding:14px 18px;color:#c0134f;font-size:13px;margin-bottom:16px;display:none}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-title">📚 Archiv štítků</span>
+  <a href="stitky-objednat.html">Objednat štítek →</a>
+  <a href="index.html">← Zpět</a>
+</div>
+
+<div class="container">
+  <div class="info-box">
+    Historie vygenerovaných štítků za posledních <b>90 dní</b>. Hledej podle kódu produktu (např. <b>89</b> nebo <b>89/200</b>). Kliknutím na kód ho zkopíruješ do schránky.
+  </div>
+
+  <div class="search-row">
+    <div class="search-wrap">
+      <span>🔍</span>
+      <input type="search" id="q" placeholder="Hledat kód (89, 89/200) nebo název…" autocomplete="off" autofocus/>
+    </div>
+    <div class="meta-row" id="meta">...</div>
+  </div>
+
+  <div class="err-box" id="errBox"></div>
+  <div id="spinner" class="spinner"></div>
+  <div class="list" id="list" style="display:none"></div>
+  <div class="empty" id="empty" style="display:none">
+    <h3>Nic nenalezeno</h3>
+    <p>Zkus jiný kód nebo název štítku.</p>
+  </div>
+</div>
+
+<script>
+const isServer = window.location.hostname !== 'nutworldcz-collab.github.io';
+let ALL = [];
+
+function norm(s){ return String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function fmtDate(iso){
+  try{
+    const d=new Date(iso);
+    return d.toLocaleDateString('cs-CZ',{day:'2-digit',month:'2-digit',year:'numeric'})+' '+d.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'});
+  }catch(e){ return iso; }
+}
+
+function langLabel(l){
+  return {'cz':'CZ','sk':'SK','both':'CZ + SK','bilingual':'CZ+SK (1 štítek)'}[l]||l;
+}
+
+function pdfUrl(filename){
+  if(isServer) return `/api/stitky-pdf/${encodeURIComponent(filename)}`;
+  // GitHub Pages: nelze stáhnout (PDF jsou na serveru)
+  return null;
+}
+
+function renderEntry(e){
+  const pdfsHtml = e.pdfs && e.pdfs.length
+    ? e.pdfs.map(p=>{
+        const url = pdfUrl(p.file);
+        const label = p.lang === 'cz' ? '📄 PDF CZ' : p.lang === 'sk' ? '📄 PDF SK' : `📄 ${p.lang}`;
+        if(url) return `<a href="${url}" download class="pdf-btn">${esc(label)}</a>`;
+        return `<span class="pdf-btn na" title="PDF dostupné jen na serveru">${esc(label)}</span>`;
+      }).join('')
+    : '<span style="font-size:11px;color:var(--muted)">PDF nedostupné</span>';
+
+  const codeChips = (e.codes||[]).map(c=>
+    `<span class="code-chip" onclick="copyCode('${esc(c)}')" title="Kopírovat kód">${esc(c)}</span>`
+  ).join('');
+
+  const trelloUrl = e.trello_id ? `https://trello.com/c/${e.trello_id}` : null;
+
+  // "Objednat znovu" – přesměruje na form s předvyplněnými kódy
+  const reorderCodes = (e.codes||[]).join('\n');
+  const reorderUrl = `stitky-objednat.html?codes=${encodeURIComponent(reorderCodes)}`;
+
+  return `<div class="entry">
+    <div class="entry-head">
+      <div>
+        <div class="entry-name">${esc(e.card)}</div>
+        <div class="entry-ts">🕐 ${esc(fmtDate(e.ts))}</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <span class="badge lang">${esc(langLabel(e.lang))}</span>
+        <span class="badge size">${esc(e.size||'105x148')}</span>
+        ${trelloUrl ? `<a href="${esc(trelloUrl)}" target="_blank" class="trello-link">Trello ↗</a>` : ''}
+        <a href="${esc(reorderUrl)}" class="btn-objednat">↻ Objednat znovu</a>
+      </div>
+    </div>
+    <div class="codes">${codeChips}</div>
+    <div class="pdf-links">${pdfsHtml}</div>
+  </div>`;
+}
+
+function render(){
+  const q = norm(document.getElementById('q').value.trim());
+  const filtered = q
+    ? ALL.filter(e => {
+        const hay = norm((e.card||'') + ' ' + (e.codes||[]).join(' '));
+        return q.split(/\s+/).every(w => hay.includes(w));
+      })
+    : ALL;
+
+  document.getElementById('meta').textContent = ALL.length
+    ? `${filtered.length} z ${ALL.length} štítků`
+    : '';
+
+  if(!filtered.length){
+    document.getElementById('list').style.display='none';
+    document.getElementById('empty').style.display='';
+  } else {
+    document.getElementById('empty').style.display='none';
+    const listEl = document.getElementById('list');
+    listEl.innerHTML = filtered.map(renderEntry).join('');
+    listEl.style.display='flex';
+  }
+}
+
+function copyCode(code){
+  navigator.clipboard.writeText(code).catch(()=>{});
+  // Flash
+  event.target.style.background='#c8f0c8';
+  setTimeout(()=>{ event.target.style.background=''; }, 600);
+}
+
+async function load(){
+  if(!isServer){
+    document.getElementById('spinner').style.display='none';
+    document.getElementById('errBox').textContent='⚠️ Archiv je dostupný jen na serveru (nastroje.nutworld.cz). Na GitHub Pages PDF soubory nejsou uloženy.';
+    document.getElementById('errBox').style.display='block';
+    document.getElementById('meta').textContent='';
+    return;
+  }
+  try {
+    const r = await fetch('/api/stitky-archiv');
+    if(!r.ok) throw new Error(`HTTP ${r.status}`);
+    ALL = await r.json();
+    document.getElementById('spinner').style.display='none';
+    render();
+  } catch(e) {
+    document.getElementById('spinner').style.display='none';
+    document.getElementById('errBox').textContent='⚠️ Chyba načítání archivu: ' + e.message;
+    document.getElementById('errBox').style.display='block';
+  }
+}
+
+document.getElementById('q').addEventListener('input', render);
+load();
+
+// Předvyplnění z URL parametru (z tlačítka "Objednat znovu" na form stránce)
+// — tato stránka nepotřebuje, ale form stránka přijímá ?codes=
+</script>
+<script src="pin-guard.js"></script>
+</body>
+</html>

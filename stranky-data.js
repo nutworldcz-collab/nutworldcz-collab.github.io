@@ -428,6 +428,13 @@ window.NW_STRANKY = [
   "hlavni": 6
  },
  {
+  "soubor": "stitky-archiv.html",
+  "skupina": "produkty",
+  "ikona": "📚",
+  "nazev": "Archiv štítků",
+  "popis": "Historie vygenerovaných štítků — hledej podle kódu, stáhni PDF nebo objednej znovu"
+ },
+ {
   "soubor": "stitky-kontrola.html",
   "skupina": "produkty",
   "ikona": "🔍",

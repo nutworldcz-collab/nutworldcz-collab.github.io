@@ -162,6 +162,15 @@ const LIST_TODO = '6af2d9f4001ae0f020370a8e';
 const TK = 'dummy'; // stripped by trello-proxy.js
 const TT = 'dummy';
 
+// Předvyplnění kódů z URL ?codes= (z archivu "Objednat znovu")
+(function(){
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const codes = params.get('codes');
+    if(codes) document.getElementById('codes').value = codes;
+  } catch(e){}
+})();
+
 // Lang toggle
 let selectedLang = 'both';
 document.querySelectorAll('#langToggle .toggle-btn').forEach(btn => {
