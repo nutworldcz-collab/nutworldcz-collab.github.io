@@ -227,13 +227,22 @@ document.getElementById('btnSubmit').addEventListener('click', async () => {
         desc += `[${parts[0]}]`;
       }
 
-      // Create Trello card
-      const body = { name: cardName, desc, idList: LIST_TODO, key: TK, token: TT };
-      const r = await fetch('https://api.trello.com/1/cards', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
+      // Create Trello card — on the server use /api/trello-card; on GitHub Pages use trello-proxy.js
+      const isServer = window.location.hostname !== 'nutworldcz-collab.github.io';
+      let r;
+      if (isServer) {
+        r = await fetch('/api/trello-card', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: cardName, desc, idList: LIST_TODO }),
+        });
+      } else {
+        r = await fetch('https://api.trello.com/1/cards', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: cardName, desc, idList: LIST_TODO, key: TK, token: TT }),
+        });
+      }
 
       if (!r.ok) {
         const err = await r.text().catch(() => '');
