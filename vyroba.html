@@ -362,6 +362,7 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .obal-vyroba-l span{background:#f1e6da;border-radius:5px;padding:2px 7px;color:#2a1a0e}
 .obal-vyroba-w{margin-top:4px;color:#83502e;font-size:11px}
 </style>
+<script src="normy-data.js"></script>
 </head>
 <body>
 
@@ -486,65 +487,7 @@ function isNabaleno(id){return nabalenoSet.has(id);}
 function markNabaleno(id){nabalenoSet.add(id);saveNabaleno();render();}
 function unmarkNabaleno(id){nabalenoSet.delete(id);saveNabaleno();render();}
 
-const NORM_OPTS=[
-  ['🏭 Balicí — stroje','Automatické kontinuální — 50g',755],
-  ['🏭 Balicí — stroje','Automatické kontinuální — 100g',690],
-  ['🏭 Balicí — stroje','Celofán poloautomat — 80g',122],
-  ['🏭 Balicí — stroje','Celofán poloautomat — 180g',103],
-  ['🏭 Balicí — stroje','Celofán poloautomat — 200g',102],
-  ['🏭 Balicí — stroje','Doypack standard — 50g',154],
-  ['🏭 Balicí — stroje','Doypack standard — 100g',162],
-  ['🏭 Balicí — stroje','Doypack standard — 200g',143],
-  ['🏭 Balicí — stroje','Doypack standard — 500g',143],
-  ['🏭 Balicí — stroje','Doypack standard — 1000g',154],
-  ['🏭 Balicí — stroje','Doypack Alza mix — 500g',63],
-  ['🏭 Balicí — stroje','Doypack Alza mix — 1000g',152],
-  ['🏭 Balicí — stroje','Alza TUBUS — 450g',117],
-  ['🏭 Balicí — stroje','Celofánek ručně — 200g',80],
-  ['🫙 Skleničky','Sklenička EXCLUSIVE — plnění',145],
-  ['🫙 Skleničky','Sklenička DELUXE 330 ml — plnění',186],
-  ['🏭 Balicí — celofánky','Celofán — 100g (bez etikety)',207],
-  ['🏭 Balicí — celofánky','Celofán tavení — kontinuální 100g',462],
-  ['🏭 Balicí — celofánky','Balení + tavení — 180g',103],
-  ['🏭 Balicí — celofánky','Balení + tavení — 80g',122],
-  ['🏭 Balicí — celofánky','Balení — 80g',122],
-  ['🏭 Balicí — celofánky','Stojací celofánek — bez štítku',130],
-  ['🏭 Balicí — celofánky','Stojací celofánek — s logem',120],
-  ['🏭 Balicí — celofánky','Tavení sáčků',667],
-  ['🎁 Dárkové kompletace','Eko kelímek — komplet',60],
-  ['🎁 Dárkové kompletace','Eko kelímek — jen štítky',200],
-  ['🎁 Dárkové kompletace','Kazetka — komplet',60],
-  ['🎁 Dárkové kompletace','Sklenička Exclusive — komplet',70],
-  ['🎁 Dárkové kompletace','Kornout — komplet',75],
-  ['🎁 Dárkové kompletace','Celofán + kelímek s mašlí',60],
-  ['🎁 Dárkové kompletace','Vázání přes roh',120],
-  ['🎁 Dárkové kompletace','Krabička 2×50g',60],
-  ['🎁 Dárkové kompletace','4×80 se senem',30],
-  ['🎁 Dárkové kompletace','Dárková krabice 3×200 doypack',30],
-  ['🎁 Štítky','Štítek přední designový — malý',300],
-  ['🎁 Štítky','Štítek legislativní — malý',300],
-  ['🎁 Štítky','Štítek přední designový — střední',200],
-  ['🎁 Štítky','Štítek legislativní — střední',200],
-  ['🎁 Štítky','Štítek přední designový — velký',150],
-  ['🎁 Štítky','Štítek legislativní — velký',150],
-  ['🎁 Vázání','Vázání jutou — malé',130],
-  ['🎁 Vázání','Vázání mašlí — malé',80],
-  ['🎁 Vázání','Vázání jutou — střední 2×50',120],
-  ['🎁 Vázání','Vázání mašlí — střední',70],
-  ['🎁 Skládání krabic','Skládání — krabička 2×50',375],
-  ['🎁 Skládání krabic','Skládání — 4×80 průhledná',200],
-  ['🎁 Skládání krabic','Skládání — Exclusive průhledná',200],
-  ['🎁 Skládání krabic','Skládání — odnoska jedno okno',120],
-  ['🎁 Skládání krabic','Skládání — bonboniera 2 řady',40],
-  ['🎁 Ostatní dárkové','Lepení štítků — stroj',600],
-  ['🎁 Ostatní dárkové','Lepení přední+zadní štítek (100g)',171],
-  ['🎁 Ostatní dárkové','Razítkování sáčků 50g',200],
-  ['🎁 Ostatní dárkové','Lepení předního štítku — vel. sáčky',400],
-  ['🎁 Ostatní dárkové','Lepení kazetky',200],
-  ['🔬 Odvozené','Vložení do eko kelímku + víčko',150],
-  ['🔬 Odvozené','Plnění 4 sáčků + seno (4×80)',86],
-  ['🔧 Čištění','Průběžné čištění — špinivé ořechy (po 100ks)',1500],
-];
+const NORM_OPTS = window.NW_NORMY;  // shared list: normy-data.js
 
 function fmtTime(mins){if(!mins||mins<=0)return '—';const h=Math.floor(mins/60),m=Math.round(mins%60);return h?(m?`${h} h ${m} min`:`${h} h`):`${m} min`;}
 function buildNormSelHtml(curName){
