@@ -4,384 +4,91 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Nutworld — Rozcestník</title>
-<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;min-height:100vh;padding:32px 16px}
-.header{text-align:center;margin-bottom:36px}
-.logo{font-family:'Exo 2',sans-serif;font-size:32px;font-weight:800;color:#5c381f}
+:root{--br:#83502e;--bd:#5c381f;--kraft:#f1e6da;--bg:#e8ddd4;--line:#d4c0a8;--muted:#8a6a4a;--pink:#da1668;--amber:#f7ab31;--leaf:#6fa044}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:var(--bg);color:var(--bd);min-height:100vh;padding:28px max(16px,env(safe-area-inset-right,0px)) 40px max(16px,env(safe-area-inset-left,0px))}
+.wrap{max-width:1040px;margin:0 auto}
+.header{text-align:center;margin-bottom:18px}
+.logo{font-family:'Exo 2',sans-serif;font-size:32px;font-weight:800;color:var(--bd)}
 .sub{font-size:12px;color:#a07850;letter-spacing:2.5px;text-transform:uppercase;margin-top:4px}
-.section-label{font-family:'Exo 2',sans-serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:#a07850;margin-bottom:10px;padding-left:4px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;max-width:860px;margin:0 auto 28px}
-.card{background:white;border-radius:14px;padding:20px 18px;text-decoration:none;border:2px solid #d4c0a8;transition:transform .15s,box-shadow .15s;box-shadow:0 2px 10px rgba(0,0,0,.07);display:block}
-.card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.12)}
-.card-icon{font-size:28px;display:block;margin-bottom:10px}
-.card-title{font-family:'Exo 2',sans-serif;font-size:14px;font-weight:700;color:#5c381f;margin-bottom:4px}
-.card-desc{font-size:12px;color:#8a6a4a;line-height:1.45}
-.card.brown{background:linear-gradient(135deg,#5c381f,#83502e);border-color:transparent}
-.card.brown .card-title{color:white}
-.card.brown .card-desc{color:rgba(255,255,255,.7)}
-.card.pink{background:linear-gradient(135deg,#a01050,#da1668);border-color:transparent}
-.card.pink .card-title{color:white}
-.card.pink .card-desc{color:rgba(255,255,255,.7)}
-.card.amber{background:linear-gradient(135deg,#b87a00,#f7ab31);border-color:transparent}
-.card.amber .card-title{color:white}
-.card.amber .card-desc{color:rgba(255,255,255,.75)}
-.card.green{background:linear-gradient(135deg,#2d5a1b,#6fa044);border-color:transparent}
-.card.green .card-title{color:white}
-.card.green .card-desc{color:rgba(255,255,255,.7)}
-.footer{text-align:center;font-size:11px;color:#b09070;margin-top:8px}
-.card-hub{background:white;border-radius:14px;padding:18px 18px 14px;border:2px solid #d4c0a8;box-shadow:0 2px 10px rgba(0,0,0,.07)}
-.card-hub-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.card-hub-icon{font-size:26px;line-height:1}
-.card-hub-title{font-family:'Exo 2',sans-serif;font-size:14px;font-weight:700;color:#5c381f}
-.card-sub-link{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;text-decoration:none;color:#5c381f;font-size:12px;font-weight:600;transition:background .12s;border:1.5px solid #e8d8c8;margin-bottom:6px}
-.card-sub-link:hover{background:#f1e6da;border-color:#c8a882}
-.card-sub-link-icon{font-size:14px;flex-shrink:0}
-.card-sub-link-label{flex:1}
-.card-sub-link-badge{font-size:10px;background:#d4c0a8;color:#5c381f;padding:2px 7px;border-radius:10px;font-weight:700;letter-spacing:.3px}
+.draft{background:#fff8e1;border:2px dashed var(--amber);border-radius:12px;padding:10px 14px;font-size:13px;color:#7a5200;margin:0 auto 18px;max-width:1040px;line-height:1.5}
+.search{position:relative;margin-bottom:22px}
+.search input{width:100%;padding:13px 16px 13px 44px;font-size:16px;border:2px solid var(--line);border-radius:14px;background:#fff;color:var(--bd);font-family:inherit;outline:none}
+.search input:focus{border-color:var(--br);box-shadow:0 0 0 3px rgba(131,80,46,.15)}
+.search span{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:17px}
+.search small{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--muted)}
+.lbl{font-family:'Exo 2',sans-serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:#a07850;margin:0 0 10px 4px}
+.top{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:26px}
+.top a{background:linear-gradient(135deg,var(--bd),var(--br));color:#fff;border-radius:14px;padding:14px;text-decoration:none;box-shadow:0 3px 12px rgba(92,56,31,.18);transition:transform .15s}
+.top a:hover{transform:translateY(-2px)}
+.top .i{font-size:24px;display:block;margin-bottom:6px}.top .t{font-family:'Exo 2',sans-serif;font-weight:700;font-size:14px}
+.groups{columns:2 460px;column-gap:16px}
+.grp{break-inside:avoid;background:#fff;border:2px solid var(--line);border-radius:16px;margin-bottom:16px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.grp>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:12px 14px;border-left:6px solid var(--c);background:linear-gradient(90deg,color-mix(in srgb,var(--c) 10%,#fff),#fff)}
+.grp>summary::-webkit-details-marker{display:none}
+.grp .gi{font-size:22px}.grp .gt{font-family:'Exo 2',sans-serif;font-weight:800;font-size:15px;color:var(--bd)}
+.grp .gs{font-size:11.5px;color:var(--muted)}.grp .gc{margin-left:auto;font-size:11px;font-weight:700;background:var(--kraft);color:var(--bd);border-radius:20px;padding:2px 9px}
+.grp .chev{font-size:12px;color:var(--muted);transition:transform .15s}.grp[open] .chev{transform:rotate(90deg)}
+.items{padding:6px}
+.it{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:10px;text-decoration:none;color:var(--bd);transition:background .12s}
+.it:hover{background:var(--kraft)}
+.it .ii{font-size:18px;line-height:1.2;width:24px;text-align:center;flex-shrink:0}
+.it .ib{min-width:0;flex:1}.it .itt{font-weight:700;font-size:13.5px}.it .id{font-size:12px;color:var(--muted);line-height:1.35;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.tag{display:inline-block;font-size:10px;font-weight:700;border-radius:10px;padding:1px 7px;margin-left:6px;vertical-align:1px;background:#eee;color:#555}
+.tag.slo{background:#fff1d6;color:#8a5a00}.tag.new{background:#e6f3dc;color:#2d5a1b}.tag.arc{background:#f3e3e3;color:#8a2a2a}.tag.int{background:#f1e6da;color:var(--bd)}
+.plan{background:#fff;border:2px solid var(--line);border-radius:16px;padding:16px 18px;margin-top:8px}
+.plan h3{font-family:'Exo 2',sans-serif;font-size:15px;margin-bottom:8px}.plan li{font-size:13px;line-height:1.55;margin-left:18px}
+.empty{text-align:center;color:var(--muted);padding:30px}
+.footer{text-align:center;font-size:11px;color:#b09070;margin-top:18px}
+@media (max-width:520px){.top{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
+<div class="wrap">
+  <div class="header"><div class="logo">🐿 Nutworld</div><div class="sub">Interní rozcestník</div></div>
 
-<div class="header">
-  <div class="logo">🐿 Nutworld</div>
-  <div class="sub">Interní rozcestník</div>
+  <div class="search"><span>🔍</span><input id="q" type="search" placeholder="Hledat nástroj… (např. štítek, marže, PPL, šarže)" autocomplete="off"><small id="cnt"></small></div>
+  <div id="top-wrap"><div class="lbl">⭐ Nejčastěji</div><div class="top" id="top"></div></div>
+  <div class="groups" id="groups"></div>
+  <div class="footer">Nutworld s.r.o. · interní nástroje · <a href="/index-puvodni.html" style="color:#b09070">původní rozcestník</a> · <a href="/rozcestnik-navrh.html" style="color:#b09070">návrh úklidu</a></div>
 </div>
-
-<div style="max-width:860px;margin:0 auto">
-
-  <!-- Obchod -->
-  <div class="section-label">Obchod & Nabídky</div>
-  <div class="grid">
-    <a class="card pink" href="/marketing-calendar.html">
-      <span class="card-icon">📅</span>
-      <div class="card-title">Marketingový kalendář</div>
-      <div class="card-desc">Q4 2026 — 10 kampaní, editovatelné produkty, stav a poznámky. Přidávej vlastní kampaně.</div>
-    </a>
-    <a class="card pink" href="/bannery.html">
-      <span class="card-icon">🐿️</span>
-      <div class="card-title">Generátor bannerů</div>
-      <div class="card-desc">Téma, rozměry, CZ/SK → NutWorldka z Canvy + texty a logo podle značky. Archiv s vyhledáváním, uložení do Canvy.</div>
-    </a>
-    <a class="card amber" href="/dokument.html">
-      <span class="card-icon">📄</span>
-      <div class="card-title">Generátor dokumentů</div>
-      <div class="card-desc">Vložte text → Nutworld kabátek → PDF. Dopis, katalog, ceník, info list, nabídka.</div>
-    </a>
-    <a class="card amber" href="/kalkulator.html">
-      <span class="card-icon">🧮</span>
-      <div class="card-title">Kalkulátor cen</div>
-      <div class="card-desc">Kalkulace MO/VO ceny a marže — produkty i dárky (krabičky, sáčky, skleničky, kelímky)</div>
-    </a>
-    <a class="card green" href="/normy.html">
-      <span class="card-icon">🏭</span>
-      <div class="card-title">Normy výroby + Kalkulátor zakázky</div>
-      <div class="card-desc">Výrobní normy balení — ks/hod, Kč/ks, čas zakázky. Šablony pro eko kelímek, doypack, kornout, kazetku, krabičky a další.</div>
-    </a>
-    <a class="card brown" href="/nabidky.html">
-      <span class="card-icon">📄</span>
-      <div class="card-title">Generátor nabídek</div>
-      <div class="card-desc">Vytvoř nabídku pro zákazníka a stáhni PDF</div>
-    </a>
-    <a class="card amber" href="/obchod-smesi.html">
-      <span class="card-icon">🏪</span>
-      <div class="card-title">Alza &amp; Vilgain — Marže</div>
-      <div class="card-desc">Marže směsí a produktů dle gramáže — plné náklady (sáček, plnění, etiketa, doprava). Alza + Vilgain.</div>
-    </a>
-    <a class="card pink" href="/marze.html">
-      <span class="card-icon">📊</span>
-      <div class="card-title">Přehled marží</div>
-      <div class="card-desc">Marže dárků a sáčků — vždy aktuální z ceníku</div>
-    </a>
-    <a class="card amber" href="/k2.html">
-      <span class="card-icon">📈</span>
-      <div class="card-title">K2 Porovnání ceníků</div>
-      <div class="card-desc">Porovnání K2 ceníků — květen vs. červen 2026</div>
-    </a>
-    <a class="card brown" href="/partneri.html">
-      <span class="card-icon">🏢</span>
-      <div class="card-title">Registr partnerů</div>
-      <div class="card-desc">Vyhledávání v dodavatelích a odběratelích z K2 — filtr podle IČO, doplňování nových</div>
-    </a>
-    <a class="card green" href="/bulk-cenik.html">
-      <span class="card-icon">📦</span>
-      <div class="card-title">Bulk ceník</div>
-      <div class="card-desc">solo balení s přelepením etikety · ceny Kč/kg + Kč/bal · automaticky dle nákupních cen</div>
-    </a>
-    <a class="card brown" href="/bulk-cenik-pracovni.html">
-      <span class="card-icon">🔢</span>
-      <div class="card-title">Bulk ceník — Pracovní</div>
-      <div class="card-desc">Interní verze · nákupní ceny · marže % · poznámky · aktualizace automaticky</div>
-    </a>
-    <a class="card" href="/cenik.html">
-      <span class="card-icon">📋</span>
-      <div class="card-title">Porovnání ceníků</div>
-      <div class="card-desc">Nahraj dva CSV ceníky a viz co se změnilo</div>
-    </a>
-    <a class="card brown" href="/doprava.html">
-      <span class="card-icon">🚛</span>
-      <div class="card-title">Doprava</div>
-      <div class="card-desc">Kalkulátory dopravy — Geis (palety), PPL (zásilky CZ+SK), Zásilkovna, TopTrans. Cena, mýtné, dobírka.</div>
-    </a>
-    <a class="card brown" href="/firmy-ceniky.html">
-      <span class="card-icon">🏢</span>
-      <div class="card-title">Firmy — vlastní ceníky</div>
-      <div class="card-desc">Individuální ceníky a nabídky pro firemní zákazníky — Náchod, Olympic Palace a další.</div>
-    </a>
-  </div>
-
-  <!-- Legislativa -->
-  <div class="section-label">Legislativa & Dokumentace</div>
-  <div class="grid">
-    <a class="card pink" href="/zmeny.html">
-      <span class="card-icon">🔄</span>
-      <div class="card-title">Změny produktů</div>
-      <div class="card-desc">Zaznamenej změnu dodavatele, složení nebo alergenů — odklikej web CZ/SK, etiketu a Trello</div>
-    </a>
-    <a class="card amber" href="/darky-lookup.html">
-      <span class="card-icon">🔍</span>
-      <div class="card-title">Kde je produkt?</div>
-      <div class="card-desc">Zadej kód základního produktu → uvidíš všechny dárky, kde je obsažený.</div>
-    </a>
-    <a class="card green" href="/co-obsahuje.html">
-      <span class="card-icon">📦</span>
-      <div class="card-title">Co obsahuje?</div>
-      <div class="card-desc">Zadej kód dárku → obsah s kódy a gramy. Nebo kód směsi → složení s alergeny.</div>
-    </a>
-    <a class="card brown" href="/specifikace.html">
-      <span class="card-icon">📋</span>
-      <div class="card-title">Specifikace produktů</div>
-      <div class="card-desc">Ořechy, Ovoce, Semínka, Směsi NW, Ostatní · PDF z Trella · složení směsí s alergeny</div>
-    </a>
-    <a class="card green" href="/generator.html">
-      <span class="card-icon">📦</span>
-      <div class="card-title">Generátor produktů</div>
-      <div class="card-desc">Doplnit popis nebo upravit existující produkt — Claude nahraje texty CZ + SK do Shoptetu</div>
-    </a>
-    <a class="card amber" href="/generator-darky.html">
-      <span class="card-icon">🎁</span>
-      <div class="card-title">Generátor dárků</div>
-      <div class="card-desc">Konfigurátor firemních dárků — krabičky, kelímky, skleničky a další balení na míru</div>
-    </a>
-    <a class="card green" href="/specifikace-generator.html">
-      <span class="card-icon">📋</span>
-      <div class="card-title">Generátor specifikací</div>
-      <div class="card-desc">Nahraj spec od dodavatele → přeloží a převede do Nutworld formátu (PDF)</div>
-    </a>
-    <div class="card-hub">
-      <div class="card-hub-header">
-        <span class="card-hub-icon">🏷️</span>
-        <div class="card-hub-title">Štítky</div>
-      </div>
-      <a class="card-sub-link" href="https://trello.com/b/ebhOygrk" target="_blank">
-        <span class="card-sub-link-icon">🏢</span>
-        <span class="card-sub-link-label">Firemní štítky</span>
-        <span class="card-sub-link-badge">Trello</span>
-      </a>
-      <a class="card-sub-link" href="/stitky-kontrola.html">
-        <span class="card-sub-link-icon">🔍</span>
-        <span class="card-sub-link-label">Kontrola štítku</span>
-      </a>
-      <a class="card-sub-link" href="/stitky-objednat.html">
-        <span class="card-sub-link-icon">🖨️</span>
-        <span class="card-sub-link-label">Objednat štítek</span>
-      </a>
-      <a class="card-sub-link" href="/stitky.html">
-        <span class="card-sub-link-icon">⚖️</span>
-        <span class="card-sub-link-label">Legislativní štítky</span>
-      </a>
-    </div>
-  </div>
-
-  <!-- Správa -->
-  <div class="section-label">Správa & Výroba</div>
-  <div class="grid">
-    <a class="card brown" href="/produkty.html">
-      <span class="card-icon">📋</span>
-      <div class="card-title">Nové produkty</div>
-      <div class="card-desc">Trello nástěnka — přesouvej karty přímo tady bez otevření Trella</div>
-    </a>
-    <a class="card amber" href="/kalendar.html">
-      <span class="card-icon">📅</span>
-      <div class="card-title">Kalendář termínů</div>
-      <div class="card-desc">Termíny dodání zakázek v měsíčním přehledu — barevně podle obchodního zástupce</div>
-    </a>
-        <a class="card amber" href="/zakazy.html">
-      <span class="card-icon">🃏</span>
-      <div class="card-title">Přehled zakázek</div>
-      <div class="card-desc">Live stav zakázek z Trella — firmy, hodnoty, termíny</div>
-    </a>
-    <a class="card brown" href="/vyroba.html">
-      <span class="card-icon">🏭</span>
-      <div class="card-title">Výrobní plán</div>
-      <div class="card-desc">Přehled co vyrábět — filtruj podle produktu, odškrtávej hotové firmy</div>
-    </a>
-    <a class="card brown" href="/denik-michani.html">
-      <span class="card-icon">📋</span>
-      <div class="card-title">Deník míchání a surovin</div>
-      <div class="card-desc">Záznam zpracování velkých dávek surovin — šarže, LOT, DMT, uložení do Trella</div>
-    </a>
-    <a class="card green" href="/receptury-smesi.html">
-      <span class="card-icon">🧮</span>
-      <div class="card-title">Receptury směsí</div>
-      <div class="card-desc">Přesné poměry složení — Alza, Vilgain, Nutworld — na 1 kg a 20 kg</div>
-    </a>
-    <a class="card brown" href="/prijem-surovin.html">
-      <span class="card-icon">📦</span>
-      <div class="card-title">Příjem surovin</div>
-      <div class="card-desc">Záznam příjmu dodávky — dodavatel, číslo dodávky, šarže, DMT, stav položek, tisk</div>
-    </a>
-    <a class="card green" href="/archiv-prijmu.html">
-      <span class="card-icon">📂</span>
-      <div class="card-title">Archiv příjmů</div>
-      <div class="card-desc">Vyhledávání v historii dodávek — podle suroviny, LOT, dodavatele, data nebo DMT</div>
-    </a>
-    <a class="card amber" href="/michani-foto.html">
-      <span class="card-icon">📷</span>
-      <div class="card-title">Nahrát foto formuláře</div>
-      <div class="card-desc">Veřejná stránka — nafotit vyplněný papír → AI přečte → Trello karta automaticky</div>
-    </a>
-    <a class="card amber" href="/vyrobni-plan.html">
-      <span class="card-icon">🎁</span>
-      <div class="card-title">Výrobní plán produktů</div>
-      <div class="card-desc">Plán výroby vánočních dárků — zadej počty kusů, zobraz potřebu surovin</div>
-    </a>
-    <a class="card brown" href="/suroviny.html">
-      <span class="card-icon">🥜</span>
-      <div class="card-title">Kde co je</div>
-      <div class="card-desc">Průřez podle suroviny — vyber druh ořechu a uvidíš všechny dárky kde se nachází</div>
-    </a>
-    <a class="card pink" href="/vzorky.html">
-      <span class="card-icon">🧪</span>
-      <div class="card-title">Vzorky</div>
-      <div class="card-desc">Zadávání a sledování B2B vzorků — od zadání přes výrobu až po odeslání klientovi</div>
-    </a>
-    <a class="card pink" href="/krizove-situace/">
-      <span class="card-icon">🚨</span>
-      <div class="card-title">Krizové situace</div>
-      <div class="card-desc">Stažení produktů, reklamace, mimořádné události — každý případ má vlastní přehled</div>
-    </a>
-    <a class="card amber" href="/adventni-kalendar.html">
-      <span class="card-icon">🎄</span>
-      <div class="card-title">Adventní kalendář 2026</div>
-      <div class="card-desc">Výrobní manuál — kalkulace, rozložení 24 okének, výrobní fronta</div>
-    </a>
-    <a class="card brown" href="/expedice/">
-      <span class="card-icon">🚚</span>
-      <div class="card-title">Expedice — výroba</div>
-      <div class="card-desc">Výrobní sledování B2B zakázek — Alza, Albi, Vilgain a další odběratelé</div>
-    </a>
-    <a class="card green" href="/objednavky.html">
-      <span class="card-icon">📦</span>
-      <div class="card-title">Výrobní rozklad objednávek</div>
-      <div class="card-desc">Live Shoptet objednávky → co vyrábět dnes — CZ + SK, filtr dle data, vyhledávání</div>
-    </a>
-    <a class="card" href="https://admin.shoptet.cz" target="_blank">
-      <span class="card-icon">🛒</span>
-      <div class="card-title">Shoptet CZ</div>
-      <div class="card-desc">Administrace e-shopu nutworld.cz</div>
-    </a>
-    <a class="card" href="https://admin.shoptet.cz" target="_blank">
-      <span class="card-icon">🛒</span>
-      <div class="card-title">Shoptet SK</div>
-      <div class="card-desc">Administrace e-shopu nutworld.sk</div>
-    </a>
-  </div>
-
-  <!-- Vnitřní struktura firmy -->
-  <div class="section-label">Vnitřní struktura firmy & Lidé</div>
-  <div class="grid">
-    <a class="card brown" href="/pichacky.html">
-      <span class="card-icon">⏱</span>
-      <div class="card-title">Píchačky</div>
-      <div class="card-desc">Docházka zaměstnanců — příchod/odchod, denní a měsíční hodiny, sazba, výplata, export CSV</div>
-    </a>
-    <a class="card green" href="/podpisove-rady.html">
-      <span class="card-icon">✍️</span>
-      <div class="card-title">Podpisové řády</div>
-      <div class="card-desc">Vnitřní řád pracoviště k podpisu — HPP, DPP/DPČ a pracovníci firmy na úkolové práce. Tisk po záložkách.</div>
-    </a>
-    <a class="card amber" href="/maorth-trans-komplet.html">
-      <span class="card-icon">🤝</span>
-      <div class="card-title">Firma na úkolové práce — kompletní přehled</div>
-      <div class="card-desc">Podmínky B2B spolupráce, švarcsystém, daně, GDPR, IP, BOZP, organizace, kontrolní orgány — checklist.</div>
-    </a>
-    <a class="card brown" href="/podminky-maorth-trans.html">
-      <span class="card-icon">📋</span>
-      <div class="card-title">Podmínky s firmou na úkolové práce</div>
-      <div class="card-desc">8 oblastí: smlouva, GDPR, autorská práva, daně, BOZP, mlčenlivost, ukončení, pojištění.</div>
-    </a>
-    <a class="card brown" href="/rozdeleni-pracovniku.html">
-      <span class="card-icon">🏢</span>
-      <div class="card-title">Rozdělení pracovníků</div>
-      <div class="card-desc">B2B vs. HPP — co Nutworld může a nesmí řídit, zóny, pauzy, švarcsystém, BOZP jako provozovatel.</div>
-    </a>
-    <a class="card pink" href="/oznaceni-pracoviste.html">
-      <span class="card-icon">🚧</span>
-      <div class="card-title">Označení pracoviště</div>
-      <div class="card-desc">BOZP, únikové cesty, potravinářský provoz, živnostenský zákon §17 — co musí být fyzicky označeno.</div>
-    </a>
-    <a class="card amber" href="/pudorysy.html">
-      <span class="card-icon">🗺️</span>
-      <div class="card-title">Půdorysy — zóny AG</div>
-      <div class="card-desc">Půdorysy pracoviště s vyznačenými zónami firmy na úkolové práce — Z1AG, Z2AG (1. patro) · Z4AG (2. patro).</div>
-    </a>
-    <a class="card green" href="/haccp.html">
-      <span class="card-icon">🛡️</span>
-      <div class="card-title">HACCP Plán</div>
-      <div class="card-desc">Kompletní HACCP plán Nut World s.r.o. — analýza nebezpečí, CCP, krizový plán, tisknutelné přílohy (formuláře, alergeny, kalibrace).</div>
-    </a>
-    <a class="card green" href="/alergeny-nastenska.html">
-      <span class="card-icon">⚠️</span>
-      <div class="card-title">Alergeny — nástěnka</div>
-      <div class="card-desc">Tisknutelný přehled pro laminaci: alergeny v provozu, pořadí výroby (Var. A + B), changeover postup, checklist před šarží.</div>
-    </a>
-    <a class="card green" href="/teploty-formular.html">
-      <span class="card-icon">🌡️</span>
-      <div class="card-title">Evidence teplot</div>
-      <div class="card-desc">Měsíční formulář pro tisk: sklad surovin (°C + RH) a balírna. 31 řádků, prázdná pole pro ruční vyplnění.</div>
-    </a>
-    <a class="card brown" href="/skoleni-dpp.html">
-      <span class="card-icon">📝</span>
-      <div class="card-title">Vstupní školení DPP</div>
-      <div class="card-desc">Obecné školení k podpisu — pracovní řád, BOZP, hygiena, mobilní telefon, mlčenlivost, požár, alergeny. 12 sekcí + podpisový arch.</div>
-    </a>
-  </div>
-
-  <!-- Návody a pravidla -->
-  <div class="section-label">Návody & Pravidla</div>
-  <div class="grid">
-    <a class="card green" href="/navod-nabidky.html" target="_blank">
-      <span class="card-icon">📖</span>
-      <div class="card-title">Návod: Nabídky & Zakázky</div>
-      <div class="card-desc">Jak zadávat nabídky, zakázky, výrobní plány — kompletní průvodce systémem</div>
-    </a>
-    <a class="card amber" href="/cenik-grafika.html" target="_blank">
-      <span class="card-icon">🖨️</span>
-      <div class="card-title">Pravidla: Ceník tisků</div>
-      <div class="card-desc">Grafika a tisk Claudia Fiori — nákupní ceny, pravidla pro zákazníka, příklady výpočtů</div>
-    </a>
-    <a class="card brown" href="/web-audit.html">
-      <span class="card-icon">📊</span>
-      <div class="card-title">Web Audit: Nutworld.cz</div>
-      <div class="card-desc">Komplexní analýza webu — hodnocení 7 oblastí, prioritní matice, doporučení pro Q4 2026. Skóre 6.8/10.</div>
-    </a>
-    <a class="card green" href="/skladnik-priority.html">
-      <span class="card-icon">📦</span>
-      <div class="card-title">Priority skladníka</div>
-      <div class="card-desc">8 priorit seřazených podle důležitosti — dofasování, příjem, K2, přesun ZJ/DJ, logistika, teplota, čistota.</div>
-    </a>
-    <a class="card amber" href="/operator-balirna.html">
-      <span class="card-icon">🏭</span>
-      <div class="card-title">Priority operátora balírny</div>
-      <div class="card-desc">9 priorit pro balírnu — tavení zakázek, rozvoz DJ/ZJ, míchání, krabice, čistý provoz, štítkování, sáčky.</div>
-    </a>
-  </div>
-
-</div>
-
-<div class="footer">nutworldcz-collab.github.io · Nutworld s.r.o.</div>
+<script src="stranky-data.js"></script>
+<script>
+const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+function tagCls(t){return /sloučit/.test(t)?'slo':/nov/.test(t)?'new':/archiv|zrušení/.test(t)?'arc':'int';}
+function item(p){return `<a class="it" href="/${p.soubor}"><span class="ii">${p.ikona}</span><span class="ib"><span class="itt">${esc(p.nazev)}</span>`+
+  (p.stitek&&/nov/.test(p.stitek)?`<span class="tag ${tagCls(p.stitek)}">${esc(p.stitek)}</span>`:'')+`<span class="id">${esc(p.popis)}</span></span></a>`;}
+function render(){
+  const q=norm(document.getElementById('q').value.trim());
+  const hit=p=>!q||norm(p.nazev+' '+p.popis+' '+p.soubor).includes(q);
+  const list=NW_STRANKY.filter(hit);
+  document.getElementById('cnt').textContent=q?`${list.length} z ${NW_STRANKY.length}`:`${NW_STRANKY.length} stránek`;
+  document.getElementById('top-wrap').hidden=!!q;
+  document.getElementById('top').innerHTML=NW_STRANKY.filter(p=>p.hlavni).sort((a,b)=>a.hlavni-b.hlavni)
+    .map(p=>`<a href="/${p.soubor}"><span class="i">${p.ikona}</span><span class="t">${esc(p.nazev)}</span></a>`).join('');
+  document.getElementById('groups').innerHTML=NW_SKUPINY.map(g=>{
+    const ps=list.filter(p=>p.skupina===g.key); if(!ps.length) return '';
+    const open=q||!g.sbaleno?' open':'';
+    return `<details class="grp" style="--c:${g.barva}"${open}><summary><span class="gi">${g.ikona}</span><span><div class="gt">${esc(g.nazev)}</div>`+
+      `<div class="gs">${esc(g.popis)}</div></span><span class="gc">${ps.length}</span><span class="chev">▶</span></summary><div class="items">${ps.map(item).join('')}</div></details>`;
+  }).join('')||'<div class="empty">Nic nenalezeno.</div>';
+}
+function plan(){
+  const by=t=>NW_STRANKY.filter(p=>p.stitek&&new RegExp(t).test(p.stitek)).map(p=>p.nazev);
+  document.getElementById('plan').innerHTML=`<h3>🧹 Navržený úklid (po schválení)</h3><ul>
+   <li><b>Doprava:</b> ${by('sloučit do Dopravy').join(', ')} → záložky v jedné stránce Doprava.</li>
+   <li><b>Konfigurátory krabiček</b> 2×50 + 4×80 → jeden konfigurátor z darky.csv.</li>
+   <li><b>Výrobní plán Vánoce</b> → sloučit s Výrobním plánem.</li>
+   <li><b>Ceníky firem</b> (Čajovna, HU-FA, Olympic, Czech Inn, Náchod) → jedna šablona z firemních ceníků; interní „marže“ stránky pod Ceny.</li>
+   <li><b>Do archivu:</b> ${by('archiv|zrušení').join(', ')}.</li>
+   <li><b>Dashboard (klasický)</b> → nahrazuje Wolf Leader Board.</li></ul>`;
+}
+document.getElementById('q').addEventListener('input',render);
+render();
+</script>
 <script src="pin-guard.js"></script>
 </body>
 </html>
