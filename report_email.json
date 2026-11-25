@@ -1,6 +1,55 @@
 {
-  "generated": "2026-11-24T17:03:53",
-  "total": 0,
+  "generated": "2026-11-25T09:55:53",
+  "total": 3,
   "spam_skipped": 0,
-  "emails": []
+  "emails": [
+    {
+      "account": "Google",
+      "sender": "Temu <temu@eu.temuemail.com>",
+      "subject": "Nabídka kreditu byla odeslána.",
+      "date": "středa 25. listopadu 2026 9:33:07",
+      "unread": true,
+      "preview": "",
+      "category": "dodavatel",
+      "sender_short": "Temu",
+      "sender_email": "temu@eu.temuemail.com",
+      "ai": {
+        "shrn": "Temu oznamuje odeslání nabídky kreditu. Jde o informaci od poskytovatele služeb.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "AliExpress <aeug-member-benefits12@deals.aliexpress.com>",
+      "subject": "Still browsing Diameter 6mm NTAG213 NFC Tags  Programmable RFI...?",
+      "date": "středa 25. listopadu 2026 6:09:41",
+      "unread": true,
+      "preview": "Shop them today and save big! ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ￼ It's still available Make it yours now Shop now ￼ . ￼ . Diameter 6mm NTAG213 N",
+      "category": "ostatni",
+      "sender_short": "AliExpress",
+      "sender_email": "aeug-member-benefits12@deals.aliexpress.com",
+      "ai": {
+        "shrn": "AliExpress nabízí nákup NFC tagů se slevou. Jde o marketingový email s nabídkou produktu.",
+        "tyka_se": false,
+        "akce": null
+      }
+    },
+    {
+      "account": "Google",
+      "sender": "\"CrossFit\" <crossfit@mail.crossfit.com>",
+      "subject": "261125 Workout of the Day: Shoulders and Grip",
+      "date": "středa 25. listopadu 2026 2:32:10",
+      "unread": true,
+      "preview": "￼ ￼ ￼ WEDNESDAY",
+      "category": "ostatni",
+      "sender_short": "CrossFit",
+      "sender_email": "crossfit@mail.crossfit.com",
+      "ai": {
+        "shrn": "CrossFit posílá denní tréninkový plán zaměřený na ramena a grip. Jde o sportovní newsletter.",
+        "tyka_se": false,
+        "akce": null
+      }
+    }
+  ]
 }
