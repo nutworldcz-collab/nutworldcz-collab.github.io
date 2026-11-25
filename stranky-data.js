@@ -523,6 +523,15 @@ window.NW_STRANKY = [
   "barva": "amber"
  },
  {
+  "soubor": "nastenky.html",
+  "skupina": "lide",
+  "ikona": "🗂",
+  "nazev": "Nástěnky",
+  "popis": "Naše vlastní nástěnky místo Trella — zatím kopie Trella (souběžný provoz), jen na serveru s přihlášením",
+  "stitek": "nové",
+  "barva": "brown"
+ },
+ {
   "soubor": "pichacky.html",
   "skupina": "lide",
   "ikona": "⏱",

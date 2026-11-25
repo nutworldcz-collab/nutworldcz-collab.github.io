@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>Nutworld — Nástěnky</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--br:#83502e;--bd:#5c381f;--kraft:#f1e6da;--bg:#e8ddd4;--line:#d4c0a8;--muted:#8a6a4a;--pink:#da1668;--amber:#f7ab31;--leaf:#6fa044;--col:#efe5da;--red:#d64545}
+html,body{height:100%}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:var(--bg);color:#2a1a0e;font-size:14px;display:flex;flex-direction:column}
+button,input,textarea,select{font:inherit;color:inherit}
+a{color:var(--br)}
+.top{background:linear-gradient(135deg,#5c381f 0%,#83502e 55%,#a0622a 100%);color:#fff;padding:10px max(14px,env(safe-area-inset-right)) 10px max(14px,env(safe-area-inset-left));display:flex;gap:10px;align-items:center;flex-wrap:wrap;flex-shrink:0}
+.top .logo{font-family:'Exo 2',sans-serif;font-weight:800;font-size:18px;text-decoration:none;color:#fff;white-space:nowrap}
+.top .bn{font-family:'Exo 2',sans-serif;font-weight:700;font-size:16px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.top .sp{flex:1}
+.top input{border:0;border-radius:10px;padding:7px 12px;width:240px;max-width:100%;background:rgba(255,255,255,.16);color:#fff;outline:none}
+.top input::placeholder{color:rgba(255,255,255,.7)}
+.top input:focus{background:#fff;color:var(--bd)}
+.btn{border:0;border-radius:10px;padding:7px 12px;cursor:pointer;font-weight:700;background:var(--kraft);color:var(--bd);white-space:nowrap}
+.btn:hover{filter:brightness(.96)}
+.btn.pri{background:var(--br);color:#fff}.btn.acc{background:var(--pink);color:#fff}.btn.ghost{background:rgba(255,255,255,.16);color:#fff}
+.btn.sm{padding:4px 9px;font-size:12px}
+.banner{background:#fff8e1;border-bottom:2px solid var(--amber);color:#7a5200;padding:7px 16px;font-size:13px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;flex-shrink:0}
+.banner.own{background:#eef6e6;border-color:var(--leaf);color:#2d5a1b}
+.main{flex:1;min-height:0;overflow:auto}
+/* home */
+.home{max-width:1100px;margin:0 auto;padding:20px max(16px,env(safe-area-inset-right)) 40px max(16px,env(safe-area-inset-left))}
+.home h2{font-family:'Exo 2',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:18px 0 10px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.tile{background:#fff;border-radius:14px;padding:12px 14px;cursor:pointer;border:2px solid transparent;box-shadow:0 2px 8px rgba(92,56,31,.08);text-align:left;display:flex;flex-direction:column;gap:6px;min-height:86px}
+.tile:hover{border-color:var(--br)}
+.tile .tn{font-family:'Exo 2',sans-serif;font-weight:700;font-size:15px;color:var(--bd)}
+.tile .tm{font-size:12px;color:var(--muted);margin-top:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.badge{display:inline-block;border-radius:10px;padding:1px 8px;font-size:11px;font-weight:700}
+.badge.tr{background:#e8eef9;color:#2c5aa0}.badge.own{background:#e6f3dc;color:#2d5a1b}.badge.cl{background:#eee;color:#666}
+.intro{background:#fff;border-radius:14px;padding:14px 16px;border-left:6px solid var(--amber);line-height:1.5;font-size:13.5px}
+/* board */
+.board{display:flex;gap:12px;align-items:flex-start;padding:14px max(14px,env(safe-area-inset-right)) 20px max(14px,env(safe-area-inset-left));min-height:100%;width:max-content}
+.col{background:var(--col);border-radius:14px;width:280px;flex-shrink:0;display:flex;flex-direction:column;max-height:calc(100vh - 150px)}
+.col.over{outline:3px dashed var(--br)}
+.colh{padding:10px 12px 6px;display:flex;align-items:center;gap:6px}
+.colh .cn{font-family:'Exo 2',sans-serif;font-weight:700;font-size:14px;color:var(--bd);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.colh .cc{font-size:11px;color:var(--muted);font-weight:700}
+.cards{padding:2px 8px 8px;overflow-y:auto;display:flex;flex-direction:column;gap:7px;min-height:20px}
+.card{background:#fff;border-radius:10px;padding:8px 10px;box-shadow:0 1px 3px rgba(92,56,31,.18);cursor:pointer;font-size:13.5px;line-height:1.35;word-wrap:break-word}
+.card:hover{box-shadow:0 0 0 2px var(--br)}
+.card.drag{opacity:.4}
+.card.arch{opacity:.6;background:#f6f2ee}
+.card img.cov{display:block;width:calc(100% + 20px);margin:-8px -10px 8px;border-radius:10px 10px 0 0;max-height:150px;object-fit:cover;background:var(--kraft)}
+.lbls{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:5px}
+.lbl{border-radius:6px;padding:1px 7px;font-size:11px;font-weight:700;color:#fff;min-width:34px;min-height:8px}
+.bdg{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:12px;color:var(--muted);align-items:center}
+.bdg .due{border-radius:6px;padding:0 6px}
+.due.late{background:var(--red);color:#fff}.due.soon{background:var(--amber);color:#fff}.due.ok{background:var(--leaf);color:#fff}
+.mem{display:flex;gap:2px;margin-left:auto}
+.av{width:24px;height:24px;border-radius:50%;background:var(--br);color:#fff;font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+.addc{margin:0 8px 8px;padding:7px;border-radius:9px;border:0;background:transparent;color:var(--muted);text-align:left;cursor:pointer;font-weight:600}
+.addc:hover{background:rgba(92,56,31,.08)}
+.newcol{width:260px;flex-shrink:0}
+.qa{width:100%;border:2px solid var(--br);border-radius:10px;padding:7px 9px;resize:vertical;min-height:54px;outline:none}
+/* modal */
+.ov{position:fixed;inset:0;background:rgba(40,25,15,.55);display:flex;align-items:flex-start;justify-content:center;padding:30px 12px;overflow:auto;z-index:50}
+.md{background:#fff;border-radius:16px;width:760px;max-width:100%;padding:20px 22px 24px;position:relative;box-shadow:0 10px 40px rgba(0,0,0,.25)}
+.md .x{position:absolute;top:10px;right:12px;border:0;background:var(--kraft);border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:16px}
+.md h3{font-family:'Exo 2',sans-serif;font-size:20px;color:var(--bd);padding-right:40px;word-wrap:break-word}
+.md h3[contenteditable=true]{outline:none;border-radius:6px}.md h3[contenteditable=true]:focus{box-shadow:0 0 0 2px var(--br)}
+.md .meta{font-size:12.5px;color:var(--muted);margin:4px 0 12px}
+.sec{font-family:'Exo 2',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--br);margin:16px 0 7px;display:flex;align-items:center;gap:8px}
+.desc{font-size:14px;line-height:1.55;word-wrap:break-word;background:#faf6f1;border-radius:10px;padding:10px 12px}
+.desc.empty{color:var(--muted);font-style:italic}
+.desc h1,.desc h2,.desc h3,.desc h4{font-family:'Exo 2',sans-serif;font-size:15px;margin:8px 0 4px;color:var(--bd)}
+.desc ul{margin:4px 0 4px 20px}
+.chip{display:inline-flex;align-items:center;gap:5px;border-radius:8px;padding:3px 9px;font-size:12px;font-weight:700;cursor:pointer;border:2px solid transparent;margin:0 5px 5px 0;background:#eee}
+.chip.off{opacity:.35}
+.ck{display:flex;gap:8px;align-items:flex-start;padding:4px 2px;font-size:13.5px}
+.ck input{margin-top:3px;accent-color:var(--leaf)}
+.ck.done span{text-decoration:line-through;color:var(--muted)}
+.bar{height:6px;background:#eee;border-radius:4px;overflow:hidden;margin:2px 0 6px}.bar i{display:block;height:100%;background:var(--leaf)}
+.att{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.att a{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:var(--bd);font-size:12px;background:#faf6f1;border-radius:10px;padding:6px;word-break:break-all}
+.att img{width:100%;height:90px;object-fit:cover;border-radius:7px;background:var(--kraft)}
+.att .ic{height:90px;display:flex;align-items:center;justify-content:center;font-size:34px;background:var(--kraft);border-radius:7px}
+.act{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid #f0e8df;font-size:13px}
+.act .who{font-weight:700}.act .when{color:var(--muted);font-size:11.5px}
+.act .cm{background:#faf6f1;border-radius:8px;padding:6px 9px;margin-top:3px;white-space:pre-wrap;word-wrap:break-word}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.inp{border:2px solid var(--line);border-radius:9px;padding:6px 9px;outline:none;background:#fff}
+.inp:focus{border-color:var(--br)}
+.res{background:#fff;border-radius:10px;padding:9px 12px;margin-bottom:7px;cursor:pointer;box-shadow:0 1px 3px rgba(92,56,31,.12)}
+.res:hover{box-shadow:0 0 0 2px var(--br)}
+.res small{color:var(--muted)}
+.empty-msg{text-align:center;color:var(--muted);padding:40px 16px}
+.dlg p{line-height:1.5;margin:8px 0 14px}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--bd);color:#fff;padding:9px 16px;border-radius:10px;z-index:99;font-weight:600}
+@media (max-width:600px){.top input{width:100%;order:9}.col{width:86vw}.md{padding:16px 14px 20px}}
+</style>
+</head>
+<body>
+<div class="top">
+  <a class="logo" href="/index.html" title="Rozcestník">🐿</a>
+  <a class="logo" href="#" onclick="go('');return false">Nástěnky</a>
+  <span class="bn" id="bn"></span>
+  <span class="sp"></span>
+  <input id="q" type="search" placeholder="🔍 Hledat kartu na všech nástěnkách…" autocomplete="off"/>
+  <span id="topbtns"></span>
+</div>
+<div id="banner"></div>
+<div class="main" id="main"><div class="empty-msg">Načítám…</div></div>
+<div id="modal"></div>
+
+<script>
+const API = '/api/nastenky';
+let ME = null, BOARDS = [], B = null, LISTS = [], CARDS = [], SHOW_ARCH = false, FILTER = '';
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $ = id => document.getElementById(id);
+
+async function api(path, opt = {}) {
+  const r = await fetch(API + path, {credentials: 'same-origin', ...opt,
+    headers: {'Content-Type': 'application/json', ...(opt.headers || {})}});
+  if (r.status === 401 || r.redirected) { location.href = '/_auth/login?next=' + encodeURIComponent(location.pathname + location.hash); throw new Error('login'); }
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.chyba || ('Chyba ' + r.status));
+  return j;
+}
+const post = (path, data) => api(path, {method: 'POST', body: JSON.stringify(data)});
+function toast(t) { const d = document.createElement('div'); d.className = 'toast'; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 2600); }
+
+function fmtDate(iso, time) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return d.toLocaleDateString('cs-CZ', {day: 'numeric', month: 'numeric', year: (new Date().getFullYear() === d.getFullYear() ? undefined : 'numeric')}) +
+    (time ? ' ' + d.toLocaleTimeString('cs-CZ', {hour: '2-digit', minute: '2-digit'}) : '');
+}
+function dueCls(c) {
+  if (!c.termin) return '';
+  if (c.termin_hotovo) return 'ok';
+  const h = (new Date(c.termin) - Date.now()) / 36e5;
+  return h < 0 ? 'late' : h < 48 ? 'soon' : '';
+}
+const initials = n => String(n).split(/\s+/).filter(Boolean).slice(0, 2).map(x => x[0]).join('').toUpperCase();
+function md(t) {  // small, safe markdown (Trello descriptions): escape first, then links, bold, headings, lists
+  if (!t) return '';
+  let h = esc(t);
+  h = h.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (m, a, u) => `<a href="${u}" target="_blank" rel="noopener">${a}</a>`);
+  h = h.replace(/(^|[\s(])(https?:\/\/[^\s<)]+)/g, (m, p, u) => `${p}<a href="${u}" target="_blank" rel="noopener">${u.length > 60 ? u.slice(0, 57) + '…' : u}</a>`);
+  h = h.replace(/\*\*([^*\n]+)\*\*/g, '<b>$1</b>');
+  h = h.split('\n').map(l => /^#{1,4}\s/.test(l) ? `<h4>${l.replace(/^#+\s/, '')}</h4>` :
+    /^\s*[-*]\s/.test(l) ? `<li>${l.replace(/^\s*[-*]\s/, '')}</li>` : l).join('\n');
+  h = h.replace(/(<li>.*<\/li>\n?)+/g, m => `<ul>${m.replace(/\n/g, '')}</ul>`);
+  return h.replace(/\n/g, '<br>');
+}
+
+/* ---------------- routing: #b=<board>  #k=<card> */
+function go(h) { location.hash = h; }
+window.addEventListener('hashchange', route);
+async function route() {
+  const h = new URLSearchParams(location.hash.slice(1));
+  const b = h.get('b'), k = h.get('k');
+  if (b) { if (!B || B.id !== b) await openBoard(b); else renderBoard(); }
+  else { B = null; renderHome(); }
+  if (k) openCard(k); else $('modal').innerHTML = '';
+}
+
+/* ---------------- home */
+function renderHome() {
+  $('bn').textContent = ''; $('banner').innerHTML = '';
+  $('topbtns').innerHTML = (ME.admin || ME.plny) ? `<button class="btn ghost" onclick="newBoard()">+ Nástěnka</button>` : '';
+  const open = BOARDS.filter(b => !b.uzavrena && (b.karet > 0 || b.mode === 'vlastni'));
+  const empty = BOARDS.filter(b => !b.uzavrena && b.karet === 0 && b.mode !== 'vlastni');
+  const closed = BOARDS.filter(b => b.uzavrena);
+  const tile = b => `<button class="tile" onclick="go('b=${b.id}')"><span class="tn">${esc(b.nazev)}</span>
+    <span class="tm"><span class="badge ${b.uzavrena ? 'cl' : b.mode === 'vlastni' ? 'own' : 'tr'}">${b.uzavrena ? 'uzavřená' : b.mode === 'vlastni' ? 'náš systém' : 'kopie z Trella'}</span>
+    ${b.karet} karet${b.posledni ? ' · ' + fmtDate(b.posledni) : ''}</span></button>`;
+  const own = BOARDS.filter(b => b.mode === 'vlastni').length;
+  $('main').innerHTML = `<div class="home">
+    <div class="intro"><b>Naše vlastní nástěnky — souběžně s Trellem.</b> Pracuje se dál v Trellu; tady je jeho kopie
+      (obnovuje se každou hodinu 6–20 h, přílohy každou noc), ať je vidět, že tu je všechno. Nástěnku přepne na náš systém Jan,
+      až bude vše vyzkoušené — pak se edituje už jen tady. ${own ? `Na našem systému už běží: <b>${own}</b>.` : ''}
+      ${ME.admin ? '<br>Vidíš všechny nástěnky (Jan). Ostatní vidí jen ty, kde jsou členy v Trellu.' : ''}</div>
+    <h2>Nástěnky (${open.length})</h2><div class="tiles">${open.map(tile).join('')}</div>
+    ${empty.length ? `<h2>Prázdné (${empty.length})</h2><div class="tiles">${empty.map(tile).join('')}</div>` : ''}
+    ${closed.length ? `<details><summary><h2 style="display:inline">Uzavřené (${closed.length})</h2></summary><div class="tiles">${closed.map(tile).join('')}</div></details>` : ''}
+  </div>`;
+}
+function newBoard() {
+  dialog(`<h3>Nová nástěnka</h3><p>Vznikne rovnou v našem systému (ne v Trellu).</p>
+    <div class="row"><input class="inp" id="nbn" placeholder="Název" style="flex:1"></div>
+    <p style="font-size:12.5px;color:var(--muted)">Sloupce: K řešení · Rozpracováno · Hotovo (dají se přejmenovat a přidat).</p>`,
+    'Založit', async () => { const n = $('nbn').value.trim(); if (!n) return false;
+      const r = await post('/board', {nazev: n}); await loadBoards(); go('b=' + r.id); });
+  setTimeout(() => $('nbn')?.focus(), 50);
+}
+
+/* ---------------- board */
+async function openBoard(id) {
+  $('main').innerHTML = '<div class="empty-msg">Načítám nástěnku…</div>';
+  try {
+    const j = await api('/board/' + id + (SHOW_ARCH ? '?archiv=1' : ''));
+    B = j.board; LISTS = j.lists; CARDS = j.cards;
+  } catch (e) { $('main').innerHTML = `<div class="empty-msg">${esc(e.message)}</div>`; B = null; return; }
+  renderBoard();
+}
+function renderBoard() {
+  $('bn').textContent = '· ' + B.nazev;
+  const ed = B.lze_upravit;
+  $('topbtns').innerHTML = `<input class="inp" style="width:150px;padding:5px 9px;border:0" placeholder="Filtr na nástěnce" value="${esc(FILTER)}" oninput="FILTER=this.value;renderCols()">
+    <button class="btn ghost sm" onclick="SHOW_ARCH=!SHOW_ARCH;openBoard(B.id)">${SHOW_ARCH ? 'Skrýt archiv' : 'Archiv'}</button>`;
+  const when = B.importovano ? fmtDate(B.importovano, true) : '';
+  $('banner').innerHTML = B.mode === 'vlastni'
+    ? `<div class="banner own">✅ Tahle nástěnka už běží v našem systému — upravuje se tady. ${ME.admin ? `<button class="btn sm" onclick="switchMode('trello')">Vrátit do Trella</button>` : ''}</div>`
+    : `<div class="banner">📋 Kopie z Trella (stav ${esc(when)}) — zatím jen pro čtení, pracujte v Trellu.
+       ${B.shortlink ? `<a href="https://trello.com/b/${esc(B.shortlink)}" target="_blank" rel="noopener">Otevřít v Trellu ↗</a>` : ''}
+       ${ME.admin ? `<button class="btn sm pri" onclick="switchMode('vlastni')">Přepnout na náš systém…</button>` : ''}</div>`;
+  $('main').innerHTML = `<div class="board" id="board"></div>`;
+  renderCols();
+}
+function cardMatch(c) {
+  if (!FILTER) return true;
+  const f = FILTER.toLowerCase();
+  return (c.nazev + ' ' + c.stitky.map(s => s.nazev).join(' ') + ' ' + c.clenove.join(' ')).toLowerCase().includes(f);
+}
+function cardHtml(c) {
+  const due = c.termin ? `<span class="due ${dueCls(c)}">🕒 ${fmtDate(c.termin)}</span>` : '';
+  return `<div class="card${c.uzavrena ? ' arch' : ''}" data-id="${c.id}" ${B.lze_upravit ? 'draggable="true"' : ''} onclick="go('b=${B.id}&k=${c.id}')">
+    ${c.obrazek ? `<img class="cov" loading="lazy" src="${API}/soubor/${c.id}/${c.obrazek}" alt="">` : ''}
+    ${c.stitky.length ? `<div class="lbls">${c.stitky.map(s => `<span class="lbl" style="background:${s.barva}">${esc(s.nazev)}</span>`).join('')}</div>` : ''}
+    ${esc(c.nazev)}
+    ${(due || c.check || c.prilohy || c.popis || c.clenove.length || c.uzavrena) ? `<div class="bdg">${c.uzavrena ? '🗄 archiv' : ''}${due}
+      ${c.popis ? '<span title="Má popis">≡</span>' : ''}
+      ${c.check ? `<span class="${c.check[0] === c.check[1] ? 'due ok' : ''}">☑ ${c.check[0]}/${c.check[1]}</span>` : ''}
+      ${c.prilohy ? `<span>📎 ${c.prilohy}</span>` : ''}
+      <span class="mem">${c.clenove.slice(0, 4).map(m => `<span class="av" title="${esc(m)}">${esc(initials(m))}</span>`).join('')}</span></div>` : ''}
+  </div>`;
+}
+function renderCols() {
+  const el = $('board'); if (!el) return;
+  const ed = B.lze_upravit;
+  el.innerHTML = LISTS.map(l => {
+    const cs = CARDS.filter(c => c.list_id === l.id && cardMatch(c)).sort((a, b) => a.pos - b.pos);
+    return `<div class="col" data-list="${l.id}">
+      <div class="colh"><span class="cn" ${ed ? `ondblclick="renameList('${l.id}')" title="Dvojklik = přejmenovat"` : ''}>${esc(l.nazev)}</span><span class="cc">${cs.length}</span></div>
+      <div class="cards">${cs.map(cardHtml).join('')}</div>
+      ${ed ? `<button class="addc" onclick="quickAdd(this,'${l.id}')">+ Přidat kartu</button>` : ''}</div>`;
+  }).join('') + (ed ? `<div class="newcol"><button class="addc" style="background:rgba(255,255,255,.5);width:100%" onclick="addList()">+ Přidat sloupec</button></div>` : '');
+  if (ed) bindDnD();
+}
+function quickAdd(btn, listId) {
+  const box = document.createElement('div'); box.style.margin = '0 8px 8px';
+  box.innerHTML = `<textarea class="qa" placeholder="Název karty… (Enter = uložit)"></textarea>
+    <div class="row" style="margin-top:6px"><button class="btn pri sm">Přidat</button><button class="btn sm">Zrušit</button></div>`;
+  btn.replaceWith(box);
+  const ta = box.querySelector('textarea'); ta.focus();
+  const save = async () => { const n = ta.value.trim(); if (!n) return renderCols();
+    const r = await post('/card', {board_id: B.id, list_id: listId, nazev: n});
+    CARDS.push({id: r.id, list_id: listId, nazev: n, pos: Math.max(0, ...CARDS.filter(c => c.list_id === listId).map(c => c.pos)) + 1024,
+      stitky: [], clenove: [], prilohy: 0, popis: false, check: null, termin: null});
+    renderCols(); const b2 = [...document.querySelectorAll(`.col[data-list="${listId}"] .addc`)][0]; if (b2) quickAdd(b2, listId); };
+  ta.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); save().catch(er => toast(er.message)); } if (e.key === 'Escape') renderCols(); });
+  box.querySelectorAll('button')[0].onclick = () => save().catch(er => toast(er.message));
+  box.querySelectorAll('button')[1].onclick = renderCols;
+}
+async function addList() {
+  dialog(`<h3>Nový sloupec</h3><div class="row" style="margin-top:10px"><input class="inp" id="nln" placeholder="Název sloupce" style="flex:1"></div>`, 'Přidat',
+    async () => { const n = $('nln').value.trim(); if (!n) return false; await post(`/board/${B.id}/sloupec`, {nazev: n}); await openBoard(B.id); });
+  setTimeout(() => $('nln')?.focus(), 50);
+}
+function renameList(id) {
+  const l = LISTS.find(x => x.id === id);
+  dialog(`<h3>Sloupec</h3><div class="row" style="margin-top:10px"><input class="inp" id="rln" value="${esc(l.nazev)}" style="flex:1"></div>
+    <p style="margin-top:12px"><button class="btn sm" onclick="archiveList('${id}')">Archivovat sloupec</button></p>`, 'Uložit',
+    async () => { const n = $('rln').value.trim(); if (!n) return false; await post(`/board/${B.id}/sloupec`, {id, nazev: n}); l.nazev = n; renderCols(); });
+}
+async function archiveList(id) {
+  if (CARDS.some(c => c.list_id === id && !c.uzavrena)) return toast('Nejdřív přesuň nebo archivuj karty ve sloupci');
+  await post(`/board/${B.id}/sloupec`, {id, archiv: true}); closeDialog(); openBoard(B.id);
+}
+/* drag & drop (desktop); on phones use "Přesunout" in the card */
+function bindDnD() {
+  let dragId = null;
+  document.querySelectorAll('.card[draggable]').forEach(el => {
+    el.addEventListener('dragstart', e => { dragId = el.dataset.id; el.classList.add('drag'); e.dataTransfer.effectAllowed = 'move'; });
+    el.addEventListener('dragend', () => { el.classList.remove('drag'); document.querySelectorAll('.col.over').forEach(x => x.classList.remove('over')); });
+  });
+  document.querySelectorAll('.col').forEach(col => {
+    col.addEventListener('dragover', e => { e.preventDefault(); col.classList.add('over'); });
+    col.addEventListener('dragleave', e => { if (!col.contains(e.relatedTarget)) col.classList.remove('over'); });
+    col.addEventListener('drop', async e => {
+      e.preventDefault(); col.classList.remove('over');
+      if (!dragId) return;
+      const listId = col.dataset.list;
+      const others = [...col.querySelectorAll('.card')].filter(x => x.dataset.id !== dragId);
+      let idx = others.findIndex(x => e.clientY < x.getBoundingClientRect().top + x.offsetHeight / 2);
+      if (idx < 0) idx = others.length;
+      const posOf = el => CARDS.find(c => c.id === el.dataset.id).pos;
+      const before = idx > 0 ? posOf(others[idx - 1]) : 0;
+      const after = idx < others.length ? posOf(others[idx]) : before + 2048;
+      const card = CARDS.find(c => c.id === dragId);
+      const pos = (before + after) / 2;
+      const moved = card.list_id !== listId;
+      Object.assign(card, {list_id: listId, pos});
+      renderCols();
+      try { await post('/card/' + card.id, moved ? {list_id: listId, pos} : {pos}); } catch (er) { toast(er.message); openBoard(B.id); }
+      dragId = null;
+    });
+  });
+}
+function switchMode(mode) {
+  const toOwn = mode === 'vlastni';
+  dialog(`<h3>${toOwn ? 'Přepnout na náš systém' : 'Vrátit do Trella'}</h3>
+    <p>${toOwn ? `Nástěnka <b>${esc(B.nazev)}</b> se přestane kopírovat z Trella a od teď se upravuje <b>jen tady</b>.
+      Nejdřív v Trellu řekni lidem, ať tam už nepíšou (případně nástěnku v Trellu zavři) — co se do Trella zapíše potom, sem se nedostane.
+      Automaty, které s touto nástěnkou pracují, přepojím zvlášť.` :
+      `Nástěnka se znovu začne kopírovat z Trella. <b>Změny udělané tady se přepíšou</b> stavem z Trella.`}</p>`,
+    toOwn ? 'Ano, přepnout' : 'Ano, vrátit do Trella', async () => {
+      await post(`/board/${B.id}/mode`, {mode}); await loadBoards(); await openBoard(B.id); toast('Hotovo'); }, true);
+}
+
+/* ---------------- card */
+let CARD = null;
+async function openCard(id) {
+  $('modal').innerHTML = `<div class="ov" onclick="if(event.target===this)closeCard()"><div class="md"><div class="empty-msg">Načítám kartu…</div></div></div>`;
+  try { const j = await api('/card/' + id); CARD = j.card; CARD._board = j.board; CARD._akce = j.akce; }
+  catch (e) { $('modal').innerHTML = `<div class="ov" onclick="closeCard()"><div class="md"><p>${esc(e.message)}</p></div></div>`; return; }
+  renderCard();
+}
+function closeCard() { CARD = null; const h = new URLSearchParams(location.hash.slice(1)); h.delete('k'); go(h.toString()); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && CARD && !$('dlg')) closeCard(); });
+function renderCard() {
+  const c = CARD, bd = c._board, ed = bd.lze_upravit;
+  const isImg = p => p.mime.startsWith('image/') && p.soubor;
+  const fileUrl = p => p.soubor ? `${API}/soubor/${c.id}/${p.id}` : p.url;
+  const ico = p => /pdf/.test(p.mime) ? '📄' : /sheet|excel|csv/.test(p.mime) ? '📊' : /word|document/.test(p.mime) ? '📝' : p.soubor ? '📎' : '🔗';
+  const cm = c._akce.filter(a => a.typ === 'komentar'), other = c._akce.filter(a => a.typ !== 'komentar');
+  const lists = (B && B.id === bd.id) ? LISTS : [];
+  $('modal').innerHTML = `<div class="ov" onclick="if(event.target===this)closeCard()"><div class="md">
+    <button class="x" onclick="closeCard()" title="Zavřít (Esc)">✕</button>
+    <h3 ${ed ? 'contenteditable="true" onblur="saveField(\'nazev\', this.innerText.trim())"' : ''}>${esc(c.nazev)}</h3>
+    <div class="meta">ve sloupci <b>${esc(c.sloupec)}</b> · ${esc(bd.nazev)} · založeno ${fmtDate(c.vytvoreno)}
+      ${c.uzavrena ? ' · <b>v archivu</b>' : ''}
+      ${c.shortlink ? ` · <a href="https://trello.com/c/${esc(c.shortlink)}" target="_blank" rel="noopener">v Trellu ↗</a>` : ''}</div>
+    ${ed && lists.length ? `<div class="row"><label style="font-size:12.5px;color:var(--muted)">Přesunout do</label>
+      <select class="inp" onchange="saveField('list_id', this.value)">${lists.map(l => `<option value="${l.id}" ${l.id === c.list_id ? 'selected' : ''}>${esc(l.nazev)}</option>`).join('')}</select>
+      <button class="btn sm" onclick="saveField('uzavrena', ${!c.uzavrena})">${c.uzavrena ? '↩ Obnovit z archivu' : '🗄 Archivovat'}</button></div>` : ''}
+
+    ${(c.stitky.length || ed) ? `<div class="sec">Štítky</div><div>${(ed ? bd.stitky : c.stitky).map(s => {
+      const on = c.stitky.some(x => x.id === s.id);
+      return `<span class="chip ${on ? '' : 'off'}" style="background:${s.barva};color:#fff" ${ed ? `onclick="toggleLabel('${s.id}')"` : ''}>${esc(s.nazev) || '&nbsp;&nbsp;&nbsp;'}</span>`; }).join('')}</div>` : ''}
+
+    ${(c.clenove.length || ed) ? `<div class="sec">Kdo na tom dělá</div><div>${(ed ? ME.lide : c.clenove).map(m => {
+      const on = c.clenove.includes(m);
+      return `<span class="chip ${on ? '' : 'off'}" ${ed ? `onclick="toggleMember('${esc(m)}')"` : ''}><span class="av" style="width:18px;height:18px;font-size:9px">${esc(initials(m))}</span>${esc(m)}</span>`; }).join('')}</div>` : ''}
+
+    ${(c.termin || ed) ? `<div class="sec">Termín</div><div class="row">
+      ${ed ? `<input type="date" class="inp" value="${c.termin ? c.termin.slice(0, 10) : ''}" onchange="saveField('termin', this.value || null)">
+        <label><input type="checkbox" ${c.termin_hotovo ? 'checked' : ''} onchange="saveField('termin_hotovo', this.checked)"> splněno</label>`
+        : `<span class="due ${dueCls(c)}" style="border-radius:6px;padding:2px 8px">${fmtDate(c.termin)}${c.termin_hotovo ? ' ✓ splněno' : ''}</span>`}</div>` : ''}
+
+    <div class="sec">Popis ${ed ? `<button class="btn sm" onclick="editDesc()">Upravit</button>` : ''}</div>
+    <div id="descbox"><div class="desc ${c.popis ? '' : 'empty'}">${c.popis ? md(c.popis) : 'Bez popisu'}</div></div>
+
+    ${c.checklisty.map((ch, ci) => { const n = ch.polozky.length, d = ch.polozky.filter(i => i.hotovo).length;
+      return `<div class="sec">☑ ${esc(ch.nazev)} <span style="color:var(--muted)">${d}/${n}</span></div>
+      <div class="bar"><i style="width:${n ? d / n * 100 : 0}%"></i></div>
+      ${ch.polozky.map((it, ii) => `<label class="ck ${it.hotovo ? 'done' : ''}"><input type="checkbox" ${it.hotovo ? 'checked' : ''} ${ed ? `onchange="toggleCheck(${ci},${ii})"` : 'disabled'}><span>${md(it.text)}</span></label>`).join('')}
+      ${ed ? `<div class="row" style="margin-top:4px"><input class="inp" placeholder="Přidat položku…" style="flex:1" onkeydown="if(event.key==='Enter'){addCheck(${ci},this.value);}"></div>` : ''}`; }).join('')}
+    ${ed ? `<p style="margin-top:10px"><button class="btn sm" onclick="addChecklist()">+ Checklist</button></p>` : ''}
+
+    ${(c.prilohy.length || ed) ? `<div class="sec">Přílohy (${c.prilohy.length}) ${ed ? `<label class="btn sm">Nahrát<input type="file" multiple hidden onchange="upload(this.files)"></label>` : ''}</div>
+    <div class="att">${c.prilohy.map(p => `<a href="${esc(fileUrl(p))}" target="_blank" rel="noopener" title="${esc(p.nazev)}">
+      ${isImg(p) ? `<img loading="lazy" src="${esc(fileUrl(p))}" alt="">` : `<span class="ic">${ico(p)}</span>`}
+      <span>${esc(p.nazev.length > 48 ? p.nazev.slice(0, 45) + '…' : p.nazev)}</span>
+      ${!p.soubor && !p.url ? '<small style="color:var(--red)">soubor se ještě stahuje</small>' : ''}</a>`).join('')}</div>` : ''}
+
+    <div class="sec">Komentáře (${cm.length})</div>
+    ${ed ? `<div class="row"><textarea class="inp" id="cmt" rows="2" placeholder="Napiš komentář…" style="flex:1;resize:vertical"></textarea><button class="btn pri" onclick="addComment()">Odeslat</button></div>` : ''}
+    ${cm.map(a => `<div class="act"><span class="av">${esc(initials(a.kdo || '?'))}</span><div style="flex:1;min-width:0"><span class="who">${esc(a.kdo)}</span> <span class="when">${fmtDate(a.cas, true)}</span><div class="cm">${md(a.text)}</div></div></div>`).join('') || '<p style="color:var(--muted);font-size:13px">Zatím žádné.</p>'}
+    ${other.length ? `<details style="margin-top:10px"><summary class="sec" style="cursor:pointer">Historie (${other.length})</summary>
+      ${other.map(a => `<div class="act"><div><span class="who">${esc(a.kdo)}</span> ${esc(a.text)} <span class="when">${fmtDate(a.cas, true)}</span></div></div>`).join('')}</details>` : ''}
+  </div></div>`;
+}
+function patchLocal(field, val) {
+  const s = CARDS.find(x => x.id === CARD.id);
+  if (!s) return;
+  if (field === 'stitky') s.stitky = CARD.stitky; else if (field === 'clenove') s.clenove = CARD.clenove;
+  else if (field === 'checklisty') { const it = CARD.checklisty.flatMap(x => x.polozky); s.check = it.length ? [it.filter(i => i.hotovo).length, it.length] : null; }
+  else if (field === 'popis') s.popis = !!val; else s[field] = val;
+  if (field === 'uzavrena' && val && !SHOW_ARCH) CARDS = CARDS.filter(x => x.id !== CARD.id);
+}
+async function saveField(field, val) {
+  if (field === 'nazev' && (!val || val === CARD.nazev)) return;
+  try {
+    await post('/card/' + CARD.id, {[field]: val});
+    CARD[field] = val; patchLocal(field, val);
+    if (field === 'list_id') { CARD.sloupec = (LISTS.find(l => l.id === val) || {}).nazev || ''; }
+    if (B) renderCols();
+    const j = await api('/card/' + CARD.id); Object.assign(CARD, j.card); CARD._akce = j.akce; renderCard();
+  } catch (e) { toast(e.message); }
+}
+function toggleLabel(id) {
+  const has = CARD.stitky.some(s => s.id === id);
+  CARD.stitky = has ? CARD.stitky.filter(s => s.id !== id) : [...CARD.stitky, CARD._board.stitky.find(s => s.id === id)];
+  post('/card/' + CARD.id, {stitky: CARD.stitky.map(s => s.id)}).catch(e => toast(e.message));
+  patchLocal('stitky'); renderCols(); renderCard();
+}
+function toggleMember(m) {
+  CARD.clenove = CARD.clenove.includes(m) ? CARD.clenove.filter(x => x !== m) : [...CARD.clenove, m];
+  post('/card/' + CARD.id, {clenove: CARD.clenove}).catch(e => toast(e.message));
+  patchLocal('clenove'); renderCols(); renderCard();
+}
+function saveChecklists() { patchLocal('checklisty'); renderCols(); renderCard(); return post('/card/' + CARD.id, {checklisty: CARD.checklisty}).catch(e => toast(e.message)); }
+function toggleCheck(ci, ii) { const it = CARD.checklisty[ci].polozky[ii]; it.hotovo = !it.hotovo; saveChecklists(); }
+function addCheck(ci, text) { text = text.trim(); if (!text) return; CARD.checklisty[ci].polozky.push({text, hotovo: false}); saveChecklists().then(() => openCard(CARD.id)); }
+function addChecklist() {
+  dialog(`<h3>Nový checklist</h3><div class="row" style="margin-top:10px"><input class="inp" id="ncl" value="Úkoly" style="flex:1"></div>`, 'Přidat',
+    async () => { CARD.checklisty.push({nazev: $('ncl').value.trim() || 'Úkoly', polozky: []}); await saveChecklists(); openCard(CARD.id); });
+}
+function editDesc() {
+  $('descbox').innerHTML = `<textarea class="inp" id="desc" rows="8" style="width:100%">${esc(CARD.popis)}</textarea>
+    <div class="row" style="margin-top:6px"><button class="btn pri sm" onclick="saveField('popis', $('desc').value)">Uložit</button><button class="btn sm" onclick="renderCard()">Zrušit</button></div>`;
+  $('desc').focus();
+}
+async function addComment() {
+  const t = $('cmt').value.trim(); if (!t) return;
+  try { await post(`/card/${CARD.id}/komentar`, {text: t}); openCard(CARD.id); } catch (e) { toast(e.message); }
+}
+async function upload(files) {
+  for (const f of files) {
+    if (f.size > 25e6) { toast(`${f.name}: max 25 MB`); continue; }
+    try {
+      const r = await fetch(`${API}/card/${CARD.id}/priloha`, {method: 'POST', credentials: 'same-origin', body: f,
+        headers: {'Content-Type': f.type || 'application/octet-stream', 'X-Nazev': encodeURIComponent(f.name)}});
+      if (!r.ok) throw new Error((await r.json().catch(() => ({}))).chyba || 'Nahrání selhalo');
+    } catch (e) { toast(e.message); }
+  }
+  const s = CARDS.find(x => x.id === CARD.id); if (s) s.prilohy += files.length;
+  openCard(CARD.id); if (B) renderCols();
+}
+
+/* ---------------- dialog (in-page confirm) */
+function dialog(html, okText, onOk, danger) {
+  const d = document.createElement('div'); d.id = 'dlg'; d.className = 'ov'; d.style.zIndex = 80;
+  d.innerHTML = `<div class="md dlg" style="width:460px">${html}<div class="row" style="justify-content:flex-end;margin-top:14px">
+    <button class="btn" onclick="closeDialog()">Zrušit</button><button class="btn ${danger ? 'acc' : 'pri'}" id="dlgok">${okText}</button></div></div>`;
+  d.addEventListener('click', e => { if (e.target === d) closeDialog(); });
+  document.body.appendChild(d);
+  const ok = async () => { try { const r = await onOk(); if (r !== false) closeDialog(); } catch (e) { toast(e.message); } };
+  $('dlgok').onclick = ok;
+  d.querySelectorAll('input').forEach(i => i.addEventListener('keydown', e => { if (e.key === 'Enter') ok(); if (e.key === 'Escape') closeDialog(); }));
+}
+function closeDialog() { $('dlg')?.remove(); }
+
+/* ---------------- search across boards */
+let qT = null;
+$('q').addEventListener('input', () => { clearTimeout(qT); qT = setTimeout(search, 300); });
+async function search() {
+  const s = $('q').value.trim();
+  if (s.length < 2) { route(); return; }
+  const j = await api('/hledat?q=' + encodeURIComponent(s));
+  $('banner').innerHTML = '';
+  $('main').innerHTML = `<div class="home"><h2>Výsledky pro „${esc(s)}“ (${j.karty.length}${j.karty.length >= 60 ? '+' : ''})</h2>
+    ${j.karty.map(c => `<div class="res" onclick="$('q').value='';go('b=${c.board_id}&k=${c.id}')"><b>${esc(c.nazev)}</b>${c.uzavrena ? ' <span class="badge cl">archiv</span>' : ''}<br>
+      <small>${esc(c.nastenka)} › ${esc(c.sloupec || '')}${c.termin ? ' · 🕒 ' + fmtDate(c.termin) : ''}${c.prilohy ? ' · 📎 ' + c.prilohy : ''}</small></div>`).join('') || '<div class="empty-msg">Nic nenalezeno.</div>'}</div>`;
+}
+
+/* ---------------- start */
+async function loadBoards() { const j = await api('/boards'); BOARDS = j.boards; ME = {jmeno: j.ja, admin: j.admin, lide: j.lide, plny: ['admin', 'plny'].includes(j.role)}; }
+(async () => {
+  try { await loadBoards(); }
+  catch (e) {
+    if (e.message === 'login') return;
+    $('main').innerHTML = `<div class="home"><div class="intro"><b>Nástěnky běží jen na našem serveru s přihlášením</b> (jsou v nich firemní data, proto ne na veřejném GitHubu).<br><br>
+      Otevři je tady: <a href="https://nastroje.178-104-139-119.sslip.io/nastenky.html">nastroje.178-104-139-119.sslip.io/nastenky.html</a>
+      <br><small>(${esc(e.message)})</small></div></div>`;
+    return;
+  }
+  route();
+})();
+</script>
+</body>
+</html>
