@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Objednat štítek | Nutworld</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bd:#5c381f;--br:#83502e;--kraft:#f1e6da;--acc:#da1668;--amb:#f7ab31;--leaf:#6fa044;--muted:#8a6a50}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;font-size:14px;min-height:100vh}
+
+.topbar{background:var(--bd);padding:12px 24px;display:flex;align-items:center;gap:14px}
+.topbar-title{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:800;color:white;flex:1}
+.topbar a{color:rgba(255,255,255,.65);font-size:12px;text-decoration:none}
+.topbar a:hover{color:white}
+
+.container{max-width:600px;margin:28px auto;padding:0 16px 48px}
+
+.card{background:white;border-radius:14px;padding:22px 24px;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.card-title{font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;color:var(--br);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px}
+
+.field{margin-bottom:14px}
+.field:last-child{margin-bottom:0}
+label.lbl{display:block;font-size:11px;font-weight:600;color:#888;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+input[type=text],input[type=email],textarea,select{
+  width:100%;border:1.5px solid #d4c0a8;border-radius:8px;padding:9px 12px;
+  font-size:13px;font-family:inherit;background:white;color:#2a1a0e;
+  transition:border-color .15s
+}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--br)}
+textarea{resize:vertical;min-height:88px;line-height:1.6}
+.hint{font-size:11px;color:#aaa;margin-top:4px;line-height:1.5}
+
+.toggle-row{display:flex;gap:8px;flex-wrap:wrap}
+.toggle-btn{
+  border:1.5px solid #d4c0a8;border-radius:20px;padding:6px 15px;
+  font-size:12px;background:white;cursor:pointer;
+  font-family:'Exo 2',sans-serif;font-weight:600;color:#888;
+  transition:all .15s;user-select:none
+}
+.toggle-btn.active{background:var(--bd);color:white;border-color:var(--bd)}
+.toggle-btn:hover:not(.active){border-color:var(--br);color:var(--br)}
+
+.check-row{display:flex;align-items:center;gap:10px;cursor:pointer}
+.check-row input[type=checkbox]{width:17px;height:17px;accent-color:var(--bd);cursor:pointer;flex-shrink:0}
+.check-row span{font-size:13px}
+
+.btn-submit{
+  background:var(--bd);color:white;border:none;border-radius:10px;
+  padding:14px 32px;font-family:'Exo 2',sans-serif;font-size:15px;font-weight:700;
+  cursor:pointer;width:100%;margin-top:4px;transition:background .15s;letter-spacing:.3px
+}
+.btn-submit:hover:not(:disabled){background:var(--br)}
+.btn-submit:disabled{opacity:.55;cursor:not-allowed}
+
+.success-box{
+  display:none;background:#f0fbf2;border:1.5px solid #4caf50;border-radius:12px;
+  padding:22px 24px;text-align:center;margin-top:16px
+}
+.success-box h3{color:#2e7d32;font-family:'Exo 2',sans-serif;font-size:17px;margin-bottom:8px}
+.success-box p{color:#3a5c3e;font-size:13px;line-height:1.6}
+.success-box .cards-made{font-size:12px;color:#5a7a5e;margin-top:8px;background:#e8f5ea;border-radius:8px;padding:8px 12px;text-align:left}
+
+.err-box{
+  display:none;background:#fff5f7;border:1.5px solid var(--acc);border-radius:10px;
+  padding:14px 18px;color:#c0134f;font-size:13px;margin-top:12px
+}
+
+.info-box{
+  background:#fdf9f5;border:1.5px solid #d4c0a8;border-radius:10px;
+  padding:14px 16px;font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:16px
+}
+.info-box b{color:var(--bd)}
+
+.example{font-size:11px;color:#b0906a;margin-top:4px;font-style:italic}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-title">🏷️ Objednat štítky</span>
+  <a href="stitky.html">Legislativní editor →</a>
+  <a href="index.html">← Zpět</a>
+</div>
+
+<div class="container">
+
+  <div class="info-box">
+    Zadej kód produktu, vyber nastavení a klikni <b>Objednat</b>. Štítek se připraví do 5 minut a přijde emailem na balírnu + legislativa. Sem patří štítky pro produkty, které <b>jsou v Shoptetu</b> — data se načtou automaticky.
+  </div>
+
+  <!-- Produkty -->
+  <div class="card">
+    <div class="card-title">Produkty</div>
+    <div class="field">
+      <label class="lbl">Kódy produktů</label>
+      <textarea id="codes" placeholder="89/200&#10;3993/200&#10;161/180"></textarea>
+      <div class="hint">Každý produkt na nový řádek. Formát: <b>KÓD/GRAMÁŽ</b> (např. <code>89/200</code>). Chceš-li sloučit více produktů do jednoho BOX štítku, zadej je na jeden řádek oddělené čárkou: <code>161/180, 1985/180</code></div>
+      <div class="example">Příklady: 89/200 · 3993/200 · 161/180,1985/180 (BOX)</div>
+    </div>
+  </div>
+
+  <!-- Nastavení -->
+  <div class="card">
+    <div class="card-title">Nastavení štítku</div>
+
+    <div class="field">
+      <label class="lbl">Jazyk</label>
+      <div class="toggle-row" id="langToggle">
+        <button class="toggle-btn active" data-val="both">CZ + SK (2 štítky)</button>
+        <button class="toggle-btn" data-val="bilingual">CZ+SK na 1 štítku</button>
+        <button class="toggle-btn" data-val="cz">Jen CZ</button>
+        <button class="toggle-btn" data-val="sk">Jen SK</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="lbl">Velikost</label>
+      <select id="size">
+        <option value="105x148">A6 — 105 × 148 mm (standardní)</option>
+        <option value="74x105">Malý — 74 × 105 mm</option>
+        <option value="70x50">Mini — 70 × 50 mm</option>
+        <option value="69x75">Čtvercový — 69 × 75 mm</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label class="check-row" for="barcode">
+        <input type="checkbox" id="barcode"/>
+        <span>Přidat čárový kód (interní kód produktu, např. <code>89/200</code>)</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Email -->
+  <div class="card">
+    <div class="card-title">Doručení</div>
+    <div class="field">
+      <label class="lbl">Přidat příjemce (volitelné)</label>
+      <input type="email" id="email" placeholder="tvuj@nutworld.cz"/>
+      <div class="hint">PDF přijde automaticky na balírnu + legislativa. Sem zadej navíc (např. svůj email nebo externe).</div>
+    </div>
+  </div>
+
+  <button class="btn-submit" id="btnSubmit">Objednat štítky →</button>
+
+  <div class="err-box" id="errBox"></div>
+
+  <div class="success-box" id="successBox">
+    <h3>✅ Štítky objednány!</h3>
+    <p>Do 5 minut přijdou PDF na email. Průběh vidíš v Trellu.</p>
+    <div class="cards-made" id="successCards"></div>
+  </div>
+
+</div>
+
+<script src="trello-proxy.js"></script>
+<script>
+// Štítky board — Potřeba udělat
+const LIST_TODO = '6af2d9f4001ae0f020370a8e';
+const TK = 'dummy'; // stripped by trello-proxy.js
+const TT = 'dummy';
+
+// Lang toggle
+let selectedLang = 'both';
+document.querySelectorAll('#langToggle .toggle-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#langToggle .toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedLang = btn.dataset.val;
+  });
+});
+
+// Submit
+document.getElementById('btnSubmit').addEventListener('click', async () => {
+  const rawCodes = document.getElementById('codes').value.trim();
+  if (!rawCodes) {
+    showErr('Zadej alespoň jeden kód produktu (např. 89/200).');
+    return;
+  }
+
+  const size    = document.getElementById('size').value;
+  const barcode = document.getElementById('barcode').checked;
+  const email   = document.getElementById('email').value.trim();
+
+  // Parse lines: each line = one card (possibly a BOX if multiple codes separated by comma)
+  const lines = rawCodes.split('\n').map(l => l.trim()).filter(Boolean);
+
+  hideErr();
+  const btn = document.getElementById('btnSubmit');
+  btn.disabled = true;
+  btn.textContent = 'Odesílám…';
+
+  const created = [];
+  try {
+    for (const line of lines) {
+      // Split by comma for BOX
+      const parts = line.split(',').map(p => p.trim()).filter(Boolean);
+      const isBox = parts.length > 1;
+
+      // Validate format: each part should match digits/digits or just digits
+      for (const p of parts) {
+        if (!/^\d+(?:\/\d+)?$/.test(p)) {
+          throw new Error(`Neplatný formát kódu: "${p}" — správný formát je 89/200 nebo 89`);
+        }
+      }
+
+      // Card name
+      const cardName = isBox
+        ? `BOX ${parts.join(' + ')}`
+        : `Štítek ${parts[0]}`;
+
+      // Build description params
+      const paramLines = [];
+      if (selectedLang !== 'both') paramLines.push(`lang=${selectedLang}`);
+      if (barcode) paramLines.push('barcode=true');
+      if (email) paramLines.push(`email=${email}`);
+      if (size !== '105x148') paramLines.push(`size=${size}`);
+
+      let desc = paramLines.length ? paramLines.join('\n') + '\n\n' : '';
+
+      // Product code lines (BOX format: [KOD/GRAM, KOD/GRAM] on one line; SOLO: [KOD/GRAM])
+      if (isBox) {
+        desc += `📦 ${parts.map(p => `[${p}]`).join(', ')}`;
+      } else {
+        desc += `[${parts[0]}]`;
+      }
+
+      // Create Trello card
+      const body = { name: cardName, desc, idList: LIST_TODO, key: TK, token: TT };
+      const r = await fetch('https://api.trello.com/1/cards', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+
+      if (!r.ok) {
+        const err = await r.text().catch(() => '');
+        throw new Error(`Trello chyba (${r.status}): ${err.slice(0, 120)}`);
+      }
+
+      const card = await r.json();
+      created.push({ name: cardName, url: `https://trello.com/c/${card.id}` });
+    }
+
+    // Success
+    document.getElementById('successCards').innerHTML = created.map(c =>
+      `• <a href="${c.url}" target="_blank" rel="noopener" style="color:#2e7d32">${escHtml(c.name)}</a>`
+    ).join('<br/>');
+    document.getElementById('successBox').style.display = 'block';
+    document.getElementById('codes').value = '';
+    btn.textContent = 'Objednat další →';
+    btn.disabled = false;
+
+  } catch(e) {
+    showErr(e.message);
+    btn.textContent = 'Objednat štítky →';
+    btn.disabled = false;
+  }
+});
+
+function showErr(msg) {
+  const el = document.getElementById('errBox');
+  el.textContent = '⚠️ ' + msg;
+  el.style.display = 'block';
+}
+function hideErr() {
+  document.getElementById('errBox').style.display = 'none';
+  document.getElementById('successBox').style.display = 'none';
+}
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+<script src="pin-guard.js"></script>
+</body>
+</html>
