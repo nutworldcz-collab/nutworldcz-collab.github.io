@@ -54,6 +54,18 @@ details.sec>summary .section-label:before{content:'▸ ';}details.sec[open]>summ
 .card.brown .tag,.card.pink .tag,.card.amber .tag,.card.green .tag{background:rgba(255,255,255,.25);color:#fff}
 .empty{text-align:center;color:#8a6a4a;padding:30px}
 .wrap{max-width:860px;margin:0 auto}
+
+/* one colour per section (Jan 2026-11-25) */
+.card.dark{background:linear-gradient(135deg,#3e2c1c,#5c381f);border-color:transparent}
+.card.rust{background:linear-gradient(135deg,#6b2f2f,#b05030);border-color:transparent}
+.card.gold{background:linear-gradient(135deg,#7a5200,#c9982e);border-color:transparent}
+.card.rose{background:linear-gradient(135deg,#a8285e,#e0628f);border-color:transparent}
+.card.terra{background:linear-gradient(135deg,#8a4f1f,#c98a4a);border-color:transparent}
+.card.kraft{background:linear-gradient(135deg,#e9d9c6,#f6ede3);border-color:#c8976a}
+.card.dark .card-title,.card.rust .card-title,.card.gold .card-title,.card.rose .card-title,.card.terra .card-title{color:#fff}
+.card.dark .card-desc,.card.rust .card-desc,.card.gold .card-desc,.card.rose .card-desc,.card.terra .card-desc{color:rgba(255,255,255,.75)}
+.card.dark .tag,.card.rust .tag,.card.gold .tag,.card.rose .tag,.card.terra .tag{background:rgba(255,255,255,.25);color:#fff}
+.section-label .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
 </style>
 </head>
 <body>
@@ -66,6 +78,8 @@ details.sec>summary .section-label:before{content:'▸ ';}details.sec[open]>summ
 <div class="footer">Nutworld s.r.o. · interní nástroje · <a href="/index-puvodni.html" style="color:#b09070">původní rozcestník</a> · <a href="/rozcestnik-navrh.html" style="color:#b09070">návrh úklidu</a></div>
 <script src="stranky-data.js"></script>
 <script>
+const BARVA={obchod:'pink',ceny:'amber',vyroba:'green',sklad:'brown',produkty:'rust',doprava:'gold',marketing:'rose',lide:'terra',jan:'dark',zakaznici:'kraft'};
+const DOT={pink:'#da1668',amber:'#f7ab31',green:'#6fa044',brown:'#83502e',rust:'#b05030',gold:'#c9982e',rose:'#e0628f',terra:'#c98a4a',dark:'#3e2c1c',kraft:'#c8976a'};
 // Rozcestník se kreslí ze stranky-data.js (registr stránek). Nová stránka = nový řádek tam.
 const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
@@ -75,7 +89,7 @@ function card(p,cls){
     `<div class="card-desc">${esc(p.popis)}</div></a>`;
 }
 function section(label,sub,items,collapsed,cls){
-  const head=`<div class="section-label">${label}<span class="cnt">${items.length}</span>${sub?`<span class="sec-sub">${esc(sub)}</span>`:''}</div>`;
+  const head=`<div class="section-label">${cls?`<span class="dot" style="background:${DOT[cls]}"></span>`:''}${label}<span class="cnt">${items.length}</span>${sub?`<span class="sec-sub">${esc(sub)}</span>`:''}</div>`;
   const grid=`<div class="grid">${items.map(p=>card(p,cls)).join('')}</div>`;
   return collapsed?`<details class="sec"><summary>${head}</summary>${grid}</details>`:head+grid;
 }
@@ -85,8 +99,8 @@ function render(){
   const list=NW_STRANKY.filter(hit);
   document.getElementById('cnt').textContent=q?`${list.length} z ${NW_STRANKY.length}`:`${NW_STRANKY.length} stránek`;
   let h='';
-  if(!q) h+=section('⭐ Nejčastěji','',NW_STRANKY.filter(p=>p.hlavni).sort((a,b)=>a.hlavni-b.hlavni),false,'brown');
-  NW_SKUPINY.forEach(g=>{ const ps=list.filter(p=>p.skupina===g.key); if(ps.length) h+=section(g.ikona+' '+esc(g.nazev),g.popis,ps,g.sbaleno&&!q); });
+  if(!q) h+=section('⭐ Nejčastěji','',NW_STRANKY.filter(p=>p.hlavni).sort((a,b)=>a.hlavni-b.hlavni),false,'dark');
+  NW_SKUPINY.forEach(g=>{ const ps=list.filter(p=>p.skupina===g.key); if(ps.length) h+=section(g.ikona+' '+esc(g.nazev),g.popis,ps,g.sbaleno&&!q,BARVA[g.key]); });
   document.getElementById('out').innerHTML=h||'<div class="empty">Nic nenalezeno.</div>';
 }
 document.getElementById('q').addEventListener('input',render);
