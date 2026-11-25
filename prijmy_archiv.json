@@ -1,5 +1,160 @@
 [
   {
+    "id": "FT01-4624-2026",
+    "cislo_dodavky": "10184501",
+    "dodavatel": "K-SERVIS PRAHA, a.s.",
+    "datum": "2026-11-23",
+    "datum_ulozeni": "2026-11-25",
+    "poznamka": "Atest FT01-4624/2026 + dodací list 10184501. Faktura zatím nedorazila.",
+    "ulozeni": "",
+    "celkove_kg": 247.5,
+    "items": [
+      {
+        "nazev": "Arašídy hrudky v hořké čokoládě",
+        "kod": "18007",
+        "sarze": "L261313",
+        "dmt": "2027-06-20",
+        "mnozstvi": 12,
+        "stav": "příjem",
+        "cena_kg": null,
+        "nw_kod": "3705",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Meruňky č. 4",
+        "kod": "11520",
+        "sarze": "L261340",
+        "dmt": "2027-08-08",
+        "mnozstvi": 12.5,
+        "stav": "příjem",
+        "cena_kg": null,
+        "nw_kod": "217",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Švestky Ashlock 80/90",
+        "kod": "11900",
+        "sarze": "LKS260215",
+        "dmt": "2027-12-08",
+        "mnozstvi": 10,
+        "stav": "příjem",
+        "cena_kg": null,
+        "nw_kod": "236",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Arašídy hrudky ve slaném karamelu",
+        "kod": "20007",
+        "sarze": "L261284",
+        "dmt": "2027-04-13",
+        "mnozstvi": 16,
+        "stav": "příjem",
+        "cena_kg": null,
+        "nw_kod": "3702",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Arašídy hrudky v mléčné čokoládě",
+        "kod": "19007",
+        "sarze": "L261410",
+        "dmt": "2027-07-13",
+        "mnozstvi": 4,
+        "stav": "příjem",
+        "cena_kg": null,
+        "nw_kod": "3704",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Jablíčka kroužky (chips)",
+        "kod": "12733",
+        "sarze": "LKS260413",
+        "dmt": "2028-04-21",
+        "mnozstvi": 18,
+        "stav": "příjem",
+        "cena_kg": null,
+        "nw_kod": "",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Lněné semínko hnědé",
+        "kod": "16300",
+        "sarze": "LKS260325",
+        "dmt": "2027-09-30",
+        "mnozstvi": 25,
+        "stav": "příjem",
+        "cena_kg": null,
+        "nw_kod": "251",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Lněné semínko zlaté",
+        "kod": "16310",
+        "sarze": "LKS260032",
+        "dmt": "2028-02-28",
+        "mnozstvi": 25,
+        "stav": "příjem",
+        "cena_kg": null,
+        "nw_kod": "254",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Jádra tykve natural GWS",
+        "kod": "15960",
+        "sarze": "6/018/25-4",
+        "dmt": "2027-08-31",
+        "mnozstvi": 25,
+        "stav": "příjem",
+        "cena_kg": null,
+        "nw_kod": "242",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Slunečnice",
+        "kod": "15801",
+        "sarze": "L261255",
+        "dmt": "2027-09-10",
+        "mnozstvi": 30,
+        "stav": "příjem",
+        "cena_kg": null,
+        "nw_kod": "266",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Sezam loupaný",
+        "kod": "16110",
+        "sarze": "L261225",
+        "dmt": "2027-09-01",
+        "mnozstvi": 25,
+        "stav": "příjem",
+        "cena_kg": null,
+        "nw_kod": "263",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Chia",
+        "kod": "10493",
+        "sarze": "LKS260307",
+        "dmt": "2028-08-31",
+        "mnozstvi": 25,
+        "stav": "příjem",
+        "cena_kg": null,
+        "nw_kod": "8541",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Meruňky v polevě s jogurtovou příchutí",
+        "kod": "170301",
+        "sarze": "L631500731",
+        "dmt": "2027-08-11",
+        "mnozstvi": 20,
+        "stav": "příjem",
+        "cena_kg": null,
+        "nw_kod": "3111",
+        "cenik_kg": null
+      }
+    ]
+  },
+  {
     "id": "FT01-4490-2026",
     "cislo_dodavky": "FT01-4490/2026",
     "dodavatel": "K-SERVIS PRAHA, a.s.",
@@ -377,6 +532,162 @@
     ]
   },
   {
+    "id": "FV-49006-2027",
+    "cislo_dodavky": "DLV-578/2027",
+    "dodavatel": "Ořechy a sušené plody s.r.o.",
+    "datum": "2026-11-16",
+    "datum_ulozeni": "2026-11-25",
+    "poznamka": "Faktura FV-49006/2027, var. sym. 1126151933. Celkem 41 967 Kč s DPH. Rtyně v Podkrkonoší.",
+    "ulozeni": "",
+    "celkove_kg": 160,
+    "items": [
+      {
+        "nazev": "Arašídy v karamelu s CHILLI 3kg",
+        "kod": "",
+        "sarze": "",
+        "dmt": "2027-11-10",
+        "mnozstvi": 21,
+        "stav": "příjem",
+        "cena_kg": 154.23,
+        "nw_kod": "8755",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Lékořice sekaný černý pendrek 3kg",
+        "kod": "",
+        "sarze": "",
+        "dmt": "2027-09-07",
+        "mnozstvi": 6,
+        "stav": "příjem",
+        "cena_kg": 144.53,
+        "nw_kod": "4116",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Lísková jádra tiramisu R 3kg",
+        "kod": "",
+        "sarze": "",
+        "dmt": "2027-10-31",
+        "mnozstvi": 3,
+        "stav": "příjem",
+        "cena_kg": 241.53,
+        "nw_kod": "10261",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Lyofilizované maliny v bílé čokoládě 4kg",
+        "kod": "",
+        "sarze": "",
+        "dmt": "2027-10-24",
+        "mnozstvi": 12,
+        "stav": "příjem",
+        "cena_kg": 377.33,
+        "nw_kod": "920",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Mandle EXCLUSIVE mix 3kg",
+        "kod": "",
+        "sarze": "",
+        "dmt": "2027-09-26",
+        "mnozstvi": 30,
+        "stav": "příjem",
+        "cena_kg": 280.33,
+        "nw_kod": "911",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Mandle TIRAMISU R 3kg",
+        "kod": "",
+        "sarze": "",
+        "dmt": "2027-10-31",
+        "mnozstvi": 30,
+        "stav": "příjem",
+        "cena_kg": 183.33,
+        "nw_kod": "1964",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Mandle RAFFAELLO v bílé čokoládě s kokosem",
+        "kod": "",
+        "sarze": "",
+        "dmt": "2027-07-31",
+        "mnozstvi": 20,
+        "stav": "příjem",
+        "cena_kg": 280.33,
+        "nw_kod": "1988",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Mandle v jogurtu R 3kg",
+        "kod": "",
+        "sarze": "",
+        "dmt": "2027-07-31",
+        "mnozstvi": 6,
+        "stav": "příjem",
+        "cena_kg": 178.48,
+        "nw_kod": "9811",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Mandle ZASNĚŽENÉ v mléčné čokoládě 3kg",
+        "kod": "",
+        "sarze": "",
+        "dmt": "2027-08-28",
+        "mnozstvi": 15,
+        "stav": "příjem",
+        "cena_kg": 257.05,
+        "nw_kod": "2117",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Para jádra tiramisu R 3kg",
+        "kod": "",
+        "sarze": "",
+        "dmt": "2027-11-11",
+        "mnozstvi": 12,
+        "stav": "příjem",
+        "cena_kg": 241.53,
+        "nw_kod": "10011",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Pendrek sekaný OVOCNÝ MIX POLŠTÁŘKY 1kg",
+        "kod": "",
+        "sarze": "",
+        "dmt": "2027-11-12",
+        "mnozstvi": 5,
+        "stav": "příjem",
+        "cena_kg": 154.23,
+        "nw_kod": "393",
+        "cenik_kg": null
+      }
+    ]
+  },
+  {
+    "id": "FV-48975-2027",
+    "cislo_dodavky": "DLV-577/2027",
+    "dodavatel": "Ořechy a sušené plody s.r.o.",
+    "datum": "2026-11-16",
+    "datum_ulozeni": "2026-11-25",
+    "poznamka": "Faktura FV-48975/2027, var. sym. 1126151925. Celkem 37 677 Kč s DPH. Rtyně v Podkrkonoší.",
+    "ulozeni": "",
+    "celkove_kg": 120,
+    "items": [
+      {
+        "nazev": "Mandle EXCLUSIVE mix 3kg",
+        "kod": "",
+        "sarze": "",
+        "dmt": "2027-09-26",
+        "mnozstvi": 120,
+        "stav": "příjem",
+        "cena_kg": 280.33,
+        "nw_kod": "911",
+        "cenik_kg": null
+      }
+    ]
+  },
+  {
     "id": "368260246",
     "cislo_dodavky": "700262183",
     "dodavatel": "Hosova obchodní společnost, spol. s r. o.",
@@ -511,8 +822,8 @@
       {
         "nazev": "Pecan - ořechy",
         "kod": "15650",
-        "sarze": "",
-        "dmt": null,
+        "sarze": "L261400",
+        "dmt": "2027-07-31",
         "mnozstvi": 54.4,
         "stav": "OK",
         "cena_kg": 359.0,
@@ -522,8 +833,8 @@
       {
         "nazev": "Lněné semínko hnědé",
         "kod": "16300",
-        "sarze": "",
-        "dmt": null,
+        "sarze": "LKS260325",
+        "dmt": "2027-09-30",
         "mnozstvi": 25.0,
         "stav": "OK",
         "cena_kg": 26.5,
@@ -533,8 +844,8 @@
       {
         "nazev": "Lněné semínko zlaté",
         "kod": "16310",
-        "sarze": "",
-        "dmt": null,
+        "sarze": "LKS260032",
+        "dmt": "2028-02-28",
         "mnozstvi": 25.0,
         "stav": "OK",
         "cena_kg": 34.5,
@@ -544,8 +855,8 @@
       {
         "nazev": "Jádra tykve natural GWS",
         "kod": "15960",
-        "sarze": "",
-        "dmt": null,
+        "sarze": "6/018/25-4",
+        "dmt": "2027-08-31",
         "mnozstvi": 25.0,
         "stav": "OK",
         "cena_kg": 94.0,
@@ -555,8 +866,8 @@
       {
         "nazev": "Slunečnice natural",
         "kod": "15801",
-        "sarze": "",
-        "dmt": null,
+        "sarze": "L261255",
+        "dmt": "2027-09-10",
         "mnozstvi": 30.0,
         "stav": "OK",
         "cena_kg": 34.5,
@@ -566,8 +877,8 @@
       {
         "nazev": "Sezam loupaný",
         "kod": "16110",
-        "sarze": "",
-        "dmt": null,
+        "sarze": "L26976",
+        "dmt": "2029-01-31",
         "mnozstvi": 25.0,
         "stav": "OK",
         "cena_kg": 51.0,
@@ -577,13 +888,223 @@
       {
         "nazev": "Chia semínka",
         "kod": "10493",
-        "sarze": "",
-        "dmt": null,
+        "sarze": "L261351",
+        "dmt": "2029-07-31",
         "mnozstvi": 25.0,
         "stav": "OK",
         "cena_kg": 79.0,
         "nw_kod": "8541",
         "cenik_kg": 79.0
+      }
+    ]
+  },
+  {
+    "id": "1626394",
+    "cislo_dodavky": "560292",
+    "dodavatel": "King Nuts & Raaphorst B.V.",
+    "datum": "2026-11-13",
+    "datum_ulozeni": "2026-11-25",
+    "poznamka": "Faktura 1626394, objednávka 578277. EUR 4,222.26. NC = EUR × 25 (bez +15 Kč/kg dopravy — ta je v K2).",
+    "ulozeni": "",
+    "celkove_kg": 516,
+    "items": [
+      {
+        "nazev": "Chocolate peanutrocks white",
+        "kod": "093735",
+        "sarze": "",
+        "dmt": "2027-12-15",
+        "mnozstvi": 12,
+        "stav": "příjem",
+        "cena_kg": 156.25,
+        "nw_kod": "3703",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Chocolate peanutrocks dark",
+        "kod": "093725",
+        "sarze": "",
+        "dmt": "2027-12-15",
+        "mnozstvi": 20,
+        "stav": "příjem",
+        "cena_kg": 171.25,
+        "nw_kod": "3705",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Chocolate peanutrocks milk",
+        "kod": "093715",
+        "sarze": "",
+        "dmt": "2027-12-15",
+        "mnozstvi": 16,
+        "stav": "příjem",
+        "cena_kg": 156.25,
+        "nw_kod": "3704",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Honey peanuts with salt",
+        "kod": "091180",
+        "sarze": "",
+        "dmt": "2027-12-01",
+        "mnozstvi": 20,
+        "stav": "příjem",
+        "cena_kg": 105.0,
+        "nw_kod": "10035",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Multicol. sesame peanut L.-RSPO",
+        "kod": "075753",
+        "sarze": "",
+        "dmt": "2027-11-13",
+        "mnozstvi": 6.5,
+        "stav": "příjem",
+        "cena_kg": 145.0,
+        "nw_kod": "9549",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Tango nuts bbq/chili",
+        "kod": "070861",
+        "sarze": "",
+        "dmt": "2027-11-13",
+        "mnozstvi": 15,
+        "stav": "příjem",
+        "cena_kg": 115.0,
+        "nw_kod": "7563",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Apple Cinnamon Chips",
+        "kod": "102400",
+        "sarze": "",
+        "dmt": "2027-11-13",
+        "mnozstvi": 18,
+        "stav": "příjem",
+        "cena_kg": 373.75,
+        "nw_kod": "9571",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Fruit Chips",
+        "kod": "106820",
+        "sarze": "",
+        "dmt": "2027-11-13",
+        "mnozstvi": 16.8,
+        "stav": "příjem",
+        "cena_kg": 487.5,
+        "nw_kod": "9572",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Mixed Vegetable Chips",
+        "kod": "106812",
+        "sarze": "",
+        "dmt": "2027-11-13",
+        "mnozstvi": 8.4,
+        "stav": "příjem",
+        "cena_kg": 347.5,
+        "nw_kod": "9570",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Groente Chips Wasabi",
+        "kod": "106809",
+        "sarze": "",
+        "dmt": "2027-11-13",
+        "mnozstvi": 8.4,
+        "stav": "příjem",
+        "cena_kg": 362.5,
+        "nw_kod": "9573",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "King Nuts coated peanuts mix",
+        "kod": "074501",
+        "sarze": "",
+        "dmt": "2027-11-13",
+        "mnozstvi": 20,
+        "stav": "příjem",
+        "cena_kg": 123.75,
+        "nw_kod": "2102",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Katjang Cashew BBQ",
+        "kod": "318355",
+        "sarze": "",
+        "dmt": "2027-11-15",
+        "mnozstvi": 70,
+        "stav": "příjem",
+        "cena_kg": 253.75,
+        "nw_kod": "5358",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Chocolate nut mix large mixed",
+        "kod": "092418",
+        "sarze": "",
+        "dmt": "2027-12-15",
+        "mnozstvi": 10,
+        "stav": "příjem",
+        "cena_kg": 302.5,
+        "nw_kod": "6456",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Chocolate raisins dark jumbo",
+        "kod": "092930",
+        "sarze": "",
+        "dmt": "2027-12-15",
+        "mnozstvi": 40,
+        "stav": "příjem",
+        "cena_kg": 178.75,
+        "nw_kod": "2024",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Baked round garden herb",
+        "kod": "070600",
+        "sarze": "",
+        "dmt": "2027-11-13",
+        "mnozstvi": 20,
+        "stav": "příjem",
+        "cena_kg": 149.75,
+        "nw_kod": "10161",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Caramelized Almonds Vanilla flavor",
+        "kod": "091205",
+        "sarze": "",
+        "dmt": "2027-11-01",
+        "mnozstvi": 50,
+        "stav": "příjem",
+        "cena_kg": 262.5,
+        "nw_kod": "9601",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Caramelized Peanuts Sesame",
+        "kod": "091235",
+        "sarze": "",
+        "dmt": "2027-08-10",
+        "mnozstvi": 150,
+        "stav": "příjem",
+        "cena_kg": 136.25,
+        "nw_kod": "9604",
+        "cenik_kg": null
+      },
+      {
+        "nazev": "Nutmix salted",
+        "kod": "332015",
+        "sarze": "",
+        "dmt": "2027-02-11",
+        "mnozstvi": 15,
+        "stav": "příjem",
+        "cena_kg": 342.5,
+        "nw_kod": "9547",
+        "cenik_kg": null
       }
     ]
   },
