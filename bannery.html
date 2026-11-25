@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Nutworld — Bannery</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--br:#83502e;--bd:#5c381f;--kraft:#f1e6da;--acc:#da1668;--amb:#f7ab31;--leaf:#6fa044;--white:#fff;--line:#d4c0a8}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;font-size:14px}
+h1,h2,h3{font-family:'Exo 2',sans-serif}
+a{color:var(--br)}
+.top{background:linear-gradient(135deg,#5c381f 0%,#83502e 55%,#a0622a 100%);color:#fff;padding:22px 16px 0;position:relative;overflow:hidden}
+.top:after{content:'';position:absolute;top:-30px;right:-30px;width:160px;height:160px;border-radius:50%;background:rgba(247,171,49,.15)}
+.top .in{max-width:1100px;margin:0 auto;position:relative;z-index:1}
+.top small{color:var(--amb);letter-spacing:2px;font-size:12px;text-transform:uppercase;font-weight:700}
+.top h1{font-size:26px;margin:2px 0 4px}
+.top p{opacity:.85;font-size:13px}
+.tabs{display:flex;gap:6px;margin-top:16px}
+.tab{background:rgba(255,255,255,.12);color:#fff;border:0;border-radius:12px 12px 0 0;padding:10px 18px;font:700 14px 'Exo 2',sans-serif;cursor:pointer}
+.tab.on{background:#e8ddd4;color:var(--bd)}
+.wrap{max-width:1100px;margin:0 auto;padding:20px 16px 60px}
+.panel{background:#fff;border-radius:14px;box-shadow:0 2px 16px rgba(0,0,0,.08);padding:20px 22px;margin-bottom:18px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:860px){.grid{grid-template-columns:1fr}}
+.sec{font-family:'Exo 2',sans-serif;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--br);margin:4px 0 10px;padding-bottom:5px;border-bottom:1.5px solid var(--kraft)}
+.field{margin-bottom:14px}
+.field>label{display:block;font-size:11px;font-weight:700;color:var(--br);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.hint{font-size:12px;color:#8a7360;margin-top:4px}
+input[type=text],textarea,select{width:100%;border:1.5px solid var(--line);border-radius:8px;padding:9px 12px;font:inherit;font-size:14px;color:#2a1a0e;background:#fdf9f6}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--br)}
+textarea{min-height:64px;resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;pointer-events:none}
+.chip span{display:inline-block;border:1.5px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer;background:#fdf9f6;font-weight:600;user-select:none}
+.chip input:checked+span{background:var(--bd);border-color:var(--bd);color:#fff}
+.chip input:focus-visible+span{outline:2px solid var(--amb)}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.btn{border:0;border-radius:999px;padding:11px 22px;font:700 14px 'Exo 2',sans-serif;cursor:pointer;background:var(--amb);color:#2a1a0e}
+.btn.dark{background:var(--bd);color:#fff}
+.btn.ghost{background:transparent;border:1.5px solid var(--line);color:var(--bd)}
+.btn.small{padding:6px 14px;font-size:12px}
+.btn:disabled{opacity:.5;cursor:wait}
+.prod{display:flex;gap:12px;align-items:center;margin-top:8px}
+.prod img{width:64px;height:64px;object-fit:cover;border-radius:8px;border:1px solid var(--line)}
+.fotky{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.fotky label{cursor:pointer;position:relative}
+.fotky input{position:absolute;opacity:0}
+.fotky img{width:92px;height:92px;object-fit:cover;border-radius:10px;border:3px solid transparent;display:block;background:#fff}
+.fotky input:checked+img{border-color:var(--amb);box-shadow:0 0 0 2px var(--bd)}
+.fotky small{display:block;text-align:center;font-size:11px;color:#8a7360}
+.var{border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px;cursor:pointer;background:#fdf9f6}
+.var.on{border-color:var(--amb);box-shadow:0 0 0 3px rgba(247,171,49,.25)}
+.var b{font-family:'Exo 2',sans-serif}
+.var .l{font-size:11px;color:var(--br);font-weight:700;letter-spacing:1px}
+.texts{display:none}
+.lang-block{border-left:3px solid var(--amb);padding-left:12px;margin-bottom:12px}
+.msg{padding:10px 14px;border-radius:10px;margin:10px 0;font-size:13px}
+.msg.err{background:#fff5f7;border:1.5px solid var(--acc);color:#8a0e44}
+.msg.ok{background:#eef6e8;border:1.5px solid var(--leaf)}
+.msg.info{background:var(--kraft);border:1.5px solid var(--line)}
+.filters{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+@media(max-width:700px){.filters{grid-template-columns:1fr 1fr}}
+.card{background:#fff;border-radius:14px;box-shadow:0 2px 12px rgba(0,0,0,.07);padding:16px 18px;margin-bottom:14px;border:2px solid transparent}
+.card.hl{border-color:var(--amb)}
+.card h3{font-size:17px;color:var(--bd)}
+.meta{font-size:12px;color:#8a7360;margin:3px 0 10px}
+.badge{display:inline-block;border-radius:999px;padding:2px 10px;font-size:11px;font-weight:700;margin-right:6px;background:var(--kraft);color:var(--bd)}
+.badge.schvaleno{background:#e3f1d8;color:#2d5a1b}.badge.pouzito{background:#e8e0f5;color:#4a2d7a}
+.badge.chyba{background:#fff5f7;color:#8a0e44}.badge.bezi,.badge.ceka{background:#fff3dc;color:#7a5200}
+.thumbs{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0}
+.thumbs a{display:block;text-align:center;font-size:11px;color:#8a7360;text-decoration:none}
+.thumbs img{height:120px;border-radius:8px;border:1px solid var(--line);display:block;margin-bottom:3px;background:var(--kraft)}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid var(--amb);border-top-color:transparent;border-radius:50%;animation:s 1s linear infinite;vertical-align:-2px;margin-right:6px}
+@keyframes s{to{transform:rotate(360deg)}}
+.hidden{display:none!important}
+.modal{position:fixed;inset:0;background:rgba(42,26,14,.55);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal .box{background:#fff;border-radius:16px;max-width:420px;width:100%;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+.modal .hd{background:#fff5f7;border-bottom:1.5px solid var(--acc);padding:14px 20px;font:700 16px 'Exo 2',sans-serif;color:#8a0e44}
+.modal .bd{padding:16px 20px;line-height:1.5}
+.modal .ft{display:flex;justify-content:flex-end;gap:8px;padding:0 20px 18px}
+.btn.danger{background:var(--acc);color:#fff}
+</style>
+</head>
+<body>
+<div class="top"><div class="in">
+  <small>Marketing · NutWorldka</small>
+  <h1>🐿️ Generátor bannerů</h1>
+  <p>Zadej téma, rozměry a co má banner sdělit. Canva nakreslí NutWorldku, šablona doplní texty, barvy a logo. Hotové bannery najdeš v archivu i v Canvě (složka „Bannery“).</p>
+  <div class="tabs"><button class="tab on" data-t="novy">Nový banner</button><button class="tab" data-t="archiv">Archiv</button></div>
+</div></div>
+
+<div class="wrap">
+<div id="offline" class="msg info hidden">Generátor běží jen na interních nástrojích po přihlášení:
+  <a href="https://nastroje.178-104-139-119.sslip.io/bannery.html">nastroje — Bannery</a>.</div>
+
+<!-- ============ NEW ============ -->
+<section id="t-novy">
+<div class="grid">
+<div class="panel">
+  <div class="sec">1 · Zadání</div>
+  <div class="field"><label for="nazev">Název banneru</label>
+    <input type="text" id="nazev" maxlength="120" placeholder="např. 2026-12 Vánoce – Sob 4728">
+    <div class="hint">Pod tímto názvem ho najdeš v archivu i v Canvě.</div></div>
+  <div class="field"><label>Téma</label><div class="chips" id="tema"></div></div>
+  <div class="field"><label>Jazyk</label><div class="chips">
+    <label class="chip"><input type="checkbox" name="jazyk" value="cz" checked><span>🇨🇿 CZ</span></label>
+    <label class="chip"><input type="checkbox" name="jazyk" value="sk"><span>🇸🇰 SK</span></label></div></div>
+  <div class="field"><label>Rozměry</label><div class="chips" id="formaty"></div></div>
+  <div class="field"><label>Způsob</label><div class="chips">
+    <label class="chip"><input type="radio" name="zpusob" value="canva_claude" checked><span>Canva + Claude (doporučeno)</span></label>
+    <label class="chip"><input type="radio" name="zpusob" value="canva"><span>Jen Canva</span></label></div>
+    <div class="hint">Canva + Claude: Canva nakreslí scénu, šablona přesně podle značky doplní text a logo do všech rozměrů.
+      Jen Canva: celý banner navrhne Canva — kreativnější, ale barvy a písma nemusí přesně sedět.</div></div>
+</div>
+
+<div class="panel">
+  <div class="sec">2 · Obsah</div>
+  <div class="field"><label for="sdeleni">Co má banner sdělit</label>
+    <textarea id="sdeleni" maxlength="500" placeholder="např. sleva 15 % na vánoční krabičky do neděle"></textarea></div>
+  <div class="field"><label for="kod_p">Produkt (nepovinné)</label>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><input type="text" id="kod_p" placeholder="kód z e-shopu, např. 4728" style="flex:1;min-width:160px">
+      <button class="btn ghost small" id="najdi" type="button">Najít v e-shopu</button>
+      <label class="btn ghost small" for="soubor" style="display:inline-block">📷 Nahrát fotku</label>
+      <input type="file" id="soubor" accept="image/jpeg,image/png,image/webp" class="hidden"></div>
+    <div class="hint">Skutečná fotka produktu (i s pravým logem) se vloží do scény vedle NutWorldky. Nejlépe vypadá fotka,
+      kde produkt <b>stojí a je focený zepředu</b> — světlé nebo jednoduché pozadí, celý produkt v záběru.</div>
+    <div class="prod hidden" id="prod"></div>
+    <div class="fotky hidden" id="fotky"></div>
+    <div class="hidden" id="pohled-box" style="margin-top:10px"><label style="font-size:11px;font-weight:700;color:var(--br);letter-spacing:1px">JAK JE PRODUKT VYFOCENÝ</label>
+      <div class="chips" style="margin-top:5px">
+        <label class="chip"><input type="radio" name="pohled" value="zepredu" checked><span>Zepředu (stojí)</span></label>
+        <label class="chip"><input type="radio" name="pohled" value="shora"><span>Shora (leží)</span></label></div>
+      <div class="hint">Podle toho Canva nakreslí scénu ze stejného úhlu, aby produkt seděl.</div></div></div>
+  <div class="field"><label>Akce (nepovinné)</label>
+    <div class="row3"><input type="text" id="sleva" maxlength="12" placeholder="štítek: −15 %">
+      <input type="text" id="kod" maxlength="30" placeholder="kód: VANOCE15">
+      <input type="text" id="platnost" maxlength="30" placeholder="platí do: 7. 12."></div></div>
+  <div class="field"><label for="scena">Přání ke scéně (nepovinné)</label>
+    <input type="text" id="scena" maxlength="300" placeholder="např. NutWorldka v šále, zasněžené okno"></div>
+</div>
+</div>
+
+<div class="panel">
+  <div class="sec">3 · Texty</div>
+  <button class="btn dark" id="navrhni" type="button">✨ Navrhnout 3 varianty textů</button>
+  <span class="hint" style="margin-left:8px">nebo je napiš sám níže</span>
+  <div id="varianty" style="margin-top:12px"></div>
+  <div id="texty"></div>
+  <div id="err" class="msg err hidden"></div>
+  <div style="margin-top:14px"><button class="btn" id="vytvor" type="button">🐿️ Vytvořit bannery</button>
+    <span class="hint" style="margin-left:8px">trvá 3–8 minut, mezitím můžeš pracovat dál — výsledek přijde do archivu</span></div>
+</div>
+</section>
+
+<!-- ============ ARCHIVE ============ -->
+<section id="t-archiv" class="hidden">
+  <div class="filters">
+    <input type="text" id="q" placeholder="🔍 Hledat (název, produkt, text…)">
+    <select id="f-tema"><option value="">Všechna témata</option></select>
+    <select id="f-jazyk"><option value="">Všechny jazyky</option><option value="cz">CZ</option><option value="sk">SK</option></select>
+    <select id="f-stav"><option value="">Všechny stavy</option><option value="navrh">Návrh</option><option value="schvaleno">Schváleno</option>
+      <option value="pouzito">Použito</option><option value="rozprac">Rozpracované</option><option value="chyba">Chyba</option></select>
+  </div>
+  <div id="list"></div>
+</section>
+</div>
+
+<div class="modal hidden" id="modal" role="alertdialog" aria-modal="true" aria-labelledby="m-hd">
+  <div class="box"><div class="hd" id="m-hd">⚠️ Smazat banner?</div>
+    <div class="bd" id="m-bd"></div>
+    <div class="ft"><button class="btn ghost" id="m-ne" type="button">Zrušit</button><button class="btn danger" id="m-ano" type="button">Smazat natrvalo</button></div></div>
+</div>
+<script>
+const API = '/api/bannery';
+const TEMATA = {vanoce:'Vánoce', mikulas:'Mikuláš', valentyn:'Valentýn', velikonoce:'Velikonoce', firemni:'Firemní', vlastni:'Vlastní'};
+const FORMATY = {fb:'FB 1200×628', ig:'IG čtverec', ig45:'IG 4:5', story:'Stories', web:'Web hero'};
+const SCHV = {navrh:'Návrh', schvaleno:'Schváleno', pouzito:'Použito'};
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let ME = {admin:false}, DATA = [], timer = null;
+
+$('#tema').innerHTML = Object.entries(TEMATA).map(([k,v],i) =>
+  `<label class="chip"><input type="radio" name="tema" value="${k}" ${i===0?'checked':''}><span>${v}</span></label>`).join('');
+$('#formaty').innerHTML = Object.entries(FORMATY).map(([k,v]) =>
+  `<label class="chip"><input type="checkbox" name="fmt" value="${k}" ${['fb','ig','story'].includes(k)?'checked':''}><span>${v}</span></label>`).join('');
+$('#f-tema').innerHTML += Object.entries(TEMATA).map(([k,v]) => `<option value="${k}">${v}</option>`).join('');
+
+const val = n => [...document.querySelectorAll(`input[name=${n}]:checked`)].map(i => i.value);
+const jazyky = () => val('jazyk');
+
+async function api(path, body) {
+  const r = await fetch(API + path, body ? {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)} : {});
+  const ct = r.headers.get('content-type') || '';
+  if (!ct.includes('json')) throw new Error('Nejsi přihlášený — obnov stránku a přihlas se.');
+  const j = await r.json();
+  if (!r.ok) throw new Error(j.chyba || 'Chyba');
+  return j;
+}
+function showErr(t){ const e=$('#err'); e.textContent=t; e.classList.toggle('hidden', !t); }
+
+// tabs
+document.querySelectorAll('.tab').forEach(b => b.onclick = () => tab(b.dataset.t));
+function tab(t){
+  document.querySelectorAll('.tab').forEach(b => b.classList.toggle('on', b.dataset.t===t));
+  $('#t-novy').classList.toggle('hidden', t!=='novy'); $('#t-archiv').classList.toggle('hidden', t!=='archiv');
+  if (t==='archiv') nacti();
+}
+
+// text inputs per language
+function textInputs(){
+  const old = {}; document.querySelectorAll('[data-tx]').forEach(i => old[i.dataset.tx] = i.value);
+  $('#texty').innerHTML = jazyky().map(j => `<div class="lang-block"><div class="sec">${j.toUpperCase()}</div>
+    <div class="field"><label>Nadpis</label><input type="text" data-tx="${j}.nadpis" maxlength="60"></div>
+    <div class="field"><label>Podnadpis</label><input type="text" data-tx="${j}.podnadpis" maxlength="120"></div>
+    <div class="field"><label>Tlačítko</label><input type="text" data-tx="${j}.tlacitko" maxlength="30"></div></div>`).join('');
+  document.querySelectorAll('[data-tx]').forEach(i => i.value = old[i.dataset.tx] || '');
+}
+document.querySelectorAll('input[name=jazyk]').forEach(i => i.onchange = textInputs);
+textInputs();
+
+// product: pick an e-shop photo or upload own
+let UPLOADS = [];   // [{id, src(objectURL)}]
+function fotkyHtml(eshop){
+  const items = [...UPLOADS.map((u,i) => ({v:u.id, src:u.src, t:'nahraná'})), ...(eshop||[]).map((f,i) => ({v:'eshop:'+f, src:f, t:'e-shop '+(i+1)}))];
+  const cur = (document.querySelector('input[name=pfoto]:checked')||{}).value || (items[0]||{}).v;
+  $('#fotky').innerHTML = items.map(x => `<label><input type="radio" name="pfoto" value="${esc(x.v)}" ${x.v===cur?'checked':''}><img src="${esc(x.src)}" alt=""><small>${x.t}</small></label>`).join('')
+    + (items.length ? '' : '');
+  $('#fotky').classList.toggle('hidden', !items.length); $('#pohled-box').classList.toggle('hidden', !items.length);
+}
+let ESHOP = [];
+$('#najdi').onclick = async () => {
+  const k = $('#kod_p').value.trim(); const box = $('#prod');
+  if (!k) { box.classList.add('hidden'); return; }
+  box.classList.remove('hidden'); box.innerHTML = '<span class="spin"></span>hledám v e-shopu…';
+  try { const p = await api('/produkt/' + encodeURIComponent(k));
+    box.innerHTML = `<div><b>${esc(p.nazev)}</b> · <a href="${esc(p.url)}" target="_blank" rel="noopener">otevřít v e-shopu ↗</a><br>
+      <span class="hint">Vyber fotku, která se vloží do banneru (nejlépe produkt stojící, focený zepředu):</span></div>`;
+    ESHOP = p.fotky || []; fotkyHtml(ESHOP);
+  } catch(e) { box.innerHTML = `<span style="color:#8a0e44">${esc(e.message)}</span>`; }
+};
+$('#soubor').onchange = async ev => {
+  const f = ev.target.files[0]; if (!f) return;
+  const box = $('#prod'); box.classList.remove('hidden'); box.innerHTML = '<span class="spin"></span>nahrávám fotku…';
+  try {
+    const r = await fetch(API + '/nahrat', {method:'POST', headers:{'Content-Type':'application/octet-stream'}, body:f});
+    const j = await r.json(); if (!r.ok) throw new Error(j.chyba || 'Nahrání selhalo');
+    UPLOADS.unshift({id:j.id, src:URL.createObjectURL(f)});
+    box.innerHTML = '<span class="hint">Fotka nahraná ✓ — je vybraná níže.</span>';
+    document.querySelectorAll('input[name=pfoto]').forEach(i => i.checked = false);
+    fotkyHtml(ESHOP); document.querySelector('input[name=pfoto]').checked = true;
+  } catch(e) { box.innerHTML = `<span style="color:#8a0e44">${esc(e.message)}</span>`; }
+  ev.target.value = '';
+};
+
+// text proposals
+$('#navrhni').onclick = async () => {
+  const b = $('#navrhni'); b.disabled = true; showErr('');
+  $('#varianty').innerHTML = '<div class="msg info"><span class="spin"></span>Claude píše 3 varianty (cca 20 s)…</div>';
+  try {
+    const r = await api('/texty', {tema: val('tema')[0], jazyky: jazyky(), sdeleni: $('#sdeleni').value, produkt_kod: $('#kod_p').value.trim(), nazev: $('#nazev').value});
+    $('#varianty').innerHTML = r.varianty.map((v,i) => `<div class="var" data-i="${i}"><div class="l">VARIANTA ${i+1}</div>` +
+      Object.entries(v).map(([j,t]) => `<div style="margin-top:4px"><span class="badge">${j.toUpperCase()}</span><b>${esc(t.nadpis)}</b> — ${esc(t.podnadpis)} <i>[${esc(t.tlacitko)}]</i></div>`).join('') + '</div>').join('') +
+      '<div class="hint">Klikni na variantu — texty se doplní níže a můžeš je upravit.</div>';
+    document.querySelectorAll('.var').forEach(el => el.onclick = () => {
+      document.querySelectorAll('.var').forEach(x => x.classList.remove('on')); el.classList.add('on');
+      const v = r.varianty[+el.dataset.i];
+      for (const [j,t] of Object.entries(v)) for (const k of ['nadpis','podnadpis','tlacitko']) {
+        const inp = document.querySelector(`[data-tx="${j}.${k}"]`); if (inp) inp.value = t[k] || '';
+      }
+    });
+  } catch(e) { $('#varianty').innerHTML = ''; showErr(e.message); }
+  b.disabled = false;
+};
+
+// create
+$('#vytvor').onclick = async () => {
+  showErr('');
+  const texty = {};
+  jazyky().forEach(j => texty[j] = {nadpis: q(`${j}.nadpis`), podnadpis: q(`${j}.podnadpis`), tlacitko: q(`${j}.tlacitko`)});
+  function q(k){ return (document.querySelector(`[data-tx="${k}"]`)||{}).value || ''; }
+  const b = $('#vytvor'); b.disabled = true;
+  try {
+    const r = await api('/novy', {nazev: $('#nazev').value, tema: val('tema')[0], jazyky: jazyky(), formaty: val('fmt'),
+      zpusob: val('zpusob')[0], produkt_kod: $('#kod_p').value.trim(), sdeleni: $('#sdeleni').value, texty,
+      sleva: $('#sleva').value, kod: $('#kod').value, platnost: $('#platnost').value, popis_sceny: $('#scena').value,
+      produkt_foto: (document.querySelector('input[name=pfoto]:checked')||{}).value || '', pohled: val('pohled')[0] || 'zepredu'});
+    location.hash = r.id; tab('archiv');
+  } catch(e) { showErr(e.message); }
+  b.disabled = false;
+};
+
+// archive
+['q','f-tema','f-jazyk','f-stav'].forEach(id => $('#'+id).addEventListener('input', vykresli));
+async function nacti(){
+  try { const r = await api('/archiv'); ME = r; DATA = r.bannery; vykresli(); $('#offline').classList.add('hidden'); }
+  catch(e) { $('#list').innerHTML = `<div class="msg err">${esc(e.message)}</div>`; }
+  clearTimeout(timer);
+  if (DATA.some(x => x.stav==='ceka' || x.stav==='bezi')) timer = setTimeout(nacti, 6000);
+}
+function vykresli(){
+  const qq = $('#q').value.toLowerCase().trim(), ft = $('#f-tema').value, fj = $('#f-jazyk').value, fs = $('#f-stav').value;
+  const hl = location.hash.slice(1);
+  const rows = DATA.filter(r => (!qq || JSON.stringify(r).toLowerCase().includes(qq)) && (!ft || r.tema===ft) &&
+    (!fj || r.jazyky.includes(fj)) && (!fs || (fs==='rozprac' ? ['ceka','bezi'].includes(r.stav) : fs==='chyba' ? r.stav==='chyba' : r.stav==='hotovo' && r.schvaleni===fs)));
+  $('#list').innerHTML = rows.length ? rows.map(r => karta(r, r.id===hl)).join('') : '<div class="msg info">Zatím tu nic není.</div>';
+  const el = hl && document.getElementById('b-'+hl); if (el) el.scrollIntoView({block:'center'});
+}
+function karta(r, hl){
+  const stav = r.stav==='hotovo' ? `<span class="badge ${r.schvaleni}">${SCHV[r.schvaleni]||''}</span>`
+    : r.stav==='chyba' ? '<span class="badge chyba">Chyba</span>' : `<span class="badge bezi"><span class="spin"></span>${esc(r.krok||'Ve frontě')}</span>`;
+  const files = (r.soubory||[]).map(s => { const u = `/bannery-soubory/${r.id}/${encodeURIComponent(s.soubor)}`;
+    return `<a href="${u}" download title="Stáhnout"><img src="${u}" loading="lazy" alt="">${s.jazyk.toUpperCase()} · ${esc(FORMATY[s.format]||s.format)} ⬇</a>`; }).join('');
+  const t = r.texty?.[r.jazyky[0]] || {};
+  const acts = [];
+  if (r.stav==='hotovo') {
+    if (ME.admin && r.schvaleni!=='schvaleno') acts.push(`<button class="btn small" onclick="akce('${r.id}','schvalit')">✅ Schválit</button>`);
+    if (r.schvaleni!=='pouzito') acts.push(`<button class="btn ghost small" onclick="akce('${r.id}','pouzito')">Označit jako použitý</button>`);
+    if (r.schvaleni!=='navrh' && ME.admin) acts.push(`<button class="btn ghost small" onclick="akce('${r.id}','navrh')">Zpět na návrh</button>`);
+  }
+  if (r.stav==='chyba') acts.push(`<button class="btn small" onclick="akce('${r.id}','znovu')">Zkusit znovu</button>`);
+  if (r.stav!=='bezi' && (ME.admin || r.autor===ME.ja)) acts.push(`<button class="btn ghost small" style="color:#8a0e44;border-color:#e9a5c0;margin-left:auto" onclick="smazat('${r.id}')">🗑 Smazat</button>`);
+  const canva = (r.canva_media||[]).length ? `V Canvě: složka „Bannery“ → hledej „${esc(r.nazev)}“` : (r.canva_chyba ? 'Do Canvy se nepodařilo uložit — PNG ke stažení jsou tady.' : '');
+  return `<div class="card ${hl?'hl':''}" id="b-${r.id}"><h3>${esc(r.nazev)}</h3>
+    <div class="meta">${TEMATA[r.tema]||''} · ${r.jazyky.map(j=>j.toUpperCase()).join(' + ')} · ${r.zpusob==='canva'?'jen Canva':'Canva + Claude'}
+      ${r.produkt?.nazev ? ' · '+esc(r.produkt.nazev) : (r.produkt_kod ? ' · produkt '+esc(r.produkt_kod) : '')}
+      · ${esc(r.autor)} · ${new Date(r.vytvoreno).toLocaleString('cs-CZ')}${r.schvalil ? ' · schválil '+esc(r.schvalil) : ''}</div>
+    ${stav}${r.sleva ? `<span class="badge">${esc(r.sleva)}</span>` : ''}${r.kod ? `<span class="badge">kód ${esc(r.kod)}</span>` : ''}
+    <div style="margin-top:8px"><b>${esc(t.nadpis)}</b> — ${esc(t.podnadpis)}</div>
+    ${r.chyba ? `<div class="msg err">${esc(r.chyba)}</div>` : ''}
+    <div class="thumbs">${files}</div><div class="meta">${canva}</div><div class="acts">${acts.join('')}</div></div>`;
+}
+function smazat(id){
+  const r = DATA.find(x => x.id===id); if (!r) return;
+  $('#m-bd').innerHTML = `Banner <b>${esc(r.nazev)}</b> (${(r.soubory||[]).length} obrázků) se smaže z archivu i ze serveru. Tohle nejde vrátit.` +
+    ((r.canva_media||[]).length ? '<br><br><span class="hint">Kopie v Canvě (složka „Bannery“) zůstanou — tam je případně smaž ručně.</span>' : '');
+  $('#modal').classList.remove('hidden'); $('#m-ne').focus();
+  $('#m-ne').onclick = () => $('#modal').classList.add('hidden');
+  $('#m-ano').onclick = async () => {
+    $('#m-ano').disabled = true;
+    try { await api(`/${id}/smazat`, {}); $('#modal').classList.add('hidden'); nacti(); }
+    catch(e) { $('#m-bd').innerHTML = `<span style="color:#8a0e44">${esc(e.message)}</span>`; }
+    $('#m-ano').disabled = false;
+  };
+}
+document.addEventListener('keydown', e => { if (e.key==='Escape') $('#modal').classList.add('hidden'); });
+async function akce(id, a){
+  try { await api(`/${id}/${a}`, {}); nacti(); } catch(e) { alert(e.message); }
+}
+
+// start: archive directly when opened from an e-mail link; detect GitHub copy (no API there)
+fetch(API + '/archiv').then(r => { if (!(r.headers.get('content-type')||'').includes('json')) throw 0; return r.json(); })
+  .then(r => { ME = r; DATA = r.bannery; if (location.hash.length > 1) tab('archiv'); })
+  .catch(() => { if (!location.hostname.startsWith('nastroje')) { $('#offline').classList.remove('hidden');
+    document.querySelectorAll('.btn').forEach(b => b.disabled = true); } });
+</script>
+<script src="pin-guard.js"></script>
+</body>
+</html>
