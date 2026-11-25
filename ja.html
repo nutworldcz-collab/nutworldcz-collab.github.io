@@ -856,7 +856,7 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
   };
 
   try {
-    const res = await fetch('https://nutworldcz-collab.github.io/report_email.json?_='+Date.now());
+    const res = await fetch('/report_email.json?_='+Date.now());
     if(!res.ok) throw new Error('HTTP '+res.status);
     const data = await res.json();
     allEmails = data.emails||[];
@@ -897,7 +897,7 @@ function fmtD(iso){if(!iso)return'';const[y,m,dd]=iso.split('-');return`${dd}.${
 // ── TRŽBY + POPTÁVKY ─────────────────────────────────────────────────────────
 (async function(){
   try {
-    const r = await fetch('https://nutworldcz-collab.github.io/shoptet-stats.json?t=' + Date.now());
+    const r = await fetch('/shoptet-stats.json?t=' + Date.now());
     if (!r.ok) throw new Error('no data');
     const s = await r.json();
     const t = s.today || {};
@@ -943,7 +943,7 @@ function fmtD(iso){if(!iso)return'';const[y,m,dd]=iso.split('-');return`${dd}.${
     return `<span style="font-size:10px;color:${pct>0?'#6fa044':'#da1668'}">${pct>0?'▲':'▼'}${Math.abs(pct).toFixed(0)}%</span>`;
   }
   try {
-    const res = await fetch('https://nutworldcz-collab.github.io/report_ads.json?_='+Date.now());
+    const res = await fetch('/report_ads.json?_='+Date.now());
     if(!res.ok) throw new Error('HTTP '+res.status);
     const data = await res.json();
     const gen = data.generated ? new Date(data.generated) : null;
@@ -999,7 +999,7 @@ function fmtD(iso){if(!iso)return'';const[y,m,dd]=iso.split('-');return`${dd}.${
 (async function(){
   const TYPE_ICON = {mentionedOnCard:'💬',commentCard:'💬',addedToCard:'➕',cardDueSoon:'⏰',changeCard:'✏️',createdCard:'🆕',updateCheckItemStateOnCard:'☑️'};
   try {
-    const res = await fetch('https://nutworldcz-collab.github.io/report_trello.json?_='+Date.now());
+    const res = await fetch('/report_trello.json?_='+Date.now());
     if(!res.ok) throw new Error('HTTP '+res.status);
     const data = await res.json();
     document.getElementById('trello-meta-info').textContent = `${data.date||''} · ${data.total} notifikací`;
@@ -1071,7 +1071,7 @@ function fmtD(iso){if(!iso)return'';const[y,m,dd]=iso.split('-');return`${dd}.${
     else throw new Error('no ls');
   }catch{
     try{
-      const r = await fetch('https://nutworldcz-collab.github.io/report_ukoly.json?_='+Date.now());
+      const r = await fetch('/report_ukoly.json?_='+Date.now());
       if(r.ok){ const d=await r.json(); tasks=d.tasks||[]; }
     }catch(e){ console.warn('ukoly widget:',e); }
   }

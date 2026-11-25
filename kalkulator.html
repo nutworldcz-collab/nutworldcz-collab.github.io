@@ -2064,7 +2064,7 @@ async function kalkUlozit() {
   const repName = REP_NAMES[repKey];
   const listId = REP_LISTS[repKey];
   const today = new Date().toLocaleDateString('cs', {day:'numeric',month:'numeric',year:'numeric'});
-  const nabUrl = 'https://nutworldcz-collab.github.io/nabidky.html#' + _buildHash();
+  const nabUrl = location.origin + '/nabidky.html#' + _buildHash();
 
   let totMo = 0, totVo = 0;
   let desc = `## Kalkulace — ${today} (${repName})\n\n| Produkt | ks | Bez DPH/ks | VO/ks |\n|---------|----|----|----|\n`;
