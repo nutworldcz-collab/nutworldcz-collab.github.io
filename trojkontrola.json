@@ -1,10 +1,10 @@
 {
-  "generated": "2026-11-25T11:36:28",
+  "generated": "2026-11-25T12:00:39",
   "souhrn": {
     "produkty": 352,
     "ok": 320,
     "spec": 4,
-    "stitek": 17,
+    "stitek": 16,
     "web": 16,
     "vypnute": 41
   },
@@ -1070,13 +1070,13 @@
         },
         {
           "sekce": "stitek",
-          "uroven": "chyba",
-          "text": "chybí údaj „zeme_puvodu“"
-        },
-        {
-          "sekce": "stitek",
           "uroven": "info",
           "text": "trvanlivost není ve spec uvedena — DMT na štítku dle šarže"
+        },
+        {
+          "sekce": "web",
+          "uroven": "chyba",
+          "text": "země původu: web „“ · spec „Česká republika“"
         }
       ],
       "nazev": "MANDLE EXCLUSIVE MIX"
