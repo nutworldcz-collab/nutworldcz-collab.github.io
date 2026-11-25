@@ -111,10 +111,15 @@ textarea{resize:vertical;min-height:70px}
     <!-- Základní info -->
     <div class="card">
       <div class="card-title">📦 Produkt</div>
-      <div class="grid2">
+      <div class="grid3">
         <div class="field">
           <label class="required">Kód produktu (Shoptet)</label>
           <input type="text" id="kod" placeholder="např. 1522" required/>
+        </div>
+        <div class="field">
+          <label>Gramáž (g)</label>
+          <input type="text" id="gramaz" placeholder="např. 200"/>
+          <div class="hint">Pro kód ve formátu 1522/200</div>
         </div>
         <div class="field">
           <label class="required">Trvanlivost</label>
@@ -223,27 +228,41 @@ textarea{resize:vertical;min-height:70px}
     </div>
 
     <div class="card">
-      <div class="field" style="margin-bottom:14px">
-        <label>Zaslat link na email</label>
-        <input type="email" id="email_recipient" placeholder="legislativa@nutworld.cz" value="legislativa@nutworld.cz"/>
-        <div class="hint">Google Doc štítek přijde sem do ~1 minuty</div>
+      <div class="field">
+        <label>Velikost štítku</label>
+        <select id="size">
+          <option value="105x148">A6 — 105 × 148 mm (standardní)</option>
+          <option value="74x105">Malý — 74 × 105 mm</option>
+          <option value="70x50">Mini — 70 × 50 mm</option>
+          <option value="69x75">Čtvercový — 69 × 75 mm</option>
+        </select>
       </div>
-      <button type="button" class="btn-submit" onclick="submitForm()">🏷️ Vytvořit štítek</button>
+      <div class="field" style="margin-top:14px;margin-bottom:14px">
+        <label>Email navíc <span style="color:#aaa;font-size:11px">(volitelné)</span></label>
+        <input type="email" id="email_recipient" placeholder="tvuj@nutworld.cz"/>
+        <div class="hint">PDF přijde automaticky na balírnu + legislativa. Sem zadej navíc (např. svůj email).</div>
+      </div>
+      <button type="button" class="btn-submit" onclick="submitForm()">🏷️ Objednat štítek</button>
     </div>
 
   </form>
 
   <div class="success" id="success">
     <h3>✅ Odesláno!</h3>
-    <p>Google Doc štítek se vytváří a link přijde na <strong><span id="success-email">legislativa@nutworld.cz</span></strong> do ~1 minuty.</p>
-    <p style="margin-top:8px;color:#555;font-size:13px">Otevřeš link → zkontrolyješ → případně upravíš → stáhneš jako PDF nebo vytiskneš.</p>
-    <p style="margin-top:8px;color:#888;font-size:12px">Můžeš odeslat další štítek nebo zavřít stránku.</p>
+    <p>Štítek se připraví do 5 minut a PDF přijde na <strong>balírnu + legislativa<span id="success-email"></span></strong>.</p>
+    <p style="margin-top:8px"><a id="success-trello" href="#" target="_blank" rel="noopener" style="color:#2e7d32;font-size:13px;font-weight:600">Sledovat průběh v Trellu →</a></p>
+    <p style="margin-top:8px;color:#888;font-size:12px">Produkt musí být v systému (vstup_cz.csv). Pokud je to úplně nový produkt, spusť nejdřív spec-import.</p>
     <button onclick="resetForm()" style="margin-top:12px;background:var(--bd);color:white;border:none;border-radius:8px;padding:8px 20px;cursor:pointer;font-family:'Exo 2',sans-serif;font-weight:600">Nový štítek</button>
   </div>
 
 </div>
 
 <script>
+// ── TRELLO ──
+const LIST_TODO = '6af2d9f4001ae0f020370a8e';
+const TK = 'dummy';
+const TT = 'dummy';
+
 // ── SPEC UPLOAD ──
 const SPEC_URL = "https://script.google.com/macros/s/AKfycbz12_74IkFywh6oQqC_Pl6c03cYU2_u5j8GD8QnxEQ3MBC6VJiq5qyE016asIID-NHx/exec";
 let specText = "";
@@ -506,104 +525,68 @@ function v(id) { return (document.getElementById(id)?.value || '').trim(); }
 function vsk(cz_id, sk_id) { return v(sk_id) || v(cz_id); }
 
 function submitForm() {
-  // Validace povinných polí
   const required = ['kod','trvanlivost','nazev_cz','druh_cz','slozeni_cz','zeme'];
   for (const id of required) {
     if (!v(id)) {
       document.getElementById(id).focus();
       document.getElementById(id).style.borderColor = '#da1668';
       setTimeout(() => document.getElementById(id).style.borderColor = '', 2000);
-      alert('Vyplňte povinné pole: ' + document.querySelector(`[for]`)?.textContent || id);
       return;
     }
   }
 
-  // Sestav data pro canva_jobs
-  const jobs = [];
-  const ELEMENTS_CZ = {
-    "nazev":"PBWfGyJTGGPVRjf3-LBYJgX2kPcncp4xW","druh":"PBWfGyJTGGPVRjf3-LB4h0dmszj3k1Szv",
-    "slozeni":"PBWfGyJTGGPVRjf3-LBlJxl1K5SXH5sSq","stopy":"PBWfGyJTGGPVRjf3-LBGJrmn0pFWB6k5K",
-    "kod":"PBWfGyJTGGPVRjf3-LB9skFL4CX2cpKJ8","trvanlivost":"PBWfGyJTGGPVRjf3-LBLhNF22VpPlHlp9",
-    "zeme":"PBWfGyJTGGPVRjf3-LBdBcMXdzhGGk9B0","energie":"PBWfGyJTGGPVRjf3-LBdrvM1dpYf1S1nS",
-    "tuky":"PBWfGyJTGGPVRjf3-LBd6nvsswvKyhKCx","nasycene":"PBWfGyJTGGPVRjf3-LBq8R32Xk9y7sdHv",
-    "sacharidy":"PBWfGyJTGGPVRjf3-LB2Kp7NLKNRNXgJh","cukry":"PBWfGyJTGGPVRjf3-LBbc6b7r9whVv1Qg",
-    "vlaknina":"PBWfGyJTGGPVRjf3-LBpyWbY2g1FQdHwY","bilkoviny":"PBWfGyJTGGPVRjf3-LBSy8ByDPzYJfXdd",
-    "sul":"PBWfGyJTGGPVRjf3-LBdgY9gt37wCfjfv"
-  };
-  const ELEMENTS_SK = {
-    "nazev":"PBX4NPLL9Q3nmn10-LBGNV2FnSnxh62gF","druh":"PBX4NPLL9Q3nmn10-LBGsyX4WD8PcsjBK",
-    "slozeni":"PBX4NPLL9Q3nmn10-LBB0KrfYxzj77T6X","stopy":"PBX4NPLL9Q3nmn10-LBK1MLtGSnv9FpFN",
-    "kod":"PBX4NPLL9Q3nmn10-LBqm06PyDP9x4V7m","trvanlivost":"PBX4NPLL9Q3nmn10-LB9hF6tpqVGM0w24",
-    "zeme":"PBX4NPLL9Q3nmn10-LBfR8XnnZlHPqwhp","energie":"PBX4NPLL9Q3nmn10-LBL9WBPbLjqt2JCW",
-    "tuky":"PBX4NPLL9Q3nmn10-LBTb5ncz1Gw7Vdzg","nasycene":"PBX4NPLL9Q3nmn10-LBK4YBG2HtxGhMW2",
-    "sacharidy":"PBX4NPLL9Q3nmn10-LBqnKkhDHB7yWdM6","cukry":"PBX4NPLL9Q3nmn10-LB7XLVm44LpZxvyf",
-    "vlaknina":"PBX4NPLL9Q3nmn10-LBdpZnbbLgr63KmV","bilkoviny":"PBX4NPLL9Q3nmn10-LBT9D7Vc4GRf0pGG",
-    "sul":"PBX4NPLL9Q3nmn10-LBxY664mFxM4MmZn"
-  };
+  const kod = v('kod');
+  const gram = v('gramaz');
+  const codeStr = gram ? `${kod}/${gram}` : kod;
+  const size = document.getElementById('size')?.value || '105x148';
+  const emailRecipient = v('email_recipient');
 
-  function makeFields(lang) {
-    const isSK = lang === 'sk';
-    return {
-      nazev:      isSK ? vsk('nazev_cz','nazev_sk') : v('nazev_cz'),
-      druh:       isSK ? vsk('druh_cz','druh_sk') : v('druh_cz'),
-      slozeni:    isSK ? vsk('slozeni_cz','slozeni_sk') : v('slozeni_cz'),
-      stopy:      isSK ? vsk('stopy_cz','stopy_sk') : v('stopy_cz'),
-      kod:        v('kod'),
-      trvanlivost: v('trvanlivost'),
-      zeme:       v('zeme'),
-      energie:    isSK ? vsk('energie_cz','energie_sk') : v('energie_cz'),
-      tuky:       isSK ? vsk('tuky_cz','tuky_sk') : v('tuky_cz'),
-      nasycene:   isSK ? vsk('nasycene_cz','nasycene_sk') : v('nasycene_cz'),
-      sacharidy:  isSK ? vsk('sacharidy_cz','sacharidy_sk') : v('sacharidy_cz'),
-      cukry:      isSK ? vsk('cukry_cz','cukry_sk') : v('cukry_cz'),
-      vlaknina:   isSK ? vsk('vlaknina_cz','vlaknina_sk') : v('vlaknina_cz'),
-      bilkoviny:  isSK ? vsk('bilkoviny_cz','bilkoviny_sk') : v('bilkoviny_cz'),
-      sul:        isSK ? vsk('sul_cz','sul_sk') : v('sul_cz'),
-    };
-  }
+  const cardName = `Štítek ${codeStr}`;
+  const paramLines = [];
+  if (currentLang !== 'both') paramLines.push(`lang=${currentLang}`);
+  if (emailRecipient) paramLines.push(`email=${emailRecipient}`);
+  if (size !== '105x148') paramLines.push(`size=${size}`);
 
-  if (currentLang === 'cz' || currentLang === 'both') {
-    jobs.push({
-      template_id: 'DAHIpVNxUgM',
-      lang: 'cz',
-      title: v('nazev_cz') + ' CZ',
-      fields: makeFields('cz'),
-      element_ids: ELEMENTS_CZ
-    });
-  }
-  if (currentLang === 'sk' || currentLang === 'both') {
-    jobs.push({
-      template_id: 'DAHIsKNI7aU',
-      lang: 'sk',
-      title: (vsk('nazev_cz','nazev_sk')) + ' SK',
-      fields: makeFields('sk'),
-      element_ids: ELEMENTS_SK
-    });
-  }
+  let desc = paramLines.length ? paramLines.join('\n') + '\n\n' : '';
+  desc += `[${codeStr}]`;
 
   const btn = document.querySelector('.btn-submit');
   btn.disabled = true;
-  btn.textContent = '⏳ Ukládám...';
+  btn.textContent = '⏳ Odesílám...';
 
-  // no-cors = fire-and-forget (Apps Script redirect blokuje čtení response v browseru)
-  const emailRecipient = document.getElementById('email_recipient')?.value.trim() || 'legislativa@nutworld.cz';
+  const isServer = window.location.hostname !== 'nutworldcz-collab.github.io';
+  const p = isServer
+    ? fetch('/api/trello-card', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: cardName, desc, idList: LIST_TODO })
+      })
+    : fetch('https://api.trello.com/1/cards', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: cardName, desc, idList: LIST_TODO, key: TK, token: TT })
+      });
 
-  fetch(SPEC_URL, {
-    method: 'POST',
-    body: JSON.stringify({ action: 'create_label', jobs, email: emailRecipient }),
-    headers: { 'Content-Type': 'text/plain' },
-    mode: 'no-cors'
-  }).catch(() => {});
-
-  document.getElementById('success-email').textContent = emailRecipient;
-  document.getElementById('form').style.display = 'none';
-  document.getElementById('success').style.display = 'block';
+  p.then(r => {
+    if (!r.ok) return r.text().then(t => { throw new Error(`Trello chyba (${r.status}): ${t.slice(0,120)}`); });
+    return r.json();
+  }).then(card => {
+    document.getElementById('success-email').textContent = emailRecipient ? ' + ' + emailRecipient : '';
+    const tl = document.getElementById('success-trello');
+    if (tl) tl.href = `https://trello.com/c/${card.id}`;
+    document.getElementById('form').style.display = 'none';
+    document.getElementById('success').style.display = 'block';
+  }).catch(err => {
+    btn.disabled = false;
+    btn.textContent = '🏷️ Objednat štítek';
+    alert('Chyba: ' + err.message);
+  });
 }
 
 function resetForm() {
   document.getElementById('form').reset();
   document.getElementById('form').style.display = 'block';
   document.getElementById('success').style.display = 'none';
+  const btn = document.querySelector('.btn-submit');
+  if (btn) { btn.disabled = false; btn.textContent = '🏷️ Objednat štítek'; }
   setLang('cz');
 }
 
@@ -677,6 +660,7 @@ function loadFromStorage() {
 
 window.addEventListener('DOMContentLoaded', loadFromStorage);
 </script>
+<script src="trello-proxy.js"></script>
 <script src="pin-guard.js"></script>
 </body>
 </html>
