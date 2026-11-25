@@ -150,6 +150,8 @@ textarea{min-height:64px;resize:vertical}
     <div class="row3"><input type="text" id="sleva" maxlength="12" placeholder="štítek: −15 %">
       <input type="text" id="kod" maxlength="30" placeholder="kód: VANOCE15">
       <input type="text" id="platnost" maxlength="30" placeholder="platí do: 7. 12."></div></div>
+  <div class="msg info hidden" id="jen-canva-info">V režimu „Jen Canva“ navrhuje celý banner Canva — cenu a logo firmy tam vložit neumí.
+    Pro cenu nebo logo zákazníka zvol „Canva + Claude“.</div>
   <div class="field hidden" id="cena-field"><label>Cena na banneru</label>
     <div class="chips">
       <label class="chip"><input type="radio" name="cenarez" value="" checked><span>Bez ceny</span></label>
@@ -162,7 +164,7 @@ textarea{min-height:64px;resize:vertical}
       <input type="text" id="odkaz-sk" maxlength="400" placeholder="SK: https://www.nutworld.sk/…"></div>
     <div class="hint">Prázdné = stránka produktu, bez produktu hlavní stránka e-shopu. Každý banner dostane odkaz s UTM značkami,
       podle kterých v Analytics uvidíš, kolik přinesl návštěv a objednávek.</div></div>
-  <div class="field"><label for="firma">Pro firmu — B2B (nepovinné)</label>
+  <div class="field" id="b2b-field"><label for="firma">Pro firmu — B2B (nepovinné)</label>
     <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
       <input type="text" id="firma" list="firmy" placeholder="název firmy z registru partnerů" style="flex:1;min-width:180px" autocomplete="off">
       <datalist id="firmy"></datalist>
@@ -269,9 +271,12 @@ let ESHOP = [], PROD = null, LOGO = '';
 const parseSleva = () => { const m = ($('#sleva').value||'').replace(',', '.').match(/(\d+(?:\.\d+)?)\s*%/); return m ? +m[1] : 0; };
 const fmtC = (c, j) => c == null ? '' : j==='sk' ? c.toFixed(2).replace('.', ',')+'\u00a0€' : (Math.abs(c-Math.round(c))<.005 ? Math.round(c) : c.toFixed(2).replace('.', ','))+'\u00a0Kč';
 // live price from the e-shop; struck-through price must be the lowest price of the last 30 days (law)
+function jenCanva(){ return val('zpusob')[0] === 'canva'; }
 function cenyHtml(){
   const c = (PROD && PROD.ceny) || {};
-  $('#cena-field').classList.toggle('hidden', !Object.keys(c).length);
+  $('#cena-field').classList.toggle('hidden', !Object.keys(c).length || jenCanva());
+  $('#b2b-field').classList.toggle('hidden', jenCanva());
+  $('#jen-canva-info').classList.toggle('hidden', !jenCanva());
   const rez = val('cenarez')[0] || '', s = parseSleva();
   $('#cenybox').innerHTML = jazyky().filter(j => c[j]).map(j => { const x = c[j];
     let nova = x.cena, puv = '';
@@ -283,7 +288,7 @@ function cenyHtml(){
       <span></span></div><div class="hint" style="margin-left:48px">${info}</div>`; }).join('') +
     (rez==='sleva' ? `<div class="hint" style="margin-top:6px">Přeškrtnutá cena = nejnižší cena za posledních 30 dní (zákon). Nová cena je spočítaná ze štítku slevy${s?' ('+s+' %)':''} — můžeš ji přepsat.</div>` : '');
 }
-document.querySelectorAll('input[name=cenarez]').forEach(i => i.onchange = cenyHtml);
+document.querySelectorAll('input[name=cenarez], input[name=zpusob]').forEach(i => i.onchange = cenyHtml);
 document.addEventListener('input', e => { if (e.target.id==='sleva' && val('cenarez')[0]==='sleva') cenyHtml(); });
 // B2B: firm from the partner register + customer logo
 (async () => { try { if (window.NWPartneri) { try { await NWPartneri.load(); } catch(e) {}
@@ -361,8 +366,8 @@ $('#vytvor').onclick = async () => {
       produkt_foto: (document.querySelector('input[name=pfoto]:checked')||{}).value || '', pohled: val('pohled')[0] || 'zepredu',
       ceny: Object.fromEntries(jazyky().map(j => [j, {cena: (document.querySelector(`[data-cena="${j}"]`)||{}).value || '',
         puvodni: val('cenarez')[0]==='sleva' ? ((document.querySelector(`[data-puv="${j}"]`)||{}).value || '') : '', od: val('cenarez')[0]==='od'}])
-        .filter(([j,c]) => val('cenarez')[0] && c.cena)),
-      odkaz: {cz: $('#odkaz-cz').value.trim(), sk: $('#odkaz-sk').value.trim()}, zakaznik: zakaznik()});
+        .filter(([j,c]) => val('cenarez')[0] && c.cena && !jenCanva())),
+      odkaz: {cz: $('#odkaz-cz').value.trim(), sk: $('#odkaz-sk').value.trim()}, zakaznik: jenCanva() ? null : zakaznik()});
     location.hash = r.id; tab('archiv');
   } catch(e) { showErr(e.message); }
   b.disabled = false;
