@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Nutworld — Rozcestník (návrh)</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--br:#83502e;--bd:#5c381f;--kraft:#f1e6da;--bg:#e8ddd4;--line:#d4c0a8;--muted:#8a6a4a;--pink:#da1668;--amber:#f7ab31;--leaf:#6fa044}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:var(--bg);color:var(--bd);min-height:100vh;padding:28px max(16px,env(safe-area-inset-right,0px)) 40px max(16px,env(safe-area-inset-left,0px))}
+.wrap{max-width:1040px;margin:0 auto}
+.header{text-align:center;margin-bottom:18px}
+.logo{font-family:'Exo 2',sans-serif;font-size:32px;font-weight:800;color:var(--bd)}
+.sub{font-size:12px;color:#a07850;letter-spacing:2.5px;text-transform:uppercase;margin-top:4px}
+.draft{background:#fff8e1;border:2px dashed var(--amber);border-radius:12px;padding:10px 14px;font-size:13px;color:#7a5200;margin:0 auto 18px;max-width:1040px;line-height:1.5}
+.search{position:relative;margin-bottom:22px}
+.search input{width:100%;padding:13px 16px 13px 44px;font-size:16px;border:2px solid var(--line);border-radius:14px;background:#fff;color:var(--bd);font-family:inherit;outline:none}
+.search input:focus{border-color:var(--br);box-shadow:0 0 0 3px rgba(131,80,46,.15)}
+.search span{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:17px}
+.search small{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--muted)}
+.lbl{font-family:'Exo 2',sans-serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:#a07850;margin:0 0 10px 4px}
+.top{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:26px}
+.top a{background:linear-gradient(135deg,var(--bd),var(--br));color:#fff;border-radius:14px;padding:14px;text-decoration:none;box-shadow:0 3px 12px rgba(92,56,31,.18);transition:transform .15s}
+.top a:hover{transform:translateY(-2px)}
+.top .i{font-size:24px;display:block;margin-bottom:6px}.top .t{font-family:'Exo 2',sans-serif;font-weight:700;font-size:14px}
+.groups{columns:2 460px;column-gap:16px}
+.grp{break-inside:avoid;background:#fff;border:2px solid var(--line);border-radius:16px;margin-bottom:16px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.grp>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:12px 14px;border-left:6px solid var(--c);background:linear-gradient(90deg,color-mix(in srgb,var(--c) 10%,#fff),#fff)}
+.grp>summary::-webkit-details-marker{display:none}
+.grp .gi{font-size:22px}.grp .gt{font-family:'Exo 2',sans-serif;font-weight:800;font-size:15px;color:var(--bd)}
+.grp .gs{font-size:11.5px;color:var(--muted)}.grp .gc{margin-left:auto;font-size:11px;font-weight:700;background:var(--kraft);color:var(--bd);border-radius:20px;padding:2px 9px}
+.grp .chev{font-size:12px;color:var(--muted);transition:transform .15s}.grp[open] .chev{transform:rotate(90deg)}
+.items{padding:6px}
+.it{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:10px;text-decoration:none;color:var(--bd);transition:background .12s}
+.it:hover{background:var(--kraft)}
+.it .ii{font-size:18px;line-height:1.2;width:24px;text-align:center;flex-shrink:0}
+.it .ib{min-width:0;flex:1}.it .itt{font-weight:700;font-size:13.5px}.it .id{font-size:12px;color:var(--muted);line-height:1.35;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.tag{display:inline-block;font-size:10px;font-weight:700;border-radius:10px;padding:1px 7px;margin-left:6px;vertical-align:1px;background:#eee;color:#555}
+.tag.slo{background:#fff1d6;color:#8a5a00}.tag.new{background:#e6f3dc;color:#2d5a1b}.tag.arc{background:#f3e3e3;color:#8a2a2a}.tag.int{background:#f1e6da;color:var(--bd)}
+.plan{background:#fff;border:2px solid var(--line);border-radius:16px;padding:16px 18px;margin-top:8px}
+.plan h3{font-family:'Exo 2',sans-serif;font-size:15px;margin-bottom:8px}.plan li{font-size:13px;line-height:1.55;margin-left:18px}
+.empty{text-align:center;color:var(--muted);padding:30px}
+.footer{text-align:center;font-size:11px;color:#b09070;margin-top:18px}
+@media (max-width:520px){.top{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header"><div class="logo">🐿 Nutworld</div><div class="sub">Interní rozcestník</div></div>
+  <div class="draft"><b>Návrh nového rozložení.</b> Současný <a href="/index.html">rozcestník</a> zůstává, dokud tohle neschválíš.
+    Všechny stránky (85) jsou rozdělené do skupin podle práce, odkazy fungují. Rozcestník se kreslí z jednoho seznamu
+    <code>stranky-data.js</code> — nová stránka tak už nikdy nezmizí.</div>
+  <div class="search"><span>🔍</span><input id="q" type="search" placeholder="Hledat nástroj… (např. štítek, marže, PPL, šarže)" autocomplete="off"><small id="cnt"></small></div>
+  <div id="top-wrap"><div class="lbl">⭐ Nejčastěji</div><div class="top" id="top"></div></div>
+  <div class="groups" id="groups"></div>
+  <div class="plan" id="plan"></div>
+  <div class="footer">Nutworld s.r.o. · interní nástroje</div>
+</div>
+<script src="stranky-data.js"></script>
+<script>
+const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+function tagCls(t){return /sloučit/.test(t)?'slo':/nov/.test(t)?'new':/archiv|zrušení/.test(t)?'arc':'int';}
+function item(p){return `<a class="it" href="/${p.soubor}"><span class="ii">${p.ikona}</span><span class="ib"><span class="itt">${esc(p.nazev)}</span>`+
+  (p.stitek?`<span class="tag ${tagCls(p.stitek)}">${esc(p.stitek)}</span>`:'')+`<span class="id">${esc(p.popis)}</span></span></a>`;}
+function render(){
+  const q=norm(document.getElementById('q').value.trim());
+  const hit=p=>!q||norm(p.nazev+' '+p.popis+' '+p.soubor).includes(q);
+  const list=NW_STRANKY.filter(hit);
+  document.getElementById('cnt').textContent=q?`${list.length} z ${NW_STRANKY.length}`:`${NW_STRANKY.length} stránek`;
+  document.getElementById('top-wrap').hidden=!!q;
+  document.getElementById('top').innerHTML=NW_STRANKY.filter(p=>p.hlavni).sort((a,b)=>a.hlavni-b.hlavni)
+    .map(p=>`<a href="/${p.soubor}"><span class="i">${p.ikona}</span><span class="t">${esc(p.nazev)}</span></a>`).join('');
+  document.getElementById('groups').innerHTML=NW_SKUPINY.map(g=>{
+    const ps=list.filter(p=>p.skupina===g.key); if(!ps.length) return '';
+    const open=q||!g.sbaleno?' open':'';
+    return `<details class="grp" style="--c:${g.barva}"${open}><summary><span class="gi">${g.ikona}</span><span><div class="gt">${esc(g.nazev)}</div>`+
+      `<div class="gs">${esc(g.popis)}</div></span><span class="gc">${ps.length}</span><span class="chev">▶</span></summary><div class="items">${ps.map(item).join('')}</div></details>`;
+  }).join('')||'<div class="empty">Nic nenalezeno.</div>';
+}
+function plan(){
+  const by=t=>NW_STRANKY.filter(p=>p.stitek&&new RegExp(t).test(p.stitek)).map(p=>p.nazev);
+  document.getElementById('plan').innerHTML=`<h3>🧹 Navržený úklid (po schválení)</h3><ul>
+   <li><b>Doprava:</b> ${by('sloučit do Dopravy').join(', ')} → záložky v jedné stránce Doprava.</li>
+   <li><b>Konfigurátory krabiček</b> 2×50 + 4×80 → jeden konfigurátor z darky.csv.</li>
+   <li><b>Výrobní plán Vánoce</b> → sloučit s Výrobním plánem.</li>
+   <li><b>Ceníky firem</b> (Čajovna, HU-FA, Olympic, Czech Inn, Náchod) → jedna šablona z firemních ceníků; interní „marže“ stránky pod Ceny.</li>
+   <li><b>Do archivu:</b> ${by('archiv|zrušení').join(', ')}.</li>
+   <li><b>Dashboard (klasický)</b> → nahrazuje Wolf Leader Board.</li></ul>`;
+}
+document.getElementById('q').addEventListener('input',render);
+render(); plan();
+</script>
+<script src="pin-guard.js"></script>
+</body>
+</html>
