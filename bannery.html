@@ -83,6 +83,17 @@ textarea{min-height:64px;resize:vertical}
 .modal .bd{padding:16px 20px;line-height:1.5}
 .modal .ft{display:flex;justify-content:flex-end;gap:8px;padding:0 20px 18px}
 .btn.danger{background:var(--acc);color:#fff}
+.cenybox{background:#fdf9f6;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:10px}
+.cenybox .lang-row{display:grid;grid-template-columns:40px 1fr 1fr auto;gap:8px;align-items:center;margin-top:6px}
+.cenybox .lang-row input[type=text]{padding:6px 10px}
+.logo-prev{height:44px;max-width:200px;object-fit:contain;background:#fff;border:1px solid var(--line);border-radius:8px;padding:4px 8px;vertical-align:middle}
+.files{display:flex;flex-wrap:wrap;gap:12px;margin:8px 0}
+.files .f{font-size:11px;color:#8a7360;text-align:center}
+.files .f img{height:120px;border-radius:8px;border:1px solid var(--line);display:block;margin-bottom:3px;background:var(--kraft)}
+.files .f a{text-decoration:none;color:#8a7360}
+.copy{border:0;background:none;color:var(--br);font:700 11px 'Source Sans 3',sans-serif;cursor:pointer;padding:2px 4px}
+.metabox{background:#f3f0fb;border:1.5px solid #cfc3ea;border-radius:10px;padding:8px 12px;margin-top:8px;font-size:13px}
+.modal input[type=text]{margin-top:8px}
 </style>
 </head>
 <body>
@@ -139,6 +150,26 @@ textarea{min-height:64px;resize:vertical}
     <div class="row3"><input type="text" id="sleva" maxlength="12" placeholder="štítek: −15 %">
       <input type="text" id="kod" maxlength="30" placeholder="kód: VANOCE15">
       <input type="text" id="platnost" maxlength="30" placeholder="platí do: 7. 12."></div></div>
+  <div class="field hidden" id="cena-field"><label>Cena na banneru</label>
+    <div class="chips">
+      <label class="chip"><input type="radio" name="cenarez" value="" checked><span>Bez ceny</span></label>
+      <label class="chip"><input type="radio" name="cenarez" value="cena"><span>Cena</span></label>
+      <label class="chip"><input type="radio" name="cenarez" value="od"><span>„od“ cena</span></label>
+      <label class="chip"><input type="radio" name="cenarez" value="sleva"><span>Sleva + přeškrtnutá</span></label></div>
+    <div class="cenybox" id="cenybox"></div></div>
+  <div class="field"><label>Kam banner vede (nepovinné)</label>
+    <div class="row3" style="grid-template-columns:1fr 1fr"><input type="text" id="odkaz-cz" maxlength="400" placeholder="CZ: https://www.nutworld.cz/…">
+      <input type="text" id="odkaz-sk" maxlength="400" placeholder="SK: https://www.nutworld.sk/…"></div>
+    <div class="hint">Prázdné = stránka produktu, bez produktu hlavní stránka e-shopu. Každý banner dostane odkaz s UTM značkami,
+      podle kterých v Analytics uvidíš, kolik přinesl návštěv a objednávek.</div></div>
+  <div class="field"><label for="firma">Pro firmu — B2B (nepovinné)</label>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+      <input type="text" id="firma" list="firmy" placeholder="název firmy z registru partnerů" style="flex:1;min-width:180px" autocomplete="off">
+      <datalist id="firmy"></datalist>
+      <label class="btn ghost small" for="logo-soubor" style="display:inline-block">🏷️ Logo firmy</label>
+      <input type="file" id="logo-soubor" accept="image/png,image/svg+xml,image/jpeg,image/webp" class="hidden">
+      <span id="logo-box"></span></div>
+    <div class="hint">Logo zákazníka se dá do bílého štítku nad nadpis. Nejlépe PNG s průhledným pozadím. Banner se uloží k firmě.</div></div>
   <div class="field"><label for="scena">Přání ke scéně (nepovinné)</label>
     <input type="text" id="scena" maxlength="300" placeholder="např. NutWorldka v šále, zasněžené okno"></div>
 </div>
@@ -174,6 +205,9 @@ textarea{min-height:64px;resize:vertical}
     <div class="bd" id="m-bd"></div>
     <div class="ft"><button class="btn ghost" id="m-ne" type="button">Zrušit</button><button class="btn danger" id="m-ano" type="button">Smazat natrvalo</button></div></div>
 </div>
+<script src="/partneri-data.js"></script>
+<script src="/nw-data.js"></script>
+<script src="/partneri-sync.js"></script>
 <script>
 const API = '/api/bannery';
 const TEMATA = {vanoce:'Vánoce', mikulas:'Mikuláš', valentyn:'Valentýn', velikonoce:'Velikonoce', firemni:'Firemní', vlastni:'Vlastní'};
@@ -219,7 +253,7 @@ function textInputs(){
     <div class="field"><label>Tlačítko</label><input type="text" data-tx="${j}.tlacitko" maxlength="30"></div></div>`).join('');
   document.querySelectorAll('[data-tx]').forEach(i => i.value = old[i.dataset.tx] || '');
 }
-document.querySelectorAll('input[name=jazyk]').forEach(i => i.onchange = textInputs);
+document.querySelectorAll('input[name=jazyk]').forEach(i => i.onchange = () => { textInputs(); cenyHtml(); });
 textInputs();
 
 // product: pick an e-shop photo or upload own
@@ -231,7 +265,44 @@ function fotkyHtml(eshop){
     + (items.length ? '' : '');
   $('#fotky').classList.toggle('hidden', !items.length); $('#pohled-box').classList.toggle('hidden', !items.length);
 }
-let ESHOP = [];
+let ESHOP = [], PROD = null, LOGO = '';
+const parseSleva = () => { const m = ($('#sleva').value||'').replace(',', '.').match(/(\d+(?:\.\d+)?)\s*%/); return m ? +m[1] : 0; };
+const fmtC = (c, j) => c == null ? '' : j==='sk' ? c.toFixed(2).replace('.', ',')+'\u00a0€' : (Math.abs(c-Math.round(c))<.005 ? Math.round(c) : c.toFixed(2).replace('.', ','))+'\u00a0Kč';
+// live price from the e-shop; struck-through price must be the lowest price of the last 30 days (law)
+function cenyHtml(){
+  const c = (PROD && PROD.ceny) || {};
+  $('#cena-field').classList.toggle('hidden', !Object.keys(c).length);
+  const rez = val('cenarez')[0] || '', s = parseSleva();
+  $('#cenybox').innerHTML = jazyky().filter(j => c[j]).map(j => { const x = c[j];
+    let nova = x.cena, puv = '';
+    if (rez==='sleva') { puv = x.min30; if (!x.akce_bezi && s) nova = j==='sk' ? Math.round(x.min30*(1-s/100)*100)/100 : Math.round(x.min30*(1-s/100)); }
+    const info = `teď ${fmtC(x.cena,j)}${x.akce_bezi ? ' (běží akce do '+esc(x.akce.do||'')+', běžně '+fmtC(x.bezna,j)+')' : ''} · nejnižší za 30 dní <b>${fmtC(x.min30,j)}</b>`;
+    return `<div class="lang-row"><span class="badge">${j.toUpperCase()}</span>
+      <input type="text" data-cena="${j}" value="${rez ? esc(fmtC(nova,j)) : ''}" placeholder="cena" ${rez?'':'disabled'}>
+      <input type="text" data-puv="${j}" value="${rez==='sleva' ? esc(fmtC(puv,j)) : ''}" placeholder="přeškrtnutá" ${rez==='sleva'?'':'disabled'}>
+      <span></span></div><div class="hint" style="margin-left:48px">${info}</div>`; }).join('') +
+    (rez==='sleva' ? `<div class="hint" style="margin-top:6px">Přeškrtnutá cena = nejnižší cena za posledních 30 dní (zákon). Nová cena je spočítaná ze štítku slevy${s?' ('+s+' %)':''} — můžeš ji přepsat.</div>` : '');
+}
+document.querySelectorAll('input[name=cenarez]').forEach(i => i.onchange = cenyHtml);
+document.addEventListener('input', e => { if (e.target.id==='sleva' && val('cenarez')[0]==='sleva') cenyHtml(); });
+// B2B: firm from the partner register + customer logo
+(async () => { try { if (window.NWPartneri) { try { await NWPartneri.load(); } catch(e) {}
+  const names = [...new Set(NWPartneri.all().map(p => p.nazev).filter(Boolean))].sort((a,b) => a.localeCompare(b,'cs'));
+  $('#firmy').innerHTML = names.map(n => `<option value="${esc(n)}">`).join(''); } } catch(e) {} })();
+$('#logo-soubor').onchange = async ev => {
+  const f = ev.target.files[0]; if (!f) return; $('#logo-box').innerHTML = '<span class="spin"></span>';
+  try { const r = await fetch(API + '/nahrat?druh=logo', {method:'POST', headers:{'Content-Type':'application/octet-stream'}, body:f});
+    const j = await r.json(); if (!r.ok) throw new Error(j.chyba || 'Nahrání selhalo');
+    LOGO = j.id; $('#logo-box').innerHTML = `<img class="logo-prev" src="${URL.createObjectURL(f)}" alt="logo"> <button class="copy" type="button" id="logo-pryc">✕ odebrat</button>`;
+    $('#logo-pryc').onclick = () => { LOGO = ''; $('#logo-box').innerHTML = ''; };
+  } catch(e) { $('#logo-box').innerHTML = `<span style="color:#8a0e44">${esc(e.message)}</span>`; }
+  ev.target.value = '';
+};
+function zakaznik(){
+  const n = $('#firma').value.trim(); if (!n && !LOGO) return null;
+  const p = window.NWPartneri ? NWPartneri.all().find(x => x.nazev === n) : null;
+  return {nazev: n, id: p ? p.id : '', logo: LOGO};
+}
 $('#najdi').onclick = async () => {
   const k = $('#kod_p').value.trim(); const box = $('#prod');
   if (!k) { box.classList.add('hidden'); return; }
@@ -239,7 +310,7 @@ $('#najdi').onclick = async () => {
   try { const p = await api('/produkt/' + encodeURIComponent(k));
     box.innerHTML = `<div><b>${esc(p.nazev)}</b> · <a href="${esc(p.url)}" target="_blank" rel="noopener">otevřít v e-shopu ↗</a><br>
       <span class="hint">Vyber fotku, která se vloží do banneru (nejlépe produkt stojící, focený zepředu):</span></div>`;
-    ESHOP = p.fotky || []; fotkyHtml(ESHOP);
+    ESHOP = p.fotky || []; fotkyHtml(ESHOP); PROD = p; cenyHtml();
   } catch(e) { box.innerHTML = `<span style="color:#8a0e44">${esc(e.message)}</span>`; }
 };
 $('#soubor').onchange = async ev => {
@@ -287,7 +358,11 @@ $('#vytvor').onclick = async () => {
     const r = await api('/novy', {nazev: $('#nazev').value, tema: val('tema')[0], jazyky: jazyky(), formaty: val('fmt'),
       zpusob: val('zpusob')[0], produkt_kod: $('#kod_p').value.trim(), sdeleni: $('#sdeleni').value, texty,
       sleva: $('#sleva').value, kod: $('#kod').value, platnost: $('#platnost').value, popis_sceny: $('#scena').value,
-      produkt_foto: (document.querySelector('input[name=pfoto]:checked')||{}).value || '', pohled: val('pohled')[0] || 'zepredu'});
+      produkt_foto: (document.querySelector('input[name=pfoto]:checked')||{}).value || '', pohled: val('pohled')[0] || 'zepredu',
+      ceny: Object.fromEntries(jazyky().map(j => [j, {cena: (document.querySelector(`[data-cena="${j}"]`)||{}).value || '',
+        puvodni: val('cenarez')[0]==='sleva' ? ((document.querySelector(`[data-puv="${j}"]`)||{}).value || '') : '', od: val('cenarez')[0]==='od'}])
+        .filter(([j,c]) => val('cenarez')[0] && c.cena)),
+      odkaz: {cz: $('#odkaz-cz').value.trim(), sk: $('#odkaz-sk').value.trim()}, zakaznik: zakaznik()});
     location.hash = r.id; tab('archiv');
   } catch(e) { showErr(e.message); }
   b.disabled = false;
@@ -313,7 +388,15 @@ function karta(r, hl){
   const stav = r.stav==='hotovo' ? `<span class="badge ${r.schvaleni}">${SCHV[r.schvaleni]||''}</span>`
     : r.stav==='chyba' ? '<span class="badge chyba">Chyba</span>' : `<span class="badge bezi"><span class="spin"></span>${esc(r.krok||'Ve frontě')}</span>`;
   const files = (r.soubory||[]).map(s => { const u = `/bannery-soubory/${r.id}/${encodeURIComponent(s.soubor)}`;
-    return `<a href="${u}" download title="Stáhnout"><img src="${u}" loading="lazy" alt="">${s.jazyk.toUpperCase()} · ${esc(FORMATY[s.format]||s.format)} ⬇</a>`; }).join('');
+    return `<div class="f"><a href="${u}" download title="Stáhnout"><img src="${u}" loading="lazy" alt="">${s.jazyk.toUpperCase()} · ${esc(FORMATY[s.format]||s.format)} ⬇</a>
+      ${s.odkaz ? `<br><button class="copy" type="button" data-copy="${esc(s.odkaz)}" title="${esc(s.odkaz)}">📋 Kopírovat odkaz</button>` : ''}</div>`; }).join('');
+  const meta = Object.entries(r.meta||{}).map(([j,m]) => m.bez_reklam
+    ? `<div class="metabox">📣 ${j.toUpperCase()}: kampaň a sada reklam jsou připravené (pozastavené, ${esc(m.rozpocet)} ${j==='sk'?'€':'Kč'}/den), obrázky jsou v knihovně reklam.
+      Samotné reklamy Meta zatím nepovolila — aplikace „Nutworld Automatizace“ je ve vývojovém režimu. Po přepnutí na „Live“ klikni na „Doplnit reklamy“.
+      <a href="${esc(m.url)}" target="_blank" rel="noopener">Správce reklam ↗</a>
+      ${ME.admin ? `<button class="btn small" style="margin-left:6px" onclick="metaDoplnit('${r.id}','${j}',this)">Doplnit reklamy</button>` : ''}</div>`
+    : `<div class="metabox">📣 Reklama ${j.toUpperCase()} připravená (pozastavená, ${esc(m.rozpocet)} ${j==='sk'?'€':'Kč'}/den, ${m.ads.length} reklam) —
+      <a href="${esc(m.url)}" target="_blank" rel="noopener">otevřít ve Správci reklam ↗</a>, zkontroluj a spusť.</div>`).join('');
   const t = r.texty?.[r.jazyky[0]] || {};
   const acts = [];
   if (r.stav==='hotovo') {
@@ -321,6 +404,8 @@ function karta(r, hl){
     if (r.schvaleni!=='pouzito') acts.push(`<button class="btn ghost small" onclick="akce('${r.id}','pouzito')">Označit jako použitý</button>`);
     if (r.schvaleni!=='navrh' && ME.admin) acts.push(`<button class="btn ghost small" onclick="akce('${r.id}','navrh')">Zpět na návrh</button>`);
   }
+  if (r.stav==='hotovo' && ME.admin) r.jazyky.filter(j => !(r.meta||{})[j]).forEach(j =>
+    acts.push(`<button class="btn ghost small" onclick="metaKampan('${r.id}','${j}')">📣 Reklama ${j.toUpperCase()}</button>`));
   if (r.stav==='chyba') acts.push(`<button class="btn small" onclick="akce('${r.id}','znovu')">Zkusit znovu</button>`);
   if (r.stav!=='bezi' && (ME.admin || r.autor===ME.ja)) acts.push(`<button class="btn ghost small" style="color:#8a0e44;border-color:#e9a5c0;margin-left:auto" onclick="smazat('${r.id}')">🗑 Smazat</button>`);
   const canva = (r.canva_media||[]).length ? `V Canvě: složka „Bannery“ → hledej „${esc(r.nazev)}“` : (r.canva_chyba ? 'Do Canvy se nepodařilo uložit — PNG ke stažení jsou tady.' : '');
@@ -329,27 +414,67 @@ function karta(r, hl){
       ${r.produkt?.nazev ? ' · '+esc(r.produkt.nazev) : (r.produkt_kod ? ' · produkt '+esc(r.produkt_kod) : '')}
       · ${esc(r.autor)} · ${new Date(r.vytvoreno).toLocaleString('cs-CZ')}${r.schvalil ? ' · schválil '+esc(r.schvalil) : ''}</div>
     ${stav}${r.sleva ? `<span class="badge">${esc(r.sleva)}</span>` : ''}${r.kod ? `<span class="badge">kód ${esc(r.kod)}</span>` : ''}
+    ${Object.entries(r.ceny||{}).map(([j,c]) => `<span class="badge">${j.toUpperCase()} ${esc(c.od?'od ':'')}${esc(c.cena)}${c.puvodni?' <s>'+esc(c.puvodni)+'</s>':''}</span>`).join('')}
+    ${r.zakaznik ? `<span class="badge" style="background:#e6eef8;color:#1d3d66">🏢 ${esc(r.zakaznik.nazev || 'logo zákazníka')}</span>` : ''}
     <div style="margin-top:8px"><b>${esc(t.nadpis)}</b> — ${esc(t.podnadpis)}</div>
     ${r.chyba ? `<div class="msg err">${esc(r.chyba)}</div>` : ''}
-    <div class="thumbs">${files}</div><div class="meta">${canva}</div><div class="acts">${acts.join('')}</div></div>`;
+    <div class="files">${files}</div>${meta}<div class="meta">${canva}</div><div class="acts">${acts.join('')}</div></div>`;
 }
 function smazat(id){
   const r = DATA.find(x => x.id===id); if (!r) return;
   $('#m-bd').innerHTML = `Banner <b>${esc(r.nazev)}</b> (${(r.soubory||[]).length} obrázků) se smaže z archivu i ze serveru. Tohle nejde vrátit.` +
     ((r.canva_media||[]).length ? '<br><br><span class="hint">Kopie v Canvě (složka „Bannery“) zůstanou — tam je případně smaž ručně.</span>' : '');
   $('#modal').classList.remove('hidden'); $('#m-ne').focus();
-  $('#m-ne').onclick = () => $('#modal').classList.add('hidden');
+  $('#m-ne').onclick = zavri;
   $('#m-ano').onclick = async () => {
     $('#m-ano').disabled = true;
-    try { await api(`/${id}/smazat`, {}); $('#modal').classList.add('hidden'); nacti(); }
+    try { await api(`/${id}/smazat`, {}); zavri(); nacti(); }
     catch(e) { $('#m-bd').innerHTML = `<span style="color:#8a0e44">${esc(e.message)}</span>`; }
     $('#m-ano').disabled = false;
   };
 }
-document.addEventListener('keydown', e => { if (e.key==='Escape') $('#modal').classList.add('hidden'); });
+document.addEventListener('click', async e => {
+  const b = e.target.closest('[data-copy]'); if (!b) return;
+  try { await navigator.clipboard.writeText(b.dataset.copy); const t = b.textContent; b.textContent = '✓ Zkopírováno'; setTimeout(() => b.textContent = t, 1500); }
+  catch(_) { prompt('Zkopíruj odkaz:', b.dataset.copy); }
+});
+function metaKampan(id, j){
+  const r = DATA.find(x => x.id===id); if (!r) return;
+  $('#m-hd').textContent = `📣 Reklama ${j.toUpperCase()} na Facebook + Instagram`;
+  $('#m-hd').style.cssText = 'background:#f3f0fb;border-color:#cfc3ea;color:#3d2a6b';
+  $('#m-bd').innerHTML = `Založím ve Správci reklam kampaň <b>${esc(r.nazev)}</b> (Advantage+, ${j==='sk'?'Slovensko':'Česko'}) se všemi rozměry banneru,
+    texty a UTM odkazy. <b>Vše zůstane pozastavené</b> — spustíš to sám po kontrole.
+    <label style="display:block;margin-top:10px;font-size:11px;font-weight:700;color:var(--br)">DENNÍ ROZPOČET (${j==='sk'?'€':'Kč'})</label>
+    <input type="text" id="m-rozp" value="${j==='sk'?'10':'300'}" inputmode="decimal">`;
+  $('#m-ano').textContent = 'Připravit reklamu'; $('#m-ano').className = 'btn';
+  $('#modal').classList.remove('hidden'); $('#m-rozp').focus();
+  $('#m-ne').onclick = zavri;
+  $('#m-ano').onclick = async () => {
+    $('#m-ano').disabled = true; $('#m-ano').innerHTML = '<span class="spin"></span>Zakládám…';
+    try { await api(`/${id}/meta`, {jazyk: j, rozpocet: $('#m-rozp').value}); zavri(); nacti(); }
+    catch(e) { $('#m-bd').insertAdjacentHTML('beforeend', `<div class="msg err">${esc(e.message)}</div>`); $('#m-ano').textContent = 'Zkusit znovu'; }
+    $('#m-ano').disabled = false;
+  };
+}
+async function metaDoplnit(id, j, b){
+  b.disabled = true; b.innerHTML = '<span class="spin"></span>Zkouším…';
+  try { await api(`/${id}/meta`, {jazyk: j}); nacti(); }
+  catch(e) { alert(e.message); b.disabled = false; b.textContent = 'Doplnit reklamy'; }
+}
+function zavri(){
+  $('#modal').classList.add('hidden');
+  $('#m-hd').textContent = '⚠️ Smazat banner?'; $('#m-hd').style.cssText = '';
+  $('#m-ano').textContent = 'Smazat natrvalo'; $('#m-ano').className = 'btn danger';
+}
+document.addEventListener('keydown', e => { if (e.key==='Escape') zavri(); });
 async function akce(id, a){
   try { await api(`/${id}/${a}`, {}); nacti(); } catch(e) { alert(e.message); }
 }
+
+// season reminder link: bannery.html?tema=valentyn -> theme preselected, name started
+{ const t = new URLSearchParams(location.search).get('tema');
+  if (t && TEMATA[t]) { const i = document.querySelector(`input[name=tema][value=${t}]`); if (i) i.checked = true;
+    if (!$('#nazev').value) { const d = new Date(); $('#nazev').value = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')} ${TEMATA[t]} – `; } } }
 
 // start: archive directly when opened from an e-mail link; detect GitHub copy (no API there)
 fetch(API + '/archiv').then(r => { if (!(r.headers.get('content-type')||'').includes('json')) throw 0; return r.json(); })
