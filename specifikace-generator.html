@@ -263,6 +263,7 @@ const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz12_74IkFywh6o
 pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
 let extractedText = "";
+let pageImages = [];   // base64 JPEG stránek — pro Vision fallback na serveru
 let currentSpec = null;
 
 // Záložní extrakce výživových hodnot z raw textu (regex) — pro případ, kdy API nevrátí hodnoty
@@ -346,6 +347,20 @@ async function extractPDF(file) {
       text += rows.map(r => r.map(it => it.str).join(" ")).join("\n") + "\n\n";
     }
     extractedText = text;
+
+    // Renderuj stránky do canvas → JPEG pro Vision fallback
+    pageImages = [];
+    for (let pi = 1; pi <= pdf.numPages; pi++) {
+      try {
+        const pg = await pdf.getPage(pi);
+        const vp = pg.getViewport({ scale: 1.5 });
+        const cv = document.createElement('canvas');
+        cv.width = vp.width; cv.height = vp.height;
+        await pg.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
+        pageImages.push(cv.toDataURL('image/jpeg', 0.82));
+      } catch (_) {}
+    }
+
     setStatus("loading", `✅ PDF přečten (${pdf.numPages} stran, ${text.length} znaků)`);
     // Debug: show extracted text
     const dbg = document.getElementById('debug-text');
@@ -398,7 +413,7 @@ document.getElementById("btn-generate").addEventListener("click", async () => {
 
     if (!data.success) throw new Error(data.error || "Chyba serveru");
 
-    // Záloha: dopln výživové hodnoty z raw textu, pokud je API vynechalo
+    // Záloha 1: regex z raw textu
     if (extractedText && data.spec) {
       const vy = data.spec.vyziva || {};
       const nutri = extractNutriFromText(extractedText);
@@ -407,6 +422,25 @@ document.getElementById("btn-generate").addEventListener("click", async () => {
         if (!vy[k]) { vy[k] = v; filled = true; }
       }
       if (filled) data.spec.vyziva = vy;
+    }
+
+    // Záloha 2: Claude Vision (jen na serveru, pokud výživovky stále chybí)
+    const isServer = window.location.hostname !== 'nutworldcz-collab.github.io';
+    const vy = data.spec && data.spec.vyziva;
+    const vyMissing = !vy || !vy.energie;
+    if (isServer && vyMissing && pageImages.length) {
+      setStatus("loading", "⏳ Výživové hodnoty nebyly v textu — čtu je z obrázku (Claude Vision)…");
+      try {
+        const vResp = await fetch('/api/spec-nutrition-vision', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pageImages })
+        });
+        const vData = await vResp.json();
+        if (vData.success && vData.vyziva) {
+          data.spec.vyziva = vData.vyziva;
+        }
+      } catch (_) { /* tiché selhání — specifikace se zobrazí bez výživovek */ }
     }
 
     currentSpec = data.spec;
