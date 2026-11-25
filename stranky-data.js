@@ -81,7 +81,8 @@ window.NW_STRANKY = [
   "ikona": "📄",
   "nazev": "Generátor nabídek",
   "popis": "Vytvoř nabídku pro zákazníka a stáhni PDF",
-  "hlavni": 1
+  "hlavni": 1,
+  "barva": "brown"
  },
  {
   "soubor": "zakazy.html",
@@ -89,14 +90,16 @@ window.NW_STRANKY = [
   "ikona": "🃏",
   "nazev": "Přehled zakázek",
   "popis": "Live stav zakázek z Trella — firmy, hodnoty, termíny",
-  "hlavni": 2
+  "hlavni": 2,
+  "barva": "amber"
  },
  {
   "soubor": "kalendar.html",
   "skupina": "obchod",
   "ikona": "📅",
   "nazev": "Kalendář termínů",
-  "popis": "Termíny dodání zakázek v měsíčním přehledu — barevně podle obchodního zástupce"
+  "popis": "Termíny dodání zakázek v měsíčním přehledu — barevně podle obchodního zástupce",
+  "barva": "amber"
  },
  {
   "soubor": "zakazka.html",
@@ -110,14 +113,16 @@ window.NW_STRANKY = [
   "skupina": "obchod",
   "ikona": "🏢",
   "nazev": "Firmy — vlastní ceníky",
-  "popis": "Individuální ceníky a nabídky pro firemní zákazníky — Náchod, Olympic Palace a další."
+  "popis": "Individuální ceníky a nabídky pro firemní zákazníky — Náchod, Olympic Palace a další.",
+  "barva": "brown"
  },
  {
   "soubor": "partneri.html",
   "skupina": "obchod",
   "ikona": "🏢",
   "nazev": "Registr partnerů",
-  "popis": "Vyhledávání v dodavatelích a odběratelích z K2 — filtr podle IČO, doplňování nových"
+  "popis": "Vyhledávání v dodavatelích a odběratelích z K2 — filtr podle IČO, doplňování nových",
+  "barva": "brown"
  },
  {
   "soubor": "klienti.html",
@@ -132,21 +137,24 @@ window.NW_STRANKY = [
   "skupina": "obchod",
   "ikona": "🧪",
   "nazev": "Vzorky",
-  "popis": "Zadávání a sledování B2B vzorků — od zadání přes výrobu až po odeslání klientovi"
+  "popis": "Zadávání a sledování B2B vzorků — od zadání přes výrobu až po odeslání klientovi",
+  "barva": "pink"
  },
  {
   "soubor": "bulk-cenik.html",
   "skupina": "obchod",
   "ikona": "📦",
   "nazev": "Bulk ceník",
-  "popis": "solo balení s přelepením etikety · ceny Kč/kg + Kč/bal · automaticky dle nákupních cen"
+  "popis": "solo balení s přelepením etikety · ceny Kč/kg + Kč/bal · automaticky dle nákupních cen",
+  "barva": "green"
  },
  {
   "soubor": "generator-darky.html",
   "skupina": "obchod",
   "ikona": "🎁",
   "nazev": "Generátor dárků",
-  "popis": "Konfigurátor firemních dárků — krabičky, kelímky, skleničky a další balení na míru"
+  "popis": "Konfigurátor firemních dárků — krabičky, kelímky, skleničky a další balení na míru",
+  "barva": "amber"
  },
  {
   "soubor": "generator-darkove-krabicky.html",
@@ -176,7 +184,8 @@ window.NW_STRANKY = [
   "skupina": "obchod",
   "ikona": "📄",
   "nazev": "Generátor dokumentů",
-  "popis": "Vložte text → Nutworld kabátek → PDF. Dopis, katalog, ceník, info list, nabídka."
+  "popis": "Vložte text → Nutworld kabátek → PDF. Dopis, katalog, ceník, info list, nabídka.",
+  "barva": "amber"
  },
  {
   "soubor": "dokumenty.html",
@@ -191,35 +200,40 @@ window.NW_STRANKY = [
   "ikona": "🧮",
   "nazev": "Kalkulátor cen",
   "popis": "Kalkulace MO/VO ceny a marže — produkty i dárky (krabičky, sáčky, skleničky, kelímky)",
-  "hlavni": 4
+  "hlavni": 4,
+  "barva": "amber"
  },
  {
   "soubor": "marze.html",
   "skupina": "ceny",
   "ikona": "📊",
   "nazev": "Přehled marží",
-  "popis": "Marže dárků a sáčků — vždy aktuální z ceníku"
+  "popis": "Marže dárků a sáčků — vždy aktuální z ceníku",
+  "barva": "pink"
  },
  {
   "soubor": "k2.html",
   "skupina": "ceny",
   "ikona": "📈",
   "nazev": "K2 Porovnání ceníků",
-  "popis": "Porovnání K2 ceníků — květen vs. červen 2026"
+  "popis": "Porovnání K2 ceníků — květen vs. červen 2026",
+  "barva": "amber"
  },
  {
   "soubor": "bulk-cenik-pracovni.html",
   "skupina": "ceny",
   "ikona": "🔢",
   "nazev": "Bulk ceník — Pracovní",
-  "popis": "Interní verze · nákupní ceny · marže % · poznámky · aktualizace automaticky"
+  "popis": "Interní verze · nákupní ceny · marže % · poznámky · aktualizace automaticky",
+  "barva": "brown"
  },
  {
   "soubor": "obchod-smesi.html",
   "skupina": "ceny",
   "ikona": "🏪",
   "nazev": "Alza & Vilgain — Marže",
-  "popis": "Marže směsí a produktů dle gramáže — plné náklady (sáček, plnění, etiketa, doprava). Alza + Vilgain."
+  "popis": "Marže směsí a produktů dle gramáže — plné náklady (sáček, plnění, etiketa, doprava). Alza + Vilgain.",
+  "barva": "amber"
  },
  {
   "soubor": "cenik.html",
@@ -235,21 +249,24 @@ window.NW_STRANKY = [
   "ikona": "🏭",
   "nazev": "Výrobní plán",
   "popis": "Přehled co vyrábět — filtruj podle produktu, odškrtávej hotové firmy",
-  "hlavni": 3
+  "hlavni": 3,
+  "barva": "brown"
  },
  {
   "soubor": "objednavky.html",
   "skupina": "vyroba",
   "ikona": "📦",
   "nazev": "Výrobní rozklad objednávek",
-  "popis": "Live Shoptet objednávky → co vyrábět dnes — CZ + SK, filtr dle data, vyhledávání"
+  "popis": "Live Shoptet objednávky → co vyrábět dnes — CZ + SK, filtr dle data, vyhledávání",
+  "barva": "green"
  },
  {
   "soubor": "normy.html",
   "skupina": "vyroba",
   "ikona": "🏭",
   "nazev": "Normy výroby + Kalkulátor zakázky",
-  "popis": "Výrobní normy balení — ks/hod, Kč/ks, čas zakázky. Šablony pro eko kelímek, doypack, kornout, kazetku, krabičky a další."
+  "popis": "Výrobní normy balení — ks/hod, Kč/ks, čas zakázky. Šablony pro eko kelímek, doypack, kornout, kazetku, krabičky a další.",
+  "barva": "green"
  },
  {
   "soubor": "vyrobni-plan.html",
@@ -257,42 +274,48 @@ window.NW_STRANKY = [
   "ikona": "🎁",
   "nazev": "Výrobní plán produktů",
   "popis": "Plán výroby vánočních dárků — zadej počty kusů, zobraz potřebu surovin",
-  "stitek": "sloučit s výrobním plánem"
+  "stitek": "sloučit s výrobním plánem",
+  "barva": "amber"
  },
  {
   "soubor": "adventni-kalendar.html",
   "skupina": "vyroba",
   "ikona": "🎄",
   "nazev": "Adventní kalendář 2026",
-  "popis": "Výrobní manuál — kalkulace, rozložení 24 okének, výrobní fronta"
+  "popis": "Výrobní manuál — kalkulace, rozložení 24 okének, výrobní fronta",
+  "barva": "amber"
  },
  {
   "soubor": "co-obsahuje.html",
   "skupina": "vyroba",
   "ikona": "📦",
   "nazev": "Co obsahuje?",
-  "popis": "Zadej kód dárku → obsah s kódy a gramy. Nebo kód směsi → složení s alergeny."
+  "popis": "Zadej kód dárku → obsah s kódy a gramy. Nebo kód směsi → složení s alergeny.",
+  "barva": "green"
  },
  {
   "soubor": "darky-lookup.html",
   "skupina": "vyroba",
   "ikona": "🔍",
   "nazev": "Kde je produkt?",
-  "popis": "Zadej kód základního produktu → uvidíš všechny dárky, kde je obsažený."
+  "popis": "Zadej kód základního produktu → uvidíš všechny dárky, kde je obsažený.",
+  "barva": "amber"
  },
  {
   "soubor": "suroviny.html",
   "skupina": "vyroba",
   "ikona": "🥜",
   "nazev": "Kde co je",
-  "popis": "Průřez podle suroviny — vyber druh ořechu a uvidíš všechny dárky kde se nachází"
+  "popis": "Průřez podle suroviny — vyber druh ořechu a uvidíš všechny dárky kde se nachází",
+  "barva": "brown"
  },
  {
   "soubor": "receptury-smesi.html",
   "skupina": "vyroba",
   "ikona": "🧮",
   "nazev": "Receptury směsí",
-  "popis": "Přesné poměry složení — Alza, Vilgain, Nutworld — na 1 kg a 20 kg"
+  "popis": "Přesné poměry složení — Alza, Vilgain, Nutworld — na 1 kg a 20 kg",
+  "barva": "green"
  },
  {
   "soubor": "prijem-surovin.html",
@@ -300,21 +323,24 @@ window.NW_STRANKY = [
   "ikona": "📦",
   "nazev": "Příjem surovin",
   "popis": "Záznam příjmu dodávky — dodavatel, číslo dodávky, šarže, DMT, stav položek, tisk",
-  "hlavni": 5
+  "hlavni": 5,
+  "barva": "brown"
  },
  {
   "soubor": "archiv-prijmu.html",
   "skupina": "sklad",
   "ikona": "📂",
   "nazev": "Archiv příjmů",
-  "popis": "Vyhledávání v historii dodávek — podle suroviny, LOT, dodavatele, data nebo DMT"
+  "popis": "Vyhledávání v historii dodávek — podle suroviny, LOT, dodavatele, data nebo DMT",
+  "barva": "green"
  },
  {
   "soubor": "denik-michani.html",
   "skupina": "sklad",
   "ikona": "📋",
   "nazev": "Deník míchání a surovin",
-  "popis": "Záznam zpracování velkých dávek surovin — šarže, LOT, DMT, uložení do Trella"
+  "popis": "Záznam zpracování velkých dávek surovin — šarže, LOT, DMT, uložení do Trella",
+  "barva": "brown"
  },
  {
   "soubor": "michani-archiv.html",
@@ -328,7 +354,8 @@ window.NW_STRANKY = [
   "skupina": "sklad",
   "ikona": "📷",
   "nazev": "Nahrát foto formuláře",
-  "popis": "Veřejná stránka — nafotit vyplněný papír → AI přečte → Trello karta automaticky"
+  "popis": "Veřejná stránka — nafotit vyplněný papír → AI přečte → Trello karta automaticky",
+  "barva": "amber"
  },
  {
   "soubor": "dmt.html",
@@ -342,14 +369,16 @@ window.NW_STRANKY = [
   "skupina": "produkty",
   "ikona": "📋",
   "nazev": "Specifikace produktů",
-  "popis": "Ořechy, Ovoce, Semínka, Směsi NW, Ostatní · PDF z Trella · složení směsí s alergeny"
+  "popis": "Ořechy, Ovoce, Semínka, Směsi NW, Ostatní · PDF z Trella · složení směsí s alergeny",
+  "barva": "brown"
  },
  {
   "soubor": "specifikace-generator.html",
   "skupina": "produkty",
   "ikona": "📋",
   "nazev": "Generátor specifikací",
-  "popis": "Nahraj spec od dodavatele → přeloží a převede do Nutworld formátu (PDF)"
+  "popis": "Nahraj spec od dodavatele → přeloží a převede do Nutworld formátu (PDF)",
+  "barva": "green"
  },
  {
   "soubor": "mix-specifikace.html",
@@ -363,21 +392,24 @@ window.NW_STRANKY = [
   "skupina": "produkty",
   "ikona": "🔄",
   "nazev": "Změny produktů",
-  "popis": "Zaznamenej změnu dodavatele, složení nebo alergenů — odklikej web CZ/SK, etiketu a Trello"
+  "popis": "Zaznamenej změnu dodavatele, složení nebo alergenů — odklikej web CZ/SK, etiketu a Trello",
+  "barva": "pink"
  },
  {
   "soubor": "produkty.html",
   "skupina": "produkty",
   "ikona": "📋",
   "nazev": "Nové produkty",
-  "popis": "Trello nástěnka — přesouvej karty přímo tady bez otevření Trella"
+  "popis": "Trello nástěnka — přesouvej karty přímo tady bez otevření Trella",
+  "barva": "brown"
  },
  {
   "soubor": "generator.html",
   "skupina": "produkty",
   "ikona": "📦",
   "nazev": "Generátor produktů",
-  "popis": "Doplnit popis nebo upravit existující produkt — Claude nahraje texty CZ + SK do Shoptetu"
+  "popis": "Doplnit popis nebo upravit existující produkt — Claude nahraje texty CZ + SK do Shoptetu",
+  "barva": "green"
  },
  {
   "soubor": "stitky.html",
@@ -407,14 +439,16 @@ window.NW_STRANKY = [
   "skupina": "produkty",
   "ikona": "⚠️",
   "nazev": "Alergeny — nástěnka",
-  "popis": "Tisknutelný přehled pro laminaci: alergeny v provozu, pořadí výroby (Var. A + B), changeover postup, checklist před šarží."
+  "popis": "Tisknutelný přehled pro laminaci: alergeny v provozu, pořadí výroby (Var. A + B), changeover postup, checklist před šarží.",
+  "barva": "green"
  },
  {
   "soubor": "doprava.html",
   "skupina": "doprava",
   "ikona": "🚛",
   "nazev": "Doprava",
-  "popis": "Kalkulátory dopravy — Geis (palety), PPL (zásilky CZ+SK), Zásilkovna, TopTrans. Cena, mýtné, dobírka."
+  "popis": "Kalkulátory dopravy — Geis (palety), PPL (zásilky CZ+SK), Zásilkovna, TopTrans. Cena, mýtné, dobírka.",
+  "barva": "brown"
  },
  {
   "soubor": "ppl.html",
@@ -453,14 +487,16 @@ window.NW_STRANKY = [
   "skupina": "marketing",
   "ikona": "📅",
   "nazev": "Marketingový kalendář",
-  "popis": "Q4 2026 — 10 kampaní, editovatelné produkty, stav a poznámky. Přidávej vlastní kampaně."
+  "popis": "Q4 2026 — 10 kampaní, editovatelné produkty, stav a poznámky. Přidávej vlastní kampaně.",
+  "barva": "pink"
  },
  {
   "soubor": "bannery.html",
   "skupina": "marketing",
   "ikona": "🐿️",
   "nazev": "Generátor bannerů",
-  "popis": "Téma, rozměry, CZ/SK → NutWorldka z Canvy + texty a logo podle značky. Archiv s vyhledáváním, uložení do Canvy."
+  "popis": "Téma, rozměry, CZ/SK → NutWorldka z Canvy + texty a logo podle značky. Archiv s vyhledáváním, uložení do Canvy.",
+  "barva": "pink"
  },
  {
   "soubor": "web-audit.html",
@@ -468,14 +504,16 @@ window.NW_STRANKY = [
   "ikona": "📊",
   "nazev": "Web Audit: Nutworld.cz",
   "popis": "Komplexní analýza webu — hodnocení 7 oblastí, prioritní matice, doporučení pro Q4 2026. Skóre 6.8/10.",
-  "stitek": "archiv"
+  "stitek": "archiv",
+  "barva": "brown"
  },
  {
   "soubor": "cenik-grafika.html",
   "skupina": "marketing",
   "ikona": "🖨️",
   "nazev": "Pravidla: Ceník tisků",
-  "popis": "Grafika a tisk Claudia Fiori — nákupní ceny, pravidla pro zákazníka, příklady výpočtů"
+  "popis": "Grafika a tisk Claudia Fiori — nákupní ceny, pravidla pro zákazníka, příklady výpočtů",
+  "barva": "amber"
  },
  {
   "soubor": "pichacky.html",
@@ -483,7 +521,8 @@ window.NW_STRANKY = [
   "ikona": "⏱",
   "nazev": "Píchačky",
   "popis": "Docházka zaměstnanců — příchod/odchod, denní a měsíční hodiny, sazba, výplata, export CSV",
-  "stitek": "nově sdílené"
+  "stitek": "nově sdílené",
+  "barva": "brown"
  },
  {
   "soubor": "zamestnanci.html",
@@ -504,84 +543,96 @@ window.NW_STRANKY = [
   "skupina": "lide",
   "ikona": "✍️",
   "nazev": "Podpisové řády",
-  "popis": "Vnitřní řád pracoviště k podpisu — HPP, DPP/DPČ a pracovníci firmy na úkolové práce. Tisk po záložkách."
+  "popis": "Vnitřní řád pracoviště k podpisu — HPP, DPP/DPČ a pracovníci firmy na úkolové práce. Tisk po záložkách.",
+  "barva": "green"
  },
  {
   "soubor": "skoleni-dpp.html",
   "skupina": "lide",
   "ikona": "📝",
   "nazev": "Vstupní školení DPP",
-  "popis": "Obecné školení k podpisu — pracovní řád, BOZP, hygiena, mobilní telefon, mlčenlivost, požár, alergeny. 12 sekcí + podpisový arch."
+  "popis": "Obecné školení k podpisu — pracovní řád, BOZP, hygiena, mobilní telefon, mlčenlivost, požár, alergeny. 12 sekcí + podpisový arch.",
+  "barva": "brown"
  },
  {
   "soubor": "rozdeleni-pracovniku.html",
   "skupina": "lide",
   "ikona": "🏢",
   "nazev": "Rozdělení pracovníků",
-  "popis": "B2B vs. HPP — co Nutworld může a nesmí řídit, zóny, pauzy, švarcsystém, BOZP jako provozovatel."
+  "popis": "B2B vs. HPP — co Nutworld může a nesmí řídit, zóny, pauzy, švarcsystém, BOZP jako provozovatel.",
+  "barva": "brown"
  },
  {
   "soubor": "maorth-trans-komplet.html",
   "skupina": "lide",
   "ikona": "🤝",
   "nazev": "Firma na úkolové práce — kompletní přehled",
-  "popis": "Podmínky B2B spolupráce, švarcsystém, daně, GDPR, IP, BOZP, organizace, kontrolní orgány — checklist."
+  "popis": "Podmínky B2B spolupráce, švarcsystém, daně, GDPR, IP, BOZP, organizace, kontrolní orgány — checklist.",
+  "barva": "amber"
  },
  {
   "soubor": "podminky-maorth-trans.html",
   "skupina": "lide",
   "ikona": "📋",
   "nazev": "Podmínky s firmou na úkolové práce",
-  "popis": "8 oblastí: smlouva, GDPR, autorská práva, daně, BOZP, mlčenlivost, ukončení, pojištění."
+  "popis": "8 oblastí: smlouva, GDPR, autorská práva, daně, BOZP, mlčenlivost, ukončení, pojištění.",
+  "barva": "brown"
  },
  {
   "soubor": "pudorysy.html",
   "skupina": "lide",
   "ikona": "🗺️",
   "nazev": "Půdorysy — zóny AG",
-  "popis": "Půdorysy pracoviště s vyznačenými zónami firmy na úkolové práce — Z1AG, Z2AG (1. patro) · Z4AG (2. patro)."
+  "popis": "Půdorysy pracoviště s vyznačenými zónami firmy na úkolové práce — Z1AG, Z2AG (1. patro) · Z4AG (2. patro).",
+  "barva": "amber"
  },
  {
   "soubor": "oznaceni-pracoviste.html",
   "skupina": "lide",
   "ikona": "🚧",
   "nazev": "Označení pracoviště",
-  "popis": "BOZP, únikové cesty, potravinářský provoz, živnostenský zákon §17 — co musí být fyzicky označeno."
+  "popis": "BOZP, únikové cesty, potravinářský provoz, živnostenský zákon §17 — co musí být fyzicky označeno.",
+  "barva": "pink"
  },
  {
   "soubor": "haccp.html",
   "skupina": "lide",
   "ikona": "🛡️",
   "nazev": "HACCP Plán",
-  "popis": "Kompletní HACCP plán Nut World s.r.o. — analýza nebezpečí, CCP, krizový plán, tisknutelné přílohy (formuláře, alergeny, kalibrace)."
+  "popis": "Kompletní HACCP plán Nut World s.r.o. — analýza nebezpečí, CCP, krizový plán, tisknutelné přílohy (formuláře, alergeny, kalibrace).",
+  "barva": "green"
  },
  {
   "soubor": "teploty-formular.html",
   "skupina": "lide",
   "ikona": "🌡️",
   "nazev": "Evidence teplot",
-  "popis": "Měsíční formulář pro tisk: sklad surovin (°C + RH) a balírna. 31 řádků, prázdná pole pro ruční vyplnění."
+  "popis": "Měsíční formulář pro tisk: sklad surovin (°C + RH) a balírna. 31 řádků, prázdná pole pro ruční vyplnění.",
+  "barva": "green"
  },
  {
   "soubor": "skladnik-priority.html",
   "skupina": "lide",
   "ikona": "📦",
   "nazev": "Priority skladníka",
-  "popis": "8 priorit seřazených podle důležitosti — dofasování, příjem, K2, přesun ZJ/DJ, logistika, teplota, čistota."
+  "popis": "8 priorit seřazených podle důležitosti — dofasování, příjem, K2, přesun ZJ/DJ, logistika, teplota, čistota.",
+  "barva": "green"
  },
  {
   "soubor": "operator-balirna.html",
   "skupina": "lide",
   "ikona": "🏭",
   "nazev": "Priority operátora balírny",
-  "popis": "9 priorit pro balírnu — tavení zakázek, rozvoz DJ/ZJ, míchání, krabice, čistý provoz, štítkování, sáčky."
+  "popis": "9 priorit pro balírnu — tavení zakázek, rozvoz DJ/ZJ, míchání, krabice, čistý provoz, štítkování, sáčky.",
+  "barva": "amber"
  },
  {
   "soubor": "navod-nabidky.html",
   "skupina": "lide",
   "ikona": "📖",
   "nazev": "Návod: Nabídky & Zakázky",
-  "popis": "Jak zadávat nabídky, zakázky, výrobní plány — kompletní průvodce systémem"
+  "popis": "Jak zadávat nabídky, zakázky, výrobní plány — kompletní průvodce systémem",
+  "barva": "green"
  },
  {
   "soubor": "wolf.html",
