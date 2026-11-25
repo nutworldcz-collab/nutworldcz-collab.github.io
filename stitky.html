@@ -316,11 +316,35 @@ async function extractSpecPDF(file) {
     for (let i = 1; i <= pdf.numPages; i++) {
       const page = await pdf.getPage(i);
       const content = await page.getTextContent();
-      text += content.items.map(item => item.str).join(' ') + '\n';
+
+      // Position-aware extraction: group items by Y into rows (tabulky v PDF mají chaos v pořadí)
+      const items = content.items
+        .filter(it => it.str.trim())
+        .map(it => ({ str: it.str, x: it.transform[4], y: it.transform[5] }));
+
+      if (!items.length) { text += '\n'; continue; }
+
+      // PDF Y=0 je dole → řadit sestupně (od shora), pak X vzestupně
+      items.sort((a, b) => (b.y - a.y) || (a.x - b.x));
+
+      // Seskupit do řádků: položky do 5 pt Y od sebe = stejný řádek
+      const rows = [];
+      let row = [items[0]];
+      for (let j = 1; j < items.length; j++) {
+        if (Math.abs(items[j].y - row[0].y) <= 5) {
+          row.push(items[j]);
+        } else {
+          rows.push([...row].sort((a, b) => a.x - b.x));
+          row = [items[j]];
+        }
+      }
+      rows.push([...row].sort((a, b) => a.x - b.x));
+
+      text += rows.map(r => r.map(it => it.str).join(' ')).join('\n') + '\n\n';
     }
     specText = text;
     document.getElementById('btn-extract').disabled = false;
-    setSpecStatus('ok', '✅ PDF načteno (' + pdf.numPages + ' stran). Klikni "Načíst data ze spec".');
+    setSpecStatus('ok', `✅ PDF načteno (${pdf.numPages} stran). Klikni "Načíst data ze spec".`);
   } catch (e) {
     setSpecStatus('err', 'Chyba čtení PDF: ' + e.message);
   }
