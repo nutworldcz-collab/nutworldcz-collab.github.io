@@ -1097,7 +1097,6 @@ function loadDB() {
 }
 function mkDefault() {
   return {
-    pin: 'jan1a',
     people: [
     ],
     records: {}
@@ -1658,4 +1657,160 @@ function checkSyncHash() {
   } catch {}
   history.replaceState(null, '', location.pathname);
 }
+</script>
+<script>
+/* ═══ SDÍLENÉ ÚLOŽIŠTĚ (Jan 2026-11-25) ═══════════════════════════════════════════
+   Jan: plný pohled přes svůj přístup do nástrojů (NWData ns "pichacky", jen Jan).
+   Pracovník: vlastní tajný odkaz …/pichacky.html#t=… → vidí a zapisuje JEN svoje dny
+   (server: akce "pich", aktuální + minulý měsíc). Dny se ukládají jednotlivě, takže
+   zápisy Jana a pracovníka se nepřepisují. Stará data z prohlížeče se nahrají sama.  */
+const NW_API = 'https://script.google.com/macros/s/AKfycbxK5FYBYGYsf9Hh9ueahqi0FhCDhaoxTkhzpFM3retvDBKvbOUJ1-YxSQurR2MQB2OT/exec';
+const TOKEN = (location.hash.match(/[#&]t=([A-Za-z0-9_-]{20,})/) || [])[1] || '';
+const MODE = TOKEN ? 'worker' : 'jan';
+let synced = { people: '[]', records: {} }, remoteReady = false, saving = Promise.resolve();
+
+function snapshot() { synced = { people: JSON.stringify(db.people), records: JSON.parse(JSON.stringify(db.records)) }; }
+function status(t, bad) {
+  let el = document.getElementById('nw-status');
+  if (!el) { el = document.createElement('div'); el.id = 'nw-status';
+    el.style.cssText = 'position:fixed;bottom:12px;right:12px;z-index:9999;background:#5c381f;color:#fff;padding:7px 12px;border-radius:9px;font:600 12px Arial;box-shadow:0 4px 14px rgba(0,0,0,.2)';
+    document.body.appendChild(el); }
+  el.style.background = bad ? '#da1668' : '#5c381f'; el.textContent = t; el.hidden = !t;
+  if (t && !bad) { clearTimeout(el._t); el._t = setTimeout(() => { el.hidden = true; }, 2500); }
+}
+async function pichApi(body) {
+  const r = await fetch(NW_API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ action: 'pich', token: TOKEN, ...body }) });
+  const j = await r.json(); if (!j.ok) throw new Error(j.error || 'chyba'); return j;
+}
+function splitKey(k) { const i = k.lastIndexOf(':'); return [k.slice(0, i), k.slice(i + 1)]; }
+function changedDays() {
+  const out = [], keys = new Set([...Object.keys(db.records), ...Object.keys(synced.records)]);
+  keys.forEach(k => { if (JSON.stringify(db.records[k] || null) !== JSON.stringify(synced.records[k] || null)) out.push(k); });
+  return out;
+}
+save = function () {
+  try { localStorage.setItem(SK + '_zaloha', JSON.stringify(db)); } catch (e) {}
+  if (!remoteReady) return;
+  saving = saving.then(async () => {
+    const days = changedDays();
+    const peopleChanged = MODE === 'jan' && JSON.stringify(db.people) !== synced.people;
+    if (!days.length && !peopleChanged) return;
+    status('Ukládám…');
+    try {
+      if (MODE === 'jan') {
+        const ops = [], months = {};
+        if (peopleChanged) ops.push({ action: 'patch', id: 'people', data: { people: db.people } });
+        days.forEach(k => { const [pid, dt] = splitKey(k); const id = 'm:' + pid + ':' + dt.slice(0, 7);
+          (months[id] = months[id] || {})[dt] = db.records[k] || null; });
+        Object.entries(months).forEach(([id, data]) => ops.push({ action: 'patch', id, data }));
+        for (let i = 0; i < ops.length; i += 400) await NWData.batch('pichacky', ops.slice(i, i + 400));
+      } else {
+        for (const k of days) await pichApi({ op: 'put', date: splitKey(k)[1], rec: db.records[k] || null });
+      }
+      snapshot(); status('Uloženo ✓');
+    } catch (e) { status('⚠ Neuloženo: ' + e.message, true); }
+  });
+};
+function fromMonths(pid, months, into) {
+  Object.values(months).forEach(m => Object.entries(m || {}).forEach(([dt, rec]) => { if (rec) into[pid + ':' + dt] = rec; }));
+}
+async function loadRemote() {
+  if (MODE === 'worker') {
+    const j = await pichApi({ op: 'load' });
+    db = { people: [{ id: j.me.id, name: j.me.name, type: j.me.type, rate: 0 }], records: {} };
+    fromMonths(j.me.id, j.months, db.records);
+  } else {
+    const items = await NWData.list('pichacky');
+    const people = items.find(i => i.id === 'people');
+    const recs = {};
+    items.filter(i => i.id.startsWith('m:')).forEach(i => { const pid = i.id.split(':')[1]; fromMonths(pid, { x: i.data }, recs); });
+    db = { people: (people && people.data.people) || [], records: recs };
+    snapshot(); remoteReady = true;
+    // this browser's old local data (before 2026-11-25): add people/days the shared store does not have (once)
+    let done = false; try { done = localStorage.getItem('nw_pichacky_nahrano') === '1'; } catch (e) {}
+    if (!done) {
+      let local = null; try { local = JSON.parse(localStorage.getItem(SK)); } catch (e) {}
+      if (local && local.people && local.people.length) {
+        const ids = new Set(db.people.map(p => p.id)); let n = 0;
+        local.people.forEach(p => { if (!ids.has(p.id)) { const q = { ...p }; delete q.pin; db.people.push(q); n++; } });
+        Object.entries(local.records || {}).forEach(([k, r]) => { if (!db.records[k]) { db.records[k] = r; n++; } });
+        if (n) { status('Nahrávám data z tohoto prohlížeče…'); save(); await saving; }
+      }
+      if (!changedDays().length && JSON.stringify(db.people) === synced.people) { try { localStorage.setItem('nw_pichacky_nahrano', '1'); } catch (e) {} }  // only after a successful upload
+    }
+    return;
+  }
+  snapshot(); remoteReady = true;
+}
+
+/* ── odkaz pro pracovníka ── */
+async function sha256hex(t) { const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(t));
+  return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join(''); }
+async function makeLink(pid) {
+  const p = db.people.find(x => x.id === pid); if (!p) return;
+  const raw = crypto.getRandomValues(new Uint8Array(24));
+  const tok = btoa(String.fromCharCode(...raw)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  p.tokenHash = await sha256hex(tok); p.odkazOd = new Date().toISOString().slice(0, 10);
+  save(); await saving;
+  const url = location.origin + location.pathname + '#t=' + tok;
+  let ov = document.getElementById('link-ov');
+  if (!ov) { ov = document.createElement('div'); ov.id = 'link-ov'; ov.className = 'add-overlay'; document.body.appendChild(ov); }
+  ov.innerHTML = `<div class="add-card"><div class="modal-title" style="margin-bottom:10px">Odkaz pro ${p.name}</div>
+    <p style="font-size:13px;color:#6a4a30;line-height:1.5;margin:0 0 12px">Pošli mu ho osobně (SMS / WhatsApp). Přes odkaz uvidí a zapíše jen svoje hodiny
+    (aktuální a minulý měsíc). Starý odkaz tímto přestal platit. Odkaz se zobrazí jen teď — ulož si ho, nebo vygeneruj nový.</p>
+    <input id="link-out" readonly value="${url}" style="width:100%;font-size:12px;margin-bottom:12px" onclick="this.select()">
+    <div class="modal-actions"><button class="btn-sec" onclick="document.getElementById('link-ov').hidden=true">Zavřít</button>
+    <button class="btn-prim" onclick="navigator.clipboard.writeText(document.getElementById('link-out').value).then(()=>this.textContent='✓ Zkopírováno').catch(()=>document.getElementById('link-out').select())">Kopírovat</button></div></div>`;
+  ov.hidden = false; renderDashboard();
+}
+async function revokeLink(pid) {
+  const p = db.people.find(x => x.id === pid); if (!p || !p.tokenHash) return;
+  delete p.tokenHash; delete p.odkazOd; save(); await saving; renderDashboard(); status('Odkaz zrušen ✓');
+}
+const _renderDashboard = renderDashboard;
+renderDashboard = function () {
+  _renderDashboard();
+  document.querySelectorAll('#dash-content .dash-card').forEach(c => {
+    const m = (c.getAttribute('onclick') || '').match(/openDetail\('([^']+)'\)/); if (!m) return;
+    const p = db.people.find(x => x.id === m[1]); if (!p) return;
+    const b = document.createElement('div');
+    b.style.cssText = 'display:flex;gap:6px;margin-top:8px;flex-wrap:wrap';
+    b.innerHTML = `<button class="dash-hbtn" style="background:#83502e;font-size:11px;padding:5px 8px" onclick="event.stopPropagation();makeLink('${p.id}')">🔗 ${p.tokenHash ? 'Nový odkaz' : 'Odkaz pro něj'}</button>` +
+      (p.tokenHash ? `<button class="dash-hbtn" style="background:#b08060;font-size:11px;padding:5px 8px" onclick="event.stopPropagation();revokeLink('${p.id}')">Zrušit odkaz</button><span style="font-size:11px;color:#8a6040;align-self:center">odkaz od ${p.odkazOd || ''}</span>` : '');
+    c.appendChild(b);
+  });
+};
+openSync = function () { status('Synchronizace už není potřeba — data jsou sdílená automaticky ✓'); };
+lock = function () { location.reload(); };
+
+/* ── start ── */
+(function start() {
+  document.getElementById('pin-screen').hidden = true;
+  const load = src => new Promise((ok, ko) => { const e = document.createElement('script'); e.src = src; e.onload = ok; e.onerror = ko; document.head.appendChild(e); });
+  const boot = async () => {
+    try {
+      status('Načítám…');
+      await loadRemote(); status('');
+      if (MODE === 'worker') {
+        document.querySelectorAll('#app .h-btn').forEach(b => { if (/Přehled|⇄|🔒/.test(b.textContent)) b.hidden = true; });
+        document.getElementById('ptabs').hidden = true;
+        const pay = document.querySelector('.tot-pay'); if (pay) pay.hidden = true;
+        document.querySelector('#app .h-brand').innerHTML = '<em>Píchačky</em> — ' + db.people[0].name;
+        openDetail(db.people[0].id);
+      } else {
+        goToDashboard();
+        setInterval(async () => { // see workers' entries without reloading
+          if (document.querySelector('.modal-overlay:not([hidden]), .add-overlay:not([hidden])') || changedDays().length) return;
+          try { await loadRemote(); if (!document.getElementById('dashboard').hidden) renderDashboard(); else render(); } catch (e) {}
+        }, 60000);
+      }
+    } catch (e) {
+      document.body.innerHTML = `<div style="font-family:Arial;padding:40px;text-align:center;color:#5c381f"><h2>Píchačky</h2><p>${
+        MODE === 'worker' ? 'Odkaz neplatí — požádej Jana o nový.' : (/jan/i.test(e.message) ? 'Píchačky vidí jen Jan.' : 'Nepodařilo se načíst data: ' + e.message)}</p></div>`;
+    }
+  };
+  if (MODE === 'worker') boot();
+  else load('pin-guard.js').then(() => load('nw-data.js')).then(boot).catch(e => status('⚠ ' + e, true));
+})();
 </script>

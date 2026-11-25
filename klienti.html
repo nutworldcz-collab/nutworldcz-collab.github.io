@@ -257,13 +257,65 @@ body{font-family:"Source Sans 3",Arial,sans-serif;background:#e8ddd4;color:#2a1a
   </div>
 </div>
 
+<script src="nw-data.js"></script>
 <script>
 const CK='nw_clients_v1', TK='nw_client_tasks_v1', NK='nw_client_notes_v1',
       MEETK='nw_client_meetings_v1', DK='nw_client_docs_v1';
 const TODAY=new Date().toISOString().slice(0,10);
 
-const ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}};
-const sv=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+/* ═══ SDÍLENÉ ÚLOŽIŠTĚ (Jan 2026-11-25): NWData ns "klienti", jeden záznam na klienta
+   c:<id> = {client, poradi, tasks, note, meetings, docs}. Vidí všichni s přístupem do nástrojů.
+   Stará data z prohlížeče se při prvním otevření nahrají sama. ═══ */
+const STORE={};
+const ld=(k,d)=>STORE[k]!==undefined?JSON.parse(JSON.stringify(STORE[k])):d;
+const sv=(k,v)=>{STORE[k]=JSON.parse(JSON.stringify(v));try{localStorage.setItem(k,JSON.stringify(v))}catch(e){};queueSync();};
+let kSynced={}, kReady=false, kSaving=Promise.resolve(), kTimer=null;
+function kDocs(){
+  const out={}, cs=STORE[CK]||[], ts=STORE[TK]||{}, ns=STORE[NK]||{}, ms=STORE[MEETK]||{}, ds=STORE[DK]||{};
+  cs.forEach((c,i)=>{ out['c:'+c.id]=JSON.stringify({client:c,poradi:i,tasks:ts[c.id]||[],note:ns[c.id]||'',meetings:ms[c.id]||[],docs:ds[c.id]||[]}); });
+  return out;
+}
+function kStatus(t,bad){
+  let el=document.getElementById('nw-status');
+  if(!el){el=document.createElement('div');el.id='nw-status';el.style.cssText='position:fixed;bottom:12px;right:12px;z-index:9999;color:#fff;padding:7px 12px;border-radius:9px;font:600 12px Arial;box-shadow:0 4px 14px rgba(0,0,0,.2)';document.body.appendChild(el);}
+  el.style.background=bad?'#da1668':'#5c381f';el.textContent=t;el.hidden=!t;
+  if(t&&!bad){clearTimeout(el._t);el._t=setTimeout(()=>{el.hidden=true},2500);}
+}
+function queueSync(){ if(!kReady) return; clearTimeout(kTimer); kTimer=setTimeout(kSync,600); }
+function kSync(){
+  kSaving=kSaving.then(async()=>{
+    const now=kDocs(), ops=[];
+    Object.entries(now).forEach(([id,j])=>{ if(kSynced[id]!==j) ops.push({action:'put',id,data:JSON.parse(j)}); });
+    Object.keys(kSynced).forEach(id=>{ if(!(id in now)) ops.push({action:'delete',id}); });
+    if(!ops.length) return;
+    kStatus('Ukládám…');
+    try{ for(let i=0;i<ops.length;i+=400) await NWData.batch('klienti',ops.slice(i,i+400)); kSynced=now; kStatus('Uloženo ✓'); }
+    catch(e){ kStatus('⚠ Neuloženo: '+e.message,true); }
+  });
+}
+function kFromItems(items){
+  const docs=items.filter(i=>i.id.startsWith('c:')).map(i=>i.data).sort((a,b)=>(a.poradi||0)-(b.poradi||0));
+  STORE[CK]=docs.map(d=>d.client); STORE[TK]={}; STORE[NK]={}; STORE[MEETK]={}; STORE[DK]={};
+  docs.forEach(d=>{const id=d.client.id; if(d.tasks&&d.tasks.length)STORE[TK][id]=d.tasks; if(d.note)STORE[NK][id]=d.note;
+    if(d.meetings&&d.meetings.length)STORE[MEETK][id]=d.meetings; if(d.docs&&d.docs.length)STORE[DK][id]=d.docs;});
+}
+async function kLoad(){
+  const items=await NWData.list('klienti');
+  kFromItems(items); kSynced=kDocs(); kReady=true;
+  // this browser's old local data (before 2026-11-25): add clients the shared list does not have yet (once)
+  let done=false; try{done=localStorage.getItem('nw_klienti_nahrano')==='1';}catch(e){}
+  if(done) return;
+  let local={}; [CK,TK,NK,MEETK,DK].forEach(k=>{try{local[k]=JSON.parse(localStorage.getItem(k));}catch(e){}});
+  const have=new Set((STORE[CK]||[]).map(c=>c.id)), haveName=new Set((STORE[CK]||[]).map(c=>c.company));
+  const add=(local[CK]||[]).filter(c=>c&&c.id&&!have.has(c.id)&&!haveName.has(c.company));
+  if(add.length){
+    kStatus('Nahrávám '+add.length+' klientů z tohoto prohlížeče…');
+    STORE[CK]=(STORE[CK]||[]).concat(add);
+    [[TK,'tasks'],[NK,'note'],[MEETK,'meetings'],[DK,'docs']].forEach(([k])=>{STORE[k]=STORE[k]||{};add.forEach(c=>{const v=(local[k]||{})[c.id];if(v!=null)STORE[k][c.id]=v;});});
+    kSync(); await kSaving;
+  }
+  if(!kDocsDirty()){try{localStorage.setItem('nw_klienti_nahrano','1');}catch(e){}}  // only after a successful upload
+}
 const clients=()=>ld(CK,[]);
 const allTasks=()=>ld(TK,{});
 const allNotes=()=>ld(NK,{});
@@ -575,7 +627,7 @@ function deleteMeeting(mid){
 }
 
 // ── SEED DATA ──
-(function initSeed(){
+function initSeed(){
   const cs = ld(CK, []);
 
   // Olympic Palace
@@ -645,10 +697,19 @@ function deleteMeeting(mid){
     }];
     sv(DK, ds2);
   }
+}
+
+(async function boot(){
+  kStatus('Načítám…');
+  try{ await kLoad(); kStatus(''); }
+  catch(e){ kStatus('⚠ Sdílená data nejdou načíst: '+e.message,true); }
+  initSeed(); render();
+  setInterval(async()=>{ // others' changes without reload
+    if(document.querySelector('.modal-overlay.open, .modal.open, [class*="modal"][style*="flex"]')||kDocsDirty()) return;
+    try{ const items=await NWData.list('klienti'); kFromItems(items); kSynced=kDocs(); render(); }catch(e){}
+  },60000);
 })();
-
-
-render();
+function kDocsDirty(){ const now=kDocs(); return Object.keys(now).some(k=>kSynced[k]!==now[k])||Object.keys(kSynced).some(k=>!(k in now)); }
 </script>
 <script src="pin-guard.js"></script>
 </body>
