@@ -259,6 +259,7 @@ dialog::backdrop{background:rgba(40,20,5,.45)}
    <div class="row2">
     <div class="field"><label for="t_sec">Malý odkaz pod tlačítkem</label><input type="text" id="t_sec" maxlength="80" placeholder="např. Ne, díky"/></div>
     <div class="field"><label for="t_dik">Poděkování po odeslání</label><input type="text" id="t_dik" maxlength="160" placeholder="jen u formulářů"/></div>
+    <div class="field"><label for="t_otazka">Otázka do chatu</label><input type="text" id="t_otazka" maxlength="200" placeholder="jen u „Otevřít chat“, např. Poraďte mi s firemními dárky"/><div class="hint">Předvyplní se zákazníkovi v chatu s NutWorldkou, stačí odeslat.</div></div>
    </div>
 
    <div class="sec">7 · Akce</div>
@@ -269,6 +270,7 @@ dialog::backdrop{background:rgba(40,20,5,.45)}
      <option value="code">Ukázat slevový kód</option>
      <option value="email">Nechat e-mail → Leadhub (+ případně slevový kód)</option>
      <option value="b2b">Firemní poptávka (firma, IČO, kontakt, počet dárků)</option>
+     <option value="chat">💬 Otevřít chat s NutWorldkou (s předvyplněnou otázkou)</option>
     </select>
    </div>
    <div class="row2">
@@ -399,12 +401,12 @@ function blank() {
     url_obsahuje: '', url_vyloucit: '', spoustec: 'time', hodnota: 5, komu: 'all', frekvence: 'navsteva', po_zavreni_dni: 7, po_akci_dni: 9999,
     barva: 'orechy', obrazek: 'ahoj', akce: 'info', url: '', url2: '', kod: '', odpocet: '', leadhub_list: '',
     dny: [], cas_od: '', cas_do: '', zdroj: [], max_zobrazeni: 0, klik: '',
-    texty: {cz: {lab: '', h: 'Nadpis popupu', t: '', zv: '', podpis: '', btn: 'Rozumím', sec: '', dik: ''}, sk: {lab: '', h: '', t: '', zv: '', podpis: '', btn: '', sec: '', dik: ''}}};
+    texty: {cz: {lab: '', h: 'Nadpis popupu', t: '', zv: '', podpis: '', btn: 'Rozumím', sec: '', dik: '', otazka: ''}, sk: {lab: '', h: '', t: '', zv: '', podpis: '', btn: '', sec: '', dik: '', otazka: ''}}};
 }
 function openEd(id) {
   const p = id ? S.popupy.find(x => x.id === id) : blank();
   cur = JSON.parse(JSON.stringify(p));
-  ['cz', 'sk'].forEach(l => { cur.texty[l] = Object.assign({lab: '', h: '', t: '', zv: '', podpis: '', btn: '', sec: '', dik: ''}, cur.texty[l] || {}); });
+  ['cz', 'sk'].forEach(l => { cur.texty[l] = Object.assign({lab: '', h: '', t: '', zv: '', podpis: '', btn: '', sec: '', dik: '', otazka: ''}, cur.texty[l] || {}); });
   L = cur.shops.includes('cz') ? 'cz' : 'sk';
   $('tabEd').hidden = false; fill(); show('ed'); msg('edMsg', '');
   loadLeads();
@@ -440,7 +442,7 @@ function fill() {
 }
 function fillLang() {
   const t = cur.texty[L];
-  ['lab', 'h', 't', 'zv', 'podpis', 'btn', 'sec', 'dik'].forEach(k => $('t_' + k).value = t[k] || '');
+  ['lab', 'h', 't', 'zv', 'podpis', 'btn', 'sec', 'dik', 'otazka'].forEach(k => $('t_' + k).value = t[k] || '');
   $('lCZ').className = 'btn small ' + (L === 'cz' ? 'dark' : 'ghost'); $('lSK').className = 'btn small ' + (L === 'sk' ? 'dark' : 'ghost');
   $('pvLang').textContent = L.toUpperCase();
   preview();
@@ -464,7 +466,7 @@ function read() {
   cur.dny = getChecks('dny').map(Number); cur.cas_od = $('f_cod').value; cur.cas_do = $('f_cdo').value;
   cur.zdroj = getChecks('zdroj'); cur.max_zobrazeni = +$('f_max').value || 0; cur.klik = $('f_klik').value.trim();
   const t = cur.texty[L];
-  ['lab', 'h', 't', 'zv', 'podpis', 'btn', 'sec', 'dik'].forEach(k => t[k] = $('t_' + k).value);
+  ['lab', 'h', 't', 'zv', 'podpis', 'btn', 'sec', 'dik', 'otazka'].forEach(k => t[k] = $('t_' + k).value);
 }
 let pvHandle = null;
 function preview() {

@@ -385,6 +385,9 @@ async function loadPublic() {
   const ts = (tk && tk.souhrn) || W.trojkontrola || {};
   if (ts.produkty) k.push(['Spec ↔ štítek ↔ web', `${ts.ok}/${ts.produkty}`, `nesedí: spec ${ts.spec} · štítek ${ts.stitek} · web ${ts.web}`]);
   k.push(['Měsíční ceníky', (W.ceniky_mesicni||[]).length + ' firem', 'odchází 1. v měsíci v 7:30']);
+  const ch = W.chat || {};
+  if (ch.konverzace7 !== undefined) k.push(['💬 Chat', ch.ceka ? ch.ceka + ' čeká' : (ch.konverzace7 || 0) + ' za 7 dní',
+    `7 dní: ${ch.konverzace7||0} konverzací · 🛒 ${ch.kosik7||0} · poptávky ${ch.b2b7||0} · 👎 ${ch.neg7||0} · nevěděla ${ch.mezery||0}`]);
   $('kpis').innerHTML = k.map(([l,v,s]) => `<div class="kpi"><div class="l">${esc(l)}</div><div class="v">${esc(v)}</div><div class="s">${esc(s)}</div></div>`).join('');
   if (ads) {
     $('ads').innerHTML = `<table class="rep"><tr><th>Kanál</th><th>Útrata</th><th>Tržby</th><th>PNO</th></tr>` + Object.entries(ads.channels||{}).map(([n,c]) =>

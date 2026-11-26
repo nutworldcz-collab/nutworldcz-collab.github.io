@@ -145,6 +145,7 @@ textarea{min-height:70px;resize:vertical}
   </div>
   <div class="tops">
    <div class="panel"><div class="sec">Nejčastěji doporučené produkty</div><div id="topK"></div></div>
+   <div class="panel"><div class="sec">Nejprodávanější na e-shopu (90 dní, CZ + SK)</div><div id="topS"></div><div class="hint">NutWorldka je při podobných dotazech doporučuje přednostně (spolu s tím, co je skladem a má dobrou marži).</div></div>
    <div class="panel"><div class="sec">Objednávky do 7 dní po chatu</div><div id="objPo"></div></div>
   </div>
   <div class="panel"><div class="sec">Odpovědi s 👎 — co zlepšit</div><div id="negList"></div></div>
@@ -332,9 +333,15 @@ async function sendReply() {
 function renderGaps() {
   const g = S.mezery || [];
   $('mezB').hidden = !g.length; $('mezB').textContent = g.length;
-  $('gaps').innerHTML = g.length ? g.map(x => `<div class="gap"><div><div class="q">${esc(x.otazka)}</div><div class="mini">.${x.shop} · ${when(x.kdy)} · <a href="#${x.sid}" data-sid="${x.sid}">konverzace</a></div></div>
+  $('gaps').innerHTML = g.length ? g.map(x => `<div class="gap"><div><div class="q">${esc(x.otazka)}</div><div class="mini">.${x.shop} · ${when(x.kdy)}${x.kod ? ' · 🥜 ' + esc(x.nazev || x.kod) : ''} · <a href="#${x.sid}" data-sid="${x.sid}">konverzace</a></div></div>
     ${S.muze_upravit ? `<button class="btn ghost small" data-id="${x.id}">✓ Vyřešeno bez odpovědi</button>
-    <div class="ans"><input type="text" placeholder="Odpověď, kterou má NutWorldka příště dát (${x.shop === 'sk' ? 'slovensky' : 'česky'})" data-ans="${x.id}"><button class="btn dark small" data-learn="${x.id}" data-shop="${x.shop}">📚 Naučit</button></div>` : ''}</div>`).join('') : '<div class="empty">Zatím nic — NutWorldka všechno věděla 🐿️</div>';
+    <div class="ans"><input type="text" placeholder="Odpověď, kterou má NutWorldka příště dát (${x.shop === 'sk' ? 'slovensky' : 'česky'})" data-ans="${x.id}"><button class="btn dark small" data-learn="${x.id}" data-shop="${x.shop}">📚 Naučit</button>${x.kod ? `<button class="btn ghost small" data-popis="${x.id}" title="Úkol: doplnit odpověď do popisu produktu na e-shopu (CZ i SK)">📝 Do popisu</button>` : ''}</div>` : ''}</div>`).join('') : '<div class="empty">Zatím nic — NutWorldka všechno věděla 🐿️</div>';
+  $('gaps').querySelectorAll('button[data-popis]').forEach(b => b.onclick = async () => {
+    const inp = $('gaps').querySelector(`input[data-ans="${b.dataset.popis}"]`);
+    b.disabled = true;
+    try { await api('/mezera-popis', {id: b.dataset.popis, odpoved: inp ? inp.value.trim() : ''}); b.textContent = '✓ Úkol vytvořen'; }
+    catch (e) { alert(e.message); b.disabled = false; }
+  });
   $('gaps').querySelectorAll('button[data-learn]').forEach(b => b.onclick = async () => {
     const inp = $('gaps').querySelector(`input[data-ans="${b.dataset.learn}"]`), x = g.find(y => y.id === b.dataset.learn);
     if (!inp.value.trim()) { inp.focus(); return; }
@@ -411,8 +418,10 @@ async function loadPre() {
     const pct = (a, b) => b ? Math.round(a / b * 100) + ' %' : '—';
     $('preKpi').innerHTML = box(s.konverzace || 0, 'konverzací') + box(pct(s.predano || 0, s.konverzace || 0), 'předáno vám') +
       box(s.b2b || 0, 'firemních poptávek') + box(pct(s.prokliky || 0, s.konverzace || 0), 'prokliků na konverzaci') +
-      box(rated ? pct(pal.nahoru, rated) : '—', `spokojenost (${rated} hodnocení)`) + box(P.obj_po_chatu.length, 'objednávek po chatu');
+      box(rated ? pct(pal.nahoru, rated) : '—', `spokojenost (${rated} hodnocení)`) + box(P.obj_po_chatu.length, 'objednávek po chatu') +
+      box(s.kosik || 0, 'vloženo do košíku z chatu');
     drawChart(P.serie);
+    $('topS').innerHTML = (P.bestsellery || []).length ? '<ol>' + P.bestsellery.map(k => `<li><a href="${esc(k.url)}" target="_blank">${esc(k.nazev)}</a> <span class="mini">${k.n} obj. (CZ ${k.cz} · SK ${k.sk})</span></li>`).join('') + '</ol>' : '<div class="empty">Počítá se — první data do druhého dne.</div>';
     $('topK').innerHTML = P.karty.length ? '<ol>' + P.karty.map(k => `<li><a href="${esc(k.url)}" target="_blank">${esc(k.nazev)}</a> <span class="mini">.${k.shop} · ${k.n}×</span></li>`).join('') + '</ol>' : '<div class="empty">Zatím nic.</div>';
     $('objPo').innerHTML = P.obj_po_chatu.length ? P.obj_po_chatu.map(o => `<div class="gap"><span><a href="#${o.sid}" data-sid="${o.sid}">${esc(o.cislo)}</a> · .${o.shop} · ${esc(o.kdy)}</span><b>${esc(o.cena)}</b></div>`).join('')
       : `<div class="empty">Zatím žádná. Počítají se jen zákazníci, kteří v chatu nechali e-mail (${P.s_emailem}).</div>`;
