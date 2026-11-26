@@ -1033,6 +1033,10 @@ function buildFirmaCard(card){
           (vaha?`<div class="obal-vyroba-w">${vzEsc(vaha)}</div>`:'');
         block.appendChild(ob);
       }
+      { const w=obPrace(prod);
+        if(!prod.isSluzba&&prod.slozeni.length){ const pw=document.createElement('div'); pw.className='obal-vyroba-w'; pw.style.margin='2px 0 4px';
+          pw.textContent=w!=null?`⏱ Práce odhadem ${fmtH(w*prod.ks/PRACE_KC_H)} (${w.toLocaleString('cs')} Kč/ks ÷ ${PRACE_KC_H} Kč/h)`:'⏱ Práce: nevím obal → doplň ručně v časech';
+          block.appendChild(pw); prod._praceH=w!=null?w*prod.ks/PRACE_KC_H:null; } }
       if(darekKg){
         const foot=document.createElement('div');
         foot.className='darek-footer';
@@ -1050,6 +1054,10 @@ function buildFirmaCard(card){
   });
 
   el.appendChild(darkyWrap);
+  { const ps=produkty.filter(p=>!p.isSluzba&&p.slozeni.length); const known=ps.filter(p=>p._praceH!=null);
+    if(ps.length){ const t=document.createElement('div'); t.className='darek-footer';
+      t.innerHTML=`<span class="darek-footer-lbl">⏱ Práce na zakázku odhadem${known.length<ps.length?` (bez ${ps.length-known.length} produktů s neznámým obalem)`:''}</span><span class="darek-footer-val">${fmtH(known.reduce((a,p)=>a+p._praceH,0))}</span>`;
+      el.appendChild(t); } }
 
   // Poznámky
   const nota = getNote(id);
@@ -1323,6 +1331,26 @@ function obAdd(prod,map){
     const o=obKey(c.obal,g); const r=o&&NW_OBALY.rozpis(o.key,g,[g]); (r?r.radky:[]).forEach(x=>add(x.nazev,x.ks*prod.ks)); });
 }
 
+// work estimate for ONE piece of an order product, Kč (obaly.csv via obaly-data.js); null = cannot tell
+function obPrace(prod){
+  if(typeof NW_OBALY==='undefined'||!NW_OBALY.prace||prod.isSluzba||!prod.slozeni.length) return null;
+  const DD=(typeof DARKY_DATA!=='undefined')?DARKY_DATA:{};
+  const dks=prod.slozeni.map(getDarkyKod);
+  if(dks.every(Boolean)){ let t=0; for(const dk of dks){ const d=DD[dk]||{}; const gs=(d.obsah||[]).map(x=>+x.gram||0);
+      const o=obKey(d.obal,gs.reduce((a,b)=>a+b,0)); const w=o&&NW_OBALY.prace(o.key,gs); if(w==null) return null; t+=w; } return t; }
+  const grams=prod.slozeni.map(c=>parseFloat(c.gram)||0);
+  const bk=obProductKey(prod);
+  if(bk&&obIsBox(bk)) return NW_OBALY.prace(bk,grams);
+  let t=0;
+  for(let i=0;i<prod.slozeni.length;i++){ const c=prod.slozeni[i], g=grams[i];
+    const o=obKey(c.obal,g);
+    const w=(/doypack/i.test(c.obal||'')&&!(o&&obIsBox(o.key)))?NW_OBALY.prace('doypack',[g]):(o?NW_OBALY.prace(o.key,[g]):null);
+    if(w==null) return null; t+=w; }
+  return t;
+}
+const PRACE_KC_H=250;   // normy-data.js: cost per piece = 250 Kč/h ÷ pieces per hour
+function fmtH(h){ return (Math.round(h*10)/10).toLocaleString('cs')+' h'; }
+
 function renderVyroba(cards){
   const mc=document.getElementById('main-content');
 
@@ -1555,13 +1583,16 @@ function renderVyroba(cards){
   mc.innerHTML=''; mc.appendChild(grid);
   if(typeof NW_OBALY!=='undefined'){
     const obMap=new Map();
-    cards.forEach(card=>card.produkty.forEach((prod,pi)=>{ if(prod.slozeni.length&&prod.slozeni.every((c,ci)=>isDone(card.id,pi,ci))) return; obAdd(prod,obMap); }));
+    let hTot=0, hUnknown=0;
+    cards.forEach(card=>card.produkty.forEach((prod,pi)=>{ if(prod.slozeni.length&&prod.slozeni.every((c,ci)=>isDone(card.id,pi,ci))) return; obAdd(prod,obMap);
+      if(!prod.isSluzba&&prod.slozeni.length){ const w=obPrace(prod); if(w==null) hUnknown++; else hTot+=w*prod.ks/PRACE_KC_H; } }));
     if(obMap.size){
       const panel=document.createElement('details');
       panel.className='icard'; panel.style.marginBottom='14px';
       const k2=s=>{const m=s.match(/K2 (\d+V)/);return m?m[1]:'';};
       panel.innerHTML=`<summary class="ihdr" style="cursor:pointer;list-style:none"><div class="iname-wrap"><div class="iname">🧰 Obalový materiál celkem</div>`+
         `<div class="ikod">součet za nehotové produkty v zobrazení · složení obalů z obaly_slozeni.csv (nebo z řádku 🧰 na kartě)</div></div><div class="itotal-kg">${obMap.size} druhů</div></summary>`+
+        `<div class="smes-comp-row" style="cursor:default;padding-left:14px;background:#fff8ec"><div class="smes-comp-name"><b>⏱ Práce odhadem celkem</b><span class="smes-comp-kod">práce z obaly.csv ÷ ${PRACE_KC_H} Kč/h${hUnknown?` · ${hUnknown} produktů s neznámým obalem nezapočteno`:''}</span></div><div class="smes-comp-kg">${fmtH(hTot)}</div></div>`+
         [...obMap.entries()].sort((a,b)=>b[1]-a[1]).map(([n,k])=>
           `<div class="smes-comp-row" style="cursor:default;padding-left:14px"><div class="smes-comp-name"><b>${n}</b>${k2(n)?`<span class="smes-comp-kod">K2 ${k2(n)}</span>`:''}</div>`+
           `<div class="smes-comp-kg">${Math.round(k).toLocaleString('cs')} ks</div></div>`).join('');
