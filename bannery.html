@@ -139,10 +139,11 @@ textarea{min-height:64px;resize:vertical}
   <div class="field"><label for="kod_p">Produkt (nepovinné)</label>
     <div style="display:flex;gap:8px;flex-wrap:wrap"><input type="text" id="kod_p" placeholder="kód z e-shopu, např. 4728" style="flex:1;min-width:160px">
       <button class="btn ghost small" id="najdi" type="button">Najít v e-shopu</button>
-      <label class="btn ghost small" for="soubor" style="display:inline-block">📷 Nahrát fotku</label>
+      <label class="btn ghost small" for="soubor" style="display:inline-block">📷 Nahrát fotku (i firemní dárek)</label>
       <input type="file" id="soubor" accept="image/jpeg,image/png,image/webp" class="hidden"></div>
-    <div class="hint">Skutečná fotka produktu (i s pravým logem) se vloží do scény vedle NutWorldky. Nejlépe vypadá fotka,
-      kde produkt <b>stojí a je focený zepředu</b> — světlé nebo jednoduché pozadí, celý produkt v záběru.</div>
+    <div class="hint">Skutečná fotka produktu (i s pravým logem) se vloží do scény nebo NutWorldce do tlapek. Nejlépe vypadá fotka,
+      kde produkt <b>stojí a je focený zepředu</b> — světlé nebo jednoduché pozadí, celý produkt v záběru.<br>
+      <b>Firemní dárek, který není v e-shopu?</b> Kód nevyplňuj, jen nahraj jeho fotku (třeba z mobilu). Firmu a logo vyplň níž v „Pro firmu — B2B“.</div>
     <div class="prod hidden" id="prod"></div>
     <div class="fotky hidden" id="fotky"></div>
     <div class="hidden" id="pohled-box" style="margin-top:10px"><label style="font-size:11px;font-weight:700;color:var(--br);letter-spacing:1px">JAK JE PRODUKT VYFOCENÝ</label>
@@ -180,7 +181,7 @@ textarea{min-height:64px;resize:vertical}
       <label class="btn ghost small" for="logo-soubor" style="display:inline-block">🏷️ Logo firmy</label>
       <input type="file" id="logo-soubor" accept="image/png,image/svg+xml,image/jpeg,image/webp" class="hidden">
       <span id="logo-box"></span></div>
-    <label style="display:flex;gap:6px;align-items:center;margin-top:6px;font-size:13px"><input type="checkbox" id="logo-krabice" checked> Logo i jako samolepka na krabici v tlapkách NutWorldky</label>
+    <label style="display:flex;gap:6px;align-items:center;margin-top:6px;font-size:13px"><input type="checkbox" id="logo-krabice" checked> Logo i jako samolepka na krabici v tlapkách NutWorldky <span class="hint" style="margin:0">(má-li dárek logo už natištěné, odškrtni)</span></label>
     <div class="hint">Logo zákazníka se dá do bílého štítku nad nadpis (a s pózou „drží produkt“ i na krabici). Nejlépe PNG s průhledným pozadím. Banner se uloží k firmě a jde vložit do nabídky.</div></div>
   <div class="field"><label for="scena">Přání ke scéně (nepovinné)</label>
     <input type="text" id="scena" maxlength="300" placeholder="např. NutWorldka v šále, zasněžené okno"></div>
