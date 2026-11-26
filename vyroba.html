@@ -389,6 +389,7 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
     <div class="view-toggle">
       <button id="btn-firmy"  class="view-btn active" onclick="setView('firmy')">🏢 Firmy</button>
       <button id="btn-vyroba" class="view-btn"        onclick="setView('vyroba')">🔧 Výroba</button>
+      <button id="btn-stejne" class="view-btn"        onclick="setView('stejne')">🎁 Stejné dárky</button>
       <button id="btn-vzorky" class="view-btn"        onclick="setView('vzorky')">🧪 Vzorky</button>
     </div>
     <div class="list-filters" id="list-filters"></div>
@@ -735,6 +736,7 @@ function setView(v){
   activeView=v;
   document.getElementById('btn-firmy').classList.toggle('active',v==='firmy');
   document.getElementById('btn-vyroba').classList.toggle('active',v==='vyroba');
+  document.getElementById('btn-stejne').classList.toggle('active',v==='stejne');
   document.getElementById('btn-vzorky').classList.toggle('active',v==='vzorky');
   const isVz=v==='vzorky';
   document.getElementById('list-filters').style.display=isVz?'none':'';
@@ -766,6 +768,7 @@ function render(){
   const cards = activeView==='vyroba' ? vyrobaCards() : visible();
   updateSummary(cards);
   if(activeView==='firmy') renderFirmy(cards);
+  else if(activeView==='stejne') renderStejne(cards);
   else renderVyroba(cards);
 }
 
@@ -1312,8 +1315,8 @@ function obInnerText(text,g){
 // packaging template of a whole product (title, or the box written at its items)
 function obProductKey(prod){
   const g=prod.slozeni.reduce((a,c)=>a+(parseFloat(c.gram)||0),0);
+  for(const c of prod.slozeni){ const x=obKey(c.obal,parseFloat(c.gram)||0); if(x&&obIsBox(x.key)) return x.key; }   // written at the items = most exact
   let o=obKey(prod.nazev,g); if(o&&obIsBox(o.key)) return o.key;
-  for(const c of prod.slozeni){ const x=obKey(c.obal,parseFloat(c.gram)||0); if(x&&obIsBox(x.key)) return x.key; }
   if(prod.slozeni.length===1){ const x=obKey(prod.slozeni[0].obal||prod.nazev,g); if(x) return x.key; }
   return null;
 }
@@ -1610,6 +1613,70 @@ function renderVyroba(cards){
         `<span class="smes-comp-gram">do směsí ${[...c.via].join(', ')}</span><div class="smes-comp-kg">${fmtKg(c.kg)}</div></div>`).join('');
     mc.insertBefore(panel,grid);
   }
+}
+
+/* ═══ STEJNÉ DÁRKY: firmy se stejným dárkem (stejné složení + gramáže + obal) u sebe (Jan 2026-11-26) ═══ */
+function giftSig(prod){
+  const DD=(typeof DARKY_DATA!=='undefined')?DARKY_DATA:{};
+  const parts=[]; let boxTxt='';
+  prod.slozeni.forEach(c=>{
+    const dk=getDarkyKod(c);
+    if(dk&&DD[dk]){ (DD[dk].obsah||[]).forEach(x=>parts.push(String(x.kod)+':'+(+x.gram||0))); boxTxt=boxTxt||String(DD[dk].obal||'').toLowerCase(); }
+    else parts.push((c.kod||String(c.nazev||'').toLowerCase().trim())+':'+(parseFloat(c.gram)||0));
+  });
+  if(!parts.length) return null;
+  parts.sort();
+  const box=obProductKey(prod)||(boxTxt&&(obKey(boxTxt,0)||{}).key)||boxTxt||'?';
+  return parts.join('|')+'#'+box;
+}
+function renderStejne(cards){
+  const mc=document.getElementById('main-content');
+  const DD=(typeof DARKY_DATA!=='undefined')?DARKY_DATA:{};
+  const listName=id=>(allLists.find(l=>l.id===id)||{}).name||'';
+  const groups=new Map();
+  cards.forEach(card=>card.produkty.forEach((prod,pi)=>{
+    if(prod.isSluzba||!prod.slozeni.length||!prod.ks) return;
+    const sig=giftSig(prod); if(!sig) return;
+    if(!groups.has(sig)) groups.set(sig,[]);
+    groups.get(sig).push({card,prod,pi});
+  }));
+  const all=[...groups.values()].map(items=>({items,firmy:new Set(items.map(i=>i.card.id)).size,ks:items.reduce((a,i)=>a+i.prod.ks,0)}));
+  const multi=all.filter(g=>g.firmy>1).sort((a,b)=>b.firmy-a.firmy||b.ks-a.ks);
+  const single=all.length-multi.length;
+  mc.innerHTML='';
+  const intro=document.createElement('div');
+  intro.className='empty-state'; intro.style.cssText='padding:10px 14px;text-align:left;font-size:13px;color:#5c381f;margin-bottom:12px';
+  intro.innerHTML=multi.length
+    ?`🎁 <b>${multi.length}</b> dárků má víc firem se stejným složením, gramážemi i obalem — dají se vyrábět najednou. Dalších ${single} dárků je jen u jedné firmy (jsou v pohledu 🏢 Firmy).`
+    :`Žádné dva stejné dárky u různých firem v tomto výběru sloupců. (${single} dárků je jen u jedné firmy.)`;
+  mc.appendChild(intro);
+  const grid=document.createElement('div'); grid.className='vyroba-grid'; mc.appendChild(grid);
+  multi.forEach(g=>{
+    const first=g.items[0].prod;
+    const names=[...new Set(g.items.map(i=>i.prod.nazev))];
+    const comps=[];
+    first.slozeni.forEach(c=>{ const dk=getDarkyKod(c);
+      if(dk&&DD[dk]) (DD[dk].obsah||[]).forEach(x=>comps.push({nazev:(PROD_NAMES&&PROD_NAMES[x.kod])||('kód '+x.kod),kod:String(x.kod),gram:+x.gram||0,obal:obInnerText(DD[dk].obal,+x.gram||0)}));
+      else comps.push({nazev:(c.kod&&PROD_NAMES&&PROD_NAMES[c.kod])||c.nazev,kod:c.kod,gram:parseFloat(c.gram)||0,obal:obInnerText(c.obal,parseFloat(c.gram)||0)}); });
+    const totKg=comps.reduce((a,c)=>a+c.gram*g.ks/1000,0);
+    const w=obPrace(first);
+    const bk=obProductKey(first), gr=comps.map(c=>c.gram);
+    const el=document.createElement('div'); el.className='icard';
+    el.innerHTML=`<div class="ihdr"><div class="iname-wrap"><div class="iname">🎁 ${vzEsc(names[0])}</div>`+
+      `<div class="ikod">${g.firmy} firem · ${g.ks} ks celkem${w!=null?` · ⏱ ${fmtH(w*g.ks/PRACE_KC_H)}`:''}${names.length>1?` · u firem i jako: ${names.slice(1).map(vzEsc).join(', ')}`:''}</div></div>`+
+      `<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><div class="itotal-kg">${fmtKg(totKg)}</div>`+
+      `<button class="print-btn" onclick="event.stopPropagation();printCard(this.closest('.icard'))">🖨 Tisk</button></div></div>`+
+      `<div class="pack-hdr" style="background:#fff8e1"><span class="pack-darek">Složení 1 dárku → celkem na ${g.ks} ks</span></div>`+
+      comps.map(c=>`<div class="smes-comp-row" style="cursor:default;padding-left:14px"><div class="smes-comp-name">${vzEsc(c.nazev)}${c.kod?`<span class="smes-comp-kod">kód ${vzEsc(c.kod)}</span>`:''}`+
+        `${c.obal?`<div class="comp-obal">🧰 ${c.obal}</div>`:''}</div><span class="smes-comp-gram">${c.gram} g</span><div class="smes-comp-kg">${fmtKg(c.gram*g.ks/1000)}</div></div>`).join('')+
+      (bk&&typeof NW_OBALY!=='undefined'?`<div style="padding:4px 10px">${NW_OBALY.html(bk,gr.reduce((a,b)=>a+b,0),g.ks,gr)}</div>`:'')+
+      `<div class="pack-hdr"><span class="pack-darek">🏢 Firmy (podle termínu)</span></div>`+
+      [...g.items].sort((a,b)=>terminSort(a.card.termin,b.card.termin)).map(i=>
+        `<div class="smes-comp-row" style="cursor:default;padding-left:14px"><div class="smes-comp-name"><b>${vzEsc(i.card.firma)}</b>`+
+        `<span class="smes-comp-kod">${vzEsc(listName(i.card.idList))}</span>${i.card.url?` <a href="${i.card.url}" target="_blank" rel="noopener" style="font-size:11px;color:#83502e">karta ↗</a>`:''}</div>`+
+        `<span class="smes-comp-gram">${i.card.termin?terminBadge(i.card.termin):'bez termínu'}</span><div class="smes-comp-kg">${i.prod.ks} ks</div></div>`).join('');
+    grid.appendChild(el);
+  });
 }
 
 /* ═══ VZORKY VIEW ═══ */
