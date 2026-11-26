@@ -418,6 +418,7 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 <script src="produkty-data.js"></script>
 <script src="smesi-data.js"></script>
 <script src="obaly-data.js"></script>
+<script src="vyroba-doplnky.js"></script>
 <script>
 const KEY   = 'via-proxy';
 const TOKEN = 'via-proxy';
@@ -653,7 +654,10 @@ function parseComp(s) {
 }
 
 function parseCard(card){
-  const {id,name,desc='',idList,url}=card;
+  const {id,name,idList,url}=card;
+  // Supplement from vyroba-doplnky.js (Trello untouched); Trello's own sections come first and win
+  const doplnek=(window.VYROBA_DOPLNKY||{})[id]||'';
+  const desc=(card.desc||'')+(doplnek?'\n\n'+doplnek.trim()+'\n':'');
   const firma=name.split(' — ')[0]||name;
   const tm=desc.match(/\*\*Termín:\*\*\s*(\d{2}\.\d{2}\.\d{4})/);
   const termin=tm?tm[1]:'';
@@ -702,7 +706,7 @@ function parseCard(card){
     if(volnyText.length<5) volnyText='';
   }
 
-  return {id,firma,termin,idList,produkty,url,personalizace,interni,volnyText};
+  return {id,firma,termin,idList,produkty,url,personalizace,interni,volnyText,doplneno:!!doplnek};
 }
 
 function process(){
@@ -879,7 +883,7 @@ function renderFirmy(cards){
 function setTvFilter(f){tvFilter=f;render();}
 
 function buildFirmaCard(card){
-  const {id,firma,termin,produkty,url}=card;
+  const {id,firma,termin,produkty,url,doplneno}=card;
 
   // Celkové kg firmy + počet složek
   let totalKg=0, doneC=0, totalC=0;
@@ -905,7 +909,7 @@ function buildFirmaCard(card){
   hdr.className='firma-hdr';
   hdr.innerHTML=`
     <div>
-      <div class="firma-name">${firma}${url?` <a href="${url}" target="_blank" style="font-size:11px;font-weight:400;color:var(--br);text-decoration:none;margin-left:6px" title="Trello">🃏</a>`:''}</div>
+      <div class="firma-name">${firma}${url?` <a href="${url}" target="_blank" style="font-size:11px;font-weight:400;color:var(--br);text-decoration:none;margin-left:6px" title="Trello">🃏</a>`:''}${doplneno?` <span style="font-size:11px;font-weight:600;color:#8a6200;background:#fff3cd;border-radius:6px;padding:1px 6px;margin-left:6px" title="Údaje doplněny jen ve výrobě, v Trellu nejsou">📝 doplněno</span>`:''}</div>
       <div class="firma-meta">
         ${termin?`<span><strong>Termín dodání:</strong> <span class="meta-val">${termin}</span></span>`:''}
         <span><strong>Objednávka:</strong> <span class="meta-val">${totalKs} ks</span></span>
