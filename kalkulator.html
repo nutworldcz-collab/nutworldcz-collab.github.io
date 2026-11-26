@@ -990,8 +990,9 @@ function switchTab(tab) {
 // Same as the e-shop (nw_core.price_round_mo): whole crowns, then up to the nearest ending 5 or 9
 // (123 → 125, 126 → 129, 339.8 → 339)
 function priceRoundMO(x) {
-  const n = Math.floor(x);
-  return Math.floor(n / 10) * 10 + (n % 10 <= 5 ? 5 : 9);
+  // always UP to the nearest price ending in 0, 5 or 9 (Jan 2026-11-26)
+  const c = Math.ceil(Math.round(x * 1e6) / 1e6), r = c % 10;
+  return r === 0 ? c : Math.floor(c / 10) * 10 + (r <= 5 ? 5 : 9);
 }
 // Nothing may be sold under 10 % margin (Jan 2026-11-21) — same as nw_core.MIN_MARGIN
 const MIN_MARGIN = 0.10;
