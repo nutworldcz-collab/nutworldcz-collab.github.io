@@ -207,6 +207,7 @@ textarea{min-height:70px;resize:vertical}
 
    <div class="sec">Pojistka</div>
    <div class="row3">
+    <div class="field"><label>Expedice teď trvá (dní)</label><input type="number" id="expd" min="1" max="30" title="NutWorldka podle toho upozorní, když se dárek nestihne doručit do svátku"></div>
     <div class="field"><label>Max. odpovědí AI za den</label><input type="number" id="limit" min="50" max="20000"></div>
     <div class="field"><label>Katalog CZ</label><div class="info" id="katCz">—</div></div>
     <div class="field"><label>Katalog SK</label><div class="info" id="katSk">—</div></div>
@@ -366,7 +367,7 @@ function renderSet() {
   for (const [sh, el] of [['cz', 'stCz'], ['sk', 'stSk']])
     $(el).innerHTML = STAV.map(([v, l]) => `<label class="chip"><input type="radio" name="st_${sh}" value="${v}" ${s.stav[sh] === v ? 'checked' : ''}><span>${l}</span></label>`).join('');
   $('dny').innerHTML = DNY.map((d, i) => `<label class="chip"><input type="checkbox" name="dny" value="${i + 1}" ${s.dny.includes(i + 1) ? 'checked' : ''}><span>${d}</span></label>`).join('');
-  $('od').value = s.od; $('do').value = s.do; $('limit').value = s.limit_den;
+  $('od').value = s.od; $('do').value = s.do; $('limit').value = s.limit_den; $('expd').value = s.expedice_dni || 3;
   $('znCz').value = s.znalosti.cz || ''; $('znSk').value = s.znalosti.sk || '';
   $('skryt').value = (s.skryt || []).join('\n');
   $('upPop').value = ((s.upozorneni || {}).poptavky || []).join('\n'); $('upClo').value = ((s.upozorneni || {}).clovek || []).join('\n');
@@ -380,7 +381,7 @@ $('save').onclick = async () => {
   const n = {
     stav: {cz: document.querySelector('input[name=st_cz]:checked').value, sk: document.querySelector('input[name=st_sk]:checked').value},
     dny: [...document.querySelectorAll('input[name=dny]:checked')].map(i => +i.value),
-    od: $('od').value, do: $('do').value, limit_den: +$('limit').value,
+    od: $('od').value, do: $('do').value, limit_den: +$('limit').value, expedice_dni: +$('expd').value,
     znalosti: {cz: $('znCz').value, sk: $('znSk').value},
     sablony: readTpl(),
     upozorneni: {poptavky: $('upPop').value.split(/[\s,;]+/).filter(Boolean), clovek: $('upClo').value.split(/[\s,;]+/).filter(Boolean)},
@@ -474,7 +475,7 @@ reload().then(() => {
   if (h) openKonv(h);
   timer = setInterval(async () => {
     try {
-      const busy = document.activeElement && ['rep', 'pzJm', 'pzTx', 'znCz', 'znSk', 'od', 'do', 'limit', 'skryt', 'kEmCz', 'kEmSk', 'kTel', 'kAdr', 'upPop', 'upClo'].includes(document.activeElement.id);
+      const busy = document.activeElement && ['rep', 'pzJm', 'pzTx', 'znCz', 'znSk', 'od', 'do', 'limit', 'expd', 'skryt', 'kEmCz', 'kEmSk', 'kTel', 'kAdr', 'upPop', 'upClo'].includes(document.activeElement.id);
       S = await api('/seznam'); renderKpi(); renderList(); renderGaps();
       if (cur && !busy) openKonv(cur.sid, true);
     } catch (e) {}
