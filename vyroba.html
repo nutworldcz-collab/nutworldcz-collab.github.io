@@ -660,7 +660,17 @@ function parseCard(card){
   const desc=(card.desc||'')+(doplnek?'\n\n'+doplnek.trim()+'\n':'');
   const firma=name.split(' — ')[0]||name;
   const tm=desc.match(/\*\*Termín:\*\*\s*(\d{2}\.\d{2}\.\d{4})/);
-  const termin=tm?tm[1]:'';
+  let termin=tm?tm[1]:'', terminZdroj=tm?'popis':'';
+  // Fallback 1: Trello card due date (the "Termín" field on the card)
+  if(!termin&&card.due){
+    const d=new Date(card.due);
+    if(!isNaN(d)){ termin=`${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${d.getFullYear()}`; terminZdroj='trello'; }
+  }
+  // Fallback 2: date written in the card name or text ("termín 4.12.2026")
+  if(!termin){
+    const nm=(name+'\n'+desc).match(/(\d{1,2})\.\s?(\d{1,2})\.\s?(20\d{2})/);
+    if(nm){ termin=`${nm[1].padStart(2,'0')}.${nm[2].padStart(2,'0')}.${nm[3]}`; terminZdroj='text'; }
+  }
   const produkty=[];
   const sect=desc.match(/##\s*🛒 Produkty\n\n([\s\S]*?)(?:\n##\s|$)/);
   if(sect){
@@ -706,7 +716,7 @@ function parseCard(card){
     if(volnyText.length<5) volnyText='';
   }
 
-  return {id,firma,termin,idList,produkty,url,personalizace,interni,volnyText,doplneno:!!doplnek};
+  return {id,firma,termin,idList,produkty,url,personalizace,interni,volnyText,doplneno:!!doplnek,terminZdroj};
 }
 
 function process(){
