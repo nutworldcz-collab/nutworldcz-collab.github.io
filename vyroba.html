@@ -767,7 +767,9 @@ function vyrobaCards(){
 /* ── Render ── */
 function render(){
   if(activeView==='vzorky'){ syncAndRenderVzorky(); return; }
-  const cards = activeView==='vyroba' ? vyrobaCards() : visible();
+  let cards = activeView==='vyroba' ? vyrobaCards() : visible();
+  // orders marked „📦 Zabaleno“ are finished — only the Firmy view still lists them (in its packed section)
+  if(activeView!=='firmy') cards = cards.filter(c=>!isNabaleno(c.id));
   updateSummary(cards);
   if(activeView==='firmy') renderFirmy(cards);
   else if(activeView==='stejne') renderStejne(cards);
