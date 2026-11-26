@@ -82,7 +82,7 @@ textarea{min-height:64px;resize:vertical}
 @keyframes s{to{transform:rotate(360deg)}}
 .hidden{display:none!important}
 .modal{position:fixed;inset:0;background:rgba(42,26,14,.55);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
-.modal .box{background:#fff;border-radius:16px;max-width:420px;width:100%;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+.modal .box{background:#fff;border-radius:16px;max-width:520px;width:100%;max-height:92vh;overflow:auto;box-shadow:0 10px 40px rgba(0,0,0,.3)}
 .modal .hd{background:#fff5f7;border-bottom:1.5px solid var(--acc);padding:14px 20px;font:700 16px 'Exo 2',sans-serif;color:#8a0e44}
 .modal .bd{padding:16px 20px;line-height:1.5}
 .modal .ft{display:flex;justify-content:flex-end;gap:8px;padding:0 20px 18px}
@@ -152,7 +152,9 @@ textarea{min-height:64px;resize:vertical}
       <div class="hint">Podle toho Canva nakreslí scénu ze stejného úhlu, aby produkt seděl.</div></div>
     <div class="hidden" id="poza-box" style="margin-top:12px"><label style="font-size:11px;font-weight:700;color:var(--br);letter-spacing:1px">NUTWORLDKA A PRODUKT</label>
       <div class="fotky pozy" id="pozy"></div>
-      <div class="hint">„Drží produkt“: NutWorldka má v tlapkách <b>skutečnou fotku</b> produktu (etiketa i logo zůstanou přesně). „Automaticky“ vybere pózu podle tvaru produktu a tématu.</div></div></div>
+      <div class="hint">„Drží produkt“: NutWorldka má v tlapkách <b>skutečnou fotku</b> produktu (etiketa i logo zůstanou přesně). „Automaticky“ vybere pózu podle tvaru produktu a tématu.</div>
+      <button class="btn ghost small" type="button" id="nahled-btn" style="margin-top:8px">👀 Náhled (zdarma, bez Canvy)</button>
+      <div id="nahled" class="hidden" style="margin-top:8px;background:#f1e6da;border-radius:12px;padding:10px;text-align:center"></div></div></div>
   <div class="field"><label>Akce (nepovinné)</label>
     <div class="row3"><input type="text" id="sleva" maxlength="12" placeholder="štítek: −15 %">
       <input type="text" id="kod" maxlength="30" placeholder="kód: VANOCE15">
@@ -178,7 +180,8 @@ textarea{min-height:64px;resize:vertical}
       <label class="btn ghost small" for="logo-soubor" style="display:inline-block">🏷️ Logo firmy</label>
       <input type="file" id="logo-soubor" accept="image/png,image/svg+xml,image/jpeg,image/webp" class="hidden">
       <span id="logo-box"></span></div>
-    <div class="hint">Logo zákazníka se dá do bílého štítku nad nadpis. Nejlépe PNG s průhledným pozadím. Banner se uloží k firmě.</div></div>
+    <label style="display:flex;gap:6px;align-items:center;margin-top:6px;font-size:13px"><input type="checkbox" id="logo-krabice" checked> Logo i jako samolepka na krabici v tlapkách NutWorldky</label>
+    <div class="hint">Logo zákazníka se dá do bílého štítku nad nadpis (a s pózou „drží produkt“ i na krabici). Nejlépe PNG s průhledným pozadím. Banner se uloží k firmě a jde vložit do nabídky.</div></div>
   <div class="field"><label for="scena">Přání ke scéně (nepovinné)</label>
     <input type="text" id="scena" maxlength="300" placeholder="např. NutWorldka v šále, zasněžené okno"></div>
 </div>
@@ -291,6 +294,18 @@ function pozyUkaz(){
   $('#pohled-box').classList.toggle('hidden', !MA_FOTKU || !vedle);
 }
 api('/pozy').then(d => { POZY = d.pozy || []; pozyHtml(); pozyUkaz(); }).catch(() => {});
+const pozaVal = () => (document.querySelector('input[name=poza]:checked')||{}).value ?? 'auto';
+$('#nahled-btn').onclick = async () => {
+  const b = $('#nahled-btn'), box = $('#nahled');
+  if (pozaVal() === '') { box.classList.remove('hidden'); box.innerHTML = '<span class="hint">Náhled je jen pro pózy „drží produkt“.</span>'; return; }
+  b.disabled = true; b.innerHTML = '<span class="spin"></span>Skládám náhled…'; box.classList.add('hidden');
+  try {
+    const r = await api('/nahled', {produkt_kod: $('#kod_p').value.trim(), produkt_foto: (document.querySelector('input[name=pfoto]:checked')||{}).value || '',
+      poza: pozaVal(), tema: val('tema')[0] || '', logo: LOGO, logo_na_krabici: !!LOGO && $('#logo-krabice').checked});
+    box.innerHTML = `<img src="${r.obrazek}" alt="" style="max-height:360px;max-width:100%"><div class="hint">Póza: ${esc(r.nazev)} · scénu a texty doplní hotový banner</div>`;
+  } catch(e) { box.innerHTML = `<div class="msg err">${esc(e.message)}</div>`; }
+  box.classList.remove('hidden'); b.disabled = false; b.textContent = '👀 Náhled (zdarma, bez Canvy)';
+};
 let ESHOP = [], PROD = null, LOGO = '';
 const parseSleva = () => { const m = ($('#sleva').value||'').replace(',', '.').match(/(\d+(?:\.\d+)?)\s*%/); return m ? +m[1] : 0; };
 const fmtC = (c, j) => c == null ? '' : j==='sk' ? c.toFixed(2).replace('.', ',')+'\u00a0€' : (Math.abs(c-Math.round(c))<.005 ? Math.round(c) : c.toFixed(2).replace('.', ','))+'\u00a0Kč';
@@ -388,7 +403,7 @@ $('#vytvor').onclick = async () => {
       zpusob: val('zpusob')[0], produkt_kod: $('#kod_p').value.trim(), sdeleni: $('#sdeleni').value, texty,
       sleva: $('#sleva').value, kod: $('#kod').value, platnost: $('#platnost').value, popis_sceny: $('#scena').value,
       produkt_foto: (document.querySelector('input[name=pfoto]:checked')||{}).value || '', pohled: val('pohled')[0] || 'zepredu',
-      poza: jenCanva() ? '' : ((document.querySelector('input[name=poza]:checked')||{}).value ?? 'auto'),
+      poza: jenCanva() ? '' : pozaVal(), logo_na_krabici: !jenCanva() && !!LOGO && $('#logo-krabice').checked,
       ceny: Object.fromEntries(jazyky().map(j => [j, {cena: (document.querySelector(`[data-cena="${j}"]`)||{}).value || '',
         puvodni: val('cenarez')[0]==='sleva' ? ((document.querySelector(`[data-puv="${j}"]`)||{}).value || '') : '', od: val('cenarez')[0]==='od'}])
         .filter(([j,c]) => val('cenarez')[0] && c.cena && !jenCanva())),
@@ -436,6 +451,7 @@ function karta(r, hl){
   }
   if (r.stav==='hotovo' && ME.admin) r.jazyky.filter(j => !(r.meta||{})[j]).forEach(j =>
     acts.push(`<button class="btn ghost small" onclick="metaKampan('${r.id}','${j}')">📣 Reklama ${j.toUpperCase()}</button>`));
+  if (r.stav==='hotovo' && r.poza_pouzita) acts.push(`<button class="btn ghost small" onclick="varianta('${r.id}')">🎨 Varianta</button>`);
   if (r.stav==='chyba') acts.push(`<button class="btn small" onclick="akce('${r.id}','znovu')">Zkusit znovu</button>`);
   if (r.stav!=='bezi' && (ME.admin || r.autor===ME.ja)) acts.push(`<button class="btn ghost small" style="color:#8a0e44;border-color:#e9a5c0;margin-left:auto" onclick="smazat('${r.id}')">🗑 Smazat</button>`);
   const canva = (r.canva_media||[]).length ? `V Canvě: složka „Bannery“ → hledej „${esc(r.nazev)}“` : (r.canva_chyba ? 'Do Canvy se nepodařilo uložit — PNG ke stažení jsou tady.' : '');
@@ -446,6 +462,7 @@ function karta(r, hl){
     ${stav}${r.sleva ? `<span class="badge">${esc(r.sleva)}</span>` : ''}${r.kod ? `<span class="badge">kód ${esc(r.kod)}</span>` : ''}
     ${Object.entries(r.ceny||{}).map(([j,c]) => `<span class="badge">${j.toUpperCase()} ${esc(c.od?'od ':'')}${esc(c.cena)}${c.puvodni?' <s>'+esc(c.puvodni)+'</s>':''}</span>`).join('')}
     ${r.zakaznik ? `<span class="badge" style="background:#e6eef8;color:#1d3d66">🏢 ${esc(r.zakaznik.nazev || 'logo zákazníka')}</span>` : ''}
+    ${r.poza_pouzita ? `<span class="badge">🐿️ ${esc((POZY.find(p => p.id===r.poza_pouzita)||{}).nazev || 'drží produkt')}</span>` : ''}${r.scena_z ? '<span class="badge">varianta</span>' : ''}
     <div style="margin-top:8px"><b>${esc(t.nadpis)}</b> — ${esc(t.podnadpis)}</div>
     ${r.chyba ? `<div class="msg err">${esc(r.chyba)}</div>` : ''}
     <div class="files">${files}</div>${meta}<div class="meta">${canva}</div><div class="acts">${acts.join('')}</div></div>`;
@@ -482,6 +499,32 @@ function metaKampan(id, j){
   $('#m-ano').onclick = async () => {
     $('#m-ano').disabled = true; $('#m-ano').innerHTML = '<span class="spin"></span>Zakládám…';
     try { await api(`/${id}/meta`, {jazyk: j, rozpocet: $('#m-rozp').value}); zavri(); nacti(); }
+    catch(e) { $('#m-bd').insertAdjacentHTML('beforeend', `<div class="msg err">${esc(e.message)}</div>`); $('#m-ano').textContent = 'Zkusit znovu'; }
+    $('#m-ano').disabled = false;
+  };
+}
+// variant: same scene + product, other pose / texts / logo -> new banner in ~1 min, no Canva drawing
+function varianta(id){
+  const r = DATA.find(x => x.id===id); if (!r) return;
+  $('#m-hd').textContent = '🎨 Varianta banneru'; $('#m-hd').style.cssText = 'background:#fff8e8;border-color:#f7ab31;color:#5c381f';
+  const pz = [{id:'auto', nazev:'Automaticky', ikona:'✨'}, ...POZY];
+  $('#m-bd').innerHTML = `Stejná scéna a produkt jako <b>${esc(r.nazev)}</b> — vyber jinou pózu nebo uprav texty. Hotové asi za minutu, Canva nic nekreslí.
+    <div class="fotky pozy" style="margin-top:8px">${pz.map(p => `<label><input type="radio" name="vpoza" value="${esc(p.id)}" ${p.id==='auto'?'checked':''}>`
+      + (p.ikona ? `<span class="ikona">${p.ikona}</span>` : `<img src="${API}/pozy/${encodeURIComponent(p.id)}.png" alt="" loading="lazy">`)
+      + `<small>${esc(p.nazev)}${p.id===r.poza_pouzita?' (teď)':''}</small></label>`).join('')}</div>
+    ${r.jazyky.map(j => `<div style="margin-top:8px"><span class="badge">${j.toUpperCase()}</span>
+      <input type="text" data-vt="${j}:nadpis" value="${esc(r.texty[j].nadpis)}" placeholder="nadpis" maxlength="120">
+      <input type="text" data-vt="${j}:podnadpis" value="${esc(r.texty[j].podnadpis||'')}" placeholder="podnadpis" maxlength="120" style="margin-top:4px">
+      <input type="text" data-vt="${j}:tlacitko" value="${esc(r.texty[j].tlacitko||'')}" placeholder="tlačítko" maxlength="120" style="margin-top:4px"></div>`).join('')}
+    ${r.zakaznik && r.zakaznik.logo ? `<label style="display:flex;gap:6px;align-items:center;margin-top:8px;font-size:13px"><input type="checkbox" id="v-logo" ${r.logo_na_krabici?'checked':''}> Logo firmy na krabici</label>` : ''}`;
+  $('#m-ano').textContent = 'Vytvořit variantu'; $('#m-ano').className = 'btn';
+  $('#modal').classList.remove('hidden');
+  $('#m-ne').onclick = zavri;
+  $('#m-ano').onclick = async () => {
+    const texty = {}; document.querySelectorAll('[data-vt]').forEach(i => { const [j,k] = i.dataset.vt.split(':'); (texty[j] = texty[j] || {})[k] = i.value; });
+    $('#m-ano').disabled = true; $('#m-ano').innerHTML = '<span class="spin"></span>Zakládám…';
+    try { const n = await api(`/${id}/varianta`, {poza: (document.querySelector('input[name=vpoza]:checked')||{}).value || 'auto', texty,
+        logo_na_krabici: !!($('#v-logo') && $('#v-logo').checked)}); zavri(); location.hash = n.id; nacti(); }
     catch(e) { $('#m-bd').insertAdjacentHTML('beforeend', `<div class="msg err">${esc(e.message)}</div>`); $('#m-ano').textContent = 'Zkusit znovu'; }
     $('#m-ano').disabled = false;
   };
