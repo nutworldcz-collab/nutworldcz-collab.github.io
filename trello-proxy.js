@@ -43,8 +43,24 @@
     return new Response(j.body, { status: j.status, headers: { 'Content-Type': 'application/json' } });
   }
 
+  // On the tools server (logged in) the same calls go to our server: boards already moved from Trello to our boards
+  // are answered from there in Trello's shape, the rest is passed on to Trello — pages work the same before and
+  // after the switch (Jan 2026-11-26). GitHub Pages keep the PIN proxy (Trello only).
+  const ON_SERVER = !/github\.io$/.test(location.hostname) && /^https?:$/.test(location.protocol)
+    && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1';
+  function serverSide(input, init) {
+    const u = new URL(typeof input === 'string' ? input : input.url);
+    u.searchParams.delete('key');
+    u.searchParams.delete('token');
+    init = Object.assign({}, init || {}, { credentials: 'same-origin' });
+    if (init.body instanceof FormData) { init.body.delete('key'); init.body.delete('token'); }
+    if (init.body instanceof URLSearchParams) { init.body.delete('key'); init.body.delete('token'); }
+    return nativeFetch(location.origin + '/api/trello' + u.pathname + u.search, init);
+  }
+
   window.fetch = function (input, init) {
     const url = typeof input === 'string' ? input : (input && input.url) || '';
-    return url.indexOf('https://api.trello.com/') === 0 ? proxied(input, init) : nativeFetch(input, init);
+    if (url.indexOf('https://api.trello.com/') !== 0) return nativeFetch(input, init);
+    return ON_SERVER ? serverSide(input, init) : proxied(input, init);
   };
 })();
