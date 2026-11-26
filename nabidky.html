@@ -1445,7 +1445,7 @@ async function nwOnlineOdkaz(cardId) {
     const r = await fetch(location.origin + '/api/nastenky/card/c_' + cardId + '/zakaznik-odkaz',
       {method: 'POST', credentials: 'same-origin', headers: {'Content-Type': 'application/json'}, body: '{}'});
     const j = await r.json();
-    if (!j.odkaz) return;
+    if (!j.odkaz || !j.nabidka_online) return;   // only offers created from 26. 11. 2026 evening (Jan: season closed)
     window._zakaznikOdkaz = j.odkaz;
     const sk = (document.getElementById('trh') || {}).value === 'SK';
     const block = `<div style="margin:0 28px 16px;background:#eef6e8;border:1.5px solid #6fa044;border-radius:8px;padding:10px 14px;font-size:12px;color:#2d5a1b">` +
