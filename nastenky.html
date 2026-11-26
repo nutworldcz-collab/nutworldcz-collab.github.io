@@ -76,6 +76,17 @@ a{color:var(--br)}
 .desc.empty{color:var(--muted);font-style:italic}
 .desc h1,.desc h2,.desc h3,.desc h4{font-family:'Exo 2',sans-serif;font-size:15px;margin:8px 0 4px;color:var(--bd)}
 .desc ul{margin:4px 0 4px 20px}
+.zk{margin-top:14px;border:2px solid var(--line);border-radius:12px;padding:12px 14px;background:#fffaf5}
+.zk h4{font-family:'Exo 2',sans-serif;margin:0 0 6px;color:var(--bd);font-size:15px}
+.zk .zst{display:flex;flex-wrap:wrap;gap:6px;font-size:12px;margin-bottom:6px}
+.zk .zst span{background:var(--kraft);border-radius:6px;padding:2px 8px;color:var(--bd)}
+.zk table{width:100%;border-collapse:collapse;font-size:12.5px;margin:2px 0 6px}
+.zk td,.zk th{padding:3px 6px;border-bottom:1px solid #f0e6dc;text-align:left;vertical-align:top}
+.zk th{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.zk .r{text-align:right;white-space:nowrap}
+.zk .warn{color:var(--pink);font-size:12.5px}
+.zk .kal{background:#fff;border:1.5px dashed var(--amber);border-radius:10px;padding:8px 10px;margin-top:8px}
+.zk .big{font-family:'Exo 2',sans-serif;font-weight:800;font-size:18px;color:var(--bd)}
 .chip{display:inline-flex;align-items:center;gap:5px;border-radius:8px;padding:3px 9px;font-size:12px;font-weight:700;cursor:pointer;border:2px solid transparent;margin:0 5px 5px 0;background:#eee}
 .chip.off{opacity:.35}
 .ck{display:flex;gap:8px;align-items:flex-start;padding:4px 2px;font-size:13.5px}
@@ -377,6 +388,7 @@ async function openCard(id) {
   try { const j = await api('/card/' + id); CARD = j.card; CARD._board = j.board; CARD._akce = j.akce; }
   catch (e) { $('modal').innerHTML = `<div class="ov" onclick="closeCard()"><div class="md"><p>${esc(e.message)}</p></div></div>`; return; }
   renderCard();
+  loadZakazka(id);
 }
 function closeCard() { CARD = null; const h = new URLSearchParams(location.hash.slice(1)); h.delete('k'); go(h.toString()); }
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && CARD && !$('dlg')) closeCard(); });
@@ -412,6 +424,7 @@ function renderCard() {
 
     <div class="sec">Popis ${ed ? `<button class="btn sm" onclick="editDesc()">Upravit</button>` : ''}</div>
     <div id="descbox"><div class="desc ${c.popis ? '' : 'empty'}">${c.popis ? md(c.popis) : 'Bez popisu'}</div></div>
+    ${/##\s*🛒/.test(c.popis || '') ? `<div class="zk" id="zkbox">${c._zkHtml || '<h4>📦 Zakázka</h4><p style="color:var(--muted);font-size:13px">Počítám rozpis zakázky…</p>'}</div>` : ''}
 
     ${c.checklisty.map((ch, ci) => { const n = ch.polozky.length, d = ch.polozky.filter(i => i.hotovo).length;
       return `<div class="sec">☑ ${esc(ch.nazev)} <span style="color:var(--muted)">${d}/${n}</span></div>
@@ -432,6 +445,48 @@ function renderCard() {
     ${other.length ? `<details style="margin-top:10px"><summary class="sec" style="cursor:pointer">Historie (${other.length})</summary>
       ${other.map(a => `<div class="act"><div><span class="who">${esc(a.kdo)}</span> ${esc(a.text)} <span class="when">${fmtDate(a.cas, true)}</span></div></div>`).join('')}</details>` : ''}
   </div></div>`;
+}
+/* ---------------- order card: everything about the order (Jan 2026-11-26 „karta = zakázka se vším“) */
+const czn = (v, d = 1) => (Math.round(v * 10 ** d) / 10 ** d).toLocaleString('cs-CZ');
+const kgf = v => v >= 1 ? czn(v) + ' kg' : czn(v * 1000, 0) + ' g';
+async function loadZakazka(id) {
+  const box = $('zkbox'); if (!box) return;
+  let j;
+  try { j = await api('/card/' + id + '/zakazka'); } catch (e) { box.innerHTML = `<h4>📦 Zakázka</h4><p class="warn">${esc(e.message)}</p>`; return; }
+  if (!CARD || CARD.id !== id || !$('zkbox')) return;
+  const z = j.zakazka;
+  if (!z) { box.innerHTML = `<h4>📦 Zakázka</h4><p class="warn">${esc(j.chyba || 'Rozpis nejde spočítat.')}</p>`; return; }
+  const v = z.vyroba, N = k => esc(z.nazvy[k] || k), stock = k => z.sklad[k] != null ? `<span style="color:var(--muted)">sklad K2 ${czn(z.sklad[k])}</span>` : '';
+  const sort = o => Object.entries(o).sort((a, b) => b[1] - a[1]);
+  let h = `<h4>📦 Zakázka</h4><div class="zst"><span>📋 ${esc(z.sloupec)}</span>${z.termin ? `<span>📅 ${esc(z.termin)}</span>` : ''}` +
+    `${z.rep ? `<span>👤 ${esc(z.rep)}</span>` : ''}${z.cislo ? `<span>📄 nabídka ${esc(z.cislo)}</span>` : ''}${z.doprava ? `<span>🚚 ${esc(z.doprava)}</span>` : ''}` +
+    `<span>⏱ práce odhadem ${czn(v.prace_h)} h</span></div>`;
+  h += `<div class="sec">🏭 Výroba</div>`;
+  if (Object.keys(v.smesi).length) h += `<table><tr><th>🥣 Namíchat</th><th class="r">kg</th></tr>${sort(v.smesi).map(([k, kg]) => `<tr><td>${N(k)} <small>(${esc(k)})</small></td><td class="r">${kgf(kg)}</td></tr>`).join('')}</table>`;
+  h += `<table><tr><th>🌰 ${Object.keys(v.smesi).length ? 'Suroviny celkem' : 'Suroviny / produkty'}</th><th class="r">potřeba</th><th class="r"></th></tr>` +
+    sort(v.suroviny).map(([k, kg]) => `<tr><td>${N(k)} <small>(${esc(k)})</small></td><td class="r"><b>${kgf(kg)}</b></td><td class="r">${stock(k)}</td></tr>`).join('') + `</table>`;
+  if (Object.keys(v.obaly).length) h += `<table><tr><th>🧰 Obaly a komponenty</th><th class="r">ks</th></tr>${sort(v.obaly).map(([n, k]) => `<tr><td>${esc(n)}</td><td class="r">${czn(k, 0)}</td></tr>`).join('')}</table>`;
+  if (v.nezname.length) h += `<div class="warn">❓ ${v.nezname.map(esc).join('<br>❓ ')}</div>`;
+  if (z.k2_datum) h += `<div style="font-size:11.5px;color:var(--muted)">Sklad = export K2 k ${esc(z.k2_datum)}.</div>`;
+  h += `<div class="sec">🏷️ Štítky</div>` + (z.stitky_pdf.length
+    ? z.stitky_pdf.map(p => `<a class="chip" href="${API}/soubor/${CARD.id}/${p.id}" target="_blank" rel="noopener">📄 ${esc(p.nazev)}</a>`).join('')
+    : `<div style="font-size:13px;color:var(--muted)">${z.stitky.blok ? '⛔ Štítky neprošly kontrolou specifikace — viz komentář na kartě.'
+       : z.stitky.prvni_beh ? 'Zakázka vznikla před spuštěním automatu — štítky se tvořily ručně (nebo napiš, ať je vytvořím).'
+       : 'Štítky se vytvoří samy do 5 minut po zadání produktů.'}</div>`);
+  h += `<div class="sec">🧾 Faktura a platba</div><div style="font-size:13px;color:var(--muted)">Napojí se z K2 (faktury) a Fia (platby).</div>`;
+  if (z.kalkulace) {
+    const k = z.kalkulace, mz = k.trzby_znamo ? k.zisk / k.trzby_znamo * 100 : null;
+    h += `<div class="kal"><div class="sec" style="margin-top:0">💰 Kalkulace <span style="font-size:10px;color:var(--muted);letter-spacing:0;text-transform:none">vidí jen obchodník zakázky, Jan a Jana</span></div>` +
+      `<div class="zst"><span>tržby bez DPH <b>${czn(k.trzby, 0)} Kč</b></span><span>náklady ${czn(k.naklady, 0)} Kč</span>` +
+      `<span>zisk <b class="big">${czn(k.zisk, 0)} Kč</b></span>${mz != null ? `<span>marže <b>${czn(mz)} %</b></span>` : ''}</div>` +
+      (k.polozky.length ? `<table><tr><th>položka</th><th class="r">ks</th><th class="r">cena</th><th class="r">náklad</th><th class="r">marže</th><th class="r">sleva</th></tr>` +
+        k.polozky.map(p => `<tr><td>${esc(p.nazev)}</td><td class="r">${czn(p.ks, 0)}</td><td class="r">${czn(p.cena, 2)}</td><td class="r">${czn(p.nakup, 2)}</td>` +
+          `<td class="r" style="${p.marze < (p.typ === 'darek' ? 30 : p.typ === 'doypack' ? 20 : 10) ? 'color:var(--pink);font-weight:700' : ''}">${czn(p.marze)} %</td>` +
+          `<td class="r">${p.sleva != null ? czn(p.sleva) + ' %' : ''}</td></tr>`).join('') + `</table>` : '') +
+      (k.nezname.length ? `<div class="warn">Bez nákladů (nejde spočítat): ${k.nezname.map(esc).join('; ')}</div>` : '') +
+      (k.trzby_znamo < k.trzby ? `<div style="font-size:11.5px;color:var(--muted)">Zisk a marže jen ze spočitatelných položek (${czn(k.trzby_znamo, 0)} Kč tržeb).</div>` : '') + `</div>`;
+  }
+  box.innerHTML = h; CARD._zkHtml = h;
 }
 function patchLocal(field, val) {
   const s = CARDS.find(x => x.id === CARD.id);
