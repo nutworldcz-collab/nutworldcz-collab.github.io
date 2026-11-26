@@ -242,6 +242,15 @@ async function load(){
 }
 
 document.getElementById('q').addEventListener('input', render);
+
+// Předvyplnění hledání z URL ?q=
+(function(){
+  try {
+    const q = new URLSearchParams(window.location.search).get('q');
+    if (q) document.getElementById('q').value = q;
+  } catch(_){}
+})();
+
 load();
 
 // Předvyplnění z URL parametru (z tlačítka "Objednat znovu" na form stránce)

@@ -160,6 +160,7 @@ textarea{resize:vertical;min-height:88px;line-height:1.6}
     <b>⚠️ Stejný štítek byl nedávno vyroben</b>
     <div id="dupDetail" style="margin:6px 0 10px;line-height:1.6"></div>
     <button id="dupOk" class="btn-submit" style="margin-top:0;padding:10px 20px;width:auto">Přesto objednat →</button>
+    <a id="dupFind" href="stitky-archiv.html" target="_blank" style="margin-left:10px;font-size:13px;font-weight:600;color:var(--br);text-decoration:none">🔍 Najít v archivu →</a>
     <button onclick="hideDup()" style="margin-left:10px;background:none;border:none;cursor:pointer;color:var(--muted);font-size:13px">Zrušit</button>
   </div>
 
@@ -231,6 +232,7 @@ document.getElementById('btnSubmit').addEventListener('click', async () => {
     if (dup) {
       document.getElementById('dupDetail').innerHTML =
         `Kódy: <b>${(dup.codes||[]).join(', ')}</b><br>Vyrobeno: <b>${fmtDateShort(dup.ts)}</b> · velikost ${dup.size||'105x148'} · ${dup.card||''}`;
+      document.getElementById('dupFind').href = `stitky-archiv.html?q=${encodeURIComponent((dup.codes||[])[0]||'')}`;
       document.getElementById('dupWarn').style.display = 'block';
       _pendingSubmit = true;
       document.getElementById('dupOk').onclick = () => {
