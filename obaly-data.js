@@ -7,9 +7,46 @@ window.NW_OBALY = {"sablony":{"sacek_knir":{"nazev":"Sáček s knírem","slozeni
     if (!name) return null;
     if (O.sablony[name]) return name;
     var n = String(name).trim().toLowerCase();
+    if (n.indexOf('→') >= 0) n = n.split('→').pop().trim();      // „celofán … → krabička 4×80g“ (row = bag → box)
+    for (var k in O.sablony) if (O.sablony[k].nazev.toLowerCase() === n) return k;
     if (n === 'ořechový kornout') return (obsahG || 0) > 200 ? 'kornout_velky' : 'kornout_maly';
     if (n === 'celofánek s mašličkou') return (obsahG || 0) > 100 ? 'celofan_velky' : 'celofan_maly';
     return O.podle_nazvu[n] || null;
+  };
+  // what ONE product goes into, for the „Obal“ field of a composition row (Jan 2026-11-26: the bag, not the final box)
+  // box with one kind of bag -> „Celofán plochý 8×15,8 cm (K2 5055V) → Krabička 4×80g“; one-piece pack -> its name
+  O.radek = function (key, g) {
+    var S = O.sablony[key];
+    if (!S) return '';
+    var inner = /^(celo_|strojovy|doypack|sklenicka|eko_kelimek|kraft_kelimek|kornout|zajicek|sacek)/;
+    var extra = /^(etiketa|maslicka|vicko|jutova|vypln)/;
+    var box = S.slozeni.some(function (r) { return !inner.test(r.k) && !extra.test(r.k); });
+    if (!box) return S.nazev;
+    var names = [];
+    S.slozeni.forEach(function (r) {
+      if (!inner.test(r.k)) return;
+      var n = r.nazev;
+      if (r.k === 'sacek' && r.ks === '*') { var b = g ? O.bagFor(g) : null; n = b ? O.komponenty[b].nazev : ''; }
+      else if (r.k === 'doypack') n = 'Doypack';
+      if (n && names.indexOf(n) < 0) names.push(n);
+    });
+    return names.length === 1 ? names[0] + ' → ' + S.nazev : S.nazev;
+  };
+  // fill the „Obal“ field of every composition row; keeps what a person typed, replaces what was filled automatically
+  O.vyplnRadky = function (rowsSel, key, force) {
+    if (!O.sablony[key] || typeof document === 'undefined') return;
+    var auto = {};
+    for (var k in O.sablony) auto[O.sablony[k].nazev.toLowerCase()] = 1;
+    for (var n in O.podle_nazvu) auto[n] = 1;
+    document.querySelectorAll(rowsSel + ' .slozeni-row').forEach(function (r) {
+      var inp = r.querySelector('.slozeni-obal');
+      if (!inp) return;
+      var v = inp.value.trim().toLowerCase();
+      if (!(force || !v || inp.dataset.auto || auto[v])) return;
+      var g = parseFloat((r.querySelector('.slozeni-gram') || {}).value) || 0;
+      inp.value = O.radek(key, g);
+      inp.dataset.auto = '1';
+    });
   };
   O.doypackG = function (g) {
     for (var i = 0; i < O.doypack.length; i++) if (g <= O.doypack[i][0]) return O.doypack[i][1];
