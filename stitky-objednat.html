@@ -156,6 +156,13 @@ textarea{resize:vertical;min-height:88px;line-height:1.6}
 
   <div class="err-box" id="errBox"></div>
 
+  <div id="dupWarn" style="display:none;background:#fffbea;border:1.5px solid var(--amb);border-radius:10px;padding:14px 18px;margin-top:12px;font-size:13px;color:#7a5200">
+    <b>⚠️ Stejný štítek byl nedávno vyroben</b>
+    <div id="dupDetail" style="margin:6px 0 10px;line-height:1.6"></div>
+    <button id="dupOk" class="btn-submit" style="margin-top:0;padding:10px 20px;width:auto">Přesto objednat →</button>
+    <button onclick="hideDup()" style="margin-left:10px;background:none;border:none;cursor:pointer;color:var(--muted);font-size:13px">Zrušit</button>
+  </div>
+
   <div class="success-box" id="successBox">
     <h3>✅ Štítky objednány!</h3>
     <p>Do 5 minut přijdou PDF na email. Průběh vidíš v Trellu.</p>
@@ -215,7 +222,26 @@ document.getElementById('btnSubmit').addEventListener('click', async () => {
   // Parse lines: each line = one card (possibly a BOX if multiple codes separated by comma)
   const lines = rawCodes.split('\n').map(l => l.trim()).filter(Boolean);
 
-  hideErr();
+  hideErr(); hideDup();
+
+  // Duplikace detekce — jen na serveru, jen pro první řádek (rychlá kontrola)
+  if (isServer && !_pendingSubmit) {
+    const allCodes = lines.flatMap(l => l.split(',').map(p => p.trim()).filter(Boolean));
+    const dup = await checkDuplicates(allCodes, size);
+    if (dup) {
+      document.getElementById('dupDetail').innerHTML =
+        `Kódy: <b>${(dup.codes||[]).join(', ')}</b><br>Vyrobeno: <b>${fmtDateShort(dup.ts)}</b> · velikost ${dup.size||'105x148'} · ${dup.card||''}`;
+      document.getElementById('dupWarn').style.display = 'block';
+      _pendingSubmit = true;
+      document.getElementById('dupOk').onclick = () => {
+        hideDup();
+        document.getElementById('btnSubmit').click();
+      };
+      return;
+    }
+  }
+  _pendingSubmit = null;
+
   const btn = document.getElementById('btnSubmit');
   btn.disabled = true;
   btn.textContent = 'Odesílám…';
@@ -306,6 +332,34 @@ function showErr(msg) {
 function hideErr() {
   document.getElementById('errBox').style.display = 'none';
   document.getElementById('successBox').style.display = 'none';
+}
+function hideDup() {
+  document.getElementById('dupWarn').style.display = 'none';
+}
+
+// Duplikace: zkontroluj archiv před odesláním
+let _pendingSubmit = null;
+
+async function checkDuplicates(codes, size) {
+  if (!isServer) return null;
+  try {
+    const r = await fetch('/api/stitky-archiv');
+    if (!r.ok) return null;
+    const archiv = await r.json();
+    const codeSet = new Set(codes.map(c => c.trim().toLowerCase()));
+    for (const e of archiv) {
+      const eset = new Set((e.codes||[]).map(c => c.trim().toLowerCase()));
+      const esize = e.size || '105x148';
+      if (esize === size && eset.size === codeSet.size && [...codeSet].every(c => eset.has(c))) {
+        return e;
+      }
+    }
+  } catch(_) {}
+  return null;
+}
+
+function fmtDateShort(iso) {
+  try { return new Date(iso).toLocaleDateString('cs-CZ', {day:'numeric',month:'numeric',year:'numeric'}); } catch(_){ return iso; }
 }
 function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
