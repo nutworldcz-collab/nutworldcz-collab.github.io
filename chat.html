@@ -76,6 +76,21 @@ textarea{min-height:70px;resize:vertical}
 .empty{color:#8a7360;padding:30px;text-align:center}
 .gap{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #f0e6dc;align-items:center}
 .gap .q{font-weight:600}.mini{font-size:12px;color:#8a7360}
+.gap{flex-wrap:wrap}.gap .ans{display:flex;gap:6px;width:100%;margin-top:6px}.gap .ans input{flex:1}
+.hist{background:#fdf9f6;border:1.5px solid var(--kraft);border-radius:12px;padding:10px 14px;margin-bottom:12px;font-size:13px;line-height:1.55}
+.hist b{color:var(--bd)}.hist .row{display:flex;justify-content:space-between;gap:10px;border-top:1px solid #f0e6dc;padding:4px 0}
+.tpl{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.tpl button{border:1.5px solid var(--line);background:#fdf9f6;border-radius:999px;padding:4px 11px;font-size:12px;font-weight:600;cursor:pointer;color:var(--bd)}
+.tpl button:hover{border-color:var(--br)}
+.learn{display:flex;align-items:center;gap:6px;font-size:13px;margin-top:6px;color:var(--bd)}
+.rt{font-size:12px;margin-left:6px}
+.chart{position:relative;height:220px;margin-top:8px}
+.chart svg{width:100%;height:100%;overflow:visible}
+.tip{position:absolute;pointer-events:none;background:#2a1a0e;color:#fff;border-radius:8px;padding:6px 10px;font-size:12px;line-height:1.5;white-space:nowrap;transform:translate(-50%,-110%);display:none}
+.tops{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:900px){.tops{grid-template-columns:1fr}}
+.tops ol{padding-left:20px;line-height:1.7}
+.tp{border:1.5px solid var(--kraft);border-radius:12px;padding:10px 12px;margin-bottom:10px}
+.tp .row2{margin-top:6px}
 </style>
 </head>
 <body>
@@ -85,6 +100,7 @@ textarea{min-height:70px;resize:vertical}
  <p>AI NutWorldka odpovídá zákazníkům na nutworld.cz/.sk sama (produkty, dárky, alergeny, doprava, stav objednávky, firemní poptávky). Co neumí, předá vám.</p>
  <div class="tabs">
   <button class="tab on" data-t="konv">Konverzace<span class="b" id="cekaB" hidden></span></button>
+  <button class="tab" data-t="pre">Přehled</button>
   <button class="tab" data-t="mez">Co nevěděla<span class="b" id="mezB" hidden></span></button>
   <button class="tab" data-t="set">Nastavení</button>
  </div>
@@ -102,6 +118,7 @@ textarea{min-height:70px;resize:vertical}
      <label class="chip"><input type="radio" name="f" value="ceka"><span>Čeká na vás</span></label>
      <label class="chip"><input type="radio" name="f" value="predano"><span>Předané</span></label>
      <label class="chip"><input type="radio" name="f" value="b2b"><span>Poptávky</span></label>
+     <label class="chip"><input type="radio" name="f" value="neg"><span>👎</span></label>
      <label class="chip"><input type="checkbox" name="sh" value="cz" checked><span>CZ</span></label>
      <label class="chip"><input type="checkbox" name="sh" value="sk" checked><span>SK</span></label>
     </div>
@@ -109,6 +126,23 @@ textarea{min-height:70px;resize:vertical}
    </div>
    <div class="panel" id="det"><div class="empty">Vyberte konverzaci vlevo.</div></div>
   </div>
+ </section>
+
+ <section id="t-pre" hidden>
+  <div class="panel">
+   <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+    <div class="sec" style="margin:0;border:0">Jak chat funguje</div>
+    <div class="chips"><label class="chip"><input type="radio" name="dni" value="7"><span>7 dní</span></label><label class="chip"><input type="radio" name="dni" value="30" checked><span>30 dní</span></label><label class="chip"><input type="radio" name="dni" value="90"><span>90 dní</span></label></div>
+   </div>
+   <div class="kpi" id="preKpi" style="margin-top:12px"></div>
+   <div class="sec">Konverzace za den</div>
+   <div class="chart" id="chart"><div class="tip" id="tip"></div></div>
+  </div>
+  <div class="tops">
+   <div class="panel"><div class="sec">Nejčastěji doporučené produkty</div><div id="topK"></div></div>
+   <div class="panel"><div class="sec">Objednávky do 7 dní po chatu</div><div id="objPo"></div></div>
+  </div>
+  <div class="panel"><div class="sec">Odpovědi s 👎 — co zlepšit</div><div id="negList"></div></div>
  </section>
 
  <section id="t-mez" hidden>
@@ -142,6 +176,11 @@ textarea{min-height:70px;resize:vertical}
     <div class="field"><label>SK</label><textarea id="znSk" style="min-height:200px" placeholder="Prázdné = použije české znalosti (odpoví slovensky)."></textarea></div>
    </div>
    <div class="hint">Má přednost před texty z e-shopu. Ty (Doprava, Kontakty, Obchodní podmínky, Reklamace) a katalog produktů se načítají samy každou noc. Aktivní popupy typu oznámení (např. zpoždění expedice) zná automaticky.</div>
+
+   <div class="sec">Hotové odpovědi</div>
+   <div id="tpls"></div>
+   <button class="btn ghost small" id="tplAdd" type="button">+ Přidat hotovou odpověď</button>
+   <div class="hint">V odpovědi zákazníkovi se vloží jedním klikem (CZ nebo SK podle e-shopu). Do textu můžete dát {email}, {telefon} a {adresa}, doplní se firemní kontakt.</div>
 
    <div class="sec">Soukromí — co zákazník nikdy nedostane</div>
    <div class="row3">
@@ -187,7 +226,8 @@ function when(ts) {
 }
 function show(t) {
   document.querySelectorAll('.tab').forEach(x => x.classList.toggle('on', x.dataset.t === t));
-  ['konv', 'mez', 'set'].forEach(k => $('t-' + k).hidden = k !== t);
+  ['konv', 'pre', 'mez', 'set'].forEach(k => $('t-' + k).hidden = k !== t);
+  if (t === 'pre') loadPre();
 }
 document.querySelectorAll('.tab').forEach(b => b.onclick = () => show(b.dataset.t));
 document.querySelectorAll('input[name=f],input[name=sh]').forEach(i => i.onchange = renderList);
@@ -202,11 +242,11 @@ function renderKpi() {
 function renderList() {
   const f = document.querySelector('input[name=f]:checked').value;
   const shops = [...document.querySelectorAll('input[name=sh]:checked')].map(i => i.value);
-  const rows = S.konverzace.filter(k => shops.includes(k.shop) && (f === 'vse' || (f === 'ceka' && k.ceka) || (f === 'predano' && k.predano) || (f === 'b2b' && k.b2b)));
+  const rows = S.konverzace.filter(k => shops.includes(k.shop) && (f === 'vse' || (f === 'ceka' && k.ceka) || (f === 'predano' && k.predano) || (f === 'b2b' && k.b2b) || (f === 'neg' && k.palec_dolu)));
   const n = S.konverzace.filter(k => k.ceka).length;
   $('cekaB').hidden = !n; $('cekaB').textContent = n;
   $('list').innerHTML = rows.length ? rows.map(k => `<div class="it${cur && cur.sid === k.sid ? ' on' : ''}" data-sid="${k.sid}">
-    <div class="t"><span><span class="tag shop">${k.shop.toUpperCase()}</span>${k.ceka ? '<span class="tag ceka">čeká na vás</span>' : k.stav === 'clovek' ? '<span class="tag clovek">předáno</span>' : k.stav === 'vyrizeno' ? '<span class="tag ok">vyřízeno</span>' : ''}${k.b2b ? '<span class="tag b2b">poptávka</span>' : ''}</span><span>${when(k.last)}</span></div>
+    <div class="t"><span><span class="tag shop">${k.shop.toUpperCase()}</span>${k.ceka ? '<span class="tag ceka">čeká na vás</span>' : k.stav === 'clovek' ? '<span class="tag clovek">předáno</span>' : k.stav === 'vyrizeno' ? '<span class="tag ok">vyřízeno</span>' : ''}${k.b2b ? '<span class="tag b2b">poptávka</span>' : ''}${k.palec_dolu ? '👎' : k.palec_nahoru ? '👍' : ''}</span><span>${when(k.last)}</span></div>
     <div class="q">${esc(k.shrnuti || k.prvni)}</div>
     <div class="mini">${k.n} zpráv${k.karty ? ` · ${k.karty} produktů ukázáno` : ''}${k.kontakt ? ' · ' + esc(k.kontakt) : ''}</div></div>`).join('')
     : '<div class="empty">Zatím žádné konverzace.</div>';
@@ -223,17 +263,29 @@ async function openKonv(sid, keepDraft) {
     const kont = [k.jmeno, k.email, k.telefon].filter(Boolean).join(' · ') || 'kontakt nezadal';
     const b2b = k.b2b ? `<div class="note"><b>💼 Firemní poptávka:</b> ${esc([k.b2b.firma, k.b2b.ico && 'IČO ' + k.b2b.ico, k.b2b.pocet && k.b2b.pocet + ' ks', k.b2b.rozpocet, k.b2b.termin].filter(Boolean).join(' · '))}<br>${esc(k.b2b.poznamka)}</div>` : '';
     $('det').innerHTML = `<div class="info"><b>${esc(k.shrnuti || 'Konverzace')}</b><br>e-shop .${k.shop} · ${esc(kont)} · začátek ${when(k.start)} · <a href="${esc(k.url)}" target="_blank">stránka zákazníka</a></div>${b2b}
+      <div class="hist" id="hist">Načítám historii zákazníka…</div>
       <div class="tr" id="tr">${k.msgs.map(m => {
         const who = {u: 'Zákazník', a: '🐿️ NutWorldka', h: '👤 ' + (m.kdo || 'Nut World'), s: 'ℹ️ systém'}[m.r] || '';
         const cards = (m.karty || []).map(c => `<a href="${esc(c.url)}" target="_blank">🛒 ${esc(c.nazev)} — ${esc(c.cena)}</a>`).join('');
-        return `<div class="m ${m.r}"><small>${who} · ${when(m.ts)}</small>${esc(m.t)}${cards ? `<div class="cards">${cards}</div>` : ''}</div>`;
+        const rt = m.hod === 1 ? '<span class="rt">👍 pomohlo</span>' : m.hod === -1 ? '<span class="rt">👎 nepomohlo</span>' : '';
+        return `<div class="m ${m.r}"><small>${who} · ${when(m.ts)}${rt}</small>${esc(m.t)}${cards ? `<div class="cards">${cards}</div>` : ''}</div>`;
       }).join('')}</div>
-      ${S.muze_upravit ? `<div class="reply"><textarea id="rep" placeholder="Odpověď zákazníkovi (objeví se mu v chatu${k.email ? '; když chat nemá otevřený, přijde mu i e-mailem' : ''})"></textarea><button class="btn dark" id="send">Odeslat</button></div>
+      ${S.muze_upravit ? `<div class="tpl">${(S.nastaveni.sablony || []).map((t, i) => `<button type="button" data-tpl="${i}">${esc(t.nazev)}</button>`).join('')}</div>
+      <div class="reply"><textarea id="rep" placeholder="Odpověď zákazníkovi (objeví se mu v chatu${k.email ? '; když chat nemá otevřený, přijde mu i e-mailem' : ''})"></textarea><button class="btn dark" id="send">Odeslat</button></div>
+      <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+        <label class="learn"><input type="checkbox" id="learn"> 📚 Naučit NutWorldku — uložit odpověď do znalostí, příště odpoví sama</label></div>
       <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
         <button class="btn ghost small" data-st="ai">🐿️ Vrátit NutWorldce</button><button class="btn ghost small" data-st="vyrizeno">✓ Vyřízeno</button></div><div id="repMsg"></div>` : ''}`;
     $('tr').scrollTop = $('tr').scrollHeight;
+    loadHist(k.sid);
     if ($('rep')) {
       $('rep').value = draft;
+      $('det').querySelectorAll('[data-tpl]').forEach(b => b.onclick = () => {
+        const t = S.nastaveni.sablony[+b.dataset.tpl], kt = S.nastaveni.kontakt || {};
+        const txt = (k.shop === 'sk' ? (t.sk || t.cz) : (t.cz || t.sk)).replaceAll('{email}', k.shop === 'sk' ? kt.email_sk : kt.email_cz)
+          .replaceAll('{telefon}', kt.telefon || '').replaceAll('{adresa}', kt.adresa || '');
+        $('rep').value = ($('rep').value ? $('rep').value + '\n' : '') + txt; $('rep').focus();
+      });
       $('send').onclick = sendReply;
       $('rep').onkeydown = e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) sendReply(); };
       $('det').querySelectorAll('[data-st]').forEach(b => b.onclick = async () => {
@@ -247,10 +299,13 @@ async function sendReply() {
   if (!t) return;
   $('send').disabled = true;
   try {
-    const j = await api('/odpoved', {sid: cur.sid, text: t});
+    const j = await api('/odpoved', {sid: cur.sid, text: t, naucit: $('learn') && $('learn').checked});
     $('rep').value = '';
     await reload(); await openKonv(cur.sid);
-    if (j.email) msg('repMsg', 'Odesláno do chatu i e-mailem (zákazník chat zrovna nemá otevřený).', true);
+    const parts = ['Odesláno do chatu'];
+    if (j.email) parts.push('i e-mailem (zákazník chat zrovna nemá otevřený)');
+    if (j.nauceno) parts.push('a NutWorldka se to naučila 📚');
+    if (j.email || j.nauceno) msg('repMsg', parts.join(' ') + '.', true);
   } catch (e) { msg('repMsg', e.message); }
   finally { if ($('send')) $('send').disabled = false; }
 }
@@ -258,7 +313,15 @@ function renderGaps() {
   const g = S.mezery || [];
   $('mezB').hidden = !g.length; $('mezB').textContent = g.length;
   $('gaps').innerHTML = g.length ? g.map(x => `<div class="gap"><div><div class="q">${esc(x.otazka)}</div><div class="mini">.${x.shop} · ${when(x.kdy)} · <a href="#${x.sid}" data-sid="${x.sid}">konverzace</a></div></div>
-    ${S.muze_upravit ? `<button class="btn ghost small" data-id="${x.id}">✓ Vyřešeno</button>` : ''}</div>`).join('') : '<div class="empty">Zatím nic — NutWorldka všechno věděla 🐿️</div>';
+    ${S.muze_upravit ? `<button class="btn ghost small" data-id="${x.id}">✓ Vyřešeno bez odpovědi</button>
+    <div class="ans"><input type="text" placeholder="Odpověď, kterou má NutWorldka příště dát (${x.shop === 'sk' ? 'slovensky' : 'česky'})" data-ans="${x.id}"><button class="btn dark small" data-learn="${x.id}" data-shop="${x.shop}">📚 Naučit</button></div>` : ''}</div>`).join('') : '<div class="empty">Zatím nic — NutWorldka všechno věděla 🐿️</div>';
+  $('gaps').querySelectorAll('button[data-learn]').forEach(b => b.onclick = async () => {
+    const inp = $('gaps').querySelector(`input[data-ans="${b.dataset.learn}"]`), x = g.find(y => y.id === b.dataset.learn);
+    if (!inp.value.trim()) { inp.focus(); return; }
+    b.disabled = true;
+    try { await api('/naucit', {shop: b.dataset.shop, otazka: x.otazka, odpoved: inp.value.trim(), mezera: x.id}); await reload(); }
+    catch (e) { alert(e.message); b.disabled = false; }
+  });
   $('gaps').querySelectorAll('a[data-sid]').forEach(a => a.onclick = e => { e.preventDefault(); show('konv'); openKonv(a.dataset.sid); });
   $('gaps').querySelectorAll('button[data-id]').forEach(b => b.onclick = async () => { await api('/mezera', {id: b.dataset.id}); await reload(); });
 }
@@ -272,6 +335,7 @@ function renderSet() {
   $('od').value = s.od; $('do').value = s.do; $('clovek').value = s.clovek; $('limit').value = s.limit_den;
   $('znCz').value = s.znalosti.cz || ''; $('znSk').value = s.znalosti.sk || '';
   $('skryt').value = (s.skryt || []).join('\n');
+  TPL = JSON.parse(JSON.stringify(s.sablony || [])); renderTpl();
   const k = s.kontakt || {}; $('kEmCz').value = k.email_cz || ''; $('kEmSk').value = k.email_sk || ''; $('kTel').value = k.telefon || ''; $('kAdr').value = k.adresa || '';
   $('katCz').textContent = S.katalog.cz ? 'načten ' + when(S.katalog.cz) : 'zatím nenačten';
   $('katSk').textContent = S.katalog.sk ? 'načten ' + when(S.katalog.sk) : 'zatím nenačten';
@@ -283,12 +347,86 @@ $('save').onclick = async () => {
     dny: [...document.querySelectorAll('input[name=dny]:checked')].map(i => +i.value),
     od: $('od').value, do: $('do').value, clovek: $('clovek').value.trim(), limit_den: +$('limit').value,
     znalosti: {cz: $('znCz').value, sk: $('znSk').value},
+    sablony: readTpl(),
     skryt: $('skryt').value.split('\n').map(x => x.trim()).filter(Boolean),
     kontakt: {email_cz: $('kEmCz').value.trim(), email_sk: $('kEmSk').value.trim(), telefon: $('kTel').value.trim(), adresa: $('kAdr').value.trim()}};
   $('save').disabled = true;
   try { await api('/nastaveni', {nastaveni: n}); await reload(); msg('setMsg', 'Uloženo. Na e-shopu se změna projeví do minuty.', true); }
   catch (e) { msg('setMsg', e.message); } finally { $('save').disabled = false; }
 };
+let TPL = [];
+function renderTpl() {
+  $('tpls').innerHTML = TPL.map((t, i) => `<div class="tp"><div style="display:flex;gap:8px;align-items:center"><input type="text" data-tn="${i}" value="${esc(t.nazev)}" placeholder="Název tlačítka, např. 📦 Reklamace" maxlength="60"><button class="btn ghost small" type="button" data-tdel="${i}">Odebrat</button></div>
+    <div class="row2"><textarea data-tcz="${i}" placeholder="Text CZ">${esc(t.cz)}</textarea><textarea data-tsk="${i}" placeholder="Text SK">${esc(t.sk)}</textarea></div></div>`).join('');
+  $('tpls').querySelectorAll('[data-tdel]').forEach(b => b.onclick = () => { TPL = readTpl(); TPL.splice(+b.dataset.tdel, 1); renderTpl(); });
+}
+function readTpl() {
+  return TPL.map((t, i) => ({id: t.id || '', nazev: $('tpls').querySelector(`[data-tn="${i}"]`).value.trim(),
+    cz: $('tpls').querySelector(`[data-tcz="${i}"]`).value.trim(), sk: $('tpls').querySelector(`[data-tsk="${i}"]`).value.trim()}));
+}
+$('tplAdd').onclick = () => { TPL = readTpl(); TPL.push({id: '', nazev: '', cz: '', sk: ''}); renderTpl(); };
+
+async function loadHist(sid) {
+  try {
+    const z = await api('/zakaznik?sid=' + encodeURIComponent(sid));
+    if (!cur || cur.sid !== sid) return;
+    const p = z.partner;
+    let h = '';
+    if (z.email) h += `<b>${esc(z.email)}</b> · ${z.pocet_obj ? `${z.pocet_obj} objednávek${z.utraceno ? ', celkem ' + esc(z.utraceno) : ''}` : 'zatím žádná objednávka'}`;
+    else h += '<b>Zákazník nezadal e-mail</b> — objednávky nejde dohledat.';
+    if (z.firma || p) h += `<br>🏢 ${esc(p ? p.nazev : z.firma)}${p && p.ico ? ' · IČO ' + esc(p.ico) : ''}${p ? (p.rep ? ' · obchodník <b>' + esc(p.rep) + '</b>' : ' · v registru, bez obchodníka') : ' · není v registru partnerů'}`;
+    h += z.objednavky.slice(0, 6).map(o => `<div class="row"><span>${o.admin ? `<a href="${esc(o.admin)}" target="_blank">${esc(o.cislo)}</a>` : esc(o.cislo)} · .${o.shop} · ${esc(o.kdy.slice(0, 10))}</span><span>${esc(o.stav || '')} · <b>${esc(o.cena)}</b></span></div>`).join('');
+    if (z.konverzace.length) h += `<div class="row" style="display:block">💬 Dřívější chaty: ${z.konverzace.map(c => `<a href="#${c.sid}" data-sid="${c.sid}" title="${esc(c.prvni)}">${when(c.start)}</a> (${c.shoda})`).join(', ')}</div>`;
+    $('hist').innerHTML = h;
+    $('hist').querySelectorAll('a[data-sid]').forEach(a => a.onclick = e => { e.preventDefault(); openKonv(a.dataset.sid); });
+  } catch (e) { if ($('hist')) $('hist').textContent = 'Historii se nepodařilo načíst: ' + e.message; }
+}
+
+async function loadPre() {
+  const dni = document.querySelector('input[name=dni]:checked').value;
+  try {
+    const P = await api('/prehled?dni=' + dni);
+    const s = P.souhrn || {}, pal = P.palce, rated = pal.nahoru + pal.dolu;
+    const box = (n, l) => `<div><b>${n}</b><span>${l}</span></div>`;
+    const pct = (a, b) => b ? Math.round(a / b * 100) + ' %' : '—';
+    $('preKpi').innerHTML = box(s.konverzace || 0, 'konverzací') + box(pct(s.predano || 0, s.konverzace || 0), 'předáno vám') +
+      box(s.b2b || 0, 'firemních poptávek') + box(pct(s.prokliky || 0, s.konverzace || 0), 'prokliků na konverzaci') +
+      box(rated ? pct(pal.nahoru, rated) : '—', `spokojenost (${rated} hodnocení)`) + box(P.obj_po_chatu.length, 'objednávek po chatu');
+    drawChart(P.serie);
+    $('topK').innerHTML = P.karty.length ? '<ol>' + P.karty.map(k => `<li><a href="${esc(k.url)}" target="_blank">${esc(k.nazev)}</a> <span class="mini">.${k.shop} · ${k.n}×</span></li>`).join('') + '</ol>' : '<div class="empty">Zatím nic.</div>';
+    $('objPo').innerHTML = P.obj_po_chatu.length ? P.obj_po_chatu.map(o => `<div class="gap"><span><a href="#${o.sid}" data-sid="${o.sid}">${esc(o.cislo)}</a> · .${o.shop} · ${esc(o.kdy)}</span><b>${esc(o.cena)}</b></div>`).join('')
+      : `<div class="empty">Zatím žádná. Počítají se jen zákazníci, kteří v chatu nechali e-mail (${P.s_emailem}).</div>`;
+    $('negList').innerHTML = P.negativni.length ? P.negativni.map(n => `<div class="gap" style="display:block"><div class="mini">.${n.shop} · ${when(n.kdy)} · <a href="#${n.sid}" data-sid="${n.sid}">konverzace</a></div><div><b>Dotaz:</b> ${esc(n.dotaz)}</div><div><b>Odpověď:</b> ${esc(n.odpoved)}</div></div>`).join('')
+      : '<div class="empty">Žádné 👎 — skvělé 🐿️</div>';
+    document.querySelectorAll('#t-pre a[data-sid]').forEach(a => a.onclick = e => { e.preventDefault(); show('konv'); openKonv(a.dataset.sid); });
+  } catch (e) { $('preKpi').innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+}
+document.querySelectorAll('input[name=dni]').forEach(i => i.onchange = loadPre);
+
+function drawChart(serie) {
+  const W = $('chart').clientWidth || 800, H = 220, pl = 28, pb = 22, pt = 8;
+  const max = Math.max(4, ...serie.map(d => d.konverzace || 0));
+  const step = Math.ceil(max / 4), top = step * 4;
+  const bw = (W - pl) / serie.length, w = Math.max(2, Math.min(28, bw - 2));
+  const y = v => pt + (H - pt - pb) * (1 - v / top);
+  let g = '';
+  for (let i = 0; i <= 4; i++) { const v = step * i; g += `<line x1="${pl}" x2="${W}" y1="${y(v)}" y2="${y(v)}" stroke="#eadfd3" stroke-width="1"/><text x="${pl - 6}" y="${y(v) + 4}" font-size="11" fill="#8a7360" text-anchor="end">${v}</text>`; }
+  serie.forEach((d, i) => {
+    const v = d.konverzace || 0, x = pl + i * bw + (bw - w) / 2, h = (H - pt - pb) - (y(v) - pt);
+    if (v) g += `<path d="M${x},${y(0)} v${-(h - 4)} q0,-4 4,-4 h${w - 8} q4,0 4,4 v${h - 4} z" fill="#83502e"/>`;
+    g += `<rect x="${pl + i * bw}" y="${pt}" width="${bw}" height="${H - pt - pb}" fill="transparent" data-i="${i}"/>`;
+    if (serie.length <= 31 ? i % Math.ceil(serie.length / 8) === 0 : i % 14 === 0) g += `<text x="${pl + i * bw + bw / 2}" y="${H - 6}" font-size="11" fill="#8a7360" text-anchor="middle">${+d.d.slice(8)}. ${+d.d.slice(5, 7)}.</text>`;
+  });
+  $('chart').querySelector('svg')?.remove();
+  $('chart').insertAdjacentHTML('afterbegin', `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Konverzace za den">${g}</svg>`);
+  $('chart').querySelectorAll('rect[data-i]').forEach(r => {
+    r.onmouseenter = () => { const d = serie[+r.dataset.i], t = $('tip');
+      t.innerHTML = `<b>${+d.d.slice(8)}. ${+d.d.slice(5, 7)}.</b><br>${d.konverzace || 0} konverzací · ${d.zpravy || 0} zpráv<br>${d.predano || 0} předáno · ${d.prokliky || 0} prokliků${d.b2b ? ' · ' + d.b2b + ' poptávek' : ''}`;
+      t.style.left = (+r.getAttribute('x') + bw / 2) / W * 100 + '%'; t.style.top = y(d.konverzace || 0) + 'px'; t.style.display = 'block'; };
+    r.onmouseleave = () => $('tip').style.display = 'none';
+  });
+}
+
 async function reload() {
   S = await api('/seznam');
   renderKpi(); renderList(); renderGaps(); renderSet();
