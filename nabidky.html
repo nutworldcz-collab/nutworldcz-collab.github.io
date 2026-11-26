@@ -117,6 +117,12 @@ table.pt input.inp-cena{width:100px;text-align:right}
 .tab-btn{padding:10px 22px;background:none;border:none;border-bottom:3px solid transparent;margin-bottom:-2px;font-family:'Exo 2',sans-serif;font-weight:700;font-size:13px;color:#83502e;cursor:pointer;letter-spacing:.3px;transition:background .12s}
 .tab-btn.active{color:#5c381f;border-bottom-color:#5c381f;background:white}
 .tab-btn:hover:not(.active){background:#ede0d4}
+#sablony-panel{display:none;grid-column:1/-1;width:100%;max-width:1100px;margin:0 auto;padding:0}
+.sab-card{background:#fff;border-radius:12px;padding:14px 16px;margin-bottom:10px;box-shadow:0 2px 8px rgba(92,56,31,.08);display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start}
+.sab-card h3{margin:0;font-family:'Exo 2',sans-serif;color:#5c381f;font-size:16px}
+.sab-card .sab-meta{font-size:12px;color:#8a6a4a;margin-top:2px}
+.sab-card ul{margin:6px 0 0;padding-left:18px;font-size:13px;color:#2a1a0e}
+.sab-btn{border:0;border-radius:8px;padding:7px 14px;font-family:'Exo 2',sans-serif;font-weight:700;font-size:12.5px;cursor:pointer}
 #archiv-panel{display:none;grid-column:1/-1;width:100%;max-width:1100px;margin:0 auto;padding:0}
 .archiv-row{flex-wrap:wrap}
 .archiv-row>div:first-child{min-width:240px}
@@ -141,6 +147,7 @@ table.pt input.inp-cena{width:100px;text-align:right}
 <div class="tab-bar">
   <button class="tab-btn active" id="tab-form" onclick="switchTab('form')">📋 Nová nabídka</button>
   <button class="tab-btn" id="tab-archiv" onclick="switchTab('archiv')">📚 Archiv zakázek <span id="archiv-cnt" style="font-weight:400;opacity:.7"></span></button>
+  <button class="tab-btn" id="tab-sablony" onclick="switchTab('sablony')">🧩 Šablony <span id="sab-cnt" style="font-weight:400;opacity:.7"></span></button>
 </div>
 
 <div id="load-section" style="display:none;background:#fff8f0;border-bottom:2px solid #d4c0a8;padding:13px 24px">
@@ -273,6 +280,7 @@ table.pt input.inp-cena{width:100px;text-align:right}
     <div class="field"><label>Poznámka (volitelná)</label><textarea id="poznamka" rows="2" placeholder="Např. ceny platí pro tento odběr..."></textarea></div>
 
     <button class="btn-gen" onclick="generateOffer()">🖨 Generovat nabídku</button>
+    <button class="btn-link" style="display:block" onclick="sabSaveDialog()">💾 Uložit produkty jako šablonu</button>
     <button class="btn-link" id="btn-link" onclick="createLink()" style="display:none">📋 Zkopírovat odkaz zakázky</button>
     <div id="link-copied" style="display:none;margin-top:10px;background:#f0fff4;border:1.5px solid #6fa044;border-radius:8px;padding:10px 14px;font-size:13px;color:#2d5a1b">
       ✅ Odkaz zkopírován! Uložte si ho — až klient schválí, otevřete ho na stránce Zakázky.
@@ -300,6 +308,16 @@ table.pt input.inp-cena{width:100px;text-align:right}
 </div>
 
 <!-- ── ARCHIV ZAKÁZEK ── -->
+<div id="sablony-panel">
+  <div class="archiv-toolbar">
+    <input class="archiv-search" id="sab-search" placeholder="🔍 Hledat šablonu…" oninput="renderSablony()"/>
+    <span id="sab-st" style="font-size:12px;color:#83502e">Šablona = hotová sada produktů (složení, obal, cena). Použitím se vloží do nabídky — zákazník zůstane, jak je vyplněný.</span>
+  </div>
+  <div id="sab-list"></div>
+  <div id="sab-dlg" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:500;align-items:center;justify-content:center" onclick="if(event.target===this)sabClose()">
+    <div style="background:white;border-radius:16px;width:460px;max-width:92vw;padding:24px;box-shadow:0 8px 40px rgba(0,0,0,.2)" id="sab-dlg-in"></div>
+  </div>
+</div>
 <div id="archiv-panel">
   <div class="archiv-toolbar">
     <input class="archiv-search" id="archiv-search" placeholder="🔍 Hledat firmu…" oninput="renderArchiv()"/>
@@ -1489,15 +1507,110 @@ function updateArchivCount() {
 }
 
 function switchTab(tab) {
-  const toArchiv = tab === 'archiv';
-  document.getElementById('form-panel').style.display    = toArchiv ? 'none' : '';
-  document.getElementById('preview-wrap').style.display  = toArchiv ? 'none' : '';
+  const toArchiv = tab === 'archiv', toSab = tab === 'sablony', toForm = !toArchiv && !toSab;
+  document.getElementById('form-panel').style.display    = toForm ? '' : 'none';
+  document.getElementById('preview-wrap').style.display  = toForm ? '' : 'none';
   document.getElementById('archiv-panel').style.display  = toArchiv ? 'block' : 'none';
+  document.getElementById('sablony-panel').style.display = toSab ? 'block' : 'none';
   if (!toArchiv) document.getElementById('load-section').style.display = 'none';
-  document.getElementById('tab-form').classList.toggle('active', !toArchiv);
+  document.getElementById('tab-form').classList.toggle('active', toForm);
   document.getElementById('tab-archiv').classList.toggle('active', toArchiv);
+  document.getElementById('tab-sablony').classList.toggle('active', toSab);
   if (toArchiv) { renderArchiv(); archivRefresh(); }
+  if (toSab) { renderSablony(); sabRefresh(); }
 }
+
+// ══════════════════════════════════════════════
+//  ŠABLONY ZAKÁZEK (Jan 2026-11-26) — shared (NWData ns "sablony_nabidek"), reusable sets of products
+// ══════════════════════════════════════════════
+const SAB_NS = 'sablony_nabidek', SAB_CACHE = 'nw_sablony_cache';
+let _sab = [], _sabDel = null;
+try { _sab = JSON.parse(localStorage.getItem(SAB_CACHE) || '[]'); } catch (e) {}
+function sabSt(t) { const el = document.getElementById('sab-st'); if (el) el.textContent = t; }
+function sabCount() { const el = document.getElementById('sab-cnt'); if (el) el.textContent = _sab.length ? '(' + _sab.length + ')' : ''; }
+async function sabRefresh() {
+  try {
+    const items = await NWData.list(SAB_NS);
+    _sab = items.map(i => ({ id: i.id, ...i.data })).sort((a, b) => String(a.nazev).localeCompare(String(b.nazev), 'cs'));
+    try { localStorage.setItem(SAB_CACHE, JSON.stringify(_sab)); } catch (e) {}
+  } catch (e) { sabSt('⚠️ Šablony se nenačetly (' + e.message + ') — zobrazuji poslední uloženou verzi'); }
+  sabCount();
+  if (document.getElementById('sablony-panel').style.display === 'block') renderSablony();
+}
+function alertBox(m) {   // message inside the open template dialog, otherwise above the form
+  if (document.getElementById('sab-dlg').style.display === 'flex')
+    document.getElementById('sab-dlg-in').insertAdjacentHTML('beforeend', `<div style="color:#c62828;font-size:13px;margin-top:8px">${escH(m)}</div>`);
+  else { switchTab('form'); offerNotice('⚠️ ' + escH(m)); }
+}
+function sabClose() { document.getElementById('sab-dlg').style.display = 'none'; _sabDel = null; }
+function sabSaveDialog() {
+  const d = collectFormData();
+  if (!d.produkty.length) { alertBox('Nejdřív vyplň produkty, které chceš uložit jako šablonu.'); return; }
+  document.getElementById('sab-dlg-in').innerHTML =
+    `<div style="font-family:'Exo 2',sans-serif;font-size:18px;font-weight:800;color:#5c381f;margin-bottom:10px">💾 Uložit jako šablonu</div>` +
+    `<div style="font-size:13px;color:#5c381f;margin-bottom:8px">${d.produkty.length} produktů (složení, obal, cena). Zákazník se do šablony neukládá.</div>` +
+    `<input id="sab-nazev" placeholder="Název, např. Vánoce L — ořechy + sklenička" style="width:100%;border:1.5px solid #d4c0a8;border-radius:8px;padding:9px;font:inherit;margin-bottom:8px">` +
+    `<textarea id="sab-popis" rows="2" placeholder="Poznámka (pro koho, kdy se hodí…)" style="width:100%;border:1.5px solid #d4c0a8;border-radius:8px;padding:9px;font:inherit"></textarea>` +
+    `<div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px"><button class="sab-btn" style="background:#f1e6da;color:#5c381f" onclick="sabClose()">Zrušit</button>` +
+    `<button class="sab-btn" style="background:#6fa044;color:#fff" onclick="sabSave()">Uložit</button></div>`;
+  document.getElementById('sab-dlg').style.display = 'flex';
+  setTimeout(() => document.getElementById('sab-nazev').focus(), 50);
+}
+async function sabSave() {
+  const nazev = document.getElementById('sab-nazev').value.trim();
+  if (!nazev) { document.getElementById('sab-nazev').focus(); return; }
+  const d = collectFormData();
+  const id = 'sab_' + Date.now().toString(36);
+  const rec = { nazev, popis: document.getElementById('sab-popis').value.trim(), trh: d.trh,
+    produkty: d.produkty.map(p => ({ ...p, nakup: null })),          // purchase price is not part of a template
+    autor: d.repName || '', vytvoreno: new Date().toISOString() };
+  try { await NWData.put(SAB_NS, id, rec); _sab = [{ id, ...rec }, ..._sab]; sabCount(); sabClose(); offerNotice(`🧩 Šablona <strong>${escH(nazev)}</strong> uložena — najdeš ji v záložce Šablony.`); }
+  catch (e) { alertBox('Šablonu se nepodařilo uložit: ' + e.message); }
+}
+function renderSablony() {
+  sabCount();
+  const q = (document.getElementById('sab-search').value || '').toLowerCase();
+  const list = _sab.filter(t => !q || (t.nazev + ' ' + (t.popis || '') + ' ' + (t.produkty || []).map(p => p.nazev).join(' ')).toLowerCase().includes(q));
+  const el = document.getElementById('sab-list');
+  if (!list.length) { el.innerHTML = `<div style="text-align:center;color:#bbb;padding:60px 0;font-size:14px">${_sab.length ? '🔍 Žádné výsledky.' : '🧩 Zatím žádné šablony. Vyplň produkty v nabídce a klikni „💾 Uložit produkty jako šablonu“.'}</div>`; return; }
+  const fd = iso => { const d = new Date(iso); return isNaN(d) ? '' : d.getDate() + '. ' + (d.getMonth() + 1) + '. ' + d.getFullYear(); };
+  el.innerHTML = list.map(t => `<div class="sab-card"><div style="flex:1;min-width:220px"><h3>🧩 ${escH(t.nazev)}</h3>` +
+    `<div class="sab-meta">${t.trh === 'SK' ? '🇸🇰 SK' : '🇨🇿 CZ'} · ${(t.produkty || []).length} produktů${t.autor ? ' · ' + escH(t.autor) : ''} · ${fd(t.vytvoreno)}</div>` +
+    (t.popis ? `<div style="font-size:13px;color:#5c381f;margin-top:4px">${escH(t.popis)}</div>` : '') +
+    `<ul>${(t.produkty || []).map(p => `<li>${escH(p.nazev)} — ${p.ks} ks × ${p.cena} ${t.trh === 'SK' ? '€' : 'Kč'}</li>`).join('')}</ul></div>` +
+    `<div style="display:flex;flex-direction:column;gap:6px"><button class="sab-btn" style="background:#83502e;color:#fff" onclick="sabUse('${t.id}')">➕ Použít v nabídce</button>` +
+    `<button class="sab-btn" style="background:#f1e6da;color:#5c381f" onclick="sabDelAsk('${t.id}')">🗑 Smazat</button></div></div>`).join('');
+}
+function sabUse(id) {
+  const t = _sab.find(x => x.id === id); if (!t) return;
+  const cur = collectFormData();
+  const prods = JSON.parse(JSON.stringify(t.produkty || []));
+  populateForm({ ...cur, trh: t.trh || cur.trh, produkty: [...cur.produkty, ...prods] });   // added to what is already in the offer
+  const dph = (t.trh || cur.trh) === 'SK' ? 0.23 : 0.12, diffs = [];
+  prods.forEach(p => { const d = typeof DARKY_DATA !== 'undefined' ? DARKY_DATA[p.kod] : null;
+    if (!d || !(d.mo || d.vo) || !p.cena) return;
+    const now = Math.round((d.mo || d.vo) / (1 + dph) * 100) / 100;
+    if (Math.abs(now - p.cena) >= 0.5) diffs.push(`${escH(p.nazev)}: v šabloně <strong>${p.cena}</strong>, dnešní maloobchodní ceník <strong>${now}</strong> bez DPH`); });
+  switchTab('form');
+  offerNotice(`🧩 Vložena šablona <strong>${escH(t.nazev)}</strong> (${prods.length} produktů). Zkontroluj počty kusů a ceny.` +
+    (diffs.length ? `<div style="margin-top:6px"><strong>⚠️ Ceny se od uložení šablony změnily:</strong><br>${diffs.join('<br>')}</div>` : ''));
+  window.scrollTo(0, 0);
+}
+function sabDelAsk(id) {
+  const t = _sab.find(x => x.id === id); if (!t) return; _sabDel = id;
+  document.getElementById('sab-dlg-in').innerHTML =
+    `<div style="font-family:'Exo 2',sans-serif;font-size:18px;font-weight:800;color:#5c381f;margin-bottom:12px">⚠️ Smazat šablonu?</div>` +
+    `<div style="font-size:14px;color:#5c381f;line-height:1.5;margin-bottom:18px">Šablona <strong>${escH(t.nazev)}</strong> zmizí pro všechny. Nabídky, které z ní vznikly, zůstanou beze změny.</div>` +
+    `<div style="display:flex;gap:8px;justify-content:flex-end"><button class="sab-btn" style="background:#f1e6da;color:#5c381f" onclick="sabClose()">Zrušit</button>` +
+    `<button class="sab-btn" style="background:#c62828;color:#fff" onclick="sabDel()">Smazat</button></div>`;
+  document.getElementById('sab-dlg').style.display = 'flex';
+}
+async function sabDel() {
+  const id = _sabDel; if (!id) return;
+  try { await NWData.remove(SAB_NS, id); _sab = _sab.filter(x => x.id !== id); sabClose(); renderSablony(); }
+  catch (e) { alertBox('Smazání se nepodařilo: ' + e.message); }
+}
+sabCount();
 
 function renderArchiv() {
   const entries = _archiv;
