@@ -127,6 +127,14 @@ textarea{resize:vertical;min-height:88px;line-height:1.6}
     </div>
 
     <div class="field">
+      <label class="lbl">Orientace</label>
+      <div class="toggle-row" id="orientToggle">
+        <button class="toggle-btn active" data-val="portrait">Na výšku</button>
+        <button class="toggle-btn" data-val="landscape">Na šířku</button>
+      </div>
+    </div>
+
+    <div class="field">
       <label class="check-row" for="barcode">
         <input type="checkbox" id="barcode"/>
         <span>Přidat čárový kód (interní kód produktu, např. <code>89/200</code>)</span>
@@ -182,6 +190,16 @@ document.querySelectorAll('#langToggle .toggle-btn').forEach(btn => {
   });
 });
 
+// Orientace toggle
+let selectedOrientation = 'portrait';
+document.querySelectorAll('#orientToggle .toggle-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#orientToggle .toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedOrientation = btn.dataset.val;
+  });
+});
+
 // Submit
 document.getElementById('btnSubmit').addEventListener('click', async () => {
   const rawCodes = document.getElementById('codes').value.trim();
@@ -227,6 +245,7 @@ document.getElementById('btnSubmit').addEventListener('click', async () => {
       if (barcode) paramLines.push('barcode=true');
       if (email) paramLines.push(`email=${email}`);
       if (size !== '105x148') paramLines.push(`size=${size}`);
+      if (selectedOrientation === 'landscape') paramLines.push('orientation=landscape');
 
       let desc = paramLines.length ? paramLines.join('\n') + '\n\n' : '';
 
