@@ -197,12 +197,4 @@ const B2C_SK_PENDING = [
   {code:'2026003384', n:'—', amt:'20.29', ccy:'EUR', date:'2026-11-19', paid:true, bank_date:'2026-11-19', bank_sender:'Alma Országhová'},
   {code:'2026003382', n:'Trnavská NAD, a.s.', amt:'80.55', ccy:'EUR', date:'2026-11-19', paid:true, bank_date:'2026-11-20', bank_sender:'TRNAVSKÁ NAD,A.S.'},
   {code:'2026003376', n:'Trnavská NAD, a.s.', amt:'80.55', ccy:'EUR', date:'2026-11-19', paid:false, bank_date:'', bank_sender:''},
-  {code:'2026003368', n:'—', amt:'38.89', ccy:'EUR', date:'2026-11-17', paid:false, bank_date:'', bank_sender:''},
-  {code:'2026003361', n:'—', amt:'55.19', ccy:'EUR', date:'2026-11-17', paid:true, bank_date:'2026-11-17', bank_sender:'Jozef Kolbasa'},
-  {code:'2026003336', n:'—', amt:'49.49', ccy:'EUR', date:'2026-11-15', paid:true, bank_date:'2026-11-15', bank_sender:'Dominika Jurcova'},
-  {code:'2026003334', n:'—', amt:'48.79', ccy:'EUR', date:'2026-11-15', paid:false, bank_date:'', bank_sender:''},
-  {code:'2026003319', n:'—', amt:'39.79', ccy:'EUR', date:'2026-11-14', paid:true, bank_date:'2026-11-14', bank_sender:'PETEROVA IVETA'},
-  {code:'2026003305', n:'ZOTT s.r.o.', amt:'179.00', ccy:'EUR', date:'2026-11-12', paid:true, bank_date:'2026-11-13', bank_sender:'ZOTT s.r.o.'},
-  {code:'2026003298', n:'—', amt:'114.00', ccy:'EUR', date:'2026-11-12', paid:true, bank_date:'2026-11-12', bank_sender:'Danka Sagnerova'},
-  {code:'2026003296', n:'MARBET, s.r.o.', amt:'14.71', ccy:'EUR', date:'2026-11-12', paid:true, bank_date:'2026-11-16', bank_sender:'MARBET, s.r.o.'},
 ];
