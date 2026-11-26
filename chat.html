@@ -163,12 +163,12 @@ textarea{min-height:70px;resize:vertical}
 
    <div class="sec">Kdy jste online (předání člověku)</div>
    <div class="field"><label>Dny</label><div class="chips" id="dny"></div></div>
-   <div class="row3">
+   <div class="row2">
     <div class="field"><label>Od</label><input type="time" id="od"></div>
     <div class="field"><label>Do</label><input type="time" id="do"></div>
-    <div class="field"><label>Jméno, které zákazník uvidí</label><input type="text" id="clovek" maxlength="40"></div>
+
    </div>
-   <div class="hint">V této době NutWorldka zákazníkovi řekne, že odpovíte v chatu do pár minut. Mimo ni si vezme e-mail a slíbí odpověď v pracovní době. Předané chaty vám chodí e-mailem s tlačítkem „Odpovědět v chatu“.</div>
+   <div class="hint">V této době NutWorldka zákazníkovi řekne, že kolegové odpoví v chatu do pár minut (nikdy nejmenuje konkrétního člověka, zákazník vidí jen „tým Nut World“). Mimo ni si vezme e-mail a slíbí odpověď v pracovní době. Předané chaty vám chodí e-mailem s tlačítkem „Odpovědět v chatu“.</div>
 
    <div class="sec">Co má NutWorldka vědět navíc</div>
    <div class="row2">
@@ -332,7 +332,7 @@ function renderSet() {
   for (const [sh, el] of [['cz', 'stCz'], ['sk', 'stSk']])
     $(el).innerHTML = STAV.map(([v, l]) => `<label class="chip"><input type="radio" name="st_${sh}" value="${v}" ${s.stav[sh] === v ? 'checked' : ''}><span>${l}</span></label>`).join('');
   $('dny').innerHTML = DNY.map((d, i) => `<label class="chip"><input type="checkbox" name="dny" value="${i + 1}" ${s.dny.includes(i + 1) ? 'checked' : ''}><span>${d}</span></label>`).join('');
-  $('od').value = s.od; $('do').value = s.do; $('clovek').value = s.clovek; $('limit').value = s.limit_den;
+  $('od').value = s.od; $('do').value = s.do; $('limit').value = s.limit_den;
   $('znCz').value = s.znalosti.cz || ''; $('znSk').value = s.znalosti.sk || '';
   $('skryt').value = (s.skryt || []).join('\n');
   TPL = JSON.parse(JSON.stringify(s.sablony || [])); renderTpl();
@@ -345,7 +345,7 @@ $('save').onclick = async () => {
   const n = {
     stav: {cz: document.querySelector('input[name=st_cz]:checked').value, sk: document.querySelector('input[name=st_sk]:checked').value},
     dny: [...document.querySelectorAll('input[name=dny]:checked')].map(i => +i.value),
-    od: $('od').value, do: $('do').value, clovek: $('clovek').value.trim(), limit_den: +$('limit').value,
+    od: $('od').value, do: $('do').value, limit_den: +$('limit').value,
     znalosti: {cz: $('znCz').value, sk: $('znSk').value},
     sablony: readTpl(),
     skryt: $('skryt').value.split('\n').map(x => x.trim()).filter(Boolean),
@@ -436,7 +436,7 @@ reload().then(() => {
   if (h) openKonv(h);
   timer = setInterval(async () => {
     try {
-      const busy = document.activeElement && ['rep', 'znCz', 'znSk', 'od', 'do', 'clovek', 'limit', 'skryt', 'kEmCz', 'kEmSk', 'kTel', 'kAdr'].includes(document.activeElement.id);
+      const busy = document.activeElement && ['rep', 'znCz', 'znSk', 'od', 'do', 'limit', 'skryt', 'kEmCz', 'kEmSk', 'kTel', 'kAdr'].includes(document.activeElement.id);
       S = await api('/seznam'); renderKpi(); renderList(); renderGaps();
       if (cur && !busy) openKonv(cur.sid, true);
     } catch (e) {}
