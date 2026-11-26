@@ -1575,9 +1575,9 @@ function reorderFromArchiv(id) {
   const diffs = [];
   (data.produkty || []).forEach(p => {
     const d = typeof DARKY_DATA !== 'undefined' ? DARKY_DATA[p.kod] : null;
-    if (!d || !d.vo || !p.cena) return;
-    const now = Math.round(d.vo / (1 + dph) * 100) / 100;
-    if (Math.abs(now - p.cena) >= 0.5) diffs.push(`${escH(p.nazev || p.kod)}: minule <strong>${p.cena}</strong>, dnešní ceník <strong>${now}</strong> bez DPH`);
+    if (!d || !(d.mo || d.vo) || !p.cena) return;
+    const now = Math.round((d.mo || d.vo) / (1 + dph) * 100) / 100;   // retail price, same as the preselection
+    if (Math.abs(now - p.cena) >= 0.5) diffs.push(`${escH(p.nazev || p.kod)}: minule <strong>${p.cena}</strong>, dnešní maloobchodní ceník <strong>${now}</strong> bez DPH`);
   });
   const fd = iso => { const x = new Date(iso); return isNaN(x) ? '' : x.getDate() + '. ' + (x.getMonth()+1) + '. ' + x.getFullYear(); };
   offerNotice(`🔁 <strong>Opakovaná objednávka</strong> podle ${escH(entry.cislo)} z ${fd(entry.datum)}. ` +
