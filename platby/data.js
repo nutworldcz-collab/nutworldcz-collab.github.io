@@ -5,67 +5,63 @@ const OV_CZK = [
   /* === Urgentní (25+ dní) === */
   {id:'ov_tumova',     n:'Hana Tůmová',                  sub:'1 faktura · č. 11821',         amt:'1 228',      days:44, pri:'r', plbl:'Urgentní', due:'9. 10.', oz:''},
   {id:'ov_vitr',       n:'Vítr v kapse s.r.o.',           sub:'1 faktura · č. 12337',         amt:'397',        days:32, pri:'r', plbl:'Urgentní', due:'19. 10.', oz:''},
-  {id:'ov_reda',       n:'REDA a.s.',                     sub:'1 faktura · č. 283',           amt:'57 490',     days:29, pri:'r', plbl:'Urgentní', due:'22. 10.', oz:'Tomáš H.'},
+  /* ov_reda uhrazen 2026-11-23 (57,489.60 Kč, Δ0.40) — Fio ✅ */
   {id:'ov_kasal',      n:'Jana Kasalová',                 sub:'1 faktura · č. 12497',         amt:'2 772',      days:28, pri:'r', plbl:'Urgentní', due:'23. 10.', oz:''},
 
   /* === Pozor (10–19 dní) === */
-  {id:'ov_kolar',      n:'Michal Kolář',                  sub:'1 faktura · č. 359',           amt:'52 630',     days:18, pri:'a', plbl:'Pozor', due:'02. 11.', oz:'Martin W.'},
-  {id:'ov_emedis',     n:'EMEDIS s.r.o.',                 sub:'1 faktura zbývá · č. 421',     amt:'18 460,02',  days:17, pri:'r', plbl:'Zbytek', due:'04. 11.', oz:'Jana N.'},
+  /* ov_kolar uhrazen 2026-11-26 (52,630.10 Kč, Δ0.10) — Fio ✅ */
+  /* ov_emedis uhrazen 2026-11-26 (18,459.81 Kč, Δ0.21) — Fio ✅ */
   {id:'ov_vonavy',     n:'Muj vonávy kramek',             sub:'1 faktura · č. 12989',         amt:'739',        days:14, pri:'a', plbl:'Pozor', due:'06. 11.', oz:''},
 
   /* === 10–13. 11. === */
   {id:'ov_cpr',        n:'CPR HK s.r.o.',                 sub:'5 faktur · č. 398–416',        amt:'10 760',     days:12, pri:'a', plbl:'10–13.11', due:'10. 11.', oz:'Jana N.'},
   {id:'ov_dfszk',      n:'DFSZK, s.r.o.',                 sub:'1 faktura · č. 13260',         amt:'1 554',      days:10, pri:'n', plbl:'10–13.11', due:'12. 11.', oz:''},
-  {id:'ov_certis',     n:'Certis Belchim Czech Republic', sub:'1 faktura · č. 414',           amt:'111 104',    days:9,  pri:'n', plbl:'10–13.11', due:'13. 11.', oz:'Martin W.'},
-  {id:'ov_bmt',        n:'BMT Medical Technology s.r.o.', sub:'1 faktura · č. 417',           amt:'46 234',     days:9,  pri:'n', plbl:'10–13.11', due:'13. 11.', oz:'Jan V.'},
+  /* ov_certis uhrazen 2026-11-20 (111,104.00 Kč, Δ0.00) — Fio ✅ */
+  /* ov_bmt uhrazen 2026-11-20 (46,233.60 Kč, Δ0.40) — Fio ✅ */
   {id:'ov_vuuo',       n:'VÚÚO Holovousy s.r.o.',         sub:'1 faktura · č. 12985',         amt:'46 087',     days:9,  pri:'n', plbl:'10–13.11', due:'13. 11.', oz:''},
-  {id:'ov_vaillant',   n:'Vaillant Group Czech Republic', sub:'1 faktura · č. 413',           amt:'28 334',     days:9,  pri:'n', plbl:'10–13.11', due:'13. 11.', oz:'Martin W.'},
+  /* ov_vaillant uhrazen 2026-11-20 (28,333.76 Kč, Δ0.24) — Fio ✅ */
   {id:'ov_saar',       n:'Saar Gummi Czech s.r.o.',       sub:'1 faktura · č. 418',           amt:'23 448',     days:9,  pri:'n', plbl:'10–13.11', due:'13. 11.', oz:'Jan V.'},
-  {id:'ov_hsekomin',   n:'HS EkoMin s.r.o.',              sub:'1 faktura · č. 13280',         amt:'4 557',      days:9,  pri:'n', plbl:'10–13.11', due:'13. 11.', oz:''},
-
+  /* ov_hsekomin uhrazen 2026-11-23 (4,557.00 Kč, Δ0.00) — Fio ✅ */
   /* === 16. 11. === */
   {id:'ov_alza16',     n:'Alza.cz a.s.',                  sub:'2 faktury · č. 134, 419',      amt:'286 649,44', days:6,  pri:'n', plbl:'16.11', due:'16. 11.', oz:'Tomáš H.'},
   {id:'ov_heineken',   n:'Heineken ČR',                   sub:'1 faktura · č. 428',           amt:'79 195,20',  days:6,  pri:'n', plbl:'16.11', due:'16. 11.', oz:'Jan V.'},
-  {id:'ov_brand',      n:'BRAND CONCEPT',                 sub:'2 faktury · č. 423, 424',      amt:'17 722,88',  days:6,  pri:'n', plbl:'16.11', due:'16. 11.', oz:'Tomáš H.'},
+  /* ov_brand uhrazen 2026-11-20 (17,722.88 Kč, Δ0.00) — Fio ✅ */
   {id:'ov_cpr16',      n:'CPR HK s.r.o.',                 sub:'5 faktur · č. 429–433',        amt:'11 690,25',  days:6,  pri:'n', plbl:'16.11', due:'16. 11.', oz:'Jana N.'},
-  {id:'ov_helik16',    n:'Markéta Helikárová',            sub:'1 faktura · č. 13411',         amt:'4 533',      days:6,  pri:'n', plbl:'16.11', due:'16. 11.', oz:''},
-  {id:'ov_kavanova',   n:'Veronika Kavanová',             sub:'1 faktura · č. 13400',         amt:'2 384',      days:6,  pri:'n', plbl:'16.11', due:'16. 11.', oz:'Markéta C.'},
-
+  /* ov_helik16 uhrazen 2026-11-23 (4,533.00 Kč, Δ0.00) — Fio ✅ */
+  /* ov_kavanova uhrazen 2026-11-19 (2,384.00 Kč, Δ0.00) — Fio ✅ */
   /* === 17. 11. === */
-  {id:'ov_greenswan',  n:'Green-Swan Pharmaceuticals',    sub:'1 faktura · č. 438',           amt:'102 821,60', days:5,  pri:'n', plbl:'17.11', due:'17. 11.', oz:'Markéta C.'},
-  {id:'ov_ikme',       n:'Institut klinické a exp. med.', sub:'1 faktura · č. 435',           amt:'12 526,08',  days:5,  pri:'n', plbl:'17.11', due:'17. 11.', oz:'Jan V.'},
+  /* ov_greenswan uhrazen 2026-11-23 (102,821.60 Kč, Δ0.00) — Fio ✅ */
+  /* ov_ikme uhrazen 2026-11-20 (12,526.08 Kč, Δ0.00) — Fio ✅ */
   {id:'ov_amt',        n:'AMT AUTO - SKLA',               sub:'1 faktura · č. 13485',         amt:'6 510',      days:5,  pri:'n', plbl:'17.11', due:'17. 11.', oz:''},
   {id:'ov_cpr17',      n:'CPR HK s.r.o.',                 sub:'1 faktura · č. 434',           amt:'2 968',      days:5,  pri:'n', plbl:'17.11', due:'17. 11.', oz:'Jana N.'},
   {id:'ov_tsp',        n:'TSP DATA',                      sub:'1 faktura · č. 13474',         amt:'1 602,31',   days:5,  pri:'n', plbl:'17.11', due:'17. 11.', oz:''},
   {id:'ov_banalita',   n:'Banalita s.r.o.',               sub:'1 faktura · č. 13452',         amt:'955',        days:5,  pri:'n', plbl:'17.11', due:'17. 11.', oz:''},
 
   /* === 18. 11. === */
-  {id:'ov_iframix',    n:'IFRAMIX',                       sub:'1 faktura · č. 442',           amt:'58 800',     days:4,  pri:'n', plbl:'18.11', due:'18. 11.', oz:'Jan V.'},
+  /* ov_iframix uhrazen 2026-11-20 (58,800.00 Kč, Δ0.00) — Fio ✅ */
   {id:'ov_kas',        n:'K a S, s.r.o.',                 sub:'1 faktura · č. 451',           amt:'16 184',     days:4,  pri:'n', plbl:'18.11', due:'18. 11.', oz:''},
-  {id:'ov_euro_pool',  n:'Euro Pool System CZ',           sub:'1 faktura · č. 445',           amt:'14 488,32',  days:4,  pri:'n', plbl:'18.11', due:'18. 11.', oz:''},
-  {id:'ov_emedis18',   n:'EMEDIS s.r.o.',                 sub:'1 faktura · č. 444',           amt:'14 053,92',  days:4,  pri:'n', plbl:'18.11', due:'18. 11.', oz:'Jana N.'},
+  /* ov_euro_pool uhrazen 2026-11-20 (14,488.32 Kč, Δ0.00) — Fio ✅ */
+  /* ov_emedis18 uhrazen 2026-11-26 (14,053.92 Kč, Δ0.00) — Fio ✅ */
   {id:'ov_sport',      n:'SPORT HOTÁREK',                 sub:'1 faktura · č. 13518',         amt:'7 832',      days:4,  pri:'n', plbl:'18.11', due:'18. 11.', oz:''},
-  {id:'ov_ms_pod',     n:'MŠ Poděbrady',                  sub:'3 faktury · č. 446, 448, 449', amt:'7 084',      days:4,  pri:'n', plbl:'18.11', due:'18. 11.', oz:'Markéta C.'},
+  /* ov_ms_pod uhrazen 2026-11-20 (7,084.00 Kč, Δ0.00) — Fio ✅ */
   {id:'ov_cpr18',      n:'CPR HK s.r.o.',                 sub:'1 faktura · č. 441',           amt:'3 284,74',   days:4,  pri:'n', plbl:'18.11', due:'18. 11.', oz:'Jana N.'},
   {id:'ov_waxwing',    n:'WAXWING',                       sub:'1 faktura · č. 13517',         amt:'3 038',      days:4,  pri:'n', plbl:'18.11', due:'18. 11.', oz:''},
 
   /* === 19. 11. — přešlo z Do 5 dní === */
-  {id:'ov_a1com',      n:'A1 com s.r.o.',                 sub:'1 faktura · č. 455',           amt:'43 769,60',  days:3,  pri:'n', plbl:'19.11', due:'19. 11.', oz:'Martin W.'},
-  {id:'ov_porkert',    n:'Vlastimil Porkert',             sub:'1 faktura · č. 454',           amt:'17 640',     days:3,  pri:'n', plbl:'19.11', due:'19. 11.', oz:'Jan V.'},
+  /* ov_a1com uhrazen 2026-11-26 (43,769.60 Kč, Δ0.00) — Fio ✅ */
+  /* ov_porkert uhrazen 2026-11-20 (17,640.00 Kč, Δ0.00) — Fio ✅ */
   {id:'ov_cpr19',      n:'CPR HK s.r.o.',                 sub:'3 faktury · č. 457, 459, 460', amt:'6 829,07',   days:3,  pri:'n', plbl:'19.11', due:'19. 11.', oz:'Jana N.'},
-  {id:'ov_agritech',   n:'AgriTechnika CZ',               sub:'1 faktura · č. 458',           amt:'4 020,80',   days:3,  pri:'n', plbl:'19.11', due:'19. 11.', oz:'Martin W.'},
-
+  /* ov_agritech uhrazen 2026-11-25 (4,020.80 Kč, Δ0.00) — Fio ✅ */
   /* === 20. 11. — přešlo z Do 5 dní === */
   {id:'ov_candex',     n:'Candex Solutions',              sub:'1 faktura · č. 463',           amt:'87 180,80',  days:2,  pri:'n', plbl:'20.11', due:'20. 11.', oz:'Jan V.'},
   {id:'ov_alza20',     n:'Alza.cz a.s.',                  sub:'3 faktury · č. 139, 140, 141', amt:'242 334',    days:2,  pri:'n', plbl:'20.11', due:'20. 11.', oz:'Tomáš H.'},
   {id:'ov_speed20',    n:'SPEED PRESS Plus a.s.',         sub:'2 faktury · č. 462, 468',      amt:'39 483,92',  days:2,  pri:'n', plbl:'20.11', due:'20. 11.', oz:'Tomáš H.'},
   {id:'ov_cpr20',      n:'CPR HK s.r.o.',                 sub:'4 faktury · č. 461, 465, 466, 472', amt:'19 710,15', days:2, pri:'n', plbl:'20.11', due:'20. 11.', oz:'Jana N.'},
-  {id:'ov_reda349',    n:'REDA a.s.',                     sub:'1 faktura · č. 349',           amt:'56 336',     days:2,  pri:'n', plbl:'20.11', due:'20. 11.', oz:'Tomáš H.'},
+  /* ov_reda349 uhrazen 2026-11-23 (56,336.00 Kč, Δ0.00) — Fio ✅ */
   {id:'ov_atlas',      n:'Atlas Copco',                   sub:'1 faktura · č. 464',           amt:'5 292',      days:2,  pri:'n', plbl:'20.11', due:'20. 11.', oz:'Jan V.'},
   {id:'ov_mlsoun',     n:'MLSOUN s.r.o.',                 sub:'1 faktura · č. 13629',         amt:'4 658',      days:2,  pri:'n', plbl:'20.11', due:'20. 11.', oz:''},
-  {id:'ov_dolany',     n:'Zemědělské druž. Dolany',       sub:'1 faktura · č. 13613',         amt:'2 064',      days:2,  pri:'n', plbl:'20.11', due:'20. 11.', oz:''},
-  {id:'ov_reda342',    n:'REDA a.s.',                     sub:'1 faktura · č. 342',           amt:'6 595',      days:2,  pri:'n', plbl:'20.11', due:'20. 11.', oz:'Tomáš H.'},
-
+  /* ov_dolany uhrazen 2026-11-20 (2,064.00 Kč, Δ0.00) — Fio ✅ */
+  /* ov_reda342 uhrazen 2026-11-23 (6,594.74 Kč, Δ0.26) — Fio ✅ */
   /* === 21. 11. — přešlo z Do 5 dní === */
   {id:'ov_vino',       n:'Víno-dárkové balíčky',          sub:'1 faktura · č. 13651',         amt:'5 820',      days:1,  pri:'n', plbl:'21.11', due:'21. 11.', oz:''},
 ];
@@ -78,13 +74,13 @@ const OV_EUR = [
   {id:'oe_metrostav',  n:'METROSTAV ESTATE A.S.',         fakt:'č. 48',  days:9,  pri:'n', plbl:'13.11',     due:'13. 11.', amt:'1 824,00', oz:'Jan V.'},
   {id:'oe_pd_vajnory', n:'PD Vajnory',                    fakt:'č. 194', days:9,  pri:'n', plbl:'13.11',     due:'13. 11.', amt:'90,68',    oz:''},
   /* LAMELLAND + POST Servis — Fio párování proběhlo, ale K2 stále eviduje jako neuhrazené — K2 je zdroj pravdy */
-  {id:'oe_lamelland',  n:'LAMELLAND s.r.o.',              fakt:'č. 190', days:6,  pri:'a', plbl:'K2 ověřit', due:'16. 11.', amt:'519,60',  oz:'Jan V.'},
+  /* oe_lamelland uhrazen 2026-11-16 (519.60 EUR, Δ0.00) — Fio ✅ */
   {id:'oe_post190',    n:'POST Servis s.r.o.',             fakt:'č. 190', days:6,  pri:'a', plbl:'K2 ověřit', due:'16. 11.', amt:'177,86',  oz:''},
   /* přešlo z Do 5 dní 19–20.11 */
-  {id:'oe_rechtys',    n:'Rechtys spol.',                  fakt:'č. 51',  days:3,  pri:'n', plbl:'19.11',     due:'19. 11.', amt:'1 814,00', oz:'Tomáš H.'},
+  /* oe_rechtys uhrazen 2026-11-24 (1,814.00 EUR, Δ0.00) — Fio ✅ */
   {id:'oe_sketch199',  n:'Sketch s.r.o.',                  fakt:'č. 199', days:3,  pri:'n', plbl:'19.11',     due:'19. 11.', amt:'165,30',  oz:'Markéta C.'},
   {id:'oe_arma',       n:'Armaplast',                      fakt:'č. 198', days:3,  pri:'n', plbl:'19.11',     due:'19. 11.', amt:'128,45',  oz:''},
-  {id:'oe_proreco',    n:'PRORECO s.r.o.',                 fakt:'č. 52',  days:2,  pri:'n', plbl:'20.11',     due:'20. 11.', amt:'3 435,60', oz:'Martin W.'},
+  /* oe_proreco uhrazen 2026-11-23 (3,435.60 EUR, Δ0.00) — Fio ✅ */
   {id:'oe_dez',        n:'DeZ spol.',                      fakt:'č. 200', days:2,  pri:'n', plbl:'20.11',     due:'20. 11.', amt:'161,10',  oz:''},
   {id:'oe_jufa',       n:'JUFA hotels',                    fakt:'č. 196', days:2,  pri:'n', plbl:'20.11',     due:'20. 11.', amt:'226,40',  oz:''},
 ];
