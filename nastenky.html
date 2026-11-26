@@ -609,7 +609,7 @@ async function loadBoards() { const j = await api('/boards'); BOARDS = j.boards;
   catch (e) {
     if (e.message === 'login') return;
     $('main').innerHTML = `<div class="home"><div class="intro"><b>Nástěnky běží jen na našem serveru s přihlášením</b> (jsou v nich firemní data, proto ne na veřejném GitHubu).<br><br>
-      Otevři je tady: <a href="https://nastroje.178-104-139-119.sslip.io/nastenky.html">nastroje.178-104-139-119.sslip.io/nastenky.html</a>
+      Otevři je tady: <a href="https://nastroje.nutworld.cz/nastenky.html">nastroje.nutworld.cz/nastenky.html</a>
       <br><small>(${esc(e.message)})</small></div></div>`;
     return;
   }
