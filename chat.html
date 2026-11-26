@@ -143,6 +143,15 @@ textarea{min-height:70px;resize:vertical}
    </div>
    <div class="hint">Má přednost před texty z e-shopu. Ty (Doprava, Kontakty, Obchodní podmínky, Reklamace) a katalog produktů se načítají samy každou noc. Aktivní popupy typu oznámení (např. zpoždění expedice) zná automaticky.</div>
 
+   <div class="sec">Soukromí — co zákazník nikdy nedostane</div>
+   <div class="row3">
+    <div class="field"><label>Firemní e-mail CZ</label><input type="text" id="kEmCz" maxlength="80"></div>
+    <div class="field"><label>Firemní e-mail SK</label><input type="text" id="kEmSk" maxlength="80"></div>
+    <div class="field"><label>Firemní telefon</label><input type="text" id="kTel" maxlength="80"></div>
+   </div>
+   <div class="field"><label>Nikdy neprozradit (jeden údaj na řádek)</label><textarea id="skryt" style="min-height:140px"></textarea>
+    <div class="hint">Soukromé adresy, osobní telefony a e-maily. NutWorldka je ze stránek e-shopu vůbec nenačte, a kdyby se přesto objevily v odpovědi, systém je před odesláním nahradí větou „napište nám na firemní e-mail“. Zákazník dostane jen firemní kontakt výše.</div></div>
+
    <div class="sec">Pojistka</div>
    <div class="row3">
     <div class="field"><label>Max. odpovědí AI za den</label><input type="number" id="limit" min="50" max="20000"></div>
@@ -261,6 +270,8 @@ function renderSet() {
   $('dny').innerHTML = DNY.map((d, i) => `<label class="chip"><input type="checkbox" name="dny" value="${i + 1}" ${s.dny.includes(i + 1) ? 'checked' : ''}><span>${d}</span></label>`).join('');
   $('od').value = s.od; $('do').value = s.do; $('clovek').value = s.clovek; $('limit').value = s.limit_den;
   $('znCz').value = s.znalosti.cz || ''; $('znSk').value = s.znalosti.sk || '';
+  $('skryt').value = (s.skryt || []).join('\n');
+  const k = s.kontakt || {}; $('kEmCz').value = k.email_cz || ''; $('kEmSk').value = k.email_sk || ''; $('kTel').value = k.telefon || '';
   $('katCz').textContent = S.katalog.cz ? 'načten ' + when(S.katalog.cz) : 'zatím nenačten';
   $('katSk').textContent = S.katalog.sk ? 'načten ' + when(S.katalog.sk) : 'zatím nenačten';
   $('save').hidden = !S.muze_upravit;
@@ -270,7 +281,9 @@ $('save').onclick = async () => {
     stav: {cz: document.querySelector('input[name=st_cz]:checked').value, sk: document.querySelector('input[name=st_sk]:checked').value},
     dny: [...document.querySelectorAll('input[name=dny]:checked')].map(i => +i.value),
     od: $('od').value, do: $('do').value, clovek: $('clovek').value.trim(), limit_den: +$('limit').value,
-    znalosti: {cz: $('znCz').value, sk: $('znSk').value}};
+    znalosti: {cz: $('znCz').value, sk: $('znSk').value},
+    skryt: $('skryt').value.split('\n').map(x => x.trim()).filter(Boolean),
+    kontakt: {email_cz: $('kEmCz').value.trim(), email_sk: $('kEmSk').value.trim(), telefon: $('kTel').value.trim()}};
   $('save').disabled = true;
   try { await api('/nastaveni', {nastaveni: n}); await reload(); msg('setMsg', 'Uloženo. Na e-shopu se změna projeví do minuty.', true); }
   catch (e) { msg('setMsg', e.message); } finally { $('save').disabled = false; }
@@ -284,7 +297,7 @@ reload().then(() => {
   if (h) openKonv(h);
   timer = setInterval(async () => {
     try {
-      const busy = document.activeElement && ['rep', 'znCz', 'znSk', 'od', 'do', 'clovek', 'limit'].includes(document.activeElement.id);
+      const busy = document.activeElement && ['rep', 'znCz', 'znSk', 'od', 'do', 'clovek', 'limit', 'skryt', 'kEmCz', 'kEmSk', 'kTel'].includes(document.activeElement.id);
       S = await api('/seznam'); renderKpi(); renderList(); renderGaps();
       if (cur && !busy) openKonv(cur.sid, true);
     } catch (e) {}
