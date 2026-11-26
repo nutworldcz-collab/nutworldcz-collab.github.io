@@ -361,10 +361,11 @@ async function extractPDF(file) {
       } catch (_) {}
     }
 
-    setStatus("loading", `✅ PDF přečten (${pdf.numPages} stran, ${text.length} znaků)`);
+    setStatus("loading", `✅ PDF přečten (${pdf.numPages} stran, ${text.length} znaků, ${pageImages.length} obrázků pro Vision)`);
     // Debug: show extracted text
     const dbg = document.getElementById('debug-text');
     if (dbg) { dbg.value = text; document.getElementById('debug-section').style.display = ''; }
+    console.log('[PDF] extracted text length:', text.length, '| pageImages:', pageImages.length);
     checkReady();
   } catch (e) {
     setStatus("error", "Chyba při čtení PDF: " + e.message);
@@ -428,8 +429,9 @@ document.getElementById("btn-generate").addEventListener("click", async () => {
     const isServer = window.location.hostname !== 'nutworldcz-collab.github.io';
     const vy = data.spec && data.spec.vyziva;
     const vyMissing = !vy || !vy.energie;
+    console.log('[Vision] isServer:', isServer, '| vyMissing:', vyMissing, '| pageImages:', pageImages.length);
     if (isServer && vyMissing && pageImages.length) {
-      setStatus("loading", "⏳ Výživové hodnoty nebyly v textu — čtu je z obrázku (Claude Vision)…");
+      setStatus("loading", `⏳ Výživové hodnoty v textu nenalezeny — čtu z obrázku (Claude Vision, ${pageImages.length} stran)…`);
       try {
         const vResp = await fetch('/api/spec-nutrition-vision', {
           method: 'POST',
@@ -437,10 +439,22 @@ document.getElementById("btn-generate").addEventListener("click", async () => {
           body: JSON.stringify({ pageImages })
         });
         const vData = await vResp.json();
+        console.log('[Vision] response:', JSON.stringify(vData).slice(0, 300));
         if (vData.success && vData.vyziva) {
           data.spec.vyziva = vData.vyziva;
+          console.log('[Vision] vyziva filled:', JSON.stringify(vData.vyziva));
+        } else {
+          console.warn('[Vision] failed or empty vyziva:', vData);
+          setStatus("loading", '⚠️ Vision nevrátilo výživovky: ' + (vData.error || 'prázdná odpověď'));
+          await new Promise(r => setTimeout(r, 2500));
         }
-      } catch (_) { /* tiché selhání — specifikace se zobrazí bez výživovek */ }
+      } catch (e) {
+        console.error('[Vision] fetch error:', e);
+        setStatus("loading", '⚠️ Vision chyba: ' + e.message);
+        await new Promise(r => setTimeout(r, 2500));
+      }
+    } else if (!isServer && vyMissing) {
+      console.log('[Vision] skipped — not on server');
     }
 
     currentSpec = data.spec;
