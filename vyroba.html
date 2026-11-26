@@ -118,6 +118,8 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .comp-info{flex:1;min-width:0}
 .comp-name{font-size:13px;color:#333}
 .comp-row.done .comp-name{text-decoration:line-through;color:#bbb}
+.comp-obal{font-size:11.5px;color:#83502e;margin-top:2px}.comp-obal b{color:#5c381f}
+.pack-obal{font-size:11px;color:#83502e;background:#fff8ec;border:1px dashed #f7ab31;border-radius:4px;padding:1px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:45%}
 .comp-gram{font-size:12px;font-weight:700;color:#1a1a1a;margin-top:1px}
 .comp-kg{font-size:13px;font-weight:800;color:#1a1a1a;white-space:nowrap;min-width:60px;text-align:right}
 .comp-row.done .comp-kg{color:#ccc}
@@ -412,6 +414,7 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 <script src="/darky-data.js"></script>
 <script src="produkty-data.js"></script>
 <script src="smesi-data.js"></script>
+<script src="obaly-data.js"></script>
 <script>
 const KEY   = 'via-proxy';
 const TOKEN = 'via-proxy';
@@ -1006,6 +1009,7 @@ function buildFirmaCard(card){
           <div class="comp-info">
             <div class="comp-name">${compName}${compKod?`<span class="comp-kod">kód ${compKod}</span>`:''}</div>
             ${compGram?`<div class="comp-gram">${compGram} × ${prod.ks} ks</div>`:''}
+            ${(()=>{const t=dk?obInnerText((DARKY_DATA[dk]||{}).obal,parseFloat(compGram)||0):obInnerText(s.obal,parseFloat(s.gram)||0);return t?`<div class="comp-obal">🧰 ${t}</div>`:'';})()}
           </div>
           <div class="comp-kg">${compKg?fmtKg(compKg):'—'}</div>
         `;
@@ -1013,6 +1017,11 @@ function buildFirmaCard(card){
         block.appendChild(row);
       });
 
+      if(!prod.obal&&!prod.isSluzba&&typeof NW_OBALY!=='undefined'){
+        const bk=obProductKey(prod);
+        if(bk){ const grams=prod.slozeni.map(c=>parseFloat(c.gram)||0);
+          const ob=document.createElement('div'); ob.innerHTML=NW_OBALY.html(bk,grams.reduce((a,b)=>a+b,0),prod.ks,grams); block.appendChild(ob); }
+      }
       if(prod.obal){
         const [co, vaha] = prod.obal.split(' | ');
         const m = co.match(/^Obal (.+?): (.+)$/);
@@ -1249,6 +1258,70 @@ function mixBlockHtml(kod,kgLeft){
   return `<div class="pack-hdr" style="background:#fff8e1"><span class="pack-darek">🥣 Namíchat ${fmtKg(kgLeft)} — recept ze smesi.csv</span></div>${rows}`;
 }
 
+/* ═══ OBALY: co do čeho jde (obaly-data.js = obaly.csv + obaly_slozeni.csv + komponenty, Jan 2026-11-26) ═══ */
+const OB_KW=[['výseková xl','krabice_vys_xl'],['výseková l','krabice_vys_l'],['6× sklen','box_6sklenicky'],['6x sklen','box_6sklenicky'],
+  ['6×50','krabicka_6x50'],['6x50','krabicka_6x50'],['4×80','krabicka_4x80'],['4x80','krabicka_4x80'],['8×80','krabicka_pecet_8x80'],['8x80','krabicka_pecet_8x80'],
+  ['4 druhy','krabicka_4mix'],['2×50','krabicka_2x50'],['2x50','krabicka_2x50'],['3x eko','krabicka_3eko'],['3× eko','krabicka_3eko'],
+  ['deluxe 3','krabice_deluxe'],['krabice s kelímky','krabice_kelimky'],['exclusive s vzkazem','exclusive_vzkaz'],['krabička exclusive','exclusive_bez'],
+  ['s překvapením','prekvapeni'],['malý mix','pecet_maly_mix'],['double mix','pecet_double'],['výběr mix','pecet_vyber_mixu'],['top výběr','top_vyber'],
+  ['3 druhy','krabice_3druhy'],['vánoční krabič','vanocni_krabicka'],['krabička sob','vanocni_krabicka'],['kazetk','kazetka'],
+  ['sklenička exclusive','sklenic_exclusive'],['sklenička deluxe','sklenic_deluxe'],['kraft','kraft'],['hranolky','kraft'],['eko kelím','eko_kelimek'],
+  ['kelímek','eko_kelimek'],['kornout','kornout'],['knír','sacek_knir'],['kolíč','sacek_kolick'],['sáček sob','sacek_vanoce'],['zajíč','zajicek'],
+  ['strojov','strojovy_sacek'],['celofán','celofan'],['doypack','doypack']];
+const OB_INNER=/^(celo_|strojovy|doypack|sklenicka|eko_kelimek|kraft_kelimek|sacek|kornout|zajicek)/;
+const OB_EXTRA=/^(etiketa|maslicka|vicko|jutova|vypln)/;
+// text („80g vánoční krabička“, „celofánek“, darky.csv obal) -> {key, pozn}; generic „dárková krabička“ = unknown, never guessed
+function obKey(text,g){
+  if(typeof NW_OBALY==='undefined'||!text) return null;
+  const t=String(text).toLowerCase().trim();
+  const exact=NW_OBALY.sablona(t,g);
+  if(exact&&exact!=='krabicka_4doypack') return {key:exact};
+  if(/sklen|sklo\b/.test(t)&&!/exclusive|deluxe|6\s*[x×]/.test(t)){
+    const k=g&&g<=100?'sklenic_exclusive':'sklenic_deluxe';
+    return {key:k,pozn:'sklenička bez typu → podle gramáže'};
+  }
+  for(const [kw,k] of OB_KW){ if(!t.includes(kw)) continue;
+    if(k==='celofan') return {key:(g||0)>100?'celofan_velky':'celofan_maly'};
+    if(k==='kornout') return {key:(g||0)>200?'kornout_velky':'kornout_maly'};
+    return {key:k}; }
+  if(/doypack s pečetí|4× doypack/.test(t)) return {key:'krabicka_4doypack'};
+  return null;
+}
+function obIsBox(key){ const s=NW_OBALY.sablony[key]; return !!s&&s.slozeni.some(r=>!OB_INNER.test(r.k)&&!OB_EXTRA.test(r.k)); }
+// what ONE product of the gift goes into: „Strojový sáček · do Vánoční krabička 2×50 g“
+function obInnerText(text,g){
+  if(!text) return '';
+  if(/doypack/i.test(text)&&!obIsBox((obKey(text,g)||{}).key||'')) return 'Doypack'+(g?` do ${g} g`:'');
+  const o=obKey(text,g); if(!o) return /krabi|box/i.test(text)?'❓ krabice bez typu — obal podle zadání':'';
+  const S=NW_OBALY.sablony[o.key]; if(!S) return '';
+  const inner=[...new Set(S.slozeni.filter(r=>OB_INNER.test(r.k)||(!obIsBox(o.key)&&/^maslicka|^jutova|^vicko/.test(r.k))).map(r=>r.nazev))];
+  const box=obIsBox(o.key);
+  let txt=inner.length?(box&&inner.length>1?'jedno z: '+inner.join(' / '):inner.join(' + ')):'';
+  if(box) txt=(txt?txt+' · ':'')+'do <b>'+S.nazev+'</b>';
+  return txt+(o.pozn?` <span style="color:#da1668">(${o.pozn})</span>`:'');
+}
+// packaging template of a whole product (title, or the box written at its items)
+function obProductKey(prod){
+  const g=prod.slozeni.reduce((a,c)=>a+(parseFloat(c.gram)||0),0);
+  let o=obKey(prod.nazev,g); if(o&&obIsBox(o.key)) return o.key;
+  for(const c of prod.slozeni){ const x=obKey(c.obal,parseFloat(c.gram)||0); if(x&&obIsBox(x.key)) return x.key; }
+  if(prod.slozeni.length===1){ const x=obKey(prod.slozeni[0].obal||prod.nazev,g); if(x) return x.key; }
+  return null;
+}
+// components × pcs of one order product -> into map (🧰 line from zakazka.html wins, otherwise obaly_slozeni)
+function obAdd(prod,map){
+  if(prod.isSluzba||!prod.ks) return;
+  const add=(n,k)=>{ if(!n) return; map.set(n,(map.get(n)||0)+k); };
+  if(prod.obal){ const co=prod.obal.split(' | ')[0]; const m=co.match(/^Obal .+?: (.+)$/);
+    (m?m[1]:co).split(', ').forEach(x=>{ const mm=x.match(/^([\d,.]+)×\s*(.+)$/); if(mm) add(mm[2].trim(),parseFloat(mm[1].replace(',','.'))); }); return; }
+  const grams=prod.slozeni.map(c=>parseFloat(c.gram)||0);
+  const bk=obProductKey(prod);
+  if(bk&&obIsBox(bk)){ const r=NW_OBALY.rozpis(bk,grams.reduce((a,b)=>a+b,0),grams); (r?r.radky:[]).forEach(x=>add(x.nazev,x.ks*prod.ks)); return; }
+  prod.slozeni.forEach((c,i)=>{ const g=grams[i];
+    if(/doypack/i.test(c.obal||'')){ add('Doypack'+(g?' do '+g+' g':''),prod.ks); add('Etiketa (štítek)',prod.ks); return; }
+    const o=obKey(c.obal,g); const r=o&&NW_OBALY.rozpis(o.key,g,[g]); (r?r.radky:[]).forEach(x=>add(x.nazev,x.ks*prod.ks)); });
+}
+
 function renderVyroba(cards){
   const mc=document.getElementById('main-content');
 
@@ -1280,7 +1353,7 @@ function renderVyroba(cards){
             const gram=item.gram+'g';
             // Pack = gramáž + kód dárku (různé dárky se stejným produktem = různé pack sekce)
             const packKey=gram+'__'+dKod;
-            if(!ing.byPack.has(packKey)) ing.byPack.set(packKey,{gram:gram,darek:darky.nazev||dKod,usages:[]});
+            if(!ing.byPack.has(packKey)) ing.byPack.set(packKey,{gram:gram,darek:darky.nazev||dKod,obal:obInnerText(darky.obal,item.gram),usages:[]});
             ing.byPack.get(packKey).usages.push({cardId:card.id,firma:card.firma,ks:prod.ks,pi,ci,termin:card.termin});
           });
         } else {
@@ -1290,7 +1363,7 @@ function renderVyroba(cards){
           if(!ingMap.has(ingKey)) ingMap.set(ingKey,{nazev:ingNazev,kod:s.kod,byPack:new Map()});
           const ing=ingMap.get(ingKey);
           const packKey=s.gram+'__'+prod.nazev;
-          if(!ing.byPack.has(packKey)) ing.byPack.set(packKey,{gram:s.gram,darek:prod.nazev,usages:[]});
+          if(!ing.byPack.has(packKey)) ing.byPack.set(packKey,{gram:s.gram,darek:prod.nazev,obal:obInnerText(s.obal,parseFloat(s.gram)||0),usages:[]});
           ing.byPack.get(packKey).usages.push({cardId:card.id,firma:card.firma,ks:prod.ks,pi,ci,termin:card.termin});
         }
       });
@@ -1371,7 +1444,7 @@ function renderVyroba(cards){
       phdr.className='pack-hdr';
       phdr.innerHTML=`
         <span class="pack-gram">${pack.gram||'?'}</span>
-        <span class="pack-darek">📦 ${pack.darek}</span>
+        <span class="pack-darek">📦 ${pack.darek}</span>${pack.obal?`<span class="pack-obal" title="${pack.obal.replace(/<[^>]+>/g,'')}">🧰 ${pack.obal}</span>`:''}
         <span class="pack-total">${packDone}/${pack.usages.length}</span>
       `;
       sect.appendChild(phdr);
@@ -1479,6 +1552,21 @@ function renderVyroba(cards){
     grid.insertBefore(buildSmesCard(smesName,usages),grid.firstChild);
   });
   mc.innerHTML=''; mc.appendChild(grid);
+  if(typeof NW_OBALY!=='undefined'){
+    const obMap=new Map();
+    cards.forEach(card=>card.produkty.forEach((prod,pi)=>{ if(prod.slozeni.length&&prod.slozeni.every((c,ci)=>isDone(card.id,pi,ci))) return; obAdd(prod,obMap); }));
+    if(obMap.size){
+      const panel=document.createElement('details');
+      panel.className='icard'; panel.style.marginBottom='14px';
+      const k2=s=>{const m=s.match(/K2 (\d+V)/);return m?m[1]:'';};
+      panel.innerHTML=`<summary class="ihdr" style="cursor:pointer;list-style:none"><div class="iname-wrap"><div class="iname">🧰 Obalový materiál celkem</div>`+
+        `<div class="ikod">součet za nehotové produkty v zobrazení · složení obalů z obaly_slozeni.csv (nebo z řádku 🧰 na kartě)</div></div><div class="itotal-kg">${obMap.size} druhů</div></summary>`+
+        [...obMap.entries()].sort((a,b)=>b[1]-a[1]).map(([n,k])=>
+          `<div class="smes-comp-row" style="cursor:default;padding-left:14px"><div class="smes-comp-name"><b>${n}</b>${k2(n)?`<span class="smes-comp-kod">K2 ${k2(n)}</span>`:''}</div>`+
+          `<div class="smes-comp-kg">${Math.round(k).toLocaleString('cs')} ks</div></div>`).join('');
+      mc.insertBefore(panel,grid);
+    }
+  }
   if(mixNeed.size){
     const tot=[...mixNeed.values()].reduce((a,c)=>a+c.kg,0);
     const panel=document.createElement('details');
