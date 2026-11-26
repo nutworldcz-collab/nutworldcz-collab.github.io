@@ -506,6 +506,14 @@ window.NW_STRANKY = [
   "barva": "pink"
  },
  {
+  "soubor": "popupy.html",
+  "skupina": "marketing",
+  "ikona": "🎯",
+  "nazev": "Popupy na e-shopu",
+  "popis": "Vlastní okna na nutworld.cz/.sk místo Poptinu: kde, kdy, jak často, CZ/SK texty, NutWorldka, e-maily do Leadhubu, statistiky.",
+  "barva": "pink"
+ },
+ {
   "soubor": "web-audit.html",
   "skupina": "marketing",
   "ikona": "📊",

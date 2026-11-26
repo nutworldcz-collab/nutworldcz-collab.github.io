@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Nutworld — Popupy na e-shopu</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--br:#83502e;--bd:#5c381f;--kraft:#f1e6da;--acc:#da1668;--amb:#f7ab31;--leaf:#6fa044;--line:#d4c0a8}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;font-size:14px}
+h1,h2,h3,h4{font-family:'Exo 2',sans-serif}
+a{color:var(--br)}
+.top{background:linear-gradient(135deg,#5c381f 0%,#83502e 55%,#a0622a 100%);color:#fff;padding:22px 16px 0;position:relative;overflow:hidden}
+.top:after{content:'';position:absolute;top:-30px;right:-30px;width:160px;height:160px;border-radius:50%;background:rgba(247,171,49,.15)}
+.top .in{max-width:1260px;margin:0 auto;position:relative;z-index:1}
+.top small{color:var(--amb);letter-spacing:2px;font-size:12px;text-transform:uppercase;font-weight:700}
+.top small a{color:var(--amb);text-decoration:none}
+.top h1{font-size:26px;margin:2px 0 4px}
+.top p{opacity:.85;font-size:13px}
+.tabs{display:flex;gap:6px;margin-top:16px;flex-wrap:wrap}
+.tab{background:rgba(255,255,255,.12);color:#fff;border:0;border-radius:12px 12px 0 0;padding:10px 18px;font:700 14px 'Exo 2',sans-serif;cursor:pointer}
+.tab.on{background:#e8ddd4;color:var(--bd)}
+.wrap{max-width:1260px;margin:0 auto;padding:20px 16px 60px}
+.panel{background:#fff;border-radius:14px;box-shadow:0 2px 16px rgba(0,0,0,.08);padding:20px 22px;margin-bottom:18px}
+.sec{font-family:'Exo 2',sans-serif;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--br);margin:20px 0 10px;padding-bottom:5px;border-bottom:1.5px solid var(--kraft)}
+.sec:first-child{margin-top:0}
+.field{margin-bottom:12px}
+.field>label{display:block;font-size:11px;font-weight:700;color:var(--br);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.hint{font-size:12px;color:#8a7360;margin-top:4px}
+input[type=text],input[type=number],input[type=date],textarea,select{width:100%;border:1.5px solid var(--line);border-radius:8px;padding:8px 11px;font:inherit;font-size:14px;color:#2a1a0e;background:#fdf9f6}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--br)}
+textarea{min-height:70px;resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;pointer-events:none}
+.chip span{display:inline-block;border:1.5px solid var(--line);border-radius:999px;padding:6px 13px;cursor:pointer;background:#fdf9f6;font-weight:600;user-select:none;font-size:13px}
+.chip input:checked+span{background:var(--bd);border-color:var(--bd);color:#fff}
+.chip input:focus-visible+span{outline:2px solid var(--amb)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+@media(max-width:700px){.row2,.row3{grid-template-columns:1fr}}
+.btn{border:0;border-radius:999px;padding:10px 20px;font:700 14px 'Exo 2',sans-serif;cursor:pointer;background:var(--amb);color:#2a1a0e;text-decoration:none;display:inline-block}
+.btn.dark{background:var(--bd);color:#fff}
+.btn.ghost{background:transparent;border:1.5px solid var(--line);color:var(--bd)}
+.btn.small{padding:5px 12px;font-size:12px}
+.btn.danger{background:transparent;border:1.5px solid var(--acc);color:var(--acc)}
+.btn:disabled{opacity:.5;cursor:wait}
+.note{background:#fff8e8;border:1.5px solid var(--amb);border-radius:10px;padding:10px 14px;font-size:13px;margin-bottom:16px;line-height:1.5}
+.err{background:#fff5f7;border:1.5px solid var(--acc);border-radius:10px;padding:10px 14px;font-size:13px;margin:10px 0}
+.okmsg{background:#eef6e6;border:1.5px solid var(--leaf);border-radius:10px;padding:10px 14px;font-size:13px;margin:10px 0}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--br);padding:8px;border-bottom:1.5px solid var(--kraft)}
+td{padding:10px 8px;border-bottom:1px solid #f0e6dc;vertical-align:middle}
+tr.click{cursor:pointer}
+tr.click:hover td{background:#fdf9f6}
+.st{display:inline-block;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:700}
+.st.on{background:#e6f2dc;color:#3d6a22}.st.off{background:#eee;color:#777}.st.plan{background:#fff1d6;color:#8a5a00}.st.konec{background:#f4e4e4;color:#8b4040}
+.mini{font-size:12px;color:#8a7360}
+.num{font-family:'Exo 2';font-weight:700}
+.ed{display:grid;grid-template-columns:minmax(0,1fr) 460px;gap:18px;align-items:start}
+@media(max-width:1050px){.ed{grid-template-columns:1fr}}
+.sticky{position:sticky;top:12px}
+.prevbox{background:#efe7df;border-radius:12px;height:600px;position:relative;overflow:hidden;border:1px solid var(--line);margin:0 auto;transition:width .2s}
+.prevbox.mob{width:340px}
+.fake-head{height:46px;background:#fff;border-bottom:1px solid #eee;display:flex;align-items:center;padding:0 14px;gap:10px;font:800 15px 'Exo 2';color:var(--bd)}
+.fake-body{padding:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.prevbox.mob .fake-body{grid-template-columns:1fr 1fr}
+.fake-card{background:#fff;border-radius:8px;height:120px}
+.langsw{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+.imgs{display:flex;gap:8px;flex-wrap:wrap}
+.imgs label{cursor:pointer;position:relative}
+.imgs input{position:absolute;opacity:0}
+.imgs .tile{width:84px;height:84px;border-radius:10px;border:3px solid transparent;background:var(--kraft);display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:12px;color:#8a7360;text-align:center}
+.imgs img{max-width:100%;max-height:100%}
+.imgs input:checked+.tile{border-color:var(--amb);box-shadow:0 0 0 2px var(--bd)}
+.code{background:#2a1a0e;color:#f7ab31;border-radius:10px;padding:12px 14px;font:13px ui-monospace,Menlo,monospace;overflow-x:auto;white-space:pre;margin:8px 0}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;align-items:center}
+dialog{border:0;border-radius:14px;padding:22px;max-width:420px;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+dialog::backdrop{background:rgba(40,20,5,.45)}
+.spark{display:flex;align-items:flex-end;gap:2px;height:46px;margin:8px 0}
+.spark div{flex:1;background:var(--amb);border-radius:2px 2px 0 0;min-height:1px}
+</style>
+</head>
+<body>
+<div class="top"><div class="in">
+ <small><a href="/">← Nástroje</a> · Marketing a grafika</small>
+ <h1>🎯 Popupy na e-shopu</h1>
+ <p>Okna na nutworld.cz a nutworld.sk spravujeme sami: kde se ukážou, kdy, jak často a co nabídnou. S veverkou NutWorldkou.</p>
+ <div class="tabs">
+  <button class="tab on" data-t="list">📋 Popupy</button>
+  <button class="tab" data-t="ed" id="tabEd" hidden>✏️ Úprava</button>
+  <button class="tab" data-t="install">🔌 Instalace</button>
+ </div>
+</div></div>
+
+<div class="wrap">
+<div id="nogh" class="note" hidden>Popupy se spravují na serveru nástrojů (s přihlášením):
+ <a href="https://nastroje.178-104-139-119.sslip.io/popupy.html">nastroje — Popupy</a>. Tahle kopie na GitHubu jen ukazuje stránku.</div>
+<div id="glob"></div>
+
+<!-- ================= LIST ================= -->
+<section id="t-list">
+ <div class="panel">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
+   <h3 style="flex:1">Popupy</h3>
+   <select id="fShop" style="width:auto"><option value="">CZ i SK</option><option value="cz">jen CZ</option><option value="sk">jen SK</option></select>
+   <button class="btn" id="btnNew">+ Nový popup</button>
+  </div>
+  <table>
+   <thead><tr><th>Název</th><th>Stav</th><th>E-shop</th><th>Typ · kdy</th><th>Zobrazení</th><th>Kliky</th><th>Vyplnění</th><th>Zavřeno</th><th>Úspěšnost</th></tr></thead>
+   <tbody id="rows"><tr><td colspan="9" class="mini">Načítám…</td></tr></tbody>
+  </table>
+  <p class="mini" style="margin-top:10px">Čísla za posledních 30 dní. Úspěšnost = (kliky + vyplnění) ÷ zobrazení. Statistika je anonymní (bez cookies, jen počty).</p>
+ </div>
+</section>
+
+<!-- ================= EDITOR ================= -->
+<section id="t-ed" hidden>
+ <div class="ed">
+ <div>
+  <div class="panel">
+   <div class="sec">1 · Základ</div>
+   <div class="row2">
+    <div class="field"><label for="f_nazev">Název (interní)</label><input type="text" id="f_nazev" maxlength="100"/><div class="hint">Zákazník ho nevidí. Používá se i v měření (UTM).</div></div>
+    <div class="field"><label for="f_stav">Stav</label><select id="f_stav"><option value="off">⏸ Vypnuto (koncept)</option><option value="on">▶ Zapnuto</option><option value="plan">📅 Naplánováno (jen v datech od–do)</option></select></div>
+   </div>
+   <div class="row3">
+    <div class="field"><label for="f_od">Platí od</label><input type="date" id="f_od"/></div>
+    <div class="field"><label for="f_do">Platí do</label><input type="date" id="f_do"/><div class="hint">Po tomto dni se sám vypne.</div></div>
+    <div class="field"><label for="f_priorita">Priorita</label><select id="f_priorita"><option value="3">Vysoká</option><option value="2">Běžná</option><option value="1">Nízká</option></select><div class="hint">Když se potkají dva, vyhraje vyšší.</div></div>
+   </div>
+   <div class="field"><label>Typ okna</label>
+    <div class="chips">
+     <label class="chip"><input type="radio" name="typ" value="modal"><span>🪟 Okno uprostřed</span></label>
+     <label class="chip"><input type="radio" name="typ" value="slide"><span>↘️ Boční okénko</span></label>
+     <label class="chip"><input type="radio" name="typ" value="bar"><span>➖ Lišta dole</span></label>
+    </div>
+   </div>
+
+   <div class="sec">2 · Kde se zobrazí</div>
+   <div class="field"><label>E-shop</label>
+    <div class="chips"><label class="chip"><input type="checkbox" name="shops" value="cz"><span>🇨🇿 nutworld.cz</span></label><label class="chip"><input type="checkbox" name="shops" value="sk"><span>🇸🇰 nutworld.sk</span></label></div>
+   </div>
+   <div class="field"><label>Stránky</label>
+    <div class="chips">
+     <label class="chip"><input type="checkbox" name="stranky" value="vse"><span>Celý web</span></label>
+     <label class="chip"><input type="checkbox" name="stranky" value="home"><span>Úvodní stránka</span></label>
+     <label class="chip"><input type="checkbox" name="stranky" value="category"><span>Kategorie</span></label>
+     <label class="chip"><input type="checkbox" name="stranky" value="product"><span>Produkty</span></label>
+     <label class="chip"><input type="checkbox" name="stranky" value="cart"><span>Košík</span></label>
+     <label class="chip"><input type="checkbox" name="stranky" value="blog"><span>Blog</span></label>
+    </div>
+    <div class="hint">Pokladna a „děkujeme za objednávku“ jsou vyloučené vždy.</div>
+   </div>
+   <div class="row2">
+    <div class="field"><label for="f_inc">Navíc na adresách obsahujících</label><input type="text" id="f_inc" placeholder="např. /vanoce/, /tipy-na-darky"/><div class="hint">Oddělte čárkou. Hodí se pro konkrétní kategorie.</div></div>
+    <div class="field"><label for="f_exc">Nikdy na adresách obsahujících</label><input type="text" id="f_exc" placeholder="např. /velkoobchodni-spoluprace-b2b/"/></div>
+   </div>
+   <div class="field"><label>Zařízení</label>
+    <div class="chips"><label class="chip"><input type="checkbox" name="zarizeni" value="desktop"><span>💻 Počítač</span></label><label class="chip"><input type="checkbox" name="zarizeni" value="mobile"><span>📱 Mobil</span></label></div>
+   </div>
+
+   <div class="sec">3 · Kdy se zobrazí</div>
+   <div class="field"><label>Spouštěč</label>
+    <div class="chips">
+     <label class="chip"><input type="radio" name="spoustec" value="now"><span>⚡ Hned</span></label>
+     <label class="chip"><input type="radio" name="spoustec" value="time"><span>⏱️ Po X sekundách</span></label>
+     <label class="chip"><input type="radio" name="spoustec" value="scroll"><span>📜 Po odscrollování X %</span></label>
+     <label class="chip"><input type="radio" name="spoustec" value="exit"><span>🚪 Když chce odejít</span></label>
+     <label class="chip"><input type="radio" name="spoustec" value="pages"><span>📄 Od X. stránky návštěvy</span></label>
+     <label class="chip"><input type="radio" name="spoustec" value="cart"><span>🛒 Košík nad X Kč/€</span></label>
+    </div>
+    <div class="hint" id="trigHint"></div>
+   </div>
+   <div class="row2">
+    <div class="field" id="hodnotaBox"><label for="f_hodnota">Hodnota X</label><input type="number" id="f_hodnota" min="0"/></div>
+    <div class="field"><label for="f_komu">Komu</label><select id="f_komu"><option value="all">Všem</option><option value="new">Jen novým návštěvníkům</option><option value="returning">Jen vracejícím se</option><option value="ads">Jen lidem z reklamy (Google, Meta)</option><option value="anon">Jen nepřihlášeným</option></select></div>
+   </div>
+
+   <div class="sec">4 · Jak často</div>
+   <div class="row3">
+    <div class="field"><label for="f_frek">Stejnému člověku</label><select id="f_frek"><option value="navsteva">Jednou za návštěvu</option><option value="1">Jednou denně</option><option value="7">Jednou za 7 dní</option><option value="30">Jednou za 30 dní</option><option value="jednou">Jen jednou navždy</option><option value="vzdy">Na každé stránce</option></select></div>
+    <div class="field"><label for="f_zav">Po zavření křížkem</label><select id="f_zav"><option value="1">Neukázat 1 den</option><option value="7">Neukázat 7 dní</option><option value="30">Neukázat 30 dní</option><option value="9999">Už nikdy</option></select></div>
+    <div class="field"><label for="f_akc">Po kliknutí / vyplnění</label><select id="f_akc"><option value="9999">Už nikdy</option><option value="30">Neukázat 30 dní</option><option value="7">Neukázat 7 dní</option><option value="1">Neukázat 1 den</option></select></div>
+   </div>
+   <div class="hint" style="margin-top:-4px">Pojistka proti otravování: za jednu návštěvu se ukáže nejvýš jeden popup (kromě „na každé stránce“).</div>
+
+   <div class="sec">5 · Vzhled</div>
+   <div class="field"><label>Obrázek</label>
+    <div class="imgs" id="imgs">
+     <label><input type="radio" name="obrazek" value="ahoj"><div class="tile"><img data-m="ahoj" alt="NutWorldka mává"></div></label>
+     <label><input type="radio" name="obrazek" value="darek"><div class="tile"><img data-m="darek" alt="NutWorldka s dárkem"></div></label>
+     <label><input type="radio" name="obrazek" value="omluva"><div class="tile"><img data-m="omluva" alt="NutWorldka se omlouvá"></div></label>
+     <label id="upTile" hidden><input type="radio" name="obrazek" value=""><div class="tile"><img id="upImg" alt="vlastní obrázek"></div></label>
+     <label><input type="radio" name="obrazek" value="" id="imgNone"><div class="tile">bez<br>obrázku</div></label>
+     <label class="btn ghost small" style="align-self:center">⬆ Vlastní obrázek<input type="file" id="upFile" accept="image/png,image/jpeg,image/webp" hidden></label>
+    </div>
+    <div class="hint">Nejlépe PNG s průhledným pozadím. Další pózy NutWorldky (Vánoce, Velikonoce…) dokreslí Claude v Canvě.</div>
+   </div>
+   <div class="field"><label for="f_barva">Barvy</label>
+    <select id="f_barva"><option value="orechy">Ořechy (hnědá + zlatá)</option><option value="darky">Dárky (zlatá)</option><option value="ovoce">Ovoce (vínová + růžová)</option><option value="seminka">Semínka (zelená)</option><option value="vanoce">Vánoce (červená + zlatá)</option></select>
+   </div>
+
+   <div class="sec">6 · Texty</div>
+   <div class="langsw">
+    <button class="btn small dark" id="lCZ" type="button">🇨🇿 CZ texty</button>
+    <button class="btn small ghost" id="lSK" type="button">🇸🇰 SK texty</button>
+    <button class="btn small" id="btnTr" type="button">✨ Přeložit CZ → SK</button>
+    <span class="mini" id="trMsg"></span>
+   </div>
+   <div class="row2">
+    <div class="field"><label for="t_lab">Malý nadpis</label><input type="text" id="t_lab" maxlength="80" placeholder="např. Důležité info"/></div>
+    <div class="field"><label for="t_btn">Text tlačítka</label><input type="text" id="t_btn" maxlength="40" placeholder="např. Rozumím"/></div>
+   </div>
+   <div class="field"><label for="t_h">Nadpis</label><input type="text" id="t_h" maxlength="140"/></div>
+   <div class="field"><label for="t_t">Text</label><textarea id="t_t" maxlength="900"></textarea><div class="hint">Nový řádek = nový odstavec.</div></div>
+   <div class="row2">
+    <div class="field"><label for="t_zv">Zvýrazněný řádek</label><input type="text" id="t_zv" maxlength="200" placeholder="např. Počítejte s dodáním za 7–10 dní."/></div>
+    <div class="field"><label for="t_podpis">Podpis</label><input type="text" id="t_podpis" maxlength="160" placeholder="např. Děkujeme, tým Nut World"/></div>
+   </div>
+   <div class="row2">
+    <div class="field"><label for="t_sec">Malý odkaz pod tlačítkem</label><input type="text" id="t_sec" maxlength="80" placeholder="např. Ne, díky"/></div>
+    <div class="field"><label for="t_dik">Poděkování po odeslání</label><input type="text" id="t_dik" maxlength="160" placeholder="jen u formulářů"/></div>
+   </div>
+
+   <div class="sec">7 · Akce</div>
+   <div class="field"><label for="f_akce">Co má zákazník udělat</label>
+    <select id="f_akce">
+     <option value="info">Jen oznámení (zpoždění, dovolená, výpadek…): tlačítko zavře okno</option>
+     <option value="link">Proklik na stránku</option>
+     <option value="code">Ukázat slevový kód</option>
+     <option value="email">Nechat e-mail → Leadhub (+ případně slevový kód)</option>
+     <option value="b2b">Firemní poptávka (firma, IČO, kontakt, počet dárků)</option>
+    </select>
+   </div>
+   <div class="row2">
+    <div class="field"><label for="f_url">Odkaz tlačítka</label><input type="text" id="f_url" placeholder="/vanoce/ nebo https://www.nutworld.cz/…"/><div class="hint">Měření (UTM) se doplní samo.</div></div>
+    <div class="field"><label for="f_url2">Odkaz malého odkazu</label><input type="text" id="f_url2" placeholder="prázdné = zavře okno"/></div>
+   </div>
+   <div class="row3">
+    <div class="field"><label for="f_kod">Slevový kód</label><input type="text" id="f_kod" maxlength="30"/><div class="hint">Musí existovat v Shoptetu (CZ i SK).</div></div>
+    <div class="field"><label for="f_odp">Odpočet do (datum)</label><input type="date" id="f_odp"/></div>
+    <div class="field" id="lhBox"><label for="f_lh">Seznam v Leadhubu</label><select id="f_lh"><option value="">— vyber —</option></select><div class="hint">Kam se zapíšou e-maily.</div></div>
+   </div>
+
+   <div id="edMsg"></div>
+   <div class="bar">
+    <button class="btn dark" id="btnSave" type="button">💾 Uložit</button>
+    <button class="btn" id="btnTryCz" type="button">🔍 Vyzkoušet na .cz</button>
+    <button class="btn" id="btnTrySk" type="button">🔍 Vyzkoušet na .sk</button>
+    <button class="btn ghost" id="btnDup" type="button">⧉ Duplikovat</button>
+    <button class="btn ghost" id="btnBack" type="button">← Zpět na seznam</button>
+    <button class="btn danger" id="btnDel" type="button" style="margin-left:auto">🗑 Smazat</button>
+   </div>
+   <p class="mini" style="margin-top:8px">„Vyzkoušet“ otevře e-shop s popupem jen pro vás (adresa s <code>?nwpopup=…</code>), i když je vypnutý. Nic se nezapočítá. Nejdřív uložte.</p>
+  </div>
+
+  <div class="panel" id="leadPanel" hidden>
+   <div class="sec">Vyplněné formuláře a průběh</div>
+   <div class="spark" id="spark" title="Zobrazení za posledních 30 dní"></div>
+   <div id="leads" class="mini">Načítám…</div>
+  </div>
+ </div>
+
+ <div class="sticky">
+  <div class="panel" style="padding:14px">
+   <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+    <h4 style="flex:1">Živý náhled <span class="mini" id="pvLang">CZ</span></h4>
+    <button class="btn small dark" id="dDesk" type="button" aria-label="Počítač">💻</button>
+    <button class="btn small ghost" id="dMob" type="button" aria-label="Mobil">📱</button>
+   </div>
+   <div class="prevbox" id="pbox">
+    <div class="fake-head">🐿️ NutWorld</div>
+    <div class="fake-body"><div class="fake-card"></div><div class="fake-card"></div><div class="fake-card"></div><div class="fake-card"></div><div class="fake-card"></div><div class="fake-card"></div></div>
+   </div>
+   <p class="mini" style="margin-top:8px">Náhled používá stejný skript jako e-shop. Formuláře v náhledu nic neodesílají.</p>
+  </div>
+ </div>
+ </div>
+</section>
+
+<!-- ================= INSTALL ================= -->
+<section id="t-install" hidden>
+ <div class="panel">
+  <div class="sec">Vložení do Shoptetu (jednou, CZ i SK)</div>
+  <p style="line-height:1.6">V administraci Shoptetu: <b>Vzhled a obsah → Editor → HTML kód → Zápatí</b> (u CZ i SK e-shopu) vložte tento jeden řádek a uložte:</p>
+  <div class="code" id="embedCode">&lt;script src="…/popup/nw-popup.js" async&gt;&lt;/script&gt;</div>
+  <button class="btn small" id="btnCopyEmbed" type="button">📋 Zkopírovat</button>
+  <div class="sec">Jak přejít z Poptinu</div>
+  <ol style="line-height:1.8;padding-left:20px">
+   <li>Vložte řádek výše. Dokud jsou popupy vypnuté, zákazníci nic nového neuvidí.</li>
+   <li>U popupu klikněte na „Vyzkoušet na .cz / .sk“ a zkontrolujte ho na živém e-shopu.</li>
+   <li>Popup zapněte a ve stejnou chvíli v Shoptetu smažte řádek Poptinu (<code>cdn.popt.in/pixel.js</code>), aby se okna neukazovala dvakrát.</li>
+   <li>Pár dní sledujte statistiku zde, pak zrušte předplatné Poptinu.</li>
+  </ol>
+ </div>
+</section>
+</div>
+
+<dialog id="dlg">
+ <h3 style="color:var(--acc);margin-bottom:8px">Opravdu smazat?</h3>
+ <p id="dlgText" style="line-height:1.5;margin-bottom:16px"></p>
+ <div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn ghost" id="dlgNo" type="button">Ne, nechat</button><button class="btn danger" id="dlgYes" type="button">Smazat</button></div>
+</dialog>
+
+<script src="/popup/nw-popup.js" data-admin="1"></script>
+<script>
+const API = '/api/popupy';
+const $ = id => document.getElementById(id);
+const TYP = {modal: '🪟 Okno', slide: '↘️ Boční', bar: '➖ Lišta'};
+const TRIG = {now: () => 'hned', time: v => `po ${v} s`, scroll: v => `po ${v} % stránky`, exit: () => 'při odchodu', pages: v => `od ${v}. stránky`, cart: v => `košík nad ${v}`};
+const TRIG_HINT = {now: 'Ukáže se cca 1 s po načtení stránky.', time: 'X = počet sekund.', scroll: 'X = kolik % stránky musí odscrollovat (např. 50).',
+  exit: 'Na počítači při pohybu myši k zavření okna, na mobilu při rychlém scrollu nahoru (po 10 s).', pages: 'X = kolikátá stránka v rámci návštěvy (např. 3).',
+  cart: 'X = hodnota košíku v měně e-shopu (Kč na .cz, € na .sk). Počítá se z „zbývá do dopravy zdarma“.'};
+let S = {popupy: [], muze: false, admin: false, leadhub: [], embed: ''};
+let cur = null, L = 'cz', mob = false, uploadVal = '';
+
+function esc(s) { return String(s ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c])); }
+function msg(el, text, ok) { $(el).innerHTML = text ? `<div class="${ok ? 'okmsg' : 'err'}">${esc(text)}</div>` : ''; }
+async function api(path, body) {
+  const r = await fetch(API + path, body ? {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)} : {});
+  const ct = r.headers.get('content-type') || '';
+  if (!ct.includes('json')) throw new Error('Server nástrojů neodpovídá (jste přihlášeni?)');
+  const j = await r.json();
+  if (!r.ok) throw new Error(j.chyba || ('Chyba ' + r.status));
+  return j;
+}
+function show(t) {
+  document.querySelectorAll('.tab').forEach(x => x.classList.toggle('on', x.dataset.t === t));
+  ['list', 'ed', 'install'].forEach(k => $('t-' + k).hidden = k !== t);
+}
+document.querySelectorAll('.tab').forEach(b => b.onclick = () => show(b.dataset.t));
+
+function stavOf(p) {
+  const d = new Date().toISOString().slice(0, 10);
+  if (p.stav === 'off') return ['off', 'Vypnuto'];
+  if (p.do && d > p.do) return ['konec', 'Skončil'];
+  if (p.od && d < p.od) return ['plan', 'Od ' + p.od.split('-').reverse().join('. ')];
+  return ['on', p.stav === 'plan' ? 'Běží (plán)' : 'Zapnuto'];
+}
+function renderList() {
+  const f = $('fShop').value;
+  const items = S.popupy.filter(p => !f || p.shops.includes(f));
+  $('rows').innerHTML = items.length ? items.map(p => {
+    const s = p.stat30 || {v: 0, c: 0, f: 0, x: 0}, [cls, lab] = stavOf(p);
+    const u = s.v ? ((s.c + s.f) / s.v * 100).toFixed(1).replace('.', ',') + ' %' : '—';
+    return `<tr class="click" data-id="${esc(p.id)}"><td><b>${esc(p.nazev)}</b><div class="mini">${p.od || p.do ? esc((p.od || '…') + ' → ' + (p.do || '…')) : ''} ${p.upravil ? '· upravil/a ' + esc(p.upravil) : ''}</div></td>
+      <td><span class="st ${cls}">${lab}</span></td><td>${p.shops.includes('cz') ? '🇨🇿' : ''} ${p.shops.includes('sk') ? '🇸🇰' : ''}</td>
+      <td>${TYP[p.typ] || ''}<div class="mini">${esc((TRIG[p.spoustec] || (() => ''))(p.hodnota))}</div></td>
+      <td class="num">${s.v.toLocaleString('cs')}</td><td class="num">${s.c || '—'}</td><td class="num">${s.f || '—'}</td><td class="num">${s.x || '—'}</td>
+      <td class="num" style="color:var(--leaf)">${u}</td></tr>`;
+  }).join('') : '<tr><td colspan="9" class="mini">Zatím žádný popup. Klikněte na „+ Nový popup“.</td></tr>';
+  document.querySelectorAll('#rows tr.click').forEach(tr => tr.onclick = () => openEd(tr.dataset.id));
+}
+$('fShop').onchange = renderList;
+
+function blank() {
+  return {id: '', nazev: 'Nový popup', stav: 'off', od: '', do: '', priorita: 2, typ: 'modal', shops: ['cz', 'sk'], stranky: ['vse'], zarizeni: ['desktop', 'mobile'],
+    url_obsahuje: '', url_vyloucit: '', spoustec: 'time', hodnota: 5, komu: 'all', frekvence: 'navsteva', po_zavreni_dni: 7, po_akci_dni: 9999,
+    barva: 'orechy', obrazek: 'ahoj', akce: 'info', url: '', url2: '', kod: '', odpocet: '', leadhub_list: '',
+    texty: {cz: {lab: '', h: 'Nadpis popupu', t: '', zv: '', podpis: '', btn: 'Rozumím', sec: '', dik: ''}, sk: {lab: '', h: '', t: '', zv: '', podpis: '', btn: '', sec: '', dik: ''}}};
+}
+function openEd(id) {
+  const p = id ? S.popupy.find(x => x.id === id) : blank();
+  cur = JSON.parse(JSON.stringify(p));
+  ['cz', 'sk'].forEach(l => { cur.texty[l] = Object.assign({lab: '', h: '', t: '', zv: '', podpis: '', btn: '', sec: '', dik: ''}, cur.texty[l] || {}); });
+  L = cur.shops.includes('cz') ? 'cz' : 'sk';
+  $('tabEd').hidden = false; fill(); show('ed'); msg('edMsg', '');
+  loadLeads();
+  history.replaceState(null, '', cur.id ? '#' + cur.id : location.pathname);
+}
+const setChecks = (name, vals) => document.querySelectorAll(`input[name=${name}]`).forEach(i => i.checked = vals.includes(i.value));
+const getChecks = name => [...document.querySelectorAll(`input[name=${name}]:checked`)].map(i => i.value);
+const setRadio = (name, v) => { const i = document.querySelector(`input[name=${name}][value="${v}"]`); if (i) i.checked = true; };
+const getRadio = name => document.querySelector(`input[name=${name}]:checked`)?.value;
+
+function fill() {
+  $('f_nazev').value = cur.nazev; $('f_stav').value = cur.stav; $('f_od').value = cur.od; $('f_do').value = cur.do; $('f_priorita').value = cur.priorita;
+  setRadio('typ', cur.typ); setChecks('shops', cur.shops); setChecks('stranky', cur.stranky); setChecks('zarizeni', cur.zarizeni);
+  $('f_inc').value = cur.url_obsahuje; $('f_exc').value = cur.url_vyloucit; setRadio('spoustec', cur.spoustec); $('f_hodnota').value = cur.hodnota;
+  $('f_komu').value = cur.komu; $('f_frek').value = cur.frekvence; $('f_zav').value = cur.po_zavreni_dni; $('f_akc').value = cur.po_akci_dni;
+  $('f_barva').value = cur.barva; $('f_akce').value = cur.akce; $('f_url').value = cur.url; $('f_url2').value = cur.url2; $('f_kod').value = cur.kod;
+  $('f_odp').value = cur.odpocet;
+  $('f_lh').innerHTML = '<option value="">— vyber —</option>' + S.leadhub.map(x => `<option value="${esc(x.code)}">${esc(x.nazev)}</option>`).join('') +
+    (cur.leadhub_list && !S.leadhub.some(x => x.code === cur.leadhub_list) ? `<option value="${esc(cur.leadhub_list)}">${esc(cur.leadhub_list)}</option>` : '');
+  $('f_lh').value = cur.leadhub_list;
+  uploadVal = /^upload:/.test(cur.obrazek) ? cur.obrazek : '';
+  $('upTile').hidden = !uploadVal;
+  if (uploadVal) { $('upTile').querySelector('input').value = uploadVal; $('upImg').src = NWPopup.imgUrl(uploadVal); }
+  if (cur.obrazek) setRadio('obrazek', cur.obrazek); else $('imgNone').checked = true;
+  fillLang(); toggles();
+  const ro = !S.muze;
+  document.querySelectorAll('#t-ed input, #t-ed select, #t-ed textarea').forEach(e => e.disabled = ro);
+  ['btnSave', 'btnDup', 'btnTr'].forEach(b => $(b).hidden = ro);
+  $('btnDel').hidden = !S.admin || !cur.id;
+  $('btnTryCz').disabled = $('btnTrySk').disabled = !cur.id;
+}
+function fillLang() {
+  const t = cur.texty[L];
+  ['lab', 'h', 't', 'zv', 'podpis', 'btn', 'sec', 'dik'].forEach(k => $('t_' + k).value = t[k] || '');
+  $('lCZ').className = 'btn small ' + (L === 'cz' ? 'dark' : 'ghost'); $('lSK').className = 'btn small ' + (L === 'sk' ? 'dark' : 'ghost');
+  $('pvLang').textContent = L.toUpperCase();
+  preview();
+}
+function toggles() {
+  const tr = getRadio('spoustec');
+  $('hodnotaBox').style.visibility = ['now', 'exit'].includes(tr) ? 'hidden' : 'visible';
+  $('trigHint').textContent = TRIG_HINT[tr] || '';
+  const a = $('f_akce').value;
+  $('lhBox').style.visibility = ['email', 'b2b'].includes(a) ? 'visible' : 'hidden';
+}
+function read() {
+  cur.nazev = $('f_nazev').value; cur.stav = $('f_stav').value; cur.od = $('f_od').value; cur.do = $('f_do').value; cur.priorita = +$('f_priorita').value;
+  cur.typ = getRadio('typ') || 'modal'; cur.shops = getChecks('shops'); cur.stranky = getChecks('stranky'); cur.zarizeni = getChecks('zarizeni');
+  cur.url_obsahuje = $('f_inc').value; cur.url_vyloucit = $('f_exc').value; cur.spoustec = getRadio('spoustec') || 'time'; cur.hodnota = +$('f_hodnota').value || 0;
+  cur.komu = $('f_komu').value; cur.frekvence = $('f_frek').value; cur.po_zavreni_dni = +$('f_zav').value; cur.po_akci_dni = +$('f_akc').value;
+  cur.barva = $('f_barva').value; cur.obrazek = getRadio('obrazek') || ''; cur.akce = $('f_akce').value; cur.url = $('f_url').value.trim(); cur.url2 = $('f_url2').value.trim();
+  cur.kod = $('f_kod').value.trim(); cur.odpocet = $('f_odp').value; cur.leadhub_list = $('f_lh').value;
+  const t = cur.texty[L];
+  ['lab', 'h', 't', 'zv', 'podpis', 'btn', 'sec', 'dik'].forEach(k => t[k] = $('t_' + k).value);
+}
+let pvHandle = null;
+function preview() {
+  if (!window.NWPopup) { $('pbox').insertAdjacentHTML('beforeend', ''); return; }
+  if (pvHandle) pvHandle.host.remove();
+  pvHandle = NWPopup.render(cur, {lang: L, container: $('pbox'), preview: true, onClose: () => setTimeout(preview, 600)});
+}
+document.querySelector('#t-ed .panel').addEventListener('input', () => { read(); toggles(); preview(); });
+document.querySelector('#t-ed .panel').addEventListener('change', () => { read(); toggles(); preview(); });
+$('lCZ').onclick = () => { read(); L = 'cz'; fillLang(); };
+$('lSK').onclick = () => { read(); L = 'sk'; fillLang(); };
+$('dDesk').onclick = () => { mob = false; $('pbox').classList.remove('mob'); $('dDesk').className = 'btn small dark'; $('dMob').className = 'btn small ghost'; preview(); };
+$('dMob').onclick = () => { mob = true; $('pbox').classList.add('mob'); $('dMob').className = 'btn small dark'; $('dDesk').className = 'btn small ghost'; preview(); };
+
+$('btnTr').onclick = async () => {
+  read(); $('btnTr').disabled = true; $('trMsg').textContent = 'Překládám…';
+  try {
+    const j = await api('/prelozit', {cz: cur.texty.cz});
+    Object.assign(cur.texty.sk, j.sk); L = 'sk'; fillLang(); $('trMsg').textContent = 'Hotovo, zkontrolujte SK texty.';
+    if (!cur.shops.includes('sk')) { cur.shops.push('sk'); setChecks('shops', cur.shops); }
+  } catch (e) { $('trMsg').textContent = e.message; }
+  $('btnTr').disabled = false;
+};
+$('upFile').onchange = async e => {
+  const f = e.target.files[0]; if (!f) return;
+  try {
+    const r = await fetch(API + '/nahrat', {method: 'POST', headers: {'Content-Type': 'application/octet-stream'}, body: f});
+    const j = await r.json(); if (!r.ok) throw new Error(j.chyba);
+    uploadVal = j.obrazek; $('upTile').hidden = false; $('upTile').querySelector('input').value = uploadVal; $('upImg').src = NWPopup.imgUrl(uploadVal);
+    $('upTile').querySelector('input').checked = true; read(); preview();
+  } catch (err) { msg('edMsg', err.message); }
+  e.target.value = '';
+};
+$('btnSave').onclick = async () => {
+  read(); $('btnSave').disabled = true;
+  try {
+    const j = await api('/ulozit', {popup: cur});
+    cur = j.popup; await reload(); msg('edMsg', 'Uloženo. ' + (cur.stav === 'off' ? 'Popup je vypnutý: zákazníci ho neuvidí.' : 'Na e-shopu se projeví do 5 minut.'), true);
+    $('btnTryCz').disabled = $('btnTrySk').disabled = false; $('btnDel').hidden = !S.admin;
+    history.replaceState(null, '', '#' + cur.id);
+  } catch (e) { msg('edMsg', e.message); }
+  $('btnSave').disabled = false;
+};
+function tryOn(shop) { window.open(`https://www.nutworld.${shop}/?nwpopup=${encodeURIComponent(cur.id)}`, '_blank', 'noopener'); }
+$('btnTryCz').onclick = () => tryOn('cz');
+$('btnTrySk').onclick = () => tryOn('sk');
+$('btnDup').onclick = () => { read(); cur = JSON.parse(JSON.stringify(cur)); cur.id = ''; cur.nazev += ' (kopie)'; cur.stav = 'off'; fill(); msg('edMsg', 'Kopie: upravte a uložte.', true); $('leadPanel').hidden = true; };
+$('btnBack').onclick = () => { show('list'); history.replaceState(null, '', location.pathname); };
+$('btnDel').onclick = () => { $('dlgText').textContent = `Popup „${cur.nazev}“ zmizí z e-shopu i ze seznamu. Statistiky a vyplněné formuláře zůstanou v záloze na serveru.`; $('dlg').showModal(); };
+$('dlgNo').onclick = () => $('dlg').close();
+$('dlgYes').onclick = async () => {
+  $('dlg').close();
+  try { await api('/smazat', {id: cur.id}); await reload(); show('list'); history.replaceState(null, '', location.pathname); } catch (e) { msg('edMsg', e.message); }
+};
+async function loadLeads() {
+  $('leadPanel').hidden = !cur.id; if (!cur.id) return;
+  try {
+    const j = await api('/leady?id=' + encodeURIComponent(cur.id));
+    const mx = Math.max(1, ...j.serie.map(d => d.v));
+    $('spark').innerHTML = j.serie.map(d => `<div style="height:${Math.round(d.v / mx * 100)}%" title="${d.d}: ${d.v} zobrazení, ${d.c} kliků, ${d.f} vyplnění"></div>`).join('');
+    $('leads').innerHTML = j.leady.length ? `<table><thead><tr><th>Kdy</th><th>E-shop</th><th>E-mail</th><th>Firma / telefon</th><th>Leadhub</th></tr></thead><tbody>` +
+      j.leady.map(r => `<tr><td>${esc(r.kdy.replace('T', ' '))}</td><td>${esc(r.shop.toUpperCase())}</td><td>${esc(r.email)}</td><td>${esc([r.firma, r.telefon, r.pocet ? r.pocet + ' ks' : ''].filter(Boolean).join(' · '))}</td><td>${esc(r.leadhub)}</td></tr>`).join('') + '</tbody></table>'
+      : (['email', 'b2b'].includes(cur.akce) ? 'Zatím nikdo nevyplnil.' : 'Tento popup nemá formulář. Graf výše = zobrazení za 30 dní.');
+  } catch (e) { $('leads').textContent = e.message; }
+}
+$('btnNew').onclick = () => openEd(null);
+$('btnCopyEmbed').onclick = () => { navigator.clipboard.writeText($('embedCode').textContent); $('btnCopyEmbed').textContent = '✓ Zkopírováno'; };
+
+async function reload() {
+  const j = await api('/seznam');
+  S = {popupy: j.popupy, muze: j.muze_upravit, admin: j.admin, leadhub: j.leadhub || [], embed: j.embed};
+  $('btnNew').hidden = !S.muze;
+  $('embedCode').textContent = `<script src="${location.origin}/popup/nw-popup.js" async><\/script>`;
+  renderList();
+}
+document.querySelectorAll('img[data-m]').forEach(i => { if (window.NWPopup) i.src = NWPopup.imgUrl(i.dataset.m); });
+reload().then(() => { const h = location.hash.slice(1); if (h && S.popupy.some(p => p.id === h)) openEd(h); })
+  .catch(e => { if (!window.NWPopup) { $('nogh').hidden = false; $('rows').innerHTML = ''; } else $('glob').innerHTML = `<div class="err">${esc(e.message)}</div>`; });
+</script>
+</body>
+</html>
