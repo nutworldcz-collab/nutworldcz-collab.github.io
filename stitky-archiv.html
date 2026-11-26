@@ -54,6 +54,7 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:var(--bg);color:var
 .badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;text-transform:uppercase;letter-spacing:.3px}
 .badge.lang{background:#e6f3dc;color:#2d5a1b}
 .badge.size{background:#fdf0e0;color:#7a5200}
+.badge.orient{background:#e0f4ff;color:#005a8a}
 .pdf-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
 .pdf-btn{
   display:inline-flex;align-items:center;gap:5px;
@@ -180,6 +181,7 @@ function renderEntry(e){
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
         <span class="badge lang">${esc(langLabel(e.lang))}</span>
         <span class="badge size">${esc(e.size||'105x148')}</span>
+        ${e.landscape ? '<span class="badge orient">Na šířku ↔</span>' : ''}
         ${trelloUrl ? `<a href="${esc(trelloUrl)}" target="_blank" class="trello-link">Trello ↗</a>` : ''}
         <a href="${esc(reorderUrl)}" class="btn-objednat">↻ Objednat znovu</a>
       </div>

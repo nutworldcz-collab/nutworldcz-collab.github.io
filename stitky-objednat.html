@@ -228,7 +228,7 @@ document.getElementById('btnSubmit').addEventListener('click', async () => {
   // Duplikace detekce — jen na serveru, jen pro první řádek (rychlá kontrola)
   if (isServer && !_pendingSubmit) {
     const allCodes = lines.flatMap(l => l.split(',').map(p => p.trim()).filter(Boolean));
-    const dup = await checkDuplicates(allCodes, size);
+    const dup = await checkDuplicates(allCodes, size, selectedOrientation);
     if (dup) {
       document.getElementById('dupDetail').innerHTML =
         `Kódy: <b>${(dup.codes||[]).join(', ')}</b><br>Vyrobeno: <b>${fmtDateShort(dup.ts)}</b> · velikost ${dup.size||'105x148'} · ${dup.card||''}`;
@@ -342,17 +342,19 @@ function hideDup() {
 // Duplikace: zkontroluj archiv před odesláním
 let _pendingSubmit = null;
 
-async function checkDuplicates(codes, size) {
+async function checkDuplicates(codes, size, orientation) {
   if (!isServer) return null;
   try {
     const r = await fetch('/api/stitky-archiv');
     if (!r.ok) return null;
     const archiv = await r.json();
     const codeSet = new Set(codes.map(c => c.trim().toLowerCase()));
+    const isLandscape = orientation === 'landscape';
     for (const e of archiv) {
       const eset = new Set((e.codes||[]).map(c => c.trim().toLowerCase()));
       const esize = e.size || '105x148';
-      if (esize === size && eset.size === codeSet.size && [...codeSet].every(c => eset.has(c))) {
+      const elandscape = e.landscape === true;
+      if (esize === size && elandscape === isLandscape && eset.size === codeSet.size && [...codeSet].every(c => eset.has(c))) {
         return e;
       }
     }
