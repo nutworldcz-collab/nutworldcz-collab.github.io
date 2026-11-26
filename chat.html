@@ -183,6 +183,13 @@ textarea{min-height:70px;resize:vertical}
    </div>
    <div class="hint">Má přednost před texty z e-shopu. Ty (Doprava, Kontakty, Obchodní podmínky, Reklamace) a katalog produktů se načítají samy každou noc. Aktivní popupy typu oznámení (např. zpoždění expedice) zná automaticky.</div>
 
+   <div class="sec">Komu chodí upozornění e-mailem</div>
+   <div class="row2">
+    <div class="field"><label>Firemní poptávky z chatu</label><textarea id="upPop" style="min-height:70px" placeholder="jeden e-mail na řádek; prázdné = hlavní e-mail ze serveru"></textarea></div>
+    <div class="field"><label>Zákazník chce člověka / nová zpráva</label><textarea id="upClo" style="min-height:70px" placeholder="jeden e-mail na řádek; prázdné = hlavní e-mail ze serveru"></textarea></div>
+   </div>
+   <div class="hint">Jen pro tým, zákazník tyto adresy nikdy neuvidí. Až to bude řešit někdo jiný, stačí sem dát jeho e-mail.</div>
+
    <div class="sec">Hotové odpovědi</div>
    <div id="tpls"></div>
    <button class="btn ghost small" id="tplAdd" type="button">+ Přidat hotovou odpověď</button>
@@ -362,6 +369,7 @@ function renderSet() {
   $('od').value = s.od; $('do').value = s.do; $('limit').value = s.limit_den;
   $('znCz').value = s.znalosti.cz || ''; $('znSk').value = s.znalosti.sk || '';
   $('skryt').value = (s.skryt || []).join('\n');
+  $('upPop').value = ((s.upozorneni || {}).poptavky || []).join('\n'); $('upClo').value = ((s.upozorneni || {}).clovek || []).join('\n');
   TPL = JSON.parse(JSON.stringify(s.sablony || [])); renderTpl();
   const k = s.kontakt || {}; $('kEmCz').value = k.email_cz || ''; $('kEmSk').value = k.email_sk || ''; $('kTel').value = k.telefon || ''; $('kAdr').value = k.adresa || '';
   $('katCz').textContent = S.katalog.cz ? 'načten ' + when(S.katalog.cz) : 'zatím nenačten';
@@ -375,6 +383,7 @@ $('save').onclick = async () => {
     od: $('od').value, do: $('do').value, limit_den: +$('limit').value,
     znalosti: {cz: $('znCz').value, sk: $('znSk').value},
     sablony: readTpl(),
+    upozorneni: {poptavky: $('upPop').value.split(/[\s,;]+/).filter(Boolean), clovek: $('upClo').value.split(/[\s,;]+/).filter(Boolean)},
     skryt: $('skryt').value.split('\n').map(x => x.trim()).filter(Boolean),
     kontakt: {email_cz: $('kEmCz').value.trim(), email_sk: $('kEmSk').value.trim(), telefon: $('kTel').value.trim(), adresa: $('kAdr').value.trim()}};
   $('save').disabled = true;
@@ -465,7 +474,7 @@ reload().then(() => {
   if (h) openKonv(h);
   timer = setInterval(async () => {
     try {
-      const busy = document.activeElement && ['rep', 'pzJm', 'pzTx', 'znCz', 'znSk', 'od', 'do', 'limit', 'skryt', 'kEmCz', 'kEmSk', 'kTel', 'kAdr'].includes(document.activeElement.id);
+      const busy = document.activeElement && ['rep', 'pzJm', 'pzTx', 'znCz', 'znSk', 'od', 'do', 'limit', 'skryt', 'kEmCz', 'kEmSk', 'kTel', 'kAdr', 'upPop', 'upClo'].includes(document.activeElement.id);
       S = await api('/seznam'); renderKpi(); renderList(); renderGaps();
       if (cur && !busy) openKonv(cur.sid, true);
     } catch (e) {}
