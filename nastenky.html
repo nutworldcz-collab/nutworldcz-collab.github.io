@@ -475,7 +475,9 @@ async function loadZakazka(id) {
        : 'Štítky se vytvoří samy do 5 minut po zadání produktů.'}</div>`);
   h += `<div class="sec">🌐 Pro zákazníka</div><div class="row" style="gap:6px">` +
     `<a class="btn sm" href="${API}/zakaznik-nahled/${CARD.id}" target="_blank" rel="noopener">👀 Náhled stránky zákazníka</a>` +
-    `<button class="btn sm" onclick="zakaznikOdkaz()">🔗 Odkaz pro zákazníka</button></div><div id="zkodkaz" style="font-size:12.5px;color:var(--muted);margin-top:4px"></div>`;
+    `<button class="btn sm" onclick="zakaznikOdkaz()">🔗 Odkaz pro zákazníka</button>` +
+    `<button class="btn sm" onclick="zakaznikVyber()">🎨 Co ukázat zákazníkovi</button></div>` +
+    `<div id="zkodkaz" style="font-size:12.5px;color:var(--muted);margin-top:4px"></div><div id="zkvyber"></div>`;
   h += `<div class="sec">🧾 Faktura a platba</div><div style="font-size:13px;color:var(--muted)">Napojí se z K2 (faktury) a Fia (platby).</div>`;
   if (z.kalkulace) {
     const k = z.kalkulace, mz = k.trzby_znamo ? k.zisk / k.trzby_znamo * 100 : null;
@@ -490,6 +492,23 @@ async function loadZakazka(id) {
       (k.trzby_znamo < k.trzby ? `<div style="font-size:11.5px;color:var(--muted)">Zisk a marže jen ze spočitatelných položek (${czn(k.trzby_znamo, 0)} Kč tržeb).</div>` : '') + `</div>`;
   }
   box.innerHTML = h; CARD._zkHtml = h;
+}
+// which attachments (visuals, mock-ups) the customer sees as „Náhled vzhledu“; labels („Štítek…“) always
+async function zakaznikVyber() {
+  const box = $('zkvyber'); box.innerHTML = '<p style="font-size:12.5px;color:var(--muted)">Načítám přílohy…</p>';
+  try {
+    const j = await api('/zakaznik-nahled/' + CARD.id + '/data');
+    box.innerHTML = j.vyber.length
+      ? `<div style="font-size:12.5px;color:var(--muted);margin:6px 0 4px">Zaškrtni vizuály, které zákazník uvidí jako „Náhled vzhledu“ a schválí spolu se štítky (štítky se ukazují vždy):</div>` +
+        j.vyber.map(p => `<label class="ck"><input type="checkbox" value="${esc(p.id)}" ${p.ukazat ? 'checked' : ''} onchange="zakaznikVyberUloz()">` +
+          `<span>👁 <a href="${API}/soubor/${CARD.id}/${esc(p.id)}" target="_blank" rel="noopener">${esc(p.nazev)}</a></span></label>`).join('')
+      : '<p style="font-size:12.5px;color:var(--muted)">Na kartě nejsou obrázky ani PDF, které by šly ukázat. Nahraj vizuál do příloh karty.</p>';
+  } catch (e) { box.innerHTML = `<p class="warn">${esc(e.message)}</p>`; }
+}
+async function zakaznikVyberUloz() {
+  const ids = [...$('zkvyber').querySelectorAll('input:checked')].map(i => i.value);
+  try { await post('/card/' + CARD.id + '/zakaznik-prilohy', {ids}); toast(ids.length ? `Zákazník uvidí ${ids.length} vizuál(y)` : 'Zákazník neuvidí žádný vizuál'); }
+  catch (e) { toast(e.message); }
 }
 async function zakaznikOdkaz() {
   try {
