@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Nutworld — Chat s NutWorldkou</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--br:#83502e;--bd:#5c381f;--kraft:#f1e6da;--acc:#da1668;--amb:#f7ab31;--leaf:#6fa044;--line:#d4c0a8}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a0e;font-size:14px}
+h1,h2,h3{font-family:'Exo 2',sans-serif}
+a{color:var(--br)}
+.top{background:linear-gradient(135deg,#5c381f 0%,#83502e 55%,#a0622a 100%);color:#fff;padding:22px 16px 0;position:relative;overflow:hidden}
+.top:after{content:'';position:absolute;top:-30px;right:-30px;width:160px;height:160px;border-radius:50%;background:rgba(247,171,49,.15)}
+.top .in{max-width:1260px;margin:0 auto;position:relative;z-index:1}
+.top small{color:var(--amb);letter-spacing:2px;font-size:12px;text-transform:uppercase;font-weight:700}
+.top small a{color:var(--amb);text-decoration:none}
+.top h1{font-size:26px;margin:2px 0 4px}
+.top p{opacity:.85;font-size:13px}
+.tabs{display:flex;gap:6px;margin-top:16px;flex-wrap:wrap}
+.tab{background:rgba(255,255,255,.12);color:#fff;border:0;border-radius:12px 12px 0 0;padding:10px 18px;font:700 14px 'Exo 2',sans-serif;cursor:pointer}
+.tab.on{background:#e8ddd4;color:var(--bd)}
+.tab .b{background:var(--acc);color:#fff;border-radius:999px;padding:0 7px;font-size:12px;margin-left:5px}
+.wrap{max-width:1260px;margin:0 auto;padding:20px 16px 60px}
+.panel{background:#fff;border-radius:14px;box-shadow:0 2px 16px rgba(0,0,0,.08);padding:18px 20px;margin-bottom:18px}
+.sec{font-family:'Exo 2',sans-serif;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--br);margin:18px 0 10px;padding-bottom:5px;border-bottom:1.5px solid var(--kraft)}
+.sec:first-child{margin-top:0}
+.field{margin-bottom:12px}
+.field>label{display:block;font-size:11px;font-weight:700;color:var(--br);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.hint{font-size:12px;color:#8a7360;margin-top:4px;line-height:1.45}
+input[type=text],input[type=number],input[type=time],textarea{width:100%;border:1.5px solid var(--line);border-radius:8px;padding:8px 11px;font:inherit;font-size:14px;color:#2a1a0e;background:#fdf9f6}
+input:focus,textarea:focus{outline:none;border-color:var(--br)}
+textarea{min-height:70px;resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;pointer-events:none}
+.chip span{display:inline-block;border:1.5px solid var(--line);border-radius:999px;padding:6px 13px;cursor:pointer;background:#fdf9f6;font-weight:600;user-select:none;font-size:13px}
+.chip input:checked+span{background:var(--bd);border-color:var(--bd);color:#fff}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media(max-width:800px){.row2,.row3{grid-template-columns:1fr}}
+.btn{border:0;border-radius:999px;padding:10px 20px;font:700 14px 'Exo 2',sans-serif;cursor:pointer;background:var(--amb);color:#2a1a0e;text-decoration:none;display:inline-block}
+.btn.dark{background:var(--bd);color:#fff}
+.btn.ghost{background:transparent;border:1.5px solid var(--line);color:var(--bd)}
+.btn.small{padding:5px 12px;font-size:12px}
+.btn:disabled{opacity:.5;cursor:wait}
+.note{background:#fff8e8;border:1.5px solid var(--amb);border-radius:10px;padding:10px 14px;font-size:13px;margin-bottom:16px;line-height:1.5}
+.err{background:#fff5f7;border:1.5px solid var(--acc);border-radius:10px;padding:10px 14px;font-size:13px;margin:10px 0}
+.okmsg{background:#eef6e6;border:1.5px solid var(--leaf);border-radius:10px;padding:10px 14px;font-size:13px;margin:10px 0}
+.kpi{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:16px}
+@media(max-width:900px){.kpi{grid-template-columns:repeat(3,1fr)}}
+.kpi div{background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.kpi b{display:block;font:800 22px 'Exo 2';color:var(--bd)}.kpi span{font-size:12px;color:#8a7360}
+.split{display:grid;grid-template-columns:380px 1fr;gap:16px;align-items:start}
+@media(max-width:900px){.split{grid-template-columns:1fr}}
+.list{max-height:72vh;overflow-y:auto;padding:6px}
+.it{padding:10px 12px;border-radius:10px;cursor:pointer;border:1.5px solid transparent;margin-bottom:4px}
+.it:hover{background:#fdf9f6}.it.on{border-color:var(--br);background:#fdf9f6}
+.it .t{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:#8a7360}
+.it .q{font-weight:600;margin:3px 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tag{display:inline-block;border-radius:999px;padding:1px 8px;font-size:11px;font-weight:700;margin-right:3px}
+.tag.ceka{background:var(--acc);color:#fff}.tag.clovek{background:#fff1d6;color:#8a5a00}.tag.b2b{background:#f7e3b0;color:#7a5200}
+.tag.ok{background:#e6f2dc;color:#3d6a22}.tag.shop{background:var(--kraft);color:var(--bd)}
+.flt{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.tr{background:#faf5f0;border-radius:12px;padding:14px;max-height:56vh;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+.m{max-width:80%;padding:8px 12px;border-radius:12px;line-height:1.45;white-space:pre-wrap;word-wrap:break-word}
+.m small{display:block;font-size:11px;font-weight:700;margin-bottom:2px;white-space:normal}
+.m.u{background:#83502e;color:#fff;align-self:flex-end}.m.u small{color:#ffe3a8}
+.m.a{background:var(--kraft)}.m.a small{color:var(--br)}
+.m.h{background:#e6f2dc}.m.h small{color:#3d6a22}
+.m.s{align-self:center;background:#fff8e8;border:1px solid var(--amb);font-size:13px}
+.cards{font-size:12px;color:var(--bd);margin-top:4px;white-space:normal}.cards a{display:block}
+.reply{display:flex;gap:8px;margin-top:12px;align-items:flex-end}.reply textarea{min-height:60px}
+.info{font-size:13px;color:#5c381f;margin-bottom:10px;line-height:1.6}
+.empty{color:#8a7360;padding:30px;text-align:center}
+.gap{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #f0e6dc;align-items:center}
+.gap .q{font-weight:600}.mini{font-size:12px;color:#8a7360}
+</style>
+</head>
+<body>
+<div class="top"><div class="in">
+ <small><a href="/">Nástroje</a> · Marketing</small>
+ <h1>💬 Chat s NutWorldkou</h1>
+ <p>AI NutWorldka odpovídá zákazníkům na nutworld.cz/.sk sama (produkty, dárky, alergeny, doprava, stav objednávky, firemní poptávky). Co neumí, předá vám.</p>
+ <div class="tabs">
+  <button class="tab on" data-t="konv">Konverzace<span class="b" id="cekaB" hidden></span></button>
+  <button class="tab" data-t="mez">Co nevěděla<span class="b" id="mezB" hidden></span></button>
+  <button class="tab" data-t="set">Nastavení</button>
+ </div>
+</div></div>
+
+<div class="wrap">
+ <div id="glob"></div>
+
+ <section id="t-konv">
+  <div class="kpi" id="kpi"></div>
+  <div class="split">
+   <div class="panel" style="padding:12px">
+    <div class="flt">
+     <label class="chip"><input type="radio" name="f" value="vse" checked><span>Vše</span></label>
+     <label class="chip"><input type="radio" name="f" value="ceka"><span>Čeká na vás</span></label>
+     <label class="chip"><input type="radio" name="f" value="predano"><span>Předané</span></label>
+     <label class="chip"><input type="radio" name="f" value="b2b"><span>Poptávky</span></label>
+     <label class="chip"><input type="checkbox" name="sh" value="cz" checked><span>CZ</span></label>
+     <label class="chip"><input type="checkbox" name="sh" value="sk" checked><span>SK</span></label>
+    </div>
+    <div class="list" id="list"><div class="empty">Načítám…</div></div>
+   </div>
+   <div class="panel" id="det"><div class="empty">Vyberte konverzaci vlevo.</div></div>
+  </div>
+ </section>
+
+ <section id="t-mez" hidden>
+  <div class="panel">
+   <div class="note">Otázky, na které NutWorldka v datech nenašla odpověď. Odpověď doplňte v <b>Nastavení → Co má NutWorldka vědět navíc</b> a otázku označte jako vyřešenou. Tak bude odpovídat čím dál víc sama.</div>
+   <div id="gaps"></div>
+  </div>
+ </section>
+
+ <section id="t-set" hidden>
+  <div class="panel">
+   <div class="sec">Kde chat běží</div>
+   <div class="row2">
+    <div class="field"><label>nutworld.cz</label><div class="chips" id="stCz"></div></div>
+    <div class="field"><label>nutworld.sk</label><div class="chips" id="stSk"></div></div>
+   </div>
+   <div class="hint">„Jen test“ = chat uvidí jen ten, kdo otevře odkaz <a href="https://www.nutworld.cz/?nwchat=open" target="_blank">nutworld.cz/?nwchat=open</a> / <a href="https://www.nutworld.sk/?nwchat=open" target="_blank">nutworld.sk/?nwchat=open</a> (platí do zavření prohlížeče). Když na webu běží Smartsupp, NutWorldka se posune doleva, aby se nepřekrývaly.</div>
+
+   <div class="sec">Kdy jste online (předání člověku)</div>
+   <div class="field"><label>Dny</label><div class="chips" id="dny"></div></div>
+   <div class="row3">
+    <div class="field"><label>Od</label><input type="time" id="od"></div>
+    <div class="field"><label>Do</label><input type="time" id="do"></div>
+    <div class="field"><label>Jméno, které zákazník uvidí</label><input type="text" id="clovek" maxlength="40"></div>
+   </div>
+   <div class="hint">V této době NutWorldka zákazníkovi řekne, že odpovíte v chatu do pár minut. Mimo ni si vezme e-mail a slíbí odpověď v pracovní době. Předané chaty vám chodí e-mailem s tlačítkem „Odpovědět v chatu“.</div>
+
+   <div class="sec">Co má NutWorldka vědět navíc</div>
+   <div class="row2">
+    <div class="field"><label>CZ</label><textarea id="znCz" style="min-height:200px" placeholder="Např.&#10;- Osobní odběr: Rtyně v Podkrkonoší, Po–Pá 8–15.&#10;- Firemní dárky s logem od 30 ks, potisk do 10 pracovních dní.&#10;- Objednávky do 18. 12. stihneme pod stromeček."></textarea></div>
+    <div class="field"><label>SK</label><textarea id="znSk" style="min-height:200px" placeholder="Prázdné = použije české znalosti (odpoví slovensky)."></textarea></div>
+   </div>
+   <div class="hint">Má přednost před texty z e-shopu. Ty (Doprava, Kontakty, Obchodní podmínky, Reklamace) a katalog produktů se načítají samy každou noc. Aktivní popupy typu oznámení (např. zpoždění expedice) zná automaticky.</div>
+
+   <div class="sec">Pojistka</div>
+   <div class="row3">
+    <div class="field"><label>Max. odpovědí AI za den</label><input type="number" id="limit" min="50" max="20000"></div>
+    <div class="field"><label>Katalog CZ</label><div class="info" id="katCz">—</div></div>
+    <div class="field"><label>Katalog SK</label><div class="info" id="katSk">—</div></div>
+   </div>
+   <div id="setMsg"></div>
+   <button class="btn dark" id="save">Uložit nastavení</button>
+  </div>
+ </section>
+</div>
+
+<script>
+const API = '/api/chat';
+const $ = id => document.getElementById(id);
+let S = null, cur = null, timer = null;
+function esc(s) { return String(s ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c])); }
+function msg(el, text, ok) { $(el).innerHTML = text ? `<div class="${ok ? 'okmsg' : 'err'}">${esc(text)}</div>` : ''; }
+async function api(path, body) {
+  const r = await fetch(API + path, body ? {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)} : {});
+  const ct = r.headers.get('content-type') || '';
+  if (!ct.includes('json')) throw new Error('Server nástrojů neodpovídá (jste přihlášeni?)');
+  const j = await r.json();
+  if (!r.ok) throw new Error(j.chyba || ('Chyba ' + r.status));
+  return j;
+}
+function when(ts) {
+  if (!ts) return '';
+  const d = new Date(ts), now = new Date();
+  const t = d.toTimeString().slice(0, 5);
+  return d.toDateString() === now.toDateString() ? t : `${d.getDate()}. ${d.getMonth() + 1}. ${t}`;
+}
+function show(t) {
+  document.querySelectorAll('.tab').forEach(x => x.classList.toggle('on', x.dataset.t === t));
+  ['konv', 'mez', 'set'].forEach(k => $('t-' + k).hidden = k !== t);
+}
+document.querySelectorAll('.tab').forEach(b => b.onclick = () => show(b.dataset.t));
+document.querySelectorAll('input[name=f],input[name=sh]').forEach(i => i.onchange = renderList);
+
+function renderKpi() {
+  const s = S.stat30 || {}, d = S.stat_dnes || {};
+  const box = (n, l, dn) => `<div><b>${n || 0}</b><span>${l}${dn !== undefined ? ` · dnes ${dn || 0}` : ''}</span></div>`;
+  $('kpi').innerHTML = box(s.otevreno, 'otevření chatu', d.otevreno) + box(s.konverzace, 'konverzací', d.konverzace) +
+    box(s.zpravy, 'zpráv zákazníků', d.zpravy) + box(s.predano, 'předáno vám', d.predano) + box(s.b2b, 'firemních poptávek', d.b2b) +
+    box(s.prokliky, 'prokliků na produkty', d.prokliky);
+}
+function renderList() {
+  const f = document.querySelector('input[name=f]:checked').value;
+  const shops = [...document.querySelectorAll('input[name=sh]:checked')].map(i => i.value);
+  const rows = S.konverzace.filter(k => shops.includes(k.shop) && (f === 'vse' || (f === 'ceka' && k.ceka) || (f === 'predano' && k.predano) || (f === 'b2b' && k.b2b)));
+  const n = S.konverzace.filter(k => k.ceka).length;
+  $('cekaB').hidden = !n; $('cekaB').textContent = n;
+  $('list').innerHTML = rows.length ? rows.map(k => `<div class="it${cur && cur.sid === k.sid ? ' on' : ''}" data-sid="${k.sid}">
+    <div class="t"><span><span class="tag shop">${k.shop.toUpperCase()}</span>${k.ceka ? '<span class="tag ceka">čeká na vás</span>' : k.stav === 'clovek' ? '<span class="tag clovek">předáno</span>' : k.stav === 'vyrizeno' ? '<span class="tag ok">vyřízeno</span>' : ''}${k.b2b ? '<span class="tag b2b">poptávka</span>' : ''}</span><span>${when(k.last)}</span></div>
+    <div class="q">${esc(k.shrnuti || k.prvni)}</div>
+    <div class="mini">${k.n} zpráv${k.karty ? ` · ${k.karty} produktů ukázáno` : ''}${k.kontakt ? ' · ' + esc(k.kontakt) : ''}</div></div>`).join('')
+    : '<div class="empty">Zatím žádné konverzace.</div>';
+  $('list').querySelectorAll('.it').forEach(e => e.onclick = () => openKonv(e.dataset.sid));
+}
+async function openKonv(sid, keepDraft) {
+  const draft = keepDraft && $('rep') ? $('rep').value : '';
+  try {
+    const j = await api('/konv?sid=' + encodeURIComponent(sid));
+    cur = j.konv;
+    history.replaceState(null, '', '#' + sid);
+    renderList();
+    const k = cur;
+    const kont = [k.jmeno, k.email, k.telefon].filter(Boolean).join(' · ') || 'kontakt nezadal';
+    const b2b = k.b2b ? `<div class="note"><b>💼 Firemní poptávka:</b> ${esc([k.b2b.firma, k.b2b.ico && 'IČO ' + k.b2b.ico, k.b2b.pocet && k.b2b.pocet + ' ks', k.b2b.rozpocet, k.b2b.termin].filter(Boolean).join(' · '))}<br>${esc(k.b2b.poznamka)}</div>` : '';
+    $('det').innerHTML = `<div class="info"><b>${esc(k.shrnuti || 'Konverzace')}</b><br>e-shop .${k.shop} · ${esc(kont)} · začátek ${when(k.start)} · <a href="${esc(k.url)}" target="_blank">stránka zákazníka</a></div>${b2b}
+      <div class="tr" id="tr">${k.msgs.map(m => {
+        const who = {u: 'Zákazník', a: '🐿️ NutWorldka', h: '👤 ' + (m.kdo || 'Nut World'), s: 'ℹ️ systém'}[m.r] || '';
+        const cards = (m.karty || []).map(c => `<a href="${esc(c.url)}" target="_blank">🛒 ${esc(c.nazev)} — ${esc(c.cena)}</a>`).join('');
+        return `<div class="m ${m.r}"><small>${who} · ${when(m.ts)}</small>${esc(m.t)}${cards ? `<div class="cards">${cards}</div>` : ''}</div>`;
+      }).join('')}</div>
+      ${S.muze_upravit ? `<div class="reply"><textarea id="rep" placeholder="Odpověď zákazníkovi (objeví se mu v chatu${k.email ? '; když chat nemá otevřený, přijde mu i e-mailem' : ''})"></textarea><button class="btn dark" id="send">Odeslat</button></div>
+      <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn ghost small" data-st="ai">🐿️ Vrátit NutWorldce</button><button class="btn ghost small" data-st="vyrizeno">✓ Vyřízeno</button></div><div id="repMsg"></div>` : ''}`;
+    $('tr').scrollTop = $('tr').scrollHeight;
+    if ($('rep')) {
+      $('rep').value = draft;
+      $('send').onclick = sendReply;
+      $('rep').onkeydown = e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) sendReply(); };
+      $('det').querySelectorAll('[data-st]').forEach(b => b.onclick = async () => {
+        try { await api('/stav', {sid: cur.sid, stav: b.dataset.st}); await reload(); openKonv(cur.sid); } catch (e) { msg('repMsg', e.message); }
+      });
+    }
+  } catch (e) { $('det').innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+}
+async function sendReply() {
+  const t = $('rep').value.trim();
+  if (!t) return;
+  $('send').disabled = true;
+  try {
+    const j = await api('/odpoved', {sid: cur.sid, text: t});
+    $('rep').value = '';
+    await reload(); await openKonv(cur.sid);
+    if (j.email) msg('repMsg', 'Odesláno do chatu i e-mailem (zákazník chat zrovna nemá otevřený).', true);
+  } catch (e) { msg('repMsg', e.message); }
+  finally { if ($('send')) $('send').disabled = false; }
+}
+function renderGaps() {
+  const g = S.mezery || [];
+  $('mezB').hidden = !g.length; $('mezB').textContent = g.length;
+  $('gaps').innerHTML = g.length ? g.map(x => `<div class="gap"><div><div class="q">${esc(x.otazka)}</div><div class="mini">.${x.shop} · ${when(x.kdy)} · <a href="#${x.sid}" data-sid="${x.sid}">konverzace</a></div></div>
+    ${S.muze_upravit ? `<button class="btn ghost small" data-id="${x.id}">✓ Vyřešeno</button>` : ''}</div>`).join('') : '<div class="empty">Zatím nic — NutWorldka všechno věděla 🐿️</div>';
+  $('gaps').querySelectorAll('a[data-sid]').forEach(a => a.onclick = e => { e.preventDefault(); show('konv'); openKonv(a.dataset.sid); });
+  $('gaps').querySelectorAll('button[data-id]').forEach(b => b.onclick = async () => { await api('/mezera', {id: b.dataset.id}); await reload(); });
+}
+const STAV = [['off', 'Vypnuto'], ['test', 'Jen test'], ['on', 'Zapnuto pro všechny']];
+const DNY = ['Po', 'Út', 'St', 'Čt', 'Pá', 'So', 'Ne'];
+function renderSet() {
+  const s = S.nastaveni;
+  for (const [sh, el] of [['cz', 'stCz'], ['sk', 'stSk']])
+    $(el).innerHTML = STAV.map(([v, l]) => `<label class="chip"><input type="radio" name="st_${sh}" value="${v}" ${s.stav[sh] === v ? 'checked' : ''}><span>${l}</span></label>`).join('');
+  $('dny').innerHTML = DNY.map((d, i) => `<label class="chip"><input type="checkbox" name="dny" value="${i + 1}" ${s.dny.includes(i + 1) ? 'checked' : ''}><span>${d}</span></label>`).join('');
+  $('od').value = s.od; $('do').value = s.do; $('clovek').value = s.clovek; $('limit').value = s.limit_den;
+  $('znCz').value = s.znalosti.cz || ''; $('znSk').value = s.znalosti.sk || '';
+  $('katCz').textContent = S.katalog.cz ? 'načten ' + when(S.katalog.cz) : 'zatím nenačten';
+  $('katSk').textContent = S.katalog.sk ? 'načten ' + when(S.katalog.sk) : 'zatím nenačten';
+  $('save').hidden = !S.muze_upravit;
+}
+$('save').onclick = async () => {
+  const n = {
+    stav: {cz: document.querySelector('input[name=st_cz]:checked').value, sk: document.querySelector('input[name=st_sk]:checked').value},
+    dny: [...document.querySelectorAll('input[name=dny]:checked')].map(i => +i.value),
+    od: $('od').value, do: $('do').value, clovek: $('clovek').value.trim(), limit_den: +$('limit').value,
+    znalosti: {cz: $('znCz').value, sk: $('znSk').value}};
+  $('save').disabled = true;
+  try { await api('/nastaveni', {nastaveni: n}); await reload(); msg('setMsg', 'Uloženo. Na e-shopu se změna projeví do minuty.', true); }
+  catch (e) { msg('setMsg', e.message); } finally { $('save').disabled = false; }
+};
+async function reload() {
+  S = await api('/seznam');
+  renderKpi(); renderList(); renderGaps(); renderSet();
+}
+reload().then(() => {
+  const h = location.hash.slice(1);
+  if (h) openKonv(h);
+  timer = setInterval(async () => {
+    try {
+      const busy = document.activeElement && ['rep', 'znCz', 'znSk', 'od', 'do', 'clovek', 'limit'].includes(document.activeElement.id);
+      S = await api('/seznam'); renderKpi(); renderList(); renderGaps();
+      if (cur && !busy) openKonv(cur.sid, true);
+    } catch (e) {}
+  }, 15000);
+}).catch(e => { $('glob').innerHTML = `<div class="err">${esc(e.message)}${location.hostname.endsWith('github.io') ? ' — chat se spravuje na serveru nástrojů (přihlášení).' : ''}</div>`; });
+</script>
+</body>
+</html>

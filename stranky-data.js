@@ -506,6 +506,14 @@ window.NW_STRANKY = [
   "barva": "pink"
  },
  {
+  "soubor": "chat.html",
+  "skupina": "marketing",
+  "ikona": "💬",
+  "nazev": "Chat s NutWorldkou",
+  "popis": "AI chat na nutworld.cz/.sk místo Smartsuppu: konverzace, odpovídání zákazníkům, předané dotazy, poptávky, co nevěděla, nastavení.",
+  "barva": "pink"
+ },
+ {
   "soubor": "popupy.html",
   "skupina": "marketing",
   "ikona": "🎯",
