@@ -491,7 +491,7 @@ async function reload() {
   const j = await api('/seznam');
   S = {popupy: j.popupy, muze: j.muze_upravit, admin: j.admin, leadhub: j.leadhub || [], embed: j.embed};
   $('btnNew').hidden = !S.muze;
-  $('embedCode').textContent = `<script src="${location.origin}/popup/nw-popup.js" async><\/script>`;
+  $('embedCode').textContent = `<script src="${S.embed || location.origin + '/popup/nw-popup.js'}" async><\/script>`;
   renderList();
 }
 document.querySelectorAll('img[data-m]').forEach(i => { if (window.NWPopup) i.src = NWPopup.imgUrl(i.dataset.m); });
