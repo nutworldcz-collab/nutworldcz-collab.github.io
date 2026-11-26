@@ -1313,6 +1313,7 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
       <tr><td style="background:#5c381f;color:white;padding:9px 12px;font-family:'Exo 2',sans-serif;font-weight:700;font-size:14px">Celkem k úhradě</td><td style="background:#5c381f;color:#f7ab31;padding:9px 12px;text-align:right;font-family:'Exo 2',sans-serif;font-weight:700;font-size:14px">${fmt(totalSDph)} ${curSym}</td></tr>
     </table>
   </div>
+  <!--NW_ONLINE--><!--/NW_ONLINE-->
   <div style="background:#5c381f;padding:12px 28px;display:flex;justify-content:space-between;align-items:center">
     <div style="color:rgba(255,255,255,.7);font-size:11px">🐿 Nutworld · info@nutworld.cz · nutworld.cz</div>
     <div style="color:rgba(255,255,255,.7);font-size:11px">č. ${cislo}</div>
@@ -1383,6 +1384,7 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
       }).catch(() => {});
     }
 
+    nwOnlineOdkaz(card.id);
     const msg = isEdit ? '✏️ Nabídka aktualizována v Trellu!' : '✅ Karta vytvořena v Trellu!';
     document.getElementById('link-copied').style.display = 'block';
     document.getElementById('link-copied').innerHTML =
@@ -1433,6 +1435,35 @@ body{font-family:'Source Sans 3',Arial,sans-serif;color:#2a1a0e;font-size:13px;l
       body: ownerBody
     })
   }).catch(() => {});
+}
+
+// Offer confirmed online (Jan 2026-11-26: every offer): the card's secret customer link -> into the offer (PDF)
+// and a copy box for the salesperson. Only on the tools server (needs the login); on GitHub the link is on the card.
+async function nwOnlineOdkaz(cardId) {
+  if (!(window.NWData && NWData.onServer) || !cardId) return;
+  try {
+    const r = await fetch(location.origin + '/api/nastenky/card/c_' + cardId + '/zakaznik-odkaz',
+      {method: 'POST', credentials: 'same-origin', headers: {'Content-Type': 'application/json'}, body: '{}'});
+    const j = await r.json();
+    if (!j.odkaz) return;
+    window._zakaznikOdkaz = j.odkaz;
+    const sk = (document.getElementById('trh') || {}).value === 'SK';
+    const block = `<div style="margin:0 28px 16px;background:#eef6e8;border:1.5px solid #6fa044;border-radius:8px;padding:10px 14px;font-size:12px;color:#2d5a1b">` +
+      `<strong>${sk ? '✅ Ponuku môžete potvrdiť online:' : '✅ Nabídku můžete potvrdit online:'}</strong> ` +
+      `<a href="${j.odkaz}" style="color:#2d5a1b;word-break:break-all">${j.odkaz}</a></div>`;
+    if (window._offerHtml) {
+      window._offerHtml = window._offerHtml.replace(/<!--NW_ONLINE-->[^]*?<!--\/NW_ONLINE-->/, '<!--NW_ONLINE-->' + block + '<!--/NW_ONLINE-->');
+      const f = document.getElementById('preview-frame');
+      if (f) f.srcdoc = window._offerHtml;
+    }
+    const box = document.getElementById('link-copied');
+    const el = document.createElement('div');
+    el.style.cssText = 'margin-top:8px;padding-top:8px;border-top:1px solid #cde3c0';
+    el.innerHTML = `🔗 <b>Odkaz pro zákazníka</b> (potvrdí nabídku online — je i v PDF):<br>` +
+      `<input readonly value="${j.odkaz}" style="width:100%;margin:4px 0;padding:6px 8px;border:1px solid #c8976a;border-radius:6px;font-size:12px" onclick="this.select()">` +
+      `<button type="button" class="btn-pdf" style="padding:6px 14px;font-size:12px" onclick="navigator.clipboard.writeText('${j.odkaz}').then(()=>this.textContent='✓ Zkopírováno')">📋 Kopírovat odkaz</button>`;
+    box.appendChild(el);
+  } catch (e) { console.warn('odkaz pro zákazníka', e); }
 }
 
 function printOffer() {
