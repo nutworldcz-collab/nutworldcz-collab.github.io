@@ -58,6 +58,11 @@ textarea{min-height:70px;resize:vertical}
 .it{padding:10px 12px;border-radius:10px;cursor:pointer;border:1.5px solid transparent;margin-bottom:4px}
 .it:hover{background:#fdf9f6}.it.on{border-color:var(--br);background:#fdf9f6}
 .it .t{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:#8a7360}
+.it .hd{display:flex;gap:10px;align-items:center}
+.av{flex:none;width:34px;height:34px;border-radius:50%;color:#fff;font:700 12px 'Exo 2';display:flex;align-items:center;justify-content:center}
+.it .nm{font-weight:700;color:var(--bd);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.it .who{flex:1;min-width:0}
+.pozn{display:flex;gap:6px;margin:6px 0 10px;flex-wrap:wrap}.pozn input{flex:1;min-width:160px}
 .it .q{font-weight:600;margin:3px 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .tag{display:inline-block;border-radius:999px;padding:1px 8px;font-size:11px;font-weight:700;margin-right:3px}
 .tag.ceka{background:var(--acc);color:#fff}.tag.clovek{background:#fff1d6;color:#8a5a00}.tag.b2b{background:#f7e3b0;color:#7a5200}
@@ -239,6 +244,12 @@ function renderKpi() {
     box(s.zpravy, 'zpráv zákazníků', d.zpravy) + box(s.predano, 'předáno vám', d.predano) + box(s.b2b, 'firemních poptávek', d.b2b) +
     box(s.prokliky, 'prokliků na produkty', d.prokliky);
 }
+const AVC = ['#83502e', '#6fa044', '#da1668', '#b8860b', '#2d5a1b', '#8b4040', '#5c381f', '#a0622a', '#4a7c2f', '#7a5200'];
+function avatar(k) {
+  const named = k.kdo && !/^Návštěvník #/.test(k.kdo);
+  const txt = named ? k.kdo.replace(/@.*/, '').split(/[\s.]+/).filter(Boolean).slice(0, 2).map(x => x[0].toUpperCase()).join('') : '#' + (k.cislo || '?');
+  return `<span class="av" style="background:${AVC[(k.cislo || 0) % AVC.length]}" title="${esc(k.kdo)}">${esc(txt)}</span>`;
+}
 function renderList() {
   const f = document.querySelector('input[name=f]:checked').value;
   const shops = [...document.querySelectorAll('input[name=sh]:checked')].map(i => i.value);
@@ -246,7 +257,9 @@ function renderList() {
   const n = S.konverzace.filter(k => k.ceka).length;
   $('cekaB').hidden = !n; $('cekaB').textContent = n;
   $('list').innerHTML = rows.length ? rows.map(k => `<div class="it${cur && cur.sid === k.sid ? ' on' : ''}" data-sid="${k.sid}">
-    <div class="t"><span><span class="tag shop">${k.shop.toUpperCase()}</span>${k.ceka ? '<span class="tag ceka">čeká na vás</span>' : k.stav === 'clovek' ? '<span class="tag clovek">předáno</span>' : k.stav === 'vyrizeno' ? '<span class="tag ok">vyřízeno</span>' : ''}${k.b2b ? '<span class="tag b2b">poptávka</span>' : ''}${k.palec_dolu ? '👎' : k.palec_nahoru ? '👍' : ''}</span><span>${when(k.last)}</span></div>
+    <div class="hd">${avatar(k)}<div class="who"><div class="nm">${esc(k.kdo)}</div>
+    <div class="mini">${esc(k.stranka || '')}${k.zarizeni ? ' · ' + (k.zarizeni === 'mobil' ? '📱' : '💻') : ''}${k.konv_celkem > 1 ? ` · ${k.konv_celkem}. konverzace` : ''}${k.pozn ? ' · 📝' : ''}</div></div></div>
+    <div class="t" style="margin-top:6px"><span><span class="tag shop">${k.shop.toUpperCase()}</span>${k.ceka ? '<span class="tag ceka">čeká na vás</span>' : k.stav === 'clovek' ? '<span class="tag clovek">předáno</span>' : k.stav === 'vyrizeno' ? '<span class="tag ok">vyřízeno</span>' : ''}${k.b2b ? '<span class="tag b2b">poptávka</span>' : ''}${k.palec_dolu ? '👎' : k.palec_nahoru ? '👍' : ''}</span><span>${when(k.last)}</span></div>
     <div class="q">${esc(k.shrnuti || k.prvni)}</div>
     <div class="mini">${k.n} zpráv${k.karty ? ` · ${k.karty} produktů ukázáno` : ''}${k.kontakt ? ' · ' + esc(k.kontakt) : ''}</div></div>`).join('')
     : '<div class="empty">Zatím žádné konverzace.</div>';
@@ -262,10 +275,13 @@ async function openKonv(sid, keepDraft) {
     const k = cur;
     const kont = [k.jmeno, k.email, k.telefon].filter(Boolean).join(' · ') || 'kontakt nezadal';
     const b2b = k.b2b ? `<div class="note"><b>💼 Firemní poptávka:</b> ${esc([k.b2b.firma, k.b2b.ico && 'IČO ' + k.b2b.ico, k.b2b.pocet && k.b2b.pocet + ' ks', k.b2b.rozpocet, k.b2b.termin].filter(Boolean).join(' · '))}<br>${esc(k.b2b.poznamka)}</div>` : '';
-    $('det').innerHTML = `<div class="info"><b>${esc(k.shrnuti || 'Konverzace')}</b><br>e-shop .${k.shop} · ${esc(kont)} · začátek ${when(k.start)} · <a href="${esc(k.url)}" target="_blank">stránka zákazníka</a></div>${b2b}
+    $('det').innerHTML = `<div class="hd" style="display:flex;gap:10px;align-items:center;margin-bottom:6px">${avatar({kdo: k.kdo, cislo: k.cislo})}<div><b style="font-size:16px;color:var(--bd)">${esc(k.kdo)}</b>
+      <div class="mini">Návštěvník #${k.cislo || '?'} · e-shop .${k.shop} · ${esc(kont)}${k.zarizeni ? ' · ' + k.zarizeni : ''} · začátek ${when(k.start)} · psal ze stránky <a href="${esc(k.url)}" target="_blank">${esc(k.stranka)}</a></div></div></div>
+      ${k.shrnuti ? `<div class="info"><b>${esc(k.shrnuti)}</b></div>` : ''}
+      ${S.muze_upravit ? `<div class="pozn"><input type="text" id="pzJm" maxlength="60" placeholder="Vlastní jméno (např. Paní z Brna – svatba)" value="${esc(k.poznamka_jmeno || '')}"><input type="text" id="pzTx" maxlength="300" placeholder="Poznámka pro vás" value="${esc(k.poznamka || '')}"><button class="btn ghost small" id="pzSave" type="button">Uložit</button></div>` : ''}${b2b}
       <div class="hist" id="hist">Načítám historii zákazníka…</div>
       <div class="tr" id="tr">${k.msgs.map(m => {
-        const who = {u: 'Zákazník', a: '🐿️ NutWorldka', h: '👤 ' + (m.kdo || 'Nut World'), s: 'ℹ️ systém'}[m.r] || '';
+        const who = {u: k.kdo, a: '🐿️ NutWorldka', h: '👤 ' + (m.kdo || 'Nut World'), s: 'ℹ️ systém'}[m.r] || '';
         const cards = (m.karty || []).map(c => `<a href="${esc(c.url)}" target="_blank">🛒 ${esc(c.nazev)} — ${esc(c.cena)}</a>`).join('');
         const rt = m.hod === 1 ? '<span class="rt">👍 pomohlo</span>' : m.hod === -1 ? '<span class="rt">👎 nepomohlo</span>' : '';
         return `<div class="m ${m.r}"><small>${who} · ${when(m.ts)}${rt}</small>${esc(m.t)}${cards ? `<div class="cards">${cards}</div>` : ''}</div>`;
@@ -278,6 +294,10 @@ async function openKonv(sid, keepDraft) {
         <button class="btn ghost small" data-st="ai">🐿️ Vrátit NutWorldce</button><button class="btn ghost small" data-st="vyrizeno">✓ Vyřízeno</button></div><div id="repMsg"></div>` : ''}`;
     $('tr').scrollTop = $('tr').scrollHeight;
     loadHist(k.sid);
+    if ($('pzSave')) $('pzSave').onclick = async () => {
+      try { await api('/poznamka', {sid: k.sid, jmeno: $('pzJm').value, poznamka: $('pzTx').value}); await reload(); openKonv(k.sid); }
+      catch (e) { alert(e.message); }
+    };
     if ($('rep')) {
       $('rep').value = draft;
       $('det').querySelectorAll('[data-tpl]').forEach(b => b.onclick = () => {
@@ -436,7 +456,7 @@ reload().then(() => {
   if (h) openKonv(h);
   timer = setInterval(async () => {
     try {
-      const busy = document.activeElement && ['rep', 'znCz', 'znSk', 'od', 'do', 'limit', 'skryt', 'kEmCz', 'kEmSk', 'kTel', 'kAdr'].includes(document.activeElement.id);
+      const busy = document.activeElement && ['rep', 'pzJm', 'pzTx', 'znCz', 'znSk', 'od', 'do', 'limit', 'skryt', 'kEmCz', 'kEmSk', 'kTel', 'kAdr'].includes(document.activeElement.id);
       S = await api('/seznam'); renderKpi(); renderList(); renderGaps();
       if (cur && !busy) openKonv(cur.sid, true);
     } catch (e) {}
