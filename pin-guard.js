@@ -1,4 +1,7 @@
 (function(){
+  // On the tools server the login (nw_auth) already guards every page and fills the name — no PIN box there.
+  if (!/github\.io$/.test(location.hostname) && /^https?:$/.test(location.protocol)
+      && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') return;
   // PINs are verified ONLY by the server (nw_data Apps Script "whoami") — no PIN list in this public file
   // (security 2026-11-21). The verified PIN + name are cached; re-checked every 12 h, so a changed PIN stops working.
   const API = 'https://script.google.com/macros/s/AKfycbxK5FYBYGYsf9Hh9ueahqi0FhCDhaoxTkhzpFM3retvDBKvbOUJ1-YxSQurR2MQB2OT/exec';
