@@ -390,6 +390,7 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
       <button id="btn-firmy"  class="view-btn active" onclick="setView('firmy')">🏢 Firmy</button>
       <button id="btn-vyroba" class="view-btn"        onclick="setView('vyroba')">🔧 Výroba</button>
       <button id="btn-stejne" class="view-btn"        onclick="setView('stejne')">🎁 Stejné dárky</button>
+      <button id="btn-den"    class="view-btn"        onclick="setView('den')">📅 Plán dne</button>
       <button id="btn-vzorky" class="view-btn"        onclick="setView('vzorky')">🧪 Vzorky</button>
     </div>
     <div class="list-filters" id="list-filters"></div>
@@ -737,6 +738,7 @@ function setView(v){
   document.getElementById('btn-firmy').classList.toggle('active',v==='firmy');
   document.getElementById('btn-vyroba').classList.toggle('active',v==='vyroba');
   document.getElementById('btn-stejne').classList.toggle('active',v==='stejne');
+  document.getElementById('btn-den').classList.toggle('active',v==='den');
   document.getElementById('btn-vzorky').classList.toggle('active',v==='vzorky');
   const isVz=v==='vzorky';
   document.getElementById('list-filters').style.display=isVz?'none':'';
@@ -769,6 +771,7 @@ function render(){
   updateSummary(cards);
   if(activeView==='firmy') renderFirmy(cards);
   else if(activeView==='stejne') renderStejne(cards);
+  else if(activeView==='den') renderDen(cards);
   else renderVyroba(cards);
 }
 
@@ -1677,6 +1680,103 @@ function renderStejne(cards){
         `<span class="smes-comp-gram">${i.card.termin?terminBadge(i.card.termin):'bez termínu'}</span><div class="smes-comp-kg">${i.prod.ks} ks</div></div>`).join('');
     grid.appendChild(el);
   });
+}
+
+/* ═══ PLÁN DNE: co se má ten den vyrobit (výrobní termín = termín − 14 prac. dní, zpožděné taky), odškrtnuté mizí ═══ */
+let planDay=(()=>{const d=new Date();d.setHours(0,0,0,0);return d;})();
+let planMode='stejne';
+function planShift(n){ const d=new Date(planDay); d.setDate(d.getDate()+n); planDay=d; render(); }
+function planToday(){ const d=new Date(); d.setHours(0,0,0,0); planDay=d; render(); }
+function planSet(m){ planMode=m; render(); }
+function toggleMany(keys){ const allDone=keys.every(([c,p,i])=>isDone(c,p,i)); keys.forEach(([c,p,i])=>{ progress[pKey(c,p,i)]=!allDone; }); saveProg(); render(); }
+function planItems(cards){
+  // [{card, prod, pi, comps:[{ci,nazev,kod,gram,obal}] (only not done), vt}]
+  const DD=(typeof DARKY_DATA!=='undefined')?DARKY_DATA:{};
+  const out=[];
+  cards.forEach(card=>{
+    const vt=calcVyrobniTermin(card.termin); if(!vt) return;
+    const v=new Date(vt); v.setHours(0,0,0,0);
+    if(v>planDay) return;
+    card.produkty.forEach((prod,pi)=>{
+      if(prod.isSluzba||!prod.ks) return;
+      const comps=[];
+      prod.slozeni.forEach((c,ci)=>{ if(isDone(card.id,pi,ci)) return;
+        const dk=getDarkyKod(c);
+        if(dk&&DD[dk]) (DD[dk].obsah||[]).forEach(x=>comps.push({ci,nazev:(PROD_NAMES&&PROD_NAMES[x.kod])||('kód '+x.kod),kod:String(x.kod),gram:+x.gram||0,obal:DD[dk].obal}));
+        else comps.push({ci,nazev:(c.kod&&PROD_NAMES&&PROD_NAMES[c.kod])||c.nazev,kod:c.kod,gram:parseFloat(c.gram)||0,obal:c.obal}); });
+      if(comps.length) out.push({card,prod,pi,comps,vt:v});
+    });
+  });
+  return out;
+}
+function obInnerName(text,g){   // plain name of what one product goes into (for grouping by kind)
+  if(!text) return '❓ obal neuveden';
+  if(/doypack/i.test(text)&&!obIsBox((obKey(text,g)||{}).key||'')) return 'Doypack';
+  const o=obKey(text,g); if(!o) return '❓ krabice bez typu';
+  const S=NW_OBALY.sablony[o.key]; if(!S) return text;
+  const inner=[...new Set(S.slozeni.filter(r=>OB_INNER.test(r.k)).map(r=>r.nazev))];
+  return inner.length===1?inner[0]:(obIsBox(o.key)?'Do krabice: '+S.nazev:S.nazev);
+}
+function renderDen(cards){
+  const mc=document.getElementById('main-content');
+  const items=planItems(cards);
+  const dd=planDay, today=new Date(); today.setHours(0,0,0,0);
+  const fmtD=d=>`${['ne','po','út','st','čt','pá','so'][d.getDay()]} ${d.getDate()}. ${d.getMonth()+1}. ${d.getFullYear()}`;
+  const late=items.filter(i=>i.vt<dd).length;
+  let html=`<div class="icard" style="margin-bottom:12px;padding:10px 14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center">`+
+    `<button class="print-btn" onclick="planShift(-1)">◀</button><b style="font-family:'Exo 2';color:#5c381f">📅 ${fmtD(dd)}${+dd===+today?' — dnes':''}</b>`+
+    `<button class="print-btn" onclick="planShift(1)">▶</button><button class="print-btn" onclick="planToday()">Dnes</button>`+
+    `<span style="flex:1"></span>`+
+    [['stejne','🎁 Podle stejných dárků'],['druh','🧰 Podle druhu balení'],['suroviny','🌰 Suroviny']].map(([k,l])=>
+      `<button class="view-btn${planMode===k?' active':''}" style="border-radius:6px" onclick="planSet('${k}')">${l}</button>`).join('')+
+    `<button class="print-btn" onclick="printCard(document.getElementById('plan-den'))">🖨 Tisk</button></div>`;
+  html+=`<div class="empty-state" style="padding:10px 14px;text-align:left;font-size:13px;color:#5c381f;margin-bottom:12px">`+
+    (items.length?`Na tento den: <b>${items.length}</b> produktů z <b>${new Set(items.map(i=>i.card.id)).size}</b> zakázek`+
+      (late?` · z toho <b style="color:#da1668">${late} zpožděných</b> (výroba měla začít dřív)`:'')+
+      ` · výroba začíná 14 pracovních dní před termínem · odškrtnuté zmizí`:'Na tento den není nic k výrobě. 🎉')+`</div>`;
+  const wrap=document.createElement('div'); wrap.id='plan-den';
+  const row=(left,mid,right,keys)=>`<div class="smes-comp-row" style="padding-left:10px" onclick='toggleMany(${JSON.stringify(keys)})'>`+
+    `<div class="comp-check"></div><div class="smes-comp-name" style="flex:1">${left}</div><span class="smes-comp-gram">${mid}</span><div class="smes-comp-kg">${right}</div></div>`;
+  let body='';
+  if(planMode==='stejne'){
+    const groups=new Map();
+    items.forEach(it=>{ const sig=giftSig(it.prod)||it.card.id+it.pi; if(!groups.has(sig)) groups.set(sig,[]); groups.get(sig).push(it); });
+    [...groups.values()].sort((a,b)=>b.reduce((s,i)=>s+i.prod.ks,0)-a.reduce((s,i)=>s+i.prod.ks,0)).forEach(g=>{
+      const ks=g.reduce((s,i)=>s+i.prod.ks,0), first=g[0];
+      const w=obPrace(first.prod);
+      body+=`<div class="icard" style="margin-bottom:10px"><div class="ihdr"><div class="iname-wrap"><div class="iname">🎁 ${vzEsc(first.prod.nazev)}</div>`+
+        `<div class="ikod">${g.length>1?g.length+' zakázek · ':''}${ks} ks${w!=null?' · ⏱ '+fmtH(w*ks/PRACE_KC_H):''} · ${first.comps.map(c=>vzEsc(c.nazev)+' '+c.gram+' g').join(', ')}</div></div></div>`+
+        g.sort((a,b)=>a.vt-b.vt).map(i=>row(`<b>${vzEsc(i.card.firma)}</b>${i.vt<dd?' <span style="color:#da1668;font-size:11px">zpoždění</span>':''}`,
+          i.card.termin?terminBadge(i.card.termin):'', `${i.prod.ks} ks`, i.comps.map(c=>[i.card.id,i.pi,c.ci]))).join('')+`</div>`;
+    });
+  } else if(planMode==='druh'){
+    const kinds=new Map();   // inner pack -> key(prod+gram) -> {nazev,gram,ks,keys,firmy}
+    items.forEach(it=>it.comps.forEach(c=>{
+      const kind=obInnerName(c.obal,c.gram);
+      if(!kinds.has(kind)) kinds.set(kind,new Map());
+      const k=(c.kod||c.nazev)+'|'+c.gram, m=kinds.get(kind);
+      if(!m.has(k)) m.set(k,{nazev:c.nazev,kod:c.kod,gram:c.gram,ks:0,keys:[],firmy:new Set()});
+      const e=m.get(k); e.ks+=it.prod.ks; e.keys.push([it.card.id,it.pi,c.ci]); e.firmy.add(it.card.firma);
+    }));
+    const unk=k=>k.startsWith('❓')?1:0;   // unknown packaging at the end
+    [...kinds.entries()].sort((a,b)=>unk(a[0])-unk(b[0])||[...b[1].values()].reduce((s,e)=>s+e.ks,0)-[...a[1].values()].reduce((s,e)=>s+e.ks,0)).forEach(([kind,m])=>{
+      const tot=[...m.values()].reduce((s,e)=>s+e.ks,0);
+      body+=`<div class="icard" style="margin-bottom:10px"><div class="ihdr"><div class="iname-wrap"><div class="iname">🧰 ${vzEsc(kind)}</div><div class="ikod">${tot} ks naplnit</div></div></div>`+
+        [...m.values()].sort((a,b)=>b.ks-a.ks).map(e=>row(`${vzEsc(e.nazev)}${e.kod?` <span class="smes-comp-kod">kód ${vzEsc(e.kod)}</span>`:''}<div class="comp-obal">${[...e.firmy].map(vzEsc).join(' · ')}</div>`,
+          e.gram?`${e.gram} g`:'', e.gram?`${e.ks} ks · ${fmtKg(e.gram*e.ks/1000)}`:`${e.ks} ks`, e.keys)).join('')+`</div>`;
+    });
+  } else {
+    const need=new Map();
+    items.forEach(it=>it.comps.forEach(c=>{ const k=c.kod||c.nazev; if(!need.has(k)) need.set(k,{nazev:c.nazev,kod:c.kod,kg:0,keys:[]});
+      const e=need.get(k); e.kg+=c.gram*it.prod.ks/1000; e.keys.push([it.card.id,it.pi,c.ci]); }));
+    const mix=new Map();
+    need.forEach(e=>{ if(window.NW_S&&e.kod&&NW_S.get(e.kod)) mixExpand(e.kod,e.kg,mix,null,0); });
+    body+=`<div class="icard" style="margin-bottom:10px"><div class="ihdr"><div class="iname-wrap"><div class="iname">🌰 Připravit produkty</div><div class="ikod">kliknutím odškrtneš všechny jejich položky</div></div></div>`+
+      [...need.values()].sort((a,b)=>b.kg-a.kg).map(e=>row(`${vzEsc(e.nazev)}${e.kod?` <span class="smes-comp-kod">kód ${vzEsc(e.kod)}</span>`:''}${window.NW_S&&e.kod&&NW_S.get(e.kod)?' <span class="smes-badge">směs</span>':''}`,'',fmtKg(e.kg),e.keys)).join('')+`</div>`;
+    if(mix.size) body+=`<div class="icard"><div class="ihdr"><div class="iname-wrap"><div class="iname">🥣 Namíchat — suroviny do směsí</div></div></div>`+
+      [...mix.values()].sort((a,b)=>b.kg-a.kg).map(c=>`<div class="smes-comp-row" style="cursor:default;padding-left:14px"><div class="smes-comp-name">${vzEsc(c.nazev)}<span class="smes-comp-kod">kód ${vzEsc(c.kod)}</span></div><span class="smes-comp-gram">do ${[...c.via].join(', ')}</span><div class="smes-comp-kg">${fmtKg(c.kg)}</div></div>`).join('')+`</div>`;
+  }
+  mc.innerHTML=html; wrap.innerHTML=body; mc.appendChild(wrap);
 }
 
 /* ═══ VZORKY VIEW ═══ */
