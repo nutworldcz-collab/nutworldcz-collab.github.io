@@ -722,19 +722,20 @@ function renderObal(id) {
   const o = obalKey(id);
   const key = o && o.key;
   const nazev = dk?.obal || (key && NW_OBALY.sablony[key]?.nazev) || '';
-  if (nazev) document.querySelectorAll('#slozeni-rows-'+id+' .slozeni-obal').forEach(inp => { if (!inp.value.trim()) inp.value = nazev; });
+  if (key) NW_OBALY.vyplnRadky('#slozeni-rows-'+id, key);          // row = the bag it goes into (→ box)
+  else if (nazev) document.querySelectorAll('#slozeni-rows-'+id+' .slozeni-obal').forEach(inp => { if (!inp.value.trim()) inp.value = nazev; });
   const ks = parseFloat(document.getElementById('ks-'+id)?.value) || 1;
   box.innerHTML = NW_OBALY.select(key, `setObal('${id}', this.value)`) + (key ? NW_OBALY.html(key, o.obsah, ks, o.grams) : '');
 }
 function setObal(id, key) {
   const row = document.getElementById('row-'+id);
   if (row) row.dataset.obalSablona = key;
-  const nazev = NW_OBALY.sablony[key]?.nazev || '';
-  document.querySelectorAll('#slozeni-rows-'+id+' .slozeni-obal').forEach(inp => inp.value = nazev);
+  NW_OBALY.vyplnRadky('#slozeni-rows-'+id, key, true);
   renderObal(id);
 }
 
 document.addEventListener('input', e => {
+  if (e.target.matches?.('.slozeni-obal')) delete e.target.dataset.auto;   // typed by a person = keep
   if (!e.target.matches?.('.slozeni-gram, .slozeni-obal')) return;
   const wrap = e.target.closest('.slozeni-rows');
   if (wrap) renderObal(wrap.id.replace('slozeni-rows-', ''));

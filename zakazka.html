@@ -563,13 +563,13 @@ function renderObalSp(i) {
   const o = obalKeySp(i);
   const key = o && o.key;
   const nazev = key ? NW_OBALY.sablony[key]?.nazev || '' : '';
-  if (nazev) document.querySelectorAll('#slozeni-rows-sp-'+i+' .slozeni-obal').forEach(inp => { if (!inp.value.trim()) inp.value = nazev; });
+  if (key) NW_OBALY.vyplnRadky('#slozeni-rows-sp-'+i, key);          // row = the bag it goes into (→ box)
+  else if (nazev) document.querySelectorAll('#slozeni-rows-sp-'+i+' .slozeni-obal').forEach(inp => { if (!inp.value.trim()) inp.value = nazev; });
   box.innerHTML = NW_OBALY.select(key, `setObalSp(${i}, this.value)`) + (key ? NW_OBALY.html(key, o.obsah, o.ks, o.grams) : '');
 }
 function setObalSp(i, key) {
   if (offerData && offerData.produkty[i]) offerData.produkty[i].obal_sablona = key;
-  const nazev = NW_OBALY.sablony[key]?.nazev || '';
-  document.querySelectorAll('#slozeni-rows-sp-'+i+' .slozeni-obal').forEach(inp => inp.value = nazev);
+  NW_OBALY.vyplnRadky('#slozeni-rows-sp-'+i, key, true);
   renderObalSp(i);
 }
 function obalTextSp(i) {
@@ -577,6 +577,7 @@ function obalTextSp(i) {
   return o && o.key ? NW_OBALY.text(o.key, o.obsah, o.ks, o.grams) : '';
 }
 document.addEventListener('input', e => {
+  if (e.target.matches?.('.slozeni-obal')) delete e.target.dataset.auto;   // typed by a person = keep
   if (!e.target.matches?.('.slozeni-gram, .slozeni-obal')) return;
   const wrap = e.target.closest('.slozeni-rows');
   if (wrap && wrap.id.startsWith('slozeni-rows-sp-')) renderObalSp(+wrap.id.replace('slozeni-rows-sp-', ''));
