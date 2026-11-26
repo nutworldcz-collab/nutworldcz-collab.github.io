@@ -823,9 +823,10 @@ function buildAC(id) {
   function fillRow(id, p) {
     document.getElementById('kod-'+id).value   = p.kod;
     document.getElementById('nazev-'+id).value = p.nazev;
-    if (p._isDarek && p.vo) {
-      const voBezDph = Math.round((p.vo / (1 + dphRate)) * 100) / 100;
-      document.getElementById('cena-'+id).value = voBezDph;
+    if (p._isDarek && (p.mo || p.vo)) {
+      // Jan 2026-11-26: preselect the RETAIL price (MO) — the salesperson lowers it if needed; VO only when MO is missing
+      const cenaBezDph = Math.round(((p.mo || p.vo) / (1 + dphRate)) * 100) / 100;
+      document.getElementById('cena-'+id).value = cenaBezDph;
       fillDarekSlozeni(id, p);
     }
     recalc(id);
