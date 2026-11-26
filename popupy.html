@@ -135,6 +135,7 @@ dialog::backdrop{background:rgba(40,20,5,.45)}
      <label class="chip"><input type="radio" name="typ" value="modal"><span>🪟 Okno uprostřed</span></label>
      <label class="chip"><input type="radio" name="typ" value="slide"><span>↘️ Boční okénko</span></label>
      <label class="chip"><input type="radio" name="typ" value="bar"><span>➖ Lišta dole</span></label>
+     <label class="chip"><input type="radio" name="typ" value="full"><span>🖥️ Přes celou obrazovku</span></label>
     </div>
    </div>
 
@@ -170,12 +171,41 @@ dialog::backdrop{background:rgba(40,20,5,.45)}
      <label class="chip"><input type="radio" name="spoustec" value="exit"><span>🚪 Když chce odejít</span></label>
      <label class="chip"><input type="radio" name="spoustec" value="pages"><span>📄 Od X. stránky návštěvy</span></label>
      <label class="chip"><input type="radio" name="spoustec" value="cart"><span>🛒 Košík nad X Kč/€</span></label>
+     <label class="chip"><input type="radio" name="spoustec" value="idle"><span>😴 Nic nedělá X sekund</span></label>
+     <label class="chip"><input type="radio" name="spoustec" value="click"><span>👆 Po kliknutí na odkaz na webu</span></label>
     </div>
     <div class="hint" id="trigHint"></div>
+   </div>
+   <div class="field" id="klikBox" hidden><label for="f_klik">Odkaz, který okno otevře</label>
+    <div class="code" id="klikAnchor" style="font-size:14px;padding:8px 12px">Nejdřív uložte – pak se tu ukáže odkaz.</div>
+    <div class="hint">V Shoptetu (text kategorie, banner, menu, článek) dejte odkazu nebo tlačítku tuto adresu. Okno se otevře při každém kliknutí. Funguje i v e-mailu: <code>https://www.nutworld.cz/…#nwpopup-ID</code> otevře okno hned po načtení.</div>
+    <input type="text" id="f_klik" placeholder="pro pokročilé: CSS selektor, např. .btn-firemni" style="margin-top:6px"/>
    </div>
    <div class="row2">
     <div class="field" id="hodnotaBox"><label for="f_hodnota">Hodnota X</label><input type="number" id="f_hodnota" min="0"/></div>
     <div class="field"><label for="f_komu">Komu</label><select id="f_komu"><option value="all">Všem</option><option value="new">Jen novým návštěvníkům</option><option value="returning">Jen vracejícím se</option><option value="ads">Jen lidem z reklamy (Google, Meta)</option><option value="anon">Jen nepřihlášeným</option></select></div>
+   </div>
+   <div class="field"><label>Odkud přišel (prázdné = odkudkoli)</label>
+    <div class="chips">
+     <label class="chip"><input type="checkbox" name="zdroj" value="facebook"><span>📘 Facebook / Instagram</span></label>
+     <label class="chip"><input type="checkbox" name="zdroj" value="google"><span>🔍 Google</span></label>
+     <label class="chip"><input type="checkbox" name="zdroj" value="seznam"><span>🔴 Seznam / Sklik</span></label>
+     <label class="chip"><input type="checkbox" name="zdroj" value="email"><span>✉️ E-mail / newsletter</span></label>
+     <label class="chip"><input type="checkbox" name="zdroj" value="srovnavace"><span>⚖️ Heureka / Zboží.cz</span></label>
+     <label class="chip"><input type="checkbox" name="zdroj" value="primo"><span>⌨️ Napsal adresu přímo</span></label>
+     <label class="chip"><input type="checkbox" name="zdroj" value="jine"><span>🌐 Jiný web</span></label>
+    </div>
+    <div class="hint">Pozná se podle odkazu, ze kterého člověk přišel (i UTM z reklam a newsletterů). Platí pro celou návštěvu.</div>
+   </div>
+   <div class="field"><label>Dny a hodiny (prázdné = kdykoli)</label>
+    <div class="chips" style="margin-bottom:8px">
+     <label class="chip"><input type="checkbox" name="dny" value="1"><span>Po</span></label><label class="chip"><input type="checkbox" name="dny" value="2"><span>Út</span></label>
+     <label class="chip"><input type="checkbox" name="dny" value="3"><span>St</span></label><label class="chip"><input type="checkbox" name="dny" value="4"><span>Čt</span></label>
+     <label class="chip"><input type="checkbox" name="dny" value="5"><span>Pá</span></label><label class="chip"><input type="checkbox" name="dny" value="6"><span>So</span></label>
+     <label class="chip"><input type="checkbox" name="dny" value="7"><span>Ne</span></label>
+    </div>
+    <div class="row2"><div class="field"><label for="f_cod">Od (čas)</label><input type="time" id="f_cod"/></div><div class="field"><label for="f_cdo">Do (čas)</label><input type="time" id="f_cdo"/></div></div>
+    <div class="hint">Např. jen o víkendu, nebo 18:00–23:00. Přes půlnoc taky jde (22:00–06:00). Čas podle zákazníkova zařízení.</div>
    </div>
 
    <div class="sec">4 · Jak často</div>
@@ -184,6 +214,7 @@ dialog::backdrop{background:rgba(40,20,5,.45)}
     <div class="field"><label for="f_zav">Po zavření křížkem</label><select id="f_zav"><option value="1">Neukázat 1 den</option><option value="7">Neukázat 7 dní</option><option value="30">Neukázat 30 dní</option><option value="9999">Už nikdy</option></select></div>
     <div class="field"><label for="f_akc">Po kliknutí / vyplnění</label><select id="f_akc"><option value="9999">Už nikdy</option><option value="30">Neukázat 30 dní</option><option value="7">Neukázat 7 dní</option><option value="1">Neukázat 1 den</option></select></div>
    </div>
+   <div class="row3"><div class="field"><label for="f_max">Nejvýš X zobrazení celkem</label><input type="number" id="f_max" min="0" max="100" placeholder="0 = bez limitu"/><div class="hint">Stejnému člověku za celou dobu kampaně. 0 = bez limitu.</div></div></div>
    <div class="hint" style="margin-top:-4px">Pojistka proti otravování: za jednu návštěvu se ukáže nejvýš jeden popup (kromě „na každé stránce“).</div>
 
    <div class="sec">5 · Vzhled</div>
@@ -314,10 +345,12 @@ dialog::backdrop{background:rgba(40,20,5,.45)}
 <script>
 const API = '/api/popupy';
 const $ = id => document.getElementById(id);
-const TYP = {modal: '🪟 Okno', slide: '↘️ Boční', bar: '➖ Lišta'};
-const TRIG = {now: () => 'hned', time: v => `po ${v} s`, scroll: v => `po ${v} % stránky`, exit: () => 'při odchodu', pages: v => `od ${v}. stránky`, cart: v => `košík nad ${v}`};
+const TYP = {modal: '🪟 Okno', slide: '↘️ Boční', bar: '➖ Lišta', full: '🖥️ Celá obrazovka'};
+const TRIG = {now: () => 'hned', time: v => `po ${v} s`, scroll: v => `po ${v} % stránky`, exit: () => 'při odchodu', pages: v => `od ${v}. stránky`, cart: v => `košík nad ${v}`, idle: v => `nečinnost ${v} s`, click: () => 'po kliknutí'};
 const TRIG_HINT = {now: 'Ukáže se cca 1 s po načtení stránky.', time: 'X = počet sekund.', scroll: 'X = kolik % stránky musí odscrollovat (např. 50).',
   exit: 'Na počítači při pohybu myši k zavření okna, na mobilu při rychlém scrollu nahoru (po 10 s).', pages: 'X = kolikátá stránka v rámci návštěvy (např. 3).',
+  idle: 'X = kolik sekund zákazník nic nedělá (nehýbe myší, nescrolluje, nepíše), např. 20.',
+  click: 'Okno se neukáže samo – otevře ho kliknutí na odkaz níže (třeba tlačítko „Firemní dárky“). Frekvence a pojistky se tu nepočítají, otevře se pokaždé.',
   cart: 'X = hodnota košíku v měně e-shopu (Kč na .cz, € na .sk). Počítá se z „zbývá do dopravy zdarma“.'};
 let S = {popupy: [], muze: false, admin: false, leadhub: [], embed: ''};
 let cur = null, L = 'cz', mob = false, uploadVal = '';
@@ -365,6 +398,7 @@ function blank() {
   return {id: '', nazev: 'Nový popup', stav: 'off', od: '', do: '', priorita: 2, typ: 'modal', shops: ['cz', 'sk'], stranky: ['vse'], zarizeni: ['desktop', 'mobile'],
     url_obsahuje: '', url_vyloucit: '', spoustec: 'time', hodnota: 5, komu: 'all', frekvence: 'navsteva', po_zavreni_dni: 7, po_akci_dni: 9999,
     barva: 'orechy', obrazek: 'ahoj', akce: 'info', url: '', url2: '', kod: '', odpocet: '', leadhub_list: '',
+    dny: [], cas_od: '', cas_do: '', zdroj: [], max_zobrazeni: 0, klik: '',
     texty: {cz: {lab: '', h: 'Nadpis popupu', t: '', zv: '', podpis: '', btn: 'Rozumím', sec: '', dik: ''}, sk: {lab: '', h: '', t: '', zv: '', podpis: '', btn: '', sec: '', dik: ''}}};
 }
 function openEd(id) {
@@ -388,6 +422,8 @@ function fill() {
   $('f_komu').value = cur.komu; $('f_frek').value = cur.frekvence; $('f_zav').value = cur.po_zavreni_dni; $('f_akc').value = cur.po_akci_dni;
   $('f_barva').value = cur.barva; $('f_akce').value = cur.akce; $('f_url').value = cur.url; $('f_url2').value = cur.url2; $('f_kod').value = cur.kod;
   $('f_odp').value = cur.odpocet;
+  setChecks('dny', (cur.dny || []).map(String)); $('f_cod').value = cur.cas_od || ''; $('f_cdo').value = cur.cas_do || '';
+  setChecks('zdroj', cur.zdroj || []); $('f_max').value = cur.max_zobrazeni || ''; $('f_klik').value = cur.klik || '';
   $('f_lh').innerHTML = '<option value="">— vyber —</option>' + S.leadhub.map(x => `<option value="${esc(x.code)}">${esc(x.nazev)}</option>`).join('') +
     (cur.leadhub_list && !S.leadhub.some(x => x.code === cur.leadhub_list) ? `<option value="${esc(cur.leadhub_list)}">${esc(cur.leadhub_list)}</option>` : '');
   $('f_lh').value = cur.leadhub_list;
@@ -411,7 +447,9 @@ function fillLang() {
 }
 function toggles() {
   const tr = getRadio('spoustec');
-  $('hodnotaBox').style.visibility = ['now', 'exit'].includes(tr) ? 'hidden' : 'visible';
+  $('hodnotaBox').style.visibility = ['now', 'exit', 'click'].includes(tr) ? 'hidden' : 'visible';
+  $('klikBox').hidden = tr !== 'click';
+  $('klikAnchor').textContent = cur.id ? '#nwpopup-' + cur.id : 'Nejdřív uložte – pak se tu ukáže odkaz.';
   $('trigHint').textContent = TRIG_HINT[tr] || '';
   const a = $('f_akce').value;
   $('lhBox').style.visibility = ['email', 'b2b'].includes(a) ? 'visible' : 'hidden';
@@ -423,6 +461,8 @@ function read() {
   cur.komu = $('f_komu').value; cur.frekvence = $('f_frek').value; cur.po_zavreni_dni = +$('f_zav').value; cur.po_akci_dni = +$('f_akc').value;
   cur.barva = $('f_barva').value; cur.obrazek = getRadio('obrazek') || ''; cur.akce = $('f_akce').value; cur.url = $('f_url').value.trim(); cur.url2 = $('f_url2').value.trim();
   cur.kod = $('f_kod').value.trim(); cur.odpocet = $('f_odp').value; cur.leadhub_list = $('f_lh').value;
+  cur.dny = getChecks('dny').map(Number); cur.cas_od = $('f_cod').value; cur.cas_do = $('f_cdo').value;
+  cur.zdroj = getChecks('zdroj'); cur.max_zobrazeni = +$('f_max').value || 0; cur.klik = $('f_klik').value.trim();
   const t = cur.texty[L];
   ['lab', 'h', 't', 'zv', 'podpis', 'btn', 'sec', 'dik'].forEach(k => t[k] = $('t_' + k).value);
 }
