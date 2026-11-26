@@ -473,6 +473,9 @@ async function loadZakazka(id) {
     : `<div style="font-size:13px;color:var(--muted)">${z.stitky.blok ? '⛔ Štítky neprošly kontrolou specifikace — viz komentář na kartě.'
        : z.stitky.prvni_beh ? 'Zakázka vznikla před spuštěním automatu — štítky se tvořily ručně (nebo napiš, ať je vytvořím).'
        : 'Štítky se vytvoří samy do 5 minut po zadání produktů.'}</div>`);
+  h += `<div class="sec">🌐 Pro zákazníka</div><div class="row" style="gap:6px">` +
+    `<a class="btn sm" href="${API}/zakaznik-nahled/${CARD.id}" target="_blank" rel="noopener">👀 Náhled stránky zákazníka</a>` +
+    `<button class="btn sm" onclick="zakaznikOdkaz()">🔗 Odkaz pro zákazníka</button></div><div id="zkodkaz" style="font-size:12.5px;color:var(--muted);margin-top:4px"></div>`;
   h += `<div class="sec">🧾 Faktura a platba</div><div style="font-size:13px;color:var(--muted)">Napojí se z K2 (faktury) a Fia (platby).</div>`;
   if (z.kalkulace) {
     const k = z.kalkulace, mz = k.trzby_znamo ? k.zisk / k.trzby_znamo * 100 : null;
@@ -487,6 +490,14 @@ async function loadZakazka(id) {
       (k.trzby_znamo < k.trzby ? `<div style="font-size:11.5px;color:var(--muted)">Zisk a marže jen ze spočitatelných položek (${czn(k.trzby_znamo, 0)} Kč tržeb).</div>` : '') + `</div>`;
   }
   box.innerHTML = h; CARD._zkHtml = h;
+}
+async function zakaznikOdkaz() {
+  try {
+    const j = await post('/card/' + CARD.id + '/zakaznik-odkaz', {});
+    $('zkodkaz').innerHTML = `<input class="inp" style="width:100%" readonly value="${esc(j.odkaz)}" onclick="this.select()">` +
+      (j.zapnuto ? 'Pošli zákazníkovi — uvidí stav zakázky, produkty a štítky ke schválení.'
+                 : '⏸ Odkaz zatím nefunguje — stránky pro zákazníky spustíme společně po Janově OK. Do té doby jen náhled.');
+  } catch (e) { toast(e.message); }
 }
 function patchLocal(field, val) {
   const s = CARDS.find(x => x.id === CARD.id);
