@@ -119,7 +119,8 @@ body{font-family:'Source Sans 3',Arial,sans-serif;background:#e8ddd4;color:#2a1a
 .comp-name{font-size:13px;color:#333}
 .comp-row.done .comp-name{text-decoration:line-through;color:#bbb}
 .comp-obal{font-size:11.5px;color:#83502e;margin-top:2px}.comp-obal b{color:#5c381f}
-.pack-obal{font-size:11px;color:#83502e;background:#fff8ec;border:1px dashed #f7ab31;border-radius:4px;padding:1px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:45%}
+.pack-obal{font-size:11px;color:#83502e;background:#fff8ec;border:1px dashed #f7ab31;border-radius:4px;padding:1px 6px;flex-basis:100%;order:9}
+.pack-hdr{flex-wrap:wrap}
 .comp-gram{font-size:12px;font-weight:700;color:#1a1a1a;margin-top:1px}
 .comp-kg{font-size:13px;font-weight:800;color:#1a1a1a;white-space:nowrap;min-width:60px;text-align:right}
 .comp-row.done .comp-kg{color:#ccc}
@@ -1291,7 +1292,7 @@ function obIsBox(key){ const s=NW_OBALY.sablony[key]; return !!s&&s.slozeni.some
 // what ONE product of the gift goes into: „Strojový sáček · do Vánoční krabička 2×50 g“
 function obInnerText(text,g){
   if(!text) return '';
-  if(/doypack/i.test(text)&&!obIsBox((obKey(text,g)||{}).key||'')) return 'Doypack'+(g?` do ${g} g`:'');
+  if(/doypack/i.test(text)&&!obIsBox((obKey(text,g)||{}).key||'')) return 'Doypack'+(g?` do ${g} g`:'')+(/logo|potisk/i.test(text)?' <b>s vlastním logem</b>':'');
   const o=obKey(text,g); if(!o) return /krabi|box/i.test(text)?'❓ krabice bez typu — obal podle zadání':'';
   const S=NW_OBALY.sablony[o.key]; if(!S) return '';
   const inner=[...new Set(S.slozeni.filter(r=>OB_INNER.test(r.k)||(!obIsBox(o.key)&&/^maslicka|^jutova|^vicko/.test(r.k))).map(r=>r.nazev))];
@@ -1318,7 +1319,7 @@ function obAdd(prod,map){
   const bk=obProductKey(prod);
   if(bk&&obIsBox(bk)){ const r=NW_OBALY.rozpis(bk,grams.reduce((a,b)=>a+b,0),grams); (r?r.radky:[]).forEach(x=>add(x.nazev,x.ks*prod.ks)); return; }
   prod.slozeni.forEach((c,i)=>{ const g=grams[i];
-    if(/doypack/i.test(c.obal||'')){ add('Doypack'+(g?' do '+g+' g':''),prod.ks); add('Etiketa (štítek)',prod.ks); return; }
+    if(/doypack/i.test(c.obal||'')){ add('Doypack'+(g?' do '+g+' g':'')+(/logo|potisk/i.test(c.obal)?' s vlastním logem':''),prod.ks); add('Etiketa (štítek)',prod.ks); return; }
     const o=obKey(c.obal,g); const r=o&&NW_OBALY.rozpis(o.key,g,[g]); (r?r.radky:[]).forEach(x=>add(x.nazev,x.ks*prod.ks)); });
 }
 
