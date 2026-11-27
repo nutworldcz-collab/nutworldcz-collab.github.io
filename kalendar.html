@@ -93,9 +93,10 @@ const ymd = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())
 const MES = ['leden','únor','březen','duben','květen','červen','červenec','srpen','září','říjen','listopad','prosinec'];
 const MES2 = ['ledna','února','března','dubna','května','června','července','srpna','září','října','listopadu','prosince'];
 const DNY = ['neděle','pondělí','úterý','středa','čtvrtek','pátek','sobota'];
-const BARVY = {schuzka: '#2c7fb8', zakaznik: '#da1668', vyroba: '#6fa044', expedice: '#a0622a', dovolena: '#8a6a4a', skoleni: '#7b4fa0', ostatni: '#5c381f'};
+const BARVY = {schuzka: '#2c7fb8', zakaznik: '#da1668', vyroba: '#6fa044', expedice: '#a0622a', dovolena: '#8a6a4a', lekar: '#2a9d8f', nepritomnost: '#9a8a7a', skoleni: '#7b4fa0', ostatni: '#5c381f'};
+const KAT_IC = {dovolena: '🌴', lekar: '🩺', nepritomnost: '🚫', skoleni: '🎓'};
 const PRIP = [[0, 'Bez připomínky'], [15, '15 minut předem'], [60, '1 hodinu předem'], [1440, '1 den předem']];
-let VIEW = innerWidth < 700 ? 'seznam' : 'mesic', CUR = new Date(), DATA = null, KAT = {}, LIDE = [], JA = '';
+let VIEW = innerWidth < 700 ? 'seznam' : 'mesic', CUR = new Date(), DATA = null, KAT = {}, KAT_SEL = {}, LIDE = [], JA = '', PLAN = null;
 const F = (() => { try { return Object.assign({udalosti: true, zakazky: true, karty: true, svatky: true, moje: false}, JSON.parse(localStorage.getItem('nw_kal_f') || '{}')); } catch (e) { return {udalosti: true, zakazky: true, karty: true, svatky: true, moje: false}; } })();
 const saveF = () => { try { localStorage.setItem('nw_kal_f', JSON.stringify(F)); } catch (e) {} };
 
@@ -131,7 +132,10 @@ async function load() {
   const [s, e] = range();
   try { DATA = await api(`/kalendar?od=${ymd(s)}&do=${ymd(e)}${F.moje ? '&moje=1' : ''}`); }
   catch (er) { if (er.message !== 'login') $('main').innerHTML = `<div class="empty">${esc(er.message)}</div>`; return; }
-  KAT = DATA.kategorie; LIDE = DATA.lide; JA = DATA.ja;
+  KAT = DATA.kategorie_vse || DATA.kategorie; KAT_SEL = DATA.kategorie; LIDE = DATA.lide; JA = DATA.ja;
+  // people plan (holidays, doctor, training) for the next 90 days — summary under the calendar
+  const t0 = new Date(), t1 = new Date(); t1.setDate(t1.getDate() + 90);
+  try { PLAN = await api(`/kalendar?od=${ymd(t0)}&do=${ymd(t1)}`); } catch (er) { PLAN = null; }
   render();
 }
 function items(day) {
@@ -161,7 +165,7 @@ function render() {
         ${its.slice(0, 3).map(itHtml).join('')}${its.length > 3 ? `<div class="more">+${its.length - 3} další</div>` : ''}
         <div class="dots">${its.slice(0, 8).map(x => `<i style="background:${x.u ? BARVY[x.u.kategorie] || '#5c381f' : x.k.zakazka ? 'var(--amber)' : 'var(--line)'}"></i>`).join('')}</div></div>`;
     }
-    $('main').innerHTML = `<div class="grid">${h}</div>`;
+    $('main').innerHTML = `<div class="grid">${h}</div>` + planHtml();
   } else {
     $('title').textContent = `Od ${CUR.getDate()}. ${MES2[CUR.getMonth()]}`;
     let h = '', any = false;
@@ -172,13 +176,32 @@ function render() {
       h += `<div class="ag-d ${day === today ? 'today' : ''}">${day === today ? 'Dnes · ' : ''}${DNY[d.getDay()]} ${d.getDate()}. ${MES2[d.getMonth()]}${ho ? ` <small style="color:var(--pink)">🇨🇿 ${esc(ho)}</small>` : ''}</div>` +
         its.map(x => x.u
           ? `<div class="ai" style="border-left-color:${BARVY[x.u.kategorie] || BARVY.ostatni}" onclick="showEvent('${x.u.id}')"><span class="t">${x.u.cely_den ? 'celý den' : esc(x.u.od.slice(11, 16))}</span>
-              <div style="min-width:0"><b>${esc(x.u.nazev)}</b>${x.u.viditelnost === 'ucastnici' ? ' 🔒' : ''}<br><small>${esc(KAT[x.u.kategorie] || '')}${x.u.misto ? ' · 📍 ' + esc(x.u.misto) : ''}${x.u.ucastnici.length ? ' · 👥 ' + esc(x.u.ucastnici.join(', ')) : ''}</small></div></div>`
+              <div style="min-width:0;flex:1"><b>${esc(x.u.nazev)}</b>${x.u.viditelnost === 'ucastnici' ? ' 🔒' : ''}<br><small>${esc(KAT[x.u.kategorie] || '')}${x.u.misto ? ' · 📍 ' + esc(x.u.misto) : ''}${x.u.ucastnici.length ? ' · 👥 ' + esc(x.u.ucastnici.join(', ')) : ''}</small></div>
+              ${x.u.lze_upravit ? `<button class="btn sm" title="Smazat" onclick="event.stopPropagation();askDelete('${x.u.id}')">🗑</button>` : ''}</div>`
           : `<div class="ai" style="border-left-color:${x.k.zakazka ? 'var(--amber)' : 'var(--line)'}" onclick="openCard('${x.k.board_id}','${x.k.id}')"><span class="t">${x.k.zakazka ? '📦' : '🗂'}</span>
               <div style="min-width:0"><b style="${x.k.hotovo ? 'text-decoration:line-through;opacity:.6' : ''}">${esc(x.k.nazev)}</b><br><small>${esc(x.k.nastenka)} › ${esc(x.k.sloupec)}${x.k.clenove.length ? ' · 👤 ' + esc(x.k.clenove.slice(0, 3).join(', ')) : ''}</small></div></div>`).join('');
     }
-    $('main').innerHTML = `<div class="agenda">${h || ''}${any ? '' : '<div class="empty">Na dalších 60 dní nic. Přidej událost tlačítkem „+ Událost“.</div>'}</div>`;
+    $('main').innerHTML = `<div class="agenda">${h || ''}${any ? '' : '<div class="empty">Na dalších 60 dní nic. Přidej událost tlačítkem „+ Událost“.</div>'}</div>` + planHtml();
   }
 }
+/* 👥 people plan: who is away / in training when — next 90 days, grouped by person (doctor = details only for Jan + the person) */
+function planHtml() {
+  const ev = ((PLAN && PLAN.udalosti) || []).filter(u => ['dovolena', 'lekar', 'nepritomnost', 'skoleni'].includes(u.kategorie));
+  const today = ymd(new Date()), by = {};
+  ev.forEach(u => (u.ucastnici.length ? u.ucastnici : [u.autor || '?']).forEach(p => (by[p] = by[p] || []).push(u)));
+  const dd = s => { const d = new Date(s.slice(0, 10) + 'T12:00'); return `${d.getDate()}. ${d.getMonth() + 1}.`; };
+  const span = u => { const a = u.od.slice(0, 10), b = (u.do || u.od).slice(0, 10); return a === b ? dd(a) + (u.cely_den ? '' : ' ' + u.od.slice(11, 16)) : `${dd(a)} – ${dd(b)}`; };
+  const away = Object.entries(by).filter(([, l]) => l.some(u => u.kategorie !== 'skoleni' && u.od.slice(0, 10) <= today && (u.do || u.od).slice(0, 10) >= today)).map(([p]) => p);
+  const lbl = u => u.kategorie === 'nepritomnost' ? 'Nepřítomnost' : u.nazev;
+  return `<div class="agenda" style="margin-top:22px"><div class="ag-d" style="color:var(--bd)">👥 Plán lidí · příštích 90 dní <small style="color:var(--muted);text-transform:none;letter-spacing:0">dovolené, lékař, školení</small></div>
+    <div class="ai" style="cursor:default;border-left-color:${away.length ? 'var(--pink)' : 'var(--leaf)'}"><span class="t">Dnes</span><div>${away.length ? '<b>Chybí:</b> ' + away.map(esc).join(', ') : '✓ Všichni v práci'}</div></div>`
+    + (Object.keys(by).length ? Object.entries(by).sort((a, b) => a[0].localeCompare(b[0], 'cs')).map(([p, l]) =>
+      `<div class="ai" style="cursor:default;border-left-color:var(--br)"><span class="t" style="min-width:120px;color:var(--bd)">${esc(p)}</span><div style="line-height:1.9">${l.sort((x, y) => x.od.localeCompare(y.od)).map(u =>
+        `<span onclick="showEvent('${u.id}')" style="cursor:pointer;display:inline-block;background:${BARVY[u.kategorie]}1f;border:1px solid ${BARVY[u.kategorie]};border-radius:12px;padding:0 9px;margin:0 4px 0 0;font-size:12.5px">${KAT_IC[u.kategorie] || ''} ${esc(lbl(u))} · ${span(u)}</span>`).join('')}</div></div>`).join('')
+      : '<div class="empty" style="padding:14px">Zatím nikdo nemá naplánovanou dovolenou, lékaře ani školení. Přidej přes „+ Událost“ → druh Dovolená / Lékař / Školení.</div>')
+    + '</div>';
+}
+function showEventAny(id) { return (DATA.udalosti.find(x => x.id === id) || (PLAN && PLAN.udalosti.find(x => x.id === id))); }
 function setView(v) { VIEW = v; if (v === 'seznam') CUR = new Date(); load(); }
 function shift(n) { if (VIEW === 'mesic') CUR = new Date(CUR.getFullYear(), CUR.getMonth() + n, 1); else CUR.setDate(CUR.getDate() + 30 * n); load(); }
 function goToday() { CUR = new Date(); load(); }
@@ -191,7 +214,7 @@ function dayClick(day) {
   if (!its.length) return editEvent(null, day);
   const d = new Date(day + 'T12:00');
   modal(`<h3>${DNY[d.getDay()]} ${d.getDate()}. ${MES2[d.getMonth()]}</h3>` + its.map(x => x.u
-      ? `<div class="ai" style="border-left-color:${BARVY[x.u.kategorie]}" onclick="showEvent('${x.u.id}')"><span class="t">${x.u.cely_den ? 'celý den' : esc(x.u.od.slice(11, 16))}</span><b>${esc(x.u.nazev)}</b></div>`
+      ? `<div class="ai" style="border-left-color:${BARVY[x.u.kategorie]}" onclick="showEvent('${x.u.id}')"><span class="t">${x.u.cely_den ? 'celý den' : esc(x.u.od.slice(11, 16))}</span><b style="flex:1">${esc(x.u.nazev)}</b>${x.u.lze_upravit ? `<button class="btn sm" title="Smazat" onclick="event.stopPropagation();askDelete('${x.u.id}')">🗑</button>` : ''}</div>`
       : `<div class="ai" onclick="openCard('${x.k.board_id}','${x.k.id}')"><span class="t">${x.k.zakazka ? '📦' : '🗂'}</span><div><b>${esc(x.k.nazev)}</b><br><small>${esc(x.k.nastenka)} › ${esc(x.k.sloupec)}</small></div></div>`).join('') +
     `<div class="row" style="justify-content:flex-end;margin-top:10px"><button class="btn pri" onclick="editEvent(null,'${day}')">+ Událost tento den</button></div>`);
 }
@@ -209,7 +232,7 @@ function fmtU(u) {
   return s;
 }
 function showEvent(id) {
-  const u = DATA.udalosti.find(x => x.id === id);
+  const u = showEventAny(id);
   if (!u) return toast('Událost nenalezena (možná je mimo zobrazené období)');
   history.replaceState(null, '', '#u=' + id);
   modal(`<h3><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:${BARVY[u.kategorie]};margin-right:6px"></span>${esc(u.nazev)}</h3>
@@ -221,7 +244,7 @@ function showEvent(id) {
     ${u.lze_upravit ? `<div class="row" style="justify-content:flex-end;margin-top:14px"><button class="btn" onclick="askDelete('${u.id}')">🗑 Smazat</button><button class="btn pri" onclick="editEvent('${u.id}')">Upravit</button></div>` : ''}`);
 }
 function askDelete(id) {
-  const u = DATA.udalosti.find(x => x.id === id);
+  const u = showEventAny(id);
   modal(`<h3>Smazat událost?</h3><p style="line-height:1.5">Opravdu smazat <b>${esc(u.nazev)}</b> (${esc(fmtU(u))})? Zmizí z kalendáře všem účastníkům.</p>
     <div class="row" style="justify-content:flex-end;margin-top:14px"><button class="btn" onclick="showEvent('${id}')">Zrušit</button>
     <button class="btn acc" onclick="doDelete('${id}')">Ano, smazat</button></div>`);
@@ -229,13 +252,14 @@ function askDelete(id) {
 async function doDelete(id) { try { await post(`/kalendar/${id}/smazat`, {}); closeModal(); toast('Smazáno'); load(); } catch (e) { toast(e.message); } }
 let FORM = null;
 function editEvent(id, day) {
-  const u = id ? DATA.udalosti.find(x => x.id === id) : null;
+  const u = id ? showEventAny(id) : null;
   const d0 = day || ymd(new Date());
   FORM = u ? {...u, ucastnici: [...u.ucastnici]} : {nazev: '', kategorie: 'schuzka', cely_den: false, od: d0 + 'T09:00', do: d0 + 'T10:00', misto: '', popis: '', ucastnici: [JA], viditelnost: 'vsichni', pripomenout: 60};
   const f = FORM, opt = (arr, v) => arr.map(([k, n]) => `<option value="${esc(k)}" ${String(k) === String(v) ? 'selected' : ''}>${esc(n)}</option>`).join('');
   modal(`<h3>${u ? 'Upravit událost' : 'Nová událost'}</h3>
     <label class="fl">Název</label><input class="inp" id="f-nazev" value="${esc(f.nazev)}" placeholder="např. Schůzka s Alzou, dovolená, inventura…">
-    <div class="row" style="gap:10px"><div style="flex:1;min-width:160px"><label class="fl">Druh</label><select class="inp" id="f-kat">${opt(Object.entries(KAT), f.kategorie)}</select></div>
+    <div class="row" style="gap:10px"><div style="flex:1;min-width:160px"><label class="fl">Druh</label><select class="inp" id="f-kat" onchange="$('f-lek').hidden=this.value!=='lekar'">${opt(Object.entries(KAT_SEL), f.kategorie)}</select>
+      <small id="f-lek" ${f.kategorie === 'lekar' ? '' : 'hidden'} style="color:var(--muted)">🩺 Detail uvidí jen účastníci a Jan — ostatní jen „Nepřítomnost“.</small></div>
       <label style="margin-top:22px;display:flex;gap:6px;align-items:center"><input type="checkbox" id="f-cd" ${f.cely_den ? 'checked' : ''} onchange="toggleCD()"> celý den</label></div>
     <div class="row" style="gap:10px"><div style="flex:1;min-width:150px"><label class="fl">Od</label><input class="inp" id="f-od" type="${f.cely_den ? 'date' : 'datetime-local'}" value="${esc(f.cely_den ? f.od.slice(0, 10) : (f.od.length > 10 ? f.od : f.od + 'T09:00'))}"></div>
       <div style="flex:1;min-width:150px"><label class="fl">Do</label><input class="inp" id="f-do" type="${f.cely_den ? 'date' : 'datetime-local'}" value="${esc(f.do ? (f.cely_den ? f.do.slice(0, 10) : (f.do.length > 10 ? f.do : f.do + 'T10:00')) : '')}"></div></div>
