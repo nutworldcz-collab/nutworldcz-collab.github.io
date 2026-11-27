@@ -37,27 +37,26 @@ const OV_CZK = [
   {id:'ov_zahradn', n:'Zahradn. centrum Brabec',       sub:'1 faktura · č. 13822',              amt:'6 750',       days:2,  pri:'n', plbl:'25.11', due:'25. 11.', oz:''},
   {id:'ov_kasper25',n:'Eliška Kasper',                 sub:'1 faktura · č. 13824',              amt:'4 886',       days:2,  pri:'n', plbl:'25.11', due:'25. 11.', oz:'Martin W.'},
   {id:'ov_cpr25',   n:'CPR HK s.r.o.',                sub:'1 faktura · č. 486',                amt:'14 870,73',   days:2,  pri:'n', plbl:'25.11', due:'25. 11.', oz:'Jana N.'},
-  {id:'ov_conseq',  n:'Conseq Investment Mgmt, a.s.', sub:'1 faktura · č. 487',                amt:'69 148,80',   days:2,  pri:'n', plbl:'25.11', due:'25. 11.', oz:'Martin W.'},
+  /* ov_conseq uhrazen 2026-11-27 (69,148.80 Kč, Δ0.00) — Fio ✅ */
   {id:'ov_alza25',  n:'Alza.cz a.s.',                 sub:'1 faktura · č. 143',                amt:'153 288,80',  days:2,  pri:'n', plbl:'25.11', due:'25. 11.', oz:'Tomáš H.'},
 
   /* === 26. 11. === */
   {id:'ov_vinotek', n:'Vinoteká u Pavlůši',            sub:'1 faktura · č. 13847',              amt:'13 402',      days:1,  pri:'n', plbl:'26.11', due:'26. 11.', oz:''},
   {id:'ov_muller',  n:'MÜLLER GROUP AG s.r.o.',        sub:'1 faktura · č. 13905',              amt:'7 385,30',    days:1,  pri:'n', plbl:'26.11', due:'26. 11.', oz:''},
-  {id:'ov_stavop',  n:'StavoPrim s.r.o.',              sub:'1 faktura · č. 13906',              amt:'8 791',       days:1,  pri:'n', plbl:'26.11', due:'26. 11.', oz:''},
+  /* ov_stavop uhrazen 2026-11-27 (8,791.00 Kč, Δ0.00) — Fio ✅ */
   {id:'ov_korabk',  n:'MUDr. Martina Korábková s.r.o.',sub:'1 faktura · č. 13911',              amt:'2 870,43',    days:1,  pri:'n', plbl:'26.11', due:'26. 11.', oz:''},
   {id:'ov_alza26',  n:'Alza.cz a.s.',                 sub:'2 faktury · č. 146, 147',           amt:'46 872',      days:1,  pri:'n', plbl:'26.11', due:'26. 11.', oz:'Tomáš H.'},
   {id:'ov_alcomet', n:'Alcometal s.r.o.',              sub:'1 faktura · č. 489',                amt:'86 195,20',   days:1,  pri:'n', plbl:'26.11', due:'26. 11.', oz:'Jan V.'},
-  {id:'ov_nakup',   n:'Nakup na Dobro s.r.o.',         sub:'1 faktura · č. 490',                amt:'44 940',      days:1,  pri:'n', plbl:'26.11', due:'26. 11.', oz:'Martin W.'},
+  /* ov_nakup uhrazen 2026-11-26 (44,940.00 Kč, Δ0.00) — Fio ✅ */
   {id:'ov_saar26',  n:'Saar Gummi Czech s.r.o.',       sub:'1 faktura · č. 491',                amt:'1 172,42',    days:1,  pri:'n', plbl:'26.11', due:'26. 11.', oz:'Jan V.'},
-  {id:'ov_imi',     n:'IMI Partner, a.s.',             sub:'3 faktury · č. 492, 496, 497',      amt:'26 444,32',   days:1,  pri:'n', plbl:'26.11', due:'26. 11.', oz:'Tomáš H.'},
-
+  /* ov_imi uhrazen 2026-11-26 (26,444.32 Kč, Δ0.00) — Fio ✅ */
   /* === 27. 11. — splatnost DNES === */
   {id:'ov_lerch27', n:'Tomáš Lerch',                   sub:'1 faktura · č. 13921',              amt:'9 605',       days:0,  pri:'n', plbl:'27.11', due:'27. 11.', oz:''},
-  {id:'ov_ekvita',  n:'EKVITA, spol. s r.o.',          sub:'1 faktura · č. 500',                amt:'19 241,26',   days:0,  pri:'n', plbl:'27.11', due:'27. 11.', oz:'Markéta C.'},
+  /* ov_ekvita uhrazen 2026-11-26 (19,241.26 Kč, Δ0.00) — Fio ✅ */
   {id:'ov_corpin',  n:'CORPIN, a.s.',                  sub:'1 faktura · č. 501',                amt:'41 132',      days:0,  pri:'n', plbl:'27.11', due:'27. 11.', oz:'Martin W.'},
-  {id:'ov_hit',     n:'HIT CZ s.r.o.',                 sub:'1 faktura · č. 504',                amt:'10 634,40',   days:0,  pri:'n', plbl:'27.11', due:'27. 11.', oz:''},
+  /* ov_hit uhrazen 2026-11-27 (10,634.40 Kč, Δ0.00) — Fio ✅ */
   {id:'ov_zsspice', n:'ZŠ Špice – Lány',               sub:'1 faktura · č. 505',                amt:'10 315,20',   days:0,  pri:'n', plbl:'27.11', due:'27. 11.', oz:''},
-  {id:'ov_alza27',  n:'Alza.cz a.s.',                  sub:'1 faktura · č. 148',                amt:'61 734,85',   days:0,  pri:'n', plbl:'27.11', due:'27. 11.', oz:'Tomáš H.'},
+  /* ov_alza27 uhrazen 2026-11-27 (61,734.85 Kč, Δ0.00) — Fio ✅ */
 ];
 
 const OV_EUR = [
