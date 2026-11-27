@@ -76,6 +76,8 @@ const G = [
       p: [['vyroba.html', 'Výrobní plán'], ['vyrobni-plan.html', 'Plán produktů'], ['objednavky.html', 'Rozklad objednávek'], ['normy.html', 'Normy']]},
     {i: '🔎', t: 'Co je v čem', m: 1, d: 'Obsah dárku, kde je produkt, kde je surovina',
       p: [['co-obsahuje.html', 'Co obsahuje'], ['darky-lookup.html', 'Kde je produkt'], ['suroviny.html', 'Kde je surovina']]},
+    {i: '📦', t: 'Expedice velkých odběratelů', m: 1, d: 'Co se kdy vyrobilo a odeslalo — Alza, Albi, Vilgain',
+      p: [['expedice/index.html', 'Přehled'], ['expedice/alza.html', 'Alza'], ['expedice/albi.html', 'Albi'], ['expedice/vilgain.html', 'Vilgain']]},
     {i: '🥣', t: 'Receptury směsí', p: [['receptury-smesi.html']], d: 'Poměry na 1 kg a 20 kg'},
     {i: '🎄', t: 'Adventní kalendář 2026', later: 1, p: [['adventni-kalendar.html']], d: 'Po sezóně do archivu'},
   ]],
@@ -93,6 +95,7 @@ const G = [
     {i: '✍️', t: 'Generátor produktů', p: [['generator.html']], d: 'Doplnit popis / upravit produkt'},
     {i: '🧼', t: 'Hygiena a HACCP', m: 1, d: 'HACCP plán, evidence teplot, alergeny na nástěnku',
       p: [['haccp.html', 'HACCP'], ['teploty-formular.html', 'Teploty'], ['alergeny-nastenska.html', 'Alergeny']]},
+    {i: '🚨', t: 'Krizové situace', p: [['soukrome/krizove-situace/index.html']], d: 'Postup při stažení výrobku (mandlové lupínky) — jen za přihlášením'},
     {i: '🆕', t: 'Nové produkty', later: 1, p: [['produkty.html']], d: 'Pohled do Trella — po 2. 1. nahradí Nástěnky'},
   ]],
   ['🚚', 'Doprava', [
@@ -119,6 +122,9 @@ const G = [
   ]],
   ['🐺', 'Jen Jan', [
     {i: '🐺', t: 'Wolf Leader Board', p: [['wolf.html']], d: 'Přehled, úkoly, upozornění'},
+    {i: '💳', t: 'Pohledávky B2B', m: 1, d: 'Kdo dluží, po splatnosti, B2C SK převody — jen za přihlášením',
+      p: [['soukrome/platby/index.html', 'Přehled'], ['soukrome/platby/po-splatnosti.html', 'Po splatnosti'], ['soukrome/platby/do-5-dni.html', 'Do 5 dní'],
+          ['soukrome/platby/delsi-splatnosti.html', 'Delší splatnosti'], ['soukrome/platby/b2c-sk.html', 'B2C SK']]},
   ]],
 ];
 const HIDDEN = [['cajovna-cenik.html', 'Čajovna — ceník'], ['cajovna-marze.html', 'Čajovna — marže'], ['hufa-cenik.html', 'HU-FA — ceník'], ['hufa-marze.html', 'HU-FA — marže'],
@@ -127,7 +133,7 @@ const HIDDEN = [['cajovna-cenik.html', 'Čajovna — ceník'], ['cajovna-marze.h
 const ARCH = [['ukoly.html', 'Moje úkoly', 'nahradily úkoly na Wolf boardu'], ['claude.html', 'Claude chat', 'nahradil asistent'],
   ['web-audit.html', 'Web audit', 'jednorázová zpráva'], ['k2.html', 'K2 porovnání květen/červen', 'jednorázové'], ['cenik.html', 'Porovnání CSV ceníků', 'už není třeba (Jan)'],
   ['michani-foto.html', 'Foto formuláře míchání', 'už není třeba (Jan)'], ['manazer.html', 'Profil manažera', 'Jan: ne'],
-  ['marketing-calendar.html', 'Marketingový kalendář Q4', 'kampaně → Kalendář'], ['index-puvodni.html', 'Původní rozcestník', 'starý']];
+  ['marketing-calendar.html', 'Marketingový kalendář Q4', 'kampaně → Kalendář'], ['index-puvodni.html', 'Původní rozcestník', 'starý'], ['rozcestnik-navrh.html', 'Návrh rozcestníku 25. 11.', 'nahrazen tímto']];
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
 let tiles = 0, pages = 0;
 document.getElementById('groups').innerHTML = G.map(([ic, n, ts]) => {
@@ -140,7 +146,7 @@ document.getElementById('groups').innerHTML = G.map(([ic, n, ts]) => {
 }).join('');
 document.getElementById('hidden').innerHTML = HIDDEN.map(([f, l]) => `<a href="/${f}">${esc(l)}</a>`).join('');
 document.getElementById('archive').innerHTML = ARCH.map(([f, l, w]) => `<a href="/${f}">${esc(l)}<small>${esc(w)}</small></a>`).join('');
-document.getElementById('sum').innerHTML = `<div><b>89 → ${tiles}</b>dlaždic v nástrojích</div><div><b>${G.length}</b>skupin (dnes 11)</div>
+document.getElementById('sum').innerHTML = `<div><b>99 → ${tiles}</b>dlaždic v nástrojích</div><div><b>${G.length}</b>skupin (dnes 11)</div>
   <div><b>${HIDDEN.length}</b>skrytých, fungují dál</div><div><b>${ARCH.length}</b>v archivu</div><div><b>0</b>smazaných</div>`;
 </script>
 </body>
