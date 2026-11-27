@@ -244,14 +244,14 @@ function renderHome() {
 function renderHomeList() {
   const f = favs(), q = HQ.trim().toLowerCase();
   const nrm = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
-  const hit = b => !q || nrm(b.nazev + ' ' + (b.trello_clenove || []).join(' ')).includes(nrm(q));
+  const hit = b => !q || nrm(b.nazev + ' ' + (b.clenove || []).join(' ')).includes(nrm(q));
   const list = BOARDS.filter(hit);
   const groupSel = b => ME.admin ? `<select class="gsel" onclick="event.stopPropagation()" onchange="setGroup('${b.id}', this.value, event)" title="Skupina">
       ${SKUPINY.map(([k, n]) => `<option value="${k}" ${k === b.skupina ? 'selected' : ''}>${esc(n)}</option>`).join('')}</select>` : '';
   const tile = b => `<div class="tile" role="button" tabindex="0" onclick="go('b=${b.id}')" onkeydown="if(event.key==='Enter')go('b=${b.id}')">
     <span class="row" style="align-items:flex-start;flex-wrap:nowrap"><span class="tn" style="flex:1">${esc(b.nazev)}</span>
       <span class="star ${f.includes(b.id) ? 'on' : ''}" onclick="toggleFav('${b.id}', event)" title="Oblíbená">★</span></span>
-    ${(b.trello_clenove || []).length ? `<span class="who">👥 ${esc(b.trello_clenove.slice(0, 4).join(', '))}${b.trello_clenove.length > 4 ? ` +${b.trello_clenove.length - 4}` : ''}</span>` : ''}
+    ${(b.clenove || []).length ? `<span class="who">👥 ${esc(b.clenove.slice(0, 4).join(', '))}${b.clenove.length > 4 ? ` +${b.clenove.length - 4}` : ''}</span>` : '<span class="who">👥 jen Jan</span>'}
     <span class="tm"><span class="badge ${b.uzavrena ? 'cl' : b.mode === 'vlastni' ? 'own' : 'tr'}">${b.uzavrena ? 'uzavřená' : b.mode === 'vlastni' ? 'náš systém' : 'kopie z Trella'}</span>
     ${b.karet} karet${b.posledni ? ' · ' + fmtDate(b.posledni) : ''} ${groupSel(b)}</span></div>`;
   const tiles = arr => `<div class="tiles">${arr.map(tile).join('')}</div>`;
@@ -329,6 +329,7 @@ function renderBoard() {
     </select>
     <button class="btn ghost sm" onclick="SHOW_ARCH=!SHOW_ARCH;openBoard(B.id)">${SHOW_ARCH ? 'Skrýt archiv' : 'Archiv'}</button>
     ${B.shortlink === ZAKAZKY_BOARD ? `<a class="btn acc sm" href="/zakazka.html" title="Zakázka se zakládá ve formuláři — vznikne karta se vším (štítky, výroba, odkaz pro zákazníka)">➕ Nová zakázka</a>` : ''}
+    ${ME.admin ? `<button class="btn ghost sm" onclick="openMembers()" title="Kdo má k nástěnce přístup">👥 ${(B.clenove || []).length}</button>` : ''}
     ${ME.admin ? `<button class="btn ghost sm" onclick="openStats()" title="Jak dlouho karty čekají, kde se zasekávají (vidí jen Jan)">📊</button>` : ''}
     ${(ME.admin || ME.plny) ? `<button class="btn ghost sm" onclick="openAuto()" title="Co se stane samo, když karta přijde do sloupce; šablony karet">⚙ Pravidla a šablony${(B.pravidla || []).length ? ' (' + B.pravidla.length + ')' : ''}</button>` : ''}
     <span class="live" id="live" title="Nástěnka se sama obnovuje, když se něco změní"></span>`;
@@ -750,6 +751,25 @@ async function saveAuto() {
   const j = await post(`/board/${B.id}/automatizace`, AUTO);
   B.pravidla = j.pravidla; B.sablony = j.sablony; renderBoard(); toast('Uloženo');
 }
+
+/* ---------------- 👥 who may see the board (Jan only; Jan himself always sees everything) */
+let MEMB = [];
+function openMembers() {
+  MEMB = [...(B.clenove || [])];
+  const nesp = (B.trello_clenove || []).filter(n => !MEMB.some(m => n.toLowerCase().includes(m.split(' ')[0].toLowerCase())));
+  dialog(`<h3>👥 Kdo vidí „${esc(B.nazev)}“</h3>
+    <p style="font-size:13px;color:var(--muted)">Nástěnku uvidí a (po přechodu) upravují <b>jen označení lidé</b>. Ty vidíš vždy všechno.
+      Změna platí hned, i když je nástěnka zatím kopií z Trella — obnova z Trella ji už nepřepíše.</p>
+    <div id="mbox">${ME.lide.map(p => `<span class="chip ${MEMB.includes(p) ? '' : 'off'}" data-p="${esc(p)}" onclick="toggleMemb(this)"><span class="av" style="width:18px;height:18px;font-size:9px">${esc(initials(p))}</span>${esc(p)}</span>`).join('')}</div>
+    ${nesp.length ? `<p style="font-size:12px;color:var(--muted);margin-top:8px">V Trellu jsou na nástěnce ještě: ${esc(nesp.join(', '))} — nemají u nás účet (nebo není spárovaný), proto tu nejsou.</p>` : ''}`,
+    'Uložit', async () => {
+      await post(`/board/${B.id}/nastaveni`, {clenove: MEMB});
+      B.clenove = [...MEMB]; const bb = BOARDS.find(x => x.id === B.id); if (bb) bb.clenove = [...MEMB];
+      renderBoard(); toast(`Přístup má ${MEMB.length} ${MEMB.length === 1 ? 'člověk' : MEMB.length < 5 ? 'lidé' : 'lidí'} + ty`);
+    });
+  $('dlg').querySelector('.md').style.width = '620px';
+}
+function toggleMemb(el) { const p = el.dataset.p, i = MEMB.indexOf(p); i < 0 ? MEMB.push(p) : MEMB.splice(i, 1); el.classList.toggle('off'); }
 
 /* ---------------- 📊 board statistics (Jan only) */
 async function openStats(dni) {
