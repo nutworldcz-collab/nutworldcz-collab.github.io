@@ -1011,7 +1011,11 @@ async function drawPich() {
   if (!ON_SERVER) { box.innerHTML = `<div class="card"><div class="s">Píchačka funguje na nastroje.nutworld.cz.</div></div>`; return; }
   let j; try { j = PICH = await pApi(); } catch (e) { box.innerHTML = `<div class="card"><div class="h">⏱ Píchačka</div><div class="s">${esc(e.message)}</div></div>` + (ME.role === 'admin' ? '<div id="p-adm"></div>' : ''); if (ME.role === 'admin') pichAdmin(); return; }
   const d = j.dny[j.dnes] || {}, inWork = d.from && !d.to, pz = d.pauzy || [], open = pz.length && !pz[pz.length - 1].do ? pz[pz.length - 1] : null;
-  const sm = j.smeny[d.smena || 'volna'] || {pauza: 30}, used = pauseM(d) + (open ? mins(open.od, j.ted) : 0);
+  const tiers = j.pauzy_narok || [[4, 15], [8, 30], [12, 60]];
+  const presence = d.from ? (d.to ? (d.to < d.from ? mins(d.from, '24:00') + mins('00:00', d.to) : mins(d.from, d.to)) : (j.ted < d.from ? mins(d.from, '24:00') + mins('00:00', j.ted) : mins(d.from, j.ted))) : 0;
+  const narok = h => tiers.reduce((a, [od, p]) => h >= od ? p : a, 0);
+  const sm = {pauza: narok(presence / 60)}, used = pauseM(d) + (open ? mins(open.od, j.ted) : 0);
+  const pravidla = 'do 4 h bez pauzy · od 4 h 15 min · od 8 h 30 min · od 12 h 60 min';
   const month = j.dnes.slice(0, 7), days = Object.entries(j.dny).filter(([k]) => k.startsWith(month)).sort((a, b) => b[0].localeCompare(a[0]));
   const total = days.reduce((a, [, r]) => a + workM(r), 0);
   const badge = r => { const o = r.overeni || {}, b = x => !x ? '' : x.ok ? '📍' : '⚠️'; return b(o.prichod) + b(o.odchod) + (r.rucne ? '✍️' : ''); };
@@ -1019,13 +1023,13 @@ async function drawPich() {
     <div class="card" style="text-align:center;padding:18px 14px">
       <div class="s">${open ? (open.typ === 'koureni' ? '🚬 Kouříš od' : '☕ Pauza od') : inWork ? 'Jsi v práci od' : d.from && d.to ? 'Dnes odpracováno' : 'Dnes ještě nepíchnuto'}</div>
       <div style="font:800 34px 'Exo 2',Arial;color:var(--tm);margin:4px 0">${open ? esc(open.od) : inWork ? esc(d.from) : d.from && d.to ? hm(workM(d)) : '—'}</div>
-      ${d.from ? `<div class="s">${esc(d.from)} – ${esc(d.to || '…')} ${badge(d)} · ${esc((j.smeny[d.smena] || {}).nazev || '')}${pz.length ? ` · pauzy ${used} / ${sm.pauza} min` : ''}</div>` : ''}
-      ${!d.from ? `<div class="s" style="margin-top:8px">${esc((j.smeny[j.ja.smena] || j.smeny.volna).nazev)} · pauza ${(j.smeny[j.ja.smena] || j.smeny.volna).pauza} min</div>
+      ${d.from ? `<div class="s">${esc(d.from)} – ${esc(d.to || '…')} ${badge(d)} · v práci ${hm(presence)} h · pauzy ${used} / ${sm.pauza} min</div>` : ''}
+      ${!d.from ? `<div class="s" style="margin-top:8px">Pauzy: ${pravidla}</div>
         <button class="big b-h" id="p-in" style="font-size:19px;padding:18px">✅ Přišel(a) jsem — načíst QR</button>` : ''}
       ${inWork && !open ? `<div style="display:flex;gap:8px"><button class="big b-l" id="p-ko" style="flex:1">🚬 Kouření</button><button class="big b-l" id="p-ji" style="flex:1">☕ Pauza na jídlo</button></div>
         <button class="big b-z" id="p-out" style="font-size:19px;padding:18px">👋 Odcházím — načíst QR</button>` : ''}
       ${open ? `<button class="big b-h" id="p-back" style="font-size:19px;padding:18px">↩️ Zpět z pauzy</button>` : ''}
-      ${inWork && used > sm.pauza ? `<div class="err" style="margin-top:6px">Pauzy ${used} min — víc než ${sm.pauza} min na směnu.</div>` : ''}
+      ${inWork && used > sm.pauza ? `<div class="err" style="margin-top:6px">Pauzy ${used} min — teď máš nárok na ${sm.pauza} min (${pravidla}).</div>` : ''}
       <div id="p-m" class="s" style="margin-top:6px"></div></div>
     <h2 class="sek">Moje hodiny · ${['leden','únor','březen','duben','květen','červen','červenec','srpen','září','říjen','listopad','prosinec'][+month.slice(5) - 1]}</h2>
     <div class="card"><div style="display:flex;justify-content:space-between"><b>Celkem ${hm(total)} h</b><span class="s">${days.length} dní · bez pauz</span></div>

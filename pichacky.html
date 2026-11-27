@@ -1031,14 +1031,10 @@ input[type="text"]:focus { border-color: var(--brown); }
 <div class="add-overlay" id="rate-overlay" hidden>
   <div class="add-card">
     <div class="modal-title" style="margin-bottom:4px" id="rate-person-name"></div>
-    <div class="modal-sub" style="margin-bottom:20px">Sazba a směna</div>
+    <div class="modal-sub" style="margin-bottom:20px">Hodinová sazba</div>
     <div class="f-label" style="margin-bottom:6px">Kč / hodina</div>
     <input type="text" id="rate-input" placeholder="např. 250" inputmode="numeric">
-    <div class="f-label" style="margin:14px 0 6px">Směna (píchá se v aplikaci)</div>
-    <select id="rate-smena" style="width:100%;padding:10px;border-radius:10px;border:1.5px solid #d4c0a8;font-size:15px">
-      <option value="volna">Brigáda — od–do podle domluvy (pauza 30 min)</option>
-      <option value="8h">8 h směna 6:00–14:30 (pauza 30 min)</option>
-      <option value="12h">12 h směna 6:00–18:00 (pauza 60 min)</option></select>
+
     <div class="modal-actions">
       <button class="btn-sec" onclick="closeRate()">Zrušit</button>
       <button class="btn-prim" onclick="saveRate()">Uložit</button>
@@ -1055,6 +1051,9 @@ input[type="text"]:focus { border-color: var(--brown); }
     <input type="text" id="doc-name" placeholder="Název, např. BOZP, Hygiena balírna, Pravidla firmy, GDPR" style="margin-bottom:8px">
     <input type="file" id="doc-file" accept=".pdf,.docx,.jpg,.jpeg,.png,.html,application/pdf">
     <div class="modal-actions" style="margin-top:10px"><button class="btn-prim" onclick="uploadDoc()">⬆ Nahrát</button></div>
+    <div class="f-label" style="margin-top:12px">…nebo stránka z nástrojů</div>
+    <input type="text" id="doc-page" placeholder="např. skoleni-dpp.html nebo celá adresa stránky">
+    <div class="modal-actions" style="margin-top:8px"><button class="btn-sec" onclick="addPageDoc()">➕ Přidat stránku</button></div>
     <div id="docs-body" style="margin-top:14px">Načítám…</div>
     <div class="modal-actions"><button class="btn-sec" onclick="document.getElementById('docs-overlay').hidden=true">Zavřít</button></div>
   </div>
@@ -1312,12 +1311,15 @@ function fmtDate(y,m,d) {
 // breaks clocked in the app (rec.pauzy) are not working time (Jan 2026-11-27)
 function pauseMins(rec) { return (rec && rec.pauzy || []).reduce((a, p) => a + (p.od && p.do ? (calcMins(p.od, p.do) || 0) : 0), 0); }
 function recMins(rec) { const m = calcMins(rec.from, rec.to); return m === null ? null : Math.max(0, m - pauseMins(rec)); }
+// break allowance by hours at work (Jan 2026-11-27): under 4 h none, from 4 h 15, from 8 h 30, from 12 h 60 min
+function pauseAllowance(rec) { const p = calcMins(rec.from, rec.to) || 0; return p >= 720 ? 60 : p >= 480 ? 30 : p >= 240 ? 15 : 0; }
 function verifyBadge(rec) {           // 📍 = QR + position at the site, ⚠️ = without QR / outside the zone, ✍️ = written by hand
   const o = rec.overeni || {}, b = x => !x ? '' : x.ok ? '📍' : '⚠️';
   const t = [o.prichod && `příchod: ${o.prichod.qr ? 'QR ✓' : 'bez QR'}${o.prichod.m != null ? ', ' + o.prichod.m + ' m' : ', poloha ?'}`,
              o.odchod && `odchod: ${o.odchod.qr ? 'QR ✓' : 'bez QR'}${o.odchod.m != null ? ', ' + o.odchod.m + ' m' : ', poloha ?'}`,
              rec.rucne && `ručně upraveno ${rec.rucne.replace('T', ' ')}`, pauseMins(rec) && `pauzy ${pauseMins(rec)} min (${(rec.pauzy || []).length}×)`].filter(Boolean).join(' · ');
-  const s = b(o.prichod) + b(o.odchod) + (rec.rucne ? '✍️' : '') + (pauseMins(rec) ? ` <small>−${pauseMins(rec)}′</small>` : '');
+  const over = pauseMins(rec) > pauseAllowance(rec);
+  const s = b(o.prichod) + b(o.odchod) + (rec.rucne ? '✍️' : '') + (pauseMins(rec) ? ` <small style="${over ? 'color:#c0392b;font-weight:700' : ''}">−${pauseMins(rec)}′${over ? ' (nárok ' + pauseAllowance(rec) + ')' : ''}</small>` : '');
   return s ? `<span title="${t}" style="font-size:12px;margin-left:4px">${s}</span>` : '';
 }
 function calcMins(from, to) {
@@ -1490,6 +1492,12 @@ async function uploadDoc() {
   try { await docApi('dokumenty', {nazev: n, nazev_souboru: f.name, mime: f.type || (f.name.endsWith('.docx') ? 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' : ''), data});
     document.getElementById('doc-name').value = ''; document.getElementById('doc-file').value = ''; openDocs(); } catch (e) { alert(e.message); }
 }
+async function addPageDoc() {
+  const v = document.getElementById('doc-page').value.trim(), n = document.getElementById('doc-name').value.trim();
+  const st = v.replace(/^https?:\/\/[^/]+\//, '').replace(/^\//, '');
+  if (!st || !n) return alert('Vyplň nahoře název a sem stránku.');
+  try { await docApi('dokumenty', {nazev: n, stranka: st}); document.getElementById('doc-page').value = ''; document.getElementById('doc-name').value = ''; openDocs(); } catch (e) { alert(e.message); }
+}
 async function delDoc(id, n) {
   if (!confirm(`Skrýt dokument „${n}“ pracovníkům? Potvrzení, která už dali, zůstanou jako doklad.`)) return;
   try { await docApi(`dokumenty/${id}/smazat`, {}); openDocs(); } catch (e) { alert(e.message); }
@@ -1500,7 +1508,6 @@ function openRate() {
   const person = db.people.find(p=>p.id===cur.person);
   document.getElementById('rate-person-name').textContent = person?.name || '';
   document.getElementById('rate-input').value = person?.rate || '';
-  document.getElementById('rate-smena').value = person?.smena || 'volna';
   document.getElementById('rate-overlay').hidden = false;
   setTimeout(() => document.getElementById('rate-input').focus(), 100);
 }
@@ -1509,7 +1516,7 @@ function saveRate() {
   const val = parseInt(document.getElementById('rate-input').value, 10);
   if (isNaN(val) || val < 0) { alert('Zadej platné číslo (Kč/h).'); return; }
   const person = db.people.find(p=>p.id===cur.person);
-  if (person) { person.rate = val; person.smena = document.getElementById('rate-smena').value; }
+  if (person) person.rate = val;
   save();
   closeRate();
   renderTotals();
