@@ -134,7 +134,9 @@ h2.sek{font-family:"Exo 2",Arial,sans-serif;font-size:13px;letter-spacing:1.5px;
 .msg.me .bub{background:var(--hn);color:#fff;border-color:var(--hn);border-bottom-right-radius:4px}
 .msg:not(.me) .bub{border-bottom-left-radius:4px}
 .msg.bot .bub{background:#fff8ec;border-color:var(--zl);color:#2a1a0e}
-.bub .mn{font-weight:700;color:var(--hn)}.msg.me .bub .mn{color:#ffe2a8}
+.bub .mn{font-weight:700;color:var(--hn)}
+.msg.bot .bub{white-space:normal}.mdt{border-collapse:collapse;font-size:13px;margin:6px 0;display:block;overflow-x:auto;max-width:100%}
+.mdt th,.mdt td{border-bottom:1px solid #ecd9b8;padding:3px 6px;text-align:left;white-space:nowrap}.mdt th{font-size:11px;color:#8a5a00}.msg.me .bub .mn{color:#ffe2a8}
 .bub img{max-width:100%;max-height:340px;border-radius:10px;display:block;margin:2px 0}
 .bub audio{max-width:240px;display:block}
 .bub .ct{border-left:3px solid var(--zl);padding:2px 8px;margin-bottom:4px;font-size:13px;opacity:.85}
@@ -145,6 +147,7 @@ h2.sek{font-family:"Exo 2",Arial,sans-serif;font-size:13px;letter-spacing:1.5px;
 .day-sep{text-align:center;color:var(--mu);font-size:12px;margin:14px 0 6px;font-weight:700}
 .tk-mention{display:flex;gap:6px;flex-wrap:wrap;padding:6px 10px;background:var(--ca);border-top:1px solid var(--li)}
 .tk-mention button,.tk-reply button{border:0;background:var(--kr);color:var(--tm);border-radius:14px;padding:5px 11px;font-weight:700;cursor:pointer;font-size:14px}
+.tk-mention[hidden],.tk-reply[hidden]{display:none}
 .tk-reply{padding:6px 10px;background:var(--ca);border-top:1px solid var(--li);font-size:13px;color:var(--mu);display:flex;gap:8px;align-items:center}
 .sheet{position:fixed;inset:0;background:rgba(30,15,5,.45);z-index:70;display:flex;align-items:flex-end;justify-content:center}
 .sheet .in{background:var(--ca);width:100%;max-width:520px;border-radius:20px 20px 0 0;padding:14px 14px calc(14px + var(--sb))}
@@ -186,7 +189,7 @@ select.find{appearance:auto}
   <section class="view tk" id="v-tymk"><div id="tk-list" class="tk-list"></div><div id="tk-mention" class="tk-mention" hidden></div>
     <div id="tk-reply" class="tk-reply" hidden></div>
     <form id="tk-form" class="tk-form"><label class="tk-ib" title="Fotka">📷<input type="file" id="tk-foto" accept="image/*" hidden></label>
-      <textarea id="tk-text" rows="1" placeholder="Napiš zprávu…  (@jméno, @nutworldka)" enterkeyhint="send"></textarea>
+      <textarea id="tk-text" rows="1" placeholder="Zpráva… (@jméno)" enterkeyhint="send"></textarea>
       <button type="button" class="tk-ib" id="tk-mic" title="Ťukni = diktovat · podrž = hlasová zpráva">🎤</button>
       <button class="tk-send" id="tk-send" aria-label="Odeslat">➤</button></form></section>
 </div>
@@ -735,6 +738,20 @@ function fmtText(s) {
   return esc(s).replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener" style="color:inherit">$1</a>')
     .replace(/@([\wÀ-ž]+(?: [A-ZÀ-Ž][\wÀ-ž]+)?)/g, '<span class="mn">@$1</span>');
 }
+// NutWorldka answers in light markdown: **bold**, tables, bullet lists
+function md(s) {
+  const inl = x => esc(x).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+  const out = [], L = String(s || '').split('\n');
+  for (let i = 0; i < L.length; i++) {
+    if (/^\s*\|/.test(L[i])) {
+      const rows = []; while (i < L.length && /^\s*\|/.test(L[i])) { if (!/^\s*\|[\s:|-]+\|\s*$/.test(L[i])) rows.push(L[i].trim().replace(/^\||\|$/g, '').split('|').map(c => c.trim())); i++; } i--;
+      out.push(`<table class="mdt">${rows.map((r, ri) => `<tr>${r.map(c => ri ? `<td>${inl(c)}</td>` : `<th>${inl(c)}</th>`).join('')}</tr>`).join('')}</table>`);
+    } else if (/^\s*[-*•]\s+/.test(L[i])) out.push('• ' + inl(L[i].replace(/^\s*[-*•]\s+/, '')) + '<br>');
+    else if (/^#{1,4}\s/.test(L[i])) out.push('<b>' + inl(L[i].replace(/^#+\s/, '')) + '</b><br>');
+    else out.push(inl(L[i]) + '<br>');
+  }
+  return out.join('').replace(/(<br>)+$/, '');
+}
 function drawMsgs(scroll) {
   const l = $('#tk-list'); let h = '', lastDay = '', lastWho = '', lastT = '';
   const me = TYM ? TYM.ja : ME.jmeno;
@@ -750,7 +767,7 @@ function drawMsgs(scroll) {
       if (m.citace) inner += `<div class="ct"><b>${esc(m.citace.kdo)}</b>: ${esc(m.citace.text)}</div>`;
       if (m.soubor && m.soubor.typ === 'foto') inner += `<img src="${esc(m.soubor.url)}" alt="fotka" loading="lazy" onclick="event.stopPropagation();window.open(this.src)">`;
       if (m.soubor && m.soubor.typ === 'audio') inner += `<audio controls preload="none" src="${esc(m.soubor.url)}" onclick="event.stopPropagation()"></audio>`;
-      if (m.text) inner += fmtText(m.text);
+      if (m.text) inner += bot ? md(m.text) : fmtText(m.text);
       if (m.akce && m.akce.length) inner += `<div class="akce">${m.akce.map(a => `<button onclick="event.stopPropagation();openPage('${esc(String(a.url).replace(/'/g, ''))}')">${a.ikona || ''} ${esc(a.nazev)}</button>`).join('')}</div>`;
     }
     const rx = Object.entries(m.reakce || {}).map(([e, w]) => `<span class="rx ${w.includes(me) ? 'mine' : ''}" title="${esc(w.join(', '))}" onclick="tkReact(${m.id},'${e}')">${e} ${w.length}</span>`).join('');
