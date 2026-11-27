@@ -90,8 +90,40 @@ td.td-del { width: 32px; }
 .ac-nazev { font-size: 13px; font-weight: 600; color: #1a0f06; }
 .ac-druh  { font-size: 11px; color: #a07850; }
 
+/* Photo intake */
+.foto-blok { background: #fffaf2; }
+.foto-help { font-size: 13.5px; color: #6b4a30; margin-bottom: 12px; }
+.foto-akce { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.btn-foto { display: inline-flex; align-items: center; gap: 8px; background: var(--amber); color: var(--brown-dark); border-radius: 10px; padding: 14px 22px; font-size: 16px; font-weight: 800; font-family: 'Exo 2', sans-serif; cursor: pointer; }
+.btn-foto input { display: none; }
+#btn-precti { margin-left: 0; padding: 14px 22px; font-size: 15px; }
+#foto-nahledy { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0 4px; }
+#foto-nahledy .nahled { position: relative; width: 84px; height: 110px; border-radius: 8px; overflow: hidden; border: 2px solid var(--border); background: #eee; }
+#foto-nahledy .nahled img { width: 100%; height: 100%; object-fit: cover; }
+#foto-nahledy .nahled span { position: absolute; inset: auto 0 0 0; background: rgba(0,0,0,.55); color: #fff; font-size: 11px; text-align: center; padding: 2px; }
+#foto-nahledy .nahled button { position: absolute; top: 2px; right: 2px; border: none; border-radius: 50%; width: 22px; height: 22px; background: rgba(0,0,0,.6); color: #fff; cursor: pointer; }
+.navrh-hlava { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; margin: 16px 0 10px; }
+@media (max-width: 640px) { .navrh-hlava { grid-template-columns: 1fr; } }
+.upozorneni { background: #fff3cd; border: 1.5px solid var(--amber); border-radius: 8px; padding: 8px 12px; margin: 8px 0; font-size: 13.5px; color: #6b4a00; }
+.upozorneni.cteni { background: #f1e6da; border-color: var(--border); color: #5c381f; }
+#navrh table td { vertical-align: top; }
+#navrh .nazev-dod { font-weight: 700; font-size: 13px; }
+#navrh .nw-nazev { font-size: 11.5px; color: #a07850; margin-top: 2px; }
+#navrh .nw-nazev.chybi { color: var(--nok); font-weight: 700; }
+#navrh tbody td input, #navrh tbody td select { border-color: var(--border); background: #fdfaf7; }
+#navrh .nejiste { background: #fff3cd !important; border-color: var(--amber) !important; }
+#navrh .chybi-pole { background: #fdf0f0 !important; border-color: #c0392b !important; }
+#navrh .zdroj { font-size: 10.5px; color: #a07850; }
+#navrh .cena { font-size: 12px; white-space: nowrap; }
+#navrh .cena.pozor { color: var(--nok); font-weight: 800; }
+#navrh .bez-dmt { font-size: 11px; color: #a07850; display: flex; gap: 4px; align-items: center; margin-top: 3px; }
+#navrh .bez-dmt input { width: auto; }
+.potvrzeni { display: flex; gap: 10px; align-items: flex-start; background: #edf7f0; border: 1.5px solid #4a7c2f; border-radius: 8px; padding: 12px 14px; margin: 14px 0; font-weight: 700; color: #2d5a1b; font-size: 14px; }
+.potvrzeni input { width: 22px; height: 22px; flex-shrink: 0; }
+
 /* ── PRINT ── */
 @media print {
+  .foto-blok { display: none !important; }
   body { background: #fff; padding: 0; }
   .page { max-width: 100%; }
   .hdr { background: #fff !important; border: 2px solid #222; border-radius: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -127,9 +159,28 @@ td.td-del { width: 32px; }
     </div>
   </div>
 
+  <!-- Příjem fotkou (server nw_prijem.py) -->
+  <div class="block foto-blok" id="foto-blok">
+    <div class="block-title">📷 Příjem fotkou dokladu</div>
+    <div id="foto-off" class="foto-help" hidden>Focení dokladů funguje po přihlášení na
+      <a href="https://nastroje.nutworld.cz/prijem-surovin.html" style="color:var(--brown);font-weight:700">nastroje.nutworld.cz</a>.
+      Tady můžeš příjem zapsat ručně níže.</div>
+    <div id="foto-on">
+      <p class="foto-help">Vyfoť doklad (všechny strany). <b>DMT připiš rukou k položce</b>, nebo přidej fotku štítku z pytle.
+        Pak klikni <b>Přečíst doklad</b> a zkontroluj, co se načetlo.</p>
+      <div class="foto-akce">
+        <label class="btn-foto">📷 Vyfotit / přidat fotku<input type="file" id="foto-inp" accept="image/*" capture="environment" multiple></label>
+        <button class="btn-save" id="btn-precti" disabled>🔍 Přečíst doklad</button>
+      </div>
+      <div id="foto-nahledy"></div>
+      <div class="status" id="foto-status"></div>
+      <div id="navrh"></div>
+    </div>
+  </div>
+
   <!-- Dodávka info -->
   <div class="block">
-    <div class="block-title">Informace o dodávce</div>
+    <div class="block-title">Ruční zápis — informace o dodávce</div>
     <div class="meta-grid">
       <div class="field field--key">
         <label>Číslo dodávky</label>
@@ -465,6 +516,183 @@ td.td-del { width: 32px; }
     st.innerHTML = msgs.join(' &nbsp;|&nbsp; ');
     btn.disabled = false;
   }
+</script>
+<script>
+/* ── Příjem fotkou: photo -> nw_prijem.py reads it -> warehouse checks -> archive (server) + Trello card ── */
+(function () {
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const NA_SERVERU = !location.hostname.endsWith('github.io');
+  if (!NA_SERVERU) { $('foto-on').hidden = true; $('foto-off').hidden = false; return; }
+
+  const fotky = [];          // {id, url}
+  let navrh = null;
+  const ZDROJ = { tisk: 'z dokladu', rukou: 'psáno rukou', stitek: 'ze štítku', hos: 'HOS: šarže + 9 měs.', chybi: '' };
+
+  // our product codes for the "náš kód" field (shared produkty-data.js)
+  const dl = document.createElement('datalist');
+  dl.id = 'nw-kody';
+  dl.innerHTML = PRODUCTS.map(p => `<option value="${esc(p.kod)}">${esc(p.nazev)}</option>`).join('');
+  document.body.appendChild(dl);
+  const nazevKodu = k => (PRODUCTS.find(p => p.kod === String(k).trim()) || {}).nazev || '';
+
+  function stav(msg, cls) { const s = $('foto-status'); s.className = 'status ' + (cls || 'loading'); s.innerHTML = msg; }
+
+  function kresliNahledy() {
+    $('foto-nahledy').innerHTML = fotky.map((f, i) =>
+      `<div class="nahled"><img src="${esc(f.url)}" alt=""><span>${i + 1}. ${f.id ? '✓' : '⏳'}</span>` +
+      `<button title="Odebrat" data-i="${i}">×</button></div>`).join('');
+    $('btn-precti').disabled = !fotky.length || fotky.some(f => !f.id);
+  }
+  $('foto-nahledy').addEventListener('click', e => {
+    const b = e.target.closest('button[data-i]');
+    if (b) { fotky.splice(+b.dataset.i, 1); kresliNahledy(); }
+  });
+
+  $('foto-inp').addEventListener('change', async e => {
+    for (const file of e.target.files) {
+      const f = { id: null, url: URL.createObjectURL(file) };
+      fotky.push(f); kresliNahledy();
+      try {
+        const r = await fetch('/api/prijem/foto', { method: 'POST', body: file, credentials: 'same-origin' });
+        const j = await r.json();
+        if (!r.ok) throw new Error(j.chyba || r.status);
+        f.id = j.id;
+      } catch (err) {
+        fotky.splice(fotky.indexOf(f), 1);
+        stav('✗ Fotka se nenahrála: ' + esc(err.message), 'error');
+      }
+      kresliNahledy();
+    }
+    e.target.value = '';
+  });
+
+  $('btn-precti').addEventListener('click', async () => {
+    $('btn-precti').disabled = true;
+    stav('⏳ Čtu doklad… (obvykle do minuty)');
+    try {
+      const r = await fetch('/api/prijem/precti', { method: 'POST', credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fotky: fotky.map(f => f.id) }) });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.chyba || r.status);
+      navrh = j;
+      kresliNavrh();
+      stav(`✓ Načteno ${j.polozky.length} položek — zkontroluj žlutá a červená pole a ulož.`, 'success');
+    } catch (err) { stav('✗ ' + esc(err.message), 'error'); }
+    $('btn-precti').disabled = false;
+  });
+
+  function kresliNavrh() {
+    const n = navrh, ceny = n.polozky.some(p => 'cena_kg' in p);
+    const upoz = (n.upozorneni || []).map(u => `<div class="upozorneni">⚠️ ${esc(u)}</div>`).join('') +
+      (n.poznamka_cteni ? `<div class="upozorneni cteni">ℹ️ ${esc(n.poznamka_cteni)}</div>` : '');
+    const radky = n.polozky.map(p => {
+      const nej = f => (p.nejiste || []).includes(f) ? ' nejiste' : '';
+      const cena = !ceny ? '' : `<td class="cena${p.stav === 'POZOR' ? ' pozor' : ''}">${p.cena_kg ?? '—'} Kč` +
+        (p.cenik_kg ? `<br><span style="color:#a07850">K2 ${Math.round(p.cenik_kg * 100) / 100}</span>` : '') +
+        (p.rozdil_pct != null ? `<br>${p.rozdil_pct > 0 ? '+' : ''}${p.rozdil_pct} %` : '') + '</td>';
+      return `<tr data-rid="${p.rid}">
+        <td class="td-num">${p.rid}</td>
+        <td><div class="nazev-dod${nej('nazev')}">${esc(p.nazev)}</div>${p.kod ? `<div class="zdroj">kód dod.: ${esc(p.kod)}</div>` : ''}</td>
+        <td><input data-f="nw_kod" list="nw-kody" value="${esc(p.nw_kod)}" style="width:80px" class="${p.nw_kod ? '' : 'chybi-pole'}">
+          <div class="nw-nazev${p.nw_kod ? '' : ' chybi'}">${p.nw_kod ? esc(p.nw_nazev || nazevKodu(p.nw_kod)) :
+            (p.kandidati?.length ? 'Možná: ' + p.kandidati.map(k => esc(k.kod + ' ' + k.nazev)).join(' · ') : 'Vyber náš kód')}</div></td>
+        <td><input data-f="sarze" value="${esc(p.sarze)}" class="${nej('sarze')}${p.sarze ? '' : ' chybi-pole'}"></td>
+        <td><input data-f="dmt" type="date" value="${esc(p.dmt)}" class="${nej('dmt')}${p.dmt ? '' : ' chybi-pole'}">
+          <div class="zdroj">${esc(ZDROJ[p.dmt_zdroj] || '')}</div>
+          <label class="bez-dmt"><input type="checkbox" data-f="bez_dmt"> bez DMT (obal)</label></td>
+        <td><input data-f="mnozstvi" type="number" step="0.01" min="0" value="${esc(p.mnozstvi)}" style="width:80px" class="${nej('mnozstvi')}">
+          <span class="zdroj">${esc(p.mj)}</span></td>
+        <td class="td-ok"><select data-f="stav">${['OK', 'NOK', '?', 'ATESTY'].map(s =>
+          `<option${(p.stav === s || (s === 'OK' && !['NOK', '?', 'ATESTY'].includes(p.stav))) ? ' selected' : ''}>${s}</option>`).join('')}</select></td>
+        ${cena}
+        <td class="td-del"><button class="del-btn" data-smazat title="Nepřijímat tuto položku">×</button></td>
+      </tr>`;
+    }).join('');
+    $('navrh').innerHTML = `
+      <div class="navrh-hlava">
+        <div class="field field--key"><label>Dodavatel</label><input id="n-dod" value="${esc(n.dodavatel)}"></div>
+        <div class="field field--key"><label>Číslo dokladu</label><input id="n-cislo" value="${esc(n.cislo)}"></div>
+        <div class="field field--key"><label>Datum</label><input id="n-datum" type="date" value="${esc(n.datum)}"></div>
+      </div>
+      ${upoz}
+      <div class="tbl-wrap"><table><thead><tr><th>#</th><th>Na dokladu</th><th>Náš kód</th><th>Šarže</th><th>DMT</th>
+        <th>Množství</th><th>Stav</th>${ceny ? '<th>Cena / kg</th>' : ''}<th></th></tr></thead><tbody>${radky}</tbody></table></div>
+      <div class="notes-grid" style="margin-top:12px">
+        <div class="field"><label>Poznámka (rozdíly, poškození)</label><textarea id="n-pozn"></textarea></div>
+        <div class="field"><label>Místo uložení</label><textarea id="n-ulozeni"></textarea></div>
+      </div>
+      <label class="potvrzeni"><input type="checkbox" id="n-sedi"> Fyzicky přišlo přesně to, co je na dokladu
+        (počty, kg, šarže). Když ne, oprav množství nebo napiš rozdíl do poznámky.</label>
+      <div class="foto-akce"><button class="btn-save" id="btn-ulozit" style="margin-left:0">💾 Uložit příjem (archiv + Trello)</button></div>
+      <div class="status" id="ulozit-status"></div>`;
+  }
+
+  // live updates in the draft table
+  $('navrh').addEventListener('input', e => {
+    const t = e.target;
+    if (t.dataset.f === 'nw_kod') {
+      const nz = nazevKodu(t.value), d = t.parentElement.querySelector('.nw-nazev');
+      d.textContent = nz || (t.value ? 'Kód nenalezen' : 'Vyber náš kód');
+      d.classList.toggle('chybi', !nz); t.classList.toggle('chybi-pole', !nz);
+    } else if (['sarze', 'dmt'].includes(t.dataset.f)) {
+      t.classList.toggle('chybi-pole', !t.value); t.classList.remove('nejiste');
+    } else if (t.dataset.f === 'mnozstvi') { t.classList.remove('nejiste'); }
+  });
+  $('navrh').addEventListener('click', e => {
+    if (e.target.matches('[data-smazat]')) {
+      const tr = e.target.closest('tr');
+      tr.dataset.smazat = tr.dataset.smazat ? '' : '1';
+      tr.style.opacity = tr.dataset.smazat ? .35 : 1;
+    }
+    if (e.target.id === 'btn-ulozit') ulozit();
+  });
+
+  async function ulozit() {
+    const btn = $('btn-ulozit'); btn.disabled = true;
+    const st = $('ulozit-status'); st.className = 'status loading'; st.textContent = '⏳ Ukládám…';
+    const polozky = [...$('navrh').querySelectorAll('tbody tr')].map(tr => {
+      const v = f => tr.querySelector(`[data-f="${f}"]`);
+      return { rid: +tr.dataset.rid, smazat: !!tr.dataset.smazat, nazev: tr.querySelector('.nazev-dod').textContent,
+        nw_kod: v('nw_kod').value.trim(), sarze: v('sarze').value.trim(), dmt: v('dmt').value,
+        bez_dmt: v('bez_dmt').checked, mnozstvi: parseFloat(v('mnozstvi').value) || 0, stav: v('stav').value };
+    });
+    const hlavicka = { dodavatel: $('n-dod').value.trim(), cislo: $('n-cislo').value.trim(), datum: $('n-datum').value,
+      poznamka: $('n-pozn').value.trim(), ulozeni: $('n-ulozeni').value.trim() };
+    try {
+      const r = await fetch('/api/prijem/ulozit', { method: 'POST', credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ navrh: navrh.id, hlavicka, polozky, fyzicky_sedi: $('n-sedi').checked }) });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.chyba || r.status);
+      const msgs = [`✓ Archiv uložen (${j.polozek} pol.)`];
+      try { msgs.push(await trelloKarta(hlavicka, polozky.filter(p => !p.smazat))); }
+      catch (e) { msgs.push('✗ Trello: ' + esc(e.message)); }
+      if (j.pozor) msgs.push(`⚠️ ${j.pozor}× cena jiná než v K2 — jde do schválení cen`);
+      st.className = msgs.some(m => m.startsWith('✗')) ? 'status error' : 'status success';
+      st.innerHTML = msgs.join(' &nbsp;|&nbsp; ') + ' &nbsp; <a href="/archiv-prijmu.html" style="color:var(--ok);font-weight:700">📂 Archiv →</a>';
+      fotky.length = 0; kresliNahledy();
+    } catch (err) {
+      st.className = 'status error';
+      st.innerHTML = '✗ ' + esc(err.message).replace(/\n/g, '<br>');
+      btn.disabled = false;
+    }
+  }
+
+  async function trelloKarta(h, rows) {
+    const nok = rows.filter(r => r.stav === 'NOK' || r.stav === '?');
+    const name = `${h.datum} | ${h.dodavatel}${h.cislo ? ' | ' + h.cislo : ''} 📷${nok.length ? ' ⚠️ ' + nok.length + ' NOK' : ''}`;
+    const lines = rows.map((r, i) => `${i + 1}. **${r.nazev}** (${r.nw_kod || '—'}) | Šarže: ${r.sarze || '—'} | DMT: ${r.dmt || (r.bez_dmt ? 'bez DMT' : '—')} | ${r.mnozstvi} | ${r.stav}`).join('\n');
+    const desc = `## Příjem surovin (z fotky) — ${h.datum}\n\n**Dodavatel:** ${h.dodavatel}\n**Číslo dokladu:** ${h.cislo || '—'}\n` +
+      `**Místo uložení:** ${h.ulozeni || '—'}\n\n## Suroviny (${rows.length} pol.)\n${lines}\n\n## Poznámky\n${h.poznamka || '—'}`;
+    const r = await fetch(`https://api.trello.com/1/cards?key=${TK}&token=${TT}`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ idList: $('trello-list').value, name, desc }) });
+    if (!r.ok) throw new Error('Trello ' + r.status);
+    const c = await r.json();
+    return `✓ Trello <a href="${esc(c.url)}" target="_blank" style="color:var(--ok);font-weight:700">→ karta</a>`;
+  }
+})();
 </script>
 <script src="pin-guard.js"></script>
 </body>
