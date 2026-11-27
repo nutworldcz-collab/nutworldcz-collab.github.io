@@ -23,7 +23,7 @@ a{color:var(--br)}
 .sp{flex:1}
 .btn{border:0;border-radius:10px;padding:7px 12px;cursor:pointer;font-weight:700;background:var(--kraft);color:var(--bd);white-space:nowrap}
 .btn.pri{background:var(--br);color:#fff}.btn.acc{background:var(--pink);color:#fff}.btn.ghost{background:rgba(255,255,255,.16);color:#fff}
-.btn.sm{padding:4px 9px;font-size:12px}
+.btn.sm{padding:4px 9px;font-size:12px}.btn.nav{font-size:22px;line-height:1;padding:4px 14px}
 .seg{display:inline-flex;background:rgba(255,255,255,.16);border-radius:10px;padding:3px;gap:3px}
 .seg button{border:0;border-radius:8px;padding:5px 10px;cursor:pointer;font-weight:700;background:transparent;color:#fff}
 .seg button.on{background:#fff;color:var(--bd)}
@@ -73,9 +73,9 @@ a{color:var(--br)}
 <div class="top">
   <a class="logo" href="/index.html" title="Rozcestník">🐿</a>
   <h1 id="title">Kalendář</h1>
-  <button class="btn ghost sm" onclick="shift(-1)" title="Předchozí">‹</button>
+  <button class="btn ghost nav" onclick="shift(-1)" title="Předchozí">‹</button>
   <button class="btn ghost sm" onclick="goToday()">Dnes</button>
-  <button class="btn ghost sm" onclick="shift(1)" title="Další">›</button>
+  <button class="btn ghost nav" onclick="shift(1)" title="Další">›</button>
   <span class="sp"></span>
   <span class="seg"><button id="v-mesic" onclick="setView('mesic')">Měsíc</button><button id="v-seznam" onclick="setView('seznam')">Seznam</button></span>
   <button class="btn acc" onclick="editEvent()">+ Událost</button>
@@ -126,7 +126,10 @@ function range() {
     const f = new Date(CUR.getFullYear(), CUR.getMonth(), 1), s = new Date(f); s.setDate(1 - ((f.getDay() + 6) % 7));
     const e = new Date(s); e.setDate(s.getDate() + 41); return [s, e];
   }
-  const s = new Date(CUR.getFullYear(), CUR.getMonth(), CUR.getDate()), e = new Date(s); e.setDate(s.getDate() + 59); return [s, e];
+  // list = one whole month (from today in the current month), so ‹ › clearly moves by months
+  const now = new Date(), first = new Date(CUR.getFullYear(), CUR.getMonth(), 1);
+  const s = (first.getFullYear() === now.getFullYear() && first.getMonth() === now.getMonth()) ? new Date(now.getFullYear(), now.getMonth(), now.getDate()) : first;
+  return [s, new Date(CUR.getFullYear(), CUR.getMonth() + 1, 0)];
 }
 async function load() {
   const [s, e] = range();
@@ -167,7 +170,7 @@ function render() {
     }
     $('main').innerHTML = `<div class="grid">${h}</div>` + planHtml();
   } else {
-    $('title').textContent = `Od ${CUR.getDate()}. ${MES2[CUR.getMonth()]}`;
+    $('title').textContent = MES[CUR.getMonth()][0].toUpperCase() + MES[CUR.getMonth()].slice(1) + ' ' + CUR.getFullYear();
     let h = '', any = false;
     for (let d = new Date(s); d <= e; d.setDate(d.getDate() + 1)) {
       const day = ymd(d), its = items(day), ho = F.svatky && hol[day];
@@ -181,7 +184,7 @@ function render() {
           : `<div class="ai" style="border-left-color:${x.k.zakazka ? 'var(--amber)' : 'var(--line)'}" onclick="openCard('${x.k.board_id}','${x.k.id}')"><span class="t">${x.k.zakazka ? '📦' : '🗂'}</span>
               <div style="min-width:0"><b style="${x.k.hotovo ? 'text-decoration:line-through;opacity:.6' : ''}">${esc(x.k.nazev)}</b><br><small>${esc(x.k.nastenka)} › ${esc(x.k.sloupec)}${x.k.clenove.length ? ' · 👤 ' + esc(x.k.clenove.slice(0, 3).join(', ')) : ''}</small></div></div>`).join('');
     }
-    $('main').innerHTML = `<div class="agenda">${h || ''}${any ? '' : '<div class="empty">Na dalších 60 dní nic. Přidej událost tlačítkem „+ Událost“.</div>'}</div>` + planHtml();
+    $('main').innerHTML = `<div class="agenda">${h || ''}${any ? '' : `<div class="empty">V ${['lednu','únoru','březnu','dubnu','květnu','červnu','červenci','srpnu','září','říjnu','listopadu','prosinci'][CUR.getMonth()]} zatím nic. Přidej událost tlačítkem „+ Událost“ nebo přejdi šipkou na další měsíc ›</div>`}</div>` + planHtml();
   }
 }
 /* 👥 people plan: who is away / in training when — next 90 days, grouped by person (doctor = details only for Jan + the person) */
@@ -203,8 +206,13 @@ function planHtml() {
     + '</div>';
 }
 function showEventAny(id) { return (DATA.udalosti.find(x => x.id === id) || (PLAN && PLAN.udalosti.find(x => x.id === id))); }
-function setView(v) { VIEW = v; if (v === 'seznam') CUR = new Date(); load(); }
-function shift(n) { if (VIEW === 'mesic') CUR = new Date(CUR.getFullYear(), CUR.getMonth() + n, 1); else CUR.setDate(CUR.getDate() + 30 * n); load(); }
+function setView(v) { VIEW = v; load(); }
+function shift(n) { CUR = new Date(CUR.getFullYear(), CUR.getMonth() + n, 1); load(); }
+// swipe left / right = next / previous month (phone)
+let SW = null;
+document.addEventListener('touchstart', e => { if (!$('modal').innerHTML) SW = [e.touches[0].clientX, e.touches[0].clientY]; }, {passive: true});
+document.addEventListener('touchend', e => { if (!SW) return; const dx = e.changedTouches[0].clientX - SW[0], dy = e.changedTouches[0].clientY - SW[1]; SW = null;
+  if (Math.abs(dx) > 70 && Math.abs(dx) > 2 * Math.abs(dy)) shift(dx < 0 ? 1 : -1); }, {passive: true});
 function goToday() { CUR = new Date(); load(); }
 function openCard(b, k) {          // inside the app (iframe) stay in the app; in a browser a new tab
   const u = `/nastenky.html#b=${b}&k=${k}`;
