@@ -1022,7 +1022,7 @@ async function drawPich() {
       ${open ? `<button class="big b-h" id="p-back" style="font-size:19px;padding:18px">↩️ Zpět z pauzy</button>` : ''}
       ${inWork && used > sm.pauza ? `<div class="err" style="margin-top:6px">Pauzy ${used} min — víc než ${sm.pauza} min na směnu.</div>` : ''}
       <div id="p-m" class="s" style="margin-top:6px"></div></div>
-    <h2 class="sek">Moje hodiny · ${esc(MES[+month.slice(5) - 1])}</h2>
+    <h2 class="sek">Moje hodiny · ${['leden','únor','březen','duben','květen','červen','červenec','srpen','září','říjen','listopad','prosinec'][+month.slice(5) - 1]}</h2>
     <div class="card"><div style="display:flex;justify-content:space-between"><b>Celkem ${hm(total)} h</b><span class="s">${days.length} dní · bez pauz</span></div>
       ${days.map(([k, r]) => { const x = new Date(k + 'T12:00');
         return `<div data-d="${k}" style="display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--li);cursor:pointer"><span style="width:86px">${DNY[x.getDay()].slice(0, 2)} ${x.getDate()}. ${x.getMonth() + 1}.</span>
