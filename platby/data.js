@@ -194,7 +194,4 @@ const B2C_SK_PENDING = [
   {code:'2026003425', n:'—', amt:'33.09', ccy:'EUR', date:'2026-11-22', paid:false, bank_date:'', bank_sender:''},
   {code:'2026003415', n:'—', amt:'60.90', ccy:'EUR', date:'2026-11-21', paid:true, bank_date:'2026-11-21', bank_sender:'Iveta Burikova'},
   {code:'2026003398', n:'—', amt:'66.30', ccy:'EUR', date:'2026-11-20', paid:true, bank_date:'2026-11-20', bank_sender:'BENEDIK JULIA'},
-  {code:'2026003384', n:'—', amt:'20.29', ccy:'EUR', date:'2026-11-19', paid:true, bank_date:'2026-11-19', bank_sender:'Alma Országhová'},
-  {code:'2026003382', n:'Trnavská NAD, a.s.', amt:'80.55', ccy:'EUR', date:'2026-11-19', paid:true, bank_date:'2026-11-20', bank_sender:'TRNAVSKÁ NAD,A.S.'},
-  {code:'2026003376', n:'Trnavská NAD, a.s.', amt:'80.55', ccy:'EUR', date:'2026-11-19', paid:false, bank_date:'', bank_sender:''},
 ];
