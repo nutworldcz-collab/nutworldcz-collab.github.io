@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="robots" content="noindex, nofollow">
+<title>Nutworld — Rozcestník (návrh úklidu)</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--br:#83502e;--bd:#5c381f;--kraft:#f1e6da;--bg:#faf6f1;--line:#e5d6c6;--muted:#8a6a4a;--pink:#da1668;--amber:#f7ab31;--leaf:#6fa044}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:var(--bg);color:#2a1a0e;font-size:15px}
+.top{background:linear-gradient(135deg,#5c381f 0%,#83502e 55%,#a0622a 100%);color:#fff;padding:22px max(16px,env(safe-area-inset-right)) 26px max(16px,env(safe-area-inset-left))}
+.top h1{font-family:'Exo 2',sans-serif;font-weight:800;font-size:24px}
+.top p{opacity:.9;margin-top:6px;max-width:760px;line-height:1.5}
+.wrap{max-width:1180px;margin:0 auto;padding:18px max(16px,env(safe-area-inset-right)) 60px max(16px,env(safe-area-inset-left))}
+.sum{display:flex;gap:10px;flex-wrap:wrap;margin:-34px 0 18px}
+.sum div{background:#fff;border-radius:14px;padding:10px 16px;box-shadow:0 2px 10px rgba(92,56,31,.12);font-size:13px;color:var(--muted)}
+.sum b{display:block;font-family:'Exo 2',sans-serif;font-size:22px;color:var(--bd)}
+h2{font-family:'Exo 2',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:24px 0 10px;display:flex;gap:8px;align-items:center}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.tile{background:#fff;border-radius:14px;padding:12px 14px;box-shadow:0 2px 8px rgba(92,56,31,.08);border:2px solid transparent;display:flex;flex-direction:column;gap:6px;min-width:0}
+.tile:hover{border-color:var(--br)}
+.tile a.main{text-decoration:none;color:var(--bd);font-family:'Exo 2',sans-serif;font-weight:700;font-size:15.5px;display:flex;gap:8px;align-items:center}
+.tile .d{font-size:12.5px;color:var(--muted);line-height:1.35}
+.tile.merged{border-left:5px solid var(--amber)}
+.tile.later{opacity:.75;border-left:5px dashed var(--line)}
+.parts{display:flex;flex-wrap:wrap;gap:4px}
+.parts a{font-size:11.5px;background:var(--kraft);color:var(--bd);border-radius:8px;padding:2px 8px;text-decoration:none;font-weight:600}
+.badge{font-size:10.5px;font-weight:700;border-radius:8px;padding:1px 7px;margin-left:auto;white-space:nowrap}
+.b-m{background:#fff3d6;color:#8a5a00}.b-n{background:#e6f3dc;color:#2d5a1b}.b-l{background:#eee;color:#666}
+details{margin-top:24px;background:#fff;border-radius:14px;padding:12px 16px;box-shadow:0 2px 8px rgba(92,56,31,.06)}
+summary{cursor:pointer;font-family:'Exo 2',sans-serif;font-weight:700;color:var(--bd)}
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px;margin-top:10px}
+.list a{font-size:13px;color:var(--bd);text-decoration:none;background:var(--bg);border-radius:9px;padding:6px 10px}
+.list small{display:block;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12.5px;color:var(--muted);margin:4px 0 0}
+</style>
+</head>
+<body>
+<div class="top">
+  <h1>🐿 Nástroje — návrh úklidu</h1>
+  <p>Jen náhled. Dnešní rozcestník i aplikace zůstávají, dokud to neschválíš. Nic se nemaže: sloučené stránky budou jedna stránka se záložkami,
+    stránky pro zákazníky fungují dál (jen nejsou v nástrojích) a staré věci jsou v 📦 Archivu. Odkazy fungují — můžeš si vše proklikat.</p>
+</div>
+<div class="wrap">
+  <div class="sum" id="sum"></div>
+  <div class="legend"><span>🟧 sloučeno ze záložek</span><span>⬜ čárkovaně = do archivu po přechodu / sezóně</span></div>
+  <div id="groups"></div>
+  <details><summary>🙈 Skryté z nástrojů — fungují dál (stránky pro zákazníky a pomocné)</summary><div class="list" id="hidden"></div></details>
+  <details><summary>📦 Archiv — dostupné, ale nepřekáží</summary><div class="list" id="archive"></div></details>
+</div>
+<script>
+// t = tile title, i = icon, d = description, p = pages [file, label]; m = merged; later = goes to archive later
+const G = [
+  ['💼', 'Obchod a zákazníci', [
+    {i: '🧾', t: 'Generátor nabídek', p: [['nabidky.html']], d: 'Nabídka → PDF, šablony zakázek'},
+    {i: '✅', t: 'Potvrzení zakázky', p: [['zakazka.html']], d: 'Z nabídky zakázka → karta na nástěnce'},
+    {i: '🎁', t: 'Konfigurátor dárků', m: 1, d: 'Firemní dárky a krabičky na jednom místě',
+      p: [['generator-darky.html', 'Dárky obecně'], ['generator-darkove-krabicky.html', 'Krabička 2×50 g'], ['generator-darkove-krabicky-4x80.html', 'Krabička 4×80 g']]},
+    {i: '🏢', t: 'Registr partnerů', p: [['partneri.html']], d: 'Firmy z K2, obchodník, karty firmy'},
+    {i: '⭐', t: 'Klíčoví klienti', p: [['klienti.html']], d: 'Úkoly, poznámky, schůzky'},
+    {i: '💶', t: 'Firmy — vlastní ceníky', p: [['firmy-ceniky.html']], d: 'Pod tím ceníky Čajovny, HU-FA, Olympicu, Czech Inn, Náchoda'},
+    {i: '🧪', t: 'Vzorky', p: [['vzorky.html']], d: 'B2B vzorky od zadání po odeslání'},
+    {i: '📊', t: 'B2B prezentace', p: [['b2b-prezentace.html']], d: 'Prezentace pro firemní klienty'},
+    {i: '📋', t: 'Přehled zakázek', later: 1, p: [['zakazy.html']], d: 'Pohled do Trella — po 2. 1. nahradí Nástěnky + Wolf'},
+  ]],
+  ['💰', 'Ceny a marže', [
+    {i: '🧮', t: 'Kalkulátor cen', p: [['kalkulator.html']], d: 'MO/VO a marže produktů i dárků'},
+    {i: '📈', t: 'Přehled marží', p: [['marze.html']], d: 'Marže dárků a sáčků, ke schválení'},
+    {i: '📦', t: 'Bulk ceník', m: 1, d: 'Veřejný ceník + pracovní verze (jen oprávnění)', p: [['bulk-cenik.html', 'Ceník'], ['bulk-cenik-pracovni.html', 'Pracovní']]},
+    {i: '🛒', t: 'Alza & Vilgain — marže', p: [['obchod-smesi.html']], d: 'Marže směsí podle gramáže'},
+  ]],
+  ['🏭', 'Výroba', [
+    {i: '🏭', t: 'Výroba', m: 1, d: 'Plán, objednávky e-shopu a normy na jednom místě',
+      p: [['vyroba.html', 'Výrobní plán'], ['vyrobni-plan.html', 'Plán produktů'], ['objednavky.html', 'Rozklad objednávek'], ['normy.html', 'Normy']]},
+    {i: '🔎', t: 'Co je v čem', m: 1, d: 'Obsah dárku, kde je produkt, kde je surovina',
+      p: [['co-obsahuje.html', 'Co obsahuje'], ['darky-lookup.html', 'Kde je produkt'], ['suroviny.html', 'Kde je surovina']]},
+    {i: '🥣', t: 'Receptury směsí', p: [['receptury-smesi.html']], d: 'Poměry na 1 kg a 20 kg'},
+    {i: '🎄', t: 'Adventní kalendář 2026', later: 1, p: [['adventni-kalendar.html']], d: 'Po sezóně do archivu'},
+  ]],
+  ['📥', 'Sklad, příjem a míchání', [
+    {i: '📥', t: 'Příjem surovin', m: 1, d: 'Fotka dokladu + historie dodávek', p: [['prijem-surovin.html', 'Příjem'], ['archiv-prijmu.html', 'Archiv příjmů']]},
+    {i: '🥣', t: 'Míchání', m: 1, d: 'Deník dávek + archiv', p: [['denik-michani.html', 'Deník'], ['michani-archiv.html', 'Archiv']]},
+    {i: '⏳', t: 'DMT Manager', p: [['dmt.html']], d: 'Trvanlivosti ze šarží'},
+  ]],
+  ['🏷️', 'Produkty, štítky a legislativa', [
+    {i: '🏷️', t: 'Štítky', m: 1, d: 'Vytvořit, objednat, archiv, trojkontrola',
+      p: [['stitky.html', 'Generátor'], ['stitky-objednat.html', 'Objednat'], ['stitky-archiv.html', 'Archiv'], ['stitky-kontrola.html', 'Kontrola']]},
+    {i: '📄', t: 'Specifikace', m: 1, d: 'Specifikace, generátor NW specifikací, směsi',
+      p: [['specifikace.html', 'Specifikace'], ['specifikace-generator.html', 'Generátor'], ['mix-specifikace.html', 'Směsi']]},
+    {i: '🔁', t: 'Změny produktů', p: [['zmeny.html']], d: 'Dodavatel, složení, alergeny → web CZ/SK'},
+    {i: '✍️', t: 'Generátor produktů', p: [['generator.html']], d: 'Doplnit popis / upravit produkt'},
+    {i: '🧼', t: 'Hygiena a HACCP', m: 1, d: 'HACCP plán, evidence teplot, alergeny na nástěnku',
+      p: [['haccp.html', 'HACCP'], ['teploty-formular.html', 'Teploty'], ['alergeny-nastenska.html', 'Alergeny']]},
+    {i: '🆕', t: 'Nové produkty', later: 1, p: [['produkty.html']], d: 'Pohled do Trella — po 2. 1. nahradí Nástěnky'},
+  ]],
+  ['🚚', 'Doprava', [
+    {i: '🚚', t: 'Doprava', m: 1, d: 'Všichni dopravci v jedné stránce',
+      p: [['doprava.html', 'Přehled'], ['ppl.html', 'PPL'], ['geis.html', 'Geis'], ['toptrans.html', 'TopTrans'], ['zasilkovna.html', 'Zásilkovna']]},
+  ]],
+  ['📣', 'Marketing', [
+    {i: '🖼️', t: 'Generátor bannerů', p: [['bannery.html']], d: 'NutWorldka + texty + logo'},
+    {i: '💬', t: 'Chat s NutWorldkou', p: [['chat.html']], d: 'Konverzace z e-shopu CZ/SK'},
+    {i: '🪟', t: 'Popupy na e-shopu', p: [['popupy.html']], d: 'Okna na nutworld.cz/.sk'},
+  ]],
+  ['👥', 'Tým a provoz', [
+    {i: '📲', t: 'Aplikace Nutworld', p: [['aplikace.html']], d: 'Nástroje v telefonu'},
+    {i: '🗂', t: 'Nástěnky', p: [['nastenky.html']], d: 'Naše nástěnky (místo Trella)'},
+    {i: '📅', t: 'Kalendář', p: [['kalendar.html']], d: 'Schůzky, dovolené, termíny — i marketingové kampaně'},
+    {i: '⏱', t: 'Píchačky', p: [['pichacky.html']], d: 'Docházka'},
+    {i: '👔', t: 'Manažeři', p: [['zamestnanci.html']], d: 'Postupně donastavíme'},
+    {i: '📋', t: 'Pracoviště a řády', m: 1, d: 'Řády k podpisu, školení, pravidla firmy na úkolové práce, priority pozic',
+      p: [['podpisove-rady.html', 'Podpisové řády'], ['skoleni-dpp.html', 'Školení DPP'], ['rozdeleni-pracovniku.html', 'Rozdělení pracovníků'],
+          ['maorth-trans-komplet.html', 'Úkolová firma — přehled'], ['podminky-maorth-trans.html', 'Úkolová firma — podmínky'], ['pudorysy.html', 'Půdorysy'],
+          ['oznaceni-pracoviste.html', 'Označení pracoviště'], ['skladnik-priority.html', 'Priority skladníka'], ['operator-balirna.html', 'Priority balírny']]},
+    {i: '📑', t: 'Dokumenty', m: 1, d: 'Generátor dokumentů + hotové dokumenty, návody, ceník grafiky',
+      p: [['dokument.html', 'Generátor'], ['dokumenty.html', 'Seznam dokumentů'], ['navod-nabidky.html', 'Návod nabídky'], ['cenik-grafika.html', 'Ceník grafiky']]},
+  ]],
+  ['🐺', 'Jen Jan', [
+    {i: '🐺', t: 'Wolf Leader Board', p: [['wolf.html']], d: 'Přehled, úkoly, upozornění'},
+  ]],
+];
+const HIDDEN = [['cajovna-cenik.html', 'Čajovna — ceník'], ['cajovna-marze.html', 'Čajovna — marže'], ['hufa-cenik.html', 'HU-FA — ceník'], ['hufa-marze.html', 'HU-FA — marže'],
+  ['olympic-nabidka.html', 'Olympic — nabídka'], ['olympic-marze.html', 'Olympic — marže'], ['czech-inn-cenik.html', 'Czech Inn — ceník'], ['nachod-cenik.html', 'Náchod — ceník'],
+  ['b2b.html', 'Poděkování za poptávku (CZ)'], ['b2b-sk.html', 'Poďakovanie za dopyt (SK)'], ['klient-import.html', 'Import klienta']];
+const ARCH = [['ukoly.html', 'Moje úkoly', 'nahradily úkoly na Wolf boardu'], ['claude.html', 'Claude chat', 'nahradil asistent'],
+  ['web-audit.html', 'Web audit', 'jednorázová zpráva'], ['k2.html', 'K2 porovnání květen/červen', 'jednorázové'], ['cenik.html', 'Porovnání CSV ceníků', 'už není třeba (Jan)'],
+  ['michani-foto.html', 'Foto formuláře míchání', 'už není třeba (Jan)'], ['manazer.html', 'Profil manažera', 'Jan: ne'],
+  ['marketing-calendar.html', 'Marketingový kalendář Q4', 'kampaně → Kalendář'], ['index-puvodni.html', 'Původní rozcestník', 'starý']];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+let tiles = 0, pages = 0;
+document.getElementById('groups').innerHTML = G.map(([ic, n, ts]) => {
+  tiles += ts.length; pages += ts.reduce((a, t) => a + t.p.length, 0);
+  return `<h2>${ic} ${esc(n)} <span style="letter-spacing:0">(${ts.length})</span></h2><div class="tiles">${ts.map(t => `
+    <div class="tile ${t.m ? 'merged' : ''} ${t.later ? 'later' : ''}">
+      <a class="main" href="/${t.p[0][0]}">${t.i} ${esc(t.t)}${t.m ? `<span class="badge b-m">${t.p.length} v 1</span>` : t.later ? '<span class="badge b-l">později archiv</span>' : ''}</a>
+      <div class="d">${esc(t.d)}</div>
+      ${t.p.length > 1 ? `<div class="parts">${t.p.map(([f, l]) => `<a href="/${f}">${esc(l)}</a>`).join('')}</div>` : ''}</div>`).join('')}</div>`;
+}).join('');
+document.getElementById('hidden').innerHTML = HIDDEN.map(([f, l]) => `<a href="/${f}">${esc(l)}</a>`).join('');
+document.getElementById('archive').innerHTML = ARCH.map(([f, l, w]) => `<a href="/${f}">${esc(l)}<small>${esc(w)}</small></a>`).join('');
+document.getElementById('sum').innerHTML = `<div><b>89 → ${tiles}</b>dlaždic v nástrojích</div><div><b>${G.length}</b>skupin (dnes 11)</div>
+  <div><b>${HIDDEN.length}</b>skrytých, fungují dál</div><div><b>${ARCH.length}</b>v archivu</div><div><b>0</b>smazaných</div>`;
+</script>
+</body>
+</html>
