@@ -148,6 +148,10 @@ h2.sek{font-family:"Exo 2",Arial,sans-serif;font-size:13px;letter-spacing:1.5px;
 .tk-mention{display:flex;gap:6px;flex-wrap:wrap;padding:6px 10px;background:var(--ca);border-top:1px solid var(--li)}
 .tk-mention button,.tk-reply button{border:0;background:var(--kr);color:var(--tm);border-radius:14px;padding:5px 11px;font-weight:700;cursor:pointer;font-size:14px}
 .tk-mention[hidden],.tk-reply[hidden]{display:none}
+.tk-rec .dot{width:12px;height:12px;border-radius:50%;background:var(--ru);animation:pulse 1s infinite}
+.tk-rec button.ok{background:var(--hn);color:#fff}
+.more{border:0;background:none;color:var(--mu);font-size:16px;cursor:pointer;padding:0 4px;line-height:1}
+.ed{font-style:italic}
 .tk-reply{padding:6px 10px;background:var(--ca);border-top:1px solid var(--li);font-size:13px;color:var(--mu);display:flex;gap:8px;align-items:center}
 .sheet{position:fixed;inset:0;background:rgba(30,15,5,.45);z-index:70;display:flex;align-items:flex-end;justify-content:center}
 .sheet .in{background:var(--ca);width:100%;max-width:520px;border-radius:20px 20px 0 0;padding:14px 14px calc(14px + var(--sb))}
@@ -188,9 +192,11 @@ select.find{appearance:auto}
   <section class="view" id="v-tym"><div class="wrap" id="tym"></div></section>
   <section class="view tk" id="v-tymk"><div id="tk-list" class="tk-list"></div><div id="tk-mention" class="tk-mention" hidden></div>
     <div id="tk-reply" class="tk-reply" hidden></div>
+    <div id="tk-recbar" class="tk-reply tk-rec" hidden><span class="dot"></span><b id="tk-rect">0:00</b><span>Nahrávám…</span>
+      <button type="button" id="tk-recx" style="margin-left:auto">Zrušit</button><button type="button" id="tk-recok" class="ok">Odeslat ➤</button></div>
     <form id="tk-form" class="tk-form"><label class="tk-ib" title="Fotka">📷<input type="file" id="tk-foto" accept="image/*" hidden></label>
       <textarea id="tk-text" rows="1" placeholder="Zpráva… (@jméno)" enterkeyhint="send"></textarea>
-      <button type="button" class="tk-ib" id="tk-mic" title="Ťukni = diktovat · podrž = hlasová zpráva">🎤</button>
+      <button type="button" class="tk-ib" id="tk-mic" title="Hlasová zpráva">🎤</button>
       <button class="tk-send" id="tk-send" aria-label="Odeslat">➤</button></form></section>
 </div>
 
@@ -755,7 +761,7 @@ function md(s) {
 function drawMsgs(scroll) {
   const l = $('#tk-list'); let h = '', lastDay = '', lastWho = '', lastT = '';
   const me = TYM ? TYM.ja : ME.jmeno;
-  if (!TK.zpravy.length) h = `<div class="s" style="text-align:center;margin-top:40px">Zatím tu nic není — napiš první zprávu 👋<br><br>Tip: <b>@nutworldka</b> odpoví na cenu, složení, obsah dárku…</div>`;
+  if (!TK.zpravy.length) h = `<div class="s" style="text-align:center;margin-top:40px">Zatím tu nic není — napiš první zprávu 👋<br><br>Tip: <b>@nutworldka</b> odpoví na cenu, složení, obsah dárku…<br>Klepni na zprávu → reakce, odpovědět, upravit, smazat.<br>Diktovat text: mikrofon na klávesnici telefonu.</div>`;
   TK.zpravy.forEach(m => {
     const day = m.cas.slice(0, 10); if (day !== lastDay) { h += `<div class="day-sep">${dayName(m.cas)}</div>`; lastDay = day; lastWho = ''; }
     const mine = m.kdo === me, bot = m.kdo === 'NutWorldka';
@@ -774,7 +780,7 @@ function drawMsgs(scroll) {
     const seen = mine ? Object.entries(TK.precteno).filter(([n, v]) => v >= m.id).map(([n]) => n.split(' ')[0]) : [];
     const isLastMine = mine && !TK.zpravy.some(x => x.id > m.id && x.kdo === me);
     h += `<div class="msg ${mine ? 'me' : ''} ${bot ? 'bot' : ''}">${who}<div class="bub ${m.smazano ? 'del' : ''}" onclick="tkSheet(${m.id})">${inner}</div>
-      <div class="meta">${rx}<span>${hhmm(m.cas)}</span>${isLastMine && seen.length ? `<span>✓✓ ${esc(seen.join(', '))}</span>` : ''}</div></div>`;
+      <div class="meta">${rx}<span>${hhmm(m.cas)}</span>${m.upraveno && !m.smazano ? '<span class="ed">upraveno</span>' : ''}${mine && !m.smazano ? `<button class="more" onclick="tkSheet(${m.id})" aria-label="Upravit nebo smazat">⋯</button>` : ''}${isLastMine && seen.length ? `<span>✓✓ ${esc(seen.join(', '))}</span>` : ''}</div></div>`;
   });
   l.innerHTML = h;
   if (scroll) l.scrollTop = l.scrollHeight;
@@ -788,6 +794,7 @@ function tkSheet(id) {
   const s = document.createElement('div'); s.className = 'sheet';
   s.innerHTML = `<div class="in"><div class="emo">${['👍', '❤️', '😂', '✅', '🙏', '👀'].map(e => `<span data-e="${e}">${e}</span>`).join('')}</div>
     <button class="big b-l" data-a="reply">↩️ Odpovědět</button>
+    ${m.kdo === me && m.text ? `<button class="big b-l" data-a="edit">✏️ Upravit text</button>` : ''}
     ${m.text ? `<button class="big b-l" data-a="copy">📋 Kopírovat text</button>` : ''}
     ${ME.role === 'admin' ? `<button class="big b-z" data-a="ukol">✅ Udělat z toho úkol (Wolf)</button>` : ''}
     ${m.kdo === me || ME.role === 'admin' ? `<button class="big b-l" data-a="del" style="color:var(--ru)">🗑 Smazat</button>` : ''}
@@ -798,6 +805,8 @@ function tkSheet(id) {
     if (ev.target === s || a === 'x') return s.remove();
     if (e) { s.remove(); return tkReact(id, e); }
     if (a === 'reply') { s.remove(); TK_REPLY = m; $('#tk-reply').hidden = false; $('#tk-reply').innerHTML = `↩️ <b>${esc(m.kdo)}</b>: ${esc((m.text || '📎').slice(0, 60))} <button style="margin-left:auto" onclick="TK_REPLY=null;this.parentNode.hidden=true">×</button>`; $('#tk-text').focus(); }
+    if (a === 'edit') { s.remove(); TK_EDIT = m; TK_REPLY = null; const ta = $('#tk-text'); ta.value = m.text; ta.dispatchEvent(new Event('input')); ta.focus();
+      $('#tk-reply').hidden = false; $('#tk-reply').innerHTML = `✏️ Upravuješ zprávu <button style="margin-left:auto" onclick="TK_EDIT=null;$('#tk-text').value='';this.parentNode.hidden=true">Zrušit</button>`; return; }
     if (a === 'copy') { s.remove(); navigator.clipboard && navigator.clipboard.writeText(m.text); }
     if (a === 'ukol') { const due = prompt('Termín úkolu (RRRR-MM-DD), prázdné = zítra:', ''); s.remove(); if (due === null) return;
       try { await tymApi('ukol', {zprava: id, due: due.trim()}); toast({title: '✅ Úkol uložen', body: 'Najdeš ho na Wolfu v Úkolech.'}); } catch (x) { alert(x.message); } }
@@ -805,8 +814,15 @@ function tkSheet(id) {
       try { await tymApi('smazat', {zprava: id}); m.smazano = true; m.text = ''; delete m.soubor; drawMsgs(false); } catch (x) { alert(x.message); } }
   };
 }
+let TK_EDIT = null;
 async function tkSend(extra) {
   const ta = $('#tk-text'), text = ta.value.trim();
+  if (TK_EDIT && !extra) {                                   // saving an edited message
+    const id = TK_EDIT.id; if (!text) return;
+    try { const m = await tymApi('upravit', {zprava: id, text}); const i = TK.zpravy.findIndex(x => x.id === id); if (i >= 0) TK.zpravy[i] = m;
+      TK_EDIT = null; ta.value = ''; ta.style.height = ''; $('#tk-reply').hidden = true; drawMsgs(false); } catch (e) { alert(e.message); }
+    return;
+  }
   if (!text && !extra) return;
   const body = {kanal: TK.id, text, odpoved_na: TK_REPLY ? TK_REPLY.id : null, ...(extra || {})};
   ta.value = ''; ta.style.height = ''; TK_REPLY = null; $('#tk-reply').hidden = true; $('#tk-mention').hidden = true;
@@ -842,36 +858,31 @@ $('#tk-foto').onchange = async e => {
     tkSend({soubor: {typ: 'foto', mime: 'image/jpeg', data: cv.toDataURL('image/jpeg', 0.82)}});
   } catch (x) { alert('Fotku se nepodařilo načíst.'); }
 };
-// mic: tap = dictate into the text (speech recognition in the phone, Czech), hold = voice message
-const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-let REC = null, DICT = null, holdT = null, held = false;
+// mic = voice message: tap -> record (bar with time, Zrušit / Odeslat), tap 🎤 again or Odeslat -> send.
+// Dictating text: the microphone on the phone keyboard (reliable on iPhone).
+let REC = null, REC_T = null, REC_CANCEL = false;
 const mic = $('#tk-mic');
 async function recStart() {
   try {
     const st = await navigator.mediaDevices.getUserMedia({audio: true});
     const mime = ['audio/mp4', 'audio/webm;codecs=opus', 'audio/webm'].find(x => window.MediaRecorder && MediaRecorder.isTypeSupported(x)) || '';
-    REC = new MediaRecorder(st, mime ? {mimeType: mime} : {}); const parts = [];
+    REC = new MediaRecorder(st, mime ? {mimeType: mime} : {}); const parts = []; REC_CANCEL = false;
     REC.ondataavailable = ev => ev.data.size && parts.push(ev.data);
-    REC.onstop = () => { st.getTracks().forEach(t => t.stop()); mic.classList.remove('rec');
-      const b = new Blob(parts, {type: REC.mimeType}); REC = null; if (b.size < 2000) return;
-      const r = new FileReader(); r.onload = () => tkSend({soubor: {typ: 'audio', mime: b.type, data: r.result}}); r.readAsDataURL(b); };
-    REC.start(); mic.classList.add('rec');
-  } catch (x) { alert('Mikrofon není povolený.'); }
+    REC.onstop = () => {
+      st.getTracks().forEach(x => x.stop()); clearInterval(REC_T); mic.classList.remove('rec'); $('#tk-recbar').hidden = true;
+      const type = REC.mimeType; REC = null; const b = new Blob(parts, {type});
+      if (REC_CANCEL || b.size < 1500) return;
+      const r = new FileReader(); r.onload = () => tkSend({soubor: {typ: 'audio', mime: type, data: r.result}}); r.readAsDataURL(b);
+    };
+    REC.start(250); mic.classList.add('rec');
+    const t0 = Date.now(); $('#tk-rect').textContent = '0:00'; $('#tk-recbar').hidden = false;
+    REC_T = setInterval(() => { const s = Math.round((Date.now() - t0) / 1000); $('#tk-rect').textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+      if (s >= 180 && REC) REC.stop(); }, 500);                        // max 3 min
+  } catch (x) { alert('Mikrofon není povolený — povol ho v Nastavení telefonu u aplikace Nutworld.'); }
 }
-function dictToggle() {
-  if (DICT) { DICT.stop(); return; }
-  if (!SR) { return REC ? REC.stop() : recStart(); }      // no dictation here -> tap toggles a voice message
-  const ta = $('#tk-text'), base = ta.value ? ta.value.trimEnd() + ' ' : '';
-  DICT = new SR(); DICT.lang = 'cs-CZ'; DICT.interimResults = true; DICT.continuous = true;
-  DICT.onresult = ev => { let s = ''; for (const r of ev.results) s += r[0].transcript; ta.value = base + s; ta.dispatchEvent(new Event('input')); };
-  DICT.onend = () => { DICT = null; mic.classList.remove('dict'); };
-  DICT.onerror = () => { DICT = null; mic.classList.remove('dict'); };
-  DICT.start(); mic.classList.add('dict');
-}
-mic.addEventListener('pointerdown', e => { e.preventDefault(); held = false; holdT = setTimeout(() => { held = true; if (!REC) recStart(); }, 450); });
-mic.addEventListener('pointerup', () => { clearTimeout(holdT); if (held) { if (REC) REC.stop(); } else dictToggle(); });
-mic.addEventListener('pointerleave', () => { clearTimeout(holdT); if (held && REC) REC.stop(); });
-mic.addEventListener('contextmenu', e => e.preventDefault());
+mic.onclick = () => REC ? REC.stop() : recStart();
+$('#tk-recok').onclick = () => REC && REC.stop();
+$('#tk-recx').onclick = () => { REC_CANCEL = true; REC && REC.stop(); };
 
 // ── top bar buttons ──
 $('#zpet').onclick = () => CUR.startsWith('tym/') ? go('tym') : history.length > 1 ? history.back() : go('domu');
