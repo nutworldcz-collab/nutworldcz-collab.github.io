@@ -269,6 +269,7 @@ async function saveEvent() {
 (async () => {
   await load();
   const m = location.hash.match(/^#u=([\w-]+)/);
+  if (location.hash === '#novy' && DATA) editEvent(null);       // app: „➕ Přidat událost“
   if (m) {
     let u = DATA && DATA.udalosti.find(x => x.id === m[1]);
     if (!u && DATA) { CUR = new Date(); }   // reminder link: the event is today or soon

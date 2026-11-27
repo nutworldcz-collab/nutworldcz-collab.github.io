@@ -179,6 +179,7 @@ select.find{appearance:auto}
   <span class="t" id="titul">Nutworld</span>
   <button class="ib" id="obnov" hidden aria-label="Obnovit" title="Obnovit stránku">⟳</button>
   <button class="ib" id="ven" hidden aria-label="Otevřít zvlášť" title="Otevřít v novém okně">↗</button>
+  <button class="ib" id="kalb" hidden aria-label="Firemní kalendář" title="Firemní kalendář">📅</button>
   <button class="av" id="av" aria-label="Můj účet">·</button>
 </div>
 
@@ -362,7 +363,7 @@ function drawHome() {
     <div id="pushhint"></div>
     <div class="hello"><img src="/pwa/ikona-192.png" alt=""><div><div class="g">${esc(greeting())}</div><div class="d">${today()}${ME.role === 'admin' ? ' · <span class="tag t-z">Jednatel</span>' : ''}</div></div></div>
     ${ME.role === 'admin' ? '<div id="jan"></div>' : ''}
-    ${ON_SERVER ? '<div id="den"></div>' : ''}
+    ${ON_SERVER ? '<div id="den"></div><div id="kal"></div>' : ''}
     ${ON_SERVER ? `<h2 class="sek">Zeptej se / zadej úkol</h2>
       <div class="ask"><input id="q" placeholder="${ME.role === 'vyroba' ? 'např. co je v dárku 3061, alergeny v kešu…' : 'např. cena kešu 200 g, co je v dárku 3061…'}" enterkeyhint="send" autocomplete="off"><button id="go">→</button></div>
       <div id="ans"></div>` : ''}
@@ -375,11 +376,35 @@ function drawHome() {
     $('#q').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); ask(); } });
   }
   if (ME.role === 'admin') drawJan();
-  if (ON_SERVER) drawDay();
+  if (ON_SERVER) { drawDay(); drawKal(); }
   pushHint();
 }
 
 // „Můj den“ for everyone: my calendar today + tomorrow, my board cards overdue / due today (same data as kalendar.html, nastenky.html)
+// company calendar of the whole team, next 7 days (Můj den above = only mine, today + tomorrow)
+const KAL_IC = {schuzka: '🤝', zakaznik: '🎁', vyroba: '🏭', expedice: '🚚', dovolena: '🌴', skoleni: '🎓', ostatni: '📌'};
+async function drawKal() {
+  const box = $('#kal'); if (!box || !can('kalendar.html')) return;
+  const a = new Date(), b = new Date(); b.setDate(b.getDate() + 7);
+  const d10 = x => `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`;
+  let j; try { const r = await fetch(`/api/nastenky/kalendar?od=${d10(a)}&do=${d10(b)}`, {credentials: 'same-origin'}); if (!r.ok) return; j = await r.json(); } catch (e) { return; }
+  const me = ME.jmeno, today = d10(a);
+  const items = [...(j.udalosti || []).map(u => ({d: u.od.slice(0, 10) < today ? today : u.od.slice(0, 10), t: u.cely_den ? '' : u.od.slice(11, 16), ic: KAL_IC[u.kategorie] || '📌',
+      n: u.nazev, s: [u.misto ? '📍 ' + u.misto : '', (u.ucastnici || []).map(x => x.split(' ')[0]).join(', ')].filter(Boolean).join(' · '), mine: (u.ucastnici || []).includes(me), u: 'kalendar.html#u=' + u.id})),
+    ...(j.karty || []).filter(k => k.zakazka && !k.hotovo).map(k => ({d: k.termin.slice(0, 10), t: '', ic: '📦', n: 'Termín: ' + k.nazev.split(' — ')[0], s: '', mine: (k.clenove || []).includes(me), u: 'kalendar.html'}))]
+    .sort((x, y) => (x.d + (x.t || '00')).localeCompare(y.d + (y.t || '00')));
+  const dn = s => { const x = new Date(s + 'T12:00'), t0 = new Date(today + 'T12:00'), df = Math.round((x - t0) / 864e5);
+    return df === 0 ? 'Dnes' : df === 1 ? 'Zítra' : `${DNY[x.getDay()]} ${x.getDate()}. ${x.getMonth() + 1}.`; };
+  let last = '';
+  box.innerHTML = `<h2 class="sek">📅 Firemní kalendář · 7 dní</h2><div class="card">`
+    + (items.length ? items.slice(0, 10).map(x => { const h = x.d !== last ? `<div class="s" style="font-weight:700;margin:${last ? 8 : 0}px 0 2px;color:var(--hn)">${dn(x.d)}</div>` : ''; last = x.d;
+        return h + `<div class="click" data-u="${esc(x.u)}" style="display:flex;gap:8px;padding:4px 0;${x.mine ? 'font-weight:700' : ''}"><span style="width:42px;color:var(--mu);font-size:13px;flex:none">${x.t || ''}</span><span>${x.ic} ${esc(x.n)}${x.s ? `<span class="s" style="font-weight:400"> · ${esc(x.s)}</span>` : ''}</span></div>`; }).join('')
+      + (items.length > 10 ? `<div class="s" style="margin-top:6px">+ dalších ${items.length - 10}</div>` : '')
+      : `<div class="s">Příštích 7 dní nic naplánováno.</div>`)
+    + `<div class="akce" style="margin-top:10px"><button data-u="kalendar.html">📅 Celý kalendář</button><button data-u="kalendar.html#novy">➕ Přidat událost</button></div></div>`;
+  box.querySelectorAll('[data-u]').forEach(c => c.onclick = () => openPage(c.dataset.u));
+}
+
 async function drawDay() {
   const box = $('#den'); if (!box) return;
   const get = u => fetch(u, {credentials: 'same-origin', cache: 'no-store'}).then(r => r.ok ? r.json() : null).catch(() => null);
@@ -927,6 +952,7 @@ $('#zpet').onclick = () => CUR.startsWith('tym/') ? go('tym') : history.length >
 $('#obnov').onclick = () => { const f = FRAMES[CUR.slice(2)]; if (f) { const i = f.querySelector('iframe'); i.src = i.src; } };
 $('#ven').onclick = () => window.open('/' + CUR.slice(2), '_blank');
 $('#av').onclick = () => go('ucet');
+$('#kalb').onclick = () => openPage('kalendar.html');
 
 // ── start ──
 (async () => {
@@ -949,6 +975,7 @@ $('#av').onclick = () => go('ucet');
   if (ON_SERVER) { const r = await fetch('/api/tym/stav', {credentials: 'same-origin'}).catch(() => null); TYM_OK = !!(r && r.ok); if (TYM_OK) TYM = await r.json(); }
   const ini = (ME.jmeno || 'NW').split(' ').map(x => x[0]).slice(0, 2).join('').toUpperCase();
   $('#av').textContent = ini;
+  $('#kalb').hidden = !(ON_SERVER && can('kalendar.html'));
   drawNav(); tymBadge(); setInterval(() => { if (!document.hidden && TYM_OK) tymPoll(); }, 15000);
   addEventListener('hashchange', route);
   route();
