@@ -13,10 +13,26 @@
     ['nw_vyroba_notes', 'nota', 'map'],
     ['nw_vyroba_cas', 'cas', 'map'],
     ['nw_pack_times', 'pack', 'map'],
-    ['nw_firma_status', 'firma', 'map'],
+    ['nw_firma_status', 'firma', 'nested'],   // {card: {chip: value}} → one record per card+chip (Jan 2026-11-27: two people ticking
+                                              // different chips on the same order at once must never overwrite each other)
     ['nw_nabaleno', 'nab', 'set'],
   ];
   const BY_KEY = Object.fromEntries(STORES.map(s => [s[0], s]));
+  const SEP = '__';
+  let legacy = [];
+  const flat = o => { const r = {}; Object.entries(o || {}).forEach(([id, st]) => Object.entries(st || {}).forEach(([k, v]) => { r[id + SEP + k] = v; })); return r; };
+  const unflat = m => { const r = {}; Object.entries(m || {}).forEach(([key, v]) => { const i = key.lastIndexOf(SEP); if (i < 0) return;
+    (r[key.slice(0, i)] = r[key.slice(0, i)] || {})[key.slice(i + SEP.length)] = v; }); return r; };
+  // one-off: rewrite old whole-card records as per-chip records, then remove the old ones (values unchanged)
+  async function migrateLegacy(sh) {
+    if (!legacy.length) return;
+    const ids = new Set(legacy);
+    const ops = Object.entries(sh.firma).filter(([k]) => ids.has(k.slice(0, k.lastIndexOf(SEP))))
+      .map(([k, v]) => ({ action: 'put', id: `v__firma__${k}`, data: { v } }))
+      .concat(legacy.map(id => ({ action: 'delete', id: `v__firma__${id}` })));
+    for (let i = 0; i < ops.length; i += 400) await NWData.batch(NS, ops.slice(i, i + 400));
+    legacy = [];
+  }
 
   const rawGet = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
   const rawSetItem = Storage.prototype.setItem;
@@ -51,7 +67,7 @@
     STORES.forEach(([k, p, kind]) => {
       let v;
       try { v = JSON.parse(rawGet(k) || (kind === 'set' ? '[]' : '{}')); } catch (e) { v = kind === 'set' ? [] : {}; }
-      out[p] = kind === 'set' ? Object.fromEntries(v.map(x => [String(x), true])) : v;
+      out[p] = kind === 'set' ? Object.fromEntries(v.map(x => [String(x), true])) : kind === 'nested' ? flat(v) : v;
     });
     return out;
   }
@@ -60,7 +76,7 @@
     try {
       STORES.forEach(([k, p, kind]) => {
         const m = sh[p] || {};
-        rawSetItem.call(localStorage, k, JSON.stringify(kind === 'set' ? Object.keys(m) : m));
+        rawSetItem.call(localStorage, k, JSON.stringify(kind === 'set' ? Object.keys(m) : kind === 'nested' ? unflat(m) : m));
       });
     } catch (e) {} finally { applying = false; }
     try { loadProg(); loadNotes(); loadCas(); loadPackTimes(); loadNabaleno(); loadFirmaStatus(); render(); } catch (e) {}
@@ -68,9 +84,16 @@
   function fromItems(items) {
     if (!items.find(i => i.id === META)) return null;
     const sh = Object.fromEntries(STORES.map(s => [s[1], {}]));
+    legacy = [];
+    const ts = {};                                               // firma chip → time of the record it came from
+    const setChip = (key, v, t) => { if (!(key in ts) || (t || '') >= ts[key]) { sh.firma[key] = v; ts[key] = t || ''; } };
     items.forEach(i => {
       const m = i.id.match(/^v__(prog|nota|cas|pack|firma|nab)__(.+)$/);
-      if (m) sh[m[1]][m[2]] = i.data.v;
+      if (!m) return;
+      if (m[1] !== 'firma') { sh[m[1]][m[2]] = i.data.v; return; }
+      if (m[2].indexOf(SEP) >= 0) return setChip(m[2], i.data.v, i.updatedAt);
+      legacy.push(m[2]);                                         // old form: whole card in one record → expand per chip
+      Object.entries(i.data.v || {}).forEach(([k, v]) => setChip(m[2] + SEP + k, v, i.updatedAt));
     });
     return sh;
   }
@@ -126,6 +149,7 @@
     try {
       const sh = await fetchMaster();
       if (sh && stable(sh) !== stable(synced) && !dirty() && !timer) apply(sh);
+      if (sh && legacy.length) migrateLegacy(sh).catch(e => console.warn('vyroba firma migrace:', e));
       okStatus();
     } catch (e) {
       status('err', '⚠️ Nelze se připojit ke sdíleným datům — změny se ukládají u tebe a odešlou se po připojení.');
@@ -163,6 +187,8 @@
 
     if (master) {
       const lastSynced = JSON.parse(rawGet(SYNCED_KEY) || 'null');
+      if (lastSynced && lastSynced.firma && Object.keys(lastSynced.firma).some(k => k.indexOf(SEP) < 0))
+        lastSynced.firma = flat(lastSynced.firma);
       try {
         if (lastSynced) {
           const ops = diffOps(lastSynced, readLocal());  // offline edits since last sync, entry by entry
@@ -177,7 +203,9 @@
         status('err', '⚠️ Nepodařilo se uložit tvoje data do sdílené zálohy — zůstávají jen u tebe, nic se nepřepsalo. (' + e.message + ') Zkouším znovu…');
         setTimeout(init, 30000); return;
       }
-      apply(master); live = true; okStatus(); return;
+      apply(master); live = true; okStatus();
+      migrateLegacy(master).catch(e => console.warn('vyroba firma migrace:', e));
+      return;
     }
 
     if (!isMaster()) {
