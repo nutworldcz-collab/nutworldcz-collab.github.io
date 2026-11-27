@@ -108,6 +108,15 @@ h2.sek{font-family:"Exo 2",Arial,sans-serif;font-size:13px;letter-spacing:1.5px;
 #load{position:fixed;inset:0;z-index:50;background:var(--tm);display:grid;place-items:center;color:#fff;font-family:"Exo 2",Arial,sans-serif;transition:opacity .25s}
 #load img{width:110px;height:110px;border-radius:28px;display:block;margin:0 auto 14px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
 .err{color:var(--ru);font-weight:700}
+label.sw{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--li);cursor:pointer}
+label.sw:last-child{border-bottom:0}
+label.sw .i{font-size:22px;width:30px;text-align:center;flex:none}
+label.sw .tx{flex:1;display:flex;flex-direction:column}
+label.sw input{width:24px;height:24px;accent-color:var(--ze);flex:none}
+select.find{appearance:auto}
+.rule{padding:9px 0;border-bottom:1px solid var(--li)}.rule:last-child{border-bottom:0}
+.rule summary{cursor:pointer;color:var(--hn);font-size:14px;margin-top:4px}
+.chips{display:flex;flex-wrap:wrap;gap:6px 14px;margin:8px 0;font-size:14px}
 </style>
 </head>
 <body>
@@ -127,6 +136,7 @@ h2.sek{font-family:"Exo 2",Arial,sans-serif;font-size:13px;letter-spacing:1.5px;
   <section class="view" id="v-vice"><div class="wrap" id="vice"></div></section>
   <section class="view" id="v-instalace"><div class="wrap" id="instalace"></div></section>
   <section class="view" id="v-ucet"><div class="wrap" id="ucet"></div></section>
+  <section class="view" id="v-upozorneni"><div class="wrap" id="upozorneni"></div></section>
 </div>
 
 <nav id="nav"></nav>
@@ -230,9 +240,9 @@ function route() {
     markNav(file);
     return;
   }
-  const v = ['domu', 'skenovat', 'vice', 'instalace', 'ucet'].includes(h) ? h : 'domu';
+  const v = ['domu', 'skenovat', 'vice', 'instalace', 'ucet', 'upozorneni'].includes(h) ? h : 'domu';
   showView(v); markNav(v);
-  ({domu: drawHome, skenovat: drawScan, vice: drawMore, instalace: drawInstall, ucet: drawAccount})[v]();
+  ({domu: drawHome, skenovat: drawScan, vice: drawMore, instalace: drawInstall, ucet: drawAccount, upozorneni: drawPush})[v]();
 }
 function showView(v) { $('#v-' + v).classList.add('on'); }
 function markNav(k) { document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('a', b.dataset.k === k)); }
@@ -282,6 +292,7 @@ function drawHome() {
   $('#titul').textContent = 'Nutworld';
   const fav = STRANKY.filter(p => p.hlavni && can(p.soubor) && !navItems().includes(p.soubor)).slice(0, 8);
   $('#domu').innerHTML = `${installHint()}
+    <div id="pushhint"></div>
     <div class="hello"><img src="/pwa/ikona-192.png" alt=""><div><div class="g">${esc(greeting())}</div><div class="d">${today()}</div></div></div>
     ${ME.role === 'admin' ? '<div id="jan"></div>' : ''}
     ${ON_SERVER ? `<h2 class="sek">Zeptej se / zadej úkol</h2>
@@ -296,6 +307,7 @@ function drawHome() {
     $('#q').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); ask(); } });
   }
   if (ME.role === 'admin') drawJan();
+  pushHint();
 }
 
 // Jan's home: what needs him + numbers of the day (same data as the morning report)
@@ -361,6 +373,7 @@ function drawMore() {
   $('#vice').innerHTML = `<input class="find" id="find" type="search" placeholder="Hledat nástroj…" autocomplete="off"><div id="seznam"></div>
     <h2 class="sek">Aplikace</h2>
     <div class="list">
+      <div class="it" onclick="go('upozorneni')"><span class="i">🔔</span><div><div class="n">Upozornění</div><div class="p">zprávy do telefonu — co ti má chodit</div></div></div>
       <div class="it" onclick="go('instalace')"><span class="i">📲</span><div><div class="n">Instalace na telefon a počítač</div><div class="p">iPhone, iPad, Android, Windows, Mac</div></div></div>
       <div class="it" onclick="go('ucet')"><span class="i">👤</span><div><div class="n">Můj účet</div><div class="p">${esc(ME.jmeno || 'přihlášení')}</div></div></div>
     </div>`;
@@ -414,11 +427,124 @@ function drawAccount() {
   $('#titul').textContent = 'Můj účet';
   const ROLE = {admin: 'Jan — vše', plny: 'Plný přístup', vyroba: 'Výroba / balírna', obchod: 'Obchodník', marketing: 'Marketing'};
   $('#ucet').innerHTML = `<div class="card"><div class="h">${esc(ME.jmeno || 'Nepřihlášen')}</div><div class="s">${esc(ROLE[ME.role] || ME.role)}</div></div>
+    <a class="big b-l" href="#/upozorneni">🔔 Upozornění</a>
     <a class="big b-l" href="#/instalace">📲 Instalace</a>
     <button class="big b-l" id="obnovit">⟳ Načíst aplikaci znovu</button>
     ${ON_SERVER ? `<a class="big b-h" href="/_auth/logout">Odhlásit</a>` : ''}`;
   $('#obnovit').onclick = () => location.reload();
 }
+
+// ── phase 2: push notifications (server nw_push.py) ──
+const PUSH_OK = 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+const IOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
+const pushApi = async (path, body) => {
+  const r = await fetch('/api/push/' + path, body ? {method: 'POST', credentials: 'same-origin', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)} : {credentials: 'same-origin', cache: 'no-store'});
+  const j = await r.json().catch(() => ({chyba: 'Server neodpověděl.'}));
+  if (!r.ok || j.chyba) throw new Error(j.chyba || 'chyba ' + r.status);
+  return j;
+};
+const b64key = s => Uint8Array.from(atob(s.replace(/-/g, '+').replace(/_/g, '/') + '=='.slice(0, (4 - s.length % 4) % 4)), c => c.charCodeAt(0));
+async function mySub() {
+  if (!PUSH_OK) return null;
+  const reg = await navigator.serviceWorker.ready;
+  return reg.pushManager.getSubscription();
+}
+const DEV_NAME = () => ({iphone: 'iPhone', ipad: 'iPad', android: 'Android', 'mac-safari': 'Mac', 'mac-chrome': 'Mac', pc: 'Počítač'})[device()];
+
+async function pushHint() {
+  const box = $('#pushhint'); if (!box || !ON_SERVER || !PUSH_OK || ls.get('nw_push_hint_off')) return;
+  if (IOS && !STANDALONE) return;                       // install first (the install hint says so)
+  if (Notification.permission === 'denied') return;
+  const s = await mySub().catch(() => null); if (s) return;
+  box.innerHTML = `<div class="hint"><button class="x" aria-label="Zavřít">×</button><b>🔔 Zapni si upozornění</b><br>
+    Zpráva do telefonu, když se děje něco pro tebe. <a href="#/upozorneni">Nastavit →</a></div>`;
+  box.querySelector('.x').onclick = () => { ls.set('nw_push_hint_off', '1'); box.innerHTML = ''; };
+}
+
+async function drawPush() {
+  $('#titul').textContent = 'Upozornění';
+  const box = $('#upozorneni');
+  if (!ON_SERVER) { box.innerHTML = `<div class="card"><div class="s">Upozornění fungují jen na <b>nastroje.nutworld.cz/aplikace.html</b> (s přihlášením).</div></div>`; return; }
+  if (!PUSH_OK || (IOS && !STANDALONE)) {
+    box.innerHTML = `<div class="card"><div class="h">Nejdřív přidej Nutworld na plochu</div><div class="s">${IOS ? 'Na iPhonu a iPadu chodí upozornění jen do aplikace přidané na plochu (Safari → Sdílet → Přidat na plochu). Pak ji otevři z ikony a vrať se sem.' : 'Tenhle prohlížeč upozornění neumí. Zkus Chrome, Edge nebo Safari.'}</div><a class="big b-h" href="#/instalace">📲 Jak přidat na plochu</a></div>`;
+    return;
+  }
+  box.innerHTML = `<div class="card"><div class="s">Načítám…</div></div>`;
+  let st, sub;
+  try { [st, sub] = await Promise.all([pushApi('stav'), mySub()]); }
+  catch (e) { box.innerHTML = `<div class="card err">${esc(e.message)}</div>`; return; }
+  const here = sub && st.zarizeni.some(d => d.endpoint === sub.endpoint);
+  const denied = Notification.permission === 'denied';
+  let h = `<div class="card"><div class="h">${here ? '✅ Na tomhle zařízení zapnuto' : '🔕 Na tomhle zařízení vypnuto'}</div>
+    <div class="s">${here ? 'Zprávy chodí, i když je aplikace zavřená.' : denied ? 'Upozornění jsou v prohlížeči zakázaná — povol je v nastavení telefonu/prohlížeče u nastroje.nutworld.cz.' : 'Jedním klepnutím zapneš. Telefon se zeptá na povolení — dej Povolit.'}</div>
+    ${here ? `<button class="big b-z" id="p-test">📨 Poslat si zkušební upozornění</button><button class="big b-l" id="p-off">Vypnout na tomhle zařízení</button>`
+           : denied ? '' : `<button class="big b-h" id="p-on">🔔 Zapnout upozornění</button>`}
+    <div id="p-msg"></div></div>`;
+  h += `<h2 class="sek">Co mi má chodit</h2><div class="card">${st.kategorie.map(k => `
+    <label class="sw"><span class="i">${k.ikona}</span><span class="tx"><b>${esc(k.nazev)}</b><span class="s">${esc(k.popis)}${k.dostava === false ? ' <i>Teď ti nechodí — změníš níže v „Kdo dostává co“.</i>' : ''}</span></span>
+    <input type="checkbox" data-k="${k.key}" ${k.zapnuto ? 'checked' : ''} ${k.povinna || k.dostava === false ? 'disabled' : ''}></label>`).join('')}</div>`;
+  if (st.zarizeni.length) h += `<h2 class="sek">Moje zařízení</h2><div class="card">${st.zarizeni.map(d => `<div class="s">📱 ${esc(d.zarizeni || 'zařízení')} · od ${esc(String(d.od || '').slice(0, 10).split('-').reverse().join('. '))}${sub && d.endpoint === sub.endpoint ? ' · <b>toto</b>' : ''}</div>`).join('')}</div>`;
+  if (st.admin) h += `<div id="p-admin"></div>`;
+  box.innerHTML = h;
+  const msg = (t, err) => { $('#p-msg').innerHTML = `<div class="${err ? 'err' : 's'}" style="margin-top:8px">${esc(t)}</div>`; };
+  const on = $('#p-on'); if (on) on.onclick = async () => {
+    on.disabled = true;
+    try {
+      if (await Notification.requestPermission() !== 'granted') throw new Error('Bez povolení to nepůjde — zkus znovu a dej Povolit.');
+      const reg = await navigator.serviceWorker.ready;
+      const s = await reg.pushManager.subscribe({userVisibleOnly: true, applicationServerKey: b64key(st.klic)});
+      await pushApi('odber', {sub: s.toJSON(), zarizeni: DEV_NAME()});
+      ls.set('nw_push_hint_off', '1'); drawPush();
+    } catch (e) { msg(e.message, true); on.disabled = false; }
+  };
+  const off = $('#p-off'); if (off) off.onclick = async () => {
+    try { const ep = sub.endpoint; await sub.unsubscribe(); await pushApi('zrusit', {endpoint: ep}); drawPush(); } catch (e) { msg(e.message, true); }
+  };
+  const tst = $('#p-test'); if (tst) tst.onclick = async () => {
+    try { const j = await pushApi('test', {}); msg(j.odeslano ? `Odesláno (${j.odeslano} zař.) — za chvilku by mělo pípnout.` : 'Nic neodešlo — zkus upozornění vypnout a zapnout.', !j.odeslano); } catch (e) { msg(e.message, true); }
+  };
+  box.querySelectorAll('input[data-k]').forEach(c => c.onchange = async () => {
+    try { await pushApi('nastaveni', {kategorie: c.dataset.k, zapnuto: c.checked}); } catch (e) { c.checked = !c.checked; alert(e.message); }
+  });
+  if (st.admin) drawPushAdmin();
+}
+
+// Jan: who has notifications on, who gets which category, send a message to the team
+const ROLE_N = {admin: 'Jan', plny: 'Plný přístup', vyroba: 'Výroba / balírna', obchod: 'Obchod', marketing: 'Marketing'};
+async function drawPushAdmin() {
+  const box = $('#p-admin'); if (!box) return;
+  let p; try { p = await pushApi('prehled'); } catch (e) { box.innerHTML = `<div class="card err">${esc(e.message)}</div>`; return; }
+  const roles = [...new Set(p.lide.map(x => x.role).filter(Boolean))];
+  const opt = `<option value="vsichni">Všichni</option>${roles.map(r => `<option value="role:${esc(r)}">Role: ${esc(ROLE_N[r] || r)}</option>`).join('')}${p.lide.map(x => `<option value="${esc(x.jmeno)}">${esc(x.jmeno)}${x.zarizeni.length ? '' : ' (nemá zapnuto)'}</option>`).join('')}`;
+  const kdo = v => v === 'vsichni' ? 'všichni' : v.startsWith('role:') ? '👥 ' + (v === 'role:admin' ? 'Admin (Jan)' : ROLE_N[v.slice(5)] || v.slice(5)) : v;
+  box.innerHTML = `<h2 class="sek">📣 Poslat zprávu týmu</h2><div class="card">
+      <select id="pa-komu" class="find">${opt}</select>
+      <input id="pa-t" class="find" placeholder="Zpráva (např. Dnes končíme ve 14:00)" maxlength="120">
+      <input id="pa-x" class="find" placeholder="Podrobnosti (nepovinné)" maxlength="400">
+      <button class="big b-h" id="pa-go">Odeslat</button><div id="pa-msg"></div></div>
+    <h2 class="sek">Kdo dostává co</h2><div class="card">${p.kategorie.map(k => `<div class="rule"><b>${k.ikona} ${esc(k.nazev)}</b>
+      <div class="s">${k.vlastni ? 'Určuje se podle situace (obchodník zakázky, autor požadavku…)' : 'Komu: ' + (k.komu.length ? k.komu.map(kdo).map(esc).join(', ') : '<i>nikomu</i>')}</div>
+      ${k.vlastni ? '' : `<details><summary>Změnit</summary><div class="chips">${['role:admin', ...roles.filter(r => r !== 'admin').map(r => 'role:' + r), ...p.lide.map(x => x.jmeno)].map(v => `<label><input type="checkbox" data-rule="${k.key}" value="${esc(v)}" ${k.komu.includes(v) ? 'checked' : ''}> ${esc(kdo(v))}</label>`).join('')}</div><button class="big b-l" data-save="${k.key}">Uložit</button></details>`}</div>`).join('')}</div>
+    <h2 class="sek">Kdo má upozornění zapnutá</h2><div class="card">${p.lide.map(x => `<div class="s">${x.zarizeni.length ? '✅' : '—'} <b>${esc(x.jmeno)}</b> · ${esc(ROLE_N[x.role] || x.role || '')}${x.zarizeni.length ? ' · ' + x.zarizeni.map(esc).join(', ') : ''}${x.vypnuto.length ? ' · vypnul(a): ' + x.vypnuto.map(esc).join(', ') : ''}</div>`).join('')}</div>
+    <h2 class="sek">Naposledy odesláno</h2><div class="card">${p.log.length ? p.log.slice(0, 15).map(l => `<div class="s">${esc(l.kdy.slice(5, 16).replace('T', ' '))} · ${esc(l.titulek)} → ${l.zarizeni} zař.${l.komu.length ? ' (' + l.komu.map(esc).join(', ') + ')' : ''}</div>`).join('') : '<div class="s">Zatím nic.</div>'}</div>`;
+  $('#pa-go').onclick = async () => {
+    const t = $('#pa-t').value.trim(); if (!t) return;
+    try { const j = await pushApi('poslat', {komu: $('#pa-komu').value, titulek: t, text: $('#pa-x').value.trim()});
+      $('#pa-msg').innerHTML = `<div class="s" style="margin-top:8px">Odesláno na ${j.odeslano} zařízení.</div>`; $('#pa-t').value = ''; $('#pa-x').value = ''; }
+    catch (e) { $('#pa-msg').innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+  };
+  box.querySelectorAll('[data-save]').forEach(b => b.onclick = async () => {
+    const k = b.dataset.save, komu = [...box.querySelectorAll(`input[data-rule="${k}"]:checked`)].map(c => c.value);
+    try { await pushApi('pravidla', {kategorie: k, komu}); drawPushAdmin(); } catch (e) { alert(e.message); }
+  });
+}
+
+// a tapped notification while the app is open -> go to its place
+if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message', e => {
+  const u = e.data && e.data.nwOtevri; if (!u) return;
+  const x = new URL(u, location.origin);
+  if (x.pathname === '/aplikace.html') { location.hash = x.hash || '#/domu'; } else location.href = x.href;
+});
 
 // ── top bar buttons ──
 $('#zpet').onclick = () => history.length > 1 ? history.back() : go('domu');
