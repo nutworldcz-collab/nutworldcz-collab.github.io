@@ -165,7 +165,7 @@ let ALLOWED = null;          // Set of page files the role may open (null = all)
 
 // ── bottom menu per role (preview approved 27. 11. 2026); first allowed candidate wins in each slot ──
 const NAV = {
-  admin:     [['domu'], ['vyroba.html'], ['skenovat'], ['chat.html'], ['vice']],
+  admin:     [['domu'], ['wolf.html'], ['vyroba.html'], ['chat.html'], ['vice']],
   plny:      [['domu'], ['vyroba.html'], ['skenovat'], ['chat.html', 'nastenky.html'], ['vice']],
   vyroba:    [['domu'], ['vyroba.html'], ['skenovat'], ['stitky-kontrola.html', 'stitky.html'], ['vice']],
   obchod:    [['domu'], ['zakazy.html', 'nastenky.html'], ['nabidky.html'], ['chat.html', 'kalkulator.html'], ['vice']],
@@ -175,7 +175,7 @@ const NAV_LABEL = {domu: ['🏠', 'Domů'], skenovat: ['📷', 'Skenovat'], vice
   'vyroba.html': ['🏭', 'Výroba'], 'chat.html': ['💬', 'Chat'], 'nastenky.html': ['📌', 'Nástěnky'],
   'stitky-kontrola.html': ['🏷️', 'Štítky'], 'stitky.html': ['🏷️', 'Štítky'], 'zakazy.html': ['📋', 'Zakázky'],
   'nabidky.html': ['🧾', 'Nabídky'], 'kalkulator.html': ['🧮', 'Kalkulátor'], 'bannery.html': ['🖼️', 'Bannery'],
-  'popupy.html': ['💬', 'Popupy']};
+  'popupy.html': ['💬', 'Popupy'], 'wolf.html': ['🐺', 'Přehled']};
 
 function can(soubor) {
   const p = PAGE[soubor];
@@ -376,6 +376,7 @@ function drawMore() {
   $('#vice').innerHTML = `<input class="find" id="find" type="search" placeholder="Hledat nástroj…" autocomplete="off"><div id="seznam"></div>
     <h2 class="sek">Aplikace</h2>
     <div class="list">
+      <div class="it" onclick="go('skenovat')"><span class="i">📷</span><div><div class="n">Skenovat</div><div class="p">QR na krabici, fotka dokladu</div></div></div>
       <div class="it" onclick="go('upozorneni')"><span class="i">🔔</span><div><div class="n">Upozornění</div><div class="p">zprávy do telefonu — co ti má chodit</div></div></div>
       <div class="it" onclick="go('instalace')"><span class="i">📲</span><div><div class="n">Instalace na telefon a počítač</div><div class="p">iPhone, iPad, Android, Windows, Mac</div></div></div>
       <div class="it" onclick="go('ucet')"><span class="i">👤</span><div><div class="n">Můj účet</div><div class="p">${esc(ME.jmeno || 'přihlášení')}</div></div></div>

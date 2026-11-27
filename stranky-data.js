@@ -681,15 +681,7 @@ window.NW_STRANKY = [
   "skupina": "jan",
   "ikona": "🐺",
   "nazev": "Wolf Leader Board",
-  "popis": "Janův přehled — upozornění, KPI, kalendář, úkoly, obchodníci"
- },
- {
-  "soubor": "ja.html",
-  "skupina": "jan",
-  "ikona": "📈",
-  "nazev": "Dashboard (klasický)",
-  "popis": "Starší Janův přehled — reklamy, e-maily, Trello, úkoly",
-  "stitek": "nahrazuje Wolf"
+  "popis": "Jednatelský přehled — obraty obchodníků po firmách, e-shop CZ+SK, reklamy, pohledávky, e-maily, úkoly, kalendář, rozvrh, poznámky (sloučeno s Já)"
  },
  {
   "soubor": "ukoly.html",
