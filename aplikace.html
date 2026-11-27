@@ -1015,7 +1015,7 @@ async function drawPich() {
       <div class="s">${open ? (open.typ === 'koureni' ? '🚬 Kouříš od' : '☕ Pauza od') : inWork ? 'Jsi v práci od' : d.from && d.to ? 'Dnes odpracováno' : 'Dnes ještě nepíchnuto'}</div>
       <div style="font:800 34px 'Exo 2',Arial;color:var(--tm);margin:4px 0">${open ? esc(open.od) : inWork ? esc(d.from) : d.from && d.to ? hm(workM(d)) : '—'}</div>
       ${d.from ? `<div class="s">${esc(d.from)} – ${esc(d.to || '…')} ${badge(d)} · ${esc((j.smeny[d.smena] || {}).nazev || '')}${pz.length ? ` · pauzy ${used} / ${sm.pauza} min` : ''}</div>` : ''}
-      ${!d.from ? `<select class="find" id="p-sm" style="margin-top:10px">${Object.entries(j.smeny).map(([k, v]) => `<option value="${k}">${esc(v.nazev)} · pauza ${v.pauza} min</option>`).join('')}</select>
+      ${!d.from ? `<div class="s" style="margin-top:8px">${esc((j.smeny[j.ja.smena] || j.smeny.volna).nazev)} · pauza ${(j.smeny[j.ja.smena] || j.smeny.volna).pauza} min</div>
         <button class="big b-h" id="p-in" style="font-size:19px;padding:18px">✅ Přišel(a) jsem — načíst QR</button>` : ''}
       ${inWork && !open ? `<div style="display:flex;gap:8px"><button class="big b-l" id="p-ko" style="flex:1">🚬 Kouření</button><button class="big b-l" id="p-ji" style="flex:1">☕ Pauza na jídlo</button></div>
         <button class="big b-z" id="p-out" style="font-size:19px;padding:18px">👋 Odcházím — načíst QR</button>` : ''}
@@ -1029,7 +1029,9 @@ async function drawPich() {
           <span style="flex:1">${esc(r.from || '?')} – ${esc(r.to || '…')} ${badge(r)}${pauseM(r) ? `<span class="s"> · pauzy ${pauseM(r)} min</span>` : ''}${r.note ? `<span class="s"> · ${esc(r.note)}</span>` : ''}</span><b>${r.from && r.to ? hm(workM(r)) : ''}</b></div>`; }).join('') || '<div class="s" style="margin-top:6px">Tento měsíc zatím nic.</div>'}
       <button class="big b-l" id="p-add">✏️ Zapsat / opravit den ručně</button></div>
     <div class="s" style="margin:6px 4px">📍 = načteno QR na provozovně · ⚠️ = bez QR nebo mimo provozovnu · ✍️ = zapsáno ručně. Každou pauzu (kouření i jídlo) si odpíchni — do hodin se nepočítá. Honza vidí v píchačkách totéž co ty.</div>
+    <div id="p-dok"></div>
     ${ME.role === 'admin' ? '<div id="p-adm"></div>' : ''}`;
+  pichDocs();
   const msg = (t, bad) => $('#p-m').innerHTML = `<span class="${bad ? 'err' : ''}">${esc(t)}</span>`;
   const send = async (body, el) => { if (el) el.disabled = true; try { const r = await pApi(body); const o = (r.zaznam && r.zaznam.overeni) || {}, v = o[body.akce === 'prisel' ? 'prichod' : 'odchod'];
       if (v && !v.ok) toast({title: '⚠️ Zapsáno s označením', body: !v.qr ? 'Bez QR kódu.' : v.m == null ? 'Poloha se nepodařila zjistit.' : `Telefon byl ${v.m} m od provozovny.`});
@@ -1040,7 +1042,7 @@ async function drawPich() {
       r = {qr: PICH_QR, ...p}; PICH_QR = null; }
     else r = await scanQR(akce === 'prisel' ? '✅ Příchod' : '👋 Odchod');
     if (!r) return;
-    send({akce, ...r, ...(akce === 'prisel' ? {smena: $('#p-sm') ? $('#p-sm').value : 'volna'} : {})}, el);
+    send({akce, ...r}, el);
   };
   if ($('#p-in')) $('#p-in').onclick = e => clock('prisel', e.target);
   if ($('#p-out')) $('#p-out').onclick = e => clock('odchod', e.target);
@@ -1064,6 +1066,27 @@ async function drawPich() {
   $('#p-add').onclick = () => edit(j.dnes);
   box.querySelectorAll('[data-d]').forEach(el => el.onclick = () => edit(el.dataset.d));
   if (ME.role === 'admin') pichAdmin();
+}
+
+// 📄 documents to confirm (BOZP, hygiene, company rules, GDPR…) — open, then „Přečetl(a) jsem a rozumím“
+async function pichDocs() {
+  const box = $('#p-dok'); if (!box) return;
+  let j; try { const r = await fetch('/api/nastenky/pichacky/dokumenty', {credentials: 'same-origin', cache: 'no-store'}); if (!r.ok) return; j = await r.json(); } catch (e) { return; }
+  if (!j.dokumenty.length) return;
+  const done = id => j.potvrzeni.find(p => p.dokument === id);
+  const open = j.dokumenty.filter(d => !done(d.id)).length;
+  const opened = new Set(JSON.parse(sessionStorage.getItem('nw_dok_open') || '[]'));
+  box.innerHTML = `<h2 class="sek">📄 Dokumenty ${open ? `<span class="tag t-r">${open} k potvrzení</span>` : '<span class="tag t-g">vše potvrzeno</span>'}</h2><div class="card">`
+    + j.dokumenty.map(d => { const x = done(d.id);
+      return `<div style="padding:10px 0;border-bottom:1px solid var(--li)"><div style="display:flex;gap:8px;align-items:center"><b style="flex:1">${esc(d.nazev)}</b>${x ? `<span class="tag t-g">✓ ${esc(x.cas.slice(8, 10) + '. ' + x.cas.slice(5, 7) + '.')}</span>` : ''}</div>
+        <div style="display:flex;gap:8px;margin-top:6px"><button class="big b-l" style="flex:1;margin:0;padding:10px" data-open="${d.id}">📖 Otevřít</button>
+        ${x ? '' : `<button class="big b-h" style="flex:1.4;margin:0;padding:10px" data-ok="${d.id}" ${opened.has(d.id) ? '' : 'disabled title="Nejdřív otevři"'}>✅ Přečetl(a) jsem a rozumím</button>`}</div></div>`; }).join('')
+    + `<div class="s" style="margin-top:8px">Potvrzení se uloží k tvé píchačce (datum, čas, přesné znění dokumentu).</div></div>`;
+  box.querySelectorAll('[data-open]').forEach(b => b.onclick = () => { opened.add(b.dataset.open); sessionStorage.setItem('nw_dok_open', JSON.stringify([...opened]));
+    window.open('/api/nastenky/pichacky/dokument/' + b.dataset.open, '_blank'); const ok = box.querySelector(`[data-ok="${b.dataset.open}"]`); if (ok) { ok.disabled = false; ok.title = ''; } });
+  box.querySelectorAll('[data-ok]').forEach(b => b.onclick = async () => { b.disabled = true;
+    try { const r = await fetch('/api/nastenky/pichacky/potvrdit', {method: 'POST', credentials: 'same-origin', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({id: b.dataset.ok})});
+      const x = await r.json(); if (!r.ok || x.chyba) throw new Error(x.chyba || 'chyba'); pichDocs(); } catch (e) { alert(e.message); b.disabled = false; } });
 }
 
 // Jan: site position (stand at the QR on the spot and tap), QR for print, new QR (old one stops working)

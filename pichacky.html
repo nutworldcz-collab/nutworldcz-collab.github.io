@@ -904,6 +904,7 @@ input[type="text"]:focus { border-color: var(--brown); }
       <button class="dash-hbtn" style="padding:7px 10px" onclick="chMonth(1)">›</button>
     </div>
     <button class="dash-hbtn" onclick="openAdd()">+ Přidat osobu</button>
+    <button class="dash-hbtn" onclick="openDocs()" title="Dokumenty k potvrzení (BOZP, hygiena, pravidla, GDPR)">📄 Dokumenty</button>
     <button class="dash-hbtn" onclick="openSync()" title="Synchronizace mezi zařízeními">⇄ Sync</button>
     <button class="dash-hbtn" onclick="lock()">🔒</button>
   </header>
@@ -1025,13 +1026,32 @@ input[type="text"]:focus { border-color: var(--brown); }
 <div class="add-overlay" id="rate-overlay" hidden>
   <div class="add-card">
     <div class="modal-title" style="margin-bottom:4px" id="rate-person-name"></div>
-    <div class="modal-sub" style="margin-bottom:20px">Hodinová sazba</div>
+    <div class="modal-sub" style="margin-bottom:20px">Sazba a směna</div>
     <div class="f-label" style="margin-bottom:6px">Kč / hodina</div>
     <input type="text" id="rate-input" placeholder="např. 250" inputmode="numeric">
+    <div class="f-label" style="margin:14px 0 6px">Směna (píchá se v aplikaci)</div>
+    <select id="rate-smena" style="width:100%;padding:10px;border-radius:10px;border:1.5px solid #d4c0a8;font-size:15px">
+      <option value="volna">Brigáda — od–do podle domluvy (pauza 30 min)</option>
+      <option value="8h">8 h směna 6:00–14:30 (pauza 30 min)</option>
+      <option value="12h">12 h směna 6:00–18:00 (pauza 60 min)</option></select>
     <div class="modal-actions">
       <button class="btn-sec" onclick="closeRate()">Zrušit</button>
       <button class="btn-prim" onclick="saveRate()">Uložit</button>
     </div>
+  </div>
+</div>
+
+<!-- ═══════════════ DOCUMENTS (server) ═══════════════ -->
+<div class="add-overlay" id="docs-overlay" hidden onclick="if(event.target===this)this.hidden=true">
+  <div class="add-card" style="max-width:640px;max-height:88vh;overflow:auto">
+    <div class="modal-title" style="margin-bottom:4px">📄 Dokumenty pro pracovníky</div>
+    <div class="modal-sub" style="margin-bottom:14px">Pracovník je v aplikaci (Píchačka) otevře a potvrdí „Přečetl(a) jsem a rozumím“. K jeho píchačce se uloží potvrzení s časem a otiskem souboru.</div>
+    <div class="f-label">Nahrát dokument</div>
+    <input type="text" id="doc-name" placeholder="Název, např. BOZP, Hygiena balírna, Pravidla firmy, GDPR" style="margin-bottom:8px">
+    <input type="file" id="doc-file" accept=".pdf,.docx,.jpg,.jpeg,.png,.html,application/pdf">
+    <div class="modal-actions" style="margin-top:10px"><button class="btn-prim" onclick="uploadDoc()">⬆ Nahrát</button></div>
+    <div id="docs-body" style="margin-top:14px">Načítám…</div>
+    <div class="modal-actions"><button class="btn-sec" onclick="document.getElementById('docs-overlay').hidden=true">Zavřít</button></div>
   </div>
 </div>
 
@@ -1440,11 +1460,42 @@ function renderTotals() {
   }
 }
 
+// ── DOCUMENTS (server /api/nastenky/pichacky/…) ──
+const docApi = async (path, body) => { const r = await fetch('/api/nastenky/pichacky/' + path, body ? {method: 'POST', credentials: 'same-origin', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)} : {credentials: 'same-origin', cache: 'no-store'});
+  const j = await r.json().catch(() => ({chyba: 'Dokumenty jsou jen na nastroje.nutworld.cz'})); if (!r.ok || j.chyba) throw new Error(j.chyba || 'chyba ' + r.status); return j; };
+const escH = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+async function openDocs() {
+  document.getElementById('docs-overlay').hidden = false;
+  const box = document.getElementById('docs-body');
+  let j; try { j = await docApi('dokumenty'); } catch (e) { box.innerHTML = `<div style="color:#c0392b">${escH(e.message)}</div>`; return; }
+  const ppl = db.people.filter(p => (p.type || '') !== 'agentura');
+  const ok = (pid, did) => j.potvrzeni.find(p => p.osoba === pid && p.dokument === did);
+  box.innerHTML = !j.dokumenty.length ? '<div style="color:#8a6a4a">Zatím žádný dokument — nahraj první nahoře.</div>' :
+    `<div style="overflow-x:auto"><table style="border-collapse:collapse;width:100%;font-size:13px"><tr><th style="text-align:left;padding:6px">Dokument</th>${ppl.map(p => `<th style="padding:6px;font-size:11px">${escH(p.name.split(' ')[0])}</th>`).join('')}<th></th></tr>`
+    + j.dokumenty.map(d => `<tr style="border-top:1px solid #eadbc9"><td style="padding:6px"><a href="/api/nastenky/pichacky/dokument/${d.id}" target="_blank" style="color:#83502e;font-weight:700">${escH(d.nazev)}</a><br><small style="color:#8a6a4a">${escH(d.nahrano.replace('T', ' '))}</small></td>`
+      + ppl.map(p => { const x = ok(p.id, d.id); return `<td style="text-align:center" title="${x ? 'potvrzeno ' + escH(x.cas.replace('T', ' ')) : 'nepotvrzeno'}">${x ? '✅' : '—'}</td>`; }).join('')
+      + `<td><button class="btn-sec" style="padding:4px 8px;font-size:12px" onclick="delDoc('${d.id}','${escH(d.nazev).replace(/'/g, '')}')">🗑</button></td></tr>`).join('')
+    + `</table></div><div style="margin-top:12px;font-size:13px"><b>Potvrzení k tisku:</b> ${ppl.map(p => `<a href="/api/nastenky/pichacky/potvrzeni/${p.id}" target="_blank" style="color:#83502e;margin-right:10px">${escH(p.name)}</a>`).join('')}</div>`;
+}
+async function uploadDoc() {
+  const f = document.getElementById('doc-file').files[0], n = document.getElementById('doc-name').value.trim();
+  if (!f || !n) return alert('Vyplň název a vyber soubor.');
+  if (f.size > 15e6) return alert('Max 15 MB.');
+  const data = await new Promise(ok => { const r = new FileReader(); r.onload = () => ok(r.result); r.readAsDataURL(f); });
+  try { await docApi('dokumenty', {nazev: n, nazev_souboru: f.name, mime: f.type || (f.name.endsWith('.docx') ? 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' : ''), data});
+    document.getElementById('doc-name').value = ''; document.getElementById('doc-file').value = ''; openDocs(); } catch (e) { alert(e.message); }
+}
+async function delDoc(id, n) {
+  if (!confirm(`Skrýt dokument „${n}“ pracovníkům? Potvrzení, která už dali, zůstanou jako doklad.`)) return;
+  try { await docApi(`dokumenty/${id}/smazat`, {}); openDocs(); } catch (e) { alert(e.message); }
+}
+
 // ── RATE MODAL ──
 function openRate() {
   const person = db.people.find(p=>p.id===cur.person);
   document.getElementById('rate-person-name').textContent = person?.name || '';
   document.getElementById('rate-input').value = person?.rate || '';
+  document.getElementById('rate-smena').value = person?.smena || 'volna';
   document.getElementById('rate-overlay').hidden = false;
   setTimeout(() => document.getElementById('rate-input').focus(), 100);
 }
@@ -1453,7 +1504,7 @@ function saveRate() {
   const val = parseInt(document.getElementById('rate-input').value, 10);
   if (isNaN(val) || val < 0) { alert('Zadej platné číslo (Kč/h).'); return; }
   const person = db.people.find(p=>p.id===cur.person);
-  if (person) person.rate = val;
+  if (person) { person.rate = val; person.smena = document.getElementById('rate-smena').value; }
   save();
   closeRate();
   renderTotals();
