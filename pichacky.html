@@ -997,6 +997,9 @@ input[type="text"]:focus { border-color: var(--brown); }
       </div>
     </div>
     <div class="calc-display" id="m-calc">—</div>
+    <div class="f-label" style="margin:4px 0 6px">Pauzy (kouření, jídlo) — nepočítají se do hodin</div>
+    <div id="m-pauzy"></div>
+    <button type="button" class="btn-sec" style="font-size:13px;padding:6px 12px;margin:4px 0 12px" onclick="addPauseRow()">+ Přidat pauzu</button>
     <div class="type-row" id="type-row"></div>
     <div class="f-label" style="margin-bottom:6px">Poznámka</div>
     <input type="text" id="m-note" placeholder="home office, sklad, výroba…">
@@ -1537,6 +1540,7 @@ function openDay(dt, d, dow) {
   document.getElementById('m-from').value = rec.from||'';
   document.getElementById('m-to').value   = rec.to||'';
   document.getElementById('m-note').value = rec.note||'';
+  M_PAUZY = JSON.parse(JSON.stringify(rec.pauzy || [])); drawPauseRows();
 
   renderTypeButtons();
   updCalc();
@@ -1556,14 +1560,25 @@ function renderTypeButtons() {
   });
 }
 
+// breaks in the day dialog (same rec.pauzy as clocked in the app)
+let M_PAUZY = [];
+function drawPauseRows() {
+  document.getElementById('m-pauzy').innerHTML = M_PAUZY.map((p, i) => `<div style="display:flex;gap:6px;align-items:center;margin-bottom:6px">
+    <select onchange="M_PAUZY[${i}].typ=this.value" style="padding:6px;border-radius:8px;border:1.5px solid #d4c0a8"><option value="koureni" ${p.typ === 'koureni' ? 'selected' : ''}>🚬 kouření</option><option value="jidlo" ${p.typ !== 'koureni' ? 'selected' : ''}>☕ jídlo</option></select>
+    <input type="time" value="${p.od || ''}" oninput="M_PAUZY[${i}].od=this.value;updCalc()" style="flex:1">–<input type="time" value="${p.do || ''}" oninput="M_PAUZY[${i}].do=this.value;updCalc()" style="flex:1">
+    <button type="button" onclick="M_PAUZY.splice(${i},1);drawPauseRows();updCalc()" style="border:0;background:none;font-size:18px;cursor:pointer;color:#c0392b">×</button></div>`).join('')
+    || '<div style="font-size:13px;color:#8a6a4a;margin-bottom:4px">Žádná pauza.</div>';
+}
+function addPauseRow() { M_PAUZY.push({typ: 'koureni', od: '', do: ''}); drawPauseRows(); }
 function updCalc() {
   const from = document.getElementById('m-from').value;
   const to   = document.getElementById('m-to').value;
-  const mins = calcMins(from, to);
+  const pres = calcMins(from, to), pz = pauseMins({pauzy: M_PAUZY});
+  const mins = pres === null ? null : Math.max(0, pres - pz);
   const el = document.getElementById('m-calc');
   if (mins!==null) {
     const h=Math.floor(mins/60), m=mins%60;
-    el.innerHTML = `${h}<small>h</small>${m?` ${m}<small>m</small>`:''}`;
+    el.innerHTML = `${h}<small>h</small>${m?` ${m}<small>m</small>`:''}` + (pz ? `<small style="font-size:13px;display:block;${pz > pauseAllowance({from, to}) ? 'color:#c0392b' : ''}">po odečtení pauz ${pz} min · nárok ${pauseAllowance({from, to})} min</small>` : '');
   } else {
     el.innerHTML = '<small style="font-size:16px">zadej čas příchodu a odchodu</small>';
   }
@@ -1577,7 +1592,8 @@ function saveDay() {
   if (!from && !to && !note && selType==='work') {
     delete db.records[key];
   } else {
-    db.records[key] = {...(db.records[key] || {}), from, to, type:selType, note};   // keep app breaks + verification
+    const pauzy = M_PAUZY.filter(p => p.od).map(p => ({od: p.od, ...(p.do ? {do: p.do} : {}), typ: p.typ === 'koureni' ? 'koureni' : 'jidlo'}));
+    db.records[key] = {...(db.records[key] || {}), from, to, type:selType, note, pauzy};   // keep app verification
   }
   save();
   closeDay();

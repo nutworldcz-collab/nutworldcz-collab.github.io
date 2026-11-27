@@ -1065,12 +1065,22 @@ async function drawPich() {
       <input class="find" type="date" id="pe-d" style="margin-top:10px" value="${k || j.dnes}" max="${j.dnes}">
       <div style="display:flex;gap:8px"><label style="flex:1" class="s">Příchod<input class="find" type="time" id="pe-o" value="${esc(r.from || '')}"></label>
         <label style="flex:1" class="s">Odchod<input class="find" type="time" id="pe-t" value="${esc(r.to || '')}"></label></div>
+      <div class="s" style="margin:2px 0 4px">Pauzy (kouření, jídlo):</div><div id="pe-pz"></div>
+      <button type="button" class="big b-l" id="pe-addpz" style="margin:0 0 8px;padding:9px">+ Přidat pauzu</button>
       <input class="find" id="pe-n" maxlength="200" placeholder="Poznámka (proč ručně)" value="${esc(r.note || '')}">
       <button class="big b-h" id="pe-ok">Uložit</button><button class="big b-l" id="pe-x">Zrušit</button></div>`;
     document.body.appendChild(s);
     s.onclick = e => { if (e.target === s) s.remove(); }; $('#pe-x').onclick = () => s.remove();
-    $('#pe-d').onchange = e => { const x = j.dny[e.target.value] || {}; $('#pe-o').value = x.from || ''; $('#pe-t').value = x.to || ''; $('#pe-n').value = x.note || ''; };
-    $('#pe-ok').onclick = async () => { try { await pApi({datum: $('#pe-d').value, od: $('#pe-o').value, do: $('#pe-t').value, pozn: $('#pe-n').value}); s.remove(); drawPich(); } catch (e) { alert(e.message); } };
+    let PZ = JSON.parse(JSON.stringify(r.pauzy || []));
+    const drawPz = () => { $('#pe-pz').innerHTML = PZ.map((p, i) => `<div style="display:flex;gap:6px;align-items:center;margin-bottom:6px">
+        <select class="find" data-i="${i}" data-k="typ" style="margin:0;flex:1.2"><option value="koureni" ${p.typ === 'koureni' ? 'selected' : ''}>🚬 kouření</option><option value="jidlo" ${p.typ !== 'koureni' ? 'selected' : ''}>☕ jídlo</option></select>
+        <input class="find" type="time" data-i="${i}" data-k="od" value="${esc(p.od || '')}" style="margin:0;flex:1"><input class="find" type="time" data-i="${i}" data-k="do" value="${esc(p.do || '')}" style="margin:0;flex:1">
+        <button type="button" class="tk-ib" data-x="${i}" style="font-size:18px">×</button></div>`).join('') || '<div class="s">Žádná pauza.</div>';
+      $('#pe-pz').querySelectorAll('[data-k]').forEach(el => el.onchange = () => { PZ[el.dataset.i][el.dataset.k] = el.value; });
+      $('#pe-pz').querySelectorAll('[data-x]').forEach(el => el.onclick = () => { PZ.splice(+el.dataset.x, 1); drawPz(); }); };
+    drawPz(); $('#pe-addpz').onclick = () => { PZ.push({typ: 'koureni', od: '', do: ''}); drawPz(); };
+    $('#pe-d').onchange = e => { const x = j.dny[e.target.value] || {}; $('#pe-o').value = x.from || ''; $('#pe-t').value = x.to || ''; $('#pe-n').value = x.note || ''; PZ = JSON.parse(JSON.stringify(x.pauzy || [])); drawPz(); };
+    $('#pe-ok').onclick = async () => { try { await pApi({datum: $('#pe-d').value, od: $('#pe-o').value, do: $('#pe-t').value, pozn: $('#pe-n').value, pauzy: PZ.filter(p => p.od)}); s.remove(); drawPich(); } catch (e) { alert(e.message); } };
   };
   $('#p-add').onclick = () => edit(j.dnes);
   box.querySelectorAll('[data-d]').forEach(el => el.onclick = () => edit(el.dataset.d));
