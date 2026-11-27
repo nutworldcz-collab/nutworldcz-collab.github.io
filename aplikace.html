@@ -796,7 +796,8 @@ function tkSheet(id) {
     <button class="big b-l" data-a="reply">↩️ Odpovědět</button>
     ${m.kdo === me && m.text ? `<button class="big b-l" data-a="edit">✏️ Upravit text</button>` : ''}
     ${m.text ? `<button class="big b-l" data-a="copy">📋 Kopírovat text</button>` : ''}
-    ${ME.role === 'admin' ? `<button class="big b-z" data-a="ukol">✅ Udělat z toho úkol (Wolf)</button>` : ''}
+    ${ON_SERVER ? `<button class="big b-z" data-a="kal">📅 Do firemního kalendáře</button>` : ''}
+    ${ME.role === 'admin' ? `<button class="big b-l" data-a="ukol">✅ Můj úkol (jen na Wolf)</button>` : ''}
     ${m.kdo === me || ME.role === 'admin' ? `<button class="big b-l" data-a="del" style="color:var(--ru)">🗑 Smazat</button>` : ''}
     <button class="big b-l" data-a="x">Zavřít</button></div>`;
   document.body.appendChild(s);
@@ -807,6 +808,7 @@ function tkSheet(id) {
     if (a === 'reply') { s.remove(); TK_REPLY = m; $('#tk-reply').hidden = false; $('#tk-reply').innerHTML = `↩️ <b>${esc(m.kdo)}</b>: ${esc((m.text || '📎').slice(0, 60))} <button style="margin-left:auto" onclick="TK_REPLY=null;this.parentNode.hidden=true">×</button>`; $('#tk-text').focus(); }
     if (a === 'edit') { s.remove(); TK_EDIT = m; TK_REPLY = null; const ta = $('#tk-text'); ta.value = m.text; ta.dispatchEvent(new Event('input')); ta.focus();
       $('#tk-reply').hidden = false; $('#tk-reply').innerHTML = `✏️ Upravuješ zprávu <button style="margin-left:auto" onclick="TK_EDIT=null;$('#tk-text').value='';this.parentNode.hidden=true">Zrušit</button>`; return; }
+    if (a === 'kal') { s.remove(); return tkKal(m); }
     if (a === 'copy') { s.remove(); navigator.clipboard && navigator.clipboard.writeText(m.text); }
     if (a === 'ukol') { const due = prompt('Termín úkolu (RRRR-MM-DD), prázdné = zítra:', ''); s.remove(); if (due === null) return;
       try { await tymApi('ukol', {zprava: id, due: due.trim()}); toast({title: '✅ Úkol uložen', body: 'Najdeš ho na Wolfu v Úkolech.'}); } catch (x) { alert(x.message); } }
@@ -815,6 +817,42 @@ function tkSheet(id) {
   };
 }
 let TK_EDIT = null;
+// message -> event in the company calendar (kalendar.html, /api/nastenky/kalendar): whole team sees it, reminder to the app
+const KAL_KAT = {schuzka: '🤝 Schůzka', zakaznik: '🎁 Zákazník', vyroba: '🏭 Výroba', expedice: '🚚 Expedice', dovolena: '🌴 Dovolená / nepřítomnost', skoleni: '🎓 Školení', ostatni: '📌 Ostatní'};
+function tkKal(m) {
+  const me = TYM ? TYM.ja : ME.jmeno, z = new Date(); z.setDate(z.getDate() + 1);
+  const people = [...new Set([me, m.kdo !== 'NutWorldka' ? m.kdo : me])];
+  const all = [...new Set([me, ...(TK ? TK.clenove : [])])];
+  const s = document.createElement('div'); s.className = 'sheet';
+  s.innerHTML = `<div class="in" style="max-height:88vh;overflow:auto"><b style="font-size:17px">📅 Do firemního kalendáře</b>
+    <input class="find" id="kl-n" style="margin-top:10px" maxlength="200" value="${esc((m.text || '').replace(/\s+/g, ' ').slice(0, 120))}" placeholder="Co (název)">
+    <div style="display:flex;gap:8px"><input class="find" id="kl-d" type="date" value="${z.toISOString().slice(0, 10)}"><input class="find" id="kl-t" type="time" value="09:00"></div>
+    <label class="s" style="display:flex;gap:6px;align-items:center;margin:2px 0 8px"><input type="checkbox" id="kl-cd"> celý den</label>
+    <select class="find" id="kl-k">${Object.entries(KAL_KAT).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select>
+    <div class="s" style="margin:4px 0">Kdo se účastní (dostane připomínku):</div>
+    <div class="chips">${all.map(n => `<label><input type="checkbox" class="kl-u" value="${esc(n)}" ${people.includes(n) ? 'checked' : ''}> ${esc(n)}</label>`).join('')}</div>
+    <label class="s" style="display:flex;gap:6px;align-items:center;margin:6px 0"><input type="checkbox" id="kl-v"> 🔒 vidí jen účastníci</label>
+    <button class="big b-h" id="kl-ok">Uložit do kalendáře</button><button class="big b-l" id="kl-x">Zrušit</button></div>`;
+  document.body.appendChild(s);
+  $('#kl-x').onclick = () => s.remove();
+  s.onclick = e => { if (e.target === s) s.remove(); };
+  $('#kl-ok').onclick = async () => {
+    const nazev = $('#kl-n').value.trim(), d = $('#kl-d').value, cd = $('#kl-cd').checked, tm = $('#kl-t').value || '09:00';
+    if (!nazev || !d) return alert('Vyplň název a datum.');
+    const od = cd ? d : `${d}T${tm}`, end = cd ? d : `${d}T${String(Math.min(23, +tm.slice(0, 2) + 1)).padStart(2, '0')}${tm.slice(2)}`;
+    const k = TYM && TYM.kanaly.find(x => x.id === (TK && TK.id));
+    const body = {nazev, od, do: end, cely_den: cd, kategorie: $('#kl-k').value, ucastnici: [...document.querySelectorAll('.kl-u:checked')].map(c => c.value),
+      viditelnost: $('#kl-v').checked ? 'ucastnici' : 'vsichni', pripomenout: cd ? 0 : 60,
+      popis: `Z týmového chatu${k ? (k.typ === 'dm' ? ' (soukromá zpráva)' : ' · # ' + k.nazev) : ''} — ${m.kdo}: ${m.text || ''}`.slice(0, 2000)};
+    try {
+      const r = await fetch('/api/nastenky/kalendar', {method: 'POST', credentials: 'same-origin', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)});
+      const j = await r.json().catch(() => ({})); if (!r.ok || j.chyba) throw new Error(j.chyba || 'Kalendář neodpověděl.');
+      s.remove();
+      const dt = new Date(d + 'T12:00'), when = `${dt.getDate()}. ${dt.getMonth() + 1}.${cd ? '' : ' ' + tm}`;
+      $('#tk-text').value = `📅 V kalendáři: ${nazev} — ${when}`; TK_REPLY = m; tkSend();
+    } catch (e) { alert(e.message); }
+  };
+}
 async function tkSend(extra) {
   const ta = $('#tk-text'), text = ta.value.trim();
   if (TK_EDIT && !extra) {                                   // saving an edited message

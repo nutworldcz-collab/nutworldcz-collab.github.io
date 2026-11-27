@@ -49,7 +49,7 @@ header .sub{opacity:.75;font-size:14px}
 .day .d{font:700 12px 'Exo 2';color:var(--bd)}
 .ev{font-size:11px;line-height:1.25;border-radius:5px;padding:1px 4px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ev.kalendar{background:#e8f0fb;color:#24508a}.ev.zakazka{background:#fde9d6;color:#7a3b10}.ev.ukol{background:#f1e6da;color:var(--bd)}
-.ev.rutina{background:#eaf4e1;color:#3d6b1f}.ev.system{background:#f3e8f7;color:#6b3a85}.ev.late{background:#fde3ec;color:#a0104a}
+.ev.rutina{background:#eaf4e1;color:#3d6b1f}.ev.firma{background:#fff1d6;color:#7a5200;border-left:3px solid #f7ab31}.ev.system{background:#f3e8f7;color:#6b3a85}.ev.late{background:#fde3ec;color:#a0104a}
 @media (max-width:640px){.day{min-height:54px}.ev{font-size:0;height:6px;padding:0}}
 .agenda .row{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px}
 .agenda .row .t{font:700 12px 'Exo 2';color:var(--br);min-width:86px}
@@ -164,7 +164,7 @@ textarea.notes{width:100%;min-height:140px;border:1.5px solid var(--line);border
         <span class="muted" id="cal-src"></span>
       </div>
       <div class="cal" id="cal"></div>
-      <p class="muted" style="margin:8px 0 0">Klikni na den → přidáš úkol na ten den. Barvy: <span class="ev kalendar" style="display:inline">Google kalendář</span> <span class="ev zakazka" style="display:inline">termín zakázky</span> <span class="ev ukol" style="display:inline">úkol</span> <span class="ev rutina" style="display:inline">rutina</span> <span class="ev system" style="display:inline">automat</span></p>
+      <p class="muted" style="margin:8px 0 0">Klikni na den → přidáš úkol na ten den. Barvy: <span class="ev kalendar" style="display:inline">Google kalendář</span> <span class="ev zakazka" style="display:inline">termín zakázky</span> <span class="ev ukol" style="display:inline">úkol</span> <span class="ev rutina" style="display:inline">rutina</span> <span class="ev system" style="display:inline">automat</span> <span class="ev firma" style="display:inline">firemní kalendář</span> · <a href="kalendar.html" style="color:#83502e">otevřít firemní kalendář →</a></p>
     </div>
     <div class="card agenda"><h2>🗓 Příštích 14 dní</h2><div id="agenda" class="muted">Načítám…</div></div>
   </div>
@@ -215,7 +215,7 @@ const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;
 const iso = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 const dm = s => s ? `${+s.slice(8,10)}. ${+s.slice(5,7)}.` : '';
 const kc = v => (Math.round(v||0)).toLocaleString('cs-CZ') + ' Kč';
-let W = {}, TASKS = [], OB = null, OS = null, PIPE = [], BANKA = {}, calRef = new Date(), OB_SEL = null;
+let FIRMA_KAL = [], W = {}, TASKS = [], OB = null, OS = null, PIPE = [], BANKA = {}, calRef = new Date(), OB_SEL = null;
 const TODAY = () => iso(new Date());
 
 // same rule as ukoly_morning.py occurs_on()
@@ -253,6 +253,10 @@ async function loadAll() {
   TASKS = uk.status === 'fulfilled' ? uk.value.map(i => ({...i.data, id: i.id})) : [];
   $('gen').textContent = W.vygenerovano ? `Data serveru: ${W.vygenerovano.replace('T',' ')} · obnovuje se každých 15 min` : 'Server zatím data nepřipravil.';
   OS = Object.assign({poznamky: '', emaily: {}, rozvrh: {}}, (items.find(i => i.id === 'jan_osobni') || {}).data || {});
+  // company calendar (kalendar.html) — on the tools server only
+  try { const a = new Date(), b = new Date(); a.setDate(a.getDate() - 60); b.setDate(b.getDate() + 180);
+    const r = await fetch(`/api/nastenky/kalendar?od=${iso(a)}&do=${iso(b)}`, {credentials: 'same-origin'});
+    if (r.ok) FIRMA_KAL = (await r.json()).udalosti || []; } catch (e) {}
   renderAlerts(); renderTasks(); renderCal(); renderAgenda(); renderObch(); renderPipe(); loadPublic(); renderPlatby(); renderNotes(); renderRozvrh();
 }
 
@@ -342,6 +346,8 @@ $('addf').addEventListener('submit', e => { e.preventDefault();
 function eventsOn(d) {
   const s = iso(d), out = [];
   (W.kalendar || []).filter(e => e.d === s).forEach(e => out.push({cls: e.zdroj, t: e.t, text: e.text + (e.rep ? ' · ' + e.rep : '')}));
+  FIRMA_KAL.filter(u => s >= u.od.slice(0, 10) && s <= (u.do || u.od).slice(0, 10)).forEach(u =>
+    out.push({cls: 'firma', t: u.cely_den ? '' : u.od.slice(11, 16), text: '📅 ' + u.nazev + (u.ucastnici && u.ucastnici.length ? ' · ' + u.ucastnici.map(n => n.split(' ')[0]).join(', ') : '')}));
   TASKS.forEach(x => {
     if ((x.typ||'ukol') === 'ukol' && x.due === s) out.push({cls: x.done ? 'ukol' : (s < TODAY() ? 'late' : 'ukol'), t: x.cas, text: (x.done ? '✓ ' : '') + x.text});
     if (x.typ === 'rutina' && !x.pauza && occursOn(x, d) && !['denne','pracovni'].includes(x.opakovani?.freq))
