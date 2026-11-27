@@ -2,6 +2,11 @@
 <html lang="cs">
 <head>
 <meta charset="utf-8">
+<script>
+  // server features (login, chat, push, clock-in, documents, bank, company calendar) live on the tools server only —
+  // the GitHub copy forwards there so both addresses work 1:1 (Jan 2026-11-27)
+  if (/github\.io$/.test(location.hostname)) location.replace('https://nastroje.nutworld.cz' + location.pathname + location.search + location.hash);
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Nutworld – aplikace</title>
 <meta name="theme-color" content="#5c381f">
