@@ -98,6 +98,13 @@ textarea.notes{width:100%;min-height:140px;border:1.5px solid var(--line);border
 .rz{display:flex;gap:10px;align-items:center;padding:6px 4px;border-bottom:1px solid var(--line);font-size:14px;cursor:pointer}
 .rz .tm{font:700 12px 'Exo 2';color:var(--br);min-width:44px}.rz.on{opacity:.5;text-decoration:line-through}.rz.now{background:#fff8ec;border-radius:8px}
 .rz input{accent-color:var(--leaf);width:17px;height:17px}
+details.fold{margin-top:10px;border:1px solid var(--line);border-radius:12px;padding:0 12px;background:#fffdf9}
+details.fold>summary{cursor:pointer;font-weight:700;color:var(--bd);padding:10px 0;list-style:none}
+details.fold>summary::-webkit-details-marker{display:none}details.fold>summary:before{content:'▸ ';color:var(--br)}details.fold[open]>summary:before{content:'▾ '}
+.card.acc>h2,.card.acc>.calhead>h2{cursor:pointer;user-select:none}
+.card.acc>h2:after{content:'▾';margin-left:auto;color:var(--mut);font-size:14px}.card.acc.zav>h2:after{content:'▸'}
+.card.acc.zav>:not(h2):not(.calhead){display:none}.card.acc.zav>.calhead>:not(h2){display:none}.card.acc.zav{padding-bottom:6px}
+.card.acc.zav h2{margin-bottom:6px}
 .theme{background:#fff8ec;border:1px solid var(--amb);border-radius:12px;padding:10px 12px;margin-bottom:8px}
 </style>
 </head>
@@ -410,6 +417,7 @@ function renderObch() {
   const mz = (z, k) => k ? (z / k * 100) : null;
   const mzCell = m => `<span style="color:${m == null ? '#8a6a4e' : m < 30 ? '#da1668' : '#6fa044'};font-weight:700">${m == null ? '—' : m.toFixed(1).replace('.', ',') + ' %'}</span>`;
   const tot = rows.reduce((a, [, v]) => ({o: a.o + (v.obrat || 0), z: a.z + (v.zisk || 0), k: a.k + (v.obrat_se_ziskem || 0), n: a.n + (v.zakazky || 0)}), {o: 0, z: 0, k: 0, n: 0});
+  $('ob-p').textContent = `${OB_SEL} · ${kc(tot.o)}`;
   $('obch').innerHTML = `<table class="rep"><tr><th>Obchodník</th><th class="num">Nabídky</th><th class="num">Zakázky</th><th class="num">Obrat</th><th class="num">Zisk</th><th class="num">Marže</th><th class="num">Firem</th><th class="num">Slevy &gt;20 %</th></tr>`
     + rows.map(([r, v], ix) => {
       const ff = firmy.filter(f => f.r === r);
@@ -466,7 +474,7 @@ function renderPipe() {
 function renderShop(o, st) {
   if (!o) { $('shop').innerHTML = '<span class="muted">Report objednávek zatím není.</span>'; return; }
   const d = o.days || [];
-  $('shop-p').textContent = d.length ? `${dm(d[0])} – ${dm(d[d.length - 1])}` : '';
+  $('shop-p').textContent = (d.length ? `7 dní · ` : '') + kc(((o.cz || {}).summary || {}).total);
   const box = (flag, s) => { if (!s) return ''; const cur = s.currency === 'EUR' ? ' €' : ' Kč';
     return `<div class="box"><div class="muted">${flag}</div><div class="big">${(Math.round(s.total || 0)).toLocaleString('cs-CZ')}${cur}</div>
       <div class="muted">${s.count || 0} objednávek · ⌀ ${s.count ? Math.round(s.total / s.count).toLocaleString('cs-CZ') + cur : '—'}</div>
@@ -484,16 +492,22 @@ function renderPlatby() {
   const num = s => +String(s || '0').replace(/[^\d,.-]/g, '').replace(',', '.') || 0;
   const g = n => (typeof window[n] !== 'undefined' ? window[n] : (() => { try { return eval(n); } catch (e) { return []; } })()) || [];
   const ov = [...g('OV_CZK').map(x => ({...x, c: 'Kč'})), ...g('OV_EUR').map(x => ({...x, c: '€'}))];
-  const soon = [...g('SOON_CZK'), ...g('SOON_EUR')];
+  const soon = [...g('SOON_CZK').flatMap(s => (s.rows || [s]).map(r => ({...r, date: s.date, c: 'Kč'}))), ...g('SOON_EUR').flatMap(s => (s.rows || [s]).map(r => ({...r, date: s.date, c: '€'})))];
   if (!ov.length && !soon.length) { $('platby').innerHTML = '<span class="muted">Data plateb nejsou.</span>'; return; }
   const sc = ov.filter(x => x.c === 'Kč').reduce((a, x) => a + num(x.amt), 0), se = ov.filter(x => x.c === '€').reduce((a, x) => a + num(x.amt), 0);
-  $('pl-n').textContent = ov.length + ' po splatnosti';
+  $('pl-n').textContent = kc(sc) + ' po splatnosti';
+  const sSoon = soon.filter(x => x.c === 'Kč').reduce((a, x) => a + num(x.amt), 0);
+  const ovRow = x => `<div class="li"><span><b>${esc(x.n)}</b><div class="muted">${esc(x.sub)} · ${x.days} dní po splatnosti${x.oz ? ' · ' + esc(x.oz) : ''}</div></span><span class="r" style="color:${x.pri === 'r' ? '#da1668' : '#b8860b'}">${esc(x.amt)} ${x.c}</span></div>`;
+  const soonRow = x => `<div class="li"><span><b>${esc(x.n)}</b><div class="muted">splatné ${esc(x.date || '')}${x.fakt ? ' · fa ' + esc(x.fakt) : ''}${x.oz ? ' · ' + esc(x.oz) : ''}</div></span><span class="r">${esc(x.amt)} ${x.c}</span></div>`;
   const b = BANKA || {}, bx = (a, cur) => a ? `<div class="box"><div class="muted">🏦 Fio ${cur === '€' ? 'EUR' : 'CZK'} · účet …${esc(a.ucet)}</div><div class="big" style="color:#4a7c2f">${Math.round(a.zustatek).toLocaleString('cs-CZ')} ${cur}</div>
       <div class="muted">od ${dm(a.od)}: přišlo ${Math.round(a.prijmy).toLocaleString('cs-CZ')} · odešlo ${Math.round(a.vydaje).toLocaleString('cs-CZ')} ${cur}</div></div>` : '';
   $('platby').innerHTML = (b.czk || b.eur ? `<div class="shop" style="margin-bottom:10px">${bx(b.czk, 'Kč')}${bx(b.eur, '€')}</div>` : '')
     + `<div class="shop"><div class="box"><div class="muted">Po splatnosti</div><div class="big" style="color:#da1668">${kc(sc)}</div><div class="muted">${se ? se.toLocaleString('cs-CZ') + ' € · ' : ''}${ov.length} položek · ${new Set(ov.map(x => x.n)).size} firem</div></div>
-      <div class="box"><div class="muted">Splatné brzy</div><div class="big">${soon.length}</div><div class="muted">faktur do 5 dní</div></div></div>`
-    + ov.sort((a, b) => (b.c === 'Kč' ? num(b.amt) : num(b.amt) * 25) - (a.c === 'Kč' ? num(a.amt) : num(a.amt) * 25)).slice(0, 8).map(x => `<div class="li"><span><b>${esc(x.n)}</b><div class="muted">${esc(x.sub)} · ${x.days} dní po splatnosti${x.oz ? ' · ' + esc(x.oz) : ''}</div></span><span class="r" style="color:${x.pri === 'r' ? '#da1668' : '#b8860b'}">${esc(x.amt)} ${x.c}</span></div>`).join('')
+      <div class="box"><div class="muted">Splatné do 5 dní</div><div class="big">${kc(sSoon)}</div><div class="muted">${soon.length} položek · ${new Set(soon.map(x => x.n)).size} firem</div></div></div>`
+    + `<details class="fold"><summary>🔴 Po splatnosti — ${new Set(ov.map(x => x.n)).size} firem, ${kc(sc)}</summary>`
+    + ov.sort((a, b) => (b.c === 'Kč' ? num(b.amt) : num(b.amt) * 25) - (a.c === 'Kč' ? num(a.amt) : num(a.amt) * 25)).map(ovRow).join('') + '</details>'
+    + `<details class="fold"><summary>🟠 Splatné do 5 dní — ${new Set(soon.map(x => x.n)).size} firem, ${kc(sSoon)}</summary>`
+    + soon.map(soonRow).join('') + '</details>'
     + `<p class="muted" style="margin:6px 0 0">${b.vygenerovano ? 'Banka: ' + esc(b.vygenerovano.replace('T', ' ')) + ' (Fio, 6× denně) · ' : ''}Stav K2: ${esc(typeof NW_PLATBY_UPDATED !== 'undefined' ? NW_PLATBY_UPDATED : '')} · <a href="platby/po-splatnosti.html" style="color:#83502e">všechny →</a></p>`;
 }
 
@@ -568,12 +582,12 @@ function rzT(k, id) { const a = OS.rozvrh[k] || (OS.rozvrh[k] = []); const i = a
 function slevyHtml(list, max) {
   if (!list.length) return `<p class="ok" style="margin-top:10px">✓ Žádná sleva nad ${max} % oproti našemu ceníku.</p>`;
   const st = {nabidka:'nabídka', zakazka:'zakázka', k2:'K2', vyroba:'výroba', hotovo:'hotovo', dokonceno:'dokončeno', archiv:'archiv'};
-  return `<div class="grp" style="color:#da1668;margin-top:14px">🏷️ Slevy nad ${max} % oproti našemu ceníku (${list.length})</div>
+  return `<details class="fold"><summary>🏷️ Slevy nad ${max} % oproti našemu ceníku — ${list.length}</summary>
     <table class="rep"><tr><th>Firma</th><th>Obchodník</th><th>Položka</th><th>Cena</th><th>Ceník</th><th>Sleva</th><th>Stav</th></tr>`
     + list.slice(0, 15).map(x => `<tr><td><a href="${esc(x.odkaz)}" style="color:#83502e;font-weight:700;text-decoration:none">${esc(x.firma)}</a><div class="muted" style="font-size:11px">${dm(x.datum)} · ${esc(x.kde)}</div></td>`
       + `<td>${esc(x.rep)}</td><td>${esc(x.nazev)}</td><td>${kc(x.cena)}</td><td>${kc(x.cenik)}</td>`
       + `<td style="color:#da1668;font-weight:700">−${Math.round(x.sleva)} %</td><td>${esc(st[x.stav]||x.stav||'')}</td></tr>`).join('')
-    + `</table><p class="muted" style="margin:6px 0 0">Ceník = velkoobchodní cena podle našeho vzorce (bez DPH). Nová sleva nad ${max} % přijde emailem tobě i obchodníkovi.</p>`;
+    + `</table><p class="muted" style="margin:6px 0 0">Ceník = velkoobchodní cena podle našeho vzorce (bez DPH). Nová sleva nad ${max} % přijde emailem tobě i obchodníkovi.</p></details>`;
 }
 
 async function loadPublic() {
@@ -611,6 +625,17 @@ async function loadPublic() {
   }
 }
 
+// every section folds: tap the heading; start folded so the page is a short overview (open ones remembered on this device)
+(() => {
+  const open = new Set(JSON.parse(localStorage.getItem('wolf_open') || '[]'));
+  document.querySelectorAll('.card').forEach(c => {
+    const h = c.querySelector(':scope > h2, :scope > .calhead > h2'); if (!h) return;
+    const key = h.textContent.replace(/[^\p{L}\s]/gu, '').trim().split(/\s+/).slice(0, 2).join('_');
+    c.classList.add('acc'); if (!open.has(key)) c.classList.add('zav');
+    h.addEventListener('click', () => { c.classList.toggle('zav'); c.classList.contains('zav') ? open.delete(key) : open.add(key);
+      localStorage.setItem('wolf_open', JSON.stringify([...open])); });
+  });
+})();
 if (localStorage.getItem('nw_master') === '' && localStorage.getItem('nw_me')) { $('app').style.display='none'; $('lock').style.display='block'; }
 else loadAll();
 setInterval(() => { if (!document.hidden) loadAll(); }, 15 * 60e3);
