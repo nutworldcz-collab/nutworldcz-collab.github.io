@@ -893,6 +893,20 @@ $('#av').onclick = () => go('ucet');
 // ── start ──
 (async () => {
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw-aplikace.js', {scope: '/'}).catch(() => {});
+  // iPhone only suspends an app from the home screen -> on return check the server for a newer version and reload
+  const ver = () => fetch('/aplikace.html', {method: 'HEAD', cache: 'no-store', credentials: 'same-origin'})
+    .then(r => r.ok ? (r.headers.get('etag') || r.headers.get('last-modified') || '') : '').catch(() => '');
+  let V0 = await ver();
+  const checkVer = async () => {
+    if (document.hidden || !V0) return;
+    const v = await ver(); if (!v || v === V0) return;
+    const busy = (typeof REC !== 'undefined' && REC) || ($('#tk-text') && $('#tk-text').value.trim());
+    if (busy) { V0 = v; return; }
+    navigator.serviceWorker && navigator.serviceWorker.getRegistration().then(r => r && r.update()).catch(() => {});
+    location.reload();
+  };
+  document.addEventListener('visibilitychange', checkVer);
+  setInterval(checkVer, 10 * 60e3);
   try { await whoami(); } catch (e) { return; }
   if (ON_SERVER) { const r = await fetch('/api/tym/stav', {credentials: 'same-origin'}).catch(() => null); TYM_OK = !!(r && r.ok); if (TYM_OK) TYM = await r.json(); }
   const ini = (ME.jmeno || 'NW').split(' ').map(x => x[0]).slice(0, 2).join('').toUpperCase();
