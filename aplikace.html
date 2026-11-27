@@ -108,6 +108,9 @@ h2.sek{font-family:"Exo 2",Arial,sans-serif;font-size:13px;letter-spacing:1.5px;
 #load{position:fixed;inset:0;z-index:50;background:var(--tm);display:grid;place-items:center;color:#fff;font-family:"Exo 2",Arial,sans-serif;transition:opacity .25s}
 #load img{width:110px;height:110px;border-radius:28px;display:block;margin:0 auto 14px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
 .err{color:var(--ru);font-weight:700}
+.toast{position:fixed;left:12px;right:12px;top:calc(var(--st) + 10px);z-index:60;background:var(--ca);color:var(--tx);border:2px solid var(--zl);
+  border-radius:16px;padding:12px 14px;box-shadow:0 10px 30px rgba(0,0,0,.25);transform:translateY(-140%);transition:transform .3s;cursor:pointer;max-width:520px;margin:0 auto}
+.toast.on{transform:none}.toast div{color:var(--mu);font-size:14px}
 label.sw{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--li);cursor:pointer}
 label.sw:last-child{border-bottom:0}
 label.sw .i{font-size:22px;width:30px;text-align:center;flex:none}
@@ -477,7 +480,7 @@ async function drawPush() {
   const denied = Notification.permission === 'denied';
   let h = `<div class="card"><div class="h">${here ? '✅ Na tomhle zařízení zapnuto' : '🔕 Na tomhle zařízení vypnuto'}</div>
     <div class="s">${here ? 'Zprávy chodí, i když je aplikace zavřená.' : denied ? 'Upozornění jsou v prohlížeči zakázaná — povol je v nastavení telefonu/prohlížeče u nastroje.nutworld.cz.' : 'Jedním klepnutím zapneš. Telefon se zeptá na povolení — dej Povolit.'}</div>
-    ${here ? `<button class="big b-z" id="p-test">📨 Poslat si zkušební upozornění</button><button class="big b-l" id="p-off">Vypnout na tomhle zařízení</button>`
+    ${here ? `<button class="big b-z" id="p-test">📨 Poslat si zkušební (za 10 s)</button><div class="s" style="margin-top:6px">Po klepnutí aplikaci zavři nebo zamkni telefon — upozornění přijde za 10 vteřin.</div><button class="big b-l" id="p-off">Vypnout na tomhle zařízení</button>`
            : denied ? '' : `<button class="big b-h" id="p-on">🔔 Zapnout upozornění</button>`}
     <div id="p-msg"></div></div>`;
   h += `<h2 class="sek">Co mi má chodit</h2><div class="card">${st.kategorie.map(k => `
@@ -501,7 +504,7 @@ async function drawPush() {
     try { const ep = sub.endpoint; await sub.unsubscribe(); await pushApi('zrusit', {endpoint: ep}); drawPush(); } catch (e) { msg(e.message, true); }
   };
   const tst = $('#p-test'); if (tst) tst.onclick = async () => {
-    try { const j = await pushApi('test', {}); msg(j.odeslano ? `Odesláno (${j.odeslano} zař.) — za chvilku by mělo pípnout.` : 'Nic neodešlo — zkus upozornění vypnout a zapnout.', !j.odeslano); } catch (e) { msg(e.message, true); }
+    try { const j = await pushApi('test', {zpozdeni: 10}); msg(j.odeslano ? 'Za 10 s přijde — teď aplikaci zavři nebo zamkni telefon.' : 'Nic neodešlo — zkus upozornění vypnout a zapnout.', !j.odeslano); } catch (e) { msg(e.message, true); }
   };
   box.querySelectorAll('input[data-k]').forEach(c => c.onchange = async () => {
     try { await pushApi('nastaveni', {kategorie: c.dataset.k, zapnuto: c.checked}); } catch (e) { c.checked = !c.checked; alert(e.message); }
@@ -539,8 +542,17 @@ async function drawPushAdmin() {
   });
 }
 
+// a push while the app is open -> small banner inside the app (tap = go there)
+function toast(d) {
+  const el = document.createElement('div'); el.className = 'toast';
+  el.innerHTML = `<b>${esc(d.title || 'Nutworld')}</b>${d.body ? `<div>${esc(d.body)}</div>` : ''}`;
+  el.onclick = () => { el.remove(); const x = new URL(d.url || '/aplikace.html', location.origin); if (x.pathname === '/aplikace.html') location.hash = x.hash || '#/domu'; else location.href = x.href; };
+  document.body.appendChild(el); setTimeout(() => el.classList.add('on'), 20);
+  setTimeout(() => { el.classList.remove('on'); setTimeout(() => el.remove(), 400); }, 8000);
+}
 // a tapped notification while the app is open -> go to its place
 if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message', e => {
+  if (e.data && e.data.nwPush) return toast(e.data.nwPush);
   const u = e.data && e.data.nwOtevri; if (!u) return;
   const x = new URL(u, location.origin);
   if (x.pathname === '/aplikace.html') { location.hash = x.hash || '#/domu'; } else location.href = x.href;

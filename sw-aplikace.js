@@ -2,7 +2,7 @@
 // Scope "/" so the tool pages opened from the app stay inside the installed app window,
 // but EVERY request outside the shell list passes straight to the network untouched
 // (login redirects of nw_auth, APIs, Trello, tool pages — nothing is cached or rewritten).
-const VERZE = 'nw-app-2';
+const VERZE = 'nw-app-3';
 const SHELL = ['/aplikace.html', '/stranky-data.js', '/pwa/aplikace.webmanifest',
   '/pwa/ikona-192.png', '/pwa/ikona-512.png', '/pwa/apple-touch-icon.png', '/pwa/favicon-64.png'];
 
@@ -35,6 +35,8 @@ self.addEventListener('fetch', e => {
 self.addEventListener('push', e => {
   let d = {};
   try { d = e.data ? e.data.json() : {}; } catch (x) { d = {title: 'Nutworld', body: e.data ? e.data.text() : ''}; }
+  // the app open on screen shows it too (iPhone shows no banner over the open app)
+  self.clients.matchAll({type: 'window'}).then(l => l.forEach(c => c.postMessage({nwPush: d})));
   e.waitUntil(self.registration.showNotification(d.title || 'Nutworld', {
     body: d.body || '', tag: d.tag || undefined, renotify: !!d.tag,
     icon: '/pwa/ikona-192.png', badge: '/pwa/favicon-64.png',
