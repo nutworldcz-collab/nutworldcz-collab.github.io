@@ -93,8 +93,8 @@ const ymd = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())
 const MES = ['leden','únor','březen','duben','květen','červen','červenec','srpen','září','říjen','listopad','prosinec'];
 const MES2 = ['ledna','února','března','dubna','května','června','července','srpna','září','října','listopadu','prosince'];
 const DNY = ['neděle','pondělí','úterý','středa','čtvrtek','pátek','sobota'];
-const BARVY = {schuzka: '#2c7fb8', zakaznik: '#da1668', vyroba: '#6fa044', expedice: '#a0622a', dovolena: '#8a6a4a', lekar: '#2a9d8f', nemoc: '#c0392b', nepritomnost: '#9a8a7a', skoleni: '#7b4fa0', ostatni: '#5c381f'};
-const KAT_IC = {dovolena: '🌴', lekar: '🩺', nemoc: '🤒', nepritomnost: '🚫', skoleni: '🎓'};
+const BARVY = {schuzka: '#2c7fb8', zakaznik: '#da1668', vyroba: '#6fa044', expedice: '#a0622a', dovolena: '#8a6a4a', lekar: '#2a9d8f', nemoc: '#c0392b', smena: '#e67e22', nepritomnost: '#9a8a7a', skoleni: '#7b4fa0', ostatni: '#5c381f'};
+const KAT_IC = {smena: '👷', dovolena: '🌴', lekar: '🩺', nemoc: '🤒', nepritomnost: '🚫', skoleni: '🎓'};
 const PRIP = [[0, 'Bez připomínky'], [15, '15 minut předem'], [60, '1 hodinu předem'], [1440, '1 den předem']];
 let VIEW = innerWidth < 700 ? 'seznam' : 'mesic', CUR = new Date(), DATA = null, KAT = {}, KAT_SEL = {}, LIDE = [], JA = '', PLAN = null;
 const F = (() => { try { return Object.assign({udalosti: true, zakazky: true, karty: true, svatky: true, moje: false}, JSON.parse(localStorage.getItem('nw_kal_f') || '{}')); } catch (e) { return {udalosti: true, zakazky: true, karty: true, svatky: true, moje: false}; } })();
@@ -186,15 +186,16 @@ function render() {
 }
 /* 👥 people plan: who is away / in training when — next 90 days, grouped by person (doctor = details only for Jan + the person) */
 function planHtml() {
-  const ev = ((PLAN && PLAN.udalosti) || []).filter(u => ['dovolena', 'lekar', 'nemoc', 'nepritomnost', 'skoleni'].includes(u.kategorie));
+  const ev = ((PLAN && PLAN.udalosti) || []).filter(u => ['dovolena', 'lekar', 'nemoc', 'nepritomnost', 'skoleni', 'smena'].includes(u.kategorie));
   const today = ymd(new Date()), by = {};
   ev.forEach(u => (u.ucastnici.length ? u.ucastnici : [u.autor || '?']).forEach(p => (by[p] = by[p] || []).push(u)));
   const dd = s => { const d = new Date(s.slice(0, 10) + 'T12:00'); return `${d.getDate()}. ${d.getMonth() + 1}.`; };
-  const span = u => { const a = u.od.slice(0, 10), b = (u.do || u.od).slice(0, 10); return a === b ? dd(a) + (u.cely_den ? '' : ' ' + u.od.slice(11, 16)) : `${dd(a)} – ${dd(b)}`; };
-  const away = Object.entries(by).filter(([, l]) => l.some(u => u.kategorie !== 'skoleni' && u.od.slice(0, 10) <= today && (u.do || u.od).slice(0, 10) >= today)).map(([p]) => p);
-  const lbl = u => u.kategorie === 'nepritomnost' ? 'Nepřítomnost' : u.nazev;
-  return `<div class="agenda" style="margin-top:22px"><div class="ag-d" style="color:var(--bd)">👥 Plán lidí · příštích 90 dní <small style="color:var(--muted);text-transform:none;letter-spacing:0">dovolené, nemoc, lékař, školení</small></div>
-    <div class="ai" style="cursor:default;border-left-color:${away.length ? 'var(--pink)' : 'var(--leaf)'}"><span class="t">Dnes</span><div>${away.length ? '<b>Chybí:</b> ' + away.map(esc).join(', ') : '✓ Všichni v práci'}</div></div>`
+  const span = u => { const a = u.od.slice(0, 10), b = (u.do || u.od).slice(0, 10); return a === b ? dd(a) + (u.cely_den ? '' : ' ' + u.od.slice(11, 16) + (u.do && u.do.length > 10 ? '–' + u.do.slice(11, 16) : '')) : `${dd(a)} – ${dd(b)}`; };
+  const away = Object.entries(by).filter(([, l]) => l.some(u => !['skoleni', 'smena'].includes(u.kategorie) && u.od.slice(0, 10) <= today && (u.do || u.od).slice(0, 10) >= today)).map(([p]) => p);
+  const lbl = u => u.kategorie === 'nepritomnost' ? 'Nepřítomnost' : u.kategorie === 'smena' ? 'V práci' : u.nazev;
+  const come = ev.filter(u => u.kategorie === 'smena' && u.od.slice(0, 10) === today).map(u => `${(u.ucastnici[0] || u.autor)} ${u.od.slice(11, 16)}–${(u.do || '').slice(11, 16)}`);
+  return `<div class="agenda" style="margin-top:22px"><div class="ag-d" style="color:var(--bd)">👥 Plán lidí · příštích 90 dní <small style="color:var(--muted);text-transform:none;letter-spacing:0">dovolené, nemoc, lékař, školení, brigádníci</small></div>
+    <div class="ai" style="cursor:default;border-left-color:${away.length ? 'var(--pink)' : 'var(--leaf)'}"><span class="t">Dnes</span><div>${away.length ? '<b>Chybí:</b> ' + away.map(esc).join(', ') : '✓ Všichni v práci'}${come.length ? '<br><b>👷 Přijdou:</b> ' + come.map(esc).join(', ') : ''}</div></div>`
     + (Object.keys(by).length ? Object.entries(by).sort((a, b) => a[0].localeCompare(b[0], 'cs')).map(([p, l]) =>
       `<div class="ai" style="cursor:default;border-left-color:var(--br)"><span class="t" style="min-width:120px;color:var(--bd)">${esc(p)}</span><div style="line-height:1.9">${l.sort((x, y) => x.od.localeCompare(y.od)).map(u =>
         `<span onclick="showEvent('${u.id}')" style="cursor:pointer;display:inline-block;background:${BARVY[u.kategorie]}1f;border:1px solid ${BARVY[u.kategorie]};border-radius:12px;padding:0 9px;margin:0 4px 0 0;font-size:12.5px">${KAT_IC[u.kategorie] || ''} ${esc(lbl(u))} · ${span(u)}</span>`).join('')}</div></div>`).join('')

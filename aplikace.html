@@ -191,6 +191,8 @@ select.find{appearance:auto}
   <section class="view" id="v-ucet"><div class="wrap" id="ucet"></div></section>
   <section class="view" id="v-upozorneni"><div class="wrap" id="upozorneni"></div></section>
   <section class="view" id="v-tym"><div class="wrap" id="tym"></div></section>
+  <section class="view" id="v-pich"><div class="wrap" id="pich"></div></section>
+  <section class="view" id="v-smeny"><div class="wrap" id="smeny"></div></section>
   <section class="view tk" id="v-tymk"><div id="tk-list" class="tk-list"></div><div id="tk-mention" class="tk-mention" hidden></div>
     <div id="tk-reply" class="tk-reply" hidden></div>
     <div id="tk-recbar" class="tk-reply tk-rec" hidden><span class="dot"></span><b id="tk-rect">0:00</b><span>Nahrávám…</span>
@@ -229,9 +231,10 @@ const NAV = {
   vyroba:    [['domu'], ['vyroba.html'], ['tym', 'skenovat'], ['stitky-kontrola.html', 'stitky.html'], ['vice']],
   obchod:    [['domu'], ['zakazy.html', 'nastenky.html'], ['nabidky.html'], ['tym', 'chat.html', 'kalkulator.html'], ['vice']],
   marketing: [['domu'], ['bannery.html'], ['tym', 'nastenky.html'], ['popupy.html', 'chat.html'], ['vice']],
+  brigadnik: [['pich'], ['smeny'], ['vice']],
 };
 const NAV_LABEL = {domu: ['🏠', 'Domů'], skenovat: ['📷', 'Skenovat'], vice: ['☰', 'Více'],
-  'vyroba.html': ['🏭', 'Výroba'], 'chat.html': ['🛍️', 'Zákazníci'], tym: ['💬', 'Tým'], 'nastenky.html': ['📌', 'Nástěnky'],
+  'vyroba.html': ['🏭', 'Výroba'], 'chat.html': ['🛍️', 'Zákazníci'], tym: ['💬', 'Tým'], pich: ['⏱', 'Píchačka'], smeny: ['👷', 'Kdy přijdu'], 'nastenky.html': ['📌', 'Nástěnky'],
   'stitky-kontrola.html': ['🏷️', 'Štítky'], 'stitky.html': ['🏷️', 'Štítky'], 'zakazy.html': ['📋', 'Zakázky'],
   'nabidky.html': ['🧾', 'Nabídky'], 'kalkulator.html': ['🧮', 'Kalkulátor'], 'bannery.html': ['🖼️', 'Bannery'],
   'popupy.html': ['💬', 'Popupy'], 'wolf.html': ['🐺', 'Přehled'], 'kalendar.html': ['📅', 'Kalendář']};
@@ -280,7 +283,8 @@ const FRAMES = {};            // keep up to 4 tool pages alive (switching tabs k
 let CUR = '';
 function go(r) { location.hash = '#/' + r; }
 function route() {
-  let h = decodeURIComponent(location.hash.replace(/^#\/?/, '')) || 'domu';
+  let h = decodeURIComponent(location.hash.replace(/^#\/?/, '')) || (ME.role === 'brigadnik' ? 'pich' : 'domu');
+  if (ME.role === 'brigadnik' && !['pich', 'smeny', 'vice', 'instalace', 'ucet', 'upozorneni'].includes(h)) h = 'pich';
   if (h.startsWith('stranka/')) h = 's/' + h.slice(8);     // manifest shortcuts
   CUR = h;
   document.querySelectorAll('.view').forEach(v => v.classList.remove('on'));
@@ -308,9 +312,9 @@ function route() {
     markNav(file);
     return;
   }
-  const v = ['domu', 'skenovat', 'vice', 'instalace', 'ucet', 'upozorneni'].includes(h) ? h : 'domu';
+  const v = ['domu', 'skenovat', 'vice', 'instalace', 'ucet', 'upozorneni', 'pich', 'smeny'].includes(h) ? h : 'domu';
   showView(v); markNav(v);
-  ({domu: drawHome, skenovat: drawScan, vice: drawMore, instalace: drawInstall, ucet: drawAccount, upozorneni: drawPush})[v]();
+  ({domu: drawHome, skenovat: drawScan, vice: drawMore, instalace: drawInstall, ucet: drawAccount, upozorneni: drawPush, pich: drawPich, smeny: drawSmeny})[v]();
 }
 function showView(v) { $('#v-' + v).classList.add('on'); }
 function markNav(k) { document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('a', b.dataset.k === k)); }
@@ -364,7 +368,7 @@ function drawHome() {
     <div class="hello"><img src="/pwa/ikona-192.png" alt=""><div><div class="g">${esc(greeting())}</div><div class="d">${today()}${ME.role === 'admin' ? ' · <span class="tag t-z">Jednatel</span>' : ''}</div></div></div>
     ${ME.role === 'admin' ? '<div id="jan"></div>' : ''}
     ${ON_SERVER ? '<div id="den"></div><div id="kal"></div>' : ''}
-    ${ON_SERVER ? `<h2 class="sek">Zeptej se / zadej úkol</h2>
+    ${ON_SERVER && ME.role !== 'brigadnik' ? `<h2 class="sek">Zeptej se / zadej úkol</h2>
       <div class="ask"><input id="q" placeholder="${ME.role === 'vyroba' ? 'např. co je v dárku 3061, alergeny v kešu…' : 'např. cena kešu 200 g, co je v dárku 3061…'}" enterkeyhint="send" autocomplete="off"><button id="go">→</button></div>
       <div id="ans"></div>` : ''}
     <h2 class="sek">Rychle otevřít</h2>${tiles(fav)}
@@ -382,7 +386,7 @@ function drawHome() {
 
 // „Můj den“ for everyone: my calendar today + tomorrow, my board cards overdue / due today (same data as kalendar.html, nastenky.html)
 // company calendar of the whole team, next 7 days (Můj den above = only mine, today + tomorrow)
-const KAL_IC = {schuzka: '🤝', zakaznik: '🎁', vyroba: '🏭', expedice: '🚚', dovolena: '🌴', lekar: '🩺', nemoc: '🤒', nepritomnost: '🚫', skoleni: '🎓', ostatni: '📌'};
+const KAL_IC = {smena: '👷', schuzka: '🤝', zakaznik: '🎁', vyroba: '🏭', expedice: '🚚', dovolena: '🌴', lekar: '🩺', nemoc: '🤒', nepritomnost: '🚫', skoleni: '🎓', ostatni: '📌'};
 async function drawKal() {
   const box = $('#kal'); if (!box || !can('kalendar.html')) return;
   const a = new Date(), b = new Date(); b.setDate(b.getDate() + 7);
@@ -501,6 +505,7 @@ function drawMore() {
   $('#vice').innerHTML = `<input class="find" id="find" type="search" placeholder="Hledat nástroj…" autocomplete="off"><div id="seznam"></div>
     <h2 class="sek">Aplikace</h2>
     <div class="list">
+      <div class="it" onclick="go('pich')"><span class="i">⏱</span><div><div class="n">Moje píchačka</div><div class="p">příchod / odchod, moje hodiny</div></div></div>
       <div class="it" onclick="go('skenovat')"><span class="i">📷</span><div><div class="n">Skenovat</div><div class="p">QR na krabici, fotka dokladu</div></div></div>
       <div class="it" onclick="go('upozorneni')"><span class="i">🔔</span><div><div class="n">Upozornění</div><div class="p">zprávy do telefonu — co ti má chodit</div></div></div>
       <div class="it" onclick="go('instalace')"><span class="i">📲</span><div><div class="n">Instalace na telefon a počítač</div><div class="p">iPhone, iPad, Android, Windows, Mac</div></div></div>
@@ -946,6 +951,96 @@ async function recStart() {
 mic.onclick = () => REC ? REC.stop() : recStart();
 $('#tk-recok').onclick = () => REC && REC.stop();
 $('#tk-recx').onclick = () => { REC_CANCEL = true; REC && REC.stop(); };
+
+// ── ⏱ own clock-in (server: /api/nastenky/pichacky — only my days, no rates or pay) ──
+const pApi = async (body) => {
+  const r = await fetch('/api/nastenky/pichacky', body ? {method: 'POST', credentials: 'same-origin', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)} : {credentials: 'same-origin', cache: 'no-store'});
+  const j = await r.json().catch(() => ({chyba: 'Server neodpověděl.'}));
+  if (!r.ok || j.chyba) throw new Error(j.chyba || 'chyba ' + r.status);
+  return j;
+};
+const mins = (a, b) => { if (!a || !b) return 0; const [h1, m1] = a.split(':').map(Number), [h2, m2] = b.split(':').map(Number); return Math.max(0, h2 * 60 + m2 - h1 * 60 - m1); };
+const hm = m => `${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`;
+async function drawPich() {
+  $('#titul').textContent = 'Píchačka';
+  const box = $('#pich');
+  if (!ON_SERVER) { box.innerHTML = `<div class="card"><div class="s">Píchačka funguje na nastroje.nutworld.cz.</div></div>`; return; }
+  let j; try { j = await pApi(); } catch (e) { box.innerHTML = `<div class="card"><div class="h">⏱ Píchačka</div><div class="s">${esc(e.message)}</div></div>`; return; }
+  const d = j.dny[j.dnes] || {}, inWork = d.from && !d.to;
+  const month = j.dnes.slice(0, 7), days = Object.entries(j.dny).filter(([k]) => k.startsWith(month)).sort((a, b) => b[0].localeCompare(a[0]));
+  const total = days.reduce((a, [, r]) => a + mins(r.from, r.to), 0);
+  const prevM = (() => { const x = new Date(j.dnes + 'T12:00'); x.setDate(1); x.setMonth(x.getMonth() - 1); return x.toISOString().slice(0, 7); })();
+  const prevTotal = Object.entries(j.dny).filter(([k]) => k.startsWith(prevM)).reduce((a, [, r]) => a + mins(r.from, r.to), 0);
+  box.innerHTML = `<div class="hello"><img src="/pwa/ikona-192.png" alt=""><div><div class="g">${esc(greeting())}</div><div class="d">${today()}</div></div></div>
+    <div class="card" style="text-align:center;padding:18px 14px">
+      <div class="s">${inWork ? 'Jsi v práci od' : d.from && d.to ? 'Dnes odpracováno' : 'Dnes ještě nepíchnuto'}</div>
+      <div style="font:800 34px 'Exo 2',Arial;color:var(--tm);margin:4px 0">${inWork ? esc(d.from) : d.from && d.to ? hm(mins(d.from, d.to)) : '—'}</div>
+      ${d.from && d.to ? `<div class="s">${esc(d.from)} – ${esc(d.to)}</div>` : ''}
+      ${!d.from ? `<button class="big b-h" id="p-in" style="font-size:19px;padding:18px">✅ Přišel(a) jsem</button>` : ''}
+      ${inWork ? `<button class="big b-z" id="p-out" style="font-size:19px;padding:18px">👋 Odcházím</button>` : ''}
+      <div id="p-m" class="s" style="margin-top:6px"></div></div>
+    <h2 class="sek">Moje hodiny · ${esc(MES[+month.slice(5) - 1])}</h2>
+    <div class="card"><div style="display:flex;justify-content:space-between"><b>Celkem ${hm(total)} h</b><span class="s">${days.length} dní${prevTotal ? ` · minulý měsíc ${hm(prevTotal)} h` : ''}</span></div>
+      ${days.map(([k, r]) => { const x = new Date(k + 'T12:00');
+        return `<div class="li-d" data-d="${k}" style="display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--li);cursor:pointer"><span style="width:92px">${DNY[x.getDay()].slice(0, 2)} ${x.getDate()}. ${x.getMonth() + 1}.</span>
+          <span style="flex:1">${esc(r.from || '?')} – ${esc(r.to || '…')}${r.note ? `<span class="s"> · ${esc(r.note)}</span>` : ''}</span><b>${r.from && r.to ? hm(mins(r.from, r.to)) : ''}</b></div>`; }).join('') || '<div class="s" style="margin-top:6px">Tento měsíc zatím nic.</div>'}
+      <button class="big b-l" id="p-add">✏️ Zapsat / opravit den</button></div>
+    <div class="s" style="margin:6px 4px">Opravit jde dnešek a posledních 35 dní. Honza vidí v píchačkách totéž co ty.</div>`;
+  const act = async (a, el) => { el.disabled = true; try { await pApi({akce: a}); drawPich(); } catch (e) { $('#p-m').innerHTML = `<span class="err">${esc(e.message)}</span>`; el.disabled = false; } };
+  if ($('#p-in')) $('#p-in').onclick = e => act('prisel', e.target);
+  if ($('#p-out')) $('#p-out').onclick = e => act('odchod', e.target);
+  const edit = k => {
+    const r = j.dny[k] || {}, s = document.createElement('div'); s.className = 'sheet';
+    s.innerHTML = `<div class="in"><b style="font-size:17px">✏️ Zapsat den</b>
+      <input class="find" type="date" id="pe-d" style="margin-top:10px" value="${k || j.dnes}" max="${j.dnes}">
+      <div style="display:flex;gap:8px"><label style="flex:1" class="s">Příchod<input class="find" type="time" id="pe-o" value="${esc(r.from || '')}"></label>
+        <label style="flex:1" class="s">Odchod<input class="find" type="time" id="pe-t" value="${esc(r.to || '')}"></label></div>
+      <input class="find" id="pe-n" maxlength="200" placeholder="Poznámka (nepovinné)" value="${esc(r.note || '')}">
+      <button class="big b-h" id="pe-ok">Uložit</button><button class="big b-l" id="pe-x">Zrušit</button></div>`;
+    document.body.appendChild(s);
+    s.onclick = e => { if (e.target === s) s.remove(); }; $('#pe-x').onclick = () => s.remove();
+    $('#pe-d').onchange = e => { const x = j.dny[e.target.value] || {}; $('#pe-o').value = x.from || ''; $('#pe-t').value = x.to || ''; $('#pe-n').value = x.note || ''; };
+    $('#pe-ok').onclick = async () => { try { await pApi({datum: $('#pe-d').value, od: $('#pe-o').value, do: $('#pe-t').value, pozn: $('#pe-n').value}); s.remove(); drawPich(); } catch (e) { alert(e.message); } };
+  };
+  $('#p-add').onclick = () => edit(j.dnes);
+  box.querySelectorAll('[data-d]').forEach(el => el.onclick = () => edit(el.dataset.d));
+}
+
+// ── 👷 when I will be at work (company calendar, kind „směna“ — the team sees who comes when) ──
+async function drawSmeny() {
+  $('#titul').textContent = 'Kdy přijdu';
+  const box = $('#smeny');
+  const a = new Date(), b = new Date(); b.setDate(b.getDate() + 90);
+  const d10 = x => `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`;
+  let ev = [];
+  try { const r = await fetch(`/api/nastenky/kalendar?od=${d10(a)}&do=${d10(b)}&moje=1`, {credentials: 'same-origin'}); if (r.ok) ev = ((await r.json()).udalosti || []).filter(u => u.kategorie === 'smena'); } catch (e) {}
+  const t = new Date(); t.setDate(t.getDate() + 1);
+  box.innerHTML = `<div class="card"><div class="h">👷 Zapiš, kdy budeš v práci</div><div class="s">Tým uvidí v kalendáři, kdo kdy dorazí.</div>
+      <input class="find" type="date" id="sm-d" style="margin-top:10px" value="${d10(t)}" min="${d10(a)}">
+      <div style="display:flex;gap:8px"><label style="flex:1" class="s">Od<input class="find" type="time" id="sm-o" value="08:00"></label>
+        <label style="flex:1" class="s">Do<input class="find" type="time" id="sm-t" value="14:00"></label></div>
+      <input class="find" id="sm-n" maxlength="200" placeholder="Poznámka (nepovinné)">
+      <button class="big b-h" id="sm-ok">Uložit</button><div id="sm-m"></div></div>
+    <h2 class="sek">Moje naplánované dny</h2><div class="card">${ev.length ? ev.map(u => { const x = new Date(u.od.slice(0, 10) + 'T12:00');
+      return `<div style="display:flex;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--li)"><b style="width:96px">${DNY[x.getDay()].slice(0, 2)} ${x.getDate()}. ${x.getMonth() + 1}.</b>
+        <span style="flex:1">${esc(u.od.slice(11, 16))} – ${esc((u.do || '').slice(11, 16))}${u.popis ? `<span class="s"> · ${esc(u.popis)}</span>` : ''}</span>
+        ${u.lze_upravit ? `<button class="tk-ib" data-del="${esc(u.id)}" title="Smazat" style="font-size:17px">🗑</button>` : ''}</div>`; }).join('') : '<div class="s">Zatím nic. Přidej první den nahoře.</div>'}</div>`;
+  $('#sm-ok').onclick = async () => {
+    const d = $('#sm-d').value, o = $('#sm-o').value, tt = $('#sm-t').value;
+    if (!d || !o || !tt || tt <= o) return $('#sm-m').innerHTML = '<div class="err" style="margin-top:6px">Vyplň den a čas (do musí být po od).</div>';
+    try {
+      const r = await fetch('/api/nastenky/kalendar', {method: 'POST', credentials: 'same-origin', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({nazev: `${ME.jmeno} — v práci`, kategorie: 'smena', od: `${d}T${o}`, do: `${d}T${tt}`, cely_den: false, ucastnici: [ME.jmeno], viditelnost: 'vsichni', pripomenout: 0, popis: $('#sm-n').value.trim()})});
+      const j = await r.json().catch(() => ({})); if (!r.ok || j.chyba) throw new Error(j.chyba || 'Neuloženo.');
+      drawSmeny();
+    } catch (e) { $('#sm-m').innerHTML = `<div class="err" style="margin-top:6px">${esc(e.message)}</div>`; }
+  };
+  box.querySelectorAll('[data-del]').forEach(el => el.onclick = async () => {
+    if (!confirm('Smazat tenhle den?')) return;
+    await fetch(`/api/nastenky/kalendar/${el.dataset.del}/smazat`, {method: 'POST', credentials: 'same-origin', headers: {'Content-Type': 'application/json'}, body: '{}'});
+    drawSmeny();
+  });
+}
 
 // ── top bar buttons ──
 $('#zpet').onclick = () => CUR.startsWith('tym/') ? go('tym') : history.length > 1 ? history.back() : go('domu');
