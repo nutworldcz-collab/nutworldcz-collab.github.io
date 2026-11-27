@@ -382,7 +382,7 @@ function drawHome() {
 
 // „Můj den“ for everyone: my calendar today + tomorrow, my board cards overdue / due today (same data as kalendar.html, nastenky.html)
 // company calendar of the whole team, next 7 days (Můj den above = only mine, today + tomorrow)
-const KAL_IC = {schuzka: '🤝', zakaznik: '🎁', vyroba: '🏭', expedice: '🚚', dovolena: '🌴', lekar: '🩺', nepritomnost: '🚫', skoleni: '🎓', ostatni: '📌'};
+const KAL_IC = {schuzka: '🤝', zakaznik: '🎁', vyroba: '🏭', expedice: '🚚', dovolena: '🌴', lekar: '🩺', nemoc: '🤒', nepritomnost: '🚫', skoleni: '🎓', ostatni: '📌'};
 async function drawKal() {
   const box = $('#kal'); if (!box || !can('kalendar.html')) return;
   const a = new Date(), b = new Date(); b.setDate(b.getDate() + 7);
@@ -843,7 +843,7 @@ function tkSheet(id) {
 }
 let TK_EDIT = null;
 // message -> event in the company calendar (kalendar.html, /api/nastenky/kalendar): whole team sees it, reminder to the app
-const KAL_KAT = {schuzka: '🤝 Schůzka', zakaznik: '🎁 Zákazník', vyroba: '🏭 Výroba', expedice: '🚚 Expedice', dovolena: '🌴 Dovolená / nepřítomnost', lekar: '🩺 Lékař (soukromé)', skoleni: '🎓 Školení', ostatni: '📌 Ostatní'};
+const KAL_KAT = {schuzka: '🤝 Schůzka', zakaznik: '🎁 Zákazník', vyroba: '🏭 Výroba', expedice: '🚚 Expedice', dovolena: '🌴 Dovolená / nepřítomnost', lekar: '🩺 Lékař (soukromé)', nemoc: '🤒 Nemoc (soukromé)', skoleni: '🎓 Školení', ostatni: '📌 Ostatní'};
 function tkKal(m) {
   const me = TYM ? TYM.ja : ME.jmeno, z = new Date(); z.setDate(z.getDate() + 1);
   const people = [...new Set([me, m.kdo !== 'NutWorldka' ? m.kdo : me])];
