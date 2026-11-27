@@ -108,6 +108,48 @@ h2.sek{font-family:"Exo 2",Arial,sans-serif;font-size:13px;letter-spacing:1.5px;
 #load{position:fixed;inset:0;z-index:50;background:var(--tm);display:grid;place-items:center;color:#fff;font-family:"Exo 2",Arial,sans-serif;transition:opacity .25s}
 #load img{width:110px;height:110px;border-radius:28px;display:block;margin:0 auto 14px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
 .err{color:var(--ru);font-weight:700}
+/* team chat */
+#nav button{position:relative}
+.bdg{position:absolute;top:0;left:calc(50% + 6px);background:var(--ru);color:#fff;border-radius:10px;font-size:10.5px;font-weight:700;padding:0 5px;min-width:17px;line-height:17px}
+@media (min-width:900px){.bdg{position:static;margin-left:auto}}
+.ch{display:flex;align-items:center;gap:12px;padding:12px 6px;border-bottom:1px solid var(--li);cursor:pointer}
+.ch:active{background:var(--kr)}
+.ch .ic{width:40px;height:40px;border-radius:12px;background:var(--kr);display:grid;place-items:center;font-size:18px;flex:none;font-weight:700;color:var(--tm)}
+.ch .tx{flex:1;min-width:0}.ch .n{font-weight:700}.ch .l{color:var(--mu);font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ch .u{background:var(--ru);color:#fff;border-radius:11px;font-size:12px;font-weight:700;padding:1px 8px}
+.ch.unread .n{color:var(--hn)}
+.view.tk{padding:0;display:none;flex-direction:column}.view.tk.on{display:flex}
+.tk-list{flex:1;overflow-y:auto;padding:12px 12px 6px;-webkit-overflow-scrolling:touch}
+.tk-form{display:flex;align-items:flex-end;gap:6px;padding:8px 8px calc(8px);border-top:1px solid var(--li);background:var(--ca)}
+.tk-form textarea{flex:1;resize:none;border:2px solid var(--li);border-radius:18px;padding:9px 13px;font:inherit;font-size:16px;max-height:140px;background:var(--bg);color:var(--tx)}
+.tk-form textarea:focus{outline:none;border-color:var(--hn)}
+.tk-ib{width:40px;height:42px;display:grid;place-items:center;font-size:21px;cursor:pointer;background:none;border:0;border-radius:12px;flex:none;user-select:none;-webkit-user-select:none}
+.tk-ib.rec{background:var(--ru);animation:pulse 1s infinite}.tk-ib.dict{background:var(--zl)}
+@keyframes pulse{50%{opacity:.6}}
+.tk-send{width:44px;height:42px;border:0;border-radius:50%;background:var(--hn);color:#fff;font-size:18px;cursor:pointer;flex:none}
+.msg{display:flex;flex-direction:column;align-items:flex-start;margin:3px 0;max-width:100%}
+.msg.me{align-items:flex-end}
+.msg .who{font-size:12px;color:var(--mu);margin:8px 6px 2px;font-weight:700}
+.bub{max-width:min(82%,560px);padding:8px 12px;border-radius:16px;background:var(--ca);border:1px solid var(--li);white-space:pre-wrap;word-wrap:break-word;font-size:15.5px;line-height:1.4;cursor:pointer}
+.msg.me .bub{background:var(--hn);color:#fff;border-color:var(--hn);border-bottom-right-radius:4px}
+.msg:not(.me) .bub{border-bottom-left-radius:4px}
+.msg.bot .bub{background:#fff8ec;border-color:var(--zl);color:#2a1a0e}
+.bub .mn{font-weight:700;color:var(--hn)}.msg.me .bub .mn{color:#ffe2a8}
+.bub img{max-width:100%;max-height:340px;border-radius:10px;display:block;margin:2px 0}
+.bub audio{max-width:240px;display:block}
+.bub .ct{border-left:3px solid var(--zl);padding:2px 8px;margin-bottom:4px;font-size:13px;opacity:.85}
+.bub.del{font-style:italic;opacity:.6}
+.meta{font-size:11px;color:var(--mu);margin:2px 8px 0;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.rx{display:inline-flex;gap:2px;background:var(--kr);border-radius:10px;padding:0 6px;font-size:12.5px;color:var(--tm);cursor:pointer}
+.rx.mine{outline:1.5px solid var(--hn)}
+.day-sep{text-align:center;color:var(--mu);font-size:12px;margin:14px 0 6px;font-weight:700}
+.tk-mention{display:flex;gap:6px;flex-wrap:wrap;padding:6px 10px;background:var(--ca);border-top:1px solid var(--li)}
+.tk-mention button,.tk-reply button{border:0;background:var(--kr);color:var(--tm);border-radius:14px;padding:5px 11px;font-weight:700;cursor:pointer;font-size:14px}
+.tk-reply{padding:6px 10px;background:var(--ca);border-top:1px solid var(--li);font-size:13px;color:var(--mu);display:flex;gap:8px;align-items:center}
+.sheet{position:fixed;inset:0;background:rgba(30,15,5,.45);z-index:70;display:flex;align-items:flex-end;justify-content:center}
+.sheet .in{background:var(--ca);width:100%;max-width:520px;border-radius:20px 20px 0 0;padding:14px 14px calc(14px + var(--sb))}
+.sheet .emo{display:flex;justify-content:space-around;font-size:28px;margin-bottom:8px}.sheet .emo span{cursor:pointer;padding:4px}
+.sheet button.big{margin-top:6px}
 .toast{position:fixed;left:12px;right:12px;top:calc(var(--st) + 10px);z-index:60;background:var(--ca);color:var(--tx);border:2px solid var(--zl);
   border-radius:16px;padding:12px 14px;box-shadow:0 10px 30px rgba(0,0,0,.25);transform:translateY(-140%);transition:transform .3s;cursor:pointer;max-width:520px;margin:0 auto}
 .toast.on{transform:none}.toast div{color:var(--mu);font-size:14px}
@@ -140,6 +182,13 @@ select.find{appearance:auto}
   <section class="view" id="v-instalace"><div class="wrap" id="instalace"></div></section>
   <section class="view" id="v-ucet"><div class="wrap" id="ucet"></div></section>
   <section class="view" id="v-upozorneni"><div class="wrap" id="upozorneni"></div></section>
+  <section class="view" id="v-tym"><div class="wrap" id="tym"></div></section>
+  <section class="view tk" id="v-tymk"><div id="tk-list" class="tk-list"></div><div id="tk-mention" class="tk-mention" hidden></div>
+    <div id="tk-reply" class="tk-reply" hidden></div>
+    <form id="tk-form" class="tk-form"><label class="tk-ib" title="Fotka">📷<input type="file" id="tk-foto" accept="image/*" hidden></label>
+      <textarea id="tk-text" rows="1" placeholder="Napiš zprávu…  (@jméno, @nutworldka)" enterkeyhint="send"></textarea>
+      <button type="button" class="tk-ib" id="tk-mic" title="Ťukni = diktovat · podrž = hlasová zpráva">🎤</button>
+      <button class="tk-send" id="tk-send" aria-label="Odeslat">➤</button></form></section>
 </div>
 
 <nav id="nav"></nav>
@@ -165,17 +214,17 @@ let ALLOWED = null;          // Set of page files the role may open (null = all)
 
 // ── bottom menu per role (preview approved 27. 11. 2026); first allowed candidate wins in each slot ──
 const NAV = {
-  admin:     [['domu'], ['wolf.html'], ['vyroba.html'], ['chat.html'], ['vice']],
-  plny:      [['domu'], ['vyroba.html'], ['skenovat'], ['chat.html', 'nastenky.html'], ['vice']],
-  vyroba:    [['domu'], ['vyroba.html'], ['skenovat'], ['stitky-kontrola.html', 'stitky.html'], ['vice']],
-  obchod:    [['domu'], ['zakazy.html', 'nastenky.html'], ['nabidky.html'], ['chat.html', 'kalkulator.html'], ['vice']],
-  marketing: [['domu'], ['bannery.html'], ['nastenky.html'], ['popupy.html', 'chat.html'], ['vice']],
+  admin:     [['domu'], ['wolf.html'], ['tym'], ['chat.html'], ['vice']],
+  plny:      [['domu'], ['vyroba.html'], ['tym', 'skenovat'], ['chat.html', 'nastenky.html'], ['vice']],
+  vyroba:    [['domu'], ['vyroba.html'], ['tym', 'skenovat'], ['stitky-kontrola.html', 'stitky.html'], ['vice']],
+  obchod:    [['domu'], ['zakazy.html', 'nastenky.html'], ['nabidky.html'], ['tym', 'chat.html', 'kalkulator.html'], ['vice']],
+  marketing: [['domu'], ['bannery.html'], ['tym', 'nastenky.html'], ['popupy.html', 'chat.html'], ['vice']],
 };
 const NAV_LABEL = {domu: ['🏠', 'Domů'], skenovat: ['📷', 'Skenovat'], vice: ['☰', 'Více'],
-  'vyroba.html': ['🏭', 'Výroba'], 'chat.html': ['💬', 'Chat'], 'nastenky.html': ['📌', 'Nástěnky'],
+  'vyroba.html': ['🏭', 'Výroba'], 'chat.html': ['🛍️', 'Zákazníci'], tym: ['💬', 'Tým'], 'nastenky.html': ['📌', 'Nástěnky'],
   'stitky-kontrola.html': ['🏷️', 'Štítky'], 'stitky.html': ['🏷️', 'Štítky'], 'zakazy.html': ['📋', 'Zakázky'],
   'nabidky.html': ['🧾', 'Nabídky'], 'kalkulator.html': ['🧮', 'Kalkulátor'], 'bannery.html': ['🖼️', 'Bannery'],
-  'popupy.html': ['💬', 'Popupy'], 'wolf.html': ['🐺', 'Přehled']};
+  'popupy.html': ['💬', 'Popupy'], 'wolf.html': ['🐺', 'Přehled'], 'kalendar.html': ['📅', 'Kalendář']};
 
 function can(soubor) {
   const p = PAGE[soubor];
@@ -213,7 +262,7 @@ async function probe() {
 
 function navItems() {
   const slots = NAV[ME.role] || [['domu'], ['nastenky.html'], ['skenovat'], ['vice']];
-  return slots.map(c => c.find(x => !x.includes('.') || can(x))).filter(Boolean);
+  return slots.map(c => c.find(x => x === 'tym' ? TYM_OK : (!x.includes('.') || can(x)))).filter(Boolean);
 }
 
 // ── routing: #/domu, #/skenovat, #/vice, #/instalace, #/ucet, #/s/<page.html?query> ──
@@ -227,6 +276,12 @@ function route() {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('on'));
   const isPage = h.startsWith('s/');
   $('#zpet').hidden = !isPage; $('#obnov').hidden = !isPage; $('#ven').hidden = !isPage;
+  if (h === 'tym' || h.startsWith('tym/')) {
+    $('#zpet').hidden = h === 'tym';
+    if (h === 'tym') { showView('tym'); markNav('tym'); drawTym(); } else { showView('tymk'); markNav('tym'); openTymK(h.slice(4)); }
+    return;
+  }
+  tymLeave();
   if (isPage) {
     const url = h.slice(2), file = url.split(/[?#]/)[0];
     if (!can(file)) { $('#titul').textContent = 'Bez přístupu'; showView('ucet'); $('#ucet').innerHTML = `<div class="card"><div class="h">Sem nemáš přístup</div><div class="s">Když to potřebuješ, napiš Honzovi přes „Napsat, co je potřeba“ na rozcestníku.</div></div>`; markNav(''); return; }
@@ -298,6 +353,7 @@ function drawHome() {
     <div id="pushhint"></div>
     <div class="hello"><img src="/pwa/ikona-192.png" alt=""><div><div class="g">${esc(greeting())}</div><div class="d">${today()}${ME.role === 'admin' ? ' · <span class="tag t-z">Jednatel</span>' : ''}</div></div></div>
     ${ME.role === 'admin' ? '<div id="jan"></div>' : ''}
+    ${ON_SERVER ? '<div id="den"></div>' : ''}
     ${ON_SERVER ? `<h2 class="sek">Zeptej se / zadej úkol</h2>
       <div class="ask"><input id="q" placeholder="${ME.role === 'vyroba' ? 'např. co je v dárku 3061, alergeny v kešu…' : 'např. cena kešu 200 g, co je v dárku 3061…'}" enterkeyhint="send" autocomplete="off"><button id="go">→</button></div>
       <div id="ans"></div>` : ''}
@@ -310,7 +366,42 @@ function drawHome() {
     $('#q').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); ask(); } });
   }
   if (ME.role === 'admin') drawJan();
+  if (ON_SERVER) drawDay();
   pushHint();
+}
+
+// „Můj den“ for everyone: my calendar today + tomorrow, my board cards overdue / due today (same data as kalendar.html, nastenky.html)
+async function drawDay() {
+  const box = $('#den'); if (!box) return;
+  const get = u => fetch(u, {credentials: 'same-origin', cache: 'no-store'}).then(r => r.ok ? r.json() : null).catch(() => null);
+  const d0 = new Date(), d1 = new Date(Date.now() + 864e5), f = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const [kal, pre] = await Promise.all([can('kalendar.html') ? get(`/api/nastenky/kalendar?od=${f(d0)}&do=${f(d1)}&moje=1`) : null,
+    can('nastenky.html') ? get('/api/nastenky/prehled') : null]);
+  const ud = ((kal && kal.udalosti) || []).slice(0, 5), today = f(d0);
+  // same rule as the morning summary: the label-making column is left out (Jan 2026-11-27)
+  const bez = s => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim() === 'tvorba stitku firmy';
+  const moje = ((pre && pre.karty) || []).filter(k => k.moje && k.termin && !k.termin_hotovo && !bez(k.sloupec));
+  const late = moje.filter(k => new Date(k.termin) < new Date()).length;
+  const dnes = moje.filter(k => k.termin.slice(0, 10) === today).length;
+  if (!ud.length && !moje.length && !kal && !pre) return;
+  let h = `<h2 class="sek">Můj den</h2>`;
+  h += ud.map(u => `<div class="card click" data-u="kalendar.html#u=${esc(u.id)}"><span class="tag t-z">${u.od.slice(0, 10) === today ? 'Dnes' : 'Zítra'}${u.cely_den ? '' : ' · ' + esc(u.od.slice(11, 16))}</span>
+    <div class="h" style="margin-top:4px">${esc(u.nazev)}</div>${u.misto ? `<div class="s">📍 ${esc(u.misto)}</div>` : ''}</div>`).join('');
+  if (late || dnes) h += `<div class="card click" data-u="nastenky.html#moje"><div class="h">📋 Moje karty</div>
+    <div class="s">${late ? `🔴 ${late} po termínu` : ''}${late && dnes ? ' · ' : ''}${dnes ? `🟠 ${dnes} na dnes` : ''}</div></div>`;
+  if (!ud.length && !late && !dnes) h += `<div class="card"><div class="s">Dnes a zítra nic v kalendáři ani karty na termín. 🐿️</div></div>`;
+  h += `<div class="row2" style="display:flex;gap:8px;margin:2px 0 8px">${can('kalendar.html') ? `<button class="big b-l" style="flex:1" data-u="kalendar.html">📅 Kalendář</button>` : ''}
+    ${can('nastenky.html') ? `<button class="big b-l" style="flex:1" data-u="nastenky.html#moje">📋 Moje karty</button>` : ''}</div>`;
+  box.innerHTML = h;
+  box.querySelectorAll('[data-u]').forEach(c => c.onclick = () => openPage(c.dataset.u));
+}
+
+// any link of ours (push, banner) opens INSIDE the app shell, never as a bare page
+function openInApp(u) {
+  const x = new URL(u || '/aplikace.html', location.origin);
+  if (x.origin !== location.origin) { location.href = x.href; return; }
+  if (x.pathname === '/aplikace.html') location.hash = x.hash || '#/domu';
+  else openPage(x.pathname.slice(1) + x.search + x.hash);
 }
 
 // Jan's home: what needs him + numbers of the day (same data as the morning report)
@@ -547,7 +638,7 @@ async function drawPushAdmin() {
 function toast(d) {
   const el = document.createElement('div'); el.className = 'toast';
   el.innerHTML = `<b>${esc(d.title || 'Nutworld')}</b>${d.body ? `<div>${esc(d.body)}</div>` : ''}`;
-  el.onclick = () => { el.remove(); const x = new URL(d.url || '/aplikace.html', location.origin); if (x.pathname === '/aplikace.html') location.hash = x.hash || '#/domu'; else location.href = x.href; };
+  el.onclick = () => { el.remove(); openInApp(d.url); };
   document.body.appendChild(el); setTimeout(() => el.classList.add('on'), 20);
   setTimeout(() => { el.classList.remove('on'); setTimeout(() => el.remove(), 400); }, 8000);
 }
@@ -555,12 +646,218 @@ function toast(d) {
 if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message', e => {
   if (e.data && e.data.nwPush) return toast(e.data.nwPush);
   const u = e.data && e.data.nwOtevri; if (!u) return;
-  const x = new URL(u, location.origin);
-  if (x.pathname === '/aplikace.html') { location.hash = x.hash || '#/domu'; } else location.href = x.href;
+  openInApp(u);
 });
 
+// ── team chat (server nw_tym.py) ──
+let TYM_OK = false, TYM = null, TK = null, TK_TIMER = null, TK_REPLY = null;
+const tymApi = async (path, body) => {
+  const r = await fetch('/api/tym/' + path, body ? {method: 'POST', credentials: 'same-origin', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)} : {credentials: 'same-origin', cache: 'no-store'});
+  const j = await r.json().catch(() => ({chyba: 'Server neodpověděl.'}));
+  if (!r.ok || j.chyba) throw new Error(j.chyba || 'chyba ' + r.status);
+  return j;
+};
+const initials = n => String(n || '?').split(' ').map(x => x[0]).slice(0, 2).join('').toUpperCase();
+function tymBadge() {
+  const b = document.querySelector('#nav button[data-k="tym"]'); if (!b || !TYM) return;
+  const n = TYM.kanaly.reduce((a, k) => a + (k.ztlumeno ? 0 : k.neprecteno), 0);
+  let s = b.querySelector('.bdg'); if (!n) { if (s) s.remove(); return; }
+  if (!s) { s = document.createElement('span'); s.className = 'bdg'; b.appendChild(s); } s.textContent = n > 99 ? '99+' : n;
+}
+async function tymPoll() { try { TYM = await tymApi('stav'); tymBadge(); if (CUR === 'tym') drawTymList(); } catch (e) {} }
+const hhmm = s => s ? s.slice(11, 16) : '';
+const dayName = s => { const d = new Date(s.slice(0, 10) + 'T12:00'), t = new Date(); t.setHours(12, 0, 0, 0);
+  const diff = Math.round((t - d) / 864e5); return diff === 0 ? 'Dnes' : diff === 1 ? 'Včera' : `${DNY[d.getDay()]} ${d.getDate()}. ${MES[d.getMonth()]}`; };
+
+async function drawTym() {
+  $('#titul').textContent = 'Tým';
+  if (!TYM_OK) { $('#tym').innerHTML = `<div class="card"><div class="s">Týmový chat zatím testuje Honza — brzy ho otevře všem.</div></div>`; return; }
+  try { TYM = await tymApi('stav'); } catch (e) { $('#tym').innerHTML = `<div class="card err">${esc(e.message)}</div>`; return; }
+  drawTymList(); tymBadge();
+}
+function drawTymList() {
+  const ch = k => `<div class="ch ${k.neprecteno && !k.ztlumeno ? 'unread' : ''}" data-k="${esc(k.id)}"><span class="ic">${k.typ === 'dm' ? esc(initials(k.nazev)) : '#'}</span>
+    <div class="tx"><div class="n">${esc(k.nazev)}${k.ztlumeno ? ' 🔕' : ''}</div><div class="l">${k.posledni ? esc((k.posledni.kdo === TYM.ja ? 'Ty' : k.posledni.kdo.split(' ')[0]) + ': ' + k.posledni.text) : 'zatím nic'}</div></div>
+    ${k.neprecteno ? `<span class="u" style="${k.ztlumeno ? 'background:var(--mu)' : ''}">${k.neprecteno}</span>` : `<span class="s">${k.posledni ? hhmm(k.posledni.cas) : ''}</span>`}</div>`;
+  const kan = TYM.kanaly.filter(k => k.typ === 'kanal'), dm = TYM.kanaly.filter(k => k.typ === 'dm')
+    .sort((a, b) => ((b.posledni || {}).id || 0) - ((a.posledni || {}).id || 0));
+  $('#tym').innerHTML = `<h2 class="sek" style="margin-top:4px">Kanály</h2><div>${kan.map(ch).join('')}</div>
+    <h2 class="sek">Soukromé zprávy</h2><div>${dm.map(ch).join('') || '<div class="s" style="padding:6px">Zatím žádné.</div>'}</div>
+    <button class="big b-l" id="tk-new">✉️ Nová soukromá zpráva</button>
+    <div id="tk-pick"></div>
+    ${TYM.admin ? `<h2 class="sek">Správa (jen ty)</h2><div class="card">
+      <div class="ask"><input id="tk-kn" placeholder="Nový kanál, např. Doprava"><button id="tk-ka">+</button></div>
+      <div class="s" style="margin-top:10px">Chat teď používá: <b>${TYM.pristup === 'vsichni' ? 'celý tým' : esc([].concat(TYM.pristup).join(', '))}</b></div>
+      <button class="big b-z" id="tk-open">${TYM.pristup === 'vsichni' ? 'Zavřít zpět jen pro mě' : '🚀 Otevřít chat celému týmu'}</button></div>` : ''}`;
+  document.querySelectorAll('#tym .ch').forEach(e => e.onclick = () => go('tym/' + e.dataset.k));
+  $('#tk-new').onclick = () => {
+    $('#tk-pick').innerHTML = TYM.lide.length ? `<div class="card">${TYM.lide.map(n => `<div class="ch" data-s="${esc(n)}"><span class="ic">${esc(initials(n))}</span><div class="tx"><div class="n">${esc(n)}</div></div></div>`).join('')}</div>`
+      : `<div class="card"><div class="s">Zatím tu nikdo další není — chat otevřeš týmu tlačítkem níže.</div></div>`;
+    document.querySelectorAll('#tk-pick [data-s]').forEach(e => e.onclick = async () => { const j = await tymApi('dm', {s: e.dataset.s}); go('tym/' + j.kanal); });
+  };
+  if (TYM.admin) {
+    $('#tk-ka').onclick = async () => { const n = $('#tk-kn').value.trim(); if (!n) return; TYM = await tymApi('kanal', {nazev: n}); drawTymList(); };
+    $('#tk-open').onclick = async () => {
+      const open = TYM.pristup !== 'vsichni';
+      if (open && !confirm('Otevřít týmový chat všem přihlášeným lidem? Každý ho uvidí v aplikaci a dostane upozornění.')) return;
+      TYM = await tymApi('pristup', {pristup: open ? 'vsichni' : [TYM.ja]}); drawTymList();
+    };
+  }
+}
+
+// ── one conversation ──
+function tymLeave() { clearInterval(TK_TIMER); TK_TIMER = null; TK = null; }
+async function openTymK(id) {
+  id = decodeURIComponent(id); tymLeave();
+  const k = (TYM && TYM.kanaly.find(x => x.id === id)) || {nazev: '', typ: 'kanal'};
+  $('#titul').textContent = (k.typ === 'dm' ? '' : '# ') + (k.nazev || 'Chat');
+  TK = {id, zpravy: [], max: 0, clenove: [], precteno: {}};
+  $('#tk-list').innerHTML = '<div class="s" style="text-align:center;margin-top:30px">Načítám…</div>';
+  try { const j = await tymApi('zpravy?kanal=' + encodeURIComponent(id)); Object.assign(TK, {zpravy: j.zpravy, clenove: j.clenove, precteno: j.precteno}); }
+  catch (e) { $('#tk-list').innerHTML = `<div class="card err">${esc(e.message)}</div>`; return; }
+  TK.max = TK.zpravy.reduce((a, m) => Math.max(a, m.id), 0);
+  drawMsgs(true); markRead();
+  TK_TIMER = setInterval(() => { if (!document.hidden) tkPoll(); }, 3000);
+}
+async function tkPoll() {
+  if (!TK) return; const id = TK.id;
+  try {
+    const j = await tymApi(`zpravy?kanal=${encodeURIComponent(id)}&po=${TK.max}`); if (!TK || TK.id !== id) return;
+    let ch = false;
+    (j.zmeny || []).forEach(m => { const i = TK.zpravy.findIndex(x => x.id === m.id); if (i >= 0 && JSON.stringify(TK.zpravy[i]) !== JSON.stringify(m)) { TK.zpravy[i] = m; ch = true; } });
+    if (j.zpravy.length) { j.zpravy.forEach(m => { if (!TK.zpravy.some(x => x.id === m.id)) TK.zpravy.push(m); }); TK.max = Math.max(TK.max, ...j.zpravy.map(m => m.id)); ch = true; }
+    if (JSON.stringify(j.precteno) !== JSON.stringify(TK.precteno)) { TK.precteno = j.precteno; ch = true; }
+    if (ch) { const l = $('#tk-list'), atBottom = l.scrollHeight - l.scrollTop - l.clientHeight < 80; drawMsgs(atBottom); if (j.zpravy.length) markRead(); }
+  } catch (e) {}
+}
+function markRead() { if (TK && TK.max) tymApi('precteno', {kanal: TK.id, posledni: TK.max}).then(() => tymPoll()).catch(() => {}); }
+function fmtText(s) {
+  return esc(s).replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener" style="color:inherit">$1</a>')
+    .replace(/@([\wÀ-ž]+(?: [A-ZÀ-Ž][\wÀ-ž]+)?)/g, '<span class="mn">@$1</span>');
+}
+function drawMsgs(scroll) {
+  const l = $('#tk-list'); let h = '', lastDay = '', lastWho = '', lastT = '';
+  const me = TYM ? TYM.ja : ME.jmeno;
+  if (!TK.zpravy.length) h = `<div class="s" style="text-align:center;margin-top:40px">Zatím tu nic není — napiš první zprávu 👋<br><br>Tip: <b>@nutworldka</b> odpoví na cenu, složení, obsah dárku…</div>`;
+  TK.zpravy.forEach(m => {
+    const day = m.cas.slice(0, 10); if (day !== lastDay) { h += `<div class="day-sep">${dayName(m.cas)}</div>`; lastDay = day; lastWho = ''; }
+    const mine = m.kdo === me, bot = m.kdo === 'NutWorldka';
+    const gap = !lastT || (new Date(m.cas) - new Date(lastT)) > 5 * 60e3;
+    const who = !mine && (m.kdo !== lastWho || gap) ? `<div class="who">${bot ? '🐿️ ' : ''}${esc(m.kdo)}</div>` : '';
+    lastWho = m.kdo; lastT = m.cas;
+    let inner = m.smazano ? 'zpráva smazána' : '';
+    if (!m.smazano) {
+      if (m.citace) inner += `<div class="ct"><b>${esc(m.citace.kdo)}</b>: ${esc(m.citace.text)}</div>`;
+      if (m.soubor && m.soubor.typ === 'foto') inner += `<img src="${esc(m.soubor.url)}" alt="fotka" loading="lazy" onclick="event.stopPropagation();window.open(this.src)">`;
+      if (m.soubor && m.soubor.typ === 'audio') inner += `<audio controls preload="none" src="${esc(m.soubor.url)}" onclick="event.stopPropagation()"></audio>`;
+      if (m.text) inner += fmtText(m.text);
+      if (m.akce && m.akce.length) inner += `<div class="akce">${m.akce.map(a => `<button onclick="event.stopPropagation();openPage('${esc(String(a.url).replace(/'/g, ''))}')">${a.ikona || ''} ${esc(a.nazev)}</button>`).join('')}</div>`;
+    }
+    const rx = Object.entries(m.reakce || {}).map(([e, w]) => `<span class="rx ${w.includes(me) ? 'mine' : ''}" title="${esc(w.join(', '))}" onclick="tkReact(${m.id},'${e}')">${e} ${w.length}</span>`).join('');
+    const seen = mine ? Object.entries(TK.precteno).filter(([n, v]) => v >= m.id).map(([n]) => n.split(' ')[0]) : [];
+    const isLastMine = mine && !TK.zpravy.some(x => x.id > m.id && x.kdo === me);
+    h += `<div class="msg ${mine ? 'me' : ''} ${bot ? 'bot' : ''}">${who}<div class="bub ${m.smazano ? 'del' : ''}" onclick="tkSheet(${m.id})">${inner}</div>
+      <div class="meta">${rx}<span>${hhmm(m.cas)}</span>${isLastMine && seen.length ? `<span>✓✓ ${esc(seen.join(', '))}</span>` : ''}</div></div>`;
+  });
+  l.innerHTML = h;
+  if (scroll) l.scrollTop = l.scrollHeight;
+}
+async function tkReact(id, e) {
+  try { const m = await tymApi('reakce', {zprava: id, emoji: e}); const i = TK.zpravy.findIndex(x => x.id === id); if (i >= 0) TK.zpravy[i] = m; drawMsgs(false); } catch (x) { alert(x.message); }
+}
+function tkSheet(id) {
+  const m = TK.zpravy.find(x => x.id === id); if (!m || m.smazano) return;
+  const me = TYM ? TYM.ja : ME.jmeno;
+  const s = document.createElement('div'); s.className = 'sheet';
+  s.innerHTML = `<div class="in"><div class="emo">${['👍', '❤️', '😂', '✅', '🙏', '👀'].map(e => `<span data-e="${e}">${e}</span>`).join('')}</div>
+    <button class="big b-l" data-a="reply">↩️ Odpovědět</button>
+    ${m.text ? `<button class="big b-l" data-a="copy">📋 Kopírovat text</button>` : ''}
+    ${ME.role === 'admin' ? `<button class="big b-z" data-a="ukol">✅ Udělat z toho úkol (Wolf)</button>` : ''}
+    ${m.kdo === me || ME.role === 'admin' ? `<button class="big b-l" data-a="del" style="color:var(--ru)">🗑 Smazat</button>` : ''}
+    <button class="big b-l" data-a="x">Zavřít</button></div>`;
+  document.body.appendChild(s);
+  s.onclick = async ev => {
+    const e = ev.target.dataset.e, a = ev.target.dataset.a;
+    if (ev.target === s || a === 'x') return s.remove();
+    if (e) { s.remove(); return tkReact(id, e); }
+    if (a === 'reply') { s.remove(); TK_REPLY = m; $('#tk-reply').hidden = false; $('#tk-reply').innerHTML = `↩️ <b>${esc(m.kdo)}</b>: ${esc((m.text || '📎').slice(0, 60))} <button style="margin-left:auto" onclick="TK_REPLY=null;this.parentNode.hidden=true">×</button>`; $('#tk-text').focus(); }
+    if (a === 'copy') { s.remove(); navigator.clipboard && navigator.clipboard.writeText(m.text); }
+    if (a === 'ukol') { const due = prompt('Termín úkolu (RRRR-MM-DD), prázdné = zítra:', ''); s.remove(); if (due === null) return;
+      try { await tymApi('ukol', {zprava: id, due: due.trim()}); toast({title: '✅ Úkol uložen', body: 'Najdeš ho na Wolfu v Úkolech.'}); } catch (x) { alert(x.message); } }
+    if (a === 'del') { if (!confirm('Opravdu smazat tuhle zprávu? Nejde vrátit.')) return; s.remove();
+      try { await tymApi('smazat', {zprava: id}); m.smazano = true; m.text = ''; delete m.soubor; drawMsgs(false); } catch (x) { alert(x.message); } }
+  };
+}
+async function tkSend(extra) {
+  const ta = $('#tk-text'), text = ta.value.trim();
+  if (!text && !extra) return;
+  const body = {kanal: TK.id, text, odpoved_na: TK_REPLY ? TK_REPLY.id : null, ...(extra || {})};
+  ta.value = ''; ta.style.height = ''; TK_REPLY = null; $('#tk-reply').hidden = true; $('#tk-mention').hidden = true;
+  $('#tk-send').disabled = true;
+  try { const m = await tymApi('poslat', body); if (!TK.zpravy.some(x => x.id === m.id)) TK.zpravy.push(m); TK.max = Math.max(TK.max, m.id); drawMsgs(true);
+    if (/@nutworldk/i.test(text)) setTimeout(tkPoll, 2500); }
+  catch (e) { alert(e.message); if (!extra) ta.value = text; }
+  finally { $('#tk-send').disabled = false; }
+}
+$('#tk-form').onsubmit = e => { e.preventDefault(); tkSend(); };
+$('#tk-text').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing && matchMedia('(min-width:900px)').matches) { e.preventDefault(); tkSend(); } });
+$('#tk-text').addEventListener('input', e => {
+  const ta = e.target; ta.style.height = ''; ta.style.height = Math.min(ta.scrollHeight, 140) + 'px';
+  const m = ta.value.slice(0, ta.selectionStart).match(/@([\wÀ-ž]*)$/);
+  const box = $('#tk-mention');
+  if (!m || !TK) { box.hidden = true; return; }
+  const q = m[1].toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const opts = ['NutWorldka', 'všichni', ...TK.clenove.filter(n => n !== (TYM && TYM.ja))].filter(n => n.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').split(' ').some(p => p.startsWith(q))).slice(0, 6);
+  box.hidden = !opts.length;
+  box.innerHTML = opts.map(n => `<button type="button">${esc(n)}</button>`).join('');
+  box.querySelectorAll('button').forEach(b => b.onclick = () => {
+    const pos = ta.selectionStart, before = ta.value.slice(0, pos).replace(/@([\wÀ-ž]*)$/, '@' + b.textContent.split(' ')[0] + ' ');
+    ta.value = before + ta.value.slice(pos); box.hidden = true; ta.focus();
+  });
+});
+// photo: shrink on the phone (max 1600 px JPEG) before sending
+$('#tk-foto').onchange = async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  try {
+    const img = await createImageBitmap(f); const sc = Math.min(1, 1600 / Math.max(img.width, img.height));
+    const cv = document.createElement('canvas'); cv.width = Math.round(img.width * sc); cv.height = Math.round(img.height * sc);
+    cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+    tkSend({soubor: {typ: 'foto', mime: 'image/jpeg', data: cv.toDataURL('image/jpeg', 0.82)}});
+  } catch (x) { alert('Fotku se nepodařilo načíst.'); }
+};
+// mic: tap = dictate into the text (speech recognition in the phone, Czech), hold = voice message
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let REC = null, DICT = null, holdT = null, held = false;
+const mic = $('#tk-mic');
+async function recStart() {
+  try {
+    const st = await navigator.mediaDevices.getUserMedia({audio: true});
+    const mime = ['audio/mp4', 'audio/webm;codecs=opus', 'audio/webm'].find(x => window.MediaRecorder && MediaRecorder.isTypeSupported(x)) || '';
+    REC = new MediaRecorder(st, mime ? {mimeType: mime} : {}); const parts = [];
+    REC.ondataavailable = ev => ev.data.size && parts.push(ev.data);
+    REC.onstop = () => { st.getTracks().forEach(t => t.stop()); mic.classList.remove('rec');
+      const b = new Blob(parts, {type: REC.mimeType}); REC = null; if (b.size < 2000) return;
+      const r = new FileReader(); r.onload = () => tkSend({soubor: {typ: 'audio', mime: b.type, data: r.result}}); r.readAsDataURL(b); };
+    REC.start(); mic.classList.add('rec');
+  } catch (x) { alert('Mikrofon není povolený.'); }
+}
+function dictToggle() {
+  if (DICT) { DICT.stop(); return; }
+  if (!SR) { return REC ? REC.stop() : recStart(); }      // no dictation here -> tap toggles a voice message
+  const ta = $('#tk-text'), base = ta.value ? ta.value.trimEnd() + ' ' : '';
+  DICT = new SR(); DICT.lang = 'cs-CZ'; DICT.interimResults = true; DICT.continuous = true;
+  DICT.onresult = ev => { let s = ''; for (const r of ev.results) s += r[0].transcript; ta.value = base + s; ta.dispatchEvent(new Event('input')); };
+  DICT.onend = () => { DICT = null; mic.classList.remove('dict'); };
+  DICT.onerror = () => { DICT = null; mic.classList.remove('dict'); };
+  DICT.start(); mic.classList.add('dict');
+}
+mic.addEventListener('pointerdown', e => { e.preventDefault(); held = false; holdT = setTimeout(() => { held = true; if (!REC) recStart(); }, 450); });
+mic.addEventListener('pointerup', () => { clearTimeout(holdT); if (held) { if (REC) REC.stop(); } else dictToggle(); });
+mic.addEventListener('pointerleave', () => { clearTimeout(holdT); if (held && REC) REC.stop(); });
+mic.addEventListener('contextmenu', e => e.preventDefault());
+
 // ── top bar buttons ──
-$('#zpet').onclick = () => history.length > 1 ? history.back() : go('domu');
+$('#zpet').onclick = () => CUR.startsWith('tym/') ? go('tym') : history.length > 1 ? history.back() : go('domu');
 $('#obnov').onclick = () => { const f = FRAMES[CUR.slice(2)]; if (f) { const i = f.querySelector('iframe'); i.src = i.src; } };
 $('#ven').onclick = () => window.open('/' + CUR.slice(2), '_blank');
 $('#av').onclick = () => go('ucet');
@@ -569,9 +866,10 @@ $('#av').onclick = () => go('ucet');
 (async () => {
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw-aplikace.js', {scope: '/'}).catch(() => {});
   try { await whoami(); } catch (e) { return; }
+  if (ON_SERVER) { const r = await fetch('/api/tym/stav', {credentials: 'same-origin'}).catch(() => null); TYM_OK = !!(r && r.ok); if (TYM_OK) TYM = await r.json(); }
   const ini = (ME.jmeno || 'NW').split(' ').map(x => x[0]).slice(0, 2).join('').toUpperCase();
   $('#av').textContent = ini;
-  drawNav();
+  drawNav(); tymBadge(); setInterval(() => { if (!document.hidden && TYM_OK) tymPoll(); }, 15000);
   addEventListener('hashchange', route);
   route();
   $('#load').style.opacity = 0; setTimeout(() => $('#load').remove(), 300);

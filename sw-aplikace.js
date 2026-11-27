@@ -2,7 +2,7 @@
 // Scope "/" so the tool pages opened from the app stay inside the installed app window,
 // but EVERY request outside the shell list passes straight to the network untouched
 // (login redirects of nw_auth, APIs, Trello, tool pages — nothing is cached or rewritten).
-const VERZE = 'nw-app-3';
+const VERZE = 'nw-app-4';
 const SHELL = ['/aplikace.html', '/stranky-data.js', '/pwa/aplikace.webmanifest',
   '/pwa/ikona-192.png', '/pwa/ikona-512.png', '/pwa/apple-touch-icon.png', '/pwa/favicon-64.png'];
 
@@ -47,7 +47,10 @@ self.addEventListener('push', e => {
 // tap -> focus the open app and go to the place, or open the app there
 self.addEventListener('notificationclick', e => {
   e.notification.close();
-  const url = new URL((e.notification.data && e.notification.data.url) || '/aplikace.html', location.origin).href;
+  // a tool page (/nastenky.html#…, /kalendar.html#u=…) opens inside the app shell, so the menu stays (Jan 2026-11-27)
+  const raw = new URL((e.notification.data && e.notification.data.url) || '/aplikace.html', location.origin);
+  const url = raw.origin !== location.origin || raw.pathname === '/aplikace.html' ? raw.href
+    : location.origin + '/aplikace.html#/s/' + raw.pathname.slice(1) + raw.search + raw.hash;
   e.waitUntil(self.clients.matchAll({type: 'window', includeUncontrolled: true}).then(list => {
     const app = list.find(c => new URL(c.url).pathname === '/aplikace.html');
     if (app) { app.postMessage({nwOtevri: url}); return app.focus(); }

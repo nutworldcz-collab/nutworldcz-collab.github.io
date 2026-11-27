@@ -99,7 +99,8 @@ window.NW_STRANKY = [
   "ikona": "📅",
   "nazev": "Kalendář",
   "popis": "Náš firemní kalendář — schůzky, dovolené, výroba, termíny zakázek a karet, svátky; připomínky do aplikace",
-  "barva": "amber"
+  "barva": "amber",
+  "hlavni": 1
  },
  {
   "soubor": "zakazka.html",
@@ -555,7 +556,8 @@ window.NW_STRANKY = [
   "nazev": "Nástěnky",
   "popis": "Naše vlastní nástěnky místo Trella — zatím kopie Trella (souběžný provoz), jen na serveru s přihlášením",
   "stitek": "nové",
-  "barva": "brown"
+  "barva": "brown",
+  "hlavni": 1
  },
  {
   "soubor": "pichacky.html",

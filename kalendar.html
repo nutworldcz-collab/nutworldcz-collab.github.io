@@ -182,7 +182,10 @@ function render() {
 function setView(v) { VIEW = v; if (v === 'seznam') CUR = new Date(); load(); }
 function shift(n) { if (VIEW === 'mesic') CUR = new Date(CUR.getFullYear(), CUR.getMonth() + n, 1); else CUR.setDate(CUR.getDate() + 30 * n); load(); }
 function goToday() { CUR = new Date(); load(); }
-function openCard(b, k) { window.open(`/nastenky.html#b=${b}&k=${k}`, '_blank', 'noopener'); }
+function openCard(b, k) {          // inside the app (iframe) stay in the app; in a browser a new tab
+  const u = `/nastenky.html#b=${b}&k=${k}`;
+  if (window.top !== window) location.href = u; else window.open(u, '_blank', 'noopener');
+}
 function dayClick(day) {
   const its = items(day);
   if (!its.length) return editEvent(null, day);
