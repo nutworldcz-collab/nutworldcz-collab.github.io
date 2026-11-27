@@ -1301,7 +1301,8 @@ ${pozn || '—'}`;
 
   (async function fetchArchiv() {
     try {
-      const r = await fetch('/prijmy_archiv.json?_=' + Date.now());
+      if (location.hostname.endsWith('github.io')) return;   // goods-in archive: server only (2026-11-27)
+      const r = await fetch('/api/prijem/archiv', { credentials: 'same-origin' });
       if (r.ok) archivData = await r.json();
     } catch(e) {}
   })();

@@ -293,7 +293,10 @@ async function fetchJsonPublic(file) {
 }
 
 async function loadArchives() {
-  const [p, m] = await Promise.all([fetchJsonPublic('prijmy_archiv.json'), fetchJsonPublic('michani_archiv.json')]);
+  // goods-in archive is on the server since 2026-11-27 (behind login, without prices for the warehouse role)
+  const prijmy = location.hostname.endsWith('github.io') ? Promise.resolve(null)
+    : fetch('/api/prijem/archiv', { credentials: 'same-origin' }).then(r => r.ok ? r.json() : null).catch(() => null);
+  const [p, m] = await Promise.all([prijmy, fetchJsonPublic('michani_archiv.json')]);
   if (p) prijmyData = p;
   if (m) michaniData = m;
   renderPrehled();
@@ -564,7 +567,7 @@ function renderPrehled() {
   items.sort((a, b) => a.dmt.localeCompare(b.dmt));
   const wrap = document.getElementById('prehled-wrap');
   if (!items.length) {
-    wrap.innerHTML = '<div class="empty-state">' + (getToken() ? 'Žádné záznamy s DMT.' : '🔑 Nastav GitHub token pro načtení dat.') + '</div>';
+    wrap.innerHTML = '<div class="empty-state">' + (location.hostname.endsWith('github.io') ? 'Příjmy jsou jen v nástrojích: <a href="https://nastroje.nutworld.cz/dmt.html">nastroje.nutworld.cz</a>' : 'Žádné záznamy s DMT.') + '</div>';
     return;
   }
   wrap.innerHTML = `<table class="dmt-table">

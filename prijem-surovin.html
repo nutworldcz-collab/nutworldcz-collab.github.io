@@ -255,7 +255,7 @@ td.td-del { width: 32px; }
     <a href="/archiv-prijmu.html" style="font-size:12px;color:var(--brown);font-weight:600;text-decoration:none;white-space:nowrap">📂 Archiv →</a>
     <div class="status" id="status"></div>
   </div>
-  <div id="gh-token-bar" style="display:none;background:#fff8e6;border:1.5px solid #f7ab31;border-radius:8px;padding:10px 16px;margin:10px 0;font-size:13px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+  <div id="gh-token-bar" style="display:none;background:#fff8e6;border:1.5px solid #f7ab31;border-radius:8px;padding:10px 16px;margin:10px 0;font-size:13px;align-items:center;gap:10px;flex-wrap:wrap">
     ⚠️ Archiv: nastav <strong>GitHub PAT</strong> (pro uložení dodávek):
     <input type="password" id="gh-tok-inp" placeholder="ghp_…" style="border:1.5px solid #d9c9b8;border-radius:5px;padding:5px 8px;font-size:13px;font-family:monospace;flex:1;min-width:180px;max-width:300px">
     <button onclick="saveGhToken()" style="background:#83502e;color:#fff;border:none;border-radius:5px;padding:6px 14px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">Uložit</button>
@@ -385,6 +385,7 @@ td.td-del { width: 32px; }
 
   // Token setup banner
   (function initTokenBanner() {
+    return;   // archive is on the server since 2026-11-27 — no GitHub token needed
     const tok = getGhToken();
     const el = document.getElementById('gh-token-bar');
     if (!tok) {
@@ -470,45 +471,21 @@ td.td-del { width: 32px; }
       msgs.push(`✓ Trello <a href="${card.url}" target="_blank" style="color:var(--ok);font-weight:700">→ karta</a>`);
     } catch(e) { msgs.push(`✗ Trello: ${e.message}`); }
 
-    // 2. GitHub archive
-    const token = getGhToken();
-    if (token) {
+    // 2. Archive on the server (nw_prijem.py) — since 2026-11-27 not in the public repo
+    if (location.hostname.endsWith('github.io')) {
+      msgs.push('ℹ️ Archiv: zapisuje se jen v nástrojích (nastroje.nutworld.cz)');
+    } else {
       try {
-        const entry = {
-          id: cislo || (dod.replace(/\s+/g,'-') + '-' + datum),
-          cislo_dodavky: cislo,
-          dodavatel: dod,
-          datum,
-          datum_ulozeni: new Date().toISOString().slice(0,10),
-          prijal,
-          poznamka: pozn,
-          ulozeni,
-          celkove_kg: rows.reduce((s,r) => s + (r.mnozstvi||0), 0),
-          items: rows.map(r => ({ nazev: r.nazev, kod: r.kod, sarze: r.sarze, dmt: r.dmt, mnozstvi: r.mnozstvi, stav: r.stav || 'OK' }))
-        };
-        const meta = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${GH_FILE}`, {
-          headers: { Authorization: 'token ' + token }
-        });
-        if (!meta.ok) throw new Error('GitHub GET: ' + meta.status);
-        const mj = await meta.json();
-        const current = JSON.parse(b64decode(mj.content));
-        current.push(entry);
-        const updated = btoa(unescape(encodeURIComponent(JSON.stringify(current, null, 2))));
-        const wr = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${GH_FILE}`, {
-          method: 'PUT', headers: { Authorization: 'token ' + token, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: `prijem: ${dod} ${datum}`, content: updated, sha: mj.sha })
-        });
-        if (!wr.ok) throw new Error('GitHub PUT: ' + wr.status);
+        const r = await fetch('/api/prijem/rucne', { method: 'POST', credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ cislo_dodavky: cislo, dodavatel: dod, datum, prijal, poznamka: pozn, ulozeni, items: rows }) });
+        const j = await r.json();
+        if (!r.ok) throw new Error(j.chyba || r.status);
         msgs.push('✓ Archiv uložen');
       } catch(e) {
-        const errMsg = e.message || String(e);
-        msgs.push(`⚠️ Archiv: ${errMsg}`);
-        console.error('Archive save error:', e);
-        alert('❌ Archiv se neuložil:\n\n' + errMsg + '\n\nOtevři konzoli (F12) pro více detailů.');
+        msgs.push(`✗ Archiv: ${e.message}`);
+        alert('❌ Archiv se neuložil:\n\n' + e.message);
       }
-    } else {
-      alert('⚠️ GitHub token není nastaven.\n\nZadej token v žlutém poli pod formulářem a klikni Uložit.');
-      msgs.push('ℹ️ Archiv: token není nastaven');
     }
 
     const allOk = msgs.every(m => m.startsWith('✓'));
