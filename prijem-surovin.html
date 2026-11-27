@@ -100,6 +100,7 @@ td.td-del { width: 32px; }
 #foto-nahledy { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0 4px; }
 #foto-nahledy .nahled { position: relative; width: 84px; height: 110px; border-radius: 8px; overflow: hidden; border: 2px solid var(--border); background: #eee; }
 #foto-nahledy .nahled img { width: 100%; height: 100%; object-fit: cover; }
+#foto-nahledy .pdf-ikona { display: flex; flex-direction: column; justify-content: center; height: 100%; text-align: center; font-size: 26px; font-weight: 800; color: var(--brown-dark); line-height: 1.2; }
 #foto-nahledy .nahled span { position: absolute; inset: auto 0 0 0; background: rgba(0,0,0,.55); color: #fff; font-size: 11px; text-align: center; padding: 2px; }
 #foto-nahledy .nahled button { position: absolute; top: 2px; right: 2px; border: none; border-radius: 50%; width: 22px; height: 22px; background: rgba(0,0,0,.6); color: #fff; cursor: pointer; }
 .navrh-hlava { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; margin: 16px 0 10px; }
@@ -166,10 +167,11 @@ td.td-del { width: 32px; }
       <a href="https://nastroje.nutworld.cz/prijem-surovin.html" style="color:var(--brown);font-weight:700">nastroje.nutworld.cz</a>.
       Tady můžeš příjem zapsat ručně níže.</div>
     <div id="foto-on">
-      <p class="foto-help">Vyfoť doklad (všechny strany). <b>DMT připiš rukou k položce</b>, nebo přidej fotku štítku z pytle.
+      <p class="foto-help">Vyfoť doklad (všechny strany), nebo nahraj sken / PDF (iPhone: Soubory → ⋯ → Skenovat dokumenty). <b>DMT připiš rukou k položce</b>, nebo přidej fotku štítku z pytle.
         Pak klikni <b>Přečíst doklad</b> a zkontroluj, co se načetlo.</p>
       <div class="foto-akce">
-        <label class="btn-foto">📷 Vyfotit / přidat fotku<input type="file" id="foto-inp" accept="image/*" capture="environment" multiple></label>
+        <label class="btn-foto">📷 Vyfotit / přidat fotku<input type="file" id="foto-inp" class="foto-vstup" accept="image/*" capture="environment" multiple></label>
+        <label class="btn-foto">📄 Nahrát sken / PDF<input type="file" id="pdf-inp" class="foto-vstup" accept="application/pdf,image/*" multiple></label>
         <button class="btn-save" id="btn-precti" disabled>🔍 Přečíst doklad</button>
       </div>
       <div id="foto-nahledy"></div>
@@ -518,7 +520,7 @@ td.td-del { width: 32px; }
 
   function kresliNahledy() {
     $('foto-nahledy').innerHTML = fotky.map((f, i) =>
-      `<div class="nahled"><img src="${esc(f.url)}" alt=""><span>${i + 1}. ${f.id ? '✓' : '⏳'}</span>` +
+      `<div class="nahled">${f.pdf ? '<div class="pdf-ikona">📄<br>PDF</div>' : `<img src="${esc(f.url)}" alt="">`}<span>${i + 1}. ${f.id ? '✓' : '⏳'}</span>` +
       `<button title="Odebrat" data-i="${i}">×</button></div>`).join('');
     $('btn-precti').disabled = !fotky.length || fotky.some(f => !f.id);
   }
@@ -527,9 +529,10 @@ td.td-del { width: 32px; }
     if (b) { fotky.splice(+b.dataset.i, 1); kresliNahledy(); }
   });
 
-  $('foto-inp').addEventListener('change', async e => {
+  document.querySelectorAll('.foto-vstup').forEach(inp => inp.addEventListener('change', async e => {
     for (const file of e.target.files) {
-      const f = { id: null, url: URL.createObjectURL(file) };
+      const pdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+      const f = { id: null, pdf, url: pdf ? '' : URL.createObjectURL(file) };
       fotky.push(f); kresliNahledy();
       try {
         const r = await fetch('/api/prijem/foto', { method: 'POST', body: file, credentials: 'same-origin' });
@@ -538,12 +541,12 @@ td.td-del { width: 32px; }
         f.id = j.id;
       } catch (err) {
         fotky.splice(fotky.indexOf(f), 1);
-        stav('✗ Fotka se nenahrála: ' + esc(err.message), 'error');
+        stav('✗ Soubor se nenahrál: ' + esc(err.message), 'error');
       }
       kresliNahledy();
     }
     e.target.value = '';
-  });
+  }));
 
   $('btn-precti').addEventListener('click', async () => {
     $('btn-precti').disabled = true;
