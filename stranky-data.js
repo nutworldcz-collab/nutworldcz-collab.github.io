@@ -322,7 +322,7 @@ window.NW_STRANKY = [
   "skupina": "sklad",
   "ikona": "📦",
   "nazev": "Příjem surovin",
-  "popis": "Záznam příjmu dodávky — dodavatel, číslo dodávky, šarže, DMT, stav položek, tisk",
+  "popis": "Příjem dodávky fotkou dokladu (suroviny i obalový materiál) — šarže, DMT, rozeslání balírně, dárkovně, expedici a obchodníkům; ruční zápis",
   "hlavni": 5,
   "barva": "brown"
  },
@@ -331,7 +331,7 @@ window.NW_STRANKY = [
   "skupina": "sklad",
   "ikona": "📂",
   "nazev": "Archiv příjmů",
-  "popis": "Vyhledávání v historii dodávek — podle suroviny, LOT, dodavatele, data nebo DMT",
+  "popis": "Historie dodávek (surovin i obalů) — podle suroviny, LOT, dodavatele, data nebo DMT; 📷 Nový příjem",
   "barva": "green"
  },
  {
