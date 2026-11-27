@@ -1,4 +1,9 @@
 <title>Píchačky</title>
+<script>
+  // server features (clock-in check, documents) live on the tools server only — the GitHub copy forwards there so both
+  // addresses work 1:1 (Jan 2026-11-27); worker links (#t=…) keep using the shared store here
+  if (/github\.io$/.test(location.hostname) && !/[#&]t=/.test(location.hash)) location.replace('https://nastroje.nutworld.cz' + location.pathname + location.search + location.hash);
+</script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Source+Sans+3:wght@300;400;600&display=swap">
 
 <style>
