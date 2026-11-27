@@ -583,6 +583,15 @@ window.NW_STRANKY = [
   "popis": "Profil, dostupnost a úkoly manažera"
  },
  {
+  "soubor": "gdpr-zamestnanci.html",
+  "skupina": "lide",
+  "ikona": "🔐",
+  "nazev": "GDPR pro zaměstnance",
+  "popis": "Informace o zpracování osobních údajů zaměstnanců a brigádníků (docházka, poloha při píchnutí, chat, zdraví) — NÁVRH ke schválení",
+  "stitek": "návrh",
+  "barva": "brown"
+ },
+ {
   "soubor": "podpisove-rady.html",
   "skupina": "lide",
   "ikona": "✍️",
