@@ -582,7 +582,7 @@ td.td-del { width: 32px; }
           <label class="bez-dmt"><input type="checkbox" data-f="bez_dmt"> bez DMT (obal)</label></td>
         <td><input data-f="mnozstvi" type="number" step="0.01" min="0" value="${esc(p.mnozstvi)}" style="width:80px" class="${nej('mnozstvi')}">
           <span class="zdroj">${esc(p.mj)}</span></td>
-        <td class="zdroj">surovina</td>
+        <td class="zdroj">${p.darkove ? '<b style="color:#da1668">🎁 Dárkovna</b><br>+ obchodníci' : 'surovina'}</td>
         <td class="td-ok"><select data-f="stav">${['OK', 'NOK', '?', 'ATESTY'].map(s =>
           `<option${(p.stav === s || (s === 'OK' && !['NOK', '?', 'ATESTY'].includes(p.stav))) ? ' selected' : ''}>${s}</option>`).join('')}</select></td>
         ${cena}
@@ -674,8 +674,8 @@ td.td-del { width: 32px; }
         catch (e) { msgs.push('✗ Nástěnka: ' + esc(e.message)); }
       }
       const o = j.oznameni || {};
-      if (j.obalu) {
-        msgs.push(o.karta ? `✓ Obaly: <a href="${esc(o.karta)}" target="_blank" style="color:var(--ok);font-weight:700">karta OBALOVÝ MATERIÁL</a>` : '✓ Obaly uloženy');
+      if (j.obalu || (o.sekce || []).length) {
+        if (j.obalu) msgs.push(o.karta ? `✓ Obaly: <a href="${esc(o.karta)}" target="_blank" style="color:var(--ok);font-weight:700">karta OBALOVÝ MATERIÁL</a>` : '✓ Obaly uloženy');
         if ((o.sekce || []).length) msgs.push('✓ E-mail: ' + o.sekce.map(esc).join(', '));
         if ((o.obchodnici || []).length) msgs.push('✓ Obchodník: ' + o.obchodnici.map(esc).join(', '));
         (o.chyby || []).forEach(c => msgs.push('✗ ' + esc(c)));
