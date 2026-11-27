@@ -597,8 +597,11 @@ function slevyHtml(list, max) {
 
 async function loadPublic() {
   const get = u => fetch(u + '?_=' + Date.now()).then(r => r.ok ? r.json() : null).catch(() => null);
+  // reports with personal data are private on the server behind the login (2026-11-27); the public copy of orders has none
+  const priv = u => fetch('/soukrome/reporty/' + u + '?_=' + Date.now(), {credentials: 'same-origin', redirect: 'manual'})
+    .then(r => r.ok ? r.json() : null).catch(() => null);
   const [st, ads, tk, ord, em, tr] = await Promise.all([get('shoptet-stats.json'), get('report_ads.json'), get('trojkontrola.json'),
-    get('report_orders.json'), get('report_email.json'), get('report_trello.json')]);
+    priv('report_orders.json').then(x => x || get('report_orders.json')), priv('report_email.json'), priv('report_trello.json')]);
   renderShop(ord, st); renderEmails(em); renderTrello(tr);
   const z = W.zakazky || {}, s = z.stavy || {};
   const k = [];

@@ -1136,7 +1136,10 @@ async function loadData() {
     const ts = Date.now();
     // Fetch live data + snapshot concurrently
     const [liveRes, snapRes] = await Promise.all([
-      fetch('/report_orders.json?t=' + ts),
+      // Jan on the server gets the full report (customer of big orders); everyone else the public copy without personal data
+      fetch('/soukrome/reporty/report_orders.json?t=' + ts, {credentials: 'same-origin', redirect: 'manual'})
+        .then(r => r.ok && /json/.test(r.headers.get('content-type') || '') ? r : fetch('/report_orders.json?t=' + ts))
+        .catch(() => fetch('/report_orders.json?t=' + ts)),
       fetch('/snapshot_orders.json?t=' + ts).catch(() => null),
     ]);
     if (!liveRes.ok) throw new Error(`HTTP ${liveRes.status}`);
