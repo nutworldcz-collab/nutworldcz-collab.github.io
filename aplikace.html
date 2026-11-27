@@ -1034,6 +1034,7 @@ async function drawPich() {
       ${open ? `<button class="big b-h" id="p-back" style="font-size:19px;padding:18px">↩️ Zpět z pauzy</button>` : ''}
       ${inWork && used > sm.pauza ? `<div class="err" style="margin-top:6px">Pauzy ${used} min — teď máš nárok na ${sm.pauza} min (${pravidla}).</div>` : ''}
       <div id="p-m" class="s" style="margin-top:6px"></div></div>
+    <div id="p-dok"></div>
     <h2 class="sek">Moje hodiny · ${['leden','únor','březen','duben','květen','červen','červenec','srpen','září','říjen','listopad','prosinec'][+month.slice(5) - 1]}</h2>
     <div class="card"><div style="display:flex;justify-content:space-between"><b>Celkem ${hm(total)} h</b><span class="s">${days.length} dní · bez pauz</span></div>
       ${days.map(([k, r]) => { const x = new Date(k + 'T12:00');
@@ -1041,7 +1042,6 @@ async function drawPich() {
           <span style="flex:1">${esc(r.from || '?')} – ${esc(r.to || '…')} ${badge(r)}${pauseM(r) ? `<span class="s"> · pauzy ${pauseM(r)} min</span>` : ''}${r.note ? `<span class="s"> · ${esc(r.note)}</span>` : ''}</span><b>${r.from && r.to ? hm(workM(r)) : ''}</b></div>`; }).join('') || '<div class="s" style="margin-top:6px">Tento měsíc zatím nic.</div>'}
       <button class="big b-l" id="p-add">✏️ Zapsat / opravit den ručně</button></div>
     <div class="s" style="margin:6px 4px">📍 = načteno QR na provozovně · ⚠️ = bez QR nebo mimo provozovnu · ✍️ = zapsáno ručně. Každou pauzu (kouření i jídlo) si odpíchni — do hodin se nepočítá. Honza vidí v píchačkách totéž co ty.</div>
-    <div id="p-dok"></div>
     ${ME.role === 'admin' ? '<div id="p-adm"></div>' : ''}`;
   pichDocs();
   clearTimeout(PICH_T);
