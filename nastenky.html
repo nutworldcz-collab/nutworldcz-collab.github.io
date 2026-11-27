@@ -116,6 +116,10 @@ a{color:var(--br)}
 .seg button{border:0;border-radius:8px;padding:6px 12px;cursor:pointer;font-weight:700;background:transparent;color:var(--muted)}
 .seg button.on{background:var(--br);color:#fff}
 .live{font-size:11px;opacity:.85;white-space:nowrap}
+.rule{background:#faf6f1;border-radius:12px;padding:10px 12px;margin:8px 0;border-left:4px solid var(--amber)}
+.rule .row{margin:4px 0}.rule select,.rule input{padding:5px 8px}
+.tpl{background:#faf6f1;border-radius:12px;padding:10px 12px;margin:8px 0;border-left:4px solid var(--leaf)}
+.x2{border:0;background:transparent;color:var(--red);cursor:pointer;font-size:16px;padding:0 4px}
 .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--bd);color:#fff;padding:9px 16px;border-radius:10px;z-index:99;font-weight:600}
 @media (max-width:600px){.top input{width:100%;order:9}.col{width:86vw}.md{padding:16px 14px 20px}}
 </style>
@@ -313,6 +317,8 @@ function renderBoard() {
       ${stitky.length ? `<optgroup label="Štítek">${stitky.map(s => `<option value="s:${esc(s)}">${esc(s)}</option>`).join('')}</optgroup>` : ''}
     </select>
     <button class="btn ghost sm" onclick="SHOW_ARCH=!SHOW_ARCH;openBoard(B.id)">${SHOW_ARCH ? 'Skrýt archiv' : 'Archiv'}</button>
+    ${B.shortlink === ZAKAZKY_BOARD ? `<a class="btn acc sm" href="/zakazka.html" title="Zakázka se zakládá ve formuláři — vznikne karta se vším (štítky, výroba, odkaz pro zákazníka)">➕ Nová zakázka</a>` : ''}
+    ${(ME.admin || ME.plny) ? `<button class="btn ghost sm" onclick="openAuto()" title="Co se stane samo, když karta přijde do sloupce; šablony karet">⚙ Pravidla a šablony${(B.pravidla || []).length ? ' (' + B.pravidla.length + ')' : ''}</button>` : ''}
     <span class="live" id="live" title="Nástěnka se sama obnovuje, když se něco změní"></span>`;
   const qf = $('topbtns').querySelector('.qf'); if (qf) qf.value = QF;
   renderBanner();
@@ -366,18 +372,24 @@ function renderCols() {
     return `<div class="col" data-list="${l.id}">
       <div class="colh"><span class="cn" ${ed ? `ondblclick="renameList('${l.id}')" title="Dvojklik = přejmenovat"` : ''}>${esc(l.nazev)}</span><span class="cc">${cs.length}</span></div>
       <div class="cards">${cs.map(cardHtml).join('')}</div>
-      ${ed ? `<button class="addc" onclick="quickAdd(this,'${l.id}')">+ Přidat kartu</button>` : ''}</div>`;
+      ${ed ? (B.shortlink === ZAKAZKY_BOARD && /nov[eé] zak/i.test(l.nazev)
+        ? `<a class="addc" style="display:block;text-decoration:none" href="/zakazka.html">➕ Nová zakázka (formulář)</a>`
+        : `<button class="addc" onclick="quickAdd(this,'${l.id}')">+ Přidat kartu</button>`) : ''}</div>`;
   }).join('') + (ed ? `<div class="newcol"><button class="addc" style="background:rgba(255,255,255,.5);width:100%" onclick="addList()">+ Přidat sloupec</button></div>` : '');
   if (ed) bindDnD();
 }
 function quickAdd(btn, listId) {
   const box = document.createElement('div'); box.style.margin = '0 8px 8px';
+  const tpls = B.sablony || [];
   box.innerHTML = `<textarea class="qa" placeholder="Název karty… (Enter = uložit)"></textarea>
+    ${tpls.length ? `<select class="inp" style="width:100%;margin-top:6px;padding:5px"><option value="">Bez šablony</option>${tpls.map(s => `<option value="${esc(s.id)}">📋 ${esc(s.nazev)}</option>`).join('')}</select>` : ''}
     <div class="row" style="margin-top:6px"><button class="btn pri sm">Přidat</button><button class="btn sm">Zrušit</button></div>`;
   btn.replaceWith(box);
   const ta = box.querySelector('textarea'); ta.focus();
   const save = async () => { const n = ta.value.trim(); if (!n) return renderCols();
-    const r = await post('/card', {board_id: B.id, list_id: listId, nazev: n});
+    const sab = box.querySelector('select')?.value || '';
+    const r = await post('/card', {board_id: B.id, list_id: listId, nazev: n, sablona: sab});
+    if (sab || (B.pravidla || []).some(x => x.sloupec === listId)) { await openBoard(B.id); return; }   // template/rule changed the card
     CARDS.push({id: r.id, list_id: listId, nazev: n, pos: Math.max(0, ...CARDS.filter(c => c.list_id === listId).map(c => c.pos)) + 1024,
       stitky: [], clenove: [], prilohy: 0, popis: false, check: null, termin: null});
     renderCols(); const b2 = [...document.querySelectorAll(`.col[data-list="${listId}"] .addc`)][0]; if (b2) quickAdd(b2, listId); };
@@ -654,6 +666,59 @@ function dialog(html, okText, onOk, danger) {
   d.querySelectorAll('input').forEach(i => i.addEventListener('keydown', e => { if (e.key === 'Enter') ok(); if (e.key === 'Escape') closeDialog(); }));
 }
 function closeDialog() { $('dlg')?.remove(); }
+
+/* ---------------- ⚙ rules + card templates of a board (Jan 2026-11-27). Rules run only once the board is in our system;
+   on a Trello copy they can be prepared now. New orders are never a template — they come from the order form (zakazka.html). */
+const ZAKAZKY_BOARD = 'DjyuREpL';
+let AUTO = null;
+const AKCE = {clen: '👤 přidat člověka', upozornit: '🔔 upozornit v aplikaci', termin: '🕒 nastavit termín za', stitek: '🏷 přidat štítek', checklist: '☑ přidat checklist ze šablony'};
+function openAuto() {
+  AUTO = {pravidla: JSON.parse(JSON.stringify(B.pravidla || [])), sablony: JSON.parse(JSON.stringify(B.sablony || []))};
+  dialog(`<h3>⚙ Pravidla a šablony — ${esc(B.nazev)}</h3>
+    <p style="font-size:13px;color:var(--muted)">${B.mode === 'vlastni' ? 'Pravidla běží hned.' : 'Nástěnka je zatím kopie z Trella — pravidla si připrav, rozjedou se samy po přechodu na náš systém.'}
+      Zakázky se nezakládají šablonou, ale <a href="/zakazka.html">formulářem zakázky</a>.</p>
+    <div id="autobox"></div>`, 'Uložit', saveAuto);
+  $('dlg').querySelector('.md').style.width = '720px';
+  drawAuto();
+}
+function drawAuto() {
+  const L = LISTS, P = ME.lide, S = B.stitky || [];
+  const opt = (arr, v) => arr.map(([k, n]) => `<option value="${esc(k)}" ${k === v ? 'selected' : ''}>${esc(n)}</option>`).join('');
+  const param = (a, ri, ai) => {
+    const on = `onchange="AUTO.pravidla[${ri}].akce[${ai}].`;
+    if (a.typ === 'clen') return `<select class="inp" ${on}jmeno=this.value">${opt([['', '– kdo –'], ...P.map(x => [x, x])], a.jmeno)}</select>`;
+    if (a.typ === 'upozornit') return `<select class="inp" ${on}komu=this.value">${opt([['clenove', 'lidi na kartě'], ...P.map(x => [x, x])], a.komu || 'clenove')}</select>`;
+    if (a.typ === 'termin') return `<input class="inp" type="number" min="0" max="365" style="width:80px" value="${a.dni ?? 2}" ${on}dni=+this.value"> dní (jen když karta termín nemá)`;
+    if (a.typ === 'stitek') return `<select class="inp" ${on}id=this.value">${opt([['', '– štítek –'], ...S.map(s => [s.id, s.nazev || s.barva])], a.id)}</select>`;
+    if (a.typ === 'checklist') return `<select class="inp" ${on}sablona=this.value">${opt([['', '– šablona –'], ...AUTO.sablony.map(s => [s.id, s.nazev])], a.sablona)}</select>`;
+    return '';
+  };
+  $('autobox').innerHTML = `<div class="sec">Pravidla — co se stane samo</div>` +
+    AUTO.pravidla.map((r, ri) => `<div class="rule"><div class="row"><b>Když karta přijde do</b>
+        <select class="inp" onchange="AUTO.pravidla[${ri}].sloupec=this.value">${opt([['', '– sloupec –'], ...L.map(l => [l.id, l.nazev])], r.sloupec)}</select>
+        <button class="x2" title="Smazat pravidlo" onclick="AUTO.pravidla.splice(${ri},1);drawAuto()">✕</button></div>
+      ${r.akce.map((a, ai) => `<div class="row" style="padding-left:14px">→ <select class="inp" onchange="AUTO.pravidla[${ri}].akce[${ai}]={typ:this.value};drawAuto()">${opt(Object.entries(AKCE), a.typ)}</select>
+        ${param(a, ri, ai)}<button class="x2" onclick="AUTO.pravidla[${ri}].akce.splice(${ai},1);drawAuto()">✕</button></div>`).join('')}
+      <button class="btn sm" style="margin-left:14px" onclick="AUTO.pravidla[${ri}].akce.push({typ:'upozornit',komu:'clenove'});drawAuto()">+ akce</button></div>`).join('') +
+    `<button class="btn sm" onclick="AUTO.pravidla.push({sloupec:'',akce:[{typ:'upozornit',komu:'clenove'}]});drawAuto()">+ Pravidlo</button>
+    <div class="sec">Šablony karet</div>` +
+    AUTO.sablony.map((s, si) => `<div class="tpl"><div class="row"><input class="inp" style="flex:1" placeholder="Název šablony" value="${esc(s.nazev)}" oninput="AUTO.sablony[${si}].nazev=this.value">
+        <button class="x2" title="Smazat šablonu" onclick="AUTO.sablony.splice(${si},1);drawAuto()">✕</button></div>
+      <textarea class="inp" rows="2" style="width:100%;margin-top:6px" placeholder="Popis karty (nepovinné)" oninput="AUTO.sablony[${si}].popis=this.value">${esc(s.popis || '')}</textarea>
+      <div class="row" style="margin-top:6px"><input class="inp" style="flex:1" placeholder="Název checklistu" value="${esc((s.checklisty[0] || {}).nazev || 'Úkoly')}" oninput="tplCh(${si}).nazev=this.value"></div>
+      <textarea class="inp" rows="4" style="width:100%;margin-top:6px" placeholder="Položky checklistu — každá na nový řádek" oninput="tplCh(${si}).polozky=this.value.split('\n')">${esc(((s.checklisty[0] || {}).polozky || []).join('\n'))}</textarea>
+      ${S.length ? `<div style="margin-top:6px">${S.map(l => `<span class="chip ${(s.stitky || []).includes(l.id) ? '' : 'off'}" style="background:${l.barva};color:#fff" onclick="tplLbl(${si},'${esc(l.id)}')">${esc(l.nazev) || '&nbsp;&nbsp;'}</span>`).join('')}</div>` : ''}</div>`).join('') +
+    `<button class="btn sm" onclick="AUTO.sablony.push({id:'s'+Math.random().toString(36).slice(2,8),nazev:'',popis:'',checklisty:[{nazev:'Úkoly',polozky:[]}],stitky:[]});drawAuto()">+ Šablona</button>`;
+}
+function tplCh(si) { const s = AUTO.sablony[si]; if (!s.checklisty.length) s.checklisty.push({nazev: 'Úkoly', polozky: []}); return s.checklisty[0]; }
+function tplLbl(si, id) { const s = AUTO.sablony[si]; s.stitky = (s.stitky || []).includes(id) ? s.stitky.filter(x => x !== id) : [...(s.stitky || []), id]; drawAuto(); }
+async function saveAuto() {
+  const bad = AUTO.pravidla.find(r => !r.sloupec);
+  if (bad) { toast('U pravidla vyber sloupec'); return false; }
+  AUTO.sablony.forEach(s => s.checklisty.forEach(ch => ch.polozky = ch.polozky.map(x => x.trim()).filter(Boolean)));
+  const j = await post(`/board/${B.id}/automatizace`, AUTO);
+  B.pravidla = j.pravidla; B.sablony = j.sablony; renderBoard(); toast('Uloženo');
+}
 
 /* ---------------- 📅 my cards + deadlines across all boards (works in the Trello preview too) */
 let MOJE_VSE = false;
