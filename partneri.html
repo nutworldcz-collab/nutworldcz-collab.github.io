@@ -310,11 +310,32 @@ function render() {
         <td class="td-adresa">${escHtml(e.adresa||'')}</td>
         <td class="td-kod">${escHtml(e.kod||'')}</td>
         <td><select class="rep-sel${e.rep?'':' rep-none'}" data-id="${escHtml(e.id)}" onchange="changeRep(this)">${repOptions(e.rep, true)}</select></td>
-        <td class="td-actions">${delBtn}</td>
+        <td class="td-actions">${ON_SERVER ? `<button class="btn-del-local" style="color:#83502e" title="Karty a zakázky firmy na nástěnkách" onclick="firmaKarty('${escHtml(e.ico||'')}','${escHtml((e.nazev||'').replace(/'/g,''))}')">📋</button>` : ''}${delBtn}</td>
       </tr>`;
     }).join('');
   }
   renderPagination(total);
+}
+
+// 📋 cards of the firm on our boards (server address only — boards are behind the login)
+const ON_SERVER = !/github\.io$/.test(location.hostname);
+async function firmaKarty(ico, nazev) {
+  const box = document.createElement('div');
+  box.style.cssText = 'position:fixed;inset:0;background:rgba(40,25,15,.55);z-index:90;display:flex;align-items:flex-start;justify-content:center;padding:30px 12px;overflow:auto';
+  box.innerHTML = `<div style="background:#fff;border-radius:16px;max-width:640px;width:100%;padding:18px 20px;font-family:inherit">
+    <div style="display:flex;justify-content:space-between;gap:10px"><b style="font-size:17px;color:#5c381f">📋 ${escHtml(nazev)}</b><button onclick="this.closest('div[style*=fixed]').remove()" style="border:0;background:#f1e6da;border-radius:50%;width:30px;height:30px;cursor:pointer">✕</button></div>
+    <div id="fkList" style="margin-top:10px;color:#8a6a4a">Načítám karty…</div></div>`;
+  box.addEventListener('click', e => { if (e.target === box) box.remove(); });
+  document.body.appendChild(box);
+  try {
+    const r = await fetch('/api/nastenky/firma?' + new URLSearchParams({ico, nazev}), {credentials: 'same-origin'});
+    const j = await r.json();
+    const k = j.karty || [];
+    box.querySelector('#fkList').innerHTML = k.length ? k.map(c => `<a href="/nastenky.html#b=${c.board_id}&k=${c.id}" target="_blank" rel="noopener"
+        style="display:block;text-decoration:none;color:#2a1a0e;background:#faf6f1;border-radius:10px;padding:8px 11px;margin-bottom:6px">
+        <b>${escHtml(c.nazev)}</b>${c.uzavrena ? ' <small>(archiv)</small>' : ''}<br><small style="color:#8a6a4a">${escHtml((c.vytvoreno||'').slice(0,4))} · ${escHtml(c.nastenka)} › ${escHtml(c.sloupec)}</small></a>`).join('')
+      : 'Žádné karty na nástěnkách.';
+  } catch (e) { box.querySelector('#fkList').textContent = 'Nepodařilo se načíst: ' + e.message; }
 }
 
 async function changeRep(sel) {
@@ -442,6 +463,8 @@ async function refresh() {
 }
 
 fillRepFilter();
+{ const q0 = new URLSearchParams(location.search).get('q');   // ?q=<IČO or name> from a board card
+  if (q0) document.getElementById(/^\d{6,8}$/.test(q0) ? 'searchICO' : 'searchQ').value = q0; }
 render();
 refresh();
 document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });

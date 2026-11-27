@@ -554,6 +554,9 @@ async function loadPublic() {
   if (ads) { const c = Object.values(ads.channels||{}); const sp = c.reduce((a,x)=>a+(x.spend||0),0), rv = c.reduce((a,x)=>a+(x.revenue||0),0);
     k.push(['Reklamy 7 dní', rv ? (sp/rv*100).toFixed(1).replace('.',',') + ' % PNO' : '—', `útrata ${kc(sp)} · tržby ${kc(rv)}`]); }
   k.push(['Zakázky', (s.zakazka||0)+(s.k2||0)+(s.vyroba||0), `nabídky ${s.nabidka||0} · výroba ${s.vyroba||0} · hotovo ${s.hotovo||0}`]);
+  const ns = W.nastenky || {};
+  if (ns.pruchod != null) k.push(['📊 Tok zakázek (30 dní)', `${String(ns.pruchod).replace('.', ',')} dní`,
+    `od založení po hotovo · nejdéle čeká: ${ns.hrdlo || '–'}${ns.hrdlo_median != null ? ` (${String(ns.hrdlo_median).replace('.', ',')} d, teď ${ns.hrdlo_ted})` : ''} · tento týden hotovo ${ns.tyden_hotovo}`]);
   const ts = (tk && tk.souhrn) || W.trojkontrola || {};
   if (ts.produkty) k.push(['Spec ↔ štítek ↔ web', `${ts.ok}/${ts.produkty}`, `nesedí: spec ${ts.spec} · štítek ${ts.stitek} · web ${ts.web}`]);
   k.push(['Měsíční ceníky', (W.ceniky_mesicni||[]).length + ' firem', 'odchází 1. v měsíci v 7:30']);

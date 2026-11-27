@@ -119,6 +119,17 @@ a{color:var(--br)}
 .rule{background:#faf6f1;border-radius:12px;padding:10px 12px;margin:8px 0;border-left:4px solid var(--amber)}
 .rule .row{margin:4px 0}.rule select,.rule input{padding:5px 8px}
 .tpl{background:#faf6f1;border-radius:12px;padding:10px 12px;margin:8px 0;border-left:4px solid var(--leaf)}
+.fm{margin-top:14px;border:2px solid #e8dccd;border-radius:12px;padding:12px 14px;background:#fffdf9}
+.fm h4{font-family:'Exo 2',sans-serif;margin:0 0 4px;color:var(--bd);font-size:15px}
+.fm .res{margin-bottom:5px;padding:6px 10px}
+.st{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0}
+.st td,.st th{padding:5px 6px;border-bottom:1px solid #f0e6dc;text-align:left;vertical-align:top}
+.st th{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.st .r{text-align:right;white-space:nowrap}
+.hbar{display:inline-block;height:9px;border-radius:4px;background:var(--amber);vertical-align:middle}
+.wk{display:flex;gap:6px;align-items:flex-end;height:110px;margin:8px 0 2px;overflow-x:auto}
+.wk div{flex:1;min-width:26px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px;font-size:10px;color:var(--muted)}
+.wk i{display:block;width:10px;border-radius:3px 3px 0 0}
 .x2{border:0;background:transparent;color:var(--red);cursor:pointer;font-size:16px;padding:0 4px}
 .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--bd);color:#fff;padding:9px 16px;border-radius:10px;z-index:99;font-weight:600}
 @media (max-width:600px){.top input{width:100%;order:9}.col{width:86vw}.md{padding:16px 14px 20px}}
@@ -318,6 +329,7 @@ function renderBoard() {
     </select>
     <button class="btn ghost sm" onclick="SHOW_ARCH=!SHOW_ARCH;openBoard(B.id)">${SHOW_ARCH ? 'Skrýt archiv' : 'Archiv'}</button>
     ${B.shortlink === ZAKAZKY_BOARD ? `<a class="btn acc sm" href="/zakazka.html" title="Zakázka se zakládá ve formuláři — vznikne karta se vším (štítky, výroba, odkaz pro zákazníka)">➕ Nová zakázka</a>` : ''}
+    ${ME.admin ? `<button class="btn ghost sm" onclick="openStats()" title="Jak dlouho karty čekají, kde se zasekávají (vidí jen Jan)">📊</button>` : ''}
     ${(ME.admin || ME.plny) ? `<button class="btn ghost sm" onclick="openAuto()" title="Co se stane samo, když karta přijde do sloupce; šablony karet">⚙ Pravidla a šablony${(B.pravidla || []).length ? ' (' + B.pravidla.length + ')' : ''}</button>` : ''}
     <span class="live" id="live" title="Nástěnka se sama obnovuje, když se něco změní"></span>`;
   const qf = $('topbtns').querySelector('.qf'); if (qf) qf.value = QF;
@@ -461,6 +473,24 @@ async function openCard(id) {
   catch (e) { $('modal').innerHTML = `<div class="ov" onclick="closeCard()"><div class="md"><p>${esc(e.message)}</p></div></div>`; return; }
   renderCard();
   loadZakazka(id);
+  loadFirma(id);
+}
+/* 🏢 firm of the card <-> partner registry: salesperson, address, links, all its cards (also past years) */
+async function loadFirma(id) {
+  let j; try { j = await api('/card/' + id + '/firma'); } catch (e) { return; }
+  if (!CARD || CARD.id !== id || !j.firma) return;
+  const f = j.firma, k = j.karty || [];
+  const yr = c => (c.vytvoreno || '').slice(0, 4);
+  const h = `<div class="fm"><h4>🏢 ${esc(f.nazev || 'Firma')}</h4>
+    <div class="zst" style="display:flex;flex-wrap:wrap;gap:6px;font-size:12px">${f.ico ? `<span class="badge tr">IČO ${esc(f.ico)}</span>` : ''}
+      <span class="badge ${f.rep ? 'own' : 'cl'}">👤 ${esc(f.rep || 'bez obchodníka')}</span>
+      ${f.v_registru ? '' : '<span class="badge cl">není v registru partnerů</span>'}${f.adresa ? `<span style="color:var(--muted)">${esc(f.adresa)}</span>` : ''}</div>
+    <div class="row" style="gap:6px;margin:8px 0">${(j.odkazy || []).map(o => `<a class="btn sm" href="${esc(o.url)}" target="_blank" rel="noopener">${esc(o.nazev)}</a>`).join('')}</div>
+    ${k.length ? `<details ${k.length <= 4 ? 'open' : ''}><summary class="sec" style="cursor:pointer;margin:6px 0">Další karty firmy (${k.length}${k.length >= 40 ? '+' : ''})</summary>
+      ${k.map(c => `<div class="res" onclick="go('b=${c.board_id}&k=${c.id}')"><b>${esc(c.nazev)}</b>${c.uzavrena ? ' <span class="badge cl">archiv</span>' : ''}<br>
+        <small>${esc(yr(c))} · ${esc(c.nastenka)} › ${esc(c.sloupec)}${c.termin ? ' · 🕒 ' + fmtDate(c.termin) : ''}</small></div>`).join('')}</details>`
+      : '<div style="font-size:12.5px;color:var(--muted)">Jiné karty této firmy nejsou — první zakázka.</div>'}</div>`;
+  CARD._fmHtml = h; const box = $('fmbox'); if (box) box.innerHTML = h;
 }
 function copyLink() {
   const u = location.origin + location.pathname + '#b=' + CARD._board.id + '&k=' + CARD.id;
@@ -502,6 +532,7 @@ function renderCard() {
 
     <div class="sec">Popis ${ed ? `<button class="btn sm" onclick="editDesc()">Upravit</button>` : ''}</div>
     <div id="descbox"><div class="desc ${c.popis ? '' : 'empty'}">${c.popis ? md(c.popis) : 'Bez popisu'}</div></div>
+    <div id="fmbox">${c._fmHtml || ''}</div>
     ${/##\s*🛒/.test(c.popis || '') ? `<div class="zk" id="zkbox">${c._zkHtml || '<h4>📦 Zakázka</h4><p style="color:var(--muted);font-size:13px">Počítám rozpis zakázky…</p>'}</div>` : ''}
 
     ${c.checklisty.map((ch, ci) => { const n = ch.polozky.length, d = ch.polozky.filter(i => i.hotovo).length;
@@ -718,6 +749,34 @@ async function saveAuto() {
   AUTO.sablony.forEach(s => s.checklisty.forEach(ch => ch.polozky = ch.polozky.map(x => x.trim()).filter(Boolean)));
   const j = await post(`/board/${B.id}/automatizace`, AUTO);
   B.pravidla = j.pravidla; B.sablony = j.sablony; renderBoard(); toast('Uloženo');
+}
+
+/* ---------------- 📊 board statistics (Jan only) */
+async function openStats(dni) {
+  dni = dni || 90;
+  dialog(`<h3>📊 Statistiky — ${esc(B.nazev)}</h3><div id="stbox"><p style="color:var(--muted)">Počítám…</p></div>`, 'Zavřít', () => true);
+  $('dlg').querySelector('.md').style.width = '760px';
+  let j; try { j = await api(`/board/${B.id}/statistiky?dni=${dni}`); } catch (e) { $('stbox').innerHTML = `<p class="warn">${esc(e.message)}</p>`; return; }
+  const n = v => v == null ? '–' : String(v).replace('.', ',');
+  const mx = Math.max(1, ...j.sloupce.map(s => s.median_dni || 0));
+  const wmx = Math.max(1, ...j.tydny.map(w => Math.max(w.nove, w.hotovo)));
+  $('stbox').innerHTML = `<div class="row" style="justify-content:space-between;margin:4px 0 8px">
+      <div class="seg">${[30, 90, 180].map(d => `<button class="${d === j.dni ? 'on' : ''}" onclick="closeDialog();openStats(${d})">${d} dní</button>`).join('')}</div></div>
+    <div class="zst" style="display:flex;flex-wrap:wrap;gap:8px;font-size:13px">
+      <span class="badge own" style="font-size:13px">✅ hotovo ${j.hotovo_celkem} karet</span>
+      <span class="badge tr" style="font-size:13px">⏱ od založení po hotovo: medián ${n(j.pruchod_median_dni)} dní</span>
+      ${j.hrdlo ? `<span class="badge" style="font-size:13px;background:#fde8ef;color:var(--pink)">🐢 nejdéle se čeká: ${esc(j.hrdlo)}</span>` : ''}</div>
+    <div class="sec">Sloupce — jak dlouho tam karty čekají</div>
+    <div style="overflow-x:auto"><table class="st"><tr><th>sloupec</th><th class="r">teď</th><th class="r">prošlo</th><th>medián (dní)</th><th>nejdéle čeká</th></tr>
+      ${j.sloupce.map(s => `<tr><td>${esc(s.sloupec)}</td><td class="r">${s.ted}</td><td class="r">${s.pruchodu}</td>
+        <td style="white-space:nowrap">${s.median_dni != null ? `<span class="hbar" style="width:${Math.round(s.median_dni / mx * 90)}px;${s.sloupec === j.hrdlo ? 'background:var(--pink)' : ''}"></span> ${n(s.median_dni)}` : '–'}</td>
+        <td>${s.nejdele.map(x => `<a href="#" onclick="closeDialog();go('b=${B.id}&k=${x.id}');return false">${esc(x.nazev.slice(0, 28))}</a> <small>${n(x.dni)} d</small>`).join('<br>')}</td></tr>`).join('')}</table></div>
+    <div class="sec">Týdny — <span style="color:var(--br)">■ nové</span> <span style="color:var(--leaf)">■ hotové</span></div>
+    <div class="wk">${j.tydny.map(w => `<div title="${w.tyden}: nové ${w.nove}, hotové ${w.hotovo}"><span style="display:flex;gap:2px;align-items:flex-end">
+      <i style="height:${Math.round(w.nove / wmx * 85)}px;background:var(--br)"></i><i style="height:${Math.round(w.hotovo / wmx * 85)}px;background:var(--leaf)"></i></span>${w.tyden.slice(-3)}</div>`).join('')}</div>
+    <div class="sec">Kdo karty posouvá (přesunů za ${j.dni} dní)</div>
+    <div>${j.presouvaji.map(x => `<span class="chip" style="cursor:default">${esc(x.kdo)} <b>${x.presunu}</b></span>`).join('')}</div>
+    <p style="font-size:11.5px;color:var(--muted);margin-top:8px">Počítá se z historie přesunů (i z Trella). „Hotovo“ = sloupec s hotovo/expedováno/archiv nebo rokem v názvu.</p>`;
 }
 
 /* ---------------- 📅 my cards + deadlines across all boards (works in the Trello preview too) */
