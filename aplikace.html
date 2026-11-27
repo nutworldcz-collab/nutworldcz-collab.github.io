@@ -986,7 +986,7 @@ function scanQR(title) {
       navigator.geolocation.getCurrentPosition(p => ok({lat: p.coords.latitude, lng: p.coords.longitude, acc: p.coords.accuracy}), () => ok(null), {enableHighAccuracy: true, timeout: 15000, maximumAge: 0}); });
     const s = document.createElement('div'); s.className = 'sheet';
     s.innerHTML = `<div class="in" style="text-align:center"><b style="font-size:17px">${esc(title)}</b>
-      <div class="s" style="margin:4px 0 8px">Namiř telefon na QR kód u vchodu (2. patro)</div>
+      <div class="s" style="margin:4px 0 8px">Namiř telefon na QR kód u šatny</div>
       <div style="position:relative;border-radius:14px;overflow:hidden;background:#222;aspect-ratio:1/1;max-height:52vh;margin:0 auto">
         <video id="qv" playsinline muted style="width:100%;height:100%;object-fit:cover"></video>
         <div style="position:absolute;inset:18%;border:3px solid #f7ab31;border-radius:14px"></div></div>
@@ -1136,8 +1136,8 @@ async function pichAdmin() {
     .then(async r => { const j = await r.json(); if (!r.ok || j.chyba) throw new Error(j.chyba || 'chyba'); return j; });
   let s; try { s = await adm({akce: 'stav'}); } catch (e) { return; }
   box.innerHTML = `<h2 class="sek">Nastavení píchání (jen ty)</h2><div class="card">
-    <div class="s">${s.poloha ? `📍 Poloha provozovny nastavena ${esc(String(s.poloha.kdy).replace('T', ' '))} (přesnost ±${s.poloha.acc} m) · zóna ${s.zona_m} m` : '📍 Poloha provozovny zatím není — postav se k QR kódu a klepni níže.'}</div>
-    <button class="big b-h" id="pa-pol">📍 Jsem na provozovně — uložit polohu</button>
+    <div class="s">${s.poloha ? `📍 Poloha provozovny nastavena ${esc(String(s.poloha.kdy).replace('T', ' '))} (přesnost ±${s.poloha.acc} m) · zóna ${s.zona_m} m` : '📍 Poloha provozovny zatím není — postav se k místu QR u šatny a klepni níže.'}</div>
+    <button class="big b-h" id="pa-pol">📍 Jsem u QR u šatny — uložit polohu</button>
     <button class="big b-z" id="pa-qr">🖨 QR kód k vytištění</button>
     <button class="big b-l" id="pa-new">🔄 Nový QR (starý přestane platit)</button><div id="pa-m" class="s"></div></div>`;
   $('#pa-pol').onclick = () => { $('#pa-m').textContent = 'Zjišťuji polohu… (venku nebo u okna je přesnější)';
@@ -1145,7 +1145,7 @@ async function pichAdmin() {
       () => $('#pa-m').textContent = 'Poloha nejde zjistit — povol ji aplikaci v nastavení telefonu.', {enableHighAccuracy: true, timeout: 20000, maximumAge: 0}); };
   const print = svg => { const w = window.open('', '_blank'); if (!w) return alert('Povol vyskakovací okna.');
     w.document.write(`<!doctype html><meta charset="utf-8"><title>QR píchačka</title><body style="font-family:Arial;text-align:center;padding:30px">
-      <h1 style="color:#5c381f;font-size:40px;margin:0">⏱ Píchačka</h1><p style="font-size:22px">Příchod i odchod: aplikace Nutworld → <b>Přišel(a) jsem / Odcházím</b> → načti tento kód</p>
+      <h1 style="color:#5c381f;font-size:40px;margin:0">⏱ Píchačka</h1><p style="font-size:22px">Příchod, odchod i každou pauzu: aplikace Nutworld → <b>Přišel(a) jsem · Kouření · Jídlo · Zpět z pauzy · Odcházím</b> → načti tento kód</p>
       <div style="width:70%;margin:20px auto">${svg.replace('<svg', '<svg style="width:100%;height:auto"')}</div><p style="font-size:18px;color:#7a6656">Nutworld · nefotit a nesdílet</p><script>setTimeout(()=>print(),400)<\/script></body>`); w.document.close(); };
   $('#pa-qr').onclick = () => s.qr_svg ? print(s.qr_svg) : alert('QR se nepodařilo vytvořit.');
   $('#pa-new').onclick = async () => { if (!confirm('Vytvořit nový QR? Starý vytištěný přestane platit a budeš muset vytisknout nový.')) return; s = await adm({akce: 'novy_qr'}); print(s.qr_svg); };
