@@ -143,13 +143,15 @@ textarea.notes{width:100%;min-height:140px;border:1.5px solid var(--line);border
   <div class="card" style="margin-top:16px"><h2>🤝 Obchodníci — obraty a firmy <span class="n" id="ob-p"></span></h2>
     <div class="pills" id="ob-pills"></div><div class="scroll" id="obch" class="muted">Načítám…</div></div>
 
+  <div class="card" style="margin-top:16px"><h2>📋 Rozpracované nabídky <span class="n" id="pp-n"></span></h2><div class="scroll" id="pipe" class="muted">Načítám…</div></div>
+
   <div class="grid cols">
     <div class="card"><h2>🛒 E-shop CZ + SK <span class="n" id="shop-p"></span></h2><div id="shop" class="muted">Načítám…</div></div>
     <div class="card"><h2>📣 Reklamy</h2><div id="ads" class="muted">Načítám…</div></div>
   </div>
 
   <div class="grid cols">
-    <div class="card"><h2>💰 Pohledávky B2B <span class="n" id="pl-n"></span></h2><div id="platby" class="muted">Načítám…</div></div>
+    <div class="card"><h2>💰 Peníze — banka a pohledávky <span class="n" id="pl-n"></span></h2><div id="platby" class="muted">Načítám…</div></div>
     <div class="card"><h2>📧 E-maily k vyřízení <span class="n" id="em-n"></span></h2><div id="emaily" class="muted">Načítám…</div></div>
   </div>
 
@@ -213,7 +215,7 @@ const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;
 const iso = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 const dm = s => s ? `${+s.slice(8,10)}. ${+s.slice(5,7)}.` : '';
 const kc = v => (Math.round(v||0)).toLocaleString('cs-CZ') + ' Kč';
-let W = {}, TASKS = [], OB = null, OS = null, calRef = new Date(), OB_SEL = null;
+let W = {}, TASKS = [], OB = null, OS = null, PIPE = [], BANKA = {}, calRef = new Date(), OB_SEL = null;
 const TODAY = () => iso(new Date());
 
 // same rule as ukoly_morning.py occurs_on()
@@ -245,10 +247,13 @@ async function loadAll() {
   const items = pre.status === 'fulfilled' ? pre.value : [];
   W = (items.find(i => i.id === 'wolf') || {}).data || {};
   OB = (items.find(i => i.id === 'obchodnici') || {}).data || null;
+  const part = id => (items.find(i => i.id === id) || {}).data || {};
+  if (OB) { OB.firmy = OB.firmy || part('obchodnici_firmy').firmy || []; OB.portfolio = OB.portfolio || part('obchodnici_portfolio').portfolio || {}; }
+  PIPE = part('pipeline').nabidky || []; BANKA = part('banka');
   TASKS = uk.status === 'fulfilled' ? uk.value.map(i => ({...i.data, id: i.id})) : [];
   $('gen').textContent = W.vygenerovano ? `Data serveru: ${W.vygenerovano.replace('T',' ')} · obnovuje se každých 15 min` : 'Server zatím data nepřipravil.';
   OS = Object.assign({poznamky: '', emaily: {}, rozvrh: {}}, (items.find(i => i.id === 'jan_osobni') || {}).data || {});
-  renderAlerts(); renderTasks(); renderCal(); renderAgenda(); renderObch(); loadPublic(); renderPlatby(); renderNotes(); renderRozvrh();
+  renderAlerts(); renderTasks(); renderCal(); renderAgenda(); renderObch(); renderPipe(); loadPublic(); renderPlatby(); renderNotes(); renderRozvrh();
 }
 
 function renderAlerts() {
@@ -427,6 +432,30 @@ function renderObch() {
     + slevyHtml(OB.slevy || [], OB.max_sleva || 20);
 }
 
+// ── rozpracované nabídky (otevřené, NWData prehled/pipeline) + konverze letos ──
+function renderPipe() {
+  const rows = (PIPE || []).filter(x => !/^test\b/i.test(x.f));
+  const t = TODAY(), age = d => d ? Math.round((new Date(t) - new Date(d)) / 864e5) : 0;
+  const y = (OB && OB.obdobi && OB.obdobi[t.slice(0, 4)]) || {};
+  const by = {};
+  rows.forEach(x => { const a = by[x.r] || (by[x.r] = {n: 0, h: 0, z: 0, old: 0, list: []}); a.n++; a.h += x.h; a.z += x.z; if (age(x.d) > 30) a.old++; a.list.push(x); });
+  Object.keys(y).forEach(r => by[r] || (by[r] = {n: 0, h: 0, z: 0, old: 0, list: []}));
+  const tot = rows.reduce((a, x) => a + x.h, 0);
+  $('pp-n').textContent = `${rows.length} · ${kc(tot)}`;
+  if (!rows.length && !Object.keys(y).length) { $('pipe').innerHTML = '<span class="muted">Žádné otevřené nabídky.</span>'; return; }
+  const conv = r => { const v = y[r] || {}; const done = (v.nab_ok || 0) + (v.nab_ztrac || 0);
+    return v.nabidky ? `<b>${Math.round((v.nab_ok || 0) / v.nabidky * 100)} %</b><div class="muted" style="font-size:11px">${v.nab_ok || 0} z ${v.nabidky} · ztraceno ${v.nab_ztrac || 0}${done ? ` · z uzavřených ${Math.round((v.nab_ok || 0) / done * 100)} %` : ''}</div>` : '—'; };
+  $('pipe').innerHTML = `<table class="rep"><tr><th>Obchodník</th><th class="num">Otevřené</th><th class="num">Hodnota</th><th class="num">Zisk (odhad)</th><th class="num">Starší 30 dní</th><th class="num">Konverze letos</th></tr>`
+    + Object.entries(by).sort((a, b) => b[1].h - a[1].h).map(([r, a], ix) => `<tr class="rep-row" onclick="this.classList.toggle('open');document.getElementById('pp${ix}').hidden=!document.getElementById('pp${ix}').hidden">
+        <td><b>${esc(r === '—' ? 'bez obchodníka' : r)}</b></td><td class="num">${a.n}</td><td class="num"><b>${kc(a.h)}</b></td><td class="num">${kc(a.z)}</td>
+        <td class="num" style="color:${a.old ? '#da1668' : '#6fa044'};font-weight:700">${a.old}</td><td class="num">${conv(r)}</td></tr>
+      <tr class="firms" id="pp${ix}" hidden><td colspan="6">${a.list.length ? `<table class="sub-t"><tr><th>Firma</th><th>Nabídka</th><th class="num">Hodnota</th><th class="num">Zisk</th><th>Poslána</th><th class="num">Stáří</th></tr>`
+        + a.list.sort((p, q) => q.h - p.h).map(x => `<tr><td><b>${esc(x.f)}</b>${x.kt ? `<span class="muted"> · ${esc(x.kt)}</span>` : ''}</td><td>${esc(x.c)}${x.trh === 'SK' ? ' 🇸🇰' : ''}</td>
+          <td class="num">${kc(x.h)}</td><td class="num">${kc(x.z)}</td><td>${dm(x.d)}</td><td class="num" style="color:${age(x.d) > 30 ? '#da1668' : age(x.d) > 14 ? '#b8860b' : 'inherit'};font-weight:700">${age(x.d)} d</td></tr>`).join('') + '</table>'
+        : '<span class="muted">Teď nic otevřeného.</span>'}</td></tr>`).join('')
+    + `</table><p class="muted" style="margin:6px 0 0">Otevřené = nabídka odeslaná, zatím ani zakázka, ani archiv. Starší 30 dní = připomenout zákazníkovi, nebo archivovat. Konverze = kolik letošních nabídek se stalo zakázkou.</p>`;
+}
+
 // ── e-shop CZ + SK (ranní report objednávek, 7 dní) ──
 function renderShop(o, st) {
   if (!o) { $('shop').innerHTML = '<span class="muted">Report objednávek zatím není.</span>'; return; }
@@ -452,11 +481,14 @@ function renderPlatby() {
   const soon = [...g('SOON_CZK'), ...g('SOON_EUR')];
   if (!ov.length && !soon.length) { $('platby').innerHTML = '<span class="muted">Data plateb nejsou.</span>'; return; }
   const sc = ov.filter(x => x.c === 'Kč').reduce((a, x) => a + num(x.amt), 0), se = ov.filter(x => x.c === '€').reduce((a, x) => a + num(x.amt), 0);
-  $('pl-n').textContent = ov.length;
-  $('platby').innerHTML = `<div class="shop"><div class="box"><div class="muted">Po splatnosti</div><div class="big" style="color:#da1668">${kc(sc)}</div><div class="muted">${se ? se.toLocaleString('cs-CZ') + ' € · ' : ''}${ov.length} firem</div></div>
+  $('pl-n').textContent = ov.length + ' po splatnosti';
+  const b = BANKA || {}, bx = (a, cur) => a ? `<div class="box"><div class="muted">🏦 Fio ${cur === '€' ? 'EUR' : 'CZK'} · účet …${esc(a.ucet)}</div><div class="big" style="color:#4a7c2f">${Math.round(a.zustatek).toLocaleString('cs-CZ')} ${cur}</div>
+      <div class="muted">od ${dm(a.od)}: přišlo ${Math.round(a.prijmy).toLocaleString('cs-CZ')} · odešlo ${Math.round(a.vydaje).toLocaleString('cs-CZ')} ${cur}</div></div>` : '';
+  $('platby').innerHTML = (b.czk || b.eur ? `<div class="shop" style="margin-bottom:10px">${bx(b.czk, 'Kč')}${bx(b.eur, '€')}</div>` : '')
+    + `<div class="shop"><div class="box"><div class="muted">Po splatnosti</div><div class="big" style="color:#da1668">${kc(sc)}</div><div class="muted">${se ? se.toLocaleString('cs-CZ') + ' € · ' : ''}${ov.length} položek · ${new Set(ov.map(x => x.n)).size} firem</div></div>
       <div class="box"><div class="muted">Splatné brzy</div><div class="big">${soon.length}</div><div class="muted">faktur do 5 dní</div></div></div>`
     + ov.sort((a, b) => (b.c === 'Kč' ? num(b.amt) : num(b.amt) * 25) - (a.c === 'Kč' ? num(a.amt) : num(a.amt) * 25)).slice(0, 8).map(x => `<div class="li"><span><b>${esc(x.n)}</b><div class="muted">${esc(x.sub)} · ${x.days} dní po splatnosti${x.oz ? ' · ' + esc(x.oz) : ''}</div></span><span class="r" style="color:${x.pri === 'r' ? '#da1668' : '#b8860b'}">${esc(x.amt)} ${x.c}</span></div>`).join('')
-    + `<p class="muted" style="margin:6px 0 0">Stav K2: ${esc(typeof NW_PLATBY_UPDATED !== 'undefined' ? NW_PLATBY_UPDATED : '')} · <a href="platby/po-splatnosti.html" style="color:#83502e">všechny →</a></p>`;
+    + `<p class="muted" style="margin:6px 0 0">${b.vygenerovano ? 'Banka: ' + esc(b.vygenerovano.replace('T', ' ')) + ' (Fio, 6× denně) · ' : ''}Stav K2: ${esc(typeof NW_PLATBY_UPDATED !== 'undefined' ? NW_PLATBY_UPDATED : '')} · <a href="platby/po-splatnosti.html" style="color:#83502e">všechny →</a></p>`;
 }
 
 // ── osobní data (poznámky, vyřízené e-maily, rozvrh) — NWData prehled/jan_osobni = telefon i počítač ──
@@ -550,6 +582,8 @@ async function loadPublic() {
     k.push(['E-shop 7 dní', kc(c.total), `CZ ${c.count||0} obj. · SK ${s2.count||0} obj. / ${Math.round(s2.total||0).toLocaleString('cs-CZ')} ${s2.currency==='EUR'?'€':'Kč'}`]); }
   if (OB && OB.obdobi) { const m = OB.obdobi[TODAY().slice(0,7)] || {}; const o = Object.values(m).reduce((a,v)=>a+(v.obrat||0),0), n = Object.values(m).reduce((a,v)=>a+(v.zakazky||0),0);
     k.push(['B2B obrat měsíc', kc(o), `${n} zakázek obchodníků`]); }
+  if (BANKA && BANKA.czk) k.push(['Na účtu', kc(BANKA.czk.zustatek), BANKA.eur ? `+ ${Math.round(BANKA.eur.zustatek).toLocaleString('cs-CZ')} € · Fio` : 'Fio']);
+  if (PIPE.length) { const r = PIPE.filter(x => !/^test\b/i.test(x.f)); k.push(['Otevřené nabídky', kc(r.reduce((a, x) => a + x.h, 0)), `${r.length} nabídek čeká na zákazníka`]); }
   if (st && st.poptavky) k.push(['B2B poptávky', st.poptavky.new || 0, `nových · celkem ${st.poptavky.total || 0}`]);
   if (ads) { const c = Object.values(ads.channels||{}); const sp = c.reduce((a,x)=>a+(x.spend||0),0), rv = c.reduce((a,x)=>a+(x.revenue||0),0);
     k.push(['Reklamy 7 dní', rv ? (sp/rv*100).toFixed(1).replace('.',',') + ' % PNO' : '—', `útrata ${kc(sp)} · tržby ${kc(rv)}`]); }
