@@ -106,6 +106,9 @@ details.sec>summary .section-label:before{content:'▸ ';}details.sec[open]>summ
 .poz .it .adm{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}.poz .it .adm input{flex:1;min-width:160px;padding:5px 8px;font-size:12.5px}
 .poz .it .adm button{border:1.5px solid #d4c0a8;background:#f6ede3;border-radius:8px;padding:4px 9px;cursor:pointer;font-size:12px;font-weight:700;color:#5c381f}
 .dots:after{content:'…';animation:d 1.2s steps(4) infinite}@keyframes d{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}}
+.card .casti{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.card .casti a{font-size:11.5px;background:rgba(92,56,31,.08);color:#5c381f;border-radius:8px;padding:2px 8px;text-decoration:none;font-weight:600}
+.card .casti a:hover{background:rgba(92,56,31,.16)}
 </style>
 </head>
 <body>
@@ -118,18 +121,24 @@ details.sec>summary .section-label:before{content:'▸ ';}details.sec[open]>summ
 <div class="poz" id="poz" hidden></div>
 <div class="ans" id="ans" hidden></div>
 <div class="wrap" id="out"></div>
-<div class="footer">Nutworld s.r.o. · interní nástroje · <a href="/index-puvodni.html" style="color:#b09070">původní rozcestník</a> · <a href="/rozcestnik-navrh.html" style="color:#b09070">návrh úklidu</a></div>
+<div class="footer">Nutworld s.r.o. · interní nástroje · <a href="/index-puvodni.html" style="color:#b09070">původní rozcestník</a></div>
 <script src="stranky-data.js"></script>
 <script>
-const BARVA={obchod:'pink',ceny:'amber',vyroba:'green',sklad:'brown',produkty:'rust',doprava:'gold',marketing:'rose',lide:'terra',jan:'dark',zakaznici:'kraft'};
+const BARVA={archiv:'kraft',obchod:'pink',ceny:'amber',vyroba:'green',sklad:'brown',produkty:'rust',doprava:'gold',marketing:'rose',lide:'terra',jan:'dark',zakaznici:'kraft'};
 const DOT={pink:'#da1668',amber:'#f7ab31',green:'#6fa044',brown:'#83502e',rust:'#b05030',gold:'#c9982e',rose:'#e0628f',terra:'#c98a4a',dark:'#3e2c1c',kraft:'#c8976a'};
 // Rozcestník se kreslí ze stranky-data.js (registr stránek). Nová stránka = nový řádek tam.
 const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+// úklid 2026-11-27: v = část sloučené dlaždice, skryto = jen není v nástrojích, archiv = 📦 Archiv, jen = jen tito lidé
+let JA='', ROLE='';
+const vidi=p=>p.jen?(JA&&p.jen.includes(JA)):!(p.skupina==='jan'&&ROLE&&ROLE!=='admin');
+const casti=p=>NW_STRANKY.filter(x=>x.v===p.soubor&&vidi(x));
 function card(p,cls){
-  return `<a class="card ${cls||p.barva||''}" href="/${p.soubor}"><span class="card-icon">${p.ikona}</span>`+
-    `<div class="card-title">${esc(p.nazev)}${p.stitek&&/nov/.test(p.stitek)?`<span class="tag">${esc(p.stitek)}</span>`:''}</div>`+
-    `<div class="card-desc">${esc(p.popis)}</div></a>`;
+  const c=casti(p);
+  return `<div class="card ${cls||p.barva||''}" onclick="if(!event.target.closest('a'))location.href='/${p.soubor}'" style="cursor:pointer"><span class="card-icon">${p.ikona}</span>`+
+    `<div class="card-title"><a href="/${p.soubor}" style="color:inherit;text-decoration:none">${esc(p.nazev)}</a>${p.stitek&&/nov/.test(p.stitek)?`<span class="tag">${esc(p.stitek)}</span>`:''}</div>`+
+    `<div class="card-desc">${esc(p.popis)}</div>`+
+    (c.length?`<div class="casti">${c.map(x=>`<a href="/${x.soubor}">${esc(x.nazev.replace(/^Pohledávky — |^Expedice — /,''))}</a>`).join('')}</div>`:'')+`</div>`;
 }
 function section(label,sub,items,collapsed,cls){
   const head=`<div class="section-label">${cls?`<span class="dot" style="background:${DOT[cls]}"></span>`:''}${label}<span class="cnt">${items.length}</span>${sub?`<span class="sec-sub">${esc(sub)}</span>`:''}</div>`;
@@ -138,16 +147,19 @@ function section(label,sub,items,collapsed,cls){
 }
 function render(){
   const q=norm(document.getElementById('q').value.trim());
-  const hit=p=>!q||norm(p.nazev+' '+p.popis+' '+p.soubor).includes(q);
-  const list=NW_STRANKY.filter(hit);
-  document.getElementById('cnt').textContent=q?`${list.length} z ${NW_STRANKY.length}`:`${NW_STRANKY.length} stránek`;
+  const hit=p=>!q||norm(p.nazev+' '+p.popis+' '+p.soubor+' '+casti(p).map(x=>x.nazev).join(' ')).includes(q);
+  const tiles=NW_STRANKY.filter(p=>!p.skryto&&!p.v&&vidi(p));
+  const list=tiles.filter(hit);
+  document.getElementById('cnt').textContent=q?`${list.length} z ${tiles.length}`:`${tiles.filter(p=>!p.archiv).length} nástrojů`;
   let h='';
-  if(!q) h+=section('⭐ Nejčastěji','',NW_STRANKY.filter(p=>p.hlavni).sort((a,b)=>a.hlavni-b.hlavni),false,'dark');
-  NW_SKUPINY.forEach(g=>{ const ps=list.filter(p=>p.skupina===g.key); if(ps.length) h+=section(g.ikona+' '+esc(g.nazev),g.popis,ps,g.sbaleno&&!q,BARVA[g.key]); });
+  if(!q) h+=section('⭐ Nejčastěji','',tiles.filter(p=>p.hlavni&&!p.archiv).sort((a,b)=>a.hlavni-b.hlavni),false,'dark');
+  NW_SKUPINY.forEach(g=>{ const ps=list.filter(p=>g.key==='archiv'?p.archiv:(p.skupina===g.key&&!p.archiv)); if(ps.length) h+=section(g.ikona+' '+esc(g.nazev),g.popis,ps,g.sbaleno&&!q,BARVA[g.key]); });
   document.getElementById('out').innerHTML=h||'<div class="empty">Nic nenalezeno.</div>';
 }
 document.getElementById('q').addEventListener('input',render);
 render();
+// who am I (server only) -> tiles meant for named people (e.g. Pohledávky: Jan + Jana)
+if(location.hostname.startsWith('nastroje')) fetch('/api/asistent/stav',{credentials:'same-origin'}).then(r=>r.ok?r.json():null).then(j=>{ if(j&&j.jmeno){ JA=j.jmeno; ROLE=j.role||''; render(); } }).catch(()=>{});
 
 // ── Assistant (nw_asistent.py on the server; GitHub copy = search only) ──
 const ONLINE = location.hostname.startsWith('nastroje');
