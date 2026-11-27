@@ -1157,7 +1157,7 @@ function personMonthStats(pid) {
     const dt = fmtDate(y, m, d);
     const rec = db.records[`${pid}:${dt}`];
     if (!rec) continue;
-    const mins = calcMins(rec.from, rec.to);
+    const mins = recMins(rec);
     if (mins > 0) { totalMins += mins; workDays++; }
   }
   return { totalMins, workDays };
@@ -1284,6 +1284,17 @@ window.addEventListener('DOMContentLoaded', () => {
 function fmtDate(y,m,d) {
   return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
 }
+// breaks clocked in the app (rec.pauzy) are not working time (Jan 2026-11-27)
+function pauseMins(rec) { return (rec && rec.pauzy || []).reduce((a, p) => a + (p.od && p.do ? (calcMins(p.od, p.do) || 0) : 0), 0); }
+function recMins(rec) { const m = calcMins(rec.from, rec.to); return m === null ? null : Math.max(0, m - pauseMins(rec)); }
+function verifyBadge(rec) {           // 📍 = QR + position at the site, ⚠️ = without QR / outside the zone, ✍️ = written by hand
+  const o = rec.overeni || {}, b = x => !x ? '' : x.ok ? '📍' : '⚠️';
+  const t = [o.prichod && `příchod: ${o.prichod.qr ? 'QR ✓' : 'bez QR'}${o.prichod.m != null ? ', ' + o.prichod.m + ' m' : ', poloha ?'}`,
+             o.odchod && `odchod: ${o.odchod.qr ? 'QR ✓' : 'bez QR'}${o.odchod.m != null ? ', ' + o.odchod.m + ' m' : ', poloha ?'}`,
+             rec.rucne && `ručně upraveno ${rec.rucne.replace('T', ' ')}`, pauseMins(rec) && `pauzy ${pauseMins(rec)} min (${(rec.pauzy || []).length}×)`].filter(Boolean).join(' · ');
+  const s = b(o.prichod) + b(o.odchod) + (rec.rucne ? '✍️' : '') + (pauseMins(rec) ? ` <small>−${pauseMins(rec)}′</small>` : '');
+  return s ? `<span title="${t}" style="font-size:12px;margin-left:4px">${s}</span>` : '';
+}
 function calcMins(from, to) {
   if (!from || !to) return null;
   const [fh,fm] = from.split(':').map(Number);
@@ -1379,7 +1390,7 @@ function renderTable() {
     const wknd = dow===0||dow===6;
     const rec = db.records[`${cur.person}:${dt}`] || {};
     const type = rec.type || (wknd ? 'weekend' : 'work');
-    const mins = calcMins(rec.from, rec.to);
+    const mins = recMins(rec);
     const isToday = dt===ts;
 
     const tr = document.createElement('tr');
@@ -1397,7 +1408,7 @@ function renderTable() {
       <td class="td-time${rec.from?'':' empty'}">${rec.from||'—'}</td>
       <td class="td-time${rec.to?'':' empty'}">${rec.to||'—'}</td>
       <td class="td-h${mins!==null?'':' empty'}">${mins!==null?fmtMins(mins):(wknd?'':'—')}</td>
-      <td class="td-type">${pillHTML}</td>
+      <td class="td-type">${pillHTML}${verifyBadge(rec)}</td>
       <td class="td-note">${rec.note||''}</td>
     `;
     tbody.appendChild(tr);
@@ -1409,7 +1420,7 @@ function renderTotals() {
   let totalMins=0, wDays=0;
   for (let d=1;d<=days;d++) {
     const rec = db.records[`${cur.person}:${fmtDate(cur.year,cur.month,d)}`]||{};
-    const m = calcMins(rec.from, rec.to);
+    const m = recMins(rec);
     if (m!==null && m>0) { totalMins+=m; wDays++; }
   }
   document.getElementById('tot-h').textContent   = totalMins>0 ? fmtMins(totalMins) : '—';
@@ -1503,7 +1514,7 @@ function saveDay() {
   if (!from && !to && !note && selType==='work') {
     delete db.records[key];
   } else {
-    db.records[key] = {from, to, type:selType, note};
+    db.records[key] = {...(db.records[key] || {}), from, to, type:selType, note};   // keep app breaks + verification
   }
   save();
   closeDay();
@@ -1566,7 +1577,7 @@ function doExport() {
     const dt  = fmtDate(cur.year,cur.month,d);
     const dow = new Date(cur.year,cur.month,d).getDay();
     const rec = db.records[`${cur.person}:${dt}`]||{};
-    const m   = calcMins(rec.from, rec.to);
+    const m   = recMins(rec);
     if (m) total+=m;
     const typeLabel = {work:'Práce',holiday:'Dovolená',sick:'Nemoc',bank:'Svátek',weekend:'Víkend'}[rec.type||'work']||'';
     csv += `${dt};${DAYS[dow]};${rec.from||''};${rec.to||''};${m?fmtMins(m):''};${typeLabel};${rec.note||''}\n`;
