@@ -179,10 +179,10 @@ const LATER_CZK = [
 const LATER_EUR = [];
 
 const B2C_SK_PENDING = [
-  {code:'2026003465', n:'SNP Capital Energy s.r.o.', amt:'151.20', ccy:'EUR', date:'2026-11-25', paid:false, bank_date:'', bank_sender:''},
+  {code:'2026003465', n:'SNP Capital Energy s.r.o.', amt:'151.20', ccy:'EUR', date:'2026-11-25', paid:true, bank_date:'', bank_sender:''},
   {code:'2026003460', n:'—', amt:'59.60', ccy:'EUR', date:'2026-11-25', paid:true, bank_date:'2026-11-25', bank_sender:'Zuzana Nestorikova'},
   {code:'2026003458', n:'Levare Cable s.r.o.', amt:'730.80', ccy:'EUR', date:'2026-11-25', paid:false, bank_date:'', bank_sender:''},
-  {code:'2026003456', n:'L.A.M. TRANS, s.r.o.', amt:'142.04', ccy:'EUR', date:'2026-11-25', paid:false, bank_date:'', bank_sender:''},
+  {code:'2026003456', n:'L.A.M. TRANS, s.r.o.', amt:'142.04', ccy:'EUR', date:'2026-11-25', paid:true, bank_date:'2026-11-27', bank_sender:'L.A.M. TRANS, s.r.o.'},
   {code:'2026003425', n:'—', amt:'33.09', ccy:'EUR', date:'2026-11-22', paid:false, bank_date:'', bank_sender:''},
   {code:'2026003415', n:'—', amt:'60.90', ccy:'EUR', date:'2026-11-21', paid:true, bank_date:'2026-11-21', bank_sender:'Iveta Burikova'},
   {code:'2026003398', n:'—', amt:'66.30', ccy:'EUR', date:'2026-11-20', paid:true, bank_date:'2026-11-20', bank_sender:'BENEDIK JULIA'},
