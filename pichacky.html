@@ -1345,7 +1345,8 @@ function verifyBadge(rec) {           // 📍 = QR + position at the site, ⚠�
              o.odchod && `odchod: ${o.odchod.qr ? 'QR ✓' : 'bez QR'}${o.odchod.m != null ? ', ' + o.odchod.m + ' m' : ', poloha ?'}`,
              rec.rucne && `ručně upraveno ${rec.rucne.replace('T', ' ')}`, pauseMins(rec) && `pauzy ${pauseMins(rec)} min (${(rec.pauzy || []).length}×)`].filter(Boolean).join(' · ');
   const over = pauseMins(rec) > pauseAllowance(rec);
-  const s = b(o.prichod) + b(o.odchod) + (rec.rucne ? '✍️' : '') + (pauseMins(rec) ? ` <small style="${over ? 'color:#c0392b;font-weight:700' : ''}">−${pauseMins(rec)}′${over ? ' (nárok ' + pauseAllowance(rec) + ')' : ''}</small>` : '');
+  const pzBad = (rec.pauzy || []).filter(p => (p.ov_od && !p.ov_od.ok) || (p.ov_do && !p.ov_do.ok) || (!p.ov_od && !p.ov_do)).length;
+  const s = b(o.prichod) + b(o.odchod) + (rec.rucne ? '✍️' : '') + (pzBad ? `<span title="${pzBad} pauz bez QR / mimo provozovnu / zapsáno ručně">⚠️☕</span>` : '') + (pauseMins(rec) ? ` <small style="${over ? 'color:#c0392b;font-weight:700' : ''}">−${pauseMins(rec)}′${over ? ' (nárok ' + pauseAllowance(rec) + ')' : ''}</small>` : '');
   return s ? `<span title="${t}" style="font-size:12px;margin-left:4px">${s}</span>` : '';
 }
 function calcMins(from, to) {
@@ -1589,6 +1590,7 @@ function drawPauseRows() {
   document.getElementById('m-pauzy').innerHTML = M_PAUZY.map((p, i) => `<div style="display:flex;gap:6px;align-items:center;margin-bottom:6px">
     <select onchange="M_PAUZY[${i}].typ=this.value" style="padding:6px;border-radius:8px;border:1.5px solid #d4c0a8"><option value="koureni" ${p.typ === 'koureni' ? 'selected' : ''}>🚬 kouření</option><option value="jidlo" ${p.typ !== 'koureni' ? 'selected' : ''}>☕ jídlo</option></select>
     <input type="time" value="${p.od || ''}" oninput="M_PAUZY[${i}].od=this.value;updCalc()" style="flex:1">–<input type="time" value="${p.do || ''}" oninput="M_PAUZY[${i}].do=this.value;updCalc()" style="flex:1">
+    <span title="začátek / konec: 📍 QR na provozovně, ⚠️ bez QR nebo mimo, ✍️ ručně" style="font-size:13px;white-space:nowrap">${p.ov_od ? (p.ov_od.ok ? '📍' : '⚠️') : '✍️'}${p.do ? (p.ov_do ? (p.ov_do.ok ? '📍' : '⚠️') : '✍️') : ''}</span>
     <button type="button" onclick="M_PAUZY.splice(${i},1);drawPauseRows();updCalc()" style="border:0;background:none;font-size:18px;cursor:pointer;color:#c0392b">×</button></div>`).join('')
     || '<div style="font-size:13px;color:#8a6a4a;margin-bottom:4px">Žádná pauza.</div>';
 }
@@ -1615,7 +1617,7 @@ function saveDay() {
   if (!from && !to && !note && selType==='work') {
     delete db.records[key];
   } else {
-    const pauzy = M_PAUZY.filter(p => p.od).map(p => ({od: p.od, ...(p.do ? {do: p.do} : {}), typ: p.typ === 'koureni' ? 'koureni' : 'jidlo'}));
+    const pauzy = M_PAUZY.filter(p => p.od).map(p => ({...p, od: p.od, ...(p.do ? {do: p.do} : {}), typ: p.typ === 'koureni' ? 'koureni' : 'jidlo'}));   // keep QR verification
     db.records[key] = {...(db.records[key] || {}), from, to, type:selType, note, pauzy};   // keep app verification
   }
   save();

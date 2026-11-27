@@ -246,6 +246,7 @@ const NAV_LABEL = {domu: ['🏠', 'Domů'], skenovat: ['📷', 'Skenovat'], vice
 
 function can(soubor) {
   const p = PAGE[soubor];
+  if (p && p.jen) return p.jen.includes(ME.jmeno);            // named people only (e.g. Pohledávky: Jan + Jana, 2026-11-27)
   if (p && p.skupina === 'jan' && ME.role !== 'admin') return false;
   return !ALLOWED || ALLOWED.has(soubor);
 }
@@ -369,7 +370,7 @@ function installHint() {
 
 function drawHome() {
   $('#titul').textContent = 'Nutworld';
-  const fav = STRANKY.filter(p => p.hlavni && can(p.soubor) && !navItems().includes(p.soubor)).slice(0, 8);
+  const fav = STRANKY.filter(p => p.hlavni && can(p.soubor) && !p.archiv && !p.skryto && !p.v && !navItems().includes(p.soubor)).slice(0, 8);
   $('#domu').innerHTML = `${installHint()}
     <div id="pushhint"></div>
     <div class="hello"><img src="/pwa/ikona-192.png" alt=""><div><div class="g">${esc(greeting())}</div><div class="d">${today()}${ME.role === 'admin' ? ' · <span class="tag t-z">Jednatel</span>' : ''}</div></div></div>
@@ -508,7 +509,9 @@ function drawScan() {
 
 function drawMore() {
   $('#titul').textContent = 'Všechny nástroje';
-  const mine = STRANKY.filter(p => can(p.soubor));
+  // úklid 2026-11-27: merged parts (v) listed under their tile, hidden pages (skryto) not here, 📦 archive last
+  const mine = STRANKY.filter(p => can(p.soubor) && !p.skryto);
+  const parts = p => mine.filter(x => x.v === p.soubor);
   $('#vice').innerHTML = `<input class="find" id="find" type="search" placeholder="Hledat nástroj…" autocomplete="off"><div id="seznam"></div>
     <h2 class="sek">Aplikace</h2>
     <div class="list">
@@ -520,11 +523,13 @@ function drawMore() {
     </div>`;
   const draw = q => {
     q = (q || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
-    const hit = p => !q || (p.nazev + ' ' + (p.popis || '') + ' ' + p.soubor).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').includes(q);
+    const nq = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    const hit = p => !q || nq(p.nazev + ' ' + (p.popis || '') + ' ' + p.soubor + ' ' + parts(p).map(x => x.nazev).join(' ')).includes(q);
     $('#seznam').innerHTML = SKUPINY.map(s => {
-      const l = mine.filter(p => p.skupina === s.key && hit(p));
+      const l = mine.filter(p => (q ? true : !p.v) && (s.key === 'archiv' ? p.archiv : p.skupina === s.key && !p.archiv) && (q && p.v ? hit(p) : !p.v && hit(p)));
       return l.length ? `<h2 class="sek">${s.ikona || ''} ${esc(s.nazev)}</h2><div class="list">${l.map(p =>
-        `<div class="it" data-p="${esc(p.soubor)}"><span class="i">${p.ikona || '📄'}</span><div><div class="n">${esc(p.nazev)}</div><div class="p">${esc(p.popis || '')}</div></div></div>`).join('')}</div>` : '';
+        `<div class="it" data-p="${esc(p.soubor)}"><span class="i">${p.ikona || '📄'}</span><div><div class="n">${esc(p.nazev)}</div><div class="p">${esc(p.popis || '')}</div>
+          ${parts(p).length ? `<div class="p" style="margin-top:3px">${parts(p).map(x => `<a href="#" data-p="${esc(x.soubor)}" style="margin-right:8px">${esc(x.nazev.replace(/^Pohledávky — |^Expedice — /, ''))}</a>`).join('')}</div>` : ''}</div></div>`).join('')}</div>` : '';
     }).join('') || `<div class="card"><div class="s">Nic takového nevidím.</div></div>`;
     bindTiles($('#seznam'));
   };
@@ -1020,7 +1025,9 @@ async function drawPich() {
   const pravidla = 'do 4 h bez pauzy · od 4 h 15 min · od 8 h 30 min · od 12 h 60 min';
   const month = j.dnes.slice(0, 7), days = Object.entries(j.dny).filter(([k]) => k.startsWith(month)).sort((a, b) => b[0].localeCompare(a[0]));
   const total = days.reduce((a, [, r]) => a + workM(r), 0);
-  const badge = r => { const o = r.overeni || {}, b = x => !x ? '' : x.ok ? '📍' : '⚠️'; return b(o.prichod) + b(o.odchod) + (r.rucne ? '✍️' : ''); };
+  const badge = r => { const o = r.overeni || {}, b = x => !x ? '' : x.ok ? '📍' : '⚠️';
+    const pzBad = (r.pauzy || []).some(p => (p.ov_od && !p.ov_od.ok) || (p.ov_do && !p.ov_do.ok));
+    return b(o.prichod) + b(o.odchod) + (r.rucne ? '✍️' : '') + (pzBad ? '⚠️☕' : ''); };
   box.innerHTML = (PICH_NAHLED ? `<div class="hint" style="background:#e8f0fb;border-color:#2c7fb8"><b>👁 Náhled — takhle to vidí ${esc(j.ja.jmeno)}</b><br>Jen pro čtení, obnovuje se samo každých 20 s.</div>` : '')
     + `<div class="hello"><img src="/pwa/ikona-192.png" alt=""><div><div class="g">${PICH_NAHLED ? 'Dobrý den, ' + esc(String(j.ja.jmeno).split(' ')[0]) : esc(greeting())}</div><div class="d">${today()}</div></div></div>
     <div class="card" style="text-align:center;padding:18px 14px">
@@ -1029,9 +1036,9 @@ async function drawPich() {
       ${d.from ? `<div class="s">${esc(d.from)} – ${esc(d.to || '…')} ${badge(d)} · v práci ${hm(presence)} h · pauzy ${used} / ${sm.pauza} min</div>` : ''}
       ${!d.from ? `<div class="s" style="margin-top:8px">Pauzy: ${pravidla}</div>
         <button class="big b-h" id="p-in" style="font-size:19px;padding:18px">✅ Přišel(a) jsem — načíst QR</button>` : ''}
-      ${inWork && !open ? `<div style="display:flex;gap:8px"><button class="big b-l" id="p-ko" style="flex:1">🚬 Kouření</button><button class="big b-l" id="p-ji" style="flex:1">☕ Pauza na jídlo</button></div>
+      ${inWork && !open ? `<div style="display:flex;gap:8px"><button class="big b-l" id="p-ko" style="flex:1">🚬 Kouření · QR</button><button class="big b-l" id="p-ji" style="flex:1">☕ Jídlo · QR</button></div>
         <button class="big b-z" id="p-out" style="font-size:19px;padding:18px">👋 Odcházím — načíst QR</button>` : ''}
-      ${open ? `<button class="big b-h" id="p-back" style="font-size:19px;padding:18px">↩️ Zpět z pauzy</button>` : ''}
+      ${open ? `<button class="big b-h" id="p-back" style="font-size:19px;padding:18px">↩️ Zpět z pauzy — načíst QR</button>` : ''}
       ${inWork && used > sm.pauza ? `<div class="err" style="margin-top:6px">Pauzy ${used} min — teď máš nárok na ${sm.pauza} min (${pravidla}).</div>` : ''}
       <div id="p-m" class="s" style="margin-top:6px"></div></div>
     <div id="p-dok"></div>
@@ -1053,22 +1060,24 @@ async function drawPich() {
     return;
   }
   const msg = (t, bad) => $('#p-m').innerHTML = `<span class="${bad ? 'err' : ''}">${esc(t)}</span>`;
-  const send = async (body, el) => { if (el) el.disabled = true; try { const r = await pApi(body); const o = (r.zaznam && r.zaznam.overeni) || {}, v = o[body.akce === 'prisel' ? 'prichod' : 'odchod'];
+  const send = async (body, el) => { if (el) el.disabled = true; try { const r = await pApi(body); const o = (r.zaznam && r.zaznam.overeni) || {}, lp = ((r.zaznam && r.zaznam.pauzy) || []).slice(-1)[0] || {};
+      const v = body.akce === 'pauza' ? lp.ov_od : body.akce === 'konec_pauzy' ? lp.ov_do : o[body.akce === 'prisel' ? 'prichod' : 'odchod'];
       if (v && !v.ok) toast({title: '⚠️ Zapsáno s označením', body: !v.qr ? 'Bez QR kódu.' : v.m == null ? 'Poloha se nepodařila zjistit.' : `Telefon byl ${v.m} m od provozovny.`});
       drawPich(); } catch (e) { msg(e.message, true); if (el) el.disabled = false; } };
-  const clock = async (akce, el) => {
+  const clock = async (akce, el, extra) => {
     let r;
     if (PICH_QR) { const p = await new Promise(ok => navigator.geolocation ? navigator.geolocation.getCurrentPosition(x => ok({lat: x.coords.latitude, lng: x.coords.longitude, acc: x.coords.accuracy}), () => ok({}), {enableHighAccuracy: true, timeout: 15000}) : ok({}));
       r = {qr: PICH_QR, ...p}; PICH_QR = null; }
-    else r = await scanQR(akce === 'prisel' ? '✅ Příchod' : '👋 Odchod');
+    else r = await scanQR({prisel: '✅ Příchod', odchod: '👋 Odchod', pauza: extra && extra.typ === 'koureni' ? '🚬 Začátek kouření' : '☕ Začátek pauzy', konec_pauzy: '↩️ Konec pauzy'}[akce]);
     if (!r) return;
-    send({akce, ...r}, el);
+    send({akce, ...r, ...(extra || {})}, el);
   };
   if ($('#p-in')) $('#p-in').onclick = e => clock('prisel', e.target);
   if ($('#p-out')) $('#p-out').onclick = e => clock('odchod', e.target);
-  if ($('#p-ko')) $('#p-ko').onclick = e => send({akce: 'pauza', typ: 'koureni'}, e.target);
-  if ($('#p-ji')) $('#p-ji').onclick = e => send({akce: 'pauza', typ: 'jidlo'}, e.target);
-  if ($('#p-back')) $('#p-back').onclick = e => send({akce: 'konec_pauzy'}, e.target);
+  // breaks also by the QR next to the changing room (Jan 2026-11-27) — start and end
+  if ($('#p-ko')) $('#p-ko').onclick = e => clock('pauza', e.target, {typ: 'koureni'});
+  if ($('#p-ji')) $('#p-ji').onclick = e => clock('pauza', e.target, {typ: 'jidlo'});
+  if ($('#p-back')) $('#p-back').onclick = e => clock('konec_pauzy', e.target);
   if (PICH_QR && !d.from) msg('QR načten — klepni na „Přišel(a) jsem“.');
   const edit = k => {
     const r = j.dny[k] || {}, s = document.createElement('div'); s.className = 'sheet';
