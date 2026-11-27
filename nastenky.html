@@ -108,6 +108,14 @@ a{color:var(--br)}
 .res small{color:var(--muted)}
 .empty-msg{text-align:center;color:var(--muted);padding:40px 16px}
 .dlg p{line-height:1.5;margin:8px 0 14px}
+.qf{border:0;border-radius:8px;padding:5px 6px;background:rgba(255,255,255,.16);color:#fff;max-width:150px}
+.qf option{color:#2a1a0e}
+.grp{margin:18px 0 8px;font-family:'Exo 2',sans-serif;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;display:flex;gap:8px;align-items:center}
+.grp.late{color:var(--red)}.grp.soon{color:#b77900}.grp.week{color:var(--br)}.grp.later,.grp.none{color:var(--muted)}
+.seg{display:inline-flex;background:#fff;border-radius:10px;padding:3px;gap:3px;box-shadow:0 1px 3px rgba(92,56,31,.12)}
+.seg button{border:0;border-radius:8px;padding:6px 12px;cursor:pointer;font-weight:700;background:transparent;color:var(--muted)}
+.seg button.on{background:var(--br);color:#fff}
+.live{font-size:11px;opacity:.85;white-space:nowrap}
 .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--bd);color:#fff;padding:9px 16px;border-radius:10px;z-index:99;font-weight:600}
 @media (max-width:600px){.top input{width:100%;order:9}.col{width:86vw}.md{padding:16px 14px 20px}}
 </style>
@@ -173,7 +181,8 @@ window.addEventListener('hashchange', route);
 async function route() {
   const h = new URLSearchParams(location.hash.slice(1));
   const b = h.get('b'), k = h.get('k');
-  if (b) { if (!B || B.id !== b) await openBoard(b); else renderBoard(); }
+  if (h.has('moje')) { B = null; renderMoje(); }
+  else if (b) { if (!B || B.id !== b) await openBoard(b); else renderBoard(); }
   else { B = null; renderHome(); }
   if (k) openCard(k); else $('modal').innerHTML = '';
 }
@@ -195,11 +204,14 @@ async function setGroup(id, sk, ev) {
 }
 function renderHome() {
   $('bn').textContent = ''; $('banner').innerHTML = '';
-  $('topbtns').innerHTML = (ME.admin || ME.plny) ? `<button class="btn ghost" onclick="newBoard()">+ Nástěnka</button>` : '';
+  $('topbtns').innerHTML = `<button class="btn ghost" onclick="go('moje')">📅 Moje karty a termíny</button>` +
+    ((ME.admin || ME.plny) ? ` <button class="btn ghost" onclick="newBoard()">+ Nástěnka</button>` : '');
   const own = BOARDS.filter(b => b.mode === 'vlastni').length;
   $('main').innerHTML = `<div class="home">
-    <div class="intro"><b>Naše vlastní nástěnky — souběžně s Trellem.</b> Pracuje se dál v Trellu; tady je jeho kopie
-      (obnovuje se každou hodinu 6–20 h, přílohy každou noc). Nástěnku přepne na náš systém Jan, až bude vyzkoušená.
+    <div class="intro"><b>Naše vlastní nástěnky — náhled Trella.</b> Do Nového roku se pracuje dál v Trellu
+      (přes <a href="https://nutworldcz-collab.github.io/" target="_blank" rel="noopener">nutworldcz-collab.github.io</a>); tady je jeho živá kopie —
+      obnovuje se každých 10 minut (6–21 h), otevřená nástěnka se překreslí sama. Klidně si tu vše prohlížej a zkoušej hledání a přehledy.
+      <b>Po Novém roce přejdeme na tento systém úplně</b> — nic se neztratí, karty, komentáře i přílohy už tu jsou.
       ${own ? `Na našem systému už běží: <b>${own}</b>.` : ''}
       ${ME.admin ? '<br>Vidíš všechny nástěnky (Jan); ostatní jen ty, kde jsou členy. Skupinu nástěnky změníš výběrem na dlaždici.' : ''}</div>
     <div class="row" style="margin:16px 0 4px">
@@ -265,25 +277,73 @@ async function openBoard(id) {
     B = j.board; LISTS = j.lists; CARDS = j.cards;
   } catch (e) { $('main').innerHTML = `<div class="empty-msg">${esc(e.message)}</div>`; B = null; return; }
   renderBoard();
+  VER = null; checkLive();
 }
+/* live refresh: every 30 s a tiny version check; the board is redrawn only when something changed and nobody is typing/dragging */
+let VER = null, LIVE_T = null;
+async function checkLive() {
+  clearTimeout(LIVE_T);
+  if (!B) return;
+  const id = B.id;
+  try {
+    const v = (await api(`/board/${id}/verze`)).verze;
+    if (!B || B.id !== id) return;
+    const busy = document.hidden || $('dlg') || document.querySelector('.card.drag, .qa, #desc, #cmt:focus') ||
+      (document.activeElement && /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName) && !document.activeElement.classList.contains('qf'));
+    if (VER && v !== VER && !busy) {
+      const j = await api('/board/' + id + (SHOW_ARCH ? '?archiv=1' : ''));
+      if (B && B.id === id) { B = j.board; LISTS = j.lists; CARDS = j.cards; renderCols(); renderBanner(); }
+    }
+    if (VER === null || !busy) VER = v;
+    const el = $('live'); if (el) el.textContent = '🟢 živě · ' + new Date().toLocaleTimeString('cs-CZ', {hour: '2-digit', minute: '2-digit'});
+  } catch (e) { const el = $('live'); if (el) el.textContent = '⚪ offline'; }
+  LIVE_T = setTimeout(checkLive, 30000);
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden && B) checkLive(); });
 function renderBoard() {
   $('bn').textContent = '· ' + B.nazev;
   const ed = B.lze_upravit;
+  const lide = [...new Set(CARDS.flatMap(c => c.clenove))].sort((a, b) => a.localeCompare(b, 'cs'));
+  const stitky = [...new Map(CARDS.flatMap(c => c.stitky).filter(s => s.nazev).map(s => [s.nazev, s])).keys()].sort((a, b) => a.localeCompare(b, 'cs'));
   $('topbtns').innerHTML = `<input class="inp" style="width:150px;padding:5px 9px;border:0" placeholder="Filtr na nástěnce" value="${esc(FILTER)}" oninput="FILTER=this.value;renderCols()">
-    <button class="btn ghost sm" onclick="SHOW_ARCH=!SHOW_ARCH;openBoard(B.id)">${SHOW_ARCH ? 'Skrýt archiv' : 'Archiv'}</button>`;
-  const when = B.importovano ? fmtDate(B.importovano, true) : '';
-  $('banner').innerHTML = B.mode === 'vlastni'
-    ? `<div class="banner own">✅ Tahle nástěnka už běží v našem systému — upravuje se tady. ${ME.admin ? `<button class="btn sm" onclick="switchMode('trello')">Vrátit do Trella</button>` : ''}</div>`
-    : `<div class="banner">📋 Kopie z Trella (stav ${esc(when)}) — zatím jen pro čtení, pracujte v Trellu.
-       ${B.shortlink ? `<a href="https://trello.com/b/${esc(B.shortlink)}" target="_blank" rel="noopener">Otevřít v Trellu ↗</a>` : ''}
-       ${ME.admin ? `<button class="btn sm pri" onclick="switchMode('vlastni')">Přepnout na náš systém…</button>` : ''}</div>`;
+    <select class="qf" title="Rychlý filtr" onchange="QF=this.value;renderCols()">
+      <option value="">Všechny karty</option><option value="moje">👤 Moje karty</option><option value="late">🔴 Po termínu</option>
+      <option value="week">🟠 Termín do 7 dní</option><option value="nodue">Bez termínu</option>
+      ${lide.length ? `<optgroup label="Člověk">${lide.map(m => `<option value="p:${esc(m)}">${esc(m)}</option>`).join('')}</optgroup>` : ''}
+      ${stitky.length ? `<optgroup label="Štítek">${stitky.map(s => `<option value="s:${esc(s)}">${esc(s)}</option>`).join('')}</optgroup>` : ''}
+    </select>
+    <button class="btn ghost sm" onclick="SHOW_ARCH=!SHOW_ARCH;openBoard(B.id)">${SHOW_ARCH ? 'Skrýt archiv' : 'Archiv'}</button>
+    <span class="live" id="live" title="Nástěnka se sama obnovuje, když se něco změní"></span>`;
+  const qf = $('topbtns').querySelector('.qf'); if (qf) qf.value = QF;
+  renderBanner();
   $('main').innerHTML = `<div class="board" id="board"></div>`;
   renderCols();
 }
+function renderBanner() {
+  const when = B.importovano ? fmtDate(B.importovano, true) : '';
+  $('banner').innerHTML = B.mode === 'vlastni'
+    ? `<div class="banner own">✅ Tahle nástěnka už běží v našem systému — upravuje se tady. ${ME.admin ? `<button class="btn sm" onclick="switchMode('trello')">Vrátit do Trella</button>` : ''}</div>`
+    : `<div class="banner">📋 Náhled Trella (stav ${esc(when)}, obnovuje se každých 10 min) — zatím jen pro čtení, pracujte v Trellu. Po Novém roce se přejde sem.
+       ${B.shortlink ? `<a href="https://trello.com/b/${esc(B.shortlink)}" target="_blank" rel="noopener">Otevřít v Trellu ↗</a>` : ''}
+       ${ME.admin ? `<button class="btn sm pri" onclick="switchMode('vlastni')">Přepnout na náš systém…</button>` : ''}</div>`;
+}
+let QF = '';
+function quickMatch(c) {
+  if (!QF) return true;
+  const h = c.termin && !c.termin_hotovo ? (new Date(c.termin) - Date.now()) / 36e5 : null;
+  if (QF === 'moje') return c.clenove.includes(ME.jmeno);
+  if (QF === 'late') return h != null && h < 0;
+  if (QF === 'week') return h != null && h >= 0 && h < 168;
+  if (QF === 'nodue') return !c.termin;
+  if (QF.startsWith('p:')) return c.clenove.includes(QF.slice(2));
+  if (QF.startsWith('s:')) return c.stitky.some(s => s.nazev === QF.slice(2));
+  return true;
+}
 function cardMatch(c) {
+  if (!quickMatch(c)) return false;
   if (!FILTER) return true;
-  const f = FILTER.toLowerCase();
-  return (c.nazev + ' ' + c.stitky.map(s => s.nazev).join(' ') + ' ' + c.clenove.join(' ')).toLowerCase().includes(f);
+  const nrm = s => String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  return nrm(c.nazev + ' ' + c.stitky.map(s => s.nazev).join(' ') + ' ' + c.clenove.join(' ')).includes(nrm(FILTER));
 }
 function cardHtml(c) {
   const due = c.termin ? `<span class="due ${dueCls(c)}">🕒 ${fmtDate(c.termin)}</span>` : '';
@@ -390,6 +450,11 @@ async function openCard(id) {
   renderCard();
   loadZakazka(id);
 }
+function copyLink() {
+  const u = location.origin + location.pathname + '#b=' + CARD._board.id + '&k=' + CARD.id;
+  (navigator.clipboard ? navigator.clipboard.writeText(u) : Promise.reject()).then(() => toast('Odkaz na kartu zkopírován'))
+    .catch(() => dialog(`<h3>Odkaz na kartu</h3><input class="inp" style="width:100%" readonly value="${esc(u)}" onclick="this.select()">`, 'OK', () => true));
+}
 function closeCard() { CARD = null; const h = new URLSearchParams(location.hash.slice(1)); h.delete('k'); go(h.toString()); }
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && CARD && !$('dlg')) closeCard(); });
 function renderCard() {
@@ -404,7 +469,8 @@ function renderCard() {
     <h3 ${ed ? 'contenteditable="true" onblur="saveField(\'nazev\', this.innerText.trim())"' : ''}>${esc(c.nazev)}</h3>
     <div class="meta">ve sloupci <b>${esc(c.sloupec)}</b> · ${esc(bd.nazev)} · založeno ${fmtDate(c.vytvoreno)}
       ${c.uzavrena ? ' · <b>v archivu</b>' : ''}
-      ${c.shortlink ? ` · <a href="https://trello.com/c/${esc(c.shortlink)}" target="_blank" rel="noopener">v Trellu ↗</a>` : ''}</div>
+      ${c.shortlink ? ` · <a href="https://trello.com/c/${esc(c.shortlink)}" target="_blank" rel="noopener">v Trellu ↗</a>` : ''}
+      · <a href="#" onclick="copyLink();return false">🔗 kopírovat odkaz</a></div>
     ${ed && lists.length ? `<div class="row"><label style="font-size:12.5px;color:var(--muted)">Přesunout do</label>
       <select class="inp" onchange="saveField('list_id', this.value)">${lists.map(l => `<option value="${l.id}" ${l.id === c.list_id ? 'selected' : ''}>${esc(l.nazev)}</option>`).join('')}</select>
       <button class="btn sm" onclick="saveField('uzavrena', ${!c.uzavrena})">${c.uzavrena ? '↩ Obnovit z archivu' : '🗄 Archivovat'}</button></div>` : ''}
@@ -588,6 +654,33 @@ function dialog(html, okText, onOk, danger) {
   d.querySelectorAll('input').forEach(i => i.addEventListener('keydown', e => { if (e.key === 'Enter') ok(); if (e.key === 'Escape') closeDialog(); }));
 }
 function closeDialog() { $('dlg')?.remove(); }
+
+/* ---------------- 📅 my cards + deadlines across all boards (works in the Trello preview too) */
+let MOJE_VSE = false;
+async function renderMoje() {
+  $('bn').textContent = '· Moje karty a termíny'; $('banner').innerHTML = ''; clearTimeout(LIVE_T);
+  $('topbtns').innerHTML = `<button class="btn ghost" onclick="go('')">← Nástěnky</button>`;
+  $('main').innerHTML = '<div class="empty-msg">Načítám…</div>';
+  let j; try { j = await api('/prehled' + (MOJE_VSE ? '?vse=1' : '')); } catch (e) { $('main').innerHTML = `<div class="empty-msg">${esc(e.message)}</div>`; return; }
+  const now = Date.now(), endWeek = (() => { const d = new Date(); d.setHours(23, 59, 59); d.setDate(d.getDate() + (7 - (d.getDay() || 7))); return d.getTime(); })();
+  const grp = c => { if (!c.termin) return 'none'; if (c.termin_hotovo) return 'later'; const t = new Date(c.termin).getTime();
+    return t < now ? 'late' : t - now < 48 * 36e5 ? 'soon' : t <= endWeek ? 'week' : 'later'; };
+  const G = [['late', '🔴 Po termínu'], ['soon', '🟠 Dnes a zítra'], ['week', '🟡 Do konce týdne'], ['later', '📆 Později'], ['none', '📋 Bez termínu']];
+  const row = c => `<div class="res" onclick="go('b=${c.board_id}&k=${c.id}')"><b>${esc(c.nazev)}</b>
+      ${c.stitky.filter(s => s.nazev).map(s => `<span class="lbl" style="background:${s.barva};margin-left:4px">${esc(s.nazev)}</span>`).join('')}<br>
+      <small>${esc(c.nastenka)} › ${esc(c.sloupec)}${c.termin ? ` · <span class="due ${dueCls(c)}" style="border-radius:5px;padding:0 5px">🕒 ${fmtDate(c.termin)}</span>` : ''}
+      ${c.clenove.length ? ' · 👤 ' + esc(c.clenove.join(', ')) : ''}${c.check ? ` · ☑ ${c.check[0]}/${c.check[1]}` : ''}</small></div>`;
+  let h = `<div class="home"><div class="row" style="justify-content:space-between">
+    <div class="seg"><button class="${MOJE_VSE ? '' : 'on'}" onclick="MOJE_VSE=false;renderMoje()">👤 Moje karty</button>
+      <button class="${MOJE_VSE ? 'on' : ''}" onclick="MOJE_VSE=true;renderMoje()">📅 + všechny termíny</button></div>
+    <small style="color:var(--muted)">${j.karty.length} karet · bez hotových sloupců</small></div>`;
+  for (const [k, n] of G) {
+    const cs = j.karty.filter(c => grp(c) === k);
+    if (cs.length) h += `<div class="grp ${k}">${n} <span style="color:var(--muted)">(${cs.length})</span></div>${cs.map(row).join('')}`;
+  }
+  if (!j.karty.length) h += `<div class="empty-msg">${MOJE_VSE ? 'Žádné karty s blížícím se termínem.' : 'Nejsi přiřazený na žádné otevřené kartě. Přepni na „všechny termíny“.'}</div>`;
+  $('main').innerHTML = h + '</div>';
+}
 
 /* ---------------- search across boards */
 let qT = null;
