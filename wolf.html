@@ -200,7 +200,7 @@ details.fold>summary::-webkit-details-marker{display:none}details.fold>summary:b
       <a href="dokumenty.html">Dokumenty a smlouvy<small>složky firem</small></a>
       <a href="bulk-cenik.html">Bulk ceník<small>vzorec dle balení</small></a>
       <a href="kalkulator.html">Kalkulátor<small>obaly z obaly.csv</small></a>
-      <a href="platby/">Platby<small>pohledávky z K2</small></a>
+      <a href="/soukrome/platby/">Platby<small>pohledávky z K2</small></a>
       <a href="/soukrome/konkurence/">Konkurence<small>ceny Kč/kg + poptávka</small></a>
       <a href="objednavky.html">Objednávky e-shopu<small>rozklad do výroby</small></a>
       <a href="index.html">Rozcestník týmu<small>pracovní nástroje (PIN)</small></a>
@@ -215,7 +215,7 @@ details.fold>summary::-webkit-details-marker{display:none}details.fold>summary:b
   <p style="text-align:right;margin:10px 0 0"><button class="pill" onclick="dlg.close()">Zavřít</button></p></dialog>
 
 <script src="nw-data.js"></script>
-<script src="platby/data.js"></script>
+<script src="/soukrome/platby/data.js"></script>  <!-- private, server only (2026-11-27) -->
 <script src="pin-guard.js"></script>
 <script>
 const $ = id => document.getElementById(id);
@@ -513,7 +513,7 @@ function renderPlatby() {
     + ov.sort((a, b) => (b.c === 'Kč' ? num(b.amt) : num(b.amt) * 25) - (a.c === 'Kč' ? num(a.amt) : num(a.amt) * 25)).map(ovRow).join('') + '</details>'
     + `<details class="fold"><summary>🟠 Splatné do 5 dní — ${new Set(soon.map(x => x.n)).size} firem, ${kc(sSoon)}</summary>`
     + soon.map(soonRow).join('') + '</details>'
-    + `<p class="muted" style="margin:6px 0 0">${b.vygenerovano ? 'Banka: ' + esc(b.vygenerovano.replace('T', ' ')) + ' (Fio, 6× denně) · ' : ''}Stav K2: ${esc(typeof NW_PLATBY_UPDATED !== 'undefined' ? NW_PLATBY_UPDATED : '')} · <a href="platby/po-splatnosti.html" style="color:#83502e">všechny →</a></p>`;
+    + `<p class="muted" style="margin:6px 0 0">${b.vygenerovano ? 'Banka: ' + esc(b.vygenerovano.replace('T', ' ')) + ' (Fio, 6× denně) · ' : ''}Stav K2: ${esc(typeof NW_PLATBY_UPDATED !== 'undefined' ? NW_PLATBY_UPDATED : '')} · <a href="/soukrome/platby/po-splatnosti.html" style="color:#83502e">všechny →</a></p>`;
 }
 
 // ── osobní data (poznámky, vyřízené e-maily, rozvrh) — NWData prehled/jan_osobni = telefon i počítač ──
