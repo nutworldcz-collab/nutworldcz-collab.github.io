@@ -289,6 +289,8 @@ let CUR = '';
 function go(r) { location.hash = '#/' + r; }
 function route() {
   let h = decodeURIComponent(location.hash.replace(/^#\/?/, '')) || (ME.role === 'brigadnik' ? 'pich' : 'domu');
+  if (h.startsWith('pich?')) { const m = h.match(/nahled=([\w-]+)/); PICH_NAHLED = m && ME.role === 'admin' ? m[1] : null; h = 'pich'; }
+  else if (h === 'pich') PICH_NAHLED = PICH_NAHLED || null;
   if (ME.role === 'brigadnik' && !['pich', 'smeny', 'vice', 'instalace', 'ucet', 'upozorneni'].includes(h)) h = 'pich';
   if (h.startsWith('stranka/')) h = 's/' + h.slice(8);     // manifest shortcuts
   CUR = h;
@@ -968,7 +970,7 @@ const mins = (a, b) => { if (!a || !b) return 0; const [h1, m1] = a.split(':').m
 const hm = m => `${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`;
 const pauseM = r => (r.pauzy || []).reduce((a, p) => a + (p.od && p.do ? mins(p.od, p.do) : 0), 0);
 const workM = r => { if (!r.from || !r.to) return 0; let m = mins(r.from, r.to); if (r.to < r.from) m = mins(r.from, '24:00') + mins('00:00', r.to); return Math.max(0, m - pauseM(r)); };
-let PICH = null, PICH_QR = null;
+let PICH = null, PICH_QR = null, PICH_NAHLED = null, PICH_T = null;
 // QR scanned by the phone camera outside the app opens …/aplikace.html#/pich?qr=… -> keep it for the next clock-in
 (() => { const m = location.hash.match(/[?&]qr=([\w-]+)/); if (m) { PICH_QR = m[1]; history.replaceState(null, '', '#/pich'); } })();
 
@@ -1009,7 +1011,7 @@ async function drawPich() {
   $('#titul').textContent = 'Píchačka';
   const box = $('#pich');
   if (!ON_SERVER) { box.innerHTML = `<div class="card"><div class="s">Píchačka funguje na nastroje.nutworld.cz.</div></div>`; return; }
-  let j; try { j = PICH = await pApi(); } catch (e) { box.innerHTML = `<div class="card"><div class="h">⏱ Píchačka</div><div class="s">${esc(e.message)}</div></div>` + (ME.role === 'admin' ? '<div id="p-adm"></div>' : ''); if (ME.role === 'admin') pichAdmin(); return; }
+  let j; try { j = PICH = PICH_NAHLED ? await (await fetch('/api/nastenky/pichacky?osoba=' + encodeURIComponent(PICH_NAHLED), {credentials: 'same-origin', cache: 'no-store'})).json() : await pApi(); if (j.chyba) throw new Error(j.chyba); } catch (e) { box.innerHTML = `<div class="card"><div class="h">⏱ Píchačka</div><div class="s">${esc(e.message)}</div></div>` + (ME.role === 'admin' ? '<div id="p-adm"></div>' : ''); if (ME.role === 'admin') pichAdmin(); return; }
   const d = j.dny[j.dnes] || {}, inWork = d.from && !d.to, pz = d.pauzy || [], open = pz.length && !pz[pz.length - 1].do ? pz[pz.length - 1] : null;
   const tiers = j.pauzy_narok || [[4, 15], [8, 30], [12, 60]];
   const presence = d.from ? (d.to ? (d.to < d.from ? mins(d.from, '24:00') + mins('00:00', d.to) : mins(d.from, d.to)) : (j.ted < d.from ? mins(d.from, '24:00') + mins('00:00', j.ted) : mins(d.from, j.ted))) : 0;
@@ -1019,7 +1021,8 @@ async function drawPich() {
   const month = j.dnes.slice(0, 7), days = Object.entries(j.dny).filter(([k]) => k.startsWith(month)).sort((a, b) => b[0].localeCompare(a[0]));
   const total = days.reduce((a, [, r]) => a + workM(r), 0);
   const badge = r => { const o = r.overeni || {}, b = x => !x ? '' : x.ok ? '📍' : '⚠️'; return b(o.prichod) + b(o.odchod) + (r.rucne ? '✍️' : ''); };
-  box.innerHTML = `<div class="hello"><img src="/pwa/ikona-192.png" alt=""><div><div class="g">${esc(greeting())}</div><div class="d">${today()}</div></div></div>
+  box.innerHTML = (PICH_NAHLED ? `<div class="hint" style="background:#e8f0fb;border-color:#2c7fb8"><b>👁 Náhled — takhle to vidí ${esc(j.ja.jmeno)}</b><br>Jen pro čtení, obnovuje se samo každých 20 s.</div>` : '')
+    + `<div class="hello"><img src="/pwa/ikona-192.png" alt=""><div><div class="g">${PICH_NAHLED ? 'Dobrý den, ' + esc(String(j.ja.jmeno).split(' ')[0]) : esc(greeting())}</div><div class="d">${today()}</div></div></div>
     <div class="card" style="text-align:center;padding:18px 14px">
       <div class="s">${open ? (open.typ === 'koureni' ? '🚬 Kouříš od' : '☕ Pauza od') : inWork ? 'Jsi v práci od' : d.from && d.to ? 'Dnes odpracováno' : 'Dnes ještě nepíchnuto'}</div>
       <div style="font:800 34px 'Exo 2',Arial;color:var(--tm);margin:4px 0">${open ? esc(open.od) : inWork ? esc(d.from) : d.from && d.to ? hm(workM(d)) : '—'}</div>
@@ -1041,6 +1044,14 @@ async function drawPich() {
     <div id="p-dok"></div>
     ${ME.role === 'admin' ? '<div id="p-adm"></div>' : ''}`;
   pichDocs();
+  clearTimeout(PICH_T);
+  if (PICH_NAHLED) {                      // preview: read-only, live
+    box.querySelectorAll('button').forEach(b => { b.disabled = true; b.style.opacity = .55; });
+    box.querySelectorAll('[data-d]').forEach(el => el.style.pointerEvents = 'none');
+    PICH_T = setTimeout(() => { if (CUR === 'pich' && PICH_NAHLED) drawPich(); }, 20000);
+    $('#titul').textContent = '👁 ' + j.ja.jmeno;
+    return;
+  }
   const msg = (t, bad) => $('#p-m').innerHTML = `<span class="${bad ? 'err' : ''}">${esc(t)}</span>`;
   const send = async (body, el) => { if (el) el.disabled = true; try { const r = await pApi(body); const o = (r.zaznam && r.zaznam.overeni) || {}, v = o[body.akce === 'prisel' ? 'prichod' : 'odchod'];
       if (v && !v.ok) toast({title: '⚠️ Zapsáno s označením', body: !v.qr ? 'Bez QR kódu.' : v.m == null ? 'Poloha se nepodařila zjistit.' : `Telefon byl ${v.m} m od provozovny.`});
@@ -1092,7 +1103,7 @@ async function pichDocs() {
   const box = $('#p-dok'); if (!box) return;
   let j; try { const r = await fetch('/api/nastenky/pichacky/dokumenty', {credentials: 'same-origin', cache: 'no-store'}); if (!r.ok) return; j = await r.json(); } catch (e) { return; }
   if (!j.dokumenty.length) return;
-  const done = id => j.potvrzeni.find(p => p.dokument === id);
+  const done = id => j.potvrzeni.find(p => p.dokument === id && (!PICH_NAHLED || p.osoba === PICH_NAHLED));
   const open = j.dokumenty.filter(d => !done(d.id)).length;
   const opened = new Set(JSON.parse(sessionStorage.getItem('nw_dok_open') || '[]'));
   box.innerHTML = `<h2 class="sek">📄 Dokumenty ${open ? `<span class="tag t-r">${open} k potvrzení</span>` : '<span class="tag t-g">vše potvrzeno</span>'}</h2><div class="card">`
@@ -1101,6 +1112,7 @@ async function pichDocs() {
         <div style="display:flex;gap:8px;margin-top:6px"><button class="big b-l" style="flex:1;margin:0;padding:10px" data-open="${d.id}">📖 Otevřít</button>
         ${x ? '' : `<button class="big b-h" style="flex:1.4;margin:0;padding:10px" data-ok="${d.id}" ${opened.has(d.id) ? '' : 'disabled title="Nejdřív otevři"'}>✅ Přečetl(a) jsem a rozumím</button>`}</div></div>`; }).join('')
     + `<div class="s" style="margin-top:8px">Potvrzení se uloží k tvé píchačce (datum, čas, přesné znění dokumentu).</div></div>`;
+  if (PICH_NAHLED) { box.querySelectorAll('[data-ok]').forEach(b => { b.disabled = true; b.style.opacity = .55; }); }
   box.querySelectorAll('[data-open]').forEach(b => b.onclick = () => { opened.add(b.dataset.open); sessionStorage.setItem('nw_dok_open', JSON.stringify([...opened]));
     window.open('/api/nastenky/pichacky/dokument/' + b.dataset.open, '_blank'); const ok = box.querySelector(`[data-ok="${b.dataset.open}"]`); if (ok) { ok.disabled = false; ok.title = ''; } });
   box.querySelectorAll('[data-ok]').forEach(b => b.onclick = async () => { b.disabled = true;
