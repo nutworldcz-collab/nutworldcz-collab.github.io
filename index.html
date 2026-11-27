@@ -66,6 +66,29 @@ details.sec>summary .section-label:before{content:'▸ ';}details.sec[open]>summ
 .card.dark .card-desc,.card.rust .card-desc,.card.gold .card-desc,.card.rose .card-desc,.card.terra .card-desc{color:rgba(255,255,255,.75)}
 .card.dark .tag,.card.rust .tag,.card.gold .tag,.card.rose .tag,.card.terra .tag{background:rgba(255,255,255,.25);color:#fff}
 .section-label .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+/* assistant: ask / give a task (Jan 2026-11-27) */
+.search input{padding-right:118px}
+.search .go{position:absolute;right:7px;top:50%;transform:translateY(-50%);border:0;border-radius:10px;background:#83502e;color:#fff;font:700 13px 'Exo 2',sans-serif;padding:9px 14px;cursor:pointer}
+.search .go:hover{background:#5c381f}.search .go:disabled{opacity:.5;cursor:wait}
+.search small{right:120px}
+.tips{max-width:860px;margin:-16px auto 22px;display:flex;flex-wrap:wrap;gap:6px;font-size:12px;color:#a07850;align-items:center}
+.tips button{border:1.5px solid #d4c0a8;background:#f6ede3;color:#5c381f;border-radius:14px;padding:3px 10px;font:600 12px 'Source Sans 3',Arial,sans-serif;cursor:pointer}
+.tips button:hover{border-color:#83502e;background:#fff}
+.ans{max-width:860px;margin:0 auto 26px;background:#fff;border:2px solid #c8976a;border-radius:14px;padding:16px 18px;box-shadow:0 2px 10px rgba(0,0,0,.06);color:#2d2013;font-size:14px;line-height:1.55}
+.ans .q{font-family:'Exo 2',sans-serif;font-weight:700;color:#83502e;font-size:12px;letter-spacing:1px;text-transform:uppercase;margin:10px 0 4px}
+.ans .q:first-child{margin-top:0}
+.ans .a{overflow-x:auto}
+.ans .a p{margin:4px 0}.ans .a ul{margin:4px 0 4px 20px}
+.ans table{border-collapse:collapse;margin:6px 0;font-size:13px;white-space:nowrap}
+.ans th,.ans td{border:1px solid #e8d8c8;padding:4px 9px;text-align:left}.ans th{background:#f1e6da;color:#5c381f}
+.ans .akce{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.ans .akce a{background:linear-gradient(135deg,#5c381f,#83502e);color:#fff;text-decoration:none;font-weight:700;border-radius:20px;padding:8px 16px;font-size:13px}
+.ans .akce a:hover{filter:brightness(1.12)}
+.ans .foot{display:flex;justify-content:space-between;margin-top:12px;font-size:11.5px;color:#a07850}
+.ans .foot button{border:0;background:none;color:#83502e;font-weight:700;cursor:pointer;font-size:12px}
+.ans .wait{color:#a07850}.ans .err{color:#8a0e44}
+@media(max-width:560px){.search small{display:none}}
+.dots:after{content:'…';animation:d 1.2s steps(4) infinite}@keyframes d{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}}
 </style>
 </head>
 <body>
@@ -73,7 +96,9 @@ details.sec>summary .section-label:before{content:'▸ ';}details.sec[open]>summ
   <div class="logo">🐿 Nutworld</div>
   <div class="sub">Interní rozcestník</div>
 </div>
-<div class="search"><span>🔍</span><input id="q" type="search" placeholder="Hledat nástroj… (např. štítek, marže, PPL, šarže)" autocomplete="off"><small id="cnt"></small></div>
+<div class="search"><span>🐿️</span><input id="q" type="search" placeholder="Zeptej se, zadej úkol, nebo hledej nástroj…" autocomplete="off" enterkeyhint="send"><small id="cnt"></small><button class="go" id="go" type="button">Zeptat se</button></div>
+<div class="tips" id="tips">Zkus: <button>Jaká je cena 89?</button><button>Udělej banner na 89</button><button>Chci nabídku pro Alzu s 89</button><button>Štítek 89/200</button><button>Jaké alergeny má 3061?</button></div>
+<div class="ans" id="ans" hidden></div>
 <div class="wrap" id="out"></div>
 <div class="footer">Nutworld s.r.o. · interní nástroje · <a href="/index-puvodni.html" style="color:#b09070">původní rozcestník</a> · <a href="/rozcestnik-navrh.html" style="color:#b09070">návrh úklidu</a></div>
 <script src="stranky-data.js"></script>
@@ -105,6 +130,55 @@ function render(){
 }
 document.getElementById('q').addEventListener('input',render);
 render();
+
+// ── Assistant (nw_asistent.py on the server; GitHub copy = search only) ──
+const ONLINE = location.hostname.startsWith('nastroje');
+let HIST = [], BUSY = false;
+function md(t){
+  const inl = x => esc(x).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/`([^`]+)`/g,'<code>$1</code>');
+  const out = []; let tbl = null, ul = null;
+  const flush = () => { if (tbl) { out.push('<table>' + tbl.map((r,i)=>'<tr>'+r.map(c=>i?`<td>${inl(c)}</td>`:`<th>${inl(c)}</th>`).join('')+'</tr>').join('') + '</table>'); tbl = null; }
+                        if (ul) { out.push('<ul>' + ul.map(x=>`<li>${inl(x)}</li>`).join('') + '</ul>'); ul = null; } };
+  String(t||'').split('\n').forEach(line => {
+    const l = line.trim();
+    if (/^\|.*\|$/.test(l)) { if (/^\|[\s:|-]+\|$/.test(l)) return; if (ul) flush(); (tbl = tbl || []).push(l.slice(1,-1).split('|').map(c=>c.trim())); return; }
+    if (/^[-*•] /.test(l)) { if (tbl) flush(); (ul = ul || []).push(l.slice(2)); return; }
+    flush();
+    if (l) out.push('<p>' + inl(l.replace(/^#+\s*/,'')) + '</p>');
+  });
+  flush(); return out.join('');
+}
+function drawAns(pending, err){
+  const box = document.getElementById('ans'); box.hidden = false;
+  let h = HIST.map(x => `<div class="q">${esc(x.q)}</div><div class="a">${md(x.a)}</div>` +
+    (x.akce && x.akce.length ? `<div class="akce">${x.akce.map(a=>`<a href="${esc(a.url)}">${esc(a.ikona||'➡️')} ${esc(a.nazev)}</a>`).join('')}</div>` : '')).join('');
+  if (pending) h += `<div class="q">${esc(pending)}</div><div class="a wait">🐿️ Hledám v našich datech<span class="dots"></span></div>`;
+  if (err) h += `<div class="a err">${esc(err)}</div>`;
+  h += `<div class="foot"><span>Odpovídá jen z našich dat (ceník, e-shop, štítky, zakázky). Můžeš se doptat.</span><button id="nova" type="button">✕ Nová otázka</button></div>`;
+  box.innerHTML = h;
+  document.getElementById('nova').onclick = () => { HIST = []; box.hidden = true; const q = document.getElementById('q'); q.value=''; render(); q.focus(); };
+}
+async function ask(text){
+  text = (text || document.getElementById('q').value).trim();
+  if (!text || BUSY) return;
+  if (!ONLINE) { drawAns(null, 'Asistent funguje jen na adrese nastroje.nutworld.cz (po přihlášení). Tady můžeš jen hledat nástroj.'); return; }
+  BUSY = true; document.getElementById('go').disabled = true; drawAns(text);
+  try {
+    const r = await fetch('/api/asistent/dotaz', {method:'POST', headers:{'Content-Type':'application/json'}, credentials:'same-origin',
+      body: JSON.stringify({text, historie: HIST.slice(-4).map(x=>({q:x.q, a:x.a}))})});
+    const j = await r.json().catch(()=>({chyba:'Asistent teď neodpověděl.'}));
+    if (!r.ok || j.chyba) throw new Error(j.chyba || ('chyba ' + r.status));
+    HIST.push({q:text, a:j.odpoved, akce:j.akce||[]}); drawAns();
+    const q = document.getElementById('q'); q.value = ''; render();
+  } catch(e) { drawAns(null, e.message); }
+  finally { BUSY = false; document.getElementById('go').disabled = false; }
+}
+document.getElementById('go').onclick = () => ask();
+document.getElementById('q').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); ask(); } });
+document.querySelectorAll('#tips button').forEach(b => b.onclick = () => ask(b.textContent));
+if (!ONLINE) { document.getElementById('go').hidden = true; document.getElementById('tips').hidden = true;
+  document.getElementById('q').placeholder = 'Hledat nástroj… (např. štítek, marže, PPL, šarže)'; document.querySelector('.search small').style.right = '14px';
+  document.querySelector('.search input').style.paddingRight = '16px'; }
 </script>
 <script src="pin-guard.js"></script>
 </body>

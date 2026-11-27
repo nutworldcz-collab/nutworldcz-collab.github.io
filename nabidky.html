@@ -1483,6 +1483,20 @@ function resetPreview() {
 // Načti nabídku z URL hashe (pro editaci) nebo přidej první prázdný řádek
 loadFromHash();
 if (rowCount === 0) addRow();
+// pre-filled from the home page assistant: nabidky.html?firma=Alza&kod=89,3061 (Jan 2026-11-27)
+(function(){
+  const sp = new URLSearchParams(location.search);
+  if (location.hash.length > 1 || !(sp.get('firma') || sp.get('kod'))) return;
+  const f = sp.get('firma');
+  if (f) { const inp = document.getElementById('firma'); inp.value = f; try { firmaAC(inp); } catch(e) {} }
+  (sp.get('kod') || '').split(',').map(k => k.trim()).filter(Boolean).slice(0, 20).forEach((k, i) => {
+    if (i) addRow();
+    const id = rowCount, inp = document.getElementById('kod-' + id);
+    inp.value = k; inp.dispatchEvent(new Event('input'));
+    const hit = [...document.querySelectorAll('#acd-kod-' + id + ' .ac-item')].find(el => el.querySelector('.ac-kod').textContent.trim() === k);
+    if (hit) hit.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+  });
+})();
 
 // ══════════════════════════════════════════════
 //  ARCHIV ZAKÁZEK — localStorage

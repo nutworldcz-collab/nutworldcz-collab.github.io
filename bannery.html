@@ -550,6 +550,11 @@ async function akce(id, a){
   if (t && TEMATA[t]) { const i = document.querySelector(`input[name=tema][value=${t}]`); if (i) i.checked = true;
     if (!$('#nazev').value) { const d = new Date(); $('#nazev').value = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')} ${TEMATA[t]} – `; } } }
 
+// pre-filled from the home page assistant: bannery.html?kod=89&sdeleni=… (Jan 2026-11-27)
+{ const sp = new URLSearchParams(location.search);
+  if (sp.get('sdeleni')) $('#sdeleni').value = sp.get('sdeleni');
+  if (sp.get('kod')) { $('#kod_p').value = sp.get('kod'); setTimeout(() => $('#najdi').click(), 600); } }
+
 // start: archive directly when opened from an e-mail link; detect GitHub copy (no API there)
 fetch(API + '/archiv').then(r => { if (!(r.headers.get('content-type')||'').includes('json')) throw 0; return r.json(); })
   .then(r => { ME = r; DATA = r.bannery; if (location.hash.length > 1) tab('archiv'); })
