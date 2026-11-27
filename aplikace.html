@@ -246,7 +246,8 @@ const NAV_LABEL = {domu: ['🏠', 'Domů'], skenovat: ['📷', 'Skenovat'], vice
 
 function can(soubor) {
   const p = PAGE[soubor];
-  if (p && p.jen) return p.jen.includes(ME.jmeno);            // named people only (e.g. Pohledávky: Jan + Jana, 2026-11-27)
+  if (p && p.jen) return !NAHLED_ROLE && p.jen.includes(ME.jmeno);   // named people only (e.g. Pohledávky: Jan + Jana); never in a role preview
+  if (soubor.startsWith('soukrome/') && ME.role !== 'admin') return false;   // Jan's private folder
   if (p && p.skupina === 'jan' && ME.role !== 'admin') return false;
   return !ALLOWED || ALLOWED.has(soubor);
 }
@@ -301,9 +302,10 @@ function route() {
   CUR = h;
   document.querySelectorAll('.view').forEach(v => v.classList.remove('on'));
   const isPage = h.startsWith('s/');
-  $('#zpet').hidden = !isPage; $('#obnov').hidden = !isPage; $('#ven').hidden = !isPage;
+  $('#obnov').hidden = !isPage; $('#ven').hidden = !isPage;
+  $('#zpet').hidden = h === homeKey() && !(isPage && FRAMES[h.slice(2)] && FRAMES[h.slice(2)]._loads > 1);
   if (h === 'tym' || h.startsWith('tym/')) {
-    $('#zpet').hidden = h === 'tym';
+    $('#zpet').hidden = false;
     if (h === 'tym') { showView('tym'); markNav('tym'); drawTym(); } else { showView('tymk'); markNav('tym'); openTymK(h.slice(4)); }
     return;
   }
@@ -315,6 +317,8 @@ function route() {
     if (!f) {
       f = document.createElement('section'); f.className = 'view frame';
       f.innerHTML = `<iframe title="${esc(file)}" src="/${esc(url)}" allow="camera; microphone; clipboard-write; geolocation"></iframe>`;
+      f._loads = 0;   // clicks inside the page add history -> the ← steps back there first
+      f.querySelector('iframe').addEventListener('load', () => { f._loads++; if (f.classList.contains('on')) $('#zpet').hidden = false; });
       $('#views').appendChild(f); FRAMES[url] = f; f._t = Date.now();
       const keys = Object.keys(FRAMES);
       if (keys.length > 4) { const old = keys.sort((a, b) => FRAMES[a]._t - FRAMES[b]._t)[0]; FRAMES[old].remove(); delete FRAMES[old]; }
@@ -1026,6 +1030,7 @@ async function drawPich() {
   const box = $('#pich');
   if (!ON_SERVER) { box.innerHTML = `<div class="card"><div class="s">Píchačka funguje na nastroje.nutworld.cz.</div></div>`; return; }
   let j; try { j = PICH = PICH_NAHLED ? await (await fetch('/api/nastenky/pichacky?osoba=' + encodeURIComponent(PICH_NAHLED), {credentials: 'same-origin', cache: 'no-store'})).json() : await pApi(); if (j.chyba) throw new Error(j.chyba); } catch (e) { box.innerHTML = `<div class="card"><div class="h">⏱ Píchačka</div><div class="s">${esc(e.message)}</div></div>` + (ME.role === 'admin' ? '<div id="p-adm"></div>' : ''); if (ME.role === 'admin') pichAdmin(); return; }
+  if (!j || !j.dny) { box.innerHTML = `<div class="card"><div class="h">⏱ Píchačka</div><div class="s">Píchačka teď nejde načíst — zkus to za chvíli.</div></div>`; return; }
   const d = j.dny[j.dnes] || {}, inWork = d.from && !d.to, pz = d.pauzy || [], open = pz.length && !pz[pz.length - 1].do ? pz[pz.length - 1] : null;
   const tiers = j.pauzy_narok || [[4, 15], [8, 30], [12, 60]];
   const presence = d.from ? (d.to ? (d.to < d.from ? mins(d.from, '24:00') + mins('00:00', d.to) : mins(d.from, d.to)) : (j.ted < d.from ? mins(d.from, '24:00') + mins('00:00', j.ted) : mins(d.from, j.ted))) : 0;
@@ -1197,7 +1202,16 @@ async function drawSmeny() {
 }
 
 // ── top bar buttons ──
-$('#zpet').onclick = () => CUR.startsWith('tym/') ? go('tym') : history.length > 1 ? history.back() : go('domu');
+// ← one step back: inside an opened page (its own history) first, then the previous screen of the app, else home
+function homeKey() { const k = navItems()[0] || 'domu'; return k.includes('.') ? 's/' + k : k; }
+$('#zpet').onclick = () => {
+  if (CUR.startsWith('s/')) { const f = FRAMES[CUR.slice(2)];
+    if (f && f._loads > 1) { f._loads -= 2; try { f.querySelector('iframe').contentWindow.history.back(); return; } catch (e) {} } }
+  if (CUR.startsWith('tym/')) return go('tym');
+  if (APP_STEPS > 0) { APP_STEPS--; BACKING = true; history.back(); } else go(homeKey());
+};
+let APP_STEPS = 0, BACKING = false;
+addEventListener('hashchange', () => { if (BACKING) { BACKING = false; return; } APP_STEPS = Math.min(APP_STEPS + 1, 50); });
 $('#obnov').onclick = () => { const f = FRAMES[CUR.slice(2)]; if (f) { const i = f.querySelector('iframe'); i.src = i.src; } };
 $('#ven').onclick = () => window.open('/' + CUR.slice(2), '_blank');
 $('#av').onclick = () => go('ucet');
