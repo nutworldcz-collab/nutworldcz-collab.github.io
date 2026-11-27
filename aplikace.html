@@ -226,7 +226,7 @@ const STRANKY = (window.NW_STRANKY || []).filter(p => p.soubor && p.soubor !== '
 const SKUPINY = window.NW_SKUPINY || [];
 const PAGE = Object.fromEntries(STRANKY.map(p => [p.soubor, p]));
 
-let ME = {jmeno: '', role: 'plny', stranky: ['*']};
+let ME = {jmeno: '', role: 'plny', stranky: ['*']}, ROLE_VSE = null, NAHLED_ROLE = null;
 let ALLOWED = null;          // Set of page files the role may open (null = all)
 
 // ── bottom menu per role (preview approved 27. 11. 2026); first allowed candidate wins in each slot ──
@@ -259,7 +259,11 @@ async function whoami() {
   }
   const r = await fetch('/api/asistent/stav', {credentials: 'same-origin', cache: 'no-store'}).catch(() => null);
   if (r && r.status === 401) { location.href = '/_auth/login?next=' + encodeURIComponent('/aplikace.html'); throw 0; }
-  if (r && r.ok) { const j = await r.json(); ME = {jmeno: j.jmeno || '', role: j.role || 'plny', stranky: j.stranky || null}; ls.set('nw_app_me', JSON.stringify(ME)); }
+  if (r && r.ok) { const j = await r.json(); ME = {jmeno: j.jmeno || '', role: j.role || 'plny', stranky: j.stranky || null}; ls.set('nw_app_me', JSON.stringify(ME));
+    ROLE_VSE = j.role_vse || null;
+    // Jan: preview the app as another role (menu, home, pages it may open) — data still come with Jan's rights
+    const nr = sessionStorage.getItem('nw_app_nahled');
+    if (ME.role === 'admin' && nr && ROLE_VSE && ROLE_VSE[nr]) { NAHLED_ROLE = nr; ME = {...ME, role: nr, stranky: ROLE_VSE[nr].stranky}; } }
   else { const c = ls.get('nw_app_me'); if (c) ME = JSON.parse(c); }   // offline -> last known
   if (ME.stranky && !ME.stranky.includes('*')) ALLOWED = new Set(ME.stranky);
   else if (!ME.stranky) ALLOWED = await probe();
@@ -573,11 +577,16 @@ function drawAccount() {
   $('#titul').textContent = 'Můj účet';
   const ROLE = {admin: 'Jednatel — vše + správa', plny: 'Plný přístup', vyroba: 'Výroba / balírna', obchod: 'Obchodník', marketing: 'Marketing'};
   $('#ucet').innerHTML = `<div class="card"><div class="h">${esc(ME.jmeno || 'Nepřihlášen')}</div><div class="s">${esc(ROLE[ME.role] || ME.role)}</div></div>
+    ${ROLE_VSE ? `<h2 class="sek">👁 Náhled aplikace jako…</h2><div class="card"><div class="s" style="margin-bottom:6px">Ukáže menu, Domů a stránky přesně jako u dané role. Data se načítají s tvými právy.</div>
+      ${Object.entries(ROLE_VSE).map(([k, v]) => `<button class="big b-l" data-nr="${esc(k)}" style="margin-top:6px">${esc(v.nazev)}</button>`).join('')}
+      ${NAHLED_ROLE ? `<button class="big b-z" data-nr="">✖ Ukončit náhled</button>` : ''}</div>` : ''}
     <a class="big b-l" href="#/upozorneni">🔔 Upozornění</a>
     <a class="big b-l" href="#/instalace">📲 Instalace</a>
     <button class="big b-l" id="obnovit">⟳ Načíst aplikaci znovu</button>
     ${ON_SERVER ? `<a class="big b-h" href="/_auth/logout">Odhlásit</a>` : ''}`;
   $('#obnovit').onclick = () => location.reload();
+  document.querySelectorAll('[data-nr]').forEach(b => b.onclick = () => { b.dataset.nr ? sessionStorage.setItem('nw_app_nahled', b.dataset.nr) : sessionStorage.removeItem('nw_app_nahled');
+    location.hash = b.dataset.nr === 'brigadnik' ? '#/pich' : '#/domu'; location.reload(); });
 }
 
 // ── phase 2: push notifications (server nw_push.py) ──
@@ -1215,6 +1224,14 @@ $('#kalb').onclick = () => openPage('kalendar.html');
   if (ON_SERVER) { const r = await fetch('/api/tym/stav', {credentials: 'same-origin'}).catch(() => null); TYM_OK = !!(r && r.ok); if (TYM_OK) TYM = await r.json(); }
   const ini = (ME.jmeno || 'NW').split(' ').map(x => x[0]).slice(0, 2).join('').toUpperCase();
   $('#av').textContent = ini;
+  if (NAHLED_ROLE) {
+    if (NAHLED_ROLE === 'brigadnik') TYM_OK = false;
+    const bn = document.createElement('div');
+    bn.style.cssText = 'position:fixed;left:0;right:0;bottom:calc(var(--navh) + var(--sb));z-index:30;background:#2c7fb8;color:#fff;font-weight:700;font-size:13px;padding:7px 12px;display:flex;gap:10px;align-items:center';
+    bn.innerHTML = `<span style="flex:1">👁 Náhled: ${esc((ROLE_VSE[NAHLED_ROLE] || {}).nazev || NAHLED_ROLE)}</span><button style="border:0;border-radius:8px;padding:4px 10px;font-weight:700;cursor:pointer">Ukončit</button>`;
+    bn.querySelector('button').onclick = () => { sessionStorage.removeItem('nw_app_nahled'); location.hash = '#/domu'; location.reload(); };
+    document.body.appendChild(bn);
+  }
   $('#kalb').hidden = !(ON_SERVER && can('kalendar.html'));
   drawNav(); tymBadge(); setInterval(() => { if (!document.hidden && TYM_OK) tymPoll(); }, 15000);
   addEventListener('hashchange', route);
