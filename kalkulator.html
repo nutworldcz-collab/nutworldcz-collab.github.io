@@ -2101,6 +2101,25 @@ async function kalkUlozit() {
 }
 </script>
 <script src="obaly-data.js"></script>
+<script>
+// pre-filled from the home page assistant: kalkulator.html?kod=89&gram=200 or ?kod=3061 (gift) (Jan 2026-11-27)
+(function(){
+  const sp = new URLSearchParams(location.search), k = (sp.get('kod') || '').trim();
+  if (!k) return;
+  const idx = PRODUKTY.findIndex(p => String(p.kod) === k.replace(/\/.*$/, ''));
+  if (idx >= 0 && !DARKY.some(d => d.kod === k)) {
+    switchTab('produkty'); pSelectProduct(idx);
+    const g = sp.get('gram') || (k.includes('/') ? k.split('/')[1].replace(/\D/g, '') : '');
+    const sel = document.getElementById('p-gramaz');
+    if (g && [...sel.options].some(o => o.value === g)) { sel.value = g; pOnGramazChange(); }
+    return;
+  }
+  if (DARKY.some(d => d.kod.toLowerCase().startsWith(k.toLowerCase()))) {
+    switchTab('darky'); dkSearch(k);
+    const i = dkMatches.findIndex(d => d.kod === k); dkPick(i >= 0 ? i : 0);
+  }
+})();
+</script>
 <script src="pin-guard.js"></script>
 </body>
 </html>
