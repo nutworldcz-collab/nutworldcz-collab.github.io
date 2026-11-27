@@ -242,7 +242,7 @@ td.td-del { width: 32px; }
   <!-- Save bar -->
   <div class="save-bar">
     <div class="trello-sel">
-      <label>Trello →</label>
+      <label>Nástěnka →</label>
       <select id="trello-list">
         <option value="6adc67b99c76007b488a1334">PRODUKTY</option>
         <option value="6adc67a9121db6c2dfb7a0b3">ALZA</option>
@@ -251,7 +251,7 @@ td.td-del { width: 32px; }
         <option value="6adc67b6a2212621e104897f">OSTATNÍ FIRMY</option>
       </select>
     </div>
-    <button class="btn-save" id="btn-save" onclick="saveAll()">💾 Uložit (Trello + Archiv)</button>
+    <button class="btn-save" id="btn-save" onclick="saveAll()">💾 Uložit (archiv + nástěnka)</button>
     <a href="/archiv-prijmu.html" style="font-size:12px;color:var(--brown);font-weight:600;text-decoration:none;white-space:nowrap">📂 Archiv →</a>
     <div class="status" id="status"></div>
   </div>
@@ -466,10 +466,10 @@ td.td-del { width: 32px; }
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idList: listId, name: cardName, desc })
       });
-      if (!tr.ok) throw new Error('Trello ' + tr.status);
+      if (!tr.ok) throw new Error('nástěnka ' + tr.status);
       const card = await tr.json();
-      msgs.push(`✓ Trello <a href="${card.url}" target="_blank" style="color:var(--ok);font-weight:700">→ karta</a>`);
-    } catch(e) { msgs.push(`✗ Trello: ${e.message}`); }
+      msgs.push(`✓ Nástěnka <a href="${card.url}" target="_blank" style="color:var(--ok);font-weight:700">→ karta</a>`);
+    } catch(e) { msgs.push(`✗ Nástěnka: ${e.message}`); }
 
     // 2. Archive on the server (nw_prijem.py) — since 2026-11-27 not in the public repo
     if (location.hostname.endsWith('github.io')) {
@@ -601,7 +601,7 @@ td.td-del { width: 32px; }
       </div>
       <label class="potvrzeni"><input type="checkbox" id="n-sedi"> Fyzicky přišlo přesně to, co je na dokladu
         (počty, kg, šarže). Když ne, oprav množství nebo napiš rozdíl do poznámky.</label>
-      <div class="foto-akce"><button class="btn-save" id="btn-ulozit" style="margin-left:0">💾 Uložit příjem (archiv + Trello)</button></div>
+      <div class="foto-akce"><button class="btn-save" id="btn-ulozit" style="margin-left:0">💾 Uložit příjem (archiv + nástěnka)</button></div>
       <div class="status" id="ulozit-status"></div>`;
   }
 
@@ -644,7 +644,7 @@ td.td-del { width: 32px; }
       if (!r.ok) throw new Error(j.chyba || r.status);
       const msgs = [`✓ Archiv uložen (${j.polozek} pol.)`];
       try { msgs.push(await trelloKarta(hlavicka, polozky.filter(p => !p.smazat))); }
-      catch (e) { msgs.push('✗ Trello: ' + esc(e.message)); }
+      catch (e) { msgs.push('✗ Nástěnka: ' + esc(e.message)); }
       if (j.pozor) msgs.push(`⚠️ ${j.pozor}× cena jiná než v K2 — jde do schválení cen`);
       st.className = msgs.some(m => m.startsWith('✗')) ? 'status error' : 'status success';
       st.innerHTML = msgs.join(' &nbsp;|&nbsp; ') + ' &nbsp; <a href="/archiv-prijmu.html" style="color:var(--ok);font-weight:700">📂 Archiv →</a>';
@@ -665,9 +665,9 @@ td.td-del { width: 32px; }
     const r = await fetch(`https://api.trello.com/1/cards?key=${TK}&token=${TT}`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ idList: $('trello-list').value, name, desc }) });
-    if (!r.ok) throw new Error('Trello ' + r.status);
+    if (!r.ok) throw new Error('nástěnka ' + r.status);
     const c = await r.json();
-    return `✓ Trello <a href="${esc(c.url)}" target="_blank" style="color:var(--ok);font-weight:700">→ karta</a>`;
+    return `✓ Nástěnka <a href="${esc(c.url)}" target="_blank" style="color:var(--ok);font-weight:700">→ karta</a>`;
   }
 })();
 </script>
