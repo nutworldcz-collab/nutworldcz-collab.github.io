@@ -505,6 +505,7 @@ td.td-del { width: 32px; }
   const fotky = [];          // {id, url}
   let navrh = null;
   const ZDROJ = { tisk: 'z dokladu', rukou: 'psáno rukou', stitek: 'ze štítku', hos: 'HOS: šarže + 9 měs.', chybi: '' };
+  const SEKCE = { balirna: '🏭 Balírna', darkovna: '🎁 Dárkovna', expedice: '📦 Expedice' };
 
   // our product codes for the "náš kód" field (shared produkty-data.js)
   const dl = document.createElement('datalist');
@@ -565,6 +566,7 @@ td.td-del { width: 32px; }
       (n.poznamka_cteni ? `<div class="upozorneni cteni">ℹ️ ${esc(n.poznamka_cteni)}</div>` : '');
     const radky = n.polozky.map(p => {
       const nej = f => (p.nejiste || []).includes(f) ? ' nejiste' : '';
+      if (p.druh === 'obal') return radekObalu(p, nej, ceny);
       const cena = !ceny ? '' : `<td class="cena${p.stav === 'POZOR' ? ' pozor' : ''}">${p.cena_kg ?? '—'} Kč` +
         (p.cenik_kg ? `<br><span style="color:#a07850">K2 ${Math.round(p.cenik_kg * 100) / 100}</span>` : '') +
         (p.rozdil_pct != null ? `<br>${p.rozdil_pct > 0 ? '+' : ''}${p.rozdil_pct} %` : '') + '</td>';
@@ -580,6 +582,7 @@ td.td-del { width: 32px; }
           <label class="bez-dmt"><input type="checkbox" data-f="bez_dmt"> bez DMT (obal)</label></td>
         <td><input data-f="mnozstvi" type="number" step="0.01" min="0" value="${esc(p.mnozstvi)}" style="width:80px" class="${nej('mnozstvi')}">
           <span class="zdroj">${esc(p.mj)}</span></td>
+        <td class="zdroj">surovina</td>
         <td class="td-ok"><select data-f="stav">${['OK', 'NOK', '?', 'ATESTY'].map(s =>
           `<option${(p.stav === s || (s === 'OK' && !['NOK', '?', 'ATESTY'].includes(p.stav))) ? ' selected' : ''}>${s}</option>`).join('')}</select></td>
         ${cena}
@@ -593,8 +596,8 @@ td.td-del { width: 32px; }
         <div class="field field--key"><label>Datum</label><input id="n-datum" type="date" value="${esc(n.datum)}"></div>
       </div>
       ${upoz}
-      <div class="tbl-wrap"><table><thead><tr><th>#</th><th>Na dokladu</th><th>Náš kód</th><th>Šarže</th><th>DMT</th>
-        <th>Množství</th><th>Stav</th>${ceny ? '<th>Cena / kg</th>' : ''}<th></th></tr></thead><tbody>${radky}</tbody></table></div>
+      <div class="tbl-wrap"><table><thead><tr><th>#</th><th>Na dokladu</th><th>Náš / K2 kód</th><th>Šarže</th><th>DMT</th>
+        <th>Množství</th><th>Sekce</th><th>Stav</th>${ceny ? '<th>Cena / kg</th>' : ''}<th></th></tr></thead><tbody>${radky}</tbody></table></div>
       <div class="notes-grid" style="margin-top:12px">
         <div class="field"><label>Poznámka (rozdíly, poškození)</label><textarea id="n-pozn"></textarea></div>
         <div class="field"><label>Místo uložení</label><textarea id="n-ulozeni"></textarea></div>
@@ -603,6 +606,27 @@ td.td-del { width: 32px; }
         (počty, kg, šarže). Když ne, oprav množství nebo napiš rozdíl do poznámky.</label>
       <div class="foto-akce"><button class="btn-save" id="btn-ulozit" style="margin-left:0">💾 Uložit příjem (archiv + nástěnka)</button></div>
       <div class="status" id="ulozit-status"></div>`;
+  }
+
+  function radekObalu(p, nej, ceny) {
+    const cena = !ceny ? '' : `<td class="cena${p.stav === 'POZOR' ? ' pozor' : ''}">${p.cena_kg ?? '—'} Kč/ks` +
+      (p.cenik_kg ? `<br><span style="color:#a07850">K2 ${Math.round(p.cenik_kg * 100) / 100}</span>` : '') +
+      (p.rozdil_pct != null ? `<br>${p.rozdil_pct > 0 ? '+' : ''}${p.rozdil_pct} %` : '') + '</td>';
+    return `<tr data-rid="${p.rid}" data-druh="obal">
+      <td class="td-num">${p.rid}</td>
+      <td><div class="nazev-dod${nej('nazev')}">${esc(p.nazev)}</div><div class="zdroj">📦 obalový materiál${p.kod ? ' · kód dod.: ' + esc(p.kod) : ''}</div></td>
+      <td><input data-f="k2_kod" value="${esc(p.k2_kod)}" placeholder="K2 kód" style="width:90px" class="${p.k2_kod ? '' : 'nejiste'}">
+        <div class="nw-nazev">${p.k2_kod ? esc(p.k2_nazev) : (p.kandidati?.length ? 'Možná: ' + p.kandidati.map(k => esc(k.kod + ' ' + k.nazev)).join(' · ') : 'K2 kód nenalezen — doplň, nebo nech prázdné')}</div>
+        ${p.firma ? `<div class="zdroj" style="color:#da1668;font-weight:700">firemní obal ${esc(p.firma.toUpperCase())} → info obchodníkovi</div>` : ''}</td>
+      <td><input data-f="sarze" value="${esc(p.sarze)}" placeholder="—"></td>
+      <td><input data-f="dmt" type="date" value="${esc(p.dmt)}"><input type="checkbox" data-f="bez_dmt" checked hidden></td>
+      <td><input data-f="mnozstvi" type="number" step="1" min="0" value="${esc(p.mnozstvi)}" style="width:90px" class="${nej('mnozstvi')}">
+        <span class="zdroj">${esc(p.mj || 'ks')}</span><input type="hidden" data-f="mj" value="${esc(p.mj || 'ks')}"></td>
+      <td><select data-f="sekce">${Object.entries(SEKCE).map(([k, v]) => `<option value="${k}"${p.sekce === k ? ' selected' : ''}>${v}</option>`).join('')}</select></td>
+      <td class="td-ok"><select data-f="stav">${['OK', 'NOK', '?'].map(s => `<option${(p.stav === s || (s === 'OK' && !['NOK', '?'].includes(p.stav))) ? ' selected' : ''}>${s}</option>`).join('')}</select></td>
+      ${cena}
+      <td class="td-del"><button class="del-btn" data-smazat title="Nepřijímat tuto položku">×</button></td>
+    </tr>`;
   }
 
   // live updates in the draft table
@@ -631,7 +655,8 @@ td.td-del { width: 32px; }
     const polozky = [...$('navrh').querySelectorAll('tbody tr')].map(tr => {
       const v = f => tr.querySelector(`[data-f="${f}"]`);
       return { rid: +tr.dataset.rid, smazat: !!tr.dataset.smazat, nazev: tr.querySelector('.nazev-dod').textContent,
-        nw_kod: v('nw_kod').value.trim(), sarze: v('sarze').value.trim(), dmt: v('dmt').value,
+        druh: tr.dataset.druh || 'surovina', nw_kod: v('nw_kod')?.value.trim() || '', k2_kod: v('k2_kod')?.value.trim() || '',
+        sekce: v('sekce')?.value || '', mj: v('mj')?.value || '', sarze: v('sarze').value.trim(), dmt: v('dmt').value,
         bez_dmt: v('bez_dmt').checked, mnozstvi: parseFloat(v('mnozstvi').value) || 0, stav: v('stav').value };
     });
     const hlavicka = { dodavatel: $('n-dod').value.trim(), cislo: $('n-cislo').value.trim(), datum: $('n-datum').value,
@@ -643,8 +668,18 @@ td.td-del { width: 32px; }
       const j = await r.json();
       if (!r.ok) throw new Error(j.chyba || r.status);
       const msgs = [`✓ Archiv uložen (${j.polozek} pol.)`];
-      try { msgs.push(await trelloKarta(hlavicka, polozky.filter(p => !p.smazat))); }
-      catch (e) { msgs.push('✗ Nástěnka: ' + esc(e.message)); }
+      const suroviny = polozky.filter(p => !p.smazat && p.druh !== 'obal');
+      if (suroviny.length) {
+        try { msgs.push(await trelloKarta(hlavicka, suroviny)); }
+        catch (e) { msgs.push('✗ Nástěnka: ' + esc(e.message)); }
+      }
+      const o = j.oznameni || {};
+      if (j.obalu) {
+        msgs.push(o.karta ? `✓ Obaly: <a href="${esc(o.karta)}" target="_blank" style="color:var(--ok);font-weight:700">karta OBALOVÝ MATERIÁL</a>` : '✓ Obaly uloženy');
+        if ((o.sekce || []).length) msgs.push('✓ E-mail: ' + o.sekce.map(esc).join(', '));
+        if ((o.obchodnici || []).length) msgs.push('✓ Obchodník: ' + o.obchodnici.map(esc).join(', '));
+        (o.chyby || []).forEach(c => msgs.push('✗ ' + esc(c)));
+      }
       if (j.pozor) msgs.push(`⚠️ ${j.pozor}× cena jiná než v K2 — jde do schválení cen`);
       st.className = msgs.some(m => m.startsWith('✗')) ? 'status error' : 'status success';
       st.innerHTML = msgs.join(' &nbsp;|&nbsp; ') + ' &nbsp; <a href="/archiv-prijmu.html" style="color:var(--ok);font-weight:700">📂 Archiv →</a>';
