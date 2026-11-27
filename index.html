@@ -210,8 +210,9 @@ async function pozList(){
     const j = await pozApi('pozadavky'); POZ_ADMIN = j.admin;
     const rows = j.pozadavky;
     box.innerHTML = `<b style="font-size:12px;color:#83502e;letter-spacing:1px;text-transform:uppercase">${POZ_ADMIN ? 'Všechny požadavky' : 'Moje požadavky'}</b>` +
-      (rows.length ? rows.map(r => `<div class="it"><div class="meta">${esc(r.cas.replace('T',' '))}${POZ_ADMIN ? ' · ' + esc(r.kdo) : ''}${r.stranka ? ' · ' + esc(r.stranka) : ''}<span class="st ${esc(r.stav)}">${POZ_ST[r.stav]||esc(r.stav)}</span></div>` +
-        `<div>${esc(r.text).replace(/\n/g,'<br>')}</div>${r.odpoved ? `<div class="odp">Honza: ${esc(r.odpoved)}</div>` : ''}` +
+      (rows.length ? rows.map(r => `<div class="it"><div class="meta">${esc(r.cas.replace('T',' '))}${POZ_ADMIN ? ' · ' + esc(r.kdo) : ''}${r.stranka ? ' · ' + esc(r.stranka) : ''}<span class="st ${esc(r.stav)}">${r.auto && r.stav==='hotovo' ? 'vyřešeno 🤖' : (POZ_ST[r.stav]||esc(r.stav))}</span></div>` +
+        `<div>${esc(r.text).replace(/\n/g,'<br>')}</div>${r.odpoved ? `<div class="odp">${r.auto ? '🤖 Asistent' : 'Honza'}: ${esc(r.odpoved)}${(r.akce||[]).map(a => ` <a href="${esc(a.url)}">${esc(a.nazev)} →</a>`).join('')}</div>` : ''}` +
+        (POZ_ADMIN && r.rozbor && !r.auto ? `<div class="odp" style="background:#f7f4f0;color:#5c381f">🤖 Rozbor: ${esc(r.rozbor.text||'')}${(r.rozbor.kroky||[]).length ? '<ol style="margin:4px 0 0 18px;padding:0">' + r.rozbor.kroky.map(k => `<li>${esc(k)}</li>`).join('') + '</ol>' : ''}${r.rozbor.chybi_info ? `<div>❓ Doptat se: ${esc(r.rozbor.chybi_info)}</div>` : ''}</div>` : '') +
         (POZ_ADMIN ? `<div class="adm"><input placeholder="Odpověď (uvidí ji autor)" value="${esc(r.odpoved||'')}" id="odp-${r.id}"><button onclick="pozSet('${r.id}','hotovo')">✓ Hotovo</button><button onclick="pozSet('${r.id}','zamitnuto')">✕ Nebude</button><button onclick="pozSet('${r.id}','novy')">↩ Otevřít</button></div>` : '') + '</div>').join('')
         : '<div class="hint" style="margin-top:6px">Zatím nic.</div>');
   } catch(e) { box.innerHTML = `<div class="msg" style="color:#8a0e44">${esc(e.message)}</div>`; }
@@ -224,7 +225,7 @@ function pozOpen(){
   if (!ONLINE) { box.hidden = false; box.innerHTML = '<div class="hint">Požadavky jdou zapsat jen na adrese nastroje.nutworld.cz (po přihlášení).</div>'; return; }
   box.hidden = false;
   box.innerHTML = `<h3>📝 Co je potřeba udělat?</h3>
-    <div class="hint">Napiš, co chybí nebo nejde — třeba „v generátoru dárků chybí dárek Vánoční kornout 500 g“, „nefunguje…“, „potřeboval bych…“. Honza dostane e-mail a stav uvidíš tady.</div>
+    <div class="hint">Napiš, co chybí nebo nejde — třeba „v generátoru dárků chybí dárek Vánoční kornout 500 g“, „nefunguje…“, „potřeboval bych…“. Asistent se nejdřív sám podívá do dat — co najde, odpoví hned. Ostatní dostane Honza e-mailem a stav uvidíš tady.</div>
     <select id="poz-str"><option value="">Kde to je? (nepovinné)</option>${NW_STRANKY.filter(p=>p.skupina!=='jan').map(p=>`<option value="${esc(p.soubor)}">${esc(p.ikona+' '+p.nazev)}</option>`).join('')}</select>
     <textarea id="poz-text" maxlength="1500" placeholder="Co je potřeba udělat…"></textarea>
     <div class="row"><button class="send" id="poz-send" type="button">Odeslat Honzovi</button><button class="send" style="background:#d4c0a8;color:#5c381f" type="button" onclick="document.getElementById('poz').hidden=true">Zavřít</button><span class="msg" id="poz-msg"></span></div>
@@ -234,7 +235,7 @@ function pozOpen(){
     if (!t) { m.textContent = 'Napiš prosím, co je potřeba.'; return; }
     document.getElementById('poz-send').disabled = true;
     try { await pozApi('pozadavek', {text: t, stranka: document.getElementById('poz-str').value});
-      document.getElementById('poz-text').value = ''; m.style.color = '#2d5a1b'; m.textContent = '✓ Odesláno, díky!'; pozList(); }
+      document.getElementById('poz-text').value = ''; m.style.color = '#2d5a1b'; m.textContent = '✓ Odesláno, díky! Asistent se na to dívá…'; pozList(); setTimeout(pozList, 25000); }
     catch(e) { m.style.color = '#8a0e44'; m.textContent = e.message; }
     finally { document.getElementById('poz-send').disabled = false; }
   };
