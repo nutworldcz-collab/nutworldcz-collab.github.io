@@ -178,6 +178,7 @@ textarea{resize:vertical;min-height:88px;line-height:1.6}
 const LIST_TODO = '6af2d9f4001ae0f020370a8e';
 const TK = 'dummy'; // stripped by trello-proxy.js
 const TT = 'dummy';
+const isServer = window.location.hostname !== 'nutworldcz-collab.github.io';
 
 // Předvyplnění kódů z URL ?codes= (z archivu "Objednat znovu")
 (function(){
@@ -285,7 +286,6 @@ document.getElementById('btnSubmit').addEventListener('click', async () => {
       }
 
       // Create Trello card — on the server use /api/trello-card; on GitHub Pages use trello-proxy.js
-      const isServer = window.location.hostname !== 'nutworldcz-collab.github.io';
       let r;
       if (isServer) {
         r = await fetch('/api/trello-card', {
