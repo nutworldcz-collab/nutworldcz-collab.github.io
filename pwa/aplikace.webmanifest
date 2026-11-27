@@ -1,0 +1,25 @@
+{
+  "id": "/aplikace.html",
+  "name": "Nutworld – nástroje",
+  "short_name": "Nutworld",
+  "description": "Aplikace pro tým Nutworld: plán dne, zakázky, nabídky, chat a všechny nástroje na jednom místě.",
+  "lang": "cs",
+  "start_url": "/aplikace.html?zdroj=ikona",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "orientation": "any",
+  "background_color": "#faf6f1",
+  "theme_color": "#5c381f",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {"src": "/pwa/ikona-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "/pwa/ikona-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "/pwa/ikona-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ],
+  "shortcuts": [
+    {"name": "Plán dne", "url": "/aplikace.html#/stranka/vyroba.html", "icons": [{"src": "/pwa/ikona-192.png", "sizes": "192x192"}]},
+    {"name": "Nabídky", "url": "/aplikace.html#/stranka/nabidky.html", "icons": [{"src": "/pwa/ikona-192.png", "sizes": "192x192"}]},
+    {"name": "Příjem surovin", "url": "/aplikace.html#/stranka/prijem-surovin.html", "icons": [{"src": "/pwa/ikona-192.png", "sizes": "192x192"}]}
+  ]
+}

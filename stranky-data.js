@@ -539,6 +539,16 @@ window.NW_STRANKY = [
   "barva": "amber"
  },
  {
+  "soubor": "aplikace.html",
+  "skupina": "lide",
+  "ikona": "📲",
+  "nazev": "Aplikace Nutworld",
+  "popis": "Nástroje jako aplikace na telefonu, tabletu i počítači — ikona NutWorldky na ploše, menu podle role",
+  "hlavni": 1,
+  "stitek": "nové",
+  "barva": "brown"
+ },
+ {
   "soubor": "nastenky.html",
   "skupina": "lide",
   "ikona": "🗂",
