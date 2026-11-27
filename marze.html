@@ -86,7 +86,7 @@ tr:hover td{background:#faf4ee}
 <div class="topbar">
   <span class="topbar-title">🐿 Nutworld · Skutečné marže</span>
   <a class="topbar-back" href="/">← Zpět na rozcestník</a>
-  <span class="topbar-sub">Ceny z e-shopů a nákupní ceny k: 26.11.2026 20:43</span>
+  <span class="topbar-sub">Ceny z e-shopů a nákupní ceny k: 27.11.2026 07:32</span>
 </div>
 <div class="nv" id="navrh"></div>
 <div class="tabs">
@@ -353,6 +353,8 @@ function init() {
     document.getElementById('d-obal').insertAdjacentHTML('beforeend', `<option>${esc(o)}</option>`));
   [...new Set(SACKY.map(r => r.gram))].sort((a, b) => a - b).forEach(g =>
     document.getElementById('s-gram').insertAdjacentHTML('beforeend', `<option value="${g}">${g >= 1000 ? g / 1000 + ' kg' : g + ' g'}</option>`));
+  { const q = new URLSearchParams(location.search).get('q');   // from the home page assistant: marze.html?q=89
+    if (q) { document.getElementById('d-search').value = q; document.getElementById('s-search').value = q; } }
   render('darky'); render('sacky'); renderNC(); renderNavrh();
   loadReq().then(() => { if (Object.values(REQ).some(q => q.data.stav === 'čeká')) poll(); });
 }
