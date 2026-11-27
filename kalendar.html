@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>Nutworld — Kalendář</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet"/>
+<script>
+  // Our calendar needs the login (team events, private events) -> server only. On GitHub Pages keep the old
+  // order-deadline calendar (Trello) so nothing breaks there (Jan 2026-11-27).
+  if (/github\.io$/.test(location.hostname)) location.replace('kalendar-terminy.html' + location.search);
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--br:#83502e;--bd:#5c381f;--kraft:#f1e6da;--bg:#e8ddd4;--line:#d4c0a8;--muted:#8a6a4a;--pink:#da1668;--amber:#f7ab31;--leaf:#6fa044;--red:#d64545;--card:#fff}
+html,body{height:100%}
+body{font-family:'Source Sans 3',Arial,sans-serif;background:var(--bg);color:#2a1a0e;font-size:14px;display:flex;flex-direction:column}
+button,input,textarea,select{font:inherit;color:inherit}
+a{color:var(--br)}
+.top{background:linear-gradient(135deg,#5c381f 0%,#83502e 55%,#a0622a 100%);color:#fff;padding:10px max(14px,env(safe-area-inset-right)) 10px max(14px,env(safe-area-inset-left));display:flex;gap:8px;align-items:center;flex-wrap:wrap;flex-shrink:0}
+.top .logo{font-family:'Exo 2',sans-serif;font-weight:800;font-size:18px;text-decoration:none;color:#fff;white-space:nowrap}
+.top h1{font-family:'Exo 2',sans-serif;font-weight:700;font-size:17px;min-width:120px}
+.sp{flex:1}
+.btn{border:0;border-radius:10px;padding:7px 12px;cursor:pointer;font-weight:700;background:var(--kraft);color:var(--bd);white-space:nowrap}
+.btn.pri{background:var(--br);color:#fff}.btn.acc{background:var(--pink);color:#fff}.btn.ghost{background:rgba(255,255,255,.16);color:#fff}
+.btn.sm{padding:4px 9px;font-size:12px}
+.seg{display:inline-flex;background:rgba(255,255,255,.16);border-radius:10px;padding:3px;gap:3px}
+.seg button{border:0;border-radius:8px;padding:5px 10px;cursor:pointer;font-weight:700;background:transparent;color:#fff}
+.seg button.on{background:#fff;color:var(--bd)}
+.bar{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:8px max(14px,env(safe-area-inset-right)) 8px max(14px,env(safe-area-inset-left));background:#f6efe7;border-bottom:1px solid var(--line);flex-shrink:0}
+.fchip{border:2px solid transparent;border-radius:20px;padding:3px 10px;font-size:12.5px;font-weight:700;cursor:pointer;background:#fff;color:var(--bd)}
+.fchip.off{opacity:.45;background:transparent;border-color:var(--line)}
+.main{flex:1;min-height:0;overflow:auto;padding:12px max(14px,env(safe-area-inset-right)) 30px max(14px,env(safe-area-inset-left))}
+.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;max-width:1300px;margin:0 auto}
+.dh{font-family:'Exo 2',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-align:center;padding:2px 0}
+.day{background:var(--card);border-radius:10px;min-height:104px;padding:5px 5px 6px;cursor:pointer;display:flex;flex-direction:column;gap:3px;min-width:0;border:2px solid transparent}
+.day:hover{border-color:var(--line)}
+.day.out{opacity:.45}.day.we{background:#fbf7f2}.day.today{border-color:var(--br)}
+.day .n{font-weight:700;font-size:12.5px;color:var(--bd);display:flex;justify-content:space-between;gap:4px}
+.day .hol{font-size:10.5px;color:var(--pink);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.it{font-size:12px;line-height:1.25;border-radius:6px;padding:2px 6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#fff;cursor:pointer}
+.it.card{background:#fff;color:var(--bd);border:1.5px solid var(--line)}
+.it.card.zak{border-color:var(--amber);background:#fff8e8}
+.it.card.done{text-decoration:line-through;opacity:.55}
+.it.card.late{border-color:var(--red);color:var(--red)}
+.more{font-size:11px;color:var(--muted);font-weight:700}
+.agenda{max-width:820px;margin:0 auto}
+.ag-d{font-family:'Exo 2',sans-serif;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--br);margin:16px 0 6px;display:flex;gap:8px;align-items:baseline}
+.ag-d.today{color:var(--pink)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ai{background:var(--card);border-radius:10px;padding:8px 12px;margin-bottom:6px;cursor:pointer;display:flex;gap:10px;align-items:flex-start;box-shadow:0 1px 3px rgba(92,56,31,.1);border-left:5px solid var(--line)}
+.ai:hover{box-shadow:0 0 0 2px var(--br)}
+.ai .t{font-size:12px;color:var(--muted);min-width:48px;font-weight:700}
+.ai small{color:var(--muted)}
+.ov{position:fixed;inset:0;background:rgba(40,25,15,.55);display:flex;align-items:flex-start;justify-content:center;padding:30px 12px;overflow:auto;z-index:50}
+.md{background:#fff;border-radius:16px;width:560px;max-width:100%;padding:20px 22px 22px;position:relative;box-shadow:0 10px 40px rgba(0,0,0,.25)}
+.md h3{font-family:'Exo 2',sans-serif;font-size:19px;color:var(--bd);padding-right:36px;margin-bottom:10px;word-wrap:break-word}
+.md .x{position:absolute;top:10px;right:12px;border:0;background:var(--kraft);border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:16px}
+.fl{display:block;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin:10px 0 4px;font-family:'Exo 2',sans-serif}
+.inp{border:2px solid var(--line);border-radius:9px;padding:7px 9px;outline:none;background:#fff;width:100%}
+.inp:focus{border-color:var(--br)}
+.pchip{display:inline-flex;align-items:center;border-radius:16px;padding:3px 10px;font-size:12.5px;font-weight:700;cursor:pointer;margin:0 4px 5px 0;background:#eee}
+.pchip.on{background:var(--br);color:#fff}
+.meta{font-size:13px;color:var(--muted);line-height:1.6}
+.desc{background:#faf6f1;border-radius:10px;padding:9px 12px;margin-top:8px;white-space:pre-wrap;word-wrap:break-word;line-height:1.5}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--bd);color:#fff;padding:9px 16px;border-radius:10px;z-index:99;font-weight:600}
+.empty{text-align:center;color:var(--muted);padding:40px 16px}
+@media (max-width:700px){.day{min-height:64px}.day .it{display:none}.day .dots{display:flex}.top h1{order:-1;flex-basis:100%}}
+.dots{display:none;gap:3px;flex-wrap:wrap}.dots i{width:7px;height:7px;border-radius:50%;display:block}
+</style>
+</head>
+<body>
+<div class="top">
+  <a class="logo" href="/index.html" title="Rozcestník">🐿</a>
+  <h1 id="title">Kalendář</h1>
+  <button class="btn ghost sm" onclick="shift(-1)" title="Předchozí">‹</button>
+  <button class="btn ghost sm" onclick="goToday()">Dnes</button>
+  <button class="btn ghost sm" onclick="shift(1)" title="Další">›</button>
+  <span class="sp"></span>
+  <span class="seg"><button id="v-mesic" onclick="setView('mesic')">Měsíc</button><button id="v-seznam" onclick="setView('seznam')">Seznam</button></span>
+  <button class="btn acc" onclick="editEvent()">+ Událost</button>
+</div>
+<div class="bar" id="filters"></div>
+<div class="main" id="main"><div class="empty">Načítám…</div></div>
+<div id="modal"></div>
+
+<script>
+const API = '/api/nastenky';
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $ = id => document.getElementById(id);
+const pad = n => String(n).padStart(2, '0');
+const ymd = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const MES = ['leden','únor','březen','duben','květen','červen','červenec','srpen','září','říjen','listopad','prosinec'];
+const MES2 = ['ledna','února','března','dubna','května','června','července','srpna','září','října','listopadu','prosince'];
+const DNY = ['neděle','pondělí','úterý','středa','čtvrtek','pátek','sobota'];
+const BARVY = {schuzka: '#2c7fb8', zakaznik: '#da1668', vyroba: '#6fa044', expedice: '#a0622a', dovolena: '#8a6a4a', skoleni: '#7b4fa0', ostatni: '#5c381f'};
+const PRIP = [[0, 'Bez připomínky'], [15, '15 minut předem'], [60, '1 hodinu předem'], [1440, '1 den předem']];
+let VIEW = innerWidth < 700 ? 'seznam' : 'mesic', CUR = new Date(), DATA = null, KAT = {}, LIDE = [], JA = '';
+const F = (() => { try { return Object.assign({udalosti: true, zakazky: true, karty: true, svatky: true, moje: false}, JSON.parse(localStorage.getItem('nw_kal_f') || '{}')); } catch (e) { return {udalosti: true, zakazky: true, karty: true, svatky: true, moje: false}; } })();
+const saveF = () => { try { localStorage.setItem('nw_kal_f', JSON.stringify(F)); } catch (e) {} };
+
+async function api(path, opt = {}) {
+  const r = await fetch(API + path, {credentials: 'same-origin', ...opt, headers: {'Content-Type': 'application/json', ...(opt.headers || {})}});
+  if (r.status === 401 || r.redirected) { location.href = '/_auth/login?next=' + encodeURIComponent(location.pathname + location.hash); throw new Error('login'); }
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.chyba || ('Chyba ' + r.status));
+  return j;
+}
+const post = (p, d) => api(p, {method: 'POST', body: JSON.stringify(d)});
+function toast(t) { const d = document.createElement('div'); d.className = 'toast'; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 2600); }
+
+/* Czech public holidays (fixed + Easter Friday/Monday) */
+function svatky(y) {
+  const a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3),
+    h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451),
+    mo = Math.floor((h + l - 7 * m + 114) / 31), da = ((h + l - 7 * m + 114) % 31) + 1, ea = new Date(y, mo - 1, da);
+  const add = n => ymd(new Date(ea.getFullYear(), ea.getMonth(), ea.getDate() + n));
+  return {[`${y}-01-01`]: 'Nový rok · Den obnovy státu', [add(-2)]: 'Velký pátek', [add(1)]: 'Velikonoční pondělí', [`${y}-05-01`]: 'Svátek práce',
+    [`${y}-05-08`]: 'Den vítězství', [`${y}-07-05`]: 'Cyril a Metoděj', [`${y}-07-06`]: 'Jan Hus', [`${y}-09-28`]: 'Den české státnosti',
+    [`${y}-10-28`]: 'Vznik Československa', [`${y}-11-17`]: 'Den boje za svobodu', [`${y}-12-24`]: 'Štědrý den', [`${y}-12-25`]: '1. svátek vánoční', [`${y}-12-26`]: '2. svátek vánoční'};
+}
+
+function range() {
+  if (VIEW === 'mesic') {
+    const f = new Date(CUR.getFullYear(), CUR.getMonth(), 1), s = new Date(f); s.setDate(1 - ((f.getDay() + 6) % 7));
+    const e = new Date(s); e.setDate(s.getDate() + 41); return [s, e];
+  }
+  const s = new Date(CUR.getFullYear(), CUR.getMonth(), CUR.getDate()), e = new Date(s); e.setDate(s.getDate() + 59); return [s, e];
+}
+async function load() {
+  const [s, e] = range();
+  try { DATA = await api(`/kalendar?od=${ymd(s)}&do=${ymd(e)}${F.moje ? '&moje=1' : ''}`); }
+  catch (er) { if (er.message !== 'login') $('main').innerHTML = `<div class="empty">${esc(er.message)}</div>`; return; }
+  KAT = DATA.kategorie; LIDE = DATA.lide; JA = DATA.ja;
+  render();
+}
+function items(day) {
+  const out = [];
+  if (F.udalosti) for (const u of DATA.udalosti) { const a = u.od.slice(0, 10), b = (u.do || u.od).slice(0, 10); if (day >= a && day <= b) out.push({u}); }
+  for (const k of DATA.karty) if (k.termin.slice(0, 10) === day && (k.zakazka ? F.zakazky : F.karty)) out.push({k});
+  return out.sort((x, y) => (x.u ? (x.u.cely_den ? '0' : x.u.od.slice(11)) : '9') .localeCompare(y.u ? (y.u.cely_den ? '0' : y.u.od.slice(11)) : '9'));
+}
+function itHtml(x) {
+  if (x.u) return `<div class="it" style="background:${BARVY[x.u.kategorie] || BARVY.ostatni}" onclick="event.stopPropagation();showEvent('${x.u.id}')" title="${esc(x.u.nazev)}">${x.u.cely_den ? '' : esc(x.u.od.slice(11, 16)) + ' '}${esc(x.u.nazev)}</div>`;
+  const k = x.k, late = !k.hotovo && new Date(k.termin) < new Date();
+  return `<div class="it card ${k.zakazka ? 'zak' : ''} ${k.hotovo ? 'done' : late ? 'late' : ''}" onclick="event.stopPropagation();openCard('${k.board_id}','${k.id}')" title="${esc(k.nazev + ' · ' + k.nastenka + ' › ' + k.sloupec)}">${k.zakazka ? '📦' : '🗂'} ${esc(k.nazev)}</div>`;
+}
+function render() {
+  $('v-mesic').classList.toggle('on', VIEW === 'mesic'); $('v-seznam').classList.toggle('on', VIEW === 'seznam');
+  const chip = (k, n) => `<span class="fchip ${F[k] ? '' : 'off'}" onclick="F.${k}=!F.${k};saveF();${k === 'moje' ? 'load()' : 'render()'}">${n}</span>`;
+  $('filters').innerHTML = chip('udalosti', '📌 Události') + chip('zakazky', '📦 Termíny zakázek') + chip('karty', '🗂 Ostatní karty') + chip('svatky', '🇨🇿 Svátky') +
+    '<span class="sp"></span>' + chip('moje', '👤 Jen moje');
+  const [s, e] = range(), today = ymd(new Date()), hol = {...svatky(s.getFullYear()), ...svatky(e.getFullYear())};
+  if (VIEW === 'mesic') {
+    $('title').textContent = MES[CUR.getMonth()][0].toUpperCase() + MES[CUR.getMonth()].slice(1) + ' ' + CUR.getFullYear();
+    let h = ['Po', 'Út', 'St', 'Čt', 'Pá', 'So', 'Ne'].map(d => `<div class="dh">${d}</div>`).join('');
+    for (let d = new Date(s); d <= e; d.setDate(d.getDate() + 1)) {
+      const day = ymd(d), its = items(day), we = d.getDay() === 0 || d.getDay() === 6;
+      h += `<div class="day ${d.getMonth() !== CUR.getMonth() ? 'out' : ''} ${we ? 'we' : ''} ${day === today ? 'today' : ''}" onclick="dayClick('${day}')">
+        <div class="n"><span>${d.getDate()}</span></div>${F.svatky && hol[day] ? `<div class="hol">${esc(hol[day])}</div>` : ''}
+        ${its.slice(0, 3).map(itHtml).join('')}${its.length > 3 ? `<div class="more">+${its.length - 3} další</div>` : ''}
+        <div class="dots">${its.slice(0, 8).map(x => `<i style="background:${x.u ? BARVY[x.u.kategorie] || '#5c381f' : x.k.zakazka ? 'var(--amber)' : 'var(--line)'}"></i>`).join('')}</div></div>`;
+    }
+    $('main').innerHTML = `<div class="grid">${h}</div>`;
+  } else {
+    $('title').textContent = `Od ${CUR.getDate()}. ${MES2[CUR.getMonth()]}`;
+    let h = '', any = false;
+    for (let d = new Date(s); d <= e; d.setDate(d.getDate() + 1)) {
+      const day = ymd(d), its = items(day), ho = F.svatky && hol[day];
+      if (!its.length && !ho) continue;
+      any = true;
+      h += `<div class="ag-d ${day === today ? 'today' : ''}">${day === today ? 'Dnes · ' : ''}${DNY[d.getDay()]} ${d.getDate()}. ${MES2[d.getMonth()]}${ho ? ` <small style="color:var(--pink)">🇨🇿 ${esc(ho)}</small>` : ''}</div>` +
+        its.map(x => x.u
+          ? `<div class="ai" style="border-left-color:${BARVY[x.u.kategorie] || BARVY.ostatni}" onclick="showEvent('${x.u.id}')"><span class="t">${x.u.cely_den ? 'celý den' : esc(x.u.od.slice(11, 16))}</span>
+              <div style="min-width:0"><b>${esc(x.u.nazev)}</b>${x.u.viditelnost === 'ucastnici' ? ' 🔒' : ''}<br><small>${esc(KAT[x.u.kategorie] || '')}${x.u.misto ? ' · 📍 ' + esc(x.u.misto) : ''}${x.u.ucastnici.length ? ' · 👥 ' + esc(x.u.ucastnici.join(', ')) : ''}</small></div></div>`
+          : `<div class="ai" style="border-left-color:${x.k.zakazka ? 'var(--amber)' : 'var(--line)'}" onclick="openCard('${x.k.board_id}','${x.k.id}')"><span class="t">${x.k.zakazka ? '📦' : '🗂'}</span>
+              <div style="min-width:0"><b style="${x.k.hotovo ? 'text-decoration:line-through;opacity:.6' : ''}">${esc(x.k.nazev)}</b><br><small>${esc(x.k.nastenka)} › ${esc(x.k.sloupec)}${x.k.clenove.length ? ' · 👤 ' + esc(x.k.clenove.slice(0, 3).join(', ')) : ''}</small></div></div>`).join('');
+    }
+    $('main').innerHTML = `<div class="agenda">${h || ''}${any ? '' : '<div class="empty">Na dalších 60 dní nic. Přidej událost tlačítkem „+ Událost“.</div>'}</div>`;
+  }
+}
+function setView(v) { VIEW = v; if (v === 'seznam') CUR = new Date(); load(); }
+function shift(n) { if (VIEW === 'mesic') CUR = new Date(CUR.getFullYear(), CUR.getMonth() + n, 1); else CUR.setDate(CUR.getDate() + 30 * n); load(); }
+function goToday() { CUR = new Date(); load(); }
+function openCard(b, k) { window.open(`/nastenky.html#b=${b}&k=${k}`, '_blank', 'noopener'); }
+function dayClick(day) {
+  const its = items(day);
+  if (!its.length) return editEvent(null, day);
+  const d = new Date(day + 'T12:00');
+  modal(`<h3>${DNY[d.getDay()]} ${d.getDate()}. ${MES2[d.getMonth()]}</h3>` + its.map(x => x.u
+      ? `<div class="ai" style="border-left-color:${BARVY[x.u.kategorie]}" onclick="showEvent('${x.u.id}')"><span class="t">${x.u.cely_den ? 'celý den' : esc(x.u.od.slice(11, 16))}</span><b>${esc(x.u.nazev)}</b></div>`
+      : `<div class="ai" onclick="openCard('${x.k.board_id}','${x.k.id}')"><span class="t">${x.k.zakazka ? '📦' : '🗂'}</span><div><b>${esc(x.k.nazev)}</b><br><small>${esc(x.k.nastenka)} › ${esc(x.k.sloupec)}</small></div></div>`).join('') +
+    `<div class="row" style="justify-content:flex-end;margin-top:10px"><button class="btn pri" onclick="editEvent(null,'${day}')">+ Událost tento den</button></div>`);
+}
+
+/* ---------------- event detail / form */
+function modal(html) {
+  $('modal').innerHTML = `<div class="ov" onclick="if(event.target===this)closeModal()"><div class="md"><button class="x" onclick="closeModal()">✕</button>${html}</div></div>`;
+}
+function closeModal() { $('modal').innerHTML = ''; if (location.hash) history.replaceState(null, '', location.pathname + location.search); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+function fmtU(u) {
+  const d = new Date(u.od.slice(0, 10) + 'T12:00'), t = u.cely_den ? 'celý den' : u.od.slice(11, 16);
+  let s = `${DNY[d.getDay()]} ${d.getDate()}. ${MES2[d.getMonth()]} ${d.getFullYear()} · ${t}`;
+  if (u.do && u.do !== u.od) { const e = new Date(u.do.slice(0, 10) + 'T12:00'); s += ` – ${u.do.slice(0, 10) !== u.od.slice(0, 10) ? `${e.getDate()}. ${MES2[e.getMonth()]} ` : ''}${u.cely_den ? '' : u.do.slice(11, 16)}`; }
+  return s;
+}
+function showEvent(id) {
+  const u = DATA.udalosti.find(x => x.id === id);
+  if (!u) return toast('Událost nenalezena (možná je mimo zobrazené období)');
+  history.replaceState(null, '', '#u=' + id);
+  modal(`<h3><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:${BARVY[u.kategorie]};margin-right:6px"></span>${esc(u.nazev)}</h3>
+    <div class="meta">🗓 ${esc(fmtU(u))}<br>${esc(KAT[u.kategorie] || '')}${u.misto ? ' · 📍 ' + esc(u.misto) : ''}<br>
+      👥 ${u.ucastnici.length ? esc(u.ucastnici.join(', ')) : 'bez účastníků'} · ${u.viditelnost === 'ucastnici' ? '🔒 jen účastníci' : '👀 vidí celý tým'}<br>
+      ${u.pripomenout ? '🔔 ' + esc((PRIP.find(p => p[0] === u.pripomenout) || [0, u.pripomenout + ' min předem'])[1]) + ' (do aplikace)' : ''}
+      <br><small>založil(a) ${esc(u.autor)}</small></div>
+    ${u.popis ? `<div class="desc">${esc(u.popis)}</div>` : ''}
+    ${u.lze_upravit ? `<div class="row" style="justify-content:flex-end;margin-top:14px"><button class="btn" onclick="askDelete('${u.id}')">🗑 Smazat</button><button class="btn pri" onclick="editEvent('${u.id}')">Upravit</button></div>` : ''}`);
+}
+function askDelete(id) {
+  const u = DATA.udalosti.find(x => x.id === id);
+  modal(`<h3>Smazat událost?</h3><p style="line-height:1.5">Opravdu smazat <b>${esc(u.nazev)}</b> (${esc(fmtU(u))})? Zmizí z kalendáře všem účastníkům.</p>
+    <div class="row" style="justify-content:flex-end;margin-top:14px"><button class="btn" onclick="showEvent('${id}')">Zrušit</button>
+    <button class="btn acc" onclick="doDelete('${id}')">Ano, smazat</button></div>`);
+}
+async function doDelete(id) { try { await post(`/kalendar/${id}/smazat`, {}); closeModal(); toast('Smazáno'); load(); } catch (e) { toast(e.message); } }
+let FORM = null;
+function editEvent(id, day) {
+  const u = id ? DATA.udalosti.find(x => x.id === id) : null;
+  const d0 = day || ymd(new Date());
+  FORM = u ? {...u, ucastnici: [...u.ucastnici]} : {nazev: '', kategorie: 'schuzka', cely_den: false, od: d0 + 'T09:00', do: d0 + 'T10:00', misto: '', popis: '', ucastnici: [JA], viditelnost: 'vsichni', pripomenout: 60};
+  const f = FORM, opt = (arr, v) => arr.map(([k, n]) => `<option value="${esc(k)}" ${String(k) === String(v) ? 'selected' : ''}>${esc(n)}</option>`).join('');
+  modal(`<h3>${u ? 'Upravit událost' : 'Nová událost'}</h3>
+    <label class="fl">Název</label><input class="inp" id="f-nazev" value="${esc(f.nazev)}" placeholder="např. Schůzka s Alzou, dovolená, inventura…">
+    <div class="row" style="gap:10px"><div style="flex:1;min-width:160px"><label class="fl">Druh</label><select class="inp" id="f-kat">${opt(Object.entries(KAT), f.kategorie)}</select></div>
+      <label style="margin-top:22px;display:flex;gap:6px;align-items:center"><input type="checkbox" id="f-cd" ${f.cely_den ? 'checked' : ''} onchange="toggleCD()"> celý den</label></div>
+    <div class="row" style="gap:10px"><div style="flex:1;min-width:150px"><label class="fl">Od</label><input class="inp" id="f-od" type="${f.cely_den ? 'date' : 'datetime-local'}" value="${esc(f.cely_den ? f.od.slice(0, 10) : (f.od.length > 10 ? f.od : f.od + 'T09:00'))}"></div>
+      <div style="flex:1;min-width:150px"><label class="fl">Do</label><input class="inp" id="f-do" type="${f.cely_den ? 'date' : 'datetime-local'}" value="${esc(f.do ? (f.cely_den ? f.do.slice(0, 10) : (f.do.length > 10 ? f.do : f.do + 'T10:00')) : '')}"></div></div>
+    <label class="fl">Místo</label><input class="inp" id="f-misto" value="${esc(f.misto)}" placeholder="Rtyně, Praha, online…">
+    <label class="fl">Kdo — účastníci</label><div id="f-lide">${LIDE.map(p => `<span class="pchip ${f.ucastnici.includes(p) ? 'on' : ''}" onclick="togglePerson(this,'${esc(p)}')">${esc(p)}</span>`).join('')}</div>
+    <div class="row" style="gap:10px"><div style="flex:1;min-width:180px"><label class="fl">Kdo to uvidí</label><select class="inp" id="f-vid">${opt([['vsichni', '👀 Celý tým'], ['ucastnici', '🔒 Jen účastníci']], f.viditelnost)}</select></div>
+      <div style="flex:1;min-width:180px"><label class="fl">Připomenout v aplikaci</label><select class="inp" id="f-prip">${opt(PRIP, f.pripomenout)}</select></div></div>
+    <label class="fl">Poznámka</label><textarea class="inp" id="f-popis" rows="3">${esc(f.popis)}</textarea>
+    <div class="row" style="justify-content:flex-end;margin-top:14px"><button class="btn" onclick="${u ? `showEvent('${u.id}')` : 'closeModal()'}">Zrušit</button><button class="btn pri" id="f-save" onclick="saveEvent()">Uložit</button></div>`);
+  setTimeout(() => $('f-nazev')?.focus(), 50);
+}
+function toggleCD() {
+  const cd = $('f-cd').checked;
+  for (const k of ['f-od', 'f-do']) { const el = $(k), v = el.value; el.type = cd ? 'date' : 'datetime-local'; el.value = cd ? v.slice(0, 10) : (v ? v.slice(0, 10) + (k === 'f-od' ? 'T09:00' : 'T10:00') : ''); }
+}
+function togglePerson(el, p) { const i = FORM.ucastnici.indexOf(p); i < 0 ? FORM.ucastnici.push(p) : FORM.ucastnici.splice(i, 1); el.classList.toggle('on'); }
+async function saveEvent() {
+  const cd = $('f-cd').checked;
+  const d = {nazev: $('f-nazev').value.trim(), kategorie: $('f-kat').value, cely_den: cd, od: $('f-od').value.slice(0, 16), do: $('f-do').value.slice(0, 16),
+    misto: $('f-misto').value.trim(), popis: $('f-popis').value, ucastnici: FORM.ucastnici, viditelnost: $('f-vid').value, pripomenout: +$('f-prip').value};
+  if (!d.nazev) return toast('Napiš název');
+  if (!d.od) return toast('Vyber datum');
+  if (d.do && d.do < d.od) return toast('Konec je dřív než začátek');
+  $('f-save').disabled = true;
+  try {
+    const r = await post('/kalendar' + (FORM.id ? '/' + FORM.id : ''), d);
+    await load(); showEvent(r.id); toast('Uloženo');
+  } catch (e) { toast(e.message); $('f-save').disabled = false; }
+}
+
+(async () => {
+  await load();
+  const m = location.hash.match(/^#u=([\w-]+)/);
+  if (m) {
+    let u = DATA && DATA.udalosti.find(x => x.id === m[1]);
+    if (!u && DATA) { CUR = new Date(); }   // reminder link: the event is today or soon
+    if (u) showEvent(u.id);
+  }
+})();
+</script>
+</body>
+</html>

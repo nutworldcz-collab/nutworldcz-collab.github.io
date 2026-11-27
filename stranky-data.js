@@ -97,8 +97,8 @@ window.NW_STRANKY = [
   "soubor": "kalendar.html",
   "skupina": "obchod",
   "ikona": "📅",
-  "nazev": "Kalendář termínů",
-  "popis": "Termíny dodání zakázek v měsíčním přehledu — barevně podle obchodního zástupce",
+  "nazev": "Kalendář",
+  "popis": "Náš firemní kalendář — schůzky, dovolené, výroba, termíny zakázek a karet, svátky; připomínky do aplikace",
   "barva": "amber"
  },
  {
