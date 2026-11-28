@@ -198,6 +198,7 @@ select.find{appearance:auto}
   <section class="view" id="v-tym"><div class="wrap" id="tym"></div></section>
   <section class="view" id="v-pich"><div class="wrap" id="pich"></div></section>
   <section class="view" id="v-smeny"><div class="wrap" id="smeny"></div></section>
+  <section class="view" id="v-ukoly"><div class="wrap" id="ukoly"></div></section>
   <section class="view tk" id="v-tymk"><div id="tk-list" class="tk-list"></div><div id="tk-mention" class="tk-mention" hidden></div>
     <div id="tk-reply" class="tk-reply" hidden></div>
     <div id="tk-recbar" class="tk-reply tk-rec" hidden><span class="dot"></span><b id="tk-rect">0:00</b><span>Nahrávám…</span>
@@ -243,10 +244,10 @@ const NAV = {
   darkovna:  [['domu'], ['vyroba.html'], ['tym', 'skenovat'], ['objednavky.html'], ['vice']],
   doprava:   [['domu'], ['expedice/index.html'], ['doprava.html'], ['tym'], ['vice']],
   sklad:     [['domu'], ['prijem-surovin.html'], ['denik-michani.html'], ['tym'], ['vice']],
-  brigadnik: [['pich'], ['smeny'], ['vice']],
+  brigadnik: [['pich'], ['ukoly'], ['smeny'], ['vice']],
 };
 const NAV_LABEL = {domu: ['🏠', 'Domů'], skenovat: ['📷', 'Skenovat'], vice: ['☰', 'Více'],
-  'vyroba.html': ['🏭', 'Výroba'], 'chat.html': ['🛍️', 'Zákazníci'], tym: ['💬', 'Tým'], pich: ['⏱', 'Píchačka'], smeny: ['👷', 'Kdy přijdu'], 'nastenky.html': ['📌', 'Nástěnky'],
+  'vyroba.html': ['🏭', 'Výroba'], 'chat.html': ['🛍️', 'Zákazníci'], tym: ['💬', 'Tým'], pich: ['⏱', 'Píchačka'], ukoly: ['📋', 'Úkoly'], smeny: ['👷', 'Kdy přijdu'], 'nastenky.html': ['📌', 'Nástěnky'],
   'stitky-kontrola.html': ['🏷️', 'Štítky'], 'stitky.html': ['🏷️', 'Štítky'], 'zakazy.html': ['📋', 'Zakázky'],
   'nabidky.html': ['🧾', 'Nabídky'], 'kalkulator.html': ['🧮', 'Kalkulátor'], 'bannery.html': ['🖼️', 'Bannery'],
   'popupy.html': ['💬', 'Popupy'], 'reklamy.html': ['📈', 'Reklamy'], 'expedice/index.html': ['🚚', 'Expedice'], 'doprava.html': ['🚛', 'Doprava'],
@@ -276,8 +277,8 @@ async function whoami() {
     if (ME.role === 'admin' && nr && ROLE_VSE && ROLE_VSE[nr]) { NAHLED_ROLE = nr; ME = {...ME, role: nr, stranky: ROLE_VSE[nr].stranky}; } }
   else { const c = ls.get('nw_app_me'); if (c) ME = JSON.parse(c); }   // offline -> last known
   if (ME.stranky && !ME.stranky.includes('*')) ALLOWED = new Set(ME.stranky);
-  DENIED = new Set((ME.stranky || []).filter(s => s.startsWith('!')).map(s => s.slice(1)));   // '*' with exceptions (vedení)
   else if (!ME.stranky) ALLOWED = await probe();
+  DENIED = new Set((ME.stranky || []).filter(s => s.startsWith('!')).map(s => s.slice(1)));   // '*' with exceptions (vedení)
 }
 
 // older server without `stranky` in /api/asistent/stav: ask the login server page by page (HEAD), cached for the session
@@ -296,7 +297,7 @@ async function probe() {
 
 function navItems() {
   const slots = NAV[ME.role] || [['domu'], ['nastenky.html'], ['skenovat'], ['vice']];
-  return slots.map(c => c.find(x => x === 'tym' ? TYM_OK : (!x.includes('.') || can(x)))).filter(Boolean);
+  return slots.map(c => c.find(x => x === 'tym' ? TYM_OK : x === 'ukoly' ? UK_OK : (!x.includes('.') || can(x)))).filter(Boolean);
 }
 
 // ── routing: #/domu, #/skenovat, #/vice, #/instalace, #/ucet, #/s/<page.html?query> ──
@@ -307,7 +308,7 @@ function route() {
   let h = decodeURIComponent(location.hash.replace(/^#\/?/, '')) || (ME.role === 'brigadnik' ? 'pich' : 'domu');
   if (h.startsWith('pich?')) { const m = h.match(/nahled=([\w-]+)/); PICH_NAHLED = m && ME.role === 'admin' ? m[1] : null; h = 'pich'; }
   else if (h === 'pich') PICH_NAHLED = PICH_NAHLED || null;
-  if (ME.role === 'brigadnik' && !['pich', 'smeny', 'vice', 'instalace', 'ucet', 'upozorneni'].includes(h)) h = 'pich';
+  if (ME.role === 'brigadnik' && !['pich', 'ukoly', 'smeny', 'vice', 'instalace', 'ucet', 'upozorneni'].includes(h)) h = 'pich';
   if (h.startsWith('stranka/')) h = 's/' + h.slice(8);     // manifest shortcuts
   CUR = h;
   document.querySelectorAll('.view').forEach(v => v.classList.remove('on'));
@@ -338,9 +339,9 @@ function route() {
     markNav(file);
     return;
   }
-  const v = ['domu', 'skenovat', 'vice', 'instalace', 'ucet', 'upozorneni', 'pich', 'smeny'].includes(h) ? h : 'domu';
+  const v = ['domu', 'skenovat', 'vice', 'instalace', 'ucet', 'upozorneni', 'pich', 'smeny', 'ukoly'].includes(h) ? h : 'domu';
   showView(v); markNav(v);
-  ({domu: drawHome, skenovat: drawScan, vice: drawMore, instalace: drawInstall, ucet: drawAccount, upozorneni: drawPush, pich: drawPich, smeny: drawSmeny})[v]();
+  ({domu: drawHome, skenovat: drawScan, vice: drawMore, instalace: drawInstall, ucet: drawAccount, upozorneni: drawPush, pich: drawPich, smeny: drawSmeny, ukoly: drawUkoly})[v]();
 }
 function showView(v) { $('#v-' + v).classList.add('on'); }
 function markNav(k) { document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('a', b.dataset.k === k)); }
@@ -558,6 +559,7 @@ function drawMore() {
     <h2 class="sek">Aplikace</h2>
     <div class="list">
       <div class="it" onclick="go('pich')"><span class="i">⏱</span><div><div class="n">Moje píchačka</div><div class="p">příchod / odchod, moje hodiny</div></div></div>
+      ${UK_OK ? `<div class="it" onclick="go('ukoly')"><span class="i">📋</span><div><div class="n">Moje úkoly ve výrobě</div><div class="p">▶ začínám · ✅ hotovo · můj výkon</div></div></div>` : ''}
       <div class="it" onclick="go('skenovat')"><span class="i">📷</span><div><div class="n">Skenovat</div><div class="p">QR na krabici, fotka dokladu</div></div></div>
       <div class="it" onclick="go('upozorneni')"><span class="i">🔔</span><div><div class="n">Upozornění</div><div class="p">zprávy do telefonu — co ti má chodit</div></div></div>
       <div class="it" onclick="go('instalace')"><span class="i">📲</span><div><div class="n">Instalace na telefon a počítač</div><div class="p">iPhone, iPad, Android, Windows, Mac</div></div></div>
@@ -1025,6 +1027,70 @@ const mins = (a, b) => { if (!a || !b) return 0; const [h1, m1] = a.split(':').m
 const hm = m => `${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`;
 const pauseM = r => (r.pauzy || []).reduce((a, p) => a + (p.od && p.do ? mins(p.od, p.do) : 0), 0);
 const workM = r => { if (!r.from || !r.to) return 0; let m = mins(r.from, r.to); if (r.to < r.from) m = mins(r.from, '24:00') + mins('00:00', r.to); return Math.max(0, m - pauseM(r)); };
+// ── 📋 my production tasks (server /api/nastenky/vukoly, Jan 2026-11-28): ▶ Začínám / ⏸ Pauza / ✅ Hotovo ──
+// Jan or a team lead assigns them in Výroba, an e-shop item I take myself in Rozklad (🙋 Beru si). The time goes to my
+// píchačka card; I see my pieces per hour against the team average (no other names).
+let UK_OK = false, UK_T = null;
+async function ukApi(path = '?moje=1', body) {
+  const r = await fetch('/api/nastenky/vukoly' + path, body ? {method: 'POST', credentials: 'same-origin', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)} : {credentials: 'same-origin', cache: 'no-store'});
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.chyba || 'chyba ' + r.status);
+  return j;
+}
+const ukMin = m => { m = Math.round(m || 0); return `${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`; };
+const ukNum = (v, d = 1) => v == null ? '–' : Number(v).toLocaleString('cs-CZ', {maximumFractionDigits: d});
+async function drawUkoly() {
+  $('#titul').textContent = 'Moje úkoly';
+  const box = $('#ukoly'); clearTimeout(UK_T);
+  let j; try { j = await ukApi(); } catch (e) { box.innerHTML = `<div class="card err">${esc(e.message)}</div>`; return; }
+  const live = j.ukoly.filter(t => t.stav !== 'hotovo'), done = j.ukoly.filter(t => t.stav === 'hotovo');
+  const card = t => {
+    const run = t.stav === 'bezi';
+    return `<div class="card" style="${run ? 'border:2px solid #6fa044' : ''}">
+      <div style="display:flex;justify-content:space-between;gap:8px"><div class="h">${esc(t.text || t.produkt)}</div><b style="white-space:nowrap">${t.ks} ks</b></div>
+      <div class="s">${esc(t.ukon)} · ${esc(t.firma || '')}${t.zadal && t.zadal !== t.osoba ? ' · zadal(a) ' + esc(t.zadal.split(' ')[0]) : ''}</div>
+      <div class="s" style="margin-top:4px">${run ? '▶ běží' : t.stav === 'pauza' ? '⏸ pauza' : '⏳ ještě nezačato'}${t.minuty ? ' · ' + ukMin(t.minuty) + ' h' : ''}${t.varovani ? ' · <span style="color:#9b1c1c">⚠️ zapomenuté zastavení</span>' : ''}</div>
+      <div style="display:flex;gap:8px">
+        ${run ? `<button class="big b-l" data-uk="pauza" data-id="${t.id}" style="flex:1">⏸ Pauza</button>` : `<button class="big b-h" data-uk="start" data-id="${t.id}" style="flex:1">▶ ${t.minuty ? 'Pokračuju' : 'Začínám'}</button>`}
+        ${t.minuty || run ? `<button class="big b-z" data-uk="hotovo" data-id="${t.id}" style="flex:1">✅ Hotovo</button>` : ''}
+      </div>
+      <div data-hk="${t.id}" hidden style="margin-top:8px"><div class="s">Kolik kusů je opravdu hotových?</div>
+        <div style="display:flex;gap:8px;align-items:center"><input type="number" inputmode="numeric" min="0" value="${t.ks}" style="flex:1;font-size:18px;padding:10px;border-radius:10px;border:1px solid var(--li)">
+        <button class="big b-z" data-uk="hotovo2" data-id="${t.id}" style="flex:1;margin-top:0">✅ Potvrdit</button></div></div>
+    </div>`;
+  };
+  box.innerHTML = (live.length ? live.map(card).join('') : `<div class="card"><div class="h">Teď nemáš žádný úkol 🐿️</div><div class="s">Až ti Honza nebo vedoucí něco zadá, přijde ti upozornění a objeví se to tady.</div></div>`)
+    + `<div class="s" style="margin:4px 4px 10px">Naráz běží jen jeden úkol — když začneš jiný, ten předchozí se dá na pauzu. Pauza v píchačce a odchod úkol zastaví samy.</div>`
+    + (done.length ? `<h2 class="sek">Hotovo za poslední týden</h2><div class="card">${done.map(t => `<div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--li)"><span style="flex:1">✅ ${esc(t.ukon)} · ${esc(t.produkt)}<span class="s"> · ${t.ks_hotovo} ks</span></span><b>${ukMin(t.minuty)}</b>${t.ks_h ? `<span class="s" style="white-space:nowrap">${ukNum(t.ks_h)} ks/h</span>` : ''}</div>`).join('')}</div>` : '')
+    + '<div id="uk-vyk"></div>';
+  box.querySelectorAll('[data-uk]').forEach(b => b.onclick = async () => {
+    const a = b.dataset.uk, id = b.dataset.id;
+    if (a === 'hotovo') { box.querySelector(`[data-hk="${id}"]`).hidden = false; return; }
+    b.disabled = true;
+    try {
+      await ukApi('/' + id, a === 'hotovo2' ? {akce: 'hotovo', ks: +box.querySelector(`[data-hk="${id}"] input`).value} : {akce: a});
+      drawUkoly();
+    } catch (e) { b.disabled = false; alertBox(box, e.message); }
+  });
+  ukSouhrn($('#uk-vyk'));
+  if (live.some(t => t.stav === 'bezi')) UK_T = setTimeout(() => { if (CUR === 'ukoly') drawUkoly(); }, 60000);
+}
+function alertBox(box, msg) { const d = document.createElement('div'); d.className = 'card err'; d.textContent = msg; box.prepend(d); setTimeout(() => d.remove(), 6000); }
+// my month: pieces per hour and minutes per piece, against the team average for the same work (no names)
+async function ukSouhrn(el) {
+  if (!el) return;
+  let j; try { j = await ukApi('/souhrn'); } catch (e) { return; }
+  if (!j.radky.length) { el.innerHTML = ''; return; }
+  const mes = ['leden','únor','březen','duben','květen','červen','červenec','srpen','září','říjen','listopad','prosinec'][+j.mesic.slice(5) - 1];
+  el.innerHTML = `<h2 class="sek">Co jsem dělal · ${mes}</h2><div class="card">
+    <div class="s" style="margin-bottom:4px">${j.ukolu} úkolů · ${ukMin(j.minut_celkem)} h na úkolech</div>
+    ${j.radky.map(r => { const lepsi = r.ks_h >= r.tym_ks_h; const pct = r.tym_ks_h ? Math.round((r.ks_h / r.tym_ks_h - 1) * 100) : 0;
+      return `<div style="padding:8px 0;border-bottom:1px solid var(--li)"><div style="display:flex;justify-content:space-between;gap:8px"><b>${esc(r.klic)}</b><span class="s" style="white-space:nowrap">${r.ks} ks · ${ukMin(r.min)} h</span></div>
+      <div style="display:flex;justify-content:space-between;gap:8px"><span><b>${ukNum(r.ks_h)} ks/h</b> · ${ukNum(r.min_ks, 2)} min/ks</span>
+      <span class="s" style="white-space:nowrap">tým ${ukNum(r.tym_ks_h)} ks/h${pct ? ` · <span style="color:${lepsi ? '#4a7c2f' : '#8a6200'}">${pct > 0 ? '+' : ''}${pct} %</span>` : ''}</span></div></div>`; }).join('')}
+    <div class="s" style="margin-top:6px">Srovnání je s průměrem celého týmu za stejnou práci (stejný úkon, obal a gramáž).</div></div>`;
+}
+
 let PICH = null, PICH_QR = null, PICH_NAHLED = null, PICH_T = null;
 // QR scanned by the phone camera outside the app opens …/aplikace.html#/pich?qr=… -> keep it for the next clock-in
 (() => { const m = location.hash.match(/[?&]qr=([\w-]+)/); if (m) { PICH_QR = m[1]; history.replaceState(null, '', '#/pich'); } })();
@@ -1093,6 +1159,7 @@ async function drawPich() {
       ${inWork && used > sm.pauza ? `<div class="err" style="margin-top:6px">Pauzy ${used} min — teď máš nárok na ${sm.pauza} min (${pravidla}).</div>` : ''}
       <div id="p-m" class="s" style="margin-top:6px"></div></div>
     <div id="p-dok"></div>
+    <div id="p-vyk"></div>
     <h2 class="sek">Moje hodiny · ${['leden','únor','březen','duben','květen','červen','červenec','srpen','září','říjen','listopad','prosinec'][+month.slice(5) - 1]}</h2>
     <div class="card"><div style="display:flex;justify-content:space-between"><b>Celkem ${hm(total)} h</b><span class="s">${days.length} dní · bez pauz</span></div>
       ${days.map(([k, r]) => { const x = new Date(k + 'T12:00');
@@ -1102,6 +1169,7 @@ async function drawPich() {
     <div class="s" style="margin:6px 4px">📍 = načteno QR na provozovně · ⚠️ = bez QR nebo mimo provozovnu · ✍️ = zapsáno ručně. Každou pauzu (kouření i jídlo) si odpíchni — do hodin se nepočítá. Honza vidí v píchačkách totéž co ty.</div>
     ${ME.role === 'admin' ? '<div id="p-adm"></div>' : ''}`;
   pichDocs();
+  if (UK_OK && !PICH_NAHLED) ukSouhrn($('#p-vyk'));     // what I did this month (production tasks)
   clearTimeout(PICH_T);
   if (PICH_NAHLED) {                      // preview: read-only, live
     box.querySelectorAll('button').forEach(b => { b.disabled = true; b.style.opacity = .55; });
@@ -1273,6 +1341,7 @@ $('#kalb').onclick = () => openPage('kalendar.html');
   setInterval(checkVer, 10 * 60e3);
   try { await whoami(); } catch (e) { return; }
   if (ON_SERVER) { const r = await fetch('/api/tym/stav', {credentials: 'same-origin'}).catch(() => null); TYM_OK = !!(r && r.ok); if (TYM_OK) TYM = await r.json(); }
+  if (ON_SERVER) { const j = await ukApi().catch(() => null); UK_OK = !!(j && j.smi); }   // production tasks (hidden until launched)
   const ini = (ME.jmeno || 'NW').split(' ').map(x => x[0]).slice(0, 2).join('').toUpperCase();
   $('#av').textContent = ini;
   if (NAHLED_ROLE) {
