@@ -591,7 +591,8 @@ function toggleFNota(nid, cardId) {
 }
 function pKey(cardId,pi,ci) { return `${cardId}_p${pi}_c${ci}`; }
 // a production task ✅ done (vukoly.js, Jan 2026-11-28) ticks the item too — in every view
-function isDone(cardId,pi,ci) { const k=pKey(cardId,pi,ci); return !!progress[k]||(window.NWUkoly&&NWUkoly.refDone(k)); }
+function vuNeed(cardId,pi){ const c=parsedCards.find(x=>x.id===cardId); return c&&c.produkty[pi]?c.produkty[pi].ks:0; }
+function isDone(cardId,pi,ci) { const k=pKey(cardId,pi,ci); return !!progress[k]||!!(window.NWUkoly&&NWUkoly.refDone(k,null,vuNeed(cardId,pi))); }
 function toggle(cardId,pi,ci) { const k=pKey(cardId,pi,ci); progress[k]=!progress[k]; saveProg(); render(); }
 
 /* ── Gramáž → kg ── */

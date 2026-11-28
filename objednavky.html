@@ -798,7 +798,7 @@ setInterval(syncDone, 10000);
 document.addEventListener('visibilitychange', syncDone);
 function applyDoneState() {
   document.querySelectorAll('.product-row[data-code]').forEach(row => {
-    const done = doneSet.has(row.dataset.code) || !!(window.NWUkoly && NWUkoly.refDone(vuRef(row.dataset.shop || 'cz', row.dataset.code), TODAY));
+    const done = doneSet.has(row.dataset.code) || !!(window.NWUkoly && NWUkoly.refDone(vuRef(row.dataset.shop || 'cz', row.dataset.code), TODAY, +row.dataset.qty || 0));
     row.classList.toggle('done', done);
     const who = done ? ROZ_KDO[row.dataset.code] : null;
     row.title = who && who.kdo ? `✓ ${who.kdo}${who.cas ? ' · ' + who.cas : ''}` : '';

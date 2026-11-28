@@ -1045,7 +1045,7 @@ async function drawUkoly() {
   $('#titul').textContent = 'Moje úkoly';
   const box = $('#ukoly'); clearTimeout(UK_T);
   let j; try { j = await ukApi(); } catch (e) { box.innerHTML = `<div class="card err">${esc(e.message)}</div>`; return; }
-  const live = j.ukoly.filter(t => t.stav !== 'hotovo'), done = j.ukoly.filter(t => t.stav === 'hotovo');
+  const live = j.ukoly.filter(t => ['zadano', 'bezi', 'pauza', 'ke_kontrole'].includes(t.stav)), done = j.ukoly.filter(t => t.stav === 'hotovo');
   const card = t => {
     const run = t.stav === 'bezi';
     return `<div class="card" style="${run ? 'border:2px solid #6fa044' : ''}">
@@ -1058,7 +1058,9 @@ async function drawUkoly() {
       </div>
       <div data-hk="${t.id}" hidden style="margin-top:8px"><div class="s">Kolik kusů je opravdu hotových?</div>
         <div style="display:flex;gap:8px;align-items:center"><input type="number" inputmode="numeric" min="0" value="${t.ks}" style="flex:1;font-size:18px;padding:10px;border-radius:10px;border:1px solid var(--li)">
-        <button class="big b-z" data-uk="hotovo2" data-id="${t.id}" style="flex:1;margin-top:0">✅ Potvrdit</button></div></div>
+        <button class="big b-z" data-uk="hotovo2" data-id="${t.id}" style="flex:1;margin-top:0">✅ Potvrdit</button></div>
+        <div data-zb hidden style="margin-top:6px"><div class="s">Zbývá <b data-zbn></b> ks:</div>
+          <select style="width:100%;font-size:16px;padding:9px;border-radius:10px;border:1px solid var(--li);margin-top:4px"><option value="moje">Dodělám později (zůstane mi)</option><option value="uvolnit">Uvolnit zbytek pro ostatní</option></select></div></div>
     </div>`;
   };
   box.innerHTML = (live.length ? live.map(card).join('') : `<div class="card"><div class="h">Teď nemáš žádný úkol 🐿️</div><div class="s">Až ti Honza nebo vedoucí něco zadá, přijde ti upozornění a objeví se to tady.</div></div>`)
@@ -1067,10 +1069,13 @@ async function drawUkoly() {
     + '<div id="uk-vyk"></div>';
   box.querySelectorAll('[data-uk]').forEach(b => b.onclick = async () => {
     const a = b.dataset.uk, id = b.dataset.id;
-    if (a === 'hotovo') { box.querySelector(`[data-hk="${id}"]`).hidden = false; return; }
+    if (a === 'hotovo') { const hk = box.querySelector(`[data-hk="${id}"]`), inp = hk.querySelector('input'), t = j.ukoly.find(x => x.id === id);
+      const upd = () => { const r = t.ks - (+inp.value || 0); hk.querySelector('[data-zb]').hidden = !(r > 0); hk.querySelector('[data-zbn]').textContent = r; };
+      inp.oninput = upd; upd(); hk.hidden = false; return; }
     b.disabled = true;
     try {
-      await ukApi('/' + id, a === 'hotovo2' ? {akce: 'hotovo', ks: +box.querySelector(`[data-hk="${id}"] input`).value} : {akce: a});
+      const hk = box.querySelector(`[data-hk="${id}"]`);
+      await ukApi('/' + id, a === 'hotovo2' ? {akce: 'hotovo', ks: +hk.querySelector('input').value, zbytek: hk.querySelector('[data-zb]').hidden ? '' : hk.querySelector('select').value} : {akce: a});
       drawUkoly();
     } catch (e) { b.disabled = false; alertBox(box, e.message); }
   });
@@ -1099,7 +1104,7 @@ async function drawPracovnik() {
   const j = r ? await r.json().catch(() => ({})) : {chyba: 'Bez spojení.'};
   if (!r || !r.ok) { box.innerHTML = `<div class="card"><div class="h">🪪 Kartička pracovníka</div><div class="s">${esc(j.chyba || 'Nejde načíst.')}</div></div>`; return; }
   $('#titul').textContent = j.jmeno;
-  const roz = j.ukoly.filter(t => t.stav !== 'hotovo'), hot = j.ukoly.filter(t => t.stav === 'hotovo');
+  const roz = j.ukoly.filter(t => ['zadano', 'bezi', 'pauza', 'ke_kontrole'].includes(t.stav)), hot = j.ukoly.filter(t => t.stav === 'hotovo');
   const row = t => `<div style="display:flex;gap:8px;padding:8px 0;border-bottom:1px solid var(--li)"><span style="flex:1">${t.stav === 'bezi' ? '▶' : t.stav === 'pauza' ? '⏸' : t.stav === 'hotovo' ? '✅' : '⏳'} <b>${esc(t.ukon)}</b> · ${esc(t.produkt)}<span class="s"> · ${t.stav === 'hotovo' ? t.ks_hotovo : t.ks} ks${t.firma ? ' · ' + esc(t.firma) : ''}</span></span><b>${ukMin(t.minuty)}</b></div>`;
   box.innerHTML = `<div class="card"><div class="h">🪪 ${esc(j.jmeno)}</div>${j.ucet ? '' : '<div class="err">Nemá účet v aplikaci — úkol mu zatím zadat nejde.</div>'}</div>
     <h2 class="sek">Teď dělá</h2><div class="card">${roz.map(row).join('') || '<div class="s">Nemá rozdělaný žádný úkol.</div>'}</div>
