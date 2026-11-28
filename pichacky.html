@@ -909,6 +909,7 @@ input[type="text"]:focus { border-color: var(--brown); }
       <button class="dash-hbtn" style="padding:7px 10px" onclick="chMonth(1)">›</button>
     </div>
     <button class="dash-hbtn" onclick="openAdd()">+ Přidat osobu</button>
+    <button class="dash-hbtn" onclick="openBulk()" title="Export měsíce pro všechny nebo vybrané skupiny (zaměstnanci, úkolové firmy, brigádníci)">⬇ Export</button>
     <button class="dash-hbtn" onclick="openDocs()" title="Dokumenty k potvrzení (BOZP, hygiena, pravidla, GDPR)">📄 Dokumenty</button>
     <button class="dash-hbtn" id="kart-btn" hidden onclick="openKarticky()" title="Kartičky s QR pro každého pracovníka — vedoucí je načte při zadání úkolu">🪪 Kartičky</button>
     <button class="dash-hbtn" id="vyk-btn" hidden onclick="openVykon()" title="Úkoly ve výrobě: kusy za hodinu a minuty na kus podle lidí a stejných produktů">📊 Výkon</button>
@@ -1143,6 +1144,18 @@ input[type="text"]:focus { border-color: var(--brown); }
 </div>
 
 <!-- ═══════════════ CSV MODAL (artifact fallback) ═══════════════ -->
+<div class="modal-overlay" id="bulk-overlay" hidden onclick="if(event.target===this)this.hidden=true">
+  <div class="modal-card">
+    <div class="modal-title" style="margin-bottom:4px">⬇ Hromadný export — <span id="bulk-m"></span></div>
+    <div class="modal-sub">Souhrn za každého člověka + rozpis po dnech (příchod, odchod, pauzy, hodiny, ověření QR). Otevře se v Excelu.</div>
+    <div id="bulk-g" style="display:grid;gap:8px;margin:12px 0"></div>
+    <div class="modal-actions">
+      <button class="btn-sec" onclick="document.getElementById('bulk-overlay').hidden=true">Zavřít</button>
+      <button class="btn-prim" onclick="doBulkExport()">⬇ Stáhnout</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="csv-overlay" hidden onclick="if(event.target===this)closeCSV()">
   <div class="modal-card">
     <div class="modal-title" style="margin-bottom:4px">Export CSV</div>
@@ -1470,7 +1483,13 @@ function renderTabs() {
     del.title = 'Smazat osobu';
     del.textContent = '×';
     del.onclick = (e) => { e.stopPropagation(); deletePerson(p.id, p.name); };
+    const ren = document.createElement('button');
+    ren.className = 'p-tab-del';
+    ren.title = 'Přejmenovat';
+    ren.textContent = '✏️';
+    ren.onclick = (e) => { e.stopPropagation(); renamePerson(p.id); };
     wrap.appendChild(btn);
+    wrap.appendChild(ren);
     wrap.appendChild(del);
     el.appendChild(wrap);
   });
@@ -1821,6 +1840,68 @@ function deletePerson(id, name) {
     cur.person = db.people[0]?.id;
     if (cur.person) render(); else goToDashboard();
   }
+}
+
+// ── BULK EXPORT (Jan 2026-11-28: zaměstnanci, brigádníci, úkoloví — všechny skupiny naráz) ──
+function openBulk() {
+  document.getElementById('bulk-m').textContent = `${MONTHS[cur.month]} ${cur.year}`;
+  const cnt = t => db.people.filter(p => (p.type || 'zamestnanec') === t).length;
+  document.getElementById('bulk-g').innerHTML = TYPE_ORDER.filter(cnt).map(t =>
+    `<label style="display:flex;gap:10px;align-items:center;font-size:15px;cursor:pointer"><input type="checkbox" class="bulk-t" value="${t}" checked style="width:20px;height:20px">
+     <span class="type-opt-dot dot-${t}"></span>${TYPE_LABELS[t]} <span style="color:#8a6a4a">(${cnt(t)})</span></label>`).join('') || 'Zatím žádné osoby.';
+  document.getElementById('bulk-overlay').hidden = false;
+}
+function doBulkExport() {
+  const types = [...document.querySelectorAll('.bulk-t:checked')].map(x => x.value);
+  if (!types.length) { alert('Vyber aspoň jednu skupinu.'); return; }
+  const y = cur.year, mo = cur.month, days = new Date(y, mo + 1, 0).getDate();
+  const q = v => { v = String(v ?? ''); return /[;"\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+  const row = a => a.map(q).join(';') + '\n';
+  const hod = m => m ? (Math.round(m / 6) / 10).toString().replace('.', ',') : '';
+  const TL = {work: 'Práce', holiday: 'Dovolená', sick: 'Nemoc', bank: 'Svátek', weekend: 'Víkend'};
+  const people = db.people.filter(p => types.includes(p.type || 'zamestnanec'))
+    .sort((a, b) => TYPE_ORDER.indexOf(a.type || 'zamestnanec') - TYPE_ORDER.indexOf(b.type || 'zamestnanec') || a.name.localeCompare(b.name, 'cs'));
+  let sum = row(['Skupina', 'Jméno', 'Odpracované dny', 'Hodin celkem', 'Pauzy (min)', 'Pauzy nad nárok (min)', 'Dovolená (dní)', 'Nemoc (dní)', 'Svátek (dní)', 'Sazba Kč/h', 'Výplata hrubá Kč', 'Píchnuto přes QR', 'Ručně upraveno (dní)']);
+  let det = row(['Skupina', 'Jméno', 'Datum', 'Den', 'Příchod', 'Odchod', 'Pauzy (min)', 'Hodin', 'Typ', 'Ověření', 'Poznámka']);
+  const tot = {}; let gMins = 0, gPay = 0;
+  people.forEach(p => {
+    const grp = TYPE_LABELS[p.type || 'zamestnanec'];
+    let mins = 0, wd = 0, pz = 0, over = 0, hol = 0, sick = 0, bank = 0, qr = 0, ruc = 0;
+    for (let d = 1; d <= days; d++) {
+      const dt = fmtDate(y, mo, d), rec = db.records[`${p.id}:${dt}`];
+      if (!rec) continue;
+      const m = recMins(rec) || 0, pm = pauseMins(rec), ty = rec.type || 'work';
+      if (m > 0) { mins += m; wd++; }
+      pz += pm; over += Math.max(0, pm - pauseAllowance(rec));
+      if (ty === 'holiday') hol++; if (ty === 'sick') sick++; if (ty === 'bank') bank++;
+      const o = rec.overeni || {}; if (o.prichod && o.prichod.qr) qr++; if (rec.rucne) ruc++;
+      const ov = [o.prichod && 'příchod ' + (o.prichod.ok ? 'QR+poloha ✓' : 'NEOVĚŘENO'), o.odchod && 'odchod ' + (o.odchod.ok ? 'QR+poloha ✓' : 'NEOVĚŘENO'), rec.rucne && 'ručně'].filter(Boolean).join(', ');
+      det += row([grp, p.name, dt.split('-').reverse().join('.'), DAYS[new Date(y, mo, d).getDay()], rec.from || '', rec.to || '', pm || '', hod(m), TL[ty] || '', ov, rec.note || '']);
+    }
+    const pay = p.rate ? Math.round(mins / 60 * p.rate) : 0;
+    sum += row([grp, p.name, wd, hod(mins), pz, over || '', hol || '', sick || '', bank || '', p.rate || '', pay || '', qr, ruc || '']);
+    const g = tot[grp] = tot[grp] || {m: 0, p: 0, n: 0}; g.m += mins; g.p += pay; g.n++; gMins += mins; gPay += pay;
+  });
+  sum += '\n' + Object.entries(tot).map(([g, v]) => row([g + ' — celkem', v.n + ' lidí', '', hod(v.m), '', '', '', '', '', '', v.p || ''])).join('');
+  sum += row(['VŠE CELKEM', people.length + ' lidí', '', hod(gMins), '', '', '', '', '', '', gPay || '']);
+  const ym = `${y}-${String(mo + 1).padStart(2, '0')}`;
+  const csv = row([`Píchačky — ${MONTHS[mo]} ${y} — ${types.map(t => TYPE_LABELS[t]).join(', ')}`]) + '\nSOUHRN\n' + sum + '\nROZPIS PO DNECH\n' + det;
+  try {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob(['﻿' + csv], {type: 'text/csv;charset=utf-8'}));
+    a.download = `pichacky-${types.length === TYPE_ORDER.filter(t => db.people.some(p => (p.type || 'zamestnanec') === t)).length ? 'vsichni' : types.join('-')}-${ym}.csv`;
+    document.body.appendChild(a); a.click(); a.remove();
+  } catch { document.getElementById('csv-text').value = csv; document.getElementById('csv-overlay').hidden = false; }
+}
+
+// rename a person (name must match the login name for the app clock-in) — Jan 2026-11-28
+function renamePerson(id) {
+  const p = db.people.find(x => x.id === id); if (!p) return;
+  const n = (prompt('Nové jméno (stejné jako přihlášení do aplikace, např. „Jan Vlček“):', p.name) || '').trim();
+  if (!n || n === p.name) return;
+  if (db.people.some(x => x.id !== id && x.name.toLowerCase() === n.toLowerCase())) { alert('Osoba s tímto jménem už existuje.'); return; }
+  p.name = n; save();
+  if (!document.getElementById('dashboard').hidden) renderDashboard(); else render();
 }
 
 // ── EXPORT CSV ──
