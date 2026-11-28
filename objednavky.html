@@ -186,6 +186,7 @@ mark { background: rgba(247,171,49,.4); color: inherit; border-radius: 2px; padd
 .product-row.done .prod-code { opacity: .25; }
 .done-check { font-size: 13px; color: var(--leaf); flex-shrink: 0; width: 16px; text-align: center; opacity: 0; transition: opacity .15s; }
 .product-row.done .done-check { opacity: 1; }
+.done-who { font-size: 11px; font-weight: 700; color: var(--leaf); white-space: nowrap; flex-shrink: 0; background: rgba(111,160,68,.12); border-radius: 8px; padding: 1px 6px; }
 .qty-badge { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 13px; min-width: 26px; flex-shrink: 0; line-height: 1; }
 .prod-name { font-size: 12px; color: var(--fg2); flex: 1; min-width: 0; line-height: 1.35; }
 .prod-code { font-size: 10px; color: var(--fg3); flex-shrink: 0; font-family: monospace; opacity: .7; }
@@ -799,8 +800,14 @@ function applyDoneState() {
   document.querySelectorAll('.product-row[data-code]').forEach(row => {
     const done = doneSet.has(row.dataset.code) || !!(window.NWUkoly && NWUkoly.refDone(vuRef(row.dataset.shop || 'cz', row.dataset.code), TODAY));
     row.classList.toggle('done', done);
-    const who = ROZ_KDO[row.dataset.code];
+    const who = done ? ROZ_KDO[row.dataset.code] : null;
     row.title = who && who.kdo ? `✓ ${who.kdo}${who.cas ? ' · ' + who.cas : ''}` : '';
+    // who ticked it, right on the row (phones have no hover) — first name + time
+    let w = row.querySelector(':scope > .done-who');
+    if (who && who.kdo) {
+      if (!w) { w = document.createElement('span'); w.className = 'done-who'; row.appendChild(w); }
+      w.textContent = `✓ ${String(who.kdo).split(' ')[0]}${who.cas ? ' ' + who.cas : ''}`;
+    } else if (w) w.remove();
     if (hideDone) row.hidden = done;
   });
   // Aktualizuj počítadla variant
