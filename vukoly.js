@@ -1,6 +1,7 @@
-// 📋 Production tasks with timing (Jan 2026-11-28) — shared by vyroba.html (Jan / team leads assign an item of an order)
-// and objednavky.html (a worker takes an e-shop item himself). Data live on the server (nw_nastenky /api/nastenky/vukoly),
-// the worker runs ▶ / ⏸ / ✅ in his own app (aplikace.html #/ukoly). On GitHub Pages (no server) everything stays hidden.
+// 📋 Production tasks with timing (Jan 2026-11-28) — shared by vyroba.html and objednavky.html. Jan / team leads assign an
+// item („👤 Zadat úkol“); anyone takes an item himself („🙋 Beru si“ = the time starts) and ends it („✅ Hotovo“) right on
+// the page. Everyone has his own to-do list + month stats (floating „📋 Moje úkoly“) and the same in the app (#/ukoly).
+// Data on the server (nw_nastenky /api/nastenky/vukoly). On GitHub Pages (no server) everything stays hidden.
 (function () {
   const API = '/api/nastenky/vukoly';
   const S = { data: null, zdroj: null, onChange: null, timer: null };
@@ -31,7 +32,19 @@
 .vu-dlg .zp{background:#f1e6da;color:#5c381f;border:0;border-radius:9px;padding:9px 14px;font-weight:700;cursor:pointer}
 .vu-dlg .del{background:#fff;color:#9b1c1c;border:1.5px solid #f5b5b5;border-radius:9px;padding:8px 12px;font-weight:700;cursor:pointer}
 .vu-dlg .err{color:#9b1c1c;font-size:13px;margin-top:8px}
-.vu-dlg .ukol{background:#f1e6da;border-radius:9px;padding:8px 10px;margin:6px 0;font-size:14px}`;
+.vu-dlg .ukol{background:#f1e6da;border-radius:9px;padding:8px 10px;margin:6px 0;font-size:14px}
+.vu-dlg select,.vu-dlg input,.vu-dlg textarea,.vu-dlg button,.vu-moje select,.vu-moje input{pointer-events:auto!important;opacity:1!important}
+.vu-btn.go{background:#83502e;color:#fff}.vu-btn.ok2{border-color:#4a7c2f;color:#2d5a1b}.vu-btn.ok2:hover{background:#4a7c2f;color:#fff}
+.vu-fab{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));z-index:9990;background:#83502e;color:#fff;border:0;border-radius:999px;
+  padding:11px 16px;font:700 14px "Source Sans 3",Arial,sans-serif;box-shadow:0 6px 20px rgba(0,0,0,.25);cursor:pointer}
+.vu-fab b{background:#f7ab31;color:#2a1a0e;border-radius:999px;padding:0 7px;margin-left:6px}
+.vu-fab.bezi{background:#4a7c2f}
+.vu-moje{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:70px;z-index:9991;width:min(420px,calc(100vw - 32px));max-height:75vh;overflow:auto;background:#fffdf9;
+  border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.28);padding:14px;font:14px/1.45 "Source Sans 3",Arial,sans-serif;color:#2a1a0e}
+.vu-moje h4{margin:0 0 8px;font:700 16px "Exo 2",Arial,sans-serif;color:#5c381f}
+.vu-moje .u{background:#f1e6da;border-radius:10px;padding:8px 10px;margin-bottom:8px}.vu-moje .u.bezi{outline:2px solid #6fa044}
+.vu-moje .s{color:#83502e;font-size:12.5px}
+.vu-moje table{width:100%;border-collapse:collapse;font-size:12.5px}.vu-moje td{padding:4px 2px;border-bottom:1px solid #eadccd;vertical-align:top}`;
   document.head.appendChild(css);
 
   async function api(path, body) {
@@ -47,11 +60,13 @@
     S.zdroj = zdroj; if (onChange) S.onChange = onChange;
     try { S.data = await api(API + '?zdroj=' + encodeURIComponent(zdroj)); } catch (e) { S.data = null; }
     if (!S.data || !S.data.smi) return S.data;
+    drawMoje();
     if (!S.timer) S.timer = setInterval(async () => {
       if (document.hidden) return;
       const old = JSON.stringify(S.data && S.data.ukoly);
       try { S.data = await api(API + '?zdroj=' + encodeURIComponent(S.zdroj)); } catch (e) { return; }
       if (JSON.stringify(S.data.ukoly) !== old && S.onChange) S.onChange();
+      drawMoje();
     }, 30000);
     return S.data;
   }
@@ -70,17 +85,21 @@
     if (t.varovani) { cls = 'warn'; txt = '⚠️ ' + txt + ' · zapomenuté zastavení'; }
     return `<span class="vu-chip ${cls}" data-vu="${esc(t.id)}" title="${esc(t.text || '')}">${txt}</span>`;
   }
+  // my own task: ▶ / ⏸ and ✅ right next to it
+  const ovl = t => (t.stav === 'bezi' ? `<button type="button" class="vu-btn" data-vu-act="pauza" data-id="${t.id}">⏸ Pauza</button>`
+    : `<button type="button" class="vu-btn go" data-vu-act="start" data-id="${t.id}">▶ ${t.minuty ? 'Pokračuju' : 'Začínám'}</button>`)
+    + ` <button type="button" class="vu-btn ok2" data-vu-act="hotovo" data-id="${t.id}">✅ Hotovo</button>`;
   // chips + button for one item; opts = what the task is about (see assign)
   function html(ref, opts, odDne) {
     if (!on()) return '';
     const l = byRef(ref, odDne);
-    const self = opts && opts.sam;            // e-shop: the worker takes it himself
-    const otevrene = l.some(t => t.stav !== 'hotovo');
+    const eshop = opts && opts.zdroj === 'eshop';
+    const cizi = l.some(t => t.stav !== 'hotovo' && !t.moje), moje = l.filter(t => t.moje && t.stav !== 'hotovo');
     let btn = '';
-    if (S.data.muze_zadat) btn = `<button type="button" class="vu-btn" data-vu-new="${esc(ref)}">👤 Zadat úkol</button>`;
-    if (self && !refDone(ref, odDne) && !(otevrene && l.some(t => t.stav !== 'hotovo' && !t.moje)) && !l.some(t => t.moje && t.stav !== 'hotovo'))
-      btn += ` <button type="button" class="vu-btn" data-vu-sam="${esc(ref)}">🙋 Beru si</button>`;
-    return `<div class="vu-chips" data-vu-ref="${esc(ref)}">${l.map(chip).join('')}${btn}</div>`;
+    // anyone takes an item himself; an e-shop item only one person at a time (company items can be split)
+    if (!refDone(ref, odDne) && !moje.length && !(eshop && cizi)) btn += `<button type="button" class="vu-btn go" data-vu-sam="${esc(ref)}">🙋 Beru si</button>`;
+    if (S.data.muze_zadat) btn += ` <button type="button" class="vu-btn" data-vu-new="${esc(ref)}">👤 Zadat úkol</button>`;
+    return `<div class="vu-chips" data-vu-ref="${esc(ref)}">${l.map(t => chip(t) + (t.moje && t.stav !== 'hotovo' ? ovl(t) : '')).join('')}${btn}</div>`;
   }
 
   function overlay(inner) {
@@ -136,17 +155,17 @@
     };
   }
   function claim(o) {
-    const ov = overlay(`<h3>🙋 Beru si</h3><div class="sub">${esc(o.produkt)}${o.gram && !String(o.produkt).replace(/\s/g, '').includes(o.gram) ? ' · ' + esc(o.gram) : ''}</div>
+    const ov = overlay(`<h3>🙋 Beru si</h3>${o.firma ? `<div class="sub" style="margin:0">${esc(o.firma)}</div>` : ''}<div class="sub">${esc(o.produkt)}${o.gram && !String(o.produkt).replace(/\s/g, '').includes(o.gram) ? ' · ' + esc(o.gram) : ''}</div>
       <div class="row"><div><label>Úkon</label><select data-f="ukon">${ukonOptions(o.dilna || 'balirna', 'Balení')}</select></div>
       <div style="flex:.6"><label>Kusů</label><input type="number" min="1" inputmode="numeric" data-f="ks" value="${esc(o.ks || '')}"></div></div>
-      <div class="sub" style="margin-top:8px">Úkol se ti objeví v aplikaci v 📋 Úkoly — tam dáš ▶ Začínám a ✅ Hotovo.</div>
+      <div class="sub" style="margin-top:8px">Čas běží od teď. Až budeš mít hotovo, klikni ✅ Hotovo — tady, v „📋 Moje úkoly“ vpravo dole nebo v aplikaci.</div>
       <div class="err" hidden></div>
-      <div class="akce"><button class="zp" type="button">Zpět</button><button class="ok" type="button">Beru si</button></div>`);
+      <div class="akce"><button class="zp" type="button">Zpět</button><button class="ok" type="button">🙋 Beru si a začínám</button></div>`);
     const f = k => ov.querySelector(`[data-f="${k}"]`);
     ov.querySelector('.zp').onclick = () => ov.remove();
     ov.querySelector('.ok').onclick = async () => {
       const [dilna, ukon] = f('ukon').value.split('|');
-      try { await api(API, { ...o, zdroj: 'eshop', ukon, dilna, ks: +f('ks').value, osoba: S.data.ja }); ov.remove(); await refresh(); }
+      try { await api(API, { ...o, zdroj: o.zdroj || 'eshop', ukon, dilna, ks: +f('ks').value, osoba: S.data.ja, start: true }); ov.remove(); await refresh(); }
       catch (e) { const er = ov.querySelector('.err'); er.hidden = false; er.textContent = e.message; }
     };
   }
@@ -217,15 +236,66 @@
   async function refresh() {
     try { S.data = await api(API + '?zdroj=' + encodeURIComponent(S.zdroj)); } catch (e) { }
     if (S.onChange) S.onChange();
+    drawMoje();
+  }
+
+  // ✅ Hotovo of my task: confirm the pieces actually done
+  function hotovo(t) {
+    const ov = overlay(`<h3>✅ Hotovo</h3><div class="sub">${esc(t.ukon)} · ${esc(t.produkt)}</div>
+      <label>Kolik kusů je opravdu hotových?</label><input type="number" min="0" inputmode="numeric" data-f="ks" value="${t.ks}">
+      <div class="err" hidden></div><div class="akce"><button class="zp" type="button">Zpět</button><button class="ok" type="button">✅ Hotovo</button></div>`);
+    const i = ov.querySelector('[data-f="ks"]'); i.focus(); i.select();
+    ov.querySelector('.zp').onclick = () => ov.remove();
+    ov.querySelector('.ok').onclick = async () => {
+      try { await api(`${API}/${t.id}`, { akce: 'hotovo', ks: +i.value }); ov.remove(); await refresh(); }
+      catch (e) { const er = ov.querySelector('.err'); er.hidden = false; er.textContent = e.message; }
+    };
+  }
+  async function act(id, a) {
+    const t = (S.moje || []).concat(S.data ? S.data.ukoly : []).find(x => x.id === id); if (!t) return;
+    if (a === 'hotovo') return hotovo(t);
+    try { await api(`${API}/${id}`, { akce: a }); await refresh(); } catch (e) { alert(e.message); }
+  }
+
+  // 📋 my to-do list + my month stats, floating on the page (every logged-in person with the feature)
+  let fab = null, panel = null;
+  async function drawMoje() {
+    if (!on()) return;
+    let j; try { j = await api(API + '?moje=1'); } catch (e) { return; }
+    S.moje = j.ukoly;
+    const live = j.ukoly.filter(t => t.stav !== 'hotovo'), run = live.find(t => t.stav === 'bezi');
+    if (!fab) { fab = document.createElement('button'); fab.className = 'vu-fab'; fab.type = 'button'; document.body.appendChild(fab);
+      fab.onclick = () => { if (panel) { panel.remove(); panel = null; } else { panel = document.createElement('div'); panel.className = 'vu-moje'; document.body.appendChild(panel); fillPanel(); } }; }
+    fab.classList.toggle('bezi', !!run);
+    fab.innerHTML = `📋 Moje úkoly${live.length ? `<b>${live.length}</b>` : ''}${run ? ` · ▶ ${fmtMin(run.minuty)}` : ''}`;
+    if (panel) fillPanel();
+  }
+  async function fillPanel() {
+    const live = (S.moje || []).filter(t => t.stav !== 'hotovo'), done = (S.moje || []).filter(t => t.stav === 'hotovo');
+    panel.innerHTML = `<h4>📋 Moje úkoly</h4>` + (live.length ? live.map(t => `<div class="u ${t.stav}">
+        <div style="display:flex;justify-content:space-between;gap:6px"><b>${esc(t.ukon)} · ${esc(t.produkt)}</b><b style="white-space:nowrap">${t.ks} ks</b></div>
+        <div class="s">${[t.firma, t.zadal !== t.osoba ? 'zadal(a) ' + (t.zadal || '').split(' ')[0] : ''].filter(Boolean).map(esc).join(' · ')}</div>
+        <div class="s">${t.stav === 'bezi' ? '▶ běží' : t.stav === 'pauza' ? '⏸ pauza' : '⏳ nezačato'}${t.minuty ? ' · ' + fmtMin(t.minuty) + ' h' : ''}</div>
+        <div style="margin-top:5px">${ovl(t)}</div></div>`).join('')
+      : '<div class="s" style="margin-bottom:8px">Teď nemáš žádný úkol. Vezmi si položku tlačítkem 🙋 Beru si.</div>')
+      + (done.length ? `<div class="s" style="margin:6px 0 2px;font-weight:700">Hotovo za týden</div><table>${done.slice(0, 15).map(t => `<tr><td>✅ ${esc(t.ukon)} · ${esc(t.produkt)}</td><td>${t.ks_hotovo} ks</td><td>${fmtMin(t.minuty)}</td><td>${t.ks_h ? num(t.ks_h) + ' ks/h' : ''}</td></tr>`).join('')}</table>` : '')
+      + '<div data-souhrn></div>';
+    let j; try { j = await api(API + '/souhrn'); } catch (e) { return; }
+    const el = panel && panel.querySelector('[data-souhrn]'); if (!el || !j.radky.length) return;
+    el.innerHTML = `<div class="s" style="margin:10px 0 2px;font-weight:700">Můj výkon tento měsíc · úkolů ${j.ukolu} · ${fmtMin(j.minut_celkem)} h</div><table>
+      <tr><td class="s">Práce</td><td class="s">ks/h</td><td class="s">min/ks</td><td class="s">tým ks/h</td></tr>
+      ${j.radky.map(r => `<tr><td><b>${esc(r.klic)}</b><br><span class="s">${r.ks} ks · ${fmtMin(r.min)} h</span></td><td><b>${num(r.ks_h)}</b></td><td>${num(r.min_ks, 2)}</td><td>${num(r.tym_ks_h)}</td></tr>`).join('')}</table>
+      <div class="s" style="margin-top:4px">Tým = průměr všech za stejnou práci (úkon, obal, gramáž), bez jmen.</div>`;
   }
 
   // one delegated click handler; pages register what each ref is about via NWUkoly.meta[ref]
   const meta = {};
   document.addEventListener('click', e => {
-    const n = e.target.closest('[data-vu-new],[data-vu-sam],[data-vu]');
+    const n = e.target.closest('[data-vu-new],[data-vu-sam],[data-vu],[data-vu-act]');
     if (!n || !on()) return;
     e.stopPropagation(); e.preventDefault();
-    if (n.dataset.vuNew) assign(meta[n.dataset.vuNew] || { ref: n.dataset.vuNew });
+    if (n.dataset.vuAct) act(n.dataset.id, n.dataset.vuAct);
+    else if (n.dataset.vuNew) assign(meta[n.dataset.vuNew] || { ref: n.dataset.vuNew });
     else if (n.dataset.vuSam) claim(meta[n.dataset.vuSam] || { ref: n.dataset.vuSam });
     else detail(n.dataset.vu);
   }, true);
