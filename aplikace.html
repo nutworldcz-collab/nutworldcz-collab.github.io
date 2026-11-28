@@ -226,7 +226,7 @@ const STRANKY = (window.NW_STRANKY || []).filter(p => p.soubor && p.soubor !== '
 const SKUPINY = window.NW_SKUPINY || [];
 const PAGE = Object.fromEntries(STRANKY.map(p => [p.soubor, p]));
 
-let ME = {jmeno: '', role: 'plny', stranky: ['*']}, ROLE_VSE = null, NAHLED_ROLE = null;
+let ME = {jmeno: '', role: 'plny', stranky: ['*']}, ROLE_VSE = null, NAHLED_ROLE = null, DENIED = new Set();
 let ALLOWED = null;          // Set of page files the role may open (null = all)
 
 // ── bottom menu per role (preview approved 27. 11. 2026); first allowed candidate wins in each slot ──
@@ -256,6 +256,7 @@ function can(soubor) {
   const p = PAGE[soubor];
   if (p && p.jen) return !NAHLED_ROLE && p.jen.includes(ME.jmeno);   // named people only (e.g. Pohledávky: Jan + Jana); never in a role preview
   if (soubor.startsWith('soukrome/') && ME.role !== 'admin') return false;   // Jan's private folder
+  if (DENIED.has(soubor)) return false;
   if (p && p.skupina === 'jan' && ME.role !== 'admin') return false;
   return !ALLOWED || ALLOWED.has(soubor);
 }
@@ -275,6 +276,7 @@ async function whoami() {
     if (ME.role === 'admin' && nr && ROLE_VSE && ROLE_VSE[nr]) { NAHLED_ROLE = nr; ME = {...ME, role: nr, stranky: ROLE_VSE[nr].stranky}; } }
   else { const c = ls.get('nw_app_me'); if (c) ME = JSON.parse(c); }   // offline -> last known
   if (ME.stranky && !ME.stranky.includes('*')) ALLOWED = new Set(ME.stranky);
+  DENIED = new Set((ME.stranky || []).filter(s => s.startsWith('!')).map(s => s.slice(1)));   // '*' with exceptions (vedení)
   else if (!ME.stranky) ALLOWED = await probe();
 }
 
