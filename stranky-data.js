@@ -539,6 +539,15 @@ window.NW_STRANKY = [
   "archiv": 1
  },
  {
+  "soubor": "reklamy.html",
+  "skupina": "marketing",
+  "ikona": "📈",
+  "nazev": "Reklamy — Facebook a Google CZ + SK",
+  "popis": "Útrata, tržby, PNO, ROAS a objednávky po kanálech za 7 dní, změny a doporučení (ranní report)",
+  "stitek": "nové",
+  "barva": "brown"
+ },
+ {
   "soubor": "bannery.html",
   "skupina": "marketing",
   "ikona": "🐿️",

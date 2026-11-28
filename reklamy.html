@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Reklamy — Facebook a Google CZ + SK</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+  :root{--hn:#83502e;--tm:#5c381f;--kr:#f1e6da;--ru:#da1668;--zl:#f7ab31;--ze:#6fa044;--tx:#2a1a0e;--mu:#7a6656;--li:#e5d6c6}
+  *{box-sizing:border-box}body{margin:0;background:#faf6f1;color:var(--tx);font:15px/1.45 'Source Sans 3',Arial,sans-serif}
+  header{background:linear-gradient(135deg,#5c381f 0%,#83502e 55%,#a0622a 100%);color:#fff;padding:20px 18px}
+  header h1{font:800 24px 'Exo 2',Arial;margin:0}header p{margin:4px 0 0;opacity:.85;font-size:14px}
+  main{max-width:980px;margin:0 auto;padding:16px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+  .card{background:#fff;border:1px solid var(--li);border-radius:14px;padding:14px 16px}
+  .card h2{font:700 16px 'Exo 2',Arial;color:var(--tm);margin:0 0 8px;display:flex;gap:8px;align-items:center}
+  .big{font:800 26px 'Exo 2',Arial;color:var(--tm)}
+  .row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #f1e6da;font-size:14px}.row:last-child{border:0}
+  .mu{color:var(--mu);font-size:13px}.ok{color:#4a7c2f;font-weight:700}.zl{color:#b8860b;font-weight:700}.bad{color:var(--ru);font-weight:700}
+  .li{background:#fff;border:1px solid var(--li);border-left:4px solid var(--zl);border-radius:10px;padding:9px 12px;margin:6px 0}
+  h3{font:700 15px 'Exo 2',Arial;color:var(--tm);margin:20px 0 6px}
+</style>
+</head>
+<body>
+<header><h1>📈 Reklamy</h1><p id="per">Facebook / Instagram a Google · CZ + SK · posledních 7 dní</p></header>
+<main>
+  <div class="grid" id="sum"></div>
+  <h3>Kanály</h3><div class="grid" id="ch">Načítám…</div>
+  <h3>Co se změnilo</h3><div id="an"></div>
+  <h3>Doporučení</h3><div id="pr"></div>
+  <p class="mu" id="gen" style="margin-top:20px"></p>
+</main>
+<script>
+// Data: ranní report reklam (ads_morning_report.py, server 8:30) -> report_ads.json. CZ účty v Kč, SK účty v €.
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+const cur = n => /SK/.test(n) ? '€' : 'Kč';
+const num = (v, n) => Math.round(v || 0).toLocaleString('cs-CZ') + ' ' + cur(n);
+const pnoCls = p => p == null ? '' : p < 20 ? 'ok' : p < 40 ? 'zl' : 'bad';
+const delta = (a, b) => b ? Math.round((a - b) / b * 100) : null;
+fetch('/report_ads.json?_=' + Date.now(), {credentials: 'same-origin'}).then(r => r.ok ? r.json() : Promise.reject(r.status)).then(d => {
+  document.getElementById('per').textContent = `Facebook / Instagram a Google · CZ + SK · ${d.period || 'posledních 7 dní'}`;
+  const ch = d.channels || {};
+  const tot = c => Object.entries(ch).filter(([n]) => n.includes(c)).reduce((a, [, v]) => ({s: a.s + (v.spend || 0), r: a.r + (v.revenue || 0)}), {s: 0, r: 0});
+  const cz = tot('CZ'), sk = tot('SK');
+  document.getElementById('sum').innerHTML = [['🇨🇿 CZ celkem', cz, 'Kč'], ['🇸🇰 SK celkem', sk, '€']].map(([t, v, c]) =>
+    `<div class="card"><h2>${t}</h2><div class="big ${pnoCls(v.r ? v.s / v.r * 100 : null)}">${v.r ? (v.s / v.r * 100).toFixed(1).replace('.', ',') + ' % PNO' : '—'}</div>
+     <div class="mu">útrata ${Math.round(v.s).toLocaleString('cs-CZ')} ${c} · tržby ${Math.round(v.r).toLocaleString('cs-CZ')} ${c}${v.s ? ' · ROAS ' + (v.r / v.s).toFixed(1).replace('.', ',') + '×' : ''}</div></div>`).join('');
+  document.getElementById('ch').innerHTML = Object.entries(ch).map(([n, v]) => { const ds = delta(v.spend, v.prev_spend);
+    return `<div class="card"><h2>${/Meta/.test(n) ? '📘' : '🔎'} ${esc(n.replace('Meta', 'Facebook'))}</h2>
+      <div class="big ${pnoCls(v.pno)}">${v.pno != null ? String(v.pno).replace('.', ',') + ' % PNO' : '—'}</div>
+      <div class="row"><span>Útrata</span><b>${num(v.spend, n)}${ds != null ? ` <small class="mu">(${ds > 0 ? '+' : ''}${ds} % proti min. týdnu)</small>` : ''}</b></div>
+      <div class="row"><span>Tržby z reklam</span><b>${num(v.revenue, n)}</b></div>
+      <div class="row"><span>Objednávky</span><b>${Math.round(v.conversions || 0)}</b></div>
+      <div class="row"><span>Kliky</span><b>${(v.clicks || 0).toLocaleString('cs-CZ')}</b></div>
+      <div class="row"><span>ROAS</span><b>${v.spend ? (v.revenue / v.spend).toFixed(1).replace('.', ',') + '×' : '—'}</b></div>
+      ${v.prev_pno != null ? `<div class="row"><span>PNO minulý týden</span><b>${String(v.prev_pno).replace('.', ',')} %</b></div>` : ''}</div>`; }).join('');
+  document.getElementById('an').innerHTML = (d.anomalies || []).map(x => `<div class="li">${esc(x)}</div>`).join('') || '<div class="mu">Nic neobvyklého.</div>';
+  document.getElementById('pr').innerHTML = (d.priorities || []).map(x => `<div class="li" style="border-left-color:#6fa044">${esc(x)}</div>`).join('') || '<div class="mu">—</div>';
+  document.getElementById('gen').textContent = `Data z ranního reportu: ${String(d.generated || '').replace('T', ' ').slice(0, 16)} · PNO = útrata / tržby (cíl pod 20 %), ROAS = tržby / útrata (cíl nad 5×).`;
+}).catch(e => { document.getElementById('ch').innerHTML = `<div class="card">Report reklam teď nejde načíst (${esc(e)}).</div>`; });
+</script>
+</body>
+</html>

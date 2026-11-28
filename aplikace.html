@@ -235,14 +235,22 @@ const NAV = {
   plny:      [['domu'], ['vyroba.html'], ['tym', 'skenovat'], ['chat.html', 'nastenky.html'], ['vice']],
   vyroba:    [['domu'], ['vyroba.html'], ['tym', 'skenovat'], ['stitky-kontrola.html', 'stitky.html'], ['vice']],
   obchod:    [['domu'], ['zakazy.html', 'nastenky.html'], ['nabidky.html'], ['tym', 'chat.html', 'kalkulator.html'], ['vice']],
-  marketing: [['domu'], ['bannery.html'], ['tym', 'nastenky.html'], ['popupy.html', 'chat.html'], ['vice']],
+  marketing: [['domu'], ['chat.html'], ['reklamy.html', 'bannery.html'], ['tym', 'nastenky.html'], ['vice']],
+  vedeni:    [['domu'], ['zakazy.html'], ['vyroba.html'], ['tym'], ['vice']],
+  kvalita:   [['domu'], ['stitky-kontrola.html'], ['specifikace.html'], ['tym'], ['vice']],
+  balirna_vedouci:  [['domu'], ['vyroba.html'], ['zakazy.html'], ['tym'], ['vice']],
+  darkovna_vedouci: [['domu'], ['vyroba.html'], ['zakazy.html'], ['tym'], ['vice']],
+  darkovna:  [['domu'], ['vyroba.html'], ['tym', 'skenovat'], ['objednavky.html'], ['vice']],
+  doprava:   [['domu'], ['expedice/index.html'], ['doprava.html'], ['tym'], ['vice']],
+  sklad:     [['domu'], ['prijem-surovin.html'], ['denik-michani.html'], ['tym'], ['vice']],
   brigadnik: [['pich'], ['smeny'], ['vice']],
 };
 const NAV_LABEL = {domu: ['🏠', 'Domů'], skenovat: ['📷', 'Skenovat'], vice: ['☰', 'Více'],
   'vyroba.html': ['🏭', 'Výroba'], 'chat.html': ['🛍️', 'Zákazníci'], tym: ['💬', 'Tým'], pich: ['⏱', 'Píchačka'], smeny: ['👷', 'Kdy přijdu'], 'nastenky.html': ['📌', 'Nástěnky'],
   'stitky-kontrola.html': ['🏷️', 'Štítky'], 'stitky.html': ['🏷️', 'Štítky'], 'zakazy.html': ['📋', 'Zakázky'],
   'nabidky.html': ['🧾', 'Nabídky'], 'kalkulator.html': ['🧮', 'Kalkulátor'], 'bannery.html': ['🖼️', 'Bannery'],
-  'popupy.html': ['💬', 'Popupy'], 'wolf.html': ['🐺', 'Přehled'], 'kalendar.html': ['📅', 'Kalendář']};
+  'popupy.html': ['💬', 'Popupy'], 'reklamy.html': ['📈', 'Reklamy'], 'expedice/index.html': ['🚚', 'Expedice'], 'doprava.html': ['🚛', 'Doprava'],
+  'prijem-surovin.html': ['📦', 'Příjem'], 'denik-michani.html': ['🥣', 'Míchání'], 'specifikace.html': ['📋', 'Specifikace'], 'objednavky.html': ['🧾', 'Rozklad'], 'wolf.html': ['🐺', 'Přehled'], 'kalendar.html': ['📅', 'Kalendář']};
 
 function can(soubor) {
   const p = PAGE[soubor];
@@ -579,7 +587,9 @@ function drawInstall() {
 
 function drawAccount() {
   $('#titul').textContent = 'Můj účet';
-  const ROLE = {admin: 'Jednatel — vše + správa', plny: 'Plný přístup', vyroba: 'Výroba / balírna', obchod: 'Obchodník', marketing: 'Marketing'};
+  const ROLE = {admin: 'Jednatel — vše + správa', vedeni: 'Vedení', plny: 'Plný přístup', obchod: 'Obchod', kvalita: 'Kvalita a legislativa',
+    balirna_vedouci: 'Balírna — vedoucí', darkovna_vedouci: 'Dárkovna — vedoucí', vyroba: 'Balírna', darkovna: 'Dárkovna', doprava: 'Doprava a expedice',
+    sklad: 'Sklad', marketing: 'Marketing', brigadnik: 'Brigádník'};
   $('#ucet').innerHTML = `<div class="card"><div class="h">${esc(ME.jmeno || 'Nepřihlášen')}</div><div class="s">${esc(ROLE[ME.role] || ME.role)}</div></div>
     ${ROLE_VSE ? `<h2 class="sek">👁 Náhled aplikace jako…</h2><div class="card"><div class="s" style="margin-bottom:6px">Ukáže menu, Domů a stránky přesně jako u dané role. Data se načítají s tvými právy.</div>
       ${Object.entries(ROLE_VSE).map(([k, v]) => `<button class="big b-l" data-nr="${esc(k)}" style="margin-top:6px">${esc(v.nazev)}</button>`).join('')}
@@ -669,7 +679,8 @@ async function drawPush() {
 }
 
 // Jan: who has notifications on, who gets which category, send a message to the team
-const ROLE_N = {admin: 'Jednatel', plny: 'Plný přístup', vyroba: 'Výroba / balírna', obchod: 'Obchod', marketing: 'Marketing'};
+const ROLE_N = {admin: 'Jednatel', vedeni: 'Vedení', plny: 'Plný přístup', obchod: 'Obchod', kvalita: 'Kvalita', balirna_vedouci: 'Balírna — vedoucí',
+  darkovna_vedouci: 'Dárkovna — vedoucí', vyroba: 'Balírna', darkovna: 'Dárkovna', doprava: 'Doprava', sklad: 'Sklad', marketing: 'Marketing', brigadnik: 'Brigádníci'};
 async function drawPushAdmin() {
   const box = $('#p-admin'); if (!box) return;
   let p; try { p = await pushApi('prehled'); } catch (e) { box.innerHTML = `<div class="card err">${esc(e.message)}</div>`; return; }
