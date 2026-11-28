@@ -13,7 +13,7 @@
   const css = document.createElement('style');
   css.textContent = `
 .vu-chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
-.vu-chip{font:600 11.5px/1.3 "Source Sans 3",Arial,sans-serif;border-radius:999px;padding:2px 8px;background:#f1e6da;color:#5c381f;border:1px solid #e3cdb5;cursor:pointer;white-space:nowrap}
+.vu-chip{font:600 11.5px/1.3 "Source Sans 3",Arial,sans-serif;border-radius:999px;padding:2px 8px;background:#f1e6da;color:#5c381f;border:1px solid #e3cdb5;cursor:pointer;white-space:normal;max-width:100%}
 .vu-chip.bezi{background:#e8f3df;color:#2d5a1b;border-color:#b9d8a0}
 .vu-chip.pauza{background:#fff3cd;color:#8a6200;border-color:#f3d98a}
 .vu-chip.hotovo{background:#dcfce7;color:#166534;border-color:#a7e3bb}
@@ -97,7 +97,7 @@
     const cizi = l.some(t => t.stav !== 'hotovo' && !t.moje), moje = l.filter(t => t.moje && t.stav !== 'hotovo');
     let btn = '';
     // anyone takes an item himself; an e-shop item only one person at a time (company items can be split)
-    if (!refDone(ref, odDne) && !moje.length && !(eshop && cizi)) btn += `<button type="button" class="vu-btn go" data-vu-sam="${esc(ref)}">🙋 Beru si</button>`;
+    if (!refDone(ref, odDne) && !moje.length && !(eshop && cizi)) btn += `<button type="button" class="vu-btn" data-vu-sam="${esc(ref)}">🙋 Beru si</button>`;
     if (S.data.muze_zadat) btn += ` <button type="button" class="vu-btn" data-vu-new="${esc(ref)}">👤 Zadat úkol</button>`;
     return `<div class="vu-chips" data-vu-ref="${esc(ref)}">${l.map(t => chip(t) + (t.moje && t.stav !== 'hotovo' ? ovl(t) : '')).join('')}${btn}</div>`;
   }
