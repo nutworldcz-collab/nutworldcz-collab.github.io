@@ -358,7 +358,7 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
     });
 
     // Stats + price alerts
-    const totalKg = filtered.reduce((s, d) => s + (d._filteredItems || d.items).reduce((a,i) => a + (parseFloat(i.mnozstvi)||0), 0), 0);
+    const totalKg = filtered.reduce((s, d) => s + (d._filteredItems || d.items).reduce((a,i) => a + (i.druh === 'obal' ? 0 : (parseFloat(i.mnozstvi)||0)), 0), 0);
     const totalItems = filtered.reduce((s, d) => s + (d._filteredItems || d.items).length, 0);
     document.getElementById('stats').innerHTML =
       `<div class="stat">Dodávky: <strong>${filtered.length}</strong></div>
@@ -412,7 +412,7 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
       }).length;
 
       const badges = [
-        `<span class="badge badge-kg">${(d.celkove_kg||0).toLocaleString('cs-CZ')} kg</span>`,
+        (d.celkove_kg || !items.some(i => i.druh === 'obal')) ? `<span class="badge badge-kg">${(d.celkove_kg||0).toLocaleString('cs-CZ')} kg</span>` : `<span class="badge badge-kg">📦 obaly</span>`,
         `<span class="badge badge-items">${items.length} pol.</span>`,
         nokCount ? `<span class="badge badge-nok">⚠ ${nokCount} NOK</span>` : '',
         warnCount ? `<span class="badge badge-warn">⏰ ${warnCount} DMT</span>` : '',
@@ -445,7 +445,7 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
           <td>${nwCell}</td>
           <td><span class="lot">${i.sarze || '—'}</span></td>
           <td class="td-dmt ${dc}" data-did="${d.id}" data-nazev="${(i.nazev||'').replace(/"/g,'&quot;')}" data-sarze="${(i.sarze||'').replace(/"/g,'&quot;')}" onclick="editDmt(this)">${dmtDisplay}</td>
-          <td>${i.mnozstvi ? i.mnozstvi+' kg' : '—'}</td>
+          <td>${i.mnozstvi ? Number(i.mnozstvi).toLocaleString('cs-CZ')+' '+(i.mj || (i.druh === 'obal' ? 'ks' : 'kg')) : '—'}</td>
           <td>${i.cena_kg ? i.cena_kg.toFixed(2)+' Kč' : '—'}</td>
           <td>${cenikCell}</td>
           <td class="delta-cell">${deltaCell}</td>
@@ -580,7 +580,7 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
         if (!products[prodKey]) products[prodKey] = { nazev: i.nazev, nw_kod: i.nw_kod, entries: [] };
         products[prodKey].entries.push({
           datum: d.datum, sarze: i.sarze, dmt: i.dmt,
-          mnozstvi: i.mnozstvi, dodavka: d.cislo_dodavky, did: d.id
+          mnozstvi: i.mnozstvi, mj: i.mj || (i.druh === 'obal' ? 'ks' : 'kg'), dodavka: d.cislo_dodavky, did: d.id
         });
       });
     });
@@ -698,7 +698,7 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
               <td>${fmtDate(e.datum)}</td>
               <td style="font-family:monospace;${isLatest?'font-weight:700;color:#5c381f':''}">${e.sarze || '—'}</td>
               <td>${e.dmt ? fmtDate(e.dmt) : '—'}</td>
-              <td>${e.mnozstvi || '—'} kg</td>
+              <td>${e.mnozstvi ? Number(e.mnozstvi).toLocaleString('cs-CZ') + ' ' + e.mj : '—'}</td>
               <td style="color:#a07850">${e.dodavka || ''}</td>
             </tr>`;
           }).join('');
@@ -726,7 +726,7 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
           <td>${sbHtml}</td>
           <td>${dmtHtml}</td>
           <td style="text-align:right">${fmtDate(last.datum)}</td>
-          <td style="text-align:right">${totalMnozstvi > 0 ? totalMnozstvi.toLocaleString('cs-CZ', {maximumFractionDigits:2}) + ' kg' : '—'}</td>
+          <td style="text-align:right">${totalMnozstvi > 0 ? totalMnozstvi.toLocaleString('cs-CZ', {maximumFractionDigits:2}) + ' ' + (last.mj || 'kg') : '—'}</td>
         </tr>`;
       }).join('');
 
