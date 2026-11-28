@@ -16,6 +16,7 @@
 .vu-chip{font:600 11.5px/1.3 "Source Sans 3",Arial,sans-serif;border-radius:999px;padding:2px 8px;background:#f1e6da;color:#5c381f;border:1px solid #e3cdb5;cursor:pointer;white-space:normal;max-width:100%}
 .vu-chip.bezi{background:#e8f3df;color:#2d5a1b;border-color:#b9d8a0}
 .vu-chip.pauza{background:#fff3cd;color:#8a6200;border-color:#f3d98a}
+.vu-chip.ke_kontrole{background:#e8f0fb;color:#24508a;border-color:#b5cdee}
 .vu-chip.hotovo{background:#dcfce7;color:#166534;border-color:#a7e3bb}
 .vu-chip.warn{background:#fee2e2;color:#9b1c1c;border-color:#f5b5b5}
 .vu-btn{font:700 11.5px/1 "Source Sans 3",Arial,sans-serif;border:1.5px solid #83502e;background:#fff;color:#83502e;border-radius:7px;padding:4px 8px;cursor:pointer;white-space:nowrap}
@@ -81,14 +82,18 @@
     if (t.stav === 'zadano') txt = `👤 ${kdo} · ${esc(t.ukon)} ${t.ks} ks · ⏳ čeká`;
     else if (t.stav === 'bezi') txt = `▶ ${kdo} · ${esc(t.ukon)} · běží ${fmtMin(t.minuty)}`;
     else if (t.stav === 'pauza') txt = `⏸ ${kdo} · ${esc(t.ukon)} · ${fmtMin(t.minuty)}`;
+    else if (t.stav === 'ke_kontrole') txt = `🔎 ${kdo} · ${esc(t.ukon)} ${t.ks_hotovo} ks · ${fmtMin(t.minuty)} · čeká na potvrzení vedoucího`;
     else txt = `✅ ${kdo} · ${esc(t.ukon)} ${t.ks_hotovo} ks · ${fmtMin(t.minuty)}` + (t.ks_h ? ` · ${num(t.ks_h)} ks/h · ${num(t.min_ks, 2)} min/ks` : '');
     if (t.varovani) { cls = 'warn'; txt = '⚠️ ' + txt + ' · zapomenuté zastavení'; }
     return `<span class="vu-chip ${cls}" data-vu="${esc(t.id)}" title="${esc(t.text || '')}">${txt}</span>`;
   }
   // my own task: ▶ / ⏸ and ✅ right next to it
-  const ovl = t => (t.stav === 'bezi' ? `<button type="button" class="vu-btn" data-vu-act="pauza" data-id="${t.id}">⏸ Pauza</button>`
+  const ovl = t => t.stav === 'ke_kontrole' ? '' : (t.stav === 'bezi' ? `<button type="button" class="vu-btn" data-vu-act="pauza" data-id="${t.id}">⏸ Pauza</button>`
     : `<button type="button" class="vu-btn go" data-vu-act="start" data-id="${t.id}">▶ ${t.minuty ? 'Pokračuju' : 'Začínám'}</button>`)
     + ` <button type="button" class="vu-btn ok2" data-vu-act="hotovo" data-id="${t.id}">✅ Hotovo</button>`;
+  // team lead: the worker's „done“ on a company order waits for him (Jan 2026-11-28)
+  const kontrola = t => t.stav === 'ke_kontrole' && S.data.muze_zadat
+    ? ` <button type="button" class="vu-btn ok2" data-vu-act="potvrdit" data-id="${t.id}">✔ Potvrdit</button> <button type="button" class="vu-btn" data-vu-act="vratit" data-id="${t.id}">↩ Vrátit</button>` : '';
   // chips + button for one item; opts = what the task is about (see assign)
   function html(ref, opts, odDne) {
     if (!on()) return '';
@@ -99,7 +104,7 @@
     // anyone takes an item himself; an e-shop item only one person at a time (company items can be split)
     if (!refDone(ref, odDne) && !moje.length && !(eshop && cizi)) btn += `<button type="button" class="vu-btn" data-vu-sam="${esc(ref)}">🙋 Beru si</button>`;
     if (S.data.muze_zadat) btn += ` <button type="button" class="vu-btn" data-vu-new="${esc(ref)}">👤 Zadat úkol</button>`;
-    return `<div class="vu-chips" data-vu-ref="${esc(ref)}">${l.map(t => chip(t) + (t.moje && t.stav !== 'hotovo' ? ovl(t) : '')).join('')}${btn}</div>`;
+    return `<div class="vu-chips" data-vu-ref="${esc(ref)}">${l.map(t => chip(t) + (t.moje && t.stav !== 'hotovo' ? ovl(t) : '') + kontrola(t)).join('')}${btn}</div>`;
   }
 
   function overlay(inner) {
@@ -174,8 +179,9 @@
     const t = S.data.ukoly.find(x => x.id === id); if (!t) return;
     const ved = S.data.muze_zadat, ja = t.moje;
     const b = [];
-    if (ja && t.stav !== 'hotovo') b.push(t.stav === 'bezi' ? ['pauza', '⏸ Pauza'] : ['start', '▶ Začínám']);
-    if ((ja || ved) && t.stav !== 'hotovo') b.push(['hotovo', '✅ Hotovo']);
+    if (ja && !['hotovo', 'ke_kontrole'].includes(t.stav)) b.push(t.stav === 'bezi' ? ['pauza', '⏸ Pauza'] : ['start', '▶ Začínám']);
+    if ((ja || ved) && !['hotovo', 'ke_kontrole'].includes(t.stav)) b.push(['hotovo', '✅ Hotovo']);
+    if (ved && t.stav === 'ke_kontrole') { b.push(['vratit', '↩ Vrátit']); b.push(['potvrdit', '✔ Potvrdit']); }
     if ((ja || ved) && t.stav === 'hotovo') b.push(['znovu', '↩ Není hotovo']);
     if (S.data.statistiky && (t.varovani || t.stav === 'hotovo')) b.push(['oprava', '✏️ Opravit čas']);
     const del = ved || (ja && t.zdroj === 'eshop') ? `<button class="del" type="button" data-a="zrusit">Zrušit úkol</button>` : '';
@@ -240,20 +246,22 @@
   }
 
   // ✅ Hotovo of my task: confirm the pieces actually done
-  function hotovo(t) {
-    const ov = overlay(`<h3>✅ Hotovo</h3><div class="sub">${esc(t.ukon)} · ${esc(t.produkt)}</div>
-      <label>Kolik kusů je opravdu hotových?</label><input type="number" min="0" inputmode="numeric" data-f="ks" value="${t.ks}">
-      <div class="err" hidden></div><div class="akce"><button class="zp" type="button">Zpět</button><button class="ok" type="button">✅ Hotovo</button></div>`);
+  function hotovo(t, potvrdit) {
+    const ov = overlay(`<h3>${potvrdit ? '✔ Potvrdit práci' : '✅ Hotovo'}</h3><div class="sub">${esc(t.ukon)} · ${esc(t.produkt)}${potvrdit ? ` · ${esc(t.osoba)} · ${fmtMin(t.minuty)} h` : ''}</div>
+      <label>Kolik kusů je opravdu hotových?</label><input type="number" min="0" inputmode="numeric" data-f="ks" value="${potvrdit ? t.ks_hotovo : t.ks}">
+      ${!potvrdit && t.zdroj === 'vyroba' && !S.data.muze_zadat ? '<div class="sub" style="margin-top:8px">Vedoucí to ještě zkontroluje a potvrdí — pak se položka odškrtne.</div>' : ''}
+      <div class="err" hidden></div><div class="akce"><button class="zp" type="button">Zpět</button><button class="ok" type="button">${potvrdit ? '✔ Potvrdit' : '✅ Hotovo'}</button></div>`);
     const i = ov.querySelector('[data-f="ks"]'); i.focus(); i.select();
     ov.querySelector('.zp').onclick = () => ov.remove();
     ov.querySelector('.ok').onclick = async () => {
-      try { await api(`${API}/${t.id}`, { akce: 'hotovo', ks: +i.value }); ov.remove(); await refresh(); }
+      try { await api(`${API}/${t.id}`, { akce: potvrdit ? 'potvrdit' : 'hotovo', ks: +i.value }); ov.remove(); await refresh(); }
       catch (e) { const er = ov.querySelector('.err'); er.hidden = false; er.textContent = e.message; }
     };
   }
   async function act(id, a) {
     const t = (S.moje || []).concat(S.data ? S.data.ukoly : []).find(x => x.id === id); if (!t) return;
     if (a === 'hotovo') return hotovo(t);
+    if (a === 'potvrdit') return hotovo(t, true);
     try { await api(`${API}/${id}`, { akce: a }); await refresh(); } catch (e) { alert(e.message); }
   }
 
@@ -267,7 +275,8 @@
     if (!fab) { fab = document.createElement('button'); fab.className = 'vu-fab'; fab.type = 'button'; document.body.appendChild(fab);
       fab.onclick = () => { if (panel) { panel.remove(); panel = null; } else { panel = document.createElement('div'); panel.className = 'vu-moje'; document.body.appendChild(panel); fillPanel(); } }; }
     fab.classList.toggle('bezi', !!run);
-    fab.innerHTML = `📋 Moje úkoly${live.length ? `<b>${live.length}</b>` : ''}${run ? ` · ▶ ${fmtMin(run.minuty)}` : ''}`;
+    const kk = S.data.muze_zadat ? S.data.ukoly.filter(t => t.stav === 'ke_kontrole').length : 0;
+    fab.innerHTML = `📋 Moje úkoly${live.length ? `<b>${live.length}</b>` : ''}${run ? ` · ▶ ${fmtMin(run.minuty)}` : ''}${kk ? ` · 🔎 ${kk}` : ''}`;
     if (panel) fillPanel();
   }
   async function fillPanel() {
@@ -275,10 +284,12 @@
     panel.innerHTML = `<h4>📋 Moje úkoly</h4>` + (live.length ? live.map(t => `<div class="u ${t.stav}">
         <div style="display:flex;justify-content:space-between;gap:6px"><b>${esc(t.ukon)} · ${esc(t.produkt)}</b><b style="white-space:nowrap">${t.ks} ks</b></div>
         <div class="s">${[t.firma, t.zadal !== t.osoba ? 'zadal(a) ' + (t.zadal || '').split(' ')[0] : ''].filter(Boolean).map(esc).join(' · ')}</div>
-        <div class="s">${t.stav === 'bezi' ? '▶ běží' : t.stav === 'pauza' ? '⏸ pauza' : '⏳ nezačato'}${t.minuty ? ' · ' + fmtMin(t.minuty) + ' h' : ''}</div>
+        <div class="s">${t.stav === 'bezi' ? '▶ běží' : t.stav === 'pauza' ? '⏸ pauza' : t.stav === 'ke_kontrole' ? '🔎 hotovo, čeká na potvrzení vedoucího' : '⏳ nezačato'}${t.minuty ? ' · ' + fmtMin(t.minuty) + ' h' : ''}</div>
         <div style="margin-top:5px">${ovl(t)}</div></div>`).join('')
       : '<div class="s" style="margin-bottom:8px">Teď nemáš žádný úkol. Vezmi si položku tlačítkem 🙋 Beru si.</div>')
       + (done.length ? `<div class="s" style="margin:6px 0 2px;font-weight:700">Hotovo za týden</div><table>${done.slice(0, 15).map(t => `<tr><td>✅ ${esc(t.ukon)} · ${esc(t.produkt)}</td><td>${t.ks_hotovo} ks</td><td>${fmtMin(t.minuty)}</td><td>${t.ks_h ? num(t.ks_h) + ' ks/h' : ''}</td></tr>`).join('')}</table>` : '')
+      + (S.data.muze_zadat && S.data.ukoly.some(t => t.stav === 'ke_kontrole') ? `<div class="s" style="margin:10px 0 4px;font-weight:700">🔎 Ke kontrole (${S.data.ukoly.filter(t => t.stav === 'ke_kontrole').length})</div>`
+        + S.data.ukoly.filter(t => t.stav === 'ke_kontrole').map(t => `<div class="u"><b>${esc(t.osoba)}</b> · ${esc(t.ukon)} · ${esc(t.produkt)} · ${t.ks_hotovo} ks · ${fmtMin(t.minuty)} h<div class="s">${esc(t.firma || '')}</div><div style="margin-top:5px">${kontrola(t)}</div></div>`).join('') : '')
       + '<div data-souhrn></div>';
     let j; try { j = await api(API + '/souhrn'); } catch (e) { return; }
     const el = panel && panel.querySelector('[data-souhrn]'); if (!el || !j.radky.length) return;

@@ -1051,8 +1051,8 @@ async function drawUkoly() {
     return `<div class="card" style="${run ? 'border:2px solid #6fa044' : ''}">
       <div style="display:flex;justify-content:space-between;gap:8px"><div class="h">${esc(t.text || t.produkt)}</div><b style="white-space:nowrap">${t.ks} ks</b></div>
       <div class="s">${[t.ukon, t.firma, t.zadal && t.zadal !== t.osoba ? 'zadal(a) ' + t.zadal.split(' ')[0] : ''].filter(Boolean).map(esc).join(' · ')}</div>
-      <div class="s" style="margin-top:4px">${run ? '▶ běží' : t.stav === 'pauza' ? '⏸ pauza' : '⏳ ještě nezačato'}${t.minuty ? ' · ' + ukMin(t.minuty) + ' h' : ''}${t.varovani ? ' · <span style="color:#9b1c1c">⚠️ zapomenuté zastavení</span>' : ''}</div>
-      <div style="display:flex;gap:8px">
+      <div class="s" style="margin-top:4px">${run ? '▶ běží' : t.stav === 'pauza' ? '⏸ pauza' : t.stav === 'ke_kontrole' ? '🔎 hotovo — čeká na potvrzení vedoucího' : '⏳ ještě nezačato'}${t.minuty ? ' · ' + ukMin(t.minuty) + ' h' : ''}${t.varovani ? ' · <span style="color:#9b1c1c">⚠️ zapomenuté zastavení</span>' : ''}</div>
+      <div style="display:flex;gap:8px"${t.stav === 'ke_kontrole' ? ' hidden' : ''}>
         ${run ? `<button class="big b-l" data-uk="pauza" data-id="${t.id}" style="flex:1">⏸ Pauza</button>` : `<button class="big b-h" data-uk="start" data-id="${t.id}" style="flex:1">▶ ${t.minuty ? 'Pokračuju' : 'Začínám'}</button>`}
         ${t.minuty || run ? `<button class="big b-z" data-uk="hotovo" data-id="${t.id}" style="flex:1">✅ Hotovo</button>` : ''}
       </div>
