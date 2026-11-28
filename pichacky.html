@@ -1882,8 +1882,8 @@ function doBulkExport() {
     sum += row([grp, p.name, wd, hod(mins), pz, over || '', hol || '', sick || '', bank || '', p.rate || '', pay || '', qr, ruc || '']);
     const g = tot[grp] = tot[grp] || {m: 0, p: 0, n: 0}; g.m += mins; g.p += pay; g.n++; gMins += mins; gPay += pay;
   });
-  sum += '\n' + Object.entries(tot).map(([g, v]) => row([g + ' — celkem', v.n + ' lidí', '', hod(v.m), '', '', '', '', '', '', v.p || ''])).join('');
-  sum += row(['VŠE CELKEM', people.length + ' lidí', '', hod(gMins), '', '', '', '', '', '', gPay || '']);
+  sum += '\n' + Object.entries(tot).map(([g, v]) => row([g + ' — celkem', 'počet ' + v.n, '', hod(v.m), '', '', '', '', '', '', v.p || ''])).join('');
+  sum += row(['VŠE CELKEM', 'počet ' + people.length, '', hod(gMins), '', '', '', '', '', '', gPay || '']);
   const ym = `${y}-${String(mo + 1).padStart(2, '0')}`;
   const csv = row([`Píchačky — ${MONTHS[mo]} ${y} — ${types.map(t => TYPE_LABELS[t]).join(', ')}`]) + '\nSOUHRN\n' + sum + '\nROZPIS PO DNECH\n' + det;
   try {
