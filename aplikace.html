@@ -393,7 +393,7 @@ function drawHome() {
     <div id="pushhint"></div>
     <div class="hello"><img src="/pwa/ikona-192.png" alt=""><div><div class="g">${esc(greeting())}</div><div class="d">${today()}${ME.role === 'admin' ? ' · <span class="tag t-z">Jednatel</span>' : ''}</div></div></div>
     ${ME.role === 'admin' ? '<div id="jan"></div>' : ''}
-    ${ON_SERVER ? '<div id="den"></div><div id="kal"></div>' : ''}
+    ${ON_SERVER ? '<div id="den"></div><div id="dnes-prace"></div><div id="moje-pohl"></div><div id="kal"></div>' : ''}
     ${ON_SERVER && ME.role !== 'brigadnik' ? `<h2 class="sek">Zeptej se / zadej úkol</h2>
       <div class="ask"><input id="q" placeholder="${ME.role === 'vyroba' ? 'např. co je v dárku 3061, alergeny v kešu…' : 'např. cena kešu 200 g, co je v dárku 3061…'}" enterkeyhint="send" autocomplete="off"><button id="go">→</button></div>
       <div id="ans"></div>` : ''}
@@ -406,7 +406,7 @@ function drawHome() {
     $('#q').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); ask(); } });
   }
   if (ME.role === 'admin') drawJan();
-  if (ON_SERVER) { drawDay(); drawKal(); }
+  if (ON_SERVER) { drawDay(); drawKal(); drawDnesPrace(); drawMojePohl(); }
   pushHint();
 }
 
@@ -433,6 +433,30 @@ async function drawKal() {
       : `<div class="s">Příštích 7 dní nic naplánováno.</div>`)
     + `<div class="akce" style="margin-top:10px"><button data-u="kalendar.html">📅 Celý kalendář</button><button data-u="kalendar.html#novy">➕ Přidat událost</button></div></div>`;
   box.querySelectorAll('[data-u]').forEach(c => c.onclick = () => openPage(c.dataset.u));
+}
+
+// 🟢 who is at work today — team leads, no money (server /api/nastenky/pichacky-dnes)
+async function drawDnesPrace() {
+  const box = $('#dnes-prace'); if (!box || !['admin', 'vedeni', 'balirna_vedouci', 'darkovna_vedouci'].includes(ME.role)) return;
+  let j; try { const r = await fetch('/api/nastenky/pichacky-dnes', {credentials: 'same-origin', cache: 'no-store'}); if (!r.ok) return; j = await r.json(); } catch (e) { return; }
+  const v = o => o === true ? '📍' : o === false ? '⚠️' : '';
+  const inw = j.lide.filter(x => !x.do);
+  box.innerHTML = `<h2 class="sek">🟢 Dnes v práci · ${inw.length}</h2><div class="card">` + (j.lide.length ? j.lide.map(x =>
+    `<div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--li);align-items:center"><b style="flex:1">${esc(x.jmeno)}</b>
+      <span class="s">${x.do ? `odešel ${esc(x.do)}` : x.pauza ? `<b style="color:#b8860b">${x.pauza.typ === 'koureni' ? '🚬' : '☕'} od ${esc(x.pauza.od)}</b>` : '<b style="color:#4a7c2f">v práci</b>'}</span>
+      <span class="s" style="min-width:92px;text-align:right">${esc(x.od)}${v(x.overeno.prichod)} – ${x.do ? esc(x.do) + v(x.overeno.odchod) : '…'}</span></div>`).join('')
+    : '<div class="s">Dnes zatím nikdo nepíchl.</div>') + '</div>';
+}
+// 💰 my receivables (salespeople) — summary on home, details on moje-pohledavky.html
+async function drawMojePohl() {
+  const box = $('#moje-pohl'); if (!box || ME.role !== 'obchod') return;
+  let d; try { const r = await fetch('/api/nastenky/pohledavky', {credentials: 'same-origin', cache: 'no-store'}); if (!r.ok) return; d = await r.json(); } catch (e) { return; }
+  const num = s => +String(s || '0').replace(/[^\d,.-]/g, '').replace(',', '.') || 0;
+  const ov = d.OV_CZK.reduce((a, x) => a + num(x.amt), 0), n = d.OV_CZK.length + d.OV_EUR.length, soon = d.SOON_CZK.length + d.SOON_EUR.length;
+  box.innerHTML = `<h2 class="sek">💰 Moje pohledávky</h2><div class="card click" id="mp-c"><div style="display:flex;gap:12px">
+    <div style="flex:1"><div class="s">Po splatnosti</div><b style="font-size:22px;color:${n ? 'var(--ru)' : 'var(--ze)'}">${Math.round(ov).toLocaleString('cs-CZ')} Kč</b><div class="s">${n} položek${d.OV_EUR.length ? ' (i v €)' : ''}</div></div>
+    <div style="flex:1"><div class="s">Splatné do 5 dní</div><b style="font-size:22px">${soon}</b><div class="s">položek</div></div></div></div>`;
+  $('#mp-c').onclick = () => openPage('moje-pohledavky.html');
 }
 
 async function drawDay() {

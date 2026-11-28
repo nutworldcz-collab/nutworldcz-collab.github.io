@@ -904,9 +904,16 @@ window.NW_STRANKY = [
   "ikona": "🚨",
   "nazev": "Krizové situace",
   "popis": "Postup při stažení výrobku — jen za přihlášením",
-  "jen": [
-   "Jan Vlček"
-  ]
+  "jen": ["Jan Vlček", "Jana Nývltová", "Lucie Turková"]
+ },
+ {
+  "soubor": "moje-pohledavky.html",
+  "skupina": "obchod",
+  "ikona": "💰",
+  "nazev": "Moje pohledávky",
+  "popis": "Faktury mých firem po splatnosti, do 5 dní a s delší splatností — každý obchodník jen svoje",
+  "stitek": "nové",
+  "barva": "brown"
  },
  {
   "soubor": "soukrome/platby/index.html",

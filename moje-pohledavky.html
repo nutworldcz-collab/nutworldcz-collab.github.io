@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<script>
+  // server only (login decides whose invoices) — the GitHub copy forwards to the tools server (Jan 2026-11-28, 1:1)
+  if (/github\.io$/.test(location.hostname)) location.replace('https://nastroje.nutworld.cz' + location.pathname + location.search + location.hash);
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Moje pohledávky — Nutworld</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+  :root{--hn:#83502e;--tm:#5c381f;--kr:#f1e6da;--ru:#da1668;--zl:#f7ab31;--ze:#6fa044;--tx:#2a1a0e;--mu:#7a6656;--li:#e5d6c6}
+  *{box-sizing:border-box}body{margin:0;background:#faf6f1;color:var(--tx);font:15px/1.45 'Source Sans 3',Arial,sans-serif}
+  header{background:linear-gradient(135deg,#5c381f 0%,#83502e 55%,#a0622a 100%);color:#fff;padding:20px 18px}
+  header h1{font:800 24px 'Exo 2',Arial;margin:0}header p{margin:4px 0 0;opacity:.85;font-size:14px}
+  main{max-width:900px;margin:0 auto;padding:16px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:6px}
+  .box{background:#fff;border:1px solid var(--li);border-radius:14px;padding:12px 14px}
+  .big{font:800 24px 'Exo 2',Arial}.mu{color:var(--mu);font-size:13px}
+  details{background:#fff;border:1px solid var(--li);border-radius:14px;padding:0 14px;margin-top:10px}
+  summary{cursor:pointer;font:700 16px 'Exo 2',Arial;color:var(--tm);padding:12px 0;list-style:none}summary::-webkit-details-marker{display:none}
+  summary:before{content:'▸ ';color:var(--hn)}details[open] summary:before{content:'▾ '}
+  .li{display:flex;gap:10px;padding:9px 0;border-top:1px solid #f1e6da}.li .r{margin-left:auto;font-weight:700;white-space:nowrap}
+</style>
+</head>
+<body>
+<header><h1>💰 Moje pohledávky</h1><p id="sub">Faktury mých firem — po splatnosti a co se blíží</p></header>
+<main><div id="out">Načítám…</div></main>
+<script>
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+const num = s => +String(s || '0').replace(/[^\d,.-]/g, '').replace(',', '.') || 0;
+const fmt = (v, c) => Math.round(v).toLocaleString('cs-CZ') + ' ' + c;
+fetch('/api/nastenky/pohledavky', {credentials: 'same-origin', cache: 'no-store'}).then(async r => { const j = await r.json(); if (!r.ok || j.chyba) throw new Error(j.chyba || r.status); return j; }).then(d => {
+  document.getElementById('sub').textContent = `${d.oz === 'všichni' ? 'Všechny firmy' : 'Firmy obchodníka ' + d.oz} · stav K2: ${d.aktualizace}`;
+  const sum = (a, c) => a.reduce((s, x) => s + num(x.amt), 0);
+  const ov = [...d.OV_CZK.map(x => ({...x, c: 'Kč'})), ...d.OV_EUR.map(x => ({...x, c: '€'}))].sort((a, b) => (b.days || 0) - (a.days || 0));
+  const soon = [...d.SOON_CZK.map(x => ({...x, c: 'Kč'})), ...d.SOON_EUR.map(x => ({...x, c: '€'}))];
+  const later = [...d.LATER_CZK.map(x => ({...x, c: 'Kč'})), ...d.LATER_EUR.map(x => ({...x, c: '€'}))];
+  const tot = (a, c) => fmt(sum(a.filter(x => x.c === c)), c);
+  const row = x => `<div class="li"><span><b>${esc(x.n)}</b><div class="mu">${esc(x.sub || (x.fakt ? 'faktury ' + x.fakt : ''))}${x.days ? ` · <b style="color:${x.days > 25 ? '#da1668' : '#b8860b'}">${Math.round(x.days)} dní po splatnosti</b>` : ''}${x.due ? ' · splatné ' + esc(x.due) : ''}${x.datum ? ' · splatné ' + esc(x.datum) : ''}</div></span><span class="r">${esc(x.amt)} ${x.c}</span></div>`;
+  document.getElementById('out').innerHTML = `<div class="grid">
+      <div class="box"><div class="mu">Po splatnosti</div><div class="big" style="color:#da1668">${tot(ov, 'Kč')}</div><div class="mu">${sum(ov.filter(x => x.c === '€')) ? tot(ov, '€') + ' · ' : ''}${ov.length} položek</div></div>
+      <div class="box"><div class="mu">Splatné do 5 dní</div><div class="big">${tot(soon, 'Kč')}</div><div class="mu">${soon.length} položek</div></div>
+      <div class="box"><div class="mu">Delší splatnost</div><div class="big">${tot(later, 'Kč')}</div><div class="mu">${later.length} položek</div></div></div>
+    <details ${ov.length ? 'open' : ''}><summary>🔴 Po splatnosti (${ov.length}) — připomeň zákazníkovi</summary>${ov.map(row).join('') || '<div class="mu" style="padding-bottom:12px">Nic po splatnosti 👍</div>'}</details>
+    <details><summary>🟠 Splatné do 5 dní (${soon.length})</summary>${soon.map(row).join('') || '<div class="mu" style="padding-bottom:12px">Nic.</div>'}</details>
+    <details><summary>🟢 Delší splatnost (${later.length})</summary>${later.map(row).join('') || '<div class="mu" style="padding-bottom:12px">Nic.</div>'}</details>
+    <p class="mu" style="margin-top:14px">Vidíš jen faktury firem, kde jsi uvedený jako obchodník. Zaplacené se odškrtnou samy podle Fio (6× denně).</p>`;
+}).catch(e => { document.getElementById('out').innerHTML = `<div class="box">${esc(e.message)}</div>`; });
+</script>
+</body>
+</html>
