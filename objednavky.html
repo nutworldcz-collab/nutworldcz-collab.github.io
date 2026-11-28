@@ -769,15 +769,38 @@ function loadDone() {
 function saveDone() {
   try { localStorage.setItem(LS_KEY, JSON.stringify([...doneSet])); } catch {}
 }
+// shared ticks (Jan 2026-11-28): what one packer ticks, everybody sees within ~10 s — server /api/nastenky/rozklad
+const ROZ_API = '/api/nastenky/rozklad', ROZ_ON = !/github\.io$/.test(location.hostname);
+let ROZ_KDO = {}, ROZ_FIRST = true;
+async function syncDone() {
+  if (!ROZ_ON || document.hidden) return;
+  try {
+    const r = await fetch(`${ROZ_API}?den=${TODAY}`, {credentials: 'same-origin', cache: 'no-store'}); if (!r.ok) return;
+    const j = await r.json();
+    if (ROZ_FIRST) {               // ticks made in this browser before sharing -> upload once
+      ROZ_FIRST = false;
+      const local = [...doneSet].filter(c => !j.hotovo[c]);
+      for (const c of local) { await fetch(ROZ_API, {method: 'POST', credentials: 'same-origin', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({den: TODAY, kod: c, hotovo: true})}).catch(() => {}); j.hotovo[c] = {kdo: 'já', cas: ''}; }
+    }
+    ROZ_KDO = j.hotovo; doneSet = new Set(Object.keys(j.hotovo)); saveDone(); applyDoneState();
+  } catch (e) {}
+}
 function toggleDone(code) {
-  if (doneSet.has(code)) doneSet.delete(code); else doneSet.add(code);
+  const on = !doneSet.has(code);
+  if (on) doneSet.add(code); else doneSet.delete(code);
   saveDone();
   applyDoneState();
+  if (ROZ_ON) fetch(ROZ_API, {method: 'POST', credentials: 'same-origin', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({den: TODAY, kod: code, hotovo: on})})
+    .then(r => { if (!r.ok) throw 0; return syncDone(); }).catch(() => { alert('Odškrtnutí se neuložilo — zkus to znovu.'); });
 }
+setInterval(syncDone, 10000);
+document.addEventListener('visibilitychange', syncDone);
 function applyDoneState() {
   document.querySelectorAll('.product-row[data-code]').forEach(row => {
     const done = doneSet.has(row.dataset.code) || !!(window.NWUkoly && NWUkoly.refDone(vuRef(row.dataset.shop || 'cz', row.dataset.code), TODAY));
     row.classList.toggle('done', done);
+    const who = ROZ_KDO[row.dataset.code];
+    row.title = who && who.kdo ? `✓ ${who.kdo}${who.cas ? ' · ' + who.cas : ''}` : '';
     if (hideDone) row.hidden = done;
   });
   // Aktualizuj počítadla variant
@@ -1173,7 +1196,7 @@ async function loadData() {
     }
 
     document.getElementById('state-msg').hidden = true;
-    loadDone();
+    loadDone(); syncDone();
     buildHeader();
     buildDatePills();
     renderSummary('cz');
