@@ -590,7 +590,8 @@ function toggleFNota(nid, cardId) {
   if (open) document.getElementById('fnota-ta-'+nid).focus();
 }
 function pKey(cardId,pi,ci) { return `${cardId}_p${pi}_c${ci}`; }
-function isDone(cardId,pi,ci) { return !!progress[pKey(cardId,pi,ci)]; }
+// a production task ✅ done (vukoly.js, Jan 2026-11-28) ticks the item too — in every view
+function isDone(cardId,pi,ci) { const k=pKey(cardId,pi,ci); return !!progress[k]||(window.NWUkoly&&NWUkoly.refDone(k)); }
 function toggle(cardId,pi,ci) { const k=pKey(cardId,pi,ci); progress[k]=!progress[k]; saveProg(); render(); }
 
 /* ── Gramáž → kg ── */
@@ -1048,6 +1049,10 @@ function buildFirmaCard(card){
             <div class="comp-name">${compName}${compKod?`<span class="comp-kod">kód ${compKod}</span>`:''}</div>
             ${compGram?`<div class="comp-gram">${compGram} × ${prod.ks} ks</div>`:''}
             ${(()=>{const t=dk?obInnerText((DARKY_DATA[dk]||{}).obal,parseFloat(compGram)||0):obInnerText(s.obal,parseFloat(s.gram)||0);return t?`<div class="comp-obal">🧰 ${t}</div>`:'';})()}
+            ${(()=>{if(!window.NWUkoly||!NWUkoly.on())return '';const k=pKey(id,pi,ci);   // 📋 assign the item to a worker
+              const ob=(dk?obInnerText((DARKY_DATA[dk]||{}).obal,parseFloat(compGram)||0):obInnerText(s.obal,parseFloat(s.gram)||0)).replace(/<[^>]+>/g,'').replace(/\s*\(.*?\)\s*$/,'').trim();
+              NWUkoly.meta[k]={zdroj:'vyroba',ref:k,karta:id,firma:firma+' · '+prod.nazev,produkt:compName,kod:compKod||'',obal:ob,gram:compGram||'',ks:prod.ks,dilna:dk?'darkovna':'balirna'};
+              return NWUkoly.html(k,NWUkoly.meta[k]);})()}
           </div>
           <div class="comp-kg">${compKg?fmtKg(compKg):'—'}</div>
         `;
@@ -2063,6 +2068,8 @@ loadNabaleno();
 loadFirmaStatus();
 loadData();
 </script>
+<script src="vukoly.js"></script>
+<script>NWUkoly.load('vyroba',()=>render()).then(d=>{if(d&&d.smi)render();});</script>
 <script src="nw-data.js"></script>
 <script src="vyroba-sync.js"></script>
 <script src="pin-guard.js"></script>

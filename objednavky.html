@@ -689,7 +689,17 @@ function setView(view, btn) {
   if (q) applySearch(q);
 }
 
+let VU_SHOP = 'cz';     // which shop the rows being drawn belong to (production tasks, vukoly.js)
+function vuRef(shop, code) { return `eshop:${shop}:${code}`; }
+function vuHtml(it, qty) {          // 📋 „🙋 Beru si“ + who is doing it (Jan 2026-11-28); hidden until launched
+  if (!window.NWUkoly || !NWUkoly.on()) return '';
+  const ref = vuRef(VU_SHOP, it.code), gm = it.name.match(/(\d+(?:[.,]\d+)?)\s?(g|kg)\b/i);
+  NWUkoly.meta[ref] = {zdroj: 'eshop', ref, firma: 'E-shop ' + VU_SHOP.toUpperCase(), produkt: it.name, kod: it.code,
+    gram: gm ? gm[1] + gm[2].toLowerCase() : '', ks: qty, dilna: it.is_gift ? 'darkovna' : 'balirna', sam: true};
+  return NWUkoly.html(ref, NWUkoly.meta[ref], TODAY);
+}
 function renderCurrentView(shopKey) {
+  VU_SHOP = shopKey;
   renderVelkeObjednavky(shopKey);
   renderDarkyKombinovane(shopKey);
   if (activeView === 'druh') renderSections(shopKey);
@@ -766,7 +776,7 @@ function toggleDone(code) {
 }
 function applyDoneState() {
   document.querySelectorAll('.product-row[data-code]').forEach(row => {
-    const done = doneSet.has(row.dataset.code);
+    const done = doneSet.has(row.dataset.code) || !!(window.NWUkoly && NWUkoly.refDone(vuRef(row.dataset.shop || 'cz', row.dataset.code), TODAY));
     row.classList.toggle('done', done);
     if (hideDone) row.hidden = done;
   });
@@ -774,7 +784,7 @@ function applyDoneState() {
   document.querySelectorAll('.variant-card').forEach(card => {
     const rows  = [...card.querySelectorAll('.product-row[data-code]')];
     const total = rows.reduce((s, r) => s + (parseInt(r.dataset.qty) || 0), 0);
-    const doneQ = rows.filter(r => doneSet.has(r.dataset.code))
+    const doneQ = rows.filter(r => r.classList.contains('done'))
                       .reduce((s, r) => s + (parseInt(r.dataset.qty) || 0), 0);
     const el = card.querySelector('.variant-total');
     if (!el) return;
@@ -843,20 +853,21 @@ function makeProductRow(it, qty, color, giftSrc) {
   }
   const giftBadge = it.is_gift ? ' <span class="gift-badge">🎁</span>' : '';
   if (src) {
-    return `<div class="product-row ing-row" data-code="${it.code}" data-qty="${qty}" onclick="toggleDone('${it.code}')">
+    return `<div class="product-row ing-row" data-code="${it.code}" data-shop="${VU_SHOP}" data-qty="${qty}" onclick="toggleDone('${it.code}')">
       <span class="done-check">✓</span>
       <span class="qty-badge" style="color:${color}">${qty}×</span>
       <div class="ing-name-wrap">
         <span class="prod-name">${it.name}${giftBadge}</span>
         <span class="prod-code-inline">${it.code}</span>
         ${src}
+        ${vuHtml(it, qty)}
       </div>
     </div>`;
   }
-  return `<div class="product-row" data-code="${it.code}" data-qty="${qty}" onclick="toggleDone('${it.code}')">
+  return `<div class="product-row" data-code="${it.code}" data-shop="${VU_SHOP}" data-qty="${qty}" onclick="toggleDone('${it.code}')">
     <span class="done-check">✓</span>
     <span class="qty-badge" style="color:${color}">${qty}×</span>
-    <span class="prod-name">${it.name}${giftBadge}</span>
+    <span class="prod-name">${it.name}${giftBadge}${vuHtml(it, qty)}</span>
     <span class="prod-code">${it.code}</span>
   </div>`;
 }
@@ -1185,6 +1196,12 @@ async function loadData() {
 }
 
 loadData();
+</script>
+<script src="vukoly.js"></script>
+<script>
+// production tasks: redraw when someone takes / finishes an item (30 s refresh in vukoly.js)
+NWUkoly.load('eshop', () => { if (!REPORT) return; renderCurrentView('cz'); renderCurrentView('sk'); applyDoneState(); })
+  .then(d => { if (d && d.smi && REPORT) { renderCurrentView('cz'); renderCurrentView('sk'); applyDoneState(); } });
 </script>
 </body>
 </html>

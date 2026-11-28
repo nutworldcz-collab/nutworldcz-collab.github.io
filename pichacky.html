@@ -910,6 +910,7 @@ input[type="text"]:focus { border-color: var(--brown); }
     </div>
     <button class="dash-hbtn" onclick="openAdd()">+ Přidat osobu</button>
     <button class="dash-hbtn" onclick="openDocs()" title="Dokumenty k potvrzení (BOZP, hygiena, pravidla, GDPR)">📄 Dokumenty</button>
+    <button class="dash-hbtn" id="vyk-btn" hidden onclick="openVykon()" title="Úkoly ve výrobě: kusy za hodinu a minuty na kus podle lidí a stejných produktů">📊 Výkon</button>
     <button class="dash-hbtn" onclick="openSync()" title="Synchronizace mezi zařízeními">⇄ Sync</button>
     <button class="dash-hbtn" onclick="lock()">🔒</button>
   </header>
@@ -1044,6 +1045,23 @@ input[type="text"]:focus { border-color: var(--brown); }
       <button class="btn-sec" onclick="closeRate()">Zrušit</button>
       <button class="btn-prim" onclick="saveRate()">Uložit</button>
     </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 📊 VÝKON — production tasks (server, Jan 2026-11-28) ═══════════════ -->
+<div class="add-overlay" id="vyk-overlay" hidden onclick="if(event.target===this)this.hidden=true">
+  <div class="add-card" style="max-width:860px;width:100%;max-height:90vh;overflow:auto">
+    <div class="modal-title" style="margin-bottom:4px">📊 Výkon ve výrobě</div>
+    <div class="modal-sub" style="margin-bottom:10px">Z úkolů zadaných ve Výrobě a vzatých v Rozkladu objednávek. Počítají se jen hotové úkoly — bez zapomenutých zastavení a kratších než 3 min. Jména vidíš jen ty; pracovník vidí jen sebe proti průměru týmu.</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px">
+      <label class="f-label" style="margin:0">Od <input type="date" id="vyk-od" style="width:auto"></label>
+      <label class="f-label" style="margin:0">Do <input type="date" id="vyk-do" style="width:auto"></label>
+      <input type="text" id="vyk-q" placeholder="Hledat: 8×15, kešu, balení…" style="flex:1;min-width:160px" oninput="drawVykon()">
+      <button class="btn-sec" onclick="loadVykon()">Načíst</button>
+    </div>
+    <div id="vyk-body">Načítám…</div>
+    <div id="vyk-set" style="margin-top:16px"></div>
+    <div class="modal-actions"><button class="btn-sec" onclick="document.getElementById('vyk-overlay').hidden=true">Zavřít</button></div>
   </div>
 </div>
 
@@ -1498,6 +1516,75 @@ function renderTotals() {
 const docApi = async (path, body) => { const r = await fetch('/api/nastenky/pichacky/' + path, body ? {method: 'POST', credentials: 'same-origin', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)} : {credentials: 'same-origin', cache: 'no-store'});
   const j = await r.json().catch(() => ({chyba: 'Dokumenty jsou jen na nastroje.nutworld.cz'})); if (!r.ok || j.chyba) throw new Error(j.chyba || 'chyba ' + r.status); return j; };
 const escH = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+// ── 📊 Výkon: pieces per hour + minutes per piece per úkon × person and per same product per month ──
+let VYK = null, VYK_SET = null;
+const vEsc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
+const vNum = (v, d = 1) => v == null ? '–' : Number(v).toLocaleString('cs-CZ', {maximumFractionDigits: d});
+const vMin = m => { m = Math.round(m || 0); return `${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`; };
+(async () => {   // the button only where the server says Jan may see it
+  try { const r = await fetch('/api/nastenky/vukoly?moje=1', {credentials: 'same-origin', cache: 'no-store'}); if (!r.ok) return;
+    const j = await r.json(); VYK_SET = j; if (j.statistiky) document.getElementById('vyk-btn').hidden = false; } catch (e) {}
+})();
+function openVykon() {
+  document.getElementById('vyk-overlay').hidden = false;
+  const d = new Date(); if (!document.getElementById('vyk-od').value) {
+    document.getElementById('vyk-od').value = new Date(d.getFullYear(), d.getMonth() - 2, 1).toISOString().slice(0, 10);
+    document.getElementById('vyk-do').value = d.toISOString().slice(0, 10); }
+  loadVykon(); drawVykSet();
+}
+async function loadVykon() {
+  const b = document.getElementById('vyk-body'); b.textContent = 'Načítám…';
+  try { const r = await fetch(`/api/nastenky/vukoly/vykon?od=${document.getElementById('vyk-od').value}&do=${document.getElementById('vyk-do').value}`, {credentials: 'same-origin', cache: 'no-store'});
+    VYK = await r.json(); if (!r.ok) throw new Error(VYK.chyba); drawVykon(); }
+  catch (e) { b.textContent = 'Nejde načíst: ' + e.message; }
+}
+function drawVykon() {
+  if (!VYK) return;
+  const q = (document.getElementById('vyk-q').value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/x/g, '×');
+  const hit = k => !q || k.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/x/g, '×').includes(q);
+  const kl = VYK.klice.filter(k => hit(k.klic));
+  const th = 'style="text-align:left;padding:6px 8px;border-bottom:2px solid #c8976a;font-size:12px;color:#5c381f;white-space:nowrap"', td = 'style="padding:6px 8px;border-bottom:1px solid #eadccd;white-space:nowrap"';
+  const mesice = Object.keys(VYK.mesice);
+  let h = `<h3 style="margin:6px 0;color:#5c381f">Podle úkonu a lidí</h3>`;
+  h += kl.length ? kl.map(k => `<div style="background:#f1e6da;border-radius:10px;padding:10px 12px;margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><b>${vEsc(k.klic)}</b><span>tým <b>${vNum(k.ks_h)} ks/h</b> · ${vNum(k.min_ks, 2)} min/ks · ${k.ks} ks · ${vMin(k.min)} h</span></div>
+      <div style="overflow-x:auto"><table style="border-collapse:collapse;width:100%;margin-top:6px;background:#fff;border-radius:8px"><tr><th ${th}>Kdo</th><th ${th}>ks/h</th><th ${th}>min/ks</th><th ${th}>Kusů</th><th ${th}>Čas</th><th ${th}>Úkolů</th><th ${th}>vs. tým</th></tr>
+      ${k.lide.map(p => { const pct = k.ks_h ? Math.round((p.ks_h / k.ks_h - 1) * 100) : 0;
+        return `<tr><td ${td}>${vEsc(p.jmeno)}</td><td ${td}><b>${vNum(p.ks_h)}</b></td><td ${td}>${vNum(p.min_ks, 2)}</td><td ${td}>${p.ks}</td><td ${td}>${vMin(p.min)}</td><td ${td}>${p.ukolu}</td><td ${td} style="color:${pct >= 0 ? '#4a7c2f' : '#9b1c1c'}">${pct > 0 ? '+' : ''}${pct} %</td></tr>`; }).join('')}</table></div></div>`).join('')
+    : '<div class="modal-sub">Zatím žádné hotové úkoly v tomto období.</div>';
+  if (mesice.length) {
+    const keys = [...new Set(mesice.flatMap(m => Object.keys(VYK.mesice[m])))].filter(hit).sort();
+    h += `<h3 style="margin:14px 0 6px;color:#5c381f">Stejné produkty po měsících</h3><div style="overflow-x:auto"><table style="border-collapse:collapse;width:100%">
+      <tr><th ${th}>Úkon · obal · gramáž</th>${mesice.map(m => `<th ${th}>${m.slice(5)}/${m.slice(2, 4)}</th>`).join('')}</tr>
+      ${keys.map(k => `<tr><td ${td}><b>${vEsc(k)}</b></td>${mesice.map(m => { const x = VYK.mesice[m][k];
+        return `<td ${td}>${x ? `<b>${vNum(x.ks_h)} ks/h</b><br><span style="font-size:12px;color:#83502e">${vNum(x.min_ks, 2)} min/ks · ${x.ks} ks · ${vMin(x.min)} h</span>` : '–'}</td>`; }).join('')}</tr>`).join('')}</table></div>`;
+  }
+  if (VYK.vyrazeno.length) h += `<h3 style="margin:14px 0 6px;color:#5c381f">Nepočítá se (${VYK.vyrazeno.length})</h3><div class="modal-sub">⚠️ zapomenuté zastavení nebo méně než 3 min. Opravit čas jde ve Výrobě kliknutím na úkol.</div>
+    ${VYK.vyrazeno.slice(0, 30).map(t => `<div style="font-size:13px;padding:3px 0">${t.varovani ? '⚠️' : '⏱'} ${vEsc(t.osoba)} · ${vEsc(t.ukon)} · ${vEsc(t.produkt)} · ${t.ks_hotovo} ks · ${vMin(t.minuty)} h</div>`).join('')}`;
+  document.getElementById('vyk-body').innerHTML = h;
+}
+function drawVykSet() {        // úkony + launch switch (Jan only)
+  const el = document.getElementById('vyk-set'); const s = VYK_SET; if (!s) { el.innerHTML = ''; return; }
+  el.innerHTML = `<div class="f-label">Úkony (jeden na řádek)</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap"><label style="flex:1;min-width:200px">Balírna<textarea id="vyk-ub" rows="5" style="width:100%;font:inherit">${vEsc((s.ukony.balirna || []).join('\n'))}</textarea></label>
+    <label style="flex:1;min-width:200px">Dárkovna<textarea id="vyk-ud" rows="5" style="width:100%;font:inherit">${vEsc((s.ukony.darkovna || []).join('\n'))}</textarea></label></div>
+    <div class="modal-actions" style="justify-content:space-between;flex-wrap:wrap">
+      <span class="modal-sub" style="margin:0">${s.spusteno ? '🟢 Spuštěno pro všechny' : '🔒 Zatím jen ty (připravujeme)'}</span>
+      <span><button class="btn-sec" id="vyk-spust">${s.spusteno ? 'Skrýt ostatním' : '🚀 Spustit pro všechny'}</button> <button class="btn-prim" onclick="saveVykSet()">Uložit úkony</button></span></div>`;
+  document.getElementById('vyk-spust').onclick = e => {
+    if (!e.target.dataset.sure) { e.target.dataset.sure = 1; e.target.textContent = s.spusteno ? 'Opravdu skrýt?' : 'Opravdu spustit všem?'; return; }
+    saveVykSet(!s.spusteno);
+  };
+}
+async function saveVykSet(spusteno) {
+  const lines = id => document.getElementById(id).value.split('\n').map(x => x.trim()).filter(Boolean);
+  const body = {ukony: {balirna: lines('vyk-ub'), darkovna: lines('vyk-ud')}};
+  if (spusteno !== undefined) body.spusteno = spusteno;
+  const r = await fetch('/api/nastenky/vukoly/nastaveni', {method: 'POST', credentials: 'same-origin', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)});
+  const j = await r.json().catch(() => ({}));
+  if (r.ok) { VYK_SET = {...VYK_SET, ...j.nastaveni}; drawVykSet(); } else alert(j.chyba || 'Neuloženo');
+}
+
 async function openDocs() {
   document.getElementById('docs-overlay').hidden = false;
   const box = document.getElementById('docs-body');

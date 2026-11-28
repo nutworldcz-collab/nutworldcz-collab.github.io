@@ -1048,7 +1048,7 @@ async function drawUkoly() {
     const run = t.stav === 'bezi';
     return `<div class="card" style="${run ? 'border:2px solid #6fa044' : ''}">
       <div style="display:flex;justify-content:space-between;gap:8px"><div class="h">${esc(t.text || t.produkt)}</div><b style="white-space:nowrap">${t.ks} ks</b></div>
-      <div class="s">${esc(t.ukon)} · ${esc(t.firma || '')}${t.zadal && t.zadal !== t.osoba ? ' · zadal(a) ' + esc(t.zadal.split(' ')[0]) : ''}</div>
+      <div class="s">${[t.ukon, t.firma, t.zadal && t.zadal !== t.osoba ? 'zadal(a) ' + t.zadal.split(' ')[0] : ''].filter(Boolean).map(esc).join(' · ')}</div>
       <div class="s" style="margin-top:4px">${run ? '▶ běží' : t.stav === 'pauza' ? '⏸ pauza' : '⏳ ještě nezačato'}${t.minuty ? ' · ' + ukMin(t.minuty) + ' h' : ''}${t.varovani ? ' · <span style="color:#9b1c1c">⚠️ zapomenuté zastavení</span>' : ''}</div>
       <div style="display:flex;gap:8px">
         ${run ? `<button class="big b-l" data-uk="pauza" data-id="${t.id}" style="flex:1">⏸ Pauza</button>` : `<button class="big b-h" data-uk="start" data-id="${t.id}" style="flex:1">▶ ${t.minuty ? 'Pokračuju' : 'Začínám'}</button>`}
@@ -1060,7 +1060,7 @@ async function drawUkoly() {
     </div>`;
   };
   box.innerHTML = (live.length ? live.map(card).join('') : `<div class="card"><div class="h">Teď nemáš žádný úkol 🐿️</div><div class="s">Až ti Honza nebo vedoucí něco zadá, přijde ti upozornění a objeví se to tady.</div></div>`)
-    + `<div class="s" style="margin:4px 4px 10px">Naráz běží jen jeden úkol — když začneš jiný, ten předchozí se dá na pauzu. Pauza v píchačce a odchod úkol zastaví samy.</div>`
+    + `<div style="margin:4px 4px 10px;font-size:13px;color:var(--mu)">Naráz běží jen jeden úkol — když začneš jiný, ten předchozí se dá na pauzu. Pauza v píchačce a odchod úkol zastaví samy.</div>`
     + (done.length ? `<h2 class="sek">Hotovo za poslední týden</h2><div class="card">${done.map(t => `<div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--li)"><span style="flex:1">✅ ${esc(t.ukon)} · ${esc(t.produkt)}<span class="s"> · ${t.ks_hotovo} ks</span></span><b>${ukMin(t.minuty)}</b>${t.ks_h ? `<span class="s" style="white-space:nowrap">${ukNum(t.ks_h)} ks/h</span>` : ''}</div>`).join('')}</div>` : '')
     + '<div id="uk-vyk"></div>';
   box.querySelectorAll('[data-uk]').forEach(b => b.onclick = async () => {
@@ -1083,7 +1083,7 @@ async function ukSouhrn(el) {
   if (!j.radky.length) { el.innerHTML = ''; return; }
   const mes = ['leden','únor','březen','duben','květen','červen','červenec','srpen','září','říjen','listopad','prosinec'][+j.mesic.slice(5) - 1];
   el.innerHTML = `<h2 class="sek">Co jsem dělal · ${mes}</h2><div class="card">
-    <div class="s" style="margin-bottom:4px">${j.ukolu} úkolů · ${ukMin(j.minut_celkem)} h na úkolech</div>
+    <div class="s" style="margin-bottom:4px">Úkolů: ${j.ukolu} · na úkolech ${ukMin(j.minut_celkem)} h</div>
     ${j.radky.map(r => { const lepsi = r.ks_h >= r.tym_ks_h; const pct = r.tym_ks_h ? Math.round((r.ks_h / r.tym_ks_h - 1) * 100) : 0;
       return `<div style="padding:8px 0;border-bottom:1px solid var(--li)"><div style="display:flex;justify-content:space-between;gap:8px"><b>${esc(r.klic)}</b><span class="s" style="white-space:nowrap">${r.ks} ks · ${ukMin(r.min)} h</span></div>
       <div style="display:flex;justify-content:space-between;gap:8px"><span><b>${ukNum(r.ks_h)} ks/h</b> · ${ukNum(r.min_ks, 2)} min/ks</span>
