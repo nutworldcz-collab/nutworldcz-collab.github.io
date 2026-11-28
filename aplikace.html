@@ -199,6 +199,7 @@ select.find{appearance:auto}
   <section class="view" id="v-pich"><div class="wrap" id="pich"></div></section>
   <section class="view" id="v-smeny"><div class="wrap" id="smeny"></div></section>
   <section class="view" id="v-ukoly"><div class="wrap" id="ukoly"></div></section>
+  <section class="view" id="v-pracovnik"><div class="wrap" id="pracovnik"></div></section>
   <section class="view tk" id="v-tymk"><div id="tk-list" class="tk-list"></div><div id="tk-mention" class="tk-mention" hidden></div>
     <div id="tk-reply" class="tk-reply" hidden></div>
     <div id="tk-recbar" class="tk-reply tk-rec" hidden><span class="dot"></span><b id="tk-rect">0:00</b><span>Nahrávám…</span>
@@ -310,6 +311,7 @@ function route() {
   else if (h === 'pich') PICH_NAHLED = PICH_NAHLED || null;
   if (ME.role === 'brigadnik' && !['pich', 'ukoly', 'smeny', 'vice', 'instalace', 'ucet', 'upozorneni'].includes(h)) h = 'pich';
   if (h.startsWith('stranka/')) h = 's/' + h.slice(8);     // manifest shortcuts
+  if (h.startsWith('pracovnik/')) { PRAC_KOD = h.slice(10); h = 'pracovnik'; }   // worker's card scanned by the phone camera
   CUR = h;
   document.querySelectorAll('.view').forEach(v => v.classList.remove('on'));
   const isPage = h.startsWith('s/');
@@ -339,9 +341,9 @@ function route() {
     markNav(file);
     return;
   }
-  const v = ['domu', 'skenovat', 'vice', 'instalace', 'ucet', 'upozorneni', 'pich', 'smeny', 'ukoly'].includes(h) ? h : 'domu';
+  const v = ['domu', 'skenovat', 'vice', 'instalace', 'ucet', 'upozorneni', 'pich', 'smeny', 'ukoly', 'pracovnik'].includes(h) ? h : 'domu';
   showView(v); markNav(v);
-  ({domu: drawHome, skenovat: drawScan, vice: drawMore, instalace: drawInstall, ucet: drawAccount, upozorneni: drawPush, pich: drawPich, smeny: drawSmeny, ukoly: drawUkoly})[v]();
+  ({domu: drawHome, skenovat: drawScan, vice: drawMore, instalace: drawInstall, ucet: drawAccount, upozorneni: drawPush, pich: drawPich, smeny: drawSmeny, ukoly: drawUkoly, pracovnik: drawPracovnik})[v]();
 }
 function showView(v) { $('#v-' + v).classList.add('on'); }
 function markNav(k) { document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('a', b.dataset.k === k)); }
@@ -1075,6 +1077,36 @@ async function drawUkoly() {
   ukSouhrn($('#uk-vyk'));
   if (live.some(t => t.stav === 'bezi')) UK_T = setTimeout(() => { if (CUR === 'ukoly') drawUkoly(); }, 60000);
 }
+// 🪪 my own card: the team lead scans it to give me a task (Jan 2026-11-28)
+async function mujQR(el) {
+  if (!el) return;
+  let j; try { j = await (await fetch('/api/nastenky/qr/muj', {credentials: 'same-origin', cache: 'no-store'})).json(); } catch (e) { return; }
+  if (!j.svg) return;
+  el.innerHTML = `<h2 class="sek">Moje kartička</h2><div class="card" style="display:flex;gap:12px;align-items:center">
+    <div style="width:84px;flex:0 0 84px;background:#fff;border-radius:8px;padding:4px">${j.svg.replace(/<svg /, '<svg style="width:100%;height:auto;display:block" ')}</div>
+    <div class="s">Když nemáš kartičku u sebe, ukaž vedoucímu tenhle QR — načte ho v „Zadat úkol“ a úkol ti hned naskočí v 📋 Úkolech.<br><button class="big b-l" id="qr-velky" style="margin-top:6px;padding:10px">Ukázat velký</button></div></div>`;
+  $('#qr-velky').onclick = () => { const s = document.createElement('div'); s.className = 'sheet';
+    s.innerHTML = `<div class="in" style="text-align:center"><b style="font-size:17px">${esc(j.jmeno)}</b><div style="background:#fff;border-radius:12px;padding:10px;margin:10px auto;max-width:320px">${j.svg.replace(/<svg /, '<svg style="width:100%;height:auto;display:block" ')}</div><button class="big b-l">Zavřít</button></div>`;
+    s.querySelector('button').onclick = () => s.remove(); document.body.appendChild(s); };
+}
+// a worker's card scanned by the team lead's phone camera -> what he is doing + give him a task
+let PRAC_KOD = '';
+async function drawPracovnik() {
+  $('#titul').textContent = 'Pracovník';
+  const box = $('#pracovnik'); $('#zpet').hidden = false;
+  if (!ON_SERVER) { box.innerHTML = `<div class="card"><div class="s">Funguje na nastroje.nutworld.cz.</div></div>`; return; }
+  const r = await fetch('/api/nastenky/qr/kdo?k=' + encodeURIComponent(PRAC_KOD), {credentials: 'same-origin', cache: 'no-store'}).catch(() => null);
+  const j = r ? await r.json().catch(() => ({})) : {chyba: 'Bez spojení.'};
+  if (!r || !r.ok) { box.innerHTML = `<div class="card"><div class="h">🪪 Kartička pracovníka</div><div class="s">${esc(j.chyba || 'Nejde načíst.')}</div></div>`; return; }
+  $('#titul').textContent = j.jmeno;
+  const roz = j.ukoly.filter(t => t.stav !== 'hotovo'), hot = j.ukoly.filter(t => t.stav === 'hotovo');
+  const row = t => `<div style="display:flex;gap:8px;padding:8px 0;border-bottom:1px solid var(--li)"><span style="flex:1">${t.stav === 'bezi' ? '▶' : t.stav === 'pauza' ? '⏸' : t.stav === 'hotovo' ? '✅' : '⏳'} <b>${esc(t.ukon)}</b> · ${esc(t.produkt)}<span class="s"> · ${t.stav === 'hotovo' ? t.ks_hotovo : t.ks} ks${t.firma ? ' · ' + esc(t.firma) : ''}</span></span><b>${ukMin(t.minuty)}</b></div>`;
+  box.innerHTML = `<div class="card"><div class="h">🪪 ${esc(j.jmeno)}</div>${j.ucet ? '' : '<div class="err">Nemá účet v aplikaci — úkol mu zatím zadat nejde.</div>'}</div>
+    <h2 class="sek">Teď dělá</h2><div class="card">${roz.map(row).join('') || '<div class="s">Nemá rozdělaný žádný úkol.</div>'}</div>
+    ${hot.length ? `<h2 class="sek">Dnes hotovo</h2><div class="card">${hot.map(row).join('')}</div>` : ''}
+    ${j.ucet && can('vyroba.html') ? `<button class="big b-h" id="pr-zadat">👤 Zadat úkol ve Výrobě</button><div class="s" style="margin:6px 4px;font-size:13px;color:var(--mu)">Otevře Výrobu — u položky dej „Zadat úkol“ a jeho jméno už bude vybrané.</div>` : ''}`;
+  const b = $('#pr-zadat'); if (b) b.onclick = () => { try { sessionStorage.setItem('nw_vu_osoba', JSON.stringify({j: j.ucet, t: Date.now()})); } catch (e) {} openPage('vyroba.html'); };
+}
 function alertBox(box, msg) { const d = document.createElement('div'); d.className = 'card err'; d.textContent = msg; box.prepend(d); setTimeout(() => d.remove(), 6000); }
 // my month: pieces per hour and minutes per piece, against the team average for the same work (no names)
 async function ukSouhrn(el) {
@@ -1160,6 +1192,7 @@ async function drawPich() {
       <div id="p-m" class="s" style="margin-top:6px"></div></div>
     <div id="p-dok"></div>
     <div id="p-vyk"></div>
+    <div id="p-qr"></div>
     <h2 class="sek">Moje hodiny · ${['leden','únor','březen','duben','květen','červen','červenec','srpen','září','říjen','listopad','prosinec'][+month.slice(5) - 1]}</h2>
     <div class="card"><div style="display:flex;justify-content:space-between"><b>Celkem ${hm(total)} h</b><span class="s">${days.length} dní · bez pauz</span></div>
       ${days.map(([k, r]) => { const x = new Date(k + 'T12:00');
@@ -1169,7 +1202,7 @@ async function drawPich() {
     <div class="s" style="margin:6px 4px">📍 = načteno QR na provozovně · ⚠️ = bez QR nebo mimo provozovnu · ✍️ = zapsáno ručně. Každou pauzu (kouření i jídlo) si odpíchni — do hodin se nepočítá. Honza vidí v píchačkách totéž co ty.</div>
     ${ME.role === 'admin' ? '<div id="p-adm"></div>' : ''}`;
   pichDocs();
-  if (UK_OK && !PICH_NAHLED) ukSouhrn($('#p-vyk'));     // what I did this month (production tasks)
+  if (UK_OK && !PICH_NAHLED) { ukSouhrn($('#p-vyk')); mujQR($('#p-qr')); }   // what I did this month + my card
   clearTimeout(PICH_T);
   if (PICH_NAHLED) {                      // preview: read-only, live
     box.querySelectorAll('button').forEach(b => { b.disabled = true; b.style.opacity = .55; });

@@ -104,11 +104,27 @@
       <label>Co udělat</label><textarea rows="2" data-f="text">${esc(text0)}</textarea>
       <div class="row"><div><label>Úkon</label><select data-f="ukon">${ukonOptions(o.dilna || 'balirna', o.ukon || (o.dilna === 'darkovna' ? 'Kompletace' : 'Balení'))}</select></div>
       <div style="flex:.6"><label>Kusů</label><input type="number" min="1" inputmode="numeric" data-f="ks" value="${esc(o.ks || '')}"></div></div>
-      <label>Kdo</label><select data-f="osoba"><option value="">— vyber —</option>${lide}</select>
+      <label>Kdo</label><div class="row" style="align-items:center"><div><select data-f="osoba"><option value="">— vyber —</option>${lide}</select></div>
+        <button type="button" class="zp" data-qr style="flex:0 0 auto;white-space:nowrap">📷 Načíst QR</button></div>
+      <div class="sub" data-kdo hidden style="margin-top:6px"></div>
       <div class="err" hidden></div>
       <div class="akce"><button class="zp" type="button">Zpět</button><button class="ok" type="button">Zadat</button></div>`);
     const f = k => ov.querySelector(`[data-f="${k}"]`);
-    ov.querySelector('.zp').onclick = () => ov.remove();
+    ov.querySelector('.zp:not([data-qr])').onclick = () => ov.remove();
+    try { const p = JSON.parse(sessionStorage.getItem('nw_vu_osoba') || 'null');   // card scanned in the app a moment ago
+      if (p && Date.now() - p.t < 30 * 60e3) f('osoba').value = p.j; } catch (e) { }
+    ov.querySelector('[data-qr]').onclick = async () => {      // 🪪 the worker's card instead of the list (Jan 2026-11-28)
+      const kod = await scan(); if (!kod) return;
+      const info = ov.querySelector('[data-kdo]'), err = ov.querySelector('.err'); err.hidden = true;
+      try {
+        const j = await api('/api/nastenky/qr/kdo?k=' + encodeURIComponent(kod));
+        if (!j.ucet) throw new Error(`${j.jmeno} zatím nemá účet v aplikaci — řekni Honzovi, ať ho založí.`);
+        f('osoba').value = j.ucet;
+        const roz = j.ukoly.filter(t => t.stav !== 'hotovo');
+        info.hidden = false;
+        info.innerHTML = `✅ <b>${esc(j.ucet)}</b>` + (roz.length ? ` · rozdělané: ${roz.map(t => `${esc(t.ukon)} ${t.ks} ks ${esc(t.produkt)} (${t.stav === 'bezi' ? '▶ běží' : t.stav === 'pauza' ? '⏸' : '⏳'})`).join(', ')}` : ' · teď nemá žádný úkol');
+      } catch (e) { err.hidden = false; err.textContent = e.message; }
+    };
     ov.querySelector('.ok').onclick = async () => {
       const [dilna, ukon] = f('ukon').value.split('|');
       const err = ov.querySelector('.err');
@@ -169,6 +185,35 @@
       catch (e) { const er = ov.querySelector('.err'); er.hidden = false; er.textContent = e.message; }
     });
   }
+  // camera -> worker card code (jsQR self-hosted, same as the píchačka); resolves the code or null
+  function scan() {
+    return new Promise(resolve => {
+      const ov = overlay(`<h3>📷 Kartička pracovníka</h3><div class="sub">Namiř kameru na QR na kartičce</div>
+        <div style="position:relative;border-radius:12px;overflow:hidden;background:#222;aspect-ratio:1/1;max-height:50vh;margin:0 auto">
+          <video playsinline muted style="width:100%;height:100%;object-fit:cover"></video>
+          <div style="position:absolute;inset:18%;border:3px solid #f7ab31;border-radius:12px"></div></div>
+        <div class="sub" data-st style="margin-top:8px">Spouštím kameru…</div>
+        <div class="akce"><button class="zp" type="button">Zrušit</button></div>`);
+      ov.style.zIndex = 10000;
+      let stream = null, done = false, raf = 0;
+      const end = v => { if (done) return; done = true; cancelAnimationFrame(raf); stream && stream.getTracks().forEach(x => x.stop()); ov.remove(); resolve(v); };
+      ov.querySelector('.zp').onclick = () => end(null);
+      ov.addEventListener('click', e => { if (e.target === ov) end(null); });
+      const st = ov.querySelector('[data-st]'), v = ov.querySelector('video');
+      const load = window.jsQR ? Promise.resolve() : new Promise((ok, no) => { const sc = document.createElement('script'); sc.src = '/vendor/jsQR-1.4.0.js'; sc.onload = ok; sc.onerror = no; document.head.appendChild(sc); });
+      Promise.all([load, navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false })]).then(([, s_]) => {
+        stream = s_; v.srcObject = s_; v.play(); st.textContent = 'Hledám QR kód…';
+        const cv = document.createElement('canvas'), cx = cv.getContext('2d', { willReadFrequently: true });
+        const tick = () => { if (done) return;
+          if (v.readyState >= 2) { const w = 480, h = Math.round(w * v.videoHeight / v.videoWidth) || 480; cv.width = w; cv.height = h; cx.drawImage(v, 0, 0, w, h);
+            const r = jsQR(cx.getImageData(0, 0, w, h).data, w, h, { inversionAttempts: 'dontInvert' });
+            if (r && r.data) { const m = r.data.match(/(pk[\w-]{8,20})/); if (m) return end(m[1]); st.textContent = 'Tohle není kartička pracovníka.'; } }
+          raf = requestAnimationFrame(tick); };
+        tick();
+      }).catch(() => { st.innerHTML = '<span style="color:#9b1c1c">Kamera nejde spustit — povol ji v prohlížeči, nebo vyber člověka ze seznamu.</span>'; });
+    });
+  }
+
   async function refresh() {
     try { S.data = await api(API + '?zdroj=' + encodeURIComponent(S.zdroj)); } catch (e) { }
     if (S.onChange) S.onChange();
@@ -185,5 +230,5 @@
     else detail(n.dataset.vu);
   }, true);
 
-  window.NWUkoly = { load, on, byRef, refDone, html, meta, refresh, fmtMin, num };
+  window.NWUkoly = { load, on, byRef, refDone, html, meta, refresh, fmtMin, num, scan };
 })();
